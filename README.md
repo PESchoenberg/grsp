@@ -1,5 +1,6 @@
 # grsp - Useful Scheme functions.
 
+[![DOI](https://zenodo.org/badge/163432499.svg)](https://zenodo.org/badge/latestdoi/163432499)
 
 
 ## Overview:

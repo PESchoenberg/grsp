@@ -28,7 +28,8 @@
   ;#:use-module ()
   #:export (pline
 	    ptit
-	    newlines))
+	    newlines
+	    pres))
 
 
 ; pline - displays character p_n p_m times in one line at the console.
@@ -82,6 +83,24 @@
     )
   )
 )
+
+
+; pres - dispay results.
+;
+; Arguments:
+; - p_s1: reference, string.
+; - p_s2: result, string
+;
+(define (pres p_s1 p_s2)
+  (let ((res " "))
+    (set! res (string-append p_s1 (string-append " = " p_s2)))
+      (display res)
+      (newline)
+  )
+)
+
+
+
 
 
 

@@ -1,20 +1,8 @@
-#! /usr/local/bin/guile -s
-!#
-
-
 ; ==============================================================================
 ;
-; example1.scm
+; grsp1.scm
 ;
-; A sample of grsp0 functions.
-;
-; Compilation:
-;
-; - cd to your /examples folder.
-;
-; - Enter the following:
-;
-;   guile example1.scm 
+; Constants.
 ;
 ; ==============================================================================
 ;
@@ -36,37 +24,24 @@
 ; ==============================================================================
 
 
-; Reqired modules.
-(use-modules (grsp grsp0))
-(use-modules (grsp grsp1))
+(define-module (grsp grsp1)
+  ;#:use-module ()
+  #:export (gconst))
+	    
 
-
-; Remember what this program is about (optional).
-(define q "This program shows the use of grsp functions.")
-
-
-; Start.
-(newlines 20)
-(ptit "=" 60 2 q)
-
-; pline
-(ptit " " 1 1 "1 - pline samples:")
-(pline "-" 20)
-(pline "*" 40)
-(pline "=" 60)
-
-; ptit
-(ptit " " 1 1 "2 - ptit samples")
-(ptit "*" 60 1 "ptit function with 1 line of '*', 60 in length.")
-(ptit "/" 40 2 "ptit function with 2 lines of '/', 40 in length.")
-
-
-; gconst
-(ptit " " 1 0 "3 - gconst samples and use of newlines and pres functions:")
-(newlines 1)
-(pres "Pi" (number->string (gconst "Pi")))
-(pres "gr" (number->string (gconst "gr")))
-
+; qconst - various constants.
+;
+; Arguments:
+; - p_n1: constant name, string.
+;
+(define (gconst p_n1)
+  (let ((res 0))
+  (cond ((equal? p_n1 "Pi")(set! res 3.14159)) ; Pi
+	((equal? p_n1 "gr")(set! res 1.00)) ; 
+	((equal? p_n1 "e")(set! res 2,71828)) ; Euler's number.
+	(else (set! res 0)))
+  res)
+)
 
 
 
