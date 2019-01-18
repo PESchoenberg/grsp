@@ -29,7 +29,9 @@
   #:export (pline
 	    ptit
 	    newlines
-	    pres))
+	    pres
+	    newspaces
+	    strings-append))
 
 
 ; pline - displays character p_n p_m times in one line at the console.
@@ -44,12 +46,7 @@
       (if (= i p_l)
 	  (begin (newline)(newline)(display str)(newline)(newline))
 	  (begin (set! str (string-append str p_c))
-	         (loop (+ i 1))
-	  )
-      )
-    )
-  )
-)
+	         (loop (+ i 1)))))))
 
 
 ; ptit - displays a console title surrounded by one or two lines.
@@ -65,24 +62,19 @@
   (if (>= p_n 2)(pline p_c p_l))
   (display p_t)
   (if (>= p_n 2)(pline p_c p_l))
-  (newline)
-)
+  (newline))
 
 
 ; newlines - repeats function newline p_n times.
 ;
 ; Arguments:
-; - p_n: numbr of iterations.
+; - p_n: number of iterations.
 ;
 (define (newlines p_n)
   (let loop ((i 0))
     (if (<= i p_n)
 	(begin (newline)
-	       (loop (+ i 1))
-	)
-    )
-  )
-)
+	       (loop (+ i 1))))))
 
 
 ; pres - dispay results.
@@ -95,11 +87,55 @@
   (let ((res " "))
     (set! res (string-append p_s1 (string-append " = " p_s2)))
       (display res)
-      (newline)
-  )
-)
+      (newline)))
 
 
+; newspaces - adds p_n blank spaces to string p_l.
+;
+; Arguments:
+; - p_n: number of blanks to add.
+; - p_l: string to display.
+; - p_s: side where to add spaces
+;   - 0 for left side.
+;   - 1 for right side.
+;
+(define (newspaces p_n p_l p_s)
+  (let ((res " ")
+	(sp ""))
+    (let loop ((i 0))
+      
+      ; Create a string of blanks.
+      (if (< i p_n)
+	  (begin (set! sp (string-append sp " "))
+		 (loop (+ i 1)))))
+      
+      ; Add the blank string.
+      (if (= p_s 0)
+  	  (set! res (string-append sp p_l)))
+      (if (= p_s 1)
+	  (set! res (string-append p_l sp)))
+      res))
+
+
+; strings-append - appends strings entered in a list as one larger string.
+;
+; Arguments:
+; - p_l: list of strings.
+; - p_s: add a blank space after each list element.
+;   - 0 for no spaces.
+;   - 1 to add one blank space.
+;
+(define (strings-append p_l p_s)
+  (let ((res "")
+	(elem #f))
+    (set! elem (car p_l))
+    (while (not (equal? elem #f))
+	   (if (equal? p_s 1)(set! elem (string-append elem " ")))
+	   (set! res (string-append res elem))
+	   (set! p_l (cdr p_l))
+	   (if (> (length p_l) 0)(set! elem (car p_l)))
+	   (if (= (length p_l) 0)(set! elem #f)))
+    res))
 
 
 

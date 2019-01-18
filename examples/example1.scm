@@ -68,6 +68,40 @@
 (pres "gr" (number->string (gconst "gr")))
 
 
+; newspaces
+(ptit " " 1 0 "4 - newspaces examples:")
+(newlines 1)
+(display (newspaces 1 "One blank left" 0))
+(newlines 1)
+(display (newspaces 1 "One blank right" 1))
+(newlines 1)
+(display (newspaces 5 "Five blanks left" 0))
+(newlines 1)
+(display (newspaces 5 "Five blanks right" 1))
+(newlines 1)
+(display (newspaces 10 "Ten blanks left" 0))
+(newlines 1)
+(display (newspaces 10 "Ten blanks right" 1))
+(newlines 1)
+(display (newspaces 20 "Twenty blanks left" 0))
+(newlines 1)
+(display (newspaces 20 "Twenty blanks right" 1))
+(newlines 1)
+
+
+; strings-append
+(ptit " " 1 0 "5 - strings-append examples:")
+(newlines 1)
+(display (strings-append (list "This" "text" "has" "no" "spaces") 0))
+(newlines 1)
+(display (strings-append (list "This" "text" "has" "spaces") 1))
+(newlines 1)
+(define res "")
+(set! res (strings-append (list "SELECT" "*" "FROM" "sde_facts" "WHERE" "Item =" "'counter1'") 1))
+(display res)
+(newlines 1)
+
+
 
 
 
