@@ -18,7 +18,7 @@
 ;
 ; ==============================================================================
 ;
-; Copyright (C) 2018  Pablo Edronkin (pablo.edronkin at yahoo.com)
+; Copyright (C) 2018 - 2019  Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;
 ;   This program is free software: you can redistribute it and/or modify
 ;   it under the terms of the GNU Lesser General Public License as published by
@@ -37,8 +37,8 @@
 
 
 ; Reqired modules.
-(use-modules (grsp grsp0))
-(use-modules (grsp grsp1))
+(use-modules (grsp grsp0)
+	     (grsp grsp1))
 
 
 ; Remember what this program is about (optional).
