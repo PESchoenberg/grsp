@@ -22,7 +22,9 @@ into a folder of your choice and cd into it.
 details concerning your OS and distribution, but as an example, on Ubuntu you
 would issue:
 
-    sudo cp *.scm -rv /usr/share/guile/site/2.0/grsp
+      sudo mkdir /usr/share/guile/site/2.0/grsp
+
+      sudo cp *.scm -rv /usr/share/guile/site/2.0/grsp
 
 and that will do the trick.
 
