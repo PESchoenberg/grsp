@@ -31,7 +31,8 @@
 	    newlines
 	    pres
 	    newspaces
-	    strings-append))
+	    strings-append
+	    read-file-as-string))
 
 
 ; pline - displays character p_n p_m times in one line at the console.
@@ -138,7 +139,25 @@
     res))
 
 
-
+; read-file-as-string - reads a file as a string; adapted from an example 
+; from sources indicated below. The string will be formatted and include 
+; characters such as \n and \r.
+;
+; Arguments:
+; - p_f: file name.
+;
+; Sources:
+; - http://www.shido.info/lisp/scheme9_e.html
+;
+(define (read-file-as-string p_f)
+  (call-with-input-file p_f
+    (lambda (p)
+      (let loop((ls1 '()) (c (read-char p)))
+	(if (eof-object? c)
+	    (begin
+	      (close-input-port p)
+	      (list->string (reverse ls1)))
+	    (loop (cons c ls1) (read-char p)))))))
 
 
 
