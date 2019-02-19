@@ -2,7 +2,8 @@
 ;
 ; grsp0.scm
 ;
-; Some useful functions for GNU Guile Scheme programs.
+; Some useful, simple functions for GNU Guile Scheme programs created or   
+; adapted during the development of several other projects.
 ;
 ; ==============================================================================
 ;
@@ -25,7 +26,6 @@
 
 
 (define-module (grsp grsp0)
-  ;#:use-module ()
   #:export (pline
 	    ptit
 	    newlines
@@ -118,7 +118,9 @@
       res))
 
 
-; strings-append - appends strings entered in a list as one larger string.
+; strings-append - appends strings entered in a list as one larger string. Use 
+; it to avoid complex, nested calls to string-append when you have to join 
+; several strings into one.
 ;
 ; Arguments:
 ; - p_l: list of strings.
@@ -141,7 +143,8 @@
 
 ; read-file-as-string - reads a file as a string; adapted from an example 
 ; from sources indicated below. The string will be formatted and include 
-; characters such as \n and \r.
+; characters such as \n and \r. What this does in practice is to read a 
+; file and return it as one single string.
 ;
 ; Arguments:
 ; - p_f: file name.
