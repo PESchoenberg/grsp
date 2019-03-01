@@ -32,7 +32,8 @@
 	    pres
 	    newspaces
 	    strings-append
-	    read-file-as-string))
+	    read-file-as-string
+	    grsp-lang-effective-version))
 
 
 ; pline - displays character p_n p_m times in one line at the console.
@@ -50,7 +51,7 @@
 	         (loop (+ i 1)))))))
 
 
-; ptit - displays a console title surrounded by one or two lines.
+; ptit - displays a console title with one or two lines.
 ;
 ; Arguments:
 ; - p_c: line character to display.
@@ -144,7 +145,7 @@
 ; read-file-as-string - reads a file as a string; adapted from an example 
 ; from sources indicated below. The string will be formatted and include 
 ; characters such as \n and \r. What this does in practice is to read a 
-; file and return it as one single string.
+; file and return it as one single string. 
 ;
 ; Arguments:
 ; - p_f: file name.
@@ -163,5 +164,23 @@
 	    (loop (cons c ls1) (read-char p)))))))
 
 
-
-
+; Checks if currently instaled GNU Guile's effective version is less, equal or 
+; higher than value of the version argument vakue.
+;
+; Arguments:
+; - p_s: enter the one of the following strings.
+;   - "lt" less than.
+;   - "eq" equal to.
+;   - "ht" higher than.
+; - p_v: version number to check against.
+;
+; Output:
+; - Boolean. Defaults to #f if p_s is entered incorrectly.
+;
+(define (grsp-lang-effective-version p_s p_v)
+  (let ((res #f)
+	(ev (string->number (effective-version))))
+    (if (equal? p_s "lt")(set! res (< ev p_v)))
+    (if (equal? p_s "eq")(set! res (= ev p_v)))
+    (if (equal? p_s "ht")(set! res (> ev p_v)))
+    res))
