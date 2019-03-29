@@ -47,7 +47,7 @@ and filled with comments.
 
 ## Credits and Sources:
 
-* GNU Guile - https://www.gnu.org/software/guile/
+* GNU Guile - https://www.gnu.org/software/guile/ (LGPL-3.0 or later)
 
 * URL of this project - https://github.com/PESchoenberg/grsp.git
 
