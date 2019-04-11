@@ -24,7 +24,13 @@ would issue:
 
       sudo mkdir /usr/share/guile/site/2.2/grsp
 
+      or
+
       sudo cp *.scm -rv /usr/share/guile/site/2.2/grsp
+
+      or
+
+      sudo cp *.scm -rv /usr/local/share/guile/site/2.2/grsp
 
 and that will do the trick.
 
