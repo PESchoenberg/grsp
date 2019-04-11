@@ -33,7 +33,8 @@
 	    newspaces
 	    strings-append
 	    read-file-as-string
-	    grsp-lang-effective-version))
+	    grsp-lang-effective-version
+	    grsp-test))
 
 
 ; pline - displays character p_n p_m times in one line at the console.
@@ -184,3 +185,11 @@
     (if (equal? p_s "eq")(set! res (= ev p_v)))
     (if (equal? p_s "ht")(set! res (> ev p_v)))
     res))
+
+
+; grsp-test - a simple test fnction.
+;
+(define (grsp-test)
+  (display "grsp-test"))
+	      
+
