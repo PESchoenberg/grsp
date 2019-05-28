@@ -34,7 +34,8 @@
 	    strings-append
 	    read-file-as-string
 	    grsp-lang-effective-version
-	    grsp-test))
+	    grsp-test
+	    qrsp-save-to-file))
 
 
 ; pline - displays character p_n p_m times in one line at the console.
@@ -187,9 +188,28 @@
     res))
 
 
-; grsp-test - a simple test fnction.
+; grsp-test - a simple test function.
 ;
 (define (grsp-test)
   (display "grsp-test"))
 	      
+
+; qrsp-append-to-file - saves a string to file p_f.   
+;	   
+; Arguments: 
+; - p_s: string to save.
+; - p_f: file.
+; - p_m: save mode.
+;  - "w": open for input. Rewrite if exists.
+;  - "a": open for append. Create if does not exist.
+;
+; Sources;
+; - https://www.gnu.org/software/guile/manual/html_node/File-Ports.html
+;
+(define (qrsp-save-to-file p_s p_f p_m)
+  (let ((output-port (open-file p_f "a")))
+    (display p_s output-port)
+    (newline output-port)
+    (close output-port)))
+
 
