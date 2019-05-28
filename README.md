@@ -57,6 +57,8 @@ and filled with comments.
 
 * URL of this project - https://github.com/PESchoenberg/grsp.git
 
+Please let me know if I forgot to add any credits or sources.
+
 
 ## License:
 
