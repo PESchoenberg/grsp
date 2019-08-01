@@ -19,7 +19,7 @@
 ;   GNU Lesser General Public License for more details.
 ;
 ;   You should have received a copy of the GNU Lesser General Public License
-;   along with this program.  If not, see <https://www.gnu.org/licenses/>.
+;   along with this program. If not, see <https://www.gnu.org/licenses/>.
 ;
 ; ==============================================================================
 
@@ -38,7 +38,7 @@
   (let ((res 0))
   (cond ((equal? p_n1 "Pi")(set! res 3.14159)) ; Pi
 	((equal? p_n1 "gr")(set! res 1.00)) ; 
-	((equal? p_n1 "e")(set! res 2,71828)) ; Euler's number.
+	((equal? p_n1 "e")(set! res 2.71828)) ; Euler's number.
 	(else (set! res 0)))
   res)
 )

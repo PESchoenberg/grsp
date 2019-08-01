@@ -20,7 +20,7 @@
 ;   GNU Lesser General Public License for more details.
 ;
 ;   You should have received a copy of the GNU Lesser General Public License
-;   along with this program.  If not, see <https://www.gnu.org/licenses/>.
+;   along with this program. If not, see <https://www.gnu.org/licenses/>.
 ;
 ; ==============================================================================
 
@@ -35,7 +35,8 @@
 	    read-file-as-string
 	    grsp-lang-effective-version
 	    grsp-test
-	    qrsp-save-to-file))
+	    grsp-save-to-file
+	    grsp-n2s))
 
 
 ; pline - displays character p_n p_m times in one line at the console.
@@ -194,7 +195,7 @@
   (display "grsp-test"))
 	      
 
-; qrsp-append-to-file - saves a string to file p_f.   
+; grsp-save-to-file - saves a string to file p_f.   
 ;	   
 ; Arguments: 
 ; - p_s: string to save.
@@ -206,10 +207,20 @@
 ; Sources;
 ; - https://www.gnu.org/software/guile/manual/html_node/File-Ports.html
 ;
-(define (qrsp-save-to-file p_s p_f p_m)
+(define (grsp-save-to-file p_s p_f p_m)
   (let ((output-port (open-file p_f "a")))
     (display p_s output-port)
     (newline output-port)
     (close output-port)))
+
+; grsp-n2s - a convenience function, shorter to write than number->string that
+; performs the same function. That is, to convert a number to a string.
+;
+; Arguments:
+; p_n: number to convert.
+;
+(define (grsp-n2s p_n)
+  (let ((res ""))
+    (set! res (number->string p_n))))
 
 
