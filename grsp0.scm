@@ -221,6 +221,7 @@
 ;
 (define (grsp-n2s p_n)
   (let ((res ""))
-    (set! res (number->string p_n))))
+    (set! res (number->string p_n))
+    res))
 
 
