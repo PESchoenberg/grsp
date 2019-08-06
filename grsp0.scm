@@ -36,7 +36,8 @@
 	    grsp-lang-effective-version
 	    grsp-test
 	    grsp-save-to-file
-	    grsp-n2s))
+	    grsp-n2s
+	    grsp-s2n))
 
 
 ; pline - displays character p_n p_m times in one line at the console.
@@ -213,6 +214,7 @@
     (newline output-port)
     (close output-port)))
 
+
 ; grsp-n2s - a convenience function, shorter to write than number->string that
 ; performs the same function. That is, to convert a number to a string.
 ;
@@ -222,6 +224,18 @@
 (define (grsp-n2s p_n)
   (let ((res ""))
     (set! res (number->string p_n))
+    res))
+
+
+; grsp-s2n - a convenience function, shorter to write than string->number that
+; performs the same function. That is, to convert a string to a number.
+;
+; Arguments:
+; p_s: string to convert.
+;
+(define (grsp-s2n p_s)
+  (let ((res 0.0))
+    (set! res (string->number p_s))
     res))
 
 
