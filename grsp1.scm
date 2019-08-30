@@ -29,7 +29,7 @@
   #:export (gconst))
 	    
 
-; qconst - various constants.
+; qconst - Various constants.
 ;
 ; Arguments:
 ; - p_n1: constant name, string.
