@@ -40,7 +40,7 @@
 	    grsp-s2n))
 
 
-; pline - displays character p_n p_m times in one line at the console.
+; pline - Displays character p_n p_m times in one line at the console.
 ;
 ; Arguments:
 ; - p_c: line character to display.
@@ -55,7 +55,7 @@
 	         (loop (+ i 1)))))))
 
 
-; ptit - displays a console title with one or two lines.
+; ptit - Displays a console title with one or two lines.
 ;
 ; Arguments:
 ; - p_c: line character to display.
@@ -71,7 +71,7 @@
   (newline))
 
 
-; newlines - repeats function newline p_n times.
+; newlines - Repeats function newline p_n times.
 ;
 ; Arguments:
 ; - p_n: number of iterations.
@@ -83,7 +83,7 @@
 	       (loop (+ i 1))))))
 
 
-; pres - dispay results.
+; pres - Display results.
 ;
 ; Arguments:
 ; - p_s1: reference, string.
@@ -96,7 +96,7 @@
       (newline)))
 
 
-; newspaces - adds p_n blank spaces to string p_l.
+; newspaces - Adds p_n blank spaces to string p_l.
 ;
 ; Arguments:
 ; - p_n: number of blanks to add.
@@ -123,7 +123,7 @@
       res))
 
 
-; strings-append - appends strings entered in a list as one larger string. Use 
+; strings-append - Appends strings entered in a list as one larger string. Use 
 ; it to avoid complex, nested calls to string-append when you have to join 
 ; several strings into one.
 ;
@@ -146,7 +146,7 @@
     res))
 
 
-; read-file-as-string - reads a file as a string; adapted from an example 
+; read-file-as-string - Reads a file as a string; adapted from an example 
 ; from sources indicated below. The string will be formatted and include 
 ; characters such as \n and \r. What this does in practice is to read a 
 ; file and return it as one single string. 
@@ -168,8 +168,9 @@
 	    (loop (cons c ls1) (read-char p)))))))
 
 
-; Checks if currently instaled GNU Guile's effective version is less, equal or 
-; higher than value of the version argument vakue.
+; grsp-lang-effective-version - Checks if currently instaled GNU Guile's
+; effective version is less, equal or higher than value of the version
+; argument vakue.
 ;
 ; Arguments:
 ; - p_s: enter the one of the following strings.
@@ -190,13 +191,13 @@
     res))
 
 
-; grsp-test - a simple test function.
+; grsp-test - A simple test function.
 ;
 (define (grsp-test)
   (display "grsp-test"))
 	      
 
-; grsp-save-to-file - saves a string to file p_f.   
+; grsp-save-to-file - Saves a string to file p_f.   
 ;	   
 ; Arguments: 
 ; - p_s: string to save.
@@ -215,7 +216,7 @@
     (close output-port)))
 
 
-; grsp-n2s - a convenience function, shorter to write than number->string that
+; grsp-n2s - A convenience function, shorter to write than number->string that
 ; performs the same function. That is, to convert a number to a string.
 ;
 ; Arguments:
@@ -227,7 +228,7 @@
     res))
 
 
-; grsp-s2n - a convenience function, shorter to write than string->number that
+; grsp-s2n - A convenience function, shorter to write than string->number that
 ; performs the same function. That is, to convert a string to a number.
 ;
 ; Arguments:
