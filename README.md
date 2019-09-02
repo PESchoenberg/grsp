@@ -10,7 +10,7 @@ Some useful functions for GNU Guile Scheme programs.
 
 ## Dependencies:
 
-* GNU Guile - ver 2.2.3 or newer ( https://www.gnu.org/software/guile/ )
+* GNU Guile - v2.2.3 or later ( https://www.gnu.org/software/guile/ )
 
 
 ## Installation:
@@ -53,7 +53,9 @@ and filled with comments.
 
 ## Credits and Sources:
 
-* GNU Guile - https://www.gnu.org/software/guile/ (LGPL-3.0 or later)
+* GNU contributors (2019). GNU's programming and extension language — GNU Guile.
+[online] Gnu.org. Available at: https://www.gnu.org/software/guile/
+[Accessed 2 Sep. 2019].
 
 * URL of this project - https://github.com/PESchoenberg/grsp.git
 
