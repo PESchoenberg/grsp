@@ -50,7 +50,11 @@
   (let ((str ""))
     (let loop ((i 0))
       (if (= i p_l)
-	  (begin (newline)(newline)(display str)(newline)(newline))
+	  (begin (newline)
+		 (newline)
+		 (display str)
+		 (newline)
+		 (newline))
 	  (begin (set! str (string-append str p_c))
 	         (loop (+ i 1)))))))
 
@@ -155,8 +159,9 @@
 ; - p_f: file name.
 ;
 ; Sources:
-; - http://www.shido.info/lisp/scheme9_e.html
-;
+; - Shido.info. (2019). 9. IO. [online] Available at:
+;   http://www.shido.info/lisp/scheme9_e.html [Accessed 15 Sep. 2019].
+
 (define (read-file-as-string p_f)
   (call-with-input-file p_f
     (lambda (p)
@@ -207,8 +212,10 @@
 ;  - "a": open for append. Create if does not exist.
 ;
 ; Sources;
-; - https://www.gnu.org/software/guile/manual/html_node/File-Ports.html
-;
+; - Gnu.org. (2019). File Ports (Guile Reference Manual). [online] Available
+;   at: https://www.gnu.org/software/guile/manual/html_node/File-Ports.html
+;   [Accessed 15 Sep. 2019].
+
 (define (grsp-save-to-file p_s p_f p_m)
   (let ((output-port (open-file p_f "a")))
     (display p_s output-port)
