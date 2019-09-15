@@ -25,7 +25,6 @@
 
 
 (define-module (grsp grsp1)
-  ;#:use-module ()
   #:export (gconst))
 	    
 
@@ -37,7 +36,7 @@
 (define (gconst p_n1)
   (let ((res 0))
   (cond ((equal? p_n1 "Pi")(set! res 3.14159)) ; Pi
-	((equal? p_n1 "gr")(set! res 1.00)) ; 
+	((equal? p_n1 "gr")(set! res 1.00)) ;
 	((equal? p_n1 "e")(set! res 2.71828)) ; Euler's number.
 	(else (set! res 0)))
   res)
