@@ -12,6 +12,8 @@ Some useful functions for GNU Guile Scheme programs.
 
 * GNU Guile - v2.2.3 or later ( https://www.gnu.org/software/guile/ )
 
+* Sqlp - v0.0.1. or later ( https://peschoenberg.github.io/sqlp/ )
+
 
 ## Installation:
 

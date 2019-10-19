@@ -37,7 +37,8 @@
 	    grsp-test
 	    grsp-save-to-file
 	    grsp-n2s
-	    grsp-s2n))
+	    grsp-s2n
+	    grsp-sqlp))
 
 
 ; pline - Displays character p_n p_m times in one line at the console.
@@ -245,5 +246,24 @@
   (let ((res 0.0))
     (set! res (string->number p_s))
     res))
+
+
+; grsp-sqlp - Calls sqlp to access Sqlite3 databases from within a Guile program; 
+; requires sqlp to be installed.
+;
+; Arguments:
+; - p_p: path to the sqlp executable.
+; - p_d: database file, with path.
+; - p_s: SQL snippet or file, with path.
+; - p_a: additional command.
+;
+; Sources: 
+; - Edronkin, P. (2019). sqlp - Simple terminal query and .sql file processing for
+; Sqlite3. [online] sqlp. Available at: https://peschoenberg.github.io/sqlp/
+; [Accessed 5 Oct. 2019].
+;
+(define (grsp-sqlp p_p p_d p_s p_a)
+  (system (strings-append (list "./" p_p "sqlp " p_d " " p_s " " p_a) 0)))
+
 
 
