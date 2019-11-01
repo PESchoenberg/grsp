@@ -29,6 +29,7 @@
   #:export (pline
 	    ptit
 	    newlines
+	    clear
 	    pres
 	    newspaces
 	    strings-append
@@ -86,6 +87,12 @@
     (if (<= i p_n)
 	(begin (newline)
 	       (loop (+ i 1))))))
+
+
+; clear - Clears the shell by inserting 100 blank lines.
+;
+(define (clear)
+  (newlines 100))
 
 
 ; pres - Display results.
@@ -255,7 +262,7 @@
 ; - p_p: path to the sqlp executable.
 ; - p_d: database file, with path.
 ; - p_s: SQL snippet or file, with path.
-; - p_a: additional command.
+; - p_a: sqlp macro.
 ;
 ; Sources: 
 ; - Edronkin, P. (2019). sqlp - Simple terminal query and .sql file processing for
@@ -263,7 +270,7 @@
 ; [Accessed 5 Oct. 2019].
 ;
 (define (grsp-sqlp p_p p_d p_s p_a)
-  (system (strings-append (list "./" p_p "sqlp " p_d " " p_s " " p_a) 0)))
+  (system (strings-append (list p_p p_d p_s p_a) 1)))
 
 
 
