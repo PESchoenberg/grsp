@@ -39,7 +39,9 @@
 	    grsp-save-to-file
 	    grsp-n2s
 	    grsp-s2n
-	    grsp-sqlp))
+	    grsp-sqlp
+	    grsp-ld
+	    grsp-ask))
 
 
 ; pline - Displays character p_n p_m times in one line at the console.
@@ -273,4 +275,27 @@
   (system (strings-append (list p_p p_d p_s p_a) 1)))
 
 
+; grsp-ld - line and display. Displays a string after a newline.
+;
+; Arguments:
+; - p_s: string.
+;
+(define (grsp-ld p_s)
+  (newline)
+  (display p_s))
+
+
+; grsp-ask - Input query.
+;
+; Arguments:
+; p_q: string representing the question to ask.
+;
+; Output:
+; - Returns a string with the user's input.
+;
+(define (grsp-ask p_q)
+  (let ((res " "))
+    (grsp-ld p_q)
+    (set! res (read))
+    res))
 
