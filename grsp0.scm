@@ -227,7 +227,8 @@
 ;   [Accessed 15 Sep. 2019].
 
 (define (grsp-save-to-file p_s p_f p_m)
-  (let ((output-port (open-file p_f "a")))
+  ;(let ((output-port (open-file p_f "a")))
+  (let ((output-port (open-file p_f p_m)))    
     (display p_s output-port)
     (newline output-port)
     (close output-port)))
