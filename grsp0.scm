@@ -41,6 +41,7 @@
 	    grsp-s2n
 	    grsp-sqlp
 	    grsp-ld
+	    grsp-cd
 	    grsp-ask))
 
 
@@ -283,6 +284,17 @@
 ;
 (define (grsp-ld p_s)
   (newline)
+  (display p_s))
+
+
+; grsp-cd - same as grsp-ld, but performs a clear instead of newline, meaning
+; that it clears the screen or console instead of just adding a line break.
+;
+; Arguments:
+; - p_s: string.
+;
+(define (grsp-cd p_s)
+  (clear)
   (display p_s))
 
 
