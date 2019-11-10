@@ -55,11 +55,9 @@
   (let ((str ""))
     (let loop ((i 0))
       (if (= i p_l)
-	  (begin (newline)
-		 (newline)
+	  (begin (newlines 1)
 		 (display str)
-		 (newline)
-		 (newline))
+		 (newlines 1))
 	  (begin (set! str (string-append str p_c))
 	         (loop (+ i 1)))))))
 
@@ -210,7 +208,7 @@
 ; grsp-test - A simple test function.
 ;
 (define (grsp-test)
-  (display "grsp-test"))
+  (grsp-ld "grsp-test"))
 	      
 
 ; grsp-save-to-file - Saves a string to file p_f.   
@@ -308,7 +306,9 @@
 ;
 (define (grsp-ask p_q)
   (let ((res " "))
+    (newline)
     (grsp-ld p_q)
     (set! res (read))
     res))
+	  
 
