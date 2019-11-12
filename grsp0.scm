@@ -226,7 +226,6 @@
 ;   [Accessed 15 Sep. 2019].
 
 (define (grsp-save-to-file p_s p_f p_m)
-  ;(let ((output-port (open-file p_f "a")))
   (let ((output-port (open-file p_f p_m)))    
     (display p_s output-port)
     (newline output-port)
@@ -275,7 +274,7 @@
   (system (strings-append (list p_p p_d p_s p_a) 1)))
 
 
-; grsp-ld - line and display. Displays a string after a newline.
+; grsp-ld - Line and display. Displays a string after a newline.
 ;
 ; Arguments:
 ; - p_s: string.
@@ -285,7 +284,7 @@
   (display p_s))
 
 
-; grsp-cd - same as grsp-ld, but performs a clear instead of newline, meaning
+; grsp-cd - Same as grsp-ld, but performs a clear instead of newline, meaning
 ; that it clears the screen or console instead of just adding a line break.
 ;
 ; Arguments:
