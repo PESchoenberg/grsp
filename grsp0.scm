@@ -256,14 +256,14 @@
     res))
 
 
-; grsp-sqlp - Calls sqlp to access Sqlite3 databases from within a Guile program; 
-; requires sqlp to be installed.
+; grsp-sqlp - Calls sqlp to access Sqlite3 or HDF5 databases from within a Guile 
+; program. Requires sqlp to be installed.
 ;
 ; Arguments:
 ; - p_p: path to the sqlp executable.
 ; - p_d: database file, with path.
-; - p_s: SQL snippet or file, with path.
-; - p_a: sqlp macro.
+; - p_s: SQL or HDFQL snippet or file, with path.
+; - p_a: sqlp macro (see sqlp's documentation for more on this).
 ;
 ; Sources: 
 ; - Edronkin, P. (2019). sqlp - Simple terminal query and .sql file processing for
