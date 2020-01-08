@@ -28,7 +28,7 @@
   #:export (gconst))
 	    
 
-; qconst - Various constants.
+; gconst - Various constants.
 ;
 ; Arguments:
 ; - p_n1: constant name, string.
@@ -47,7 +47,10 @@
 ;   [Accessed 1 Jan. 2020].
 ; - En.wikipedia.org. (2020). Power of 10. [online] Available at:
 ;   https://en.wikipedia.org/wiki/Power_of_10 [Accessed 1 Jan. 2020].
-;
+; - En.wikipedia.org. (2020). Orders of magnitude (numbers). [online] Available
+;   at: https://en.wikipedia.org/wiki/Orders_of_magnitude_(numbers)
+;   [Accessed 6 Jan. 2020].
+
 (define (gconst p_n1)
   (let ((res 0))
     (cond ((equal? p_n1 "gr")(set! res 1.00))
@@ -58,9 +61,93 @@
 	  ; Googol.
 	  ((equal? p_n1 "Googol")(set! res (expt 10 100)))
 
+	  ; One Googolth.
+	  ((equal? p_n1 "Googol")(set! res (expt 10 -100)))
+	  
 	  ; Life, the universe and everything ;) 
 	  ((equal? p_n1 "The answer")(set! res 42))
 
+	  ; Rubik 3x3 cube, possible permutations.
+	  ((equal? p_n1 "Rubik3x3x3")(set! res 43252003274489856000))
+
+	  ; Rubik 5x5x5 cube, possible permutations.
+	  ((equal? p_n1 "Rubik5x5x5")(set! res (* 2.83 (expt 10 74))))
+
+	  ; Rubik 6x6x6 cube, possible permutations.
+	  ((equal? p_n1 "Rubik6x6x6")(set! res (* 1.57 (expt 10 116))))
+
+	  ; Rubik 7x7x7 cube, possible permutations.
+	  ((equal? p_n1 "Rubik7x7x7")(set! res (* 1.95 (expt 10 160))))
+
+	  ; Rubik 33x33x33 cube, possible permutations.
+	  ((equal? p_n1 "Rubik33x33x33")(set! res (* 1.896 (expt 10 4099))))
+
+	  ; Borges' Library of Babel lower estimate of books.
+	  ((equal? p_n1 "LibraryBabel")(set! res (* 1.956 (expt 10 1834097))))
+
+	  ; Linde-Vanchurin universes.
+	  ((equal? p_n1 "Linde-Vanchurin")(set! res (expt 10 (expt 10 10000000))))
+	  
+	  ; Atoms in the human body.
+	  ((equal? p_n1 "HumanAtoms")(set! res (* 7 (expt 10 27))))
+
+	  ; Atoms on Earth.
+	  ((equal? p_n1 "EarthAtoms")(set! res (* 1.33 (expt 10 50))))
+
+	  ; Alexander's star possible positions.
+	  ((equal? p_n1 "AlexanderStar")(set! res (* 7.24 (expt 10 34))))
+	  
+	  ; Estimated bacterial cells on Earth.
+	  ((equal? p_n1 "BacteriesEarth")(set! res (* 5 (expt 10 30))))
+
+	  ; Shannon chess complexity number.
+	  ((equal? p_n1 "Shannon")(set! res (expt 10 120)))
+
+	  ; Xiangqi complexity number.
+	  ((equal? p_n1 "Xiangqi")(set! res (expt 10 150)))
+
+	  ; Asamkhyeya 1.
+	  ((equal? p_n1 "Asamkhyeya1")(set! res (expt 10 140)))
+
+	  ; Asamkhyeya 2.
+	  ((equal? p_n1 "Asamkhyeya2")(set! res (expt 10 (* 5 (expt 2 103)))))
+
+	  ; Asamkhyeya 3.
+	  ((equal? p_n1 "Asamkhyeya2")(set! res (expt 10 (* 7 (expt 2 103)))))  
+
+          ; Asamkhyeya 4.
+	  ((equal? p_n1 "Asamkhyeya4")(set! res (expt 10 (* 10 (expt 2 104)))))  
+
+	  ; Grains of sand on Earth.
+	  ((equal? p_n1 "EarthSand")(set! res (expt 10 21)))
+
+	  ; Insects on Earth.
+	  ((equal? p_n1 "EarthInsects")(set! res (expt 10 19)))
+
+	  ; Human cells in the human body.
+	  ((equal? p_n1 "HumanCellsHumanBody")(set! res (expt 10 13)))
+
+	  ; Toatal cells in the human body.
+	  ((equal? p_n1 "TotalCellsHumanBody")(set! res (expt 10 14)))
+
+	  ; Bacterial cells in the human body.
+	  ((equal? p_n1 "BacterialCellsHumanBody")(set! res (expt 10 12)))
+
+	  ; Bacterial cells in the human mouth.
+	  ((equal? p_n1 "BacterialCellsHumanMouth")(set! res (expt 10 10)))
+	  
+	  ; Neurons in the human brain.
+	  ((equal? p_n1 "NeuronsHumanBrain")(set! res (expt 10 11)))
+
+	  ; Connections of the human neuron.
+	  ((equal? p_n1 "NeuronsHumanConnections")(set! res 10000))
+	  
+	  ; Stars in the Andromeda galaxy.
+	  ((equal? p_n1 "StarsAndromeda")(set! res (expt 10 12)))
+
+	  ; Stars in the Milky Way galaxy.
+	  ((equal? p_n1 "StarsMilkyWay")(set! res (expt 10 11)))
+	  
           ; --------------------------------------------------------------------
 	  
 	  ; Million.
@@ -373,7 +460,7 @@
 	  ; Heath-Brown-Moroz constant.
 	  ((equal? p_n1 "A118228")(set! res 0.00131764115485317810))
 
-	  ; Magin angle (radians).
+	  ; Magic angle (radians).
           ((equal? p_n1 "A195696")(set! res 0.955316618124509278163))
 
 	  ; Polya random walk P(3) constant.
@@ -382,9 +469,63 @@
 	  ; Landau-Ramanujan constant.
           ((equal? p_n1 "A064533")(set! res 0.76422365358922066299))
 
+	  ; Gieseking constant.
+	  ((equal? p_n1 "A143298")(set! res 1.01494160640965362502))
+
+	  ; Fractal dimension of the Cantor set.
+          ((equal? p_n1 "A102525")(set! res 0.63092975357145743709))
+
+	  ; Connective constant.
+	  ((equal? p_n1 "A179260")(set! res 1.84775906502257351225))
+
+	  ; Bronze ratio.
+	  ((equal? p_n1 "A098316")(set! res 3.30277563773199464655))
+
+	  ; Tetranacci constant.
+	  ((equal? p_n1 "A086088")(set! res 1.92756197548292530426))
+
+	  ; Module of infinite tetration of i.
+	  ((equal? p_n1 "A212479")(set! res 0.56755516330695782538))
+
+	  ; Goh-Schmutz constant.
+	  ((equal? p_n1 "A143300")(set! res 1.11786415118994497314))	  
+	  
+	  ; Sarnak constant.
+	  ((equal? p_n1 "A065476")(set! res 0.72364840229820000940))
+	  
+	  ; Paris constant.
+	  ((equal? p_n1 "A105415")(set! res 1.09864196439415648573))
+	  
+	  ; First Trott constant.
+	  ((equal? p_n1 "A039662")(set! res 0.10841015122311136151))
+	  
+	  ; Second Trott constant.
+	  ((equal? p_n1 "A091694")(set! res 0.27394419573927161717))
+	  
+	  ; Third Trott constant.
+	  ((equal? p_n1 "A113307")(set! res 0.48267728193918159949))
+	  
+	  ; Median of the Gumbel distribution.
+	  ((equal? p_n1 "A074785")(set! res 0.36651292058166432701))	       
+	  
 	  ; 's constant.
 	  ;((equal? p_n1 "GC")(set! res ))
-	  	  	  	  
+	  
+	  ; 's constant.
+	  ;((equal? p_n1 "GC")(set! res ))
+	  
+	  ; 's constant.
+	  ;((equal? p_n1 "GC")(set! res ))
+	  
+	  ; 's constant.
+	  ;((equal? p_n1 "GC")(set! res ))
+	  
+	  ; 's constant.
+	  ;((equal? p_n1 "GC")(set! res ))
+	  
+	  ; 's constant.
+	  ;((equal? p_n1 "GC")(set! res ))
+	  	  	  	  	  	  	  
 	  ; --------------------------------------------------------------------
 	  ; Physics
 	  
@@ -432,6 +573,9 @@
 	  
           ; Vacuum permittivity. (F * (m ** -1))
 	  ((equal? p_n1 "e0")(set! res (* 8.8541878128 (expt 10 -12))))	  
+
+          ; Eddington-Dirac number.
+	  ((equal? p_n1 "Eddington-Dirac")(set! res (expt 10 40)))
 	  
 	  (else (set! res 0)))
   res))
