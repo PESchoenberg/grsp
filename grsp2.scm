@@ -2,7 +2,7 @@
 ;
 ; grsp2.scm
 ;
-; Math procedures.
+; Math stuff.
 ;
 ; ==============================================================================
 ;
@@ -29,7 +29,9 @@
   #:use-module (grsp grsp1)
   #:export (grsp-ps3bl1
 	    grsp-sexp
-	    grsp-slog))
+	    grsp-slog
+	    grsp-woodall-number
+	    grsp-cullen-number))
 
 
 ; grsp-ps3bl1 - Pseudo tri-boolean 1. Provides a pseudo trinary result.
@@ -39,7 +41,7 @@
 ;
 ; Output:
 ; - Retuns -1, 0 or 1 depending on the number being less than, equal or 
-;   reater than zero
+;   greater than zero.
 ;
 (define (grsp-ps3bl1 p_n)
   (let ((res 0))
@@ -96,5 +98,42 @@
      res))
 
 
+; grsp-woodall-number - Calculates the Woodall number of p_n.
+;
+; Arguments:
+; - p_n: any natural number.
+;
+; Output:
+; - If p_n is not a natural number, the function returns 1. Otherwise, it
+;   returns the Woodall number of p_n.
+;
+; Sources:
+; - En.wikipedia.org. (2020). Woodall number. [online] Available at:
+;   https://en.wikipedia.org/wiki/Woodall_number
+;   [Accessed 6 Jan. 2020].En.wikipedia.org. (2020).
+;
+(define (grsp-woodall-number p_n)
+  (let ((res 1))
+    (cond ((exact-integer? p_n)(cond ((> p_n 0)(set! res (- (* p_n (expt 2 p_n)) 1))))))
+    res))
+
+
+; grsp-cullen-number - Calculates the Cullen number of p_n.
+;
+; Arguments:
+; - p_n: any natural number.
+;
+; Output:
+; - If p_n is not a natural number, the function returns 1. Otherwise, it
+;   returns the Cullen number of p_n.
+;
+; Sources:
+; - En.wikipedia.org. (2020). Cullen number. [online] Available at:
+;   https://en.wikipedia.org/wiki/Cullen_number [Accessed 6 Jan. 2020].
+;
+(define (grsp-cullen-number p_n)
+  (let ((res 1))
+    (cond ((exact-integer? p_n)(cond ((> p_n 0)(set! res (+ (* p_n (expt 2 p_n)) 1))))))
+    res))
 
 
