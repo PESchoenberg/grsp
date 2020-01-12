@@ -27,7 +27,10 @@
 (define-module (grsp grsp2)
   #:use-module (grsp grsp0)
   #:use-module (grsp grsp1)
-  #:export (grsp-ps3bl1
+  #:export (grsp-is-prime
+	    grsp-gtls
+	    grsp-getles
+	    grsp-ps3bl1
 	    grsp-krnb
 	    grsp-bpp
 	    grsp-sexp
@@ -35,7 +38,78 @@
 	    grsp-woodall-number
 	    grsp-cullen-number
 	    grsp-proth-number
-	    grsp-mersenne-number))
+	    grsp-mersenne-number
+	    grsp-repdigit-number
+	    grsp-wagstaff-number
+	    grsp-williams-number
+	    grsp-thabit-number
+	    grsp-fermat-number
+	    grsp-wagstaff-prime))
+
+
+; grsp-is-prime - This is a very simple procedure, inefficient, but sufficient for
+; small numbers to find if they are prime or not. For large numbers other methods
+; qill likely be more adequate.
+;
+; Arguments:
+; - p_n: integer.
+;
+; Output: 
+; - Returns #f of p_n is prime, #f otherwise.
+;
+(define (grsp-is-prime p_n)
+  (let ((res #t)
+	(cyc #f)
+	(i 2))
+    (while (eq? cyc #f)
+	   (cond ((= 0 (remainder p_n i))
+		  (set! res #f)
+		  (set! cyc #t)))
+	   (set! i (+ i 1))
+	   (cond ((>= i p_n)
+		  (set! cyc #t))))
+    (cond ((grsp-getles p_n -1 1)
+	   (set! res #f)))
+    res))
+
+
+
+; grsp-gtls - "gtls = Greater than, less than" Finds if number p_n1 is greater
+; than p_n2 and smaller than p_n3.
+;
+; Arguments:
+; - p_n1
+; - p_n2
+; - p_n3
+; 
+; Output:
+; - Returns #t if the condition holds. #f otherwise.
+;
+(define (grsp-gtls p_n1 p_n2 p_n3)
+  (let ((res #f))
+    (cond ((> p_n1 p_n2)
+	   (cond ((< p_n1 p_n3)
+		  (set! res #t)))))
+    res))
+
+
+; grsp-getles - "getles = Greater or equal than, less or equal than" Finds if
+; number p_n1 is greater or equal than p_n2 and smaller or equal than p_n3.
+;
+; Arguments:
+; - p_n1
+; - p_n2
+; - p_n3
+; 
+; Output:
+; - Returns #t if the condition holds. #f otherwise.
+;
+(define (grsp-getles p_n1 p_n2 p_n3)
+  (let ((res #f))
+    (cond ((>= p_n1 p_n2)
+	   (cond ((<= p_n1 p_n3)
+		  (set! res #t)))))
+    res))
 
 
 ; grsp-ps3bl1 - Pseudo tri-boolean 1. Provides a pseudo trinary result.
@@ -156,7 +230,6 @@
 ;
 (define (grsp-woodall-number p_n)
   (let ((res 1))
-    ;(cond ((exact-integer? p_n)(cond ((> p_n 0)(set! res (- (* p_n (expt 2 p_n)) 1))))))
     (cond ((exact-integer? p_n)(cond ((> p_n 0)(set! res (grsp-krnb p_n 2 p_n -1))))))
     res))
 
@@ -176,7 +249,6 @@
 ;
 (define (grsp-cullen-number p_n)
   (let ((res 1))
-    ;(cond ((exact-integer? p_n)(cond ((> p_n 0)(set! res (+ (* p_n (expt 2 p_n)) 1))))))
     (cond ((exact-integer? p_n)(cond ((> p_n 0)(set! res (grsp-krnb p_n 2 p_n 1))))))
     res))
 
@@ -225,5 +297,133 @@
     (cond ((exact-integer? p_n)
 	   (set! res (grsp-krnb 1 2 p_n -1))))
     res))
+	  
+
+; grsp-repdigit-number - Produces a repdigit number composed by p_n repeated
+; p_d instances.
+;
+; Arguments:
+; - p_n: Natural number between [1,9].
+; - p_d: Natural number.
+;
+; Sources:
+; - En.wikipedia.org. (2020). Repdigit. [online] Available at:
+;   https://en.wikipedia.org/wiki/Repdigit [Accessed 11 Jan. 2020].
+;
+(define (grsp-repdigit-number p_n p_d)
+  (let ((res 0)
+	(i 0))
+    (cond ((exact-integer? p_n)
+	   (cond ((exact-integer? p_d)
+		  (cond ((eq? (grsp-gtls p_n 0 10) #t)
+			 (while (< i p_d)
+				(set! res (+ res p_n))
+				(set! i (+ i 1))
+				(cond ((< i p_d)
+				       (set! res (* res 10)))))))))))
+  res))
 
 
+; grsp-wagstaff-number - Producesa Wagstaff number of base p_b.
+;
+; Arguments:
+; - p_n: Natural number.
+; - p_b: Natural number >= 2.
+;
+; Output:
+; - If conditions for arguments are met, the result is a Wagstaff number. Otherwise
+; the function returns zero.
+;
+; Sources:
+; - En.wikipedia.org. (2020). Wagstaff prime. [online] Available at:
+; https://en.wikipedia.org/wiki/Wagstaff_prime [Accessed 11 Jan. 2020].
+;
+(define (grsp-wagstaff-number p_n p_b)
+  (let ((res 0))
+    (cond ((exact-integer? p_n)
+	   (cond ((exact-integer? p_b)
+		  (cond ((>= p_n 1)
+			 (cond ((>= p_b 2)
+				(set! res (* 1.0 (/ (+ (expt p_b p_n) 1) (+ p_b 1))))))))))))
+    res))
+
+
+; grsp-williams-number - Produces a Williams number of base p_b.
+;
+; Arguments:
+; - p_n: Natural number >= 1.
+; - p_b: Natural number >= 2.
+;
+; Output:
+; - If conditions for arguments are met, the result is a Wagstaff number. Otherwise
+; the function returns zero.
+;
+; Sources:
+; - En.wikipedia.org. (2020). Williams number. [online] Available at:
+; https://en.wikipedia.org/wiki/Williams_number [Accessed 11 Jan. 2020].
+;
+(define (grsp-williams-number p_n p_b)
+  (let ((res 0))
+    (cond ((exact-integer? p_n)
+	   (cond ((exact-integer? p_b)
+		  (cond ((>= p_n 1)
+			 (cond ((>= p_b 2)    
+				(set! res (- (* (- p_b 1) (expt p_b p_n)) 1))))))))))
+    res))
+
+
+; grsp-thabit-number - Produces a Thabit number.
+;
+; Arguments:
+; - p_n: Natural number >= 0.
+;
+; Output:
+; - If conditions for arguments are met, the result is a Thabit number. Otherwise
+; the function returns zero.
+;
+(define (grsp-thabit-number p_n)
+  (let ((res 0))
+    (cond ((exact-integer? p_n)
+	   (cond ((>= p_n 0)
+		  (set! res (- (* 3 (expt 2 p_n)) 1))))))
+    res))
+
+
+; grsp-fermat-number - Produces a Fermat numbernumber.
+;
+; Arguments:
+; - p_n: non-negative integer.
+;
+; Output:
+; - If conditions for arguments are met, the result is a Fermat number. Otherwise
+; the function returns zero.
+;
+(define (grsp-fermat-number p_n)
+  (let ((res 0))
+    (cond ((exact-integer? p_n)
+	   (cond ((>= p_n 0)
+		  (set! res (+ (expt 2 (expt 2 p_n)) 1))))))
+    res))
+
+		  
+; grsp-wagstaff-prime - Produces a Wagstaff prime number.
+;
+; Arguments:
+; - p_n: Prime number.
+;
+; Output:
+; - A Wagstaff prime if p_n is prime, zero otherwise.
+;
+; Sources:
+; - En.wikipedia.org. (2020). Wagstaff prime. [online] Available at:
+; https://en.wikipedia.org/wiki/Wagstaff_prime [Accessed 11 Jan. 2020].
+;
+(define (grsp-wagstaff-prime p_n)
+  (let ((res 0))
+    (cond ((exact-integer? p_n)
+	   (cond ((eq? (odd? p_n) #t)
+		  (cond ((> p_n 0)
+			 (set! res (/ (+ (expt 2 p_n) 1) 3))))))))
+    res))
+
+	   
