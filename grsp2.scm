@@ -27,10 +27,14 @@
 (define-module (grsp grsp2)
   #:use-module (grsp grsp0)
   #:use-module (grsp grsp1)
-  #:export (grsp-is-prime
+  #:export (grsp-gtels
+	    grsp-eiget
+	    grsp-is-prime
+	    grsp-fact
+	    grsp-biconr
+	    grsp-bicowr
 	    grsp-gtls
 	    grsp-getles
-	    grsp-ps3bl1
 	    grsp-krnb
 	    grsp-bpp
 	    grsp-sexp
@@ -44,7 +48,45 @@
 	    grsp-williams-number
 	    grsp-thabit-number
 	    grsp-fermat-number
-	    grsp-wagstaff-prime))
+	    grsp-catalan-number
+	    grsp-wagstaff-prime
+	    grsp-dobinski-formula))
+
+
+; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
+;
+; Arguments:
+; - p_n1: number.
+; - p_n2: number.
+;
+; Output:
+; - 1 if (> p_n1 p_n2).
+; - 0 if (= p_n1 p_n2).
+; - -1 if (< p_n1 p_n2).
+;
+(define (grsp-gtels p_n1 p_n2)
+  (let ((res 0))
+    (cond ((> p_n1 p_n2)(set! res 1))
+	  ((< p_n1 p_n2)(set! res -1)))
+    res))
+	   
+
+; grsp-eiget - Finds out if p_n1 is an exact integer equal or greater than p_n2.
+;
+; Arguments:
+; - p_n1: integer.
+; - p_n2: integer.
+;
+; Output:
+; - Returns #t if p_n1 is an integer and equal orgreater than p_n2. Returns #f
+; otherwise.
+;
+(define (grsp-eiget p_n1 p_n2)
+  (let ((res #f))
+    (cond ((exact-integer? p_n1)
+	   (cond ((>= p_n1 p_n2)    
+		  (set! res #t)))))
+    res))
 
 
 ; grsp-is-prime - This is a very simple procedure, inefficient, but sufficient for
@@ -72,6 +114,57 @@
 	   (set! res #f)))
     res))
 
+
+; grsp-fact - Calculates the factorial of p_n
+;
+; Arguments:
+; - p_n: natural number.
+; 
+; Output:
+; - Returns 1 if p_n is not a natural number. Factorial of p_n otherwise.
+;
+(define (grsp-fact p_n)
+  (let ((res 1))
+    (cond ((eq? (grsp-eiget p_n 1) #t)
+	   (set! res (* p_n (grsp-fact (- p_n 1))))))
+    res))
+
+
+; grsp-biconr - Binomial coefficient. Les you choose p_k elements from a set of
+; p_n elements without repetition.
+; 
+; Arguemnts:
+; - p_n: integer >= 0
+; - p_k: integer >= 0 and <= p_n.
+;
+; Sources:
+; - En.wikipedia.org. (2020). Binomial coefficient. [online] Available at:
+; https://en.wikipedia.org/wiki/Binomial_coefficient [Accessed 13 Jan. 2020].
+;
+(define (grsp-biconr p_n p_k)
+  (let ((res 0))
+    (cond ((eq? (grsp-eiget p_n 0) #t)		  
+	   (cond ((eq? (grsp-eiget p_k 0) #t)				
+		  (cond ((>= p_n p_k)
+			 (set! res (/ (grsp-fact p_n) (* (grsp-fact (- p_n p_k)) (grsp-fact p_k))))))))))
+    res))
+
+
+; grsp-bicowr - Binomial coefficient. Les you choose p_k elements from a set of
+; p_n elements with repetition.
+; 
+; Arguemnts:
+; - p_n: integer >= 0
+; - p_k: integer >= 0 and <= p_n.
+;
+; Sources:
+; - En.wikipedia.org. (2020). Binomial coefficient. [online] Available at:
+; https://en.wikipedia.org/wiki/Binomial_coefficient [Accessed 13 Jan. 2020].
+;
+(define (grsp-bicowr p_n p_k)
+  (let ((res 0))
+    (set! res (grsp-biconr (+ p_n (- p_k 1)) p_k))
+    res))
 
 
 ; grsp-gtls - "gtls = Greater than, less than" Finds if number p_n1 is greater
@@ -112,23 +205,6 @@
     res))
 
 
-; grsp-ps3bl1 - Pseudo tri-boolean 1. Provides a pseudo trinary result.
-;
-; Arguments: 
-; - p_n: number.
-;
-; Output:
-; - Retuns -1, 0 or 1 depending on the number being less than, equal or 
-;   greater than zero.
-;
-(define (grsp-ps3bl1 p_n)
-  (let ((res 0))
-    (cond ((equal? p_n 0)(set! res 0))
-	  ((> p_n 0)(set! res 1))
-	  ((< p_n 0)(set! res -1)))
-    res))
-
-
 ; grsp-k2nb - Returns the value of (p_k * (p_r**p_n)) + p_b
 ;
 ; Arguments:
@@ -160,10 +236,9 @@
   (let ((res 0)
 	(k 0))
     (cond ((exact-integer? p_k)
-	   (cond ((exact-integer? p_b)
-		  (cond ((>= p_b 2)(begin (while (< k p_k)
-						 (set! res (+ res (* (/ 1 (expt p_b k)) (/ (p_pf k) (p_qf k)))))
-						 (set! k (+ k 1))))))))))
+	   (cond ((eq? (grsp-eiget p_b 2) #t)(begin (while (< k p_k)
+							   (set! res (+ res (* (/ 1 (expt p_b k)) (/ (p_pf k) (p_qf k)))))
+							   (set! k (+ k 1))))))))
     res))
 			 
 
@@ -230,7 +305,8 @@
 ;
 (define (grsp-woodall-number p_n)
   (let ((res 1))
-    (cond ((exact-integer? p_n)(cond ((> p_n 0)(set! res (grsp-krnb p_n 2 p_n -1))))))
+    (cond ((eq? (grsp-eiget p_n 1) #t)		  
+	   (set! res (grsp-krnb p_n 2 p_n -1))))
     res))
 
 
@@ -249,8 +325,10 @@
 ;
 (define (grsp-cullen-number p_n)
   (let ((res 1))
-    (cond ((exact-integer? p_n)(cond ((> p_n 0)(set! res (grsp-krnb p_n 2 p_n 1))))))
+    (cond ((eq? (grsp-eiget p_n 1) #t)		  
+	   (set! res (grsp-krnb p_n 2 p_n 1))))
     res))
+
 
 ; grsp-proth-number - Returns the value of a Proth number if:
 ; - Both p_n and p_k are positive integers.
@@ -340,11 +418,9 @@
 ;
 (define (grsp-wagstaff-number p_n p_b)
   (let ((res 0))
-    (cond ((exact-integer? p_n)
-	   (cond ((exact-integer? p_b)
-		  (cond ((>= p_n 1)
-			 (cond ((>= p_b 2)
-				(set! res (* 1.0 (/ (+ (expt p_b p_n) 1) (+ p_b 1))))))))))))
+    (cond ((eq? (grsp-eiget p_n 1) #t)
+	   (cond ((eq? (grsp-eiget p_b 2) #t)
+		  (set! res (* 1.0 (/ (+ (expt p_b p_n) 1) (+ p_b 1))))))))
     res))
 
 
@@ -364,11 +440,9 @@
 ;
 (define (grsp-williams-number p_n p_b)
   (let ((res 0))
-    (cond ((exact-integer? p_n)
-	   (cond ((exact-integer? p_b)
-		  (cond ((>= p_n 1)
-			 (cond ((>= p_b 2)    
-				(set! res (- (* (- p_b 1) (expt p_b p_n)) 1))))))))))
+    (cond ((eq? (grsp-eiget p_n 1) #t)		  
+	   (cond ((eq? (grsp-eiget p_b 2) #t)				
+		  (set! res (- (* (- p_b 1) (expt p_b p_n)) 1))))))
     res))
 
 
@@ -383,9 +457,8 @@
 ;
 (define (grsp-thabit-number p_n)
   (let ((res 0))
-    (cond ((exact-integer? p_n)
-	   (cond ((>= p_n 0)
-		  (set! res (- (* 3 (expt 2 p_n)) 1))))))
+    (cond ((eq? (grsp-eiget p_n 0) #t)		  
+	   (set! res (- (* 3 (expt 2 p_n)) 1))))
     res))
 
 
@@ -400,12 +473,30 @@
 ;
 (define (grsp-fermat-number p_n)
   (let ((res 0))
-    (cond ((exact-integer? p_n)
-	   (cond ((>= p_n 0)
-		  (set! res (+ (expt 2 (expt 2 p_n)) 1))))))
+    (cond ((eq? (grsp-eiget p_n 0) #t)		  
+	   (set! res (+ (expt 2 (expt 2 p_n)) 1))))
     res))
 
-		  
+
+; grsp-catalan-number - Calculates the p_n(th) Catalan number.
+;
+; Arguments:
+; - p_n: non-negative integer.
+;
+; Output:
+; - Returns 0 if conditions for p_n are not met.
+;
+; Sources:
+; - En.wikipedia.org. (2020). Catalan number. [online] Available at:
+; https://en.wikipedia.org/wiki/Catalan_number [Accessed 13 Jan. 2020].
+;
+(define (grsp-catalan-number p_n)
+  (let ((res 0))
+    (cond ((eq? (grsp-eiget p_n 0) #t)		      
+	   (set! res (* (/ 1 (+ p_n 1)) (grsp-biconr (* 2 p_n) p_n)))))
+    res))
+
+			
 ; grsp-wagstaff-prime - Produces a Wagstaff prime number.
 ;
 ; Arguments:
@@ -420,10 +511,34 @@
 ;
 (define (grsp-wagstaff-prime p_n)
   (let ((res 0))
-    (cond ((exact-integer? p_n)
+    (cond ((eq? (grsp-eiget p_n 1) #t)    
 	   (cond ((eq? (odd? p_n) #t)
-		  (cond ((> p_n 0)
-			 (set! res (/ (+ (expt 2 p_n) 1) 3))))))))
+		  (set! res (/ (+ (expt 2 p_n) 1) 3))))))
     res))
 
-	   
+
+; grsp-dobinski-formula - Implementation of the Dobinski formula.
+;
+; Arguments:
+; - p_n: non-negative integer.
+; - p_k: non-negative integer.
+;
+; Output:
+; - Zero if conditions for p_n and p_k are not met. p_n(th) Bell number. 
+;
+; Sources:
+; - En.wikipedia.org. (2020). Dobiński's formula. [online] Available at:
+;   https://en.wikipedia.org/wiki/Dobi%C5%84ski%27s_formula
+;   [Accessed 14 Jan. 2020].
+;
+(define (grsp-dobinski-formula p_n p_k)
+  (let ((res 0)
+	(i 0))
+    (cond ((eq? (grsp-eiget p_n 0) #t)
+	   (cond ((eq? (grsp-eiget p_k 0) #t)
+		  (while (<= i p_n)
+			 (set! res (+ (/ (expt p_k p_n) (grsp-fact p_k))))
+			 (set! i (+ i 1)))))))
+    (set! res (* res (/ 1 (gconst "A001113"))))
+    res))
+
