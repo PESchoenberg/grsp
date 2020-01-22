@@ -50,7 +50,7 @@
 ; - En.wikipedia.org. (2020). Orders of magnitude (numbers). [online] Available
 ;   at: https://en.wikipedia.org/wiki/Orders_of_magnitude_(numbers)
 ;   [Accessed 6 Jan. 2020].
-
+;
 (define (gconst p_n1)
   (let ((res 0))
     (cond ((equal? p_n1 "gr")(set! res 1.00))
@@ -91,7 +91,7 @@
 	  ; Atoms in the human body.
 	  ((equal? p_n1 "HumanAtoms")(set! res (* 7 (expt 10 27))))
 
-	  ; Atoms on Earth.
+	  ; Atoms on planet Earth.
 	  ((equal? p_n1 "EarthAtoms")(set! res (* 1.33 (expt 10 50))))
 
 	  ; Alexander's star possible positions.
@@ -510,21 +510,7 @@
 	  
 	  ; 's constant.
 	  ;((equal? p_n1 "GC")(set! res ))
-	  
-	  ; 's constant.
-	  ;((equal? p_n1 "GC")(set! res ))
-	  
-	  ; 's constant.
-	  ;((equal? p_n1 "GC")(set! res ))
-	  
-	  ; 's constant.
-	  ;((equal? p_n1 "GC")(set! res ))
-	  
-	  ; 's constant.
-	  ;((equal? p_n1 "GC")(set! res ))
-	  
-	  ; 's constant.
-	  ;((equal? p_n1 "GC")(set! res ))
+
 	  	  	  	  	  	  	  
 	  ; --------------------------------------------------------------------
 	  ; Physics
