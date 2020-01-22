@@ -31,6 +31,7 @@
 	    grsp-eiget
 	    grsp-is-prime
 	    grsp-fact
+	    grsp-sumat
 	    grsp-biconr
 	    grsp-bicowr
 	    grsp-gtls
@@ -78,8 +79,8 @@
 ; - p_n2: integer.
 ;
 ; Output:
-; - Returns #t if p_n1 is an integer and equal orgreater than p_n2. Returns #f
-; otherwise.
+; - Returns #t if p_n1 is an integer and equal or greater than p_n2. Returns #f
+;   otherwise.
 ;
 (define (grsp-eiget p_n1 p_n2)
   (let ((res #f))
@@ -89,7 +90,7 @@
     res))
 
 
-; grsp-is-prime - This is a very simple procedure, inefficient, but sufficient for
+; grsp-is-prime - This is a very simple procedure, inefficient but sufficient for
 ; small numbers to find if they are prime or not. For large numbers other methods
 ; qill likely be more adequate.
 ;
@@ -115,7 +116,7 @@
     res))
 
 
-; grsp-fact - Calculates the factorial of p_n
+; grsp-fact - Calculates the factorial of p_n.
 ;
 ; Arguments:
 ; - p_n: natural number.
@@ -130,16 +131,31 @@
     res))
 
 
+; grsp-sumat - Calculates the summation of p_n.
+;
+; Arguments:
+; - p_n: integer >= 0.
+; 
+; Output:
+; - Returns 0 if p_n is not a natural number. Summation value of p_n otherwise.
+;
+(define (grsp-sumat p_n)
+  (let ((res 0))
+    (cond ((eq? (grsp-eiget p_n 0) #t)
+	   (set! res (+ p_n (grsp-sumat (- p_n 1))))))
+    res))
+
+
 ; grsp-biconr - Binomial coefficient. Les you choose p_k elements from a set of
 ; p_n elements without repetition.
 ; 
 ; Arguemnts:
 ; - p_n: integer >= 0
-; - p_k: integer >= 0 and <= p_n.
+; - p_k: integer between [0, p_n].
 ;
 ; Sources:
 ; - En.wikipedia.org. (2020). Binomial coefficient. [online] Available at:
-; https://en.wikipedia.org/wiki/Binomial_coefficient [Accessed 13 Jan. 2020].
+;   https://en.wikipedia.org/wiki/Binomial_coefficient [Accessed 13 Jan. 2020].
 ;
 (define (grsp-biconr p_n p_k)
   (let ((res 0))
@@ -159,7 +175,7 @@
 ;
 ; Sources:
 ; - En.wikipedia.org. (2020). Binomial coefficient. [online] Available at:
-; https://en.wikipedia.org/wiki/Binomial_coefficient [Accessed 13 Jan. 2020].
+;   https://en.wikipedia.org/wiki/Binomial_coefficient [Accessed 13 Jan. 2020].
 ;
 (define (grsp-bicowr p_n p_k)
   (let ((res 0))
@@ -168,7 +184,7 @@
 
 
 ; grsp-gtls - "gtls = Greater than, less than" Finds if number p_n1 is greater
-; than p_n2 and smaller than p_n3.
+; than p_n2 and smaller than p_n3, or in the interval (p_n2:p_n3).
 ;
 ; Arguments:
 ; - p_n1
@@ -222,7 +238,7 @@
 ; grsp-bpp - Bailey–Borwein–Plouffe formula.
 ;
 ; Arguments:
-; - p_k: Summation iterations desired.
+; - p_k: summation iterations desired.
 ; - p_b: integer base.
 ; - p_pf: polynomial with integer coef.
 ; - p_qf: polynomial with integer coef.
@@ -236,9 +252,10 @@
   (let ((res 0)
 	(k 0))
     (cond ((exact-integer? p_k)
-	   (cond ((eq? (grsp-eiget p_b 2) #t)(begin (while (< k p_k)
-							   (set! res (+ res (* (/ 1 (expt p_b k)) (/ (p_pf k) (p_qf k)))))
-							   (set! k (+ k 1))))))))
+	   (cond ((eq? (grsp-eiget p_b 2) #t)
+		  (begin (while (< k p_k)
+				(set! res (+ res (* (/ 1 (expt p_b k)) (/ (p_pf k) (p_qf k)))))
+				(set! k (+ k 1))))))))
     res))
 			 
 
@@ -292,7 +309,7 @@
 ; grsp-woodall-number - Calculates the Woodall number of p_n.
 ;
 ; Arguments:
-; - p_n: any natural number.
+; - p_n: natural number.
 ;
 ; Output:
 ; - If p_n is not a natural number, the function returns 1. Otherwise, it
@@ -360,7 +377,7 @@
 ; grsp-mersenne-number - Calculates a Mersenne number according to Mn = 2**p_n -1 .
 ;
 ; Arguments:
-; - p_n positive integer.
+; - p_n: positive integer.
 ;
 ; Output:
 ; - 0 if p_n is not a positive integer.
@@ -368,7 +385,10 @@
 ;
 ; Sources:
 ; - Mersenne.org. (2020). Great Internet Mersenne Prime Search - PrimeNet.
-; [online] Available at: https://www.mersenne.org/ [Accessed 9 Jan. 2020].
+;   [online] Available at: https://www.mersenne.org/ [Accessed 9 Jan. 2020].
+; - Mathworld.wolfram.com. (2020). Mersenne Number -- from Wolfram MathWorld.
+;   [online] Available at: http://mathworld.wolfram.com/MersenneNumber.html
+;   [Accessed 16 Jan. 2020].
 ;
 (define (grsp-mersenne-number p_n)
   (let ((res 0))
@@ -381,8 +401,8 @@
 ; p_d instances.
 ;
 ; Arguments:
-; - p_n: Natural number between [1,9].
-; - p_d: Natural number.
+; - p_n: natural number between [1,9].
+; - p_d: natural number.
 ;
 ; Sources:
 ; - En.wikipedia.org. (2020). Repdigit. [online] Available at:
@@ -405,8 +425,8 @@
 ; grsp-wagstaff-number - Producesa Wagstaff number of base p_b.
 ;
 ; Arguments:
-; - p_n: Natural number.
-; - p_b: Natural number >= 2.
+; - p_n: natural number.
+; - p_b: natural number >= 2.
 ;
 ; Output:
 ; - If conditions for arguments are met, the result is a Wagstaff number. Otherwise
@@ -449,7 +469,7 @@
 ; grsp-thabit-number - Produces a Thabit number.
 ;
 ; Arguments:
-; - p_n: Natural number >= 0.
+; - p_n: positive integer.
 ;
 ; Output:
 ; - If conditions for arguments are met, the result is a Thabit number. Otherwise
