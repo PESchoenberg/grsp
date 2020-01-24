@@ -51,7 +51,9 @@
 	    grsp-fermat-number
 	    grsp-catalan-number
 	    grsp-wagstaff-prime
-	    grsp-dobinski-formula))
+	    grsp-dobinski-formula
+	    grsp-method-newton
+	    grsp-method-euler))
 
 
 ; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -561,4 +563,48 @@
 			 (set! i (+ i 1)))))))
     (set! res (* res (/ 1 (gconst "A001113"))))
     res))
+
+
+; grsp-method-netwton - Simple implementation of the Newton-Rapson method.
+; 
+; - p_x: x(n)
+; - p_fx: f(x(b))
+; - p_dx: f'(x(n))
+;
+; Output:
+; - x(n+1)
+;
+; Sources:
+; - En.wikipedia.org. (2020). Newton's method. [online] Available at:
+;  https://en.wikipedia.org/wiki/Newton%27s_method [Accessed 23 Jan. 2020].
+; - En.wikipedia.org. (2020). Numerical analysis. [online] Available at:
+;   https://en.wikipedia.org/wiki/Numerical_analysis [Accessed 24 Jan. 2020].
+;
+(define (grsp-method-newton p_x p_fx p_dx)
+  (let ((res 0))
+    (set! res (- p_x (/ p_fx p_dx)))
+    res))
+
+
+; grsp-method-euler - Simple implementation of the Euler method.
+; 
+; Arguments:
+; - p_y: y(n).
+; - p_h: h (step).
+; - p_f: f(t,y).
+;
+; Output:
+; - x(n+1)
+;
+; Sources:
+; - En.wikipedia.org. (2020). Euler method. [online] Available at:
+;   https://en.wikipedia.org/wiki/Euler_method [Accessed 24 Jan. 2020].
+; - En.wikipedia.org. (2020). Numerical analysis. [online] Available at:
+;   https://en.wikipedia.org/wiki/Numerical_analysis [Accessed 24 Jan. 2020].
+;
+(define (grsp-method-euler p_y p_h p_f)
+  (let ((res 0))
+    (set! res (+ p_y (* p_h p_f)))
+    res))
+
 
