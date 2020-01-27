@@ -53,7 +53,8 @@
 	    grsp-wagstaff-prime
 	    grsp-dobinski-formula
 	    grsp-method-newton
-	    grsp-method-euler))
+	    grsp-method-euler
+	    grsp-lerp))
 
 
 ; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -608,3 +609,26 @@
     res))
 
 
+; grsp-lerp - Linear interpolation. Interpolates p_y3 in the interval (p_x1, p_x2) 
+; given p_x3.
+;
+; Arguments:
+; - p_x1: x1
+; - p_x2: x2
+; - p_x3: x3
+; - p_y1: y1
+; - p_y2: y2
+; 
+; Output:
+; - y3.
+;
+; Sources:
+; - En.wikipedia.org. (2020). Linear interpolation. [online] Available at:
+;   https://en.wikipedia.org/wiki/Linear_interpolation [Accessed 24 Jan. 2020].
+;
+(define (grsp-lerp p_x1 p_x2 p_x3 p_y1 p_y2)
+  (let ((res 0))
+    (set! res (+ p_y1 (* (- p_x3 p_x1) (/ (- p_y2 p_y1) (- p_x2 p_x1)))))
+    res))
+
+  
