@@ -22,9 +22,30 @@
 ;   along with this program. If not, see <https://www.gnu.org/licenses/>.
 ;
 ; ==============================================================================
+;
+; Notes:
+; - grsp3 provides some level of matrix algebra functionality for Guile, but in
+;  its current version it is not intended to be particulary fast. It does not make
+;  use of any additional non-Scheme library like BLAS or Lapack.
+; - As a convention here, m represents rows, n represents columns.
+;
+; Sources:
+; - Hep.by. (2020). Array Procedures - Guile Reference Manual. [online] Available
+;   at: http://www.hep.by/gnu/guile/Array-Procedures.html#Array-Procedures
+;   [Accessed 28 Jan. 2020].
+; - En.wikipedia.org. (2020). Numerical linear algebra. [online] Available at:
+;   https://en.wikipedia.org/wiki/Numerical_linear_algebra
+;   [Accessed 28 Jan. 2020].
+; - En.wikipedia.org. (2020). Matrix theory. [online] Available at:
+;   https://en.wikipedia.org/wiki/Category:Matrix_theory
+;   [Accessed 28 Jan. 2020].
+;
+; REPL examples:
+; (use-modules (grsp grsp0)(grsp grsp1)(grsp grsp2)(grsp grsp3))
+; (define X (grsp-matrix-create 1 4 4))
+; (define Y (grsp-matrix-create 2 4 4))
+; (define R (grsp-matrix-opmm "#+" X Y))
 
-; http://www.hep.by/gnu/guile/Array-Procedures.html#Array-Procedures
-; https://en.wikipedia.org/wiki/Numerical_linear_algebra
 
 (define-module (grsp grsp3)
   #:use-module (grsp grsp2)
@@ -33,17 +54,19 @@
 	    grsp-matrix-change
 	    grsp-matrix-transpose
 	    grsp-matrix-opsc
-	    grsp-matrix-sub))
+	    grsp-matrix-opmm
+	    grsp-matrix-sub
+	    grsp-matrix-exp))
 
 
 ; grsp-matrix-esi - Extracts shape information from an m x n matrix.
 ;
 ; Arguments:
 ; - p_e: number indicating the element value desired.
-; - 1: low boundary for m.
-; - 2: high boundary for m.
-; - 3: low boundary for n.
-; - 4: high boundary for n.
+; - 1: low boundary for m (rows).
+; - 2: high boundary for m (rows).
+; - 3: low boundary for n (cols).
+; - 4: high boundary for n (cols).
 ;
 ; Output:
 ; - A number corresponding to the shape element value desired. Returns 0 
@@ -69,8 +92,8 @@
 ;
 ; Arguments:
 ; - p_v: element that will initially fill the matrix.
-; - p_x: size on x axis (cols), positive integer.
-; - p_y: size on y axis (rows), positive integer
+; - p_m: rows, positive integer.
+; - p_n: cols, positive integer.
 ;
 (define (grsp-matrix-create p_v p_m p_n)
   (let ((res 0)
@@ -107,7 +130,7 @@
 ;
 ; Arguments:
 ; - p_a: matrix to operate on.
-; - p_v1: value to be replaced.
+; - p_v1: value to be replaced within p_a.
 ; - p_v2: value to replace p_v1 with.
 ;
 ; Output:
@@ -180,7 +203,7 @@
 
 ; grsp-matrix-opsc - Performs scalar operation p_s between matrix p_a and
 ; scalar p_v or discrete operation on p_a.
-;c
+;
 ; Arguments:
 ; - p_s: scalar operation.
 ;   - "#+": scalar sum.
@@ -193,19 +216,24 @@
 ;   - "#rw": replace all elements of p_a with p_v regardless of their value.
 ;   - "#rprnd": replace all elements of p_a with pseudo random numbers in a
 ;      normal distribution with mean 0.0 and standard deviation equal to p_v.
-;   - "#L": obtains the L matrix of p_a.
-;   - "#U": obtains the U matrix of p_a.
+;   - "#L": obtains the L matrix of p_a for a LU decomposition.
+;   - "#U": obtains the U matrix of p_a for a LU decomposition.
 ; - p_a: matrix.
 ; - p_v: scalar value.
 ;
 ; Notes:
 ; - You may need to use seed->random-state for pseudo random numbers.
+; - This function does not validate the dimensionality or boundaries of the 
+;   matrices involved; the user or an additional shell function should take care
+;   of that.
 ;
 ; Sources:
 ; - Gnu.org. (2020). Random (Guile Reference Manual). [online] Available at:
 ;   https://www.gnu.org/software/guile/manual/html_node/Random.html
 ;   [Accessed 26 Jan. 2020].
-; - https://es.wikipedia.org/wiki/Factorizaci%C3%B3n_LU
+; - Es.wikipedia.org. (2020). Factorización LU. [online] Available at:
+;   https://es.wikipedia.org/wiki/Factorizaci%C3%B3n_LU
+;   [Accessed 28 Jan. 2020].
 ;
 (define (grsp-matrix-opsc p_s p_a p_v)
   (let ((res1 p_a)
@@ -260,6 +288,112 @@
     res2))
 
 
+; grsp-matrix-opmm - Performs operation p_s between matrices p_a1 and p_a2.
+;
+; Arguments:
+; - p_s: operation described as a string:
+;   - "#+": matrix sum.
+;   - "#-": matrix substraction.
+;   - "#*": matrix multiplication.
+;   - "#/": matrix division.
+; - p_a1: first matrix.
+; - p_a2: second matrix.
+;
+; Notes:
+; - This function does not validate the dimensionality or boundaries of the 
+;   matrices involved; the user or an additional shell function should take care
+;   of that.
+;
+(define (grsp-matrix-opmm p_s p_a1 p_a2)
+  (let ((res1 p_a1)
+	(res2 p_a2)
+	(res4 0)
+	(res3 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(i1 0)
+	(j1 0)
+	(lm2 0)
+	(hm2 0)
+	(ln2 0)
+	(hn2 0)
+	(i2 0)
+	(j2 0)
+	(lm3 0)
+	(hm3 0)
+	(ln3 0)
+	(hn3 0))
+
+    ; Extract the boundaries of the first matrix.
+    (set! lm1 (grsp-matrix-esi 1 res1))
+    (set! hm1 (grsp-matrix-esi 2 res1))
+    (set! ln1 (grsp-matrix-esi 3 res1))
+    (set! hn1 (grsp-matrix-esi 4 res1))
+
+    ; Extract the boundaries of the second matrix.
+    (set! lm2 (grsp-matrix-esi 1 res2))
+    (set! hm2 (grsp-matrix-esi 2 res2))
+    (set! ln2 (grsp-matrix-esi 3 res2))
+    (set! hn2 (grsp-matrix-esi 4 res2))    
+
+    ; Define the size of the results matrix.
+    (cond ((equal? p_s "#*")
+	   (set! lm3 lm1)
+	   (set! hm3 hm1)
+	   (set! ln3 ln2)
+	   (set! hn3 hn2))
+	  (else (set! lm3 lm1)
+		(set! hm3 hm1)
+		(set! ln3 ln1)
+		(set! hn3 hn1)))
+		   
+    ; Create holding matrix.
+    ; (set! res3 (grsp-matrix-create res3 (+ (- hm3 ln3) 1) (+ (- hn3 ln3) 1)))
+    (set! res3 (grsp-matrix-create res3 (+ (- hm3 lm3) 1) (+ (- hn3 ln3) 1)))
+    
+    ; Apply mm operation.
+    (cond ((equal? p_s "#*")
+	   
+	   (set! i1 lm3)
+	   (while (<= i1 hm3)
+		  ; https://en.wikipedia.org/wiki/Matrix_multiplication
+		  ; https://en.wikipedia.org/wiki/Matrix_multiplication_algorithm
+		  (set! j1 ln3)
+		  (while (<= j1 hn3)
+			 (set! res4 0)
+			 (set! i2 0)
+			 (while (<= i2 hm3)
+				(set! res4 (+ res4 (* (array-ref res1 i1 i2) (array-ref res1 i2 j1))))
+				(set! i2 (+ i2 1)))
+			 (array-set! res3 res4 i1 j1)
+			 (set! j1 (+ j1 1)))
+		  (set! i1 (+ i1 1))))
+	  (else (
+		 ; Matrix sum and substraction require a specific cycle.
+
+		 (set! i1 lm3)		 
+		 (while (<= i1 hm3)
+			(set! j1 ln3)			
+			(while (<= j1 hn3)			       
+			       (cond ((equal? p_s "#+")
+				      (array-set! res3 (+ (array-ref res1 i1 j1) (array-ref res2 i1 j1)) i1 j1))
+				     ((equal? p_s "#-")
+				      (array-set! res3 (- (array-ref res1 i1 j1) (array-ref res2 i1 j1)) i1 j1)))		  
+			       (set! j1 (+ j1 1)))
+			(set! i1 (+ i1 1)))
+		 
+		 (newline)
+		 (display  "p2")
+		 (newline)
+		 
+		 (display res3)
+		 (newline))))
+    
+    res3))
+    
+
 ; grsp-matrix-sub - Extracts a block or sub matrix from matrix p_a. The process is
 ; not destructive with regards to p_a. The user is responsable for providing
 ; correct boundaries since the function does not check those parameters in 
@@ -267,10 +401,10 @@
 ;
 ; Arguments:
 ; - p_a: matrix to be partitioned.
-; - p_lm: lower m boundary.
-; - p_hm: higher m boundary.
-; - p_ln: lower n boundary.
-; - p_hn: higher n boundary
+; - p_lm: lower m boundary (rows).
+; - p_hm: higher m boundary (rows).
+; - p_ln: lower n boundary (cols).
+; - p_hn: higher n boundary (cols).
 ;
 (define (grsp-matrix-sub p_a p_lm p_hm p_ln p_hn)
   (let ((res1 p_a)
@@ -286,6 +420,43 @@
     (while (<= i p_hm)
 	   (set! j p_ln)
 	   (while (<= j p_hn)
+		  (array-set! res2 (array-ref res1 i j) i j)
+		  (set! j (+ j 1)))
+	   (set! i (+ i 1)))
+    res2))
+
+
+; grsp-matrix-exp - Add columns or rows to a matrix.
+;
+; Arguments:
+; - p_a: matrix to expand.
+; - p_am: rows to add.
+; - p_an: cols to add.
+;
+(define (grsp-matrix-exp p_a p_am p_an)
+  (let ((res1 p_a)
+	(res2 0)
+	(lm 0)
+	(hm 0)
+	(ln 0)
+	(hn 0)
+	(i 0)
+	(j 0))
+
+    ; Extract the boundaries of the matrix.
+    (set! lm (grsp-matrix-esi 1 res1))
+    (set! hm (grsp-matrix-esi 2 res1))
+    (set! ln (grsp-matrix-esi 3 res1))
+    (set! hn (grsp-matrix-esi 4 res1))
+
+    ; Create ex[anded matrix.
+    (set! res2 (grsp-matrix-create res2 (+ (- (+ hm p_am) ln) 1) (+ (- (+ hn p_an) ln) 1)))
+
+    ; Copy to submatrix.
+    (set! i lm)
+    (while (<= i hm)
+	   (set! j ln)
+	   (while (<= j hn)
 		  (array-set! res2 (array-ref res1 i j) i j)
 		  (set! j (+ j 1)))
 	   (set! i (+ i 1)))
