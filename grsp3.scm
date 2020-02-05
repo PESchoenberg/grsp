@@ -44,7 +44,7 @@
 ; (use-modules (grsp grsp0)(grsp grsp1)(grsp grsp2)(grsp grsp3))
 ; (define X (grsp-matrix-create 1 4 4))
 ; (define Y (grsp-matrix-create 2 4 4))
-; (define R (grsp-matrix-opmm "#+" X Y))
+; (define R (grsp-matrix-opew "#+" X Y))
 
 
 (define-module (grsp grsp3)
@@ -54,6 +54,7 @@
 	    grsp-matrix-change
 	    grsp-matrix-transpose
 	    grsp-matrix-opsc
+	    grsp-matrix-opew
 	    grsp-matrix-opmm
 	    grsp-matrix-sub
 	    grsp-matrix-exp))
@@ -201,8 +202,8 @@
     res2))
 
 
-; grsp-matrix-opsc - Performs scalar operation p_s between matrix p_a and
-; scalar p_v or discrete operation on p_a.
+; grsp-matrix-opsc - Performs san operation p_s between matrix p_a and scalar
+; p_v or a discrete operation on p_a.
 ;
 ; Arguments:
 ; - p_s: scalar operation.
@@ -288,6 +289,70 @@
     res2))
 
 
+; grsp-matrix-opew - Performs element-wise operation p_s between matrices p_a1 and
+; p_a2.
+;
+; Arguments:
+; - p_s: operation described as a string:
+;   - "#+": sum.
+;   - "#-": substraction.
+;   - "#*": multiplication.
+;   - "#/": division.
+;   - "#expt": element wise (expt p_a1 p_a2).
+;   - "#max": element wise max function.
+;   - "#min": element wise min function.
+; - p_a1: first matrix.
+; - p_a2: second matrix.
+;
+; Notes:
+; - This function does not validate the dimensionality or boundaries of the 
+;   matrices involved; the user or an additional shell function should take care
+;   of that.
+;
+(define (grsp-matrix-opew p_s p_a1 p_a2)
+  (let ((res1 p_a1)
+	(res2 p_a2)
+	(res3 0)
+	(i 0)
+	(j 0)
+	(lm 0)
+	(hm 0)
+	(ln 0)
+	(hn 0))
+    
+    ; Extract the boundaries of the matrix.
+    (set! lm (grsp-matrix-esi 1 res1))
+    (set! hm (grsp-matrix-esi 2 res1))
+    (set! ln (grsp-matrix-esi 3 res1))
+    (set! hn (grsp-matrix-esi 4 res1))
+    
+    ; Create holding matrix.
+    (set! res3 (grsp-matrix-create res3 (+ (- hm ln) 1) (+ (- hn ln) 1)))    
+
+    ; Apply bitwise operation.
+    (set! i lm)		 
+    (while (<= i hm)
+	   (set! j ln)			
+	   (while (<= j hn)			       
+		  (cond ((equal? p_s "#+")
+			 (array-set! res3 (+ (array-ref res1 i j) (array-ref res2 i j)) i j))
+			((equal? p_s "#-")
+			 (array-set! res3 (- (array-ref res1 i j) (array-ref res2 i j)) i j))
+			((equal? p_s "#*")
+			 (array-set! res3 (* (array-ref res1 i j) (array-ref res2 i j)) i j))
+			((equal? p_s "#/")
+			 (array-set! res3 (/ (array-ref res1 i j) (array-ref res2 i j)) i j))
+			((equal? p_s "#expt")
+			 (array-set! res3 (expt (array-ref res1 i j) (array-ref res2 i j)) i j))
+			((equal? p_s "#max")
+			 (array-set! res3 (max (array-ref res1 i j) (array-ref res2 i j)) i j))
+			((equal? p_s "#min")
+			 (array-set! res3 (min (array-ref res1 i j) (array-ref res2 i j)) i j)))			
+		  (set! j (+ j 1)))
+	   (set! i (+ i 1)))
+    res3))
+
+
 ; grsp-matrix-opmm - Performs operation p_s between matrices p_a1 and p_a2.
 ;
 ; Arguments:
@@ -352,6 +417,7 @@
     ; Create holding matrix.
     ; (set! res3 (grsp-matrix-create res3 (+ (- hm3 ln3) 1) (+ (- hn3 ln3) 1)))
     (set! res3 (grsp-matrix-create res3 (+ (- hm3 lm3) 1) (+ (- hn3 ln3) 1)))
+    (set! res3 (grsp-matrix-opsc "#*" res3 0))  
     
     ; Apply mm operation.
     (cond ((equal? p_s "#*")
@@ -383,15 +449,19 @@
 				      (array-set! res3 (- (array-ref res1 i1 j1) (array-ref res2 i1 j1)) i1 j1)))		  
 			       (set! j1 (+ j1 1)))
 			(set! i1 (+ i1 1)))
-		 
-		 (newline)
-		 (display  "p2")
-		 (newline)
-		 
-		 (display res3)
-		 (newline))))
-    
-    res3))
+		     (newline)
+		     (display  "p1")
+		     (newline)
+		     (display res3)
+		     (newline)
+		     (display "p1.1")
+		     res3)))
+	 
+    (newline)
+    (display  "p2")
+    (newline)
+    (display res3)
+    (newline)))
     
 
 ; grsp-matrix-sub - Extracts a block or sub matrix from matrix p_a. The process is
@@ -461,4 +531,3 @@
 		  (set! j (+ j 1)))
 	   (set! i (+ i 1)))
     res2))
-
