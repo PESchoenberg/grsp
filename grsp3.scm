@@ -53,8 +53,10 @@
 	    grsp-matrix-create
 	    grsp-matrix-change
 	    grsp-matrix-transpose
+	    grsp-matrix-opio
 	    grsp-matrix-opsc
 	    grsp-matrix-opew
+	    grsp-matrix-opfn
 	    grsp-matrix-opmm
 	    grsp-matrix-sub
 	    grsp-matrix-exp))
@@ -197,6 +199,37 @@
 	   (set! j ln)
 	   (while (<= j hn)
 		  (array-set! res2 (array-ref res1 i j) j i)
+		  (set! j (+ j 1)))
+	   (set! i (+ i 1)))
+    res2))
+
+
+
+(define (grsp-matrix-opio p_s p_a p_l)
+  (let ((res1 p_a)
+	(res2 2)
+	(lm 0)
+	(hm 0)
+	(ln 0)
+	(hn 0)
+	(i 0)
+	(j 0))
+
+    ; Extract the boundaries of the matrix.
+    (set! lm (grsp-matrix-esi 1 res1))
+    (set! hm (grsp-matrix-esi 2 res1))
+    (set! ln (grsp-matrix-esi 3 res1))
+    (set! hn (grsp-matrix-esi 4 res1))
+
+    ; Apply internal operation.
+    (set! i lm)
+    (while (<= i hm)
+	   (set! j ln)
+	   (while (<= j hn)
+		  (cond ((equal? p_s "#trace")
+			 (array-set! res2 (+ (array-ref res1 i j) p_v) i j))
+			((equal? p_s "#-")
+			 (array-set! res2 (- (array-ref res1 i j) p_v) i j)))
 		  (set! j (+ j 1)))
 	   (set! i (+ i 1)))
     res2))
@@ -353,6 +386,109 @@
     res3))
 
 
+; grsp-matrix-opfn - Applies function p_s to all elements of p_a1.
+;
+; Arguments:
+; - p_s: function as per sources, described as a string:
+;   - "#abs".
+;   - "#truncate".
+;   - "#round".
+;   - "#floor".
+;   - "#ceiling.
+;   - "#sqrt".
+;   - "#sin".
+;   - "#cos".
+;   - "#tan".
+;   - "#asin".
+;   - "#acos".
+;   - "#atan".
+;   - "#exp".
+;   - "#log".
+;   - "#log10".
+;   - "#sinh".
+;   - "#cosh".
+;   - "#tanh".
+;   - "#asinh".
+;   - "#acosh".
+;   - "#atanh".
+;- p_a1: matrix.
+;
+; Sources:
+; - Gnu.org. (2020). Guile Reference Manual. [online] Available at:
+;   https://www.gnu.org/software/guile/manual/guile.html#Arithmetic
+;   [Accessed 6 Feb. 2020].
+;
+(define (grsp-matrix-opfn p_s p_a1)
+  (let ((res1 p_a1)
+	(res3 0)
+	(i 0)
+	(j 0)
+	(lm 0)
+	(hm 0)
+	(ln 0)
+	(hn 0))
+    
+    ; Extract the boundaries of the matrix.
+    (set! lm (grsp-matrix-esi 1 res1))
+    (set! hm (grsp-matrix-esi 2 res1))
+    (set! ln (grsp-matrix-esi 3 res1))
+    (set! hn (grsp-matrix-esi 4 res1))
+    
+    ; Create holding matrix.
+    (set! res3 (grsp-matrix-create res3 (+ (- hm ln) 1) (+ (- hn ln) 1)))    
+
+    ; Apply bitwise operation.
+    (set! i lm)		 
+    (while (<= i hm)
+	   (set! j ln)			
+	   (while (<= j hn)			       
+		  (cond ((equal? p_s "#abs")
+			 (array-set! res3 (abs (array-ref res1 i j)) i j))
+			((equal? p_s "#truncate")
+			 (array-set! res3 (truncate (array-ref res1 i j)) i j))
+			((equal? p_s "#round")
+			 (array-set! res3 (round (array-ref res1 i j)) i j))
+			((equal? p_s "#floor")
+			 (array-set! res3 (floor (array-ref res1 i j)) i j)) 
+			((equal? p_s "#ceiling")
+			 (array-set! res3 (ceiling (array-ref res1 i j)) i j)) 
+			((equal? p_s "#sqrt")
+			 (array-set! res3 (sqrt (array-ref res1 i j)) i j)) 				     
+			((equal? p_s "#sin")
+			 (array-set! res3 (sin (array-ref res1 i j)) i j)) 			
+			((equal? p_s "#cos")
+			 (array-set! res3 (cos (array-ref res1 i j)) i j))
+			((equal? p_s "#tan")
+			 (array-set! res3 (tan (array-ref res1 i j)) i j))
+			((equal? p_s "#asin")
+			 (array-set! res3 (asin (array-ref res1 i j)) i j)) 			
+			((equal? p_s "#acos")
+			 (array-set! res3 (acos (array-ref res1 i j)) i j))
+			((equal? p_s "#atan")
+			 (array-set! res3 (atan (array-ref res1 i j)) i j))
+			((equal? p_s "#exp")
+			 (array-set! res3 (exp (array-ref res1 i j)) i j))
+			((equal? p_s "#log")
+			 (array-set! res3 (log (array-ref res1 i j)) i j))
+			((equal? p_s "#log10")
+			 (array-set! res3 (log10 (array-ref res1 i j)) i j))
+			((equal? p_s "#sinh")
+			 (array-set! res3 (sinh (array-ref res1 i j)) i j)) 			
+			((equal? p_s "#cosh")
+			 (array-set! res3 (cosh (array-ref res1 i j)) i j))
+			((equal? p_s "#tanh")
+			 (array-set! res3 (tanh (array-ref res1 i j)) i j))
+			((equal? p_s "#asinh")
+			 (array-set! res3 (asinh (array-ref res1 i j)) i j)) 			
+			((equal? p_s "#acosh")
+			 (array-set! res3 (acosh (array-ref res1 i j)) i j))
+			((equal? p_s "#atanh")
+			 (array-set! res3 (atanh (array-ref res1 i j)) i j)))						
+		  (set! j (+ j 1)))
+	   (set! i (+ i 1)))
+    res3))
+
+
 ; grsp-matrix-opmm - Performs operation p_s between matrices p_a1 and p_a2.
 ;
 ; Arguments:
@@ -404,24 +540,17 @@
     (set! hn2 (grsp-matrix-esi 4 res2))    
 
     ; Define the size of the results matrix.
-    (cond ((equal? p_s "#*")
-	   (set! lm3 lm1)
-	   (set! hm3 hm1)
-	   (set! ln3 ln2)
-	   (set! hn3 hn2))
-	  (else (set! lm3 lm1)
-		(set! hm3 hm1)
-		(set! ln3 ln1)
-		(set! hn3 hn1)))
+    (set! lm3 lm1)
+    (set! hm3 hm1)
+    (set! ln3 ln2)
+    (set! hn3 hn2)
 		   
     ; Create holding matrix.
     ; (set! res3 (grsp-matrix-create res3 (+ (- hm3 ln3) 1) (+ (- hn3 ln3) 1)))
     (set! res3 (grsp-matrix-create res3 (+ (- hm3 lm3) 1) (+ (- hn3 ln3) 1)))
-    (set! res3 (grsp-matrix-opsc "#*" res3 0))  
     
     ; Apply mm operation.
     (cond ((equal? p_s "#*")
-	   
 	   (set! i1 lm3)
 	   (while (<= i1 hm3)
 		  ; https://en.wikipedia.org/wiki/Matrix_multiplication
@@ -435,33 +564,8 @@
 				(set! i2 (+ i2 1)))
 			 (array-set! res3 res4 i1 j1)
 			 (set! j1 (+ j1 1)))
-		  (set! i1 (+ i1 1))))
-	  (else (
-		 ; Matrix sum and substraction require a specific cycle.
-
-		 (set! i1 lm3)		 
-		 (while (<= i1 hm3)
-			(set! j1 ln3)			
-			(while (<= j1 hn3)			       
-			       (cond ((equal? p_s "#+")
-				      (array-set! res3 (+ (array-ref res1 i1 j1) (array-ref res2 i1 j1)) i1 j1))
-				     ((equal? p_s "#-")
-				      (array-set! res3 (- (array-ref res1 i1 j1) (array-ref res2 i1 j1)) i1 j1)))		  
-			       (set! j1 (+ j1 1)))
-			(set! i1 (+ i1 1)))
-		     (newline)
-		     (display  "p1")
-		     (newline)
-		     (display res3)
-		     (newline)
-		     (display "p1.1")
-		     res3)))
-	 
-    (newline)
-    (display  "p2")
-    (newline)
-    (display res3)
-    (newline)))
+		  (set! i1 (+ i1 1)))))
+    res3))
     
 
 ; grsp-matrix-sub - Extracts a block or sub matrix from matrix p_a. The process is
