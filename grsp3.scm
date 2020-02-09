@@ -204,10 +204,35 @@
     res2))
 
 
-
+; grsp-matrix-opio - Internal operations that produce a scalar result.
+;
+; Arguments;
+; - p_s: operation.
+;   - "#+": sum of all elements.
+;   - "#-": substraction of all elements.
+;   - "#*": product of all elements.
+;   - "#/": division of all elements.
+;   - "#+r": sum of all elements of row p_l.
+;   - "#-r": substraction of all elements of row p_l.
+;   - "#*r": product of all elements of row p_l.
+;   - "#/r": division of all elements of row p_l.
+;   - "#+c": sum of all elements of col p_l.
+;   - "#-c": substraction of all elements of col p_l.
+;   - "#*c": product of all elements of col p_l.
+;   - "#/c": division of all elements of col p_l.
+;   - "#trace": sum of the diagonal elements.
+; - p_a: matrix. 
+; - p_l: column or row number.
+;
+; Note:
+; - Value for argument p_l should be passed as 0 if not used. It is only
+;   needed for row and column operations.
+;
 (define (grsp-matrix-opio p_s p_a p_l)
   (let ((res1 p_a)
-	(res2 2)
+	(res2 0)
+	(res3 1)
+	(l 0)
 	(lm 0)
 	(hm 0)
 	(ln 0)
@@ -221,21 +246,67 @@
     (set! ln (grsp-matrix-esi 3 res1))
     (set! hn (grsp-matrix-esi 4 res1))
 
+    (set! l p_l)
+    (cond ((equal? p_s "#*")
+	   (set! res2 1))
+	  ((equal? p_s "#/")
+	   (set! res2 1))	  
+	  ((equal? p_s "#*r")
+	   (set! res2 1))
+	  ((equal? p_s "#/r")
+	   (set! res2 1))
+	  ((equal? p_s "#*c")
+	   (set! res2 1))
+	  ((equal? p_s "#/c")
+	   (set! res2 1)))	  
+	  
     ; Apply internal operation.
     (set! i lm)
     (while (<= i hm)
 	   (set! j ln)
 	   (while (<= j hn)
-		  (cond ((equal? p_s "#trace")
-			 (array-set! res2 (+ (array-ref res1 i j) p_v) i j))
+		  (cond ((equal? p_s "#+")
+			 (set! res2 (+ res2 (array-ref res1 i j))))	  
 			((equal? p_s "#-")
-			 (array-set! res2 (- (array-ref res1 i j) p_v) i j)))
+			 (set! res2 (- res2 (array-ref res1 i j))))
+			((equal? p_s "#*")
+			 (set! res2 (* res2 (array-ref res1 i j))))
+			((equal? p_s "#/")
+			 (set! res2 (/ res2 (array-ref res1 i j))))
+
+			; Diagonal operations.
+			((equal? p_s "#trace")
+			 (cond ((equal? (grsp-gtels i j) 0)
+				(set! res2 (+ res2 (array-ref res1 i j)))))))
+			
+		  ; Row operations.
+		  (cond ((= l i)
+			 (cond ((equal? p_s "#+r")
+				(set! res2 (+ res2 (array-ref res1 i j))))
+			       ((equal? p_s "#-r")
+				(set! res2 (- res2 (array-ref res1 i j))))
+			       ((equal? p_s "#*r")
+				(set! res2 (* res2 (array-ref res1 i j))))
+			       ((equal? p_s "#/r")
+				(set! res2 (/ res2 (array-ref res1 i j)))))))
+
+		  ; Column operations.
+		  (cond ((= l j)
+			 (cond ((equal? p_s "#+c")
+				(set! res2 (+ res2 (array-ref res1 i j))))
+			       ((equal? p_s "#-c")
+				(set! res2 (- res2 (array-ref res1 i j))))
+			       ((equal? p_s "#*c")
+				(set! res2 (* res2 (array-ref res1 i j))))
+			       ((equal? p_s "#/c")
+				(set! res2 (/ res2 (array-ref res1 i j)))))))			       
+
 		  (set! j (+ j 1)))
 	   (set! i (+ i 1)))
     res2))
 
 
-; grsp-matrix-opsc - Performs san operation p_s between matrix p_a and scalar
+; grsp-matrix-opsc - Performs an operation p_s between matrix p_a and scalar
 ; p_v or a discrete operation on p_a.
 ;
 ; Arguments:
