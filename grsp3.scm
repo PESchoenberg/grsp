@@ -53,13 +53,16 @@
 	    grsp-matrix-create
 	    grsp-matrix-change
 	    grsp-matrix-transpose
+	    grsp-matrix-decompose
 	    grsp-matrix-opio
 	    grsp-matrix-opsc
 	    grsp-matrix-opew
 	    grsp-matrix-opfn
 	    grsp-matrix-opmm
 	    grsp-matrix-sub
-	    grsp-matrix-exp))
+	    grsp-matrix-exp
+	    grsp-matrix-is-equal
+	    grsp-matrix-is-square))
 
 
 ; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -204,6 +207,34 @@
     res2))
 
 
+(define (grsp-matrix-decomposion p_s p_a1)
+  (let ((res1 p_a1)
+	(res2 '())
+	(L 0)
+	(U 0)
+	(lm 0)
+	(hm 0)
+	(ln 0)
+	(hn 0)
+	(i 0)
+	(j 0))
+
+    ; Extract the boundaries of the matrix.
+    (set! lm (grsp-matrix-esi 1 res1))
+    (set! hm (grsp-matrix-esi 2 res1))
+    (set! ln (grsp-matrix-esi 3 res1))
+    (set! hn (grsp-matrix-esi 4 res1))	
+
+    (cond ((equal? p_s "#LUGauss")
+	   (set! L (grsp-matrix-create L (+ (- hm ln) 1) (+ (- hn ln) 1)))
+	   (set! U (grsp-matrix-create U (+ (- hm ln) 1) (+ (- hn ln) 1)))
+
+	   (list-set! res2 1 L)
+	   (list-set! res2 2 U)))
+	   ;(set! res2 '(L U))))
+    
+    res2))
+	   
 ; grsp-matrix-opio - Internal operations that produce a scalar result.
 ;
 ; Arguments;
@@ -321,8 +352,6 @@
 ;   - "#rw": replace all elements of p_a with p_v regardless of their value.
 ;   - "#rprnd": replace all elements of p_a with pseudo random numbers in a
 ;      normal distribution with mean 0.0 and standard deviation equal to p_v.
-;   - "#L": obtains the L matrix of p_a for a LU decomposition.
-;   - "#U": obtains the U matrix of p_a for a LU decomposition.
 ; - p_a: matrix.
 ; - p_v: scalar value.
 ;
@@ -357,7 +386,8 @@
     (set! hn (grsp-matrix-esi 4 res1))
 
     ; Create holding matrix.
-    (set! res2 (grsp-matrix-create res2 (+ (- hm ln) 1) (+ (- hn ln) 1)))
+    ;(set! res2 (grsp-matrix-create res2 (+ (- hm ln) 1) (+ (- hn ln) 1)))
+    (set! res2 (grsp-matrix-create res2 (+ (- hm lm) 1) (+ (- hn ln) 1)))
     
     ; Apply scalar operation.
     (set! i lm)
@@ -379,13 +409,7 @@
 			((equal? p_s "#min")
 			 (array-set! res2 (min (array-ref res1 i j) p_v) i j))
 			((equal? p_s "#rw")
-			 (array-set! res2 p_v i j))
-			((equal? p_s "#L")
-			 (cond ((< i j)
-				(array-set! res2 0 i j))))	       
-			((equal? p_s "#U")
-			 (cond ((> i j)
-				(array-set! res2 0 i j))))			  
+			 (array-set! res2 p_v i j))			  
 			((equal? p_s "#rprnd")
 			 (array-set! res2 (+ 0.0 (* p_v (random:normal))) i j)))
 		  (set! j (+ j 1)))
@@ -706,3 +730,90 @@
 		  (set! j (+ j 1)))
 	   (set! i (+ i 1)))
     res2))
+
+
+; grsp-matrix-is-equal - Returns #t if matrix p_a1 is equal to matrix p_a2.
+; 
+; Arguments:
+; - p_a1: matrix.
+; - p_a2: matrix.
+;
+(define (grsp-matrix-is-equal p_a1 p_a2)
+  (let ((res1 p_a1)
+	(res2 p_a2)
+	(res4 #f)
+	(res3 #f)
+	(res5 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(i 0)
+	(j 0)
+	(lm2 0)
+	(hm2 0)
+	(ln2 0)
+	(hn2 0))
+
+    ; Extract the boundaries of the first matrix.
+    (set! lm1 (grsp-matrix-esi 1 res1))
+    (set! hm1 (grsp-matrix-esi 2 res1))
+    (set! ln1 (grsp-matrix-esi 3 res1))
+    (set! hn1 (grsp-matrix-esi 4 res1))
+
+    ; Extract the boundaries of the second matrix.
+    (set! lm2 (grsp-matrix-esi 1 res2))
+    (set! hm2 (grsp-matrix-esi 2 res2))
+    (set! ln2 (grsp-matrix-esi 3 res2))
+    (set! hn2 (grsp-matrix-esi 4 res2))
+
+    ; Compare the size of both matrices.
+    (cond ((= lm1 lm2)
+	   (cond ((= hm1 hm2)
+		  (cond ((= ln1 ln2)
+			 (cond ((= hn1 hn2)
+				(set! res3 #t)
+				(set! res4 #t)))))))))
+    
+    ; If the size is the same, compare each element.
+    (cond ((equal? res4 #t)
+	   (set! i lm1)
+	   (while (<= i hm1)
+		  (set! j ln1)
+		  (while (<= j hn1)
+			 (cond ((equal? (equal? (grsp-gtels (array-ref res1 i j) (array-ref res2 i j)) 0) #f)
+				(set! res5 (+ res5 1))))
+			 (set! j (+ j 1)))
+		  (set! i (+ i 1)))))
+    (cond ((> res5 0)
+	   (set! res3 #f)))
+    res3))
+
+
+; grsp-matrix-is-square - Returns #t if matrix p_a1 is square (i.e. m x m).
+;
+; Arguments:
+; - p_a1: matrix.
+;
+(define (grsp-matrix-is-square p_a1)
+  (let ((res1 p_a1)
+	(res2 #f)
+	(lm 0)
+	(hm 0)
+	(ln 0)
+	(hn 0))
+
+    ; Extract the boundaries of the matrix.
+    (set! lm (grsp-matrix-esi 1 res1))
+    (set! hm (grsp-matrix-esi 2 res1))
+    (set! ln (grsp-matrix-esi 3 res1))
+    (set! hn (grsp-matrix-esi 4 res1))
+
+    ; Find out if m = n.
+    (cond ((equal? (- hm lm) (- hn ln))
+	   (set! res2 #t)))
+    
+    res2))
+
+
+
