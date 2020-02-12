@@ -207,7 +207,21 @@
     res2))
 
 
-(define (grsp-matrix-decomposion p_s p_a1)
+; grsp-matrix-decompose - Applies decomposition p_s to matrix p_a1.
+;
+; Arguments:
+; - p_s: decomposition type.
+;   - "#LU": LU.
+; - p_a1: matrix to be decomposed.
+; - This function does not perform viability checks on p_a1 for the 
+;   required operation; the user or an additional shell function should take 
+;   care of that.
+;
+; Sources:
+; - Es.wikipedia.org. (2020). Factorización LU. [online] Available at:
+;   https://es.wikipedia.org/wiki/Factorizaci%C3%B3n_LU [Accessed 12 Feb. 2020].
+;
+(define (grsp-matrix-decompose p_s p_a1)
   (let ((res1 p_a1)
 	(res2 '())
 	(L 0)
@@ -225,7 +239,7 @@
     (set! ln (grsp-matrix-esi 3 res1))
     (set! hn (grsp-matrix-esi 4 res1))	
 
-    (cond ((equal? p_s "#LUGauss")
+    (cond ((equal? p_s "#LU")
 	   (set! L (grsp-matrix-create L (+ (- hm ln) 1) (+ (- hn ln) 1)))
 	   (set! U (grsp-matrix-create U (+ (- hm ln) 1) (+ (- hn ln) 1)))
 
@@ -655,7 +669,7 @@
 			 (set! res4 0)
 			 (set! i2 0)
 			 (while (<= i2 hm3)
-				(set! res4 (+ res4 (* (array-ref res1 i1 i2) (array-ref res1 i2 j1))))
+				(set! res4 (+ res4 (* (array-ref res1 i1 i2) (array-ref res2 i2 j1))))
 				(set! i2 (+ i2 1)))
 			 (array-set! res3 res4 i1 j1)
 			 (set! j1 (+ j1 1)))
