@@ -59,8 +59,10 @@
 	    grsp-matrix-opew
 	    grsp-matrix-opfn
 	    grsp-matrix-opmm
-	    grsp-matrix-sub
-	    grsp-matrix-exp
+	    grsp-matrix-subcpy
+	    grsp-matrix-subrep
+	    ;grsp-matrix-subdel
+	    grsp-matrix-subexp
 	    grsp-matrix-is-equal
 	    grsp-matrix-is-square))
 
@@ -94,40 +96,60 @@
   
 
 ; grsp-matrix-create - Creates a p_m x p_n matrix and fill it with element value 
-; p_v.
+; p_s.
 ;
 ; Arguments:
-; - p_v: element that will initially fill the matrix.
+; - p_s: matrix type or element that will fill it initially.
+;   - "#I": Identity matrix.
+;   - "#Q": Quincunx matrix.
 ; - p_m: rows, positive integer.
 ; - p_n: cols, positive integer.
 ;
-(define (grsp-matrix-create p_v p_m p_n)
+(define (grsp-matrix-create p_s p_m p_n)
   (let ((res 0)
 	(t "n")
-	(v 0)
+	(s 0)
 	(i 0)
-	(j 0))
-    (cond ((eq? (grsp-eiget p_m 0) #t)
-	   (cond ((eq? (grsp-eiget p_n 0) #t)
+	(j 0)
+	(m p_m)
+	(n p_n))
+    (cond ((eq? (grsp-eiget m 0) #t)
+	   (cond ((eq? (grsp-eiget n 0) #t)
 
 		  ; For an identity matrix, First set all elements to 0.
-		  (cond ((equal? p_v "#I")
-			 (set! v 0))
-			(else (set! v p_v)))
+		  (cond ((equal? p_s "#I")
+			 (set! s 0))
+			((equal? p_s "#Q")
+			 (set! s 1)
+			 (set! m 2)
+			 (set! n 2))
+			((equal? p_s "#Ladder")
+			 (set! s 1))
+			(else (set! s p_s)))
 
-		  ; Build the matrix with all elements as 0.
-		  (set! res (make-array v p_m p_n))
+		  ; Build the matrix.
+		  (set! res (make-array s m n))
 
 		  ; Once the matrix has been created, depending on the type of 
 		  ; matrix, modify its values.
-		  (cond ((equal? p_v "#I")
-			 (while (< i p_m)
+		  (cond ((equal? p_s "#I")
+			 (while (< i m)
 				(set! j 0)
-				(while (< j p_n)
+				(while (< j n)
 				       (cond ((eq? i j)
 					      (array-set! res 1 i j)))
 				       (set! j (+ j 1)))
-				(set! i (+ i 1)))))))))    
+				(set! i (+ i 1))))
+			((equal? p_s "#Ladder")
+			 (while (< i m)
+				(set! j 0)
+				(while (< j n)			        
+				       (array-set! res s i j)
+				       (set! s (+ s 1))
+				       (set! j (+ j 1)))
+				(set! i (+ i 1))))			
+			((equal? p_s "#Q")
+			 (array-set! res -1 (- m 2) (- n 1))))))))
     res))
 
 
@@ -245,7 +267,7 @@
 
 	   (list-set! res2 1 L)
 	   (list-set! res2 2 U)))
-	   ;(set! res2 '(L U))))
+	   ;(set! res2 '(L U)))) 
     
     res2))
 	   
@@ -400,7 +422,6 @@
     (set! hn (grsp-matrix-esi 4 res1))
 
     ; Create holding matrix.
-    ;(set! res2 (grsp-matrix-create res2 (+ (- hm ln) 1) (+ (- hn ln) 1)))
     (set! res2 (grsp-matrix-create res2 (+ (- hm lm) 1) (+ (- hn ln) 1)))
     
     ; Apply scalar operation.
@@ -602,10 +623,10 @@
 ;
 ; Arguments:
 ; - p_s: operation described as a string:
-;   - "#+": matrix sum.
-;   - "#-": matrix substraction.
-;   - "#*": matrix multiplication.
-;   - "#/": matrix division.
+;   - "#+": matrix to matrix sum.
+;   - "#-": matrix to matrix substraction.
+;   - "#*": matrix to matrix multiplication.
+;   - "#/": matrix to matrix pseudo-division.
 ; - p_a1: first matrix.
 ; - p_a2: second matrix.
 ;
@@ -655,15 +676,12 @@
     (set! hn3 hn2)
 		   
     ; Create holding matrix.
-    ; (set! res3 (grsp-matrix-create res3 (+ (- hm3 ln3) 1) (+ (- hn3 ln3) 1)))
     (set! res3 (grsp-matrix-create res3 (+ (- hm3 lm3) 1) (+ (- hn3 ln3) 1)))
     
     ; Apply mm operation.
     (cond ((equal? p_s "#*")
 	   (set! i1 lm3)
 	   (while (<= i1 hm3)
-		  ; https://en.wikipedia.org/wiki/Matrix_multiplication
-		  ; https://en.wikipedia.org/wiki/Matrix_multiplication_algorithm
 		  (set! j1 ln3)
 		  (while (<= j1 hn3)
 			 (set! res4 0)
@@ -673,11 +691,28 @@
 				(set! i2 (+ i2 1)))
 			 (array-set! res3 res4 i1 j1)
 			 (set! j1 (+ j1 1)))
-		  (set! i1 (+ i1 1)))))
+		  (set! i1 (+ i1 1))))
+	  ((equal? p_s "#/")
+	   (set! i1 lm3)
+	   (while (<= i1 hm3)
+		  (set! j1 ln3)
+		  (while (<= j1 hn3)
+			 (set! res4 0)
+			 (set! i2 0)
+			 (while (<= i2 hm3)
+				(set! res4 (+ res4 (/ (array-ref res1 i1 i2) (array-ref res2 i2 j1))))
+				(set! i2 (+ i2 1)))
+			 (array-set! res3 res4 i1 j1)
+			 (set! j1 (+ j1 1)))
+		  (set! i1 (+ i1 1))))	  
+	  ((equal? p_s "#+")
+	   (set! res3 (grsp-matrix-opew p_s res1 res2)))
+	  ((equal? p_s "#-")
+	   (set! res3 (grsp-matrix-opew p_s res1 res2))))
     res3))
     
 
-; grsp-matrix-sub - Extracts a block or sub matrix from matrix p_a. The process is
+; grsp-matrix-subcpy - Extracts a block or sub matrix from matrix p_a. The process is
 ; not destructive with regards to p_a. The user is responsable for providing
 ; correct boundaries since the function does not check those parameters in 
 ; relation to p_a.
@@ -689,34 +724,165 @@
 ; - p_ln: lower n boundary (cols).
 ; - p_hn: higher n boundary (cols).
 ;
-(define (grsp-matrix-sub p_a p_lm p_hm p_ln p_hn)
+(define (grsp-matrix-subcpy p_a p_lm p_hm p_ln p_hn)
   (let ((res1 p_a)
-	(res2 2)
-	(i 0)
-	(j 0))
+	(res2 0)
+	(i1 0)
+	(i2 0)
+	(j1 0)
+	(j2 0))
 
     ; Create submatrix.
-    (set! res2 (grsp-matrix-create res2 (+ (- p_hm p_ln) 1) (+ (- p_hn p_ln) 1)))  
-
+    (set! res2 (grsp-matrix-create res2 (+ (- p_hm p_lm) 1) (+ (- p_hn p_ln) 1)))  
+    
     ; Copy to submatrix.
-    (set! i p_lm)
-    (while (<= i p_hm)
-	   (set! j p_ln)
-	   (while (<= j p_hn)
-		  (array-set! res2 (array-ref res1 i j) i j)
-		  (set! j (+ j 1)))
-	   (set! i (+ i 1)))
+    (set! i1 p_lm)
+    (while (<= i1 p_hm)
+	   (set! j1 p_ln)
+	   (set! j2 0)
+	   (while (<= j1 p_hn)
+		  (array-set! res2 (array-ref res1 i1 j1) i2 j2)
+		  (set! j2 (+ j2 1))
+		  (set! j1 (+ j1 1)))
+	   (set! i2 (+ i2 1))
+	   (set! i1 (+ i1 1)))
     res2))
 
 
-; grsp-matrix-exp - Add columns or rows to a matrix.
+; grsp-matrix-subrep - Replaces a submatrix or section of matrix p_a1 with matrix 
+; p_a2.
+; 
+; Arguments:
+; - p_a1: matrix.
+; - p_a2: matrix.
+; - p_m1: row coordinate of p_a1 where to place the upper left corner of p_a2.
+; - p_n1: col coordinate of p_a1 where to place the upper left corner of p_a2.
+;
+(define (grsp-matrix-subrep p_a1 p_a2 p_m1 p_n1)
+  (let ((res1 p_a1)
+	(res2 p_a2)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(lm2 0)
+	(hm2 0)
+	(ln2 0)
+	(hn2 0)
+	(m1 p_m1)
+	(n1 p_n1)
+	(i1 0)
+	(j1 0)
+	(i2 0)
+	(j2 0)
+	(i3 0)
+	(j3 0))
+
+    ; Extract the boundaries of the first matrix.
+    (set! lm1 (grsp-matrix-esi 1 res1))
+    (set! hm1 (grsp-matrix-esi 2 res1))
+    (set! ln1 (grsp-matrix-esi 3 res1))
+    (set! hn1 (grsp-matrix-esi 4 res1))
+
+    ; Extract the boundaries of the second matrix.
+    (set! lm2 (grsp-matrix-esi 1 res2))
+    (set! hm2 (grsp-matrix-esi 2 res2))
+    (set! ln2 (grsp-matrix-esi 3 res2))
+    (set! hn2 (grsp-matrix-esi 4 res2))    
+
+    ; Define initial position counter values.
+    (set! i1 m1)
+    (set! j1 n1)
+
+    ; Define the span of the count.
+    (set! i2 (+ i1 (- hm2 lm2)))
+    (set! j2 (+ j1 (- hn2 ln2)))
+
+    ; Replacement loop.
+    (while (<= i1 i2)
+	   (set! j3 0)
+	   (while (<= j1 j2)
+		  (array-set! res1 (array-ref res2 i3 j3) i1 j1)
+		  (set! j3 (+ j3 1))
+		  (set! j1 (+ j1 1)))
+	   (set! i3 (+ i3 1))
+	   (set! i1 (+ i1 1)))
+    res1))
+
+
+
+
+    
+
+
+; grsp-matrix-subdel - Deletes column or row p_n from matrix p_a.
+;
+; Arguments:
+; - p_s: string describin the required operation.
+;   - "#Delc": delete column.
+;   - "#Delr": delete row. 
+; - p_a: matrix.
+; - p_n: row or col number to delete.
+;
+(define (grsp-matrix-subdel p_s p_a p_n)
+  (let ((res1 p_a)
+	(res2 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(i1 0)
+	(j1 0)
+	(i2 0)
+	(j2 0))
+
+     ; Extract the boundaries of the first matrix.
+    (set! lm1 (grsp-matrix-esi 1 res1))
+    (set! hm1 (grsp-matrix-esi 2 res1))
+    (set! ln1 (grsp-matrix-esi 3 res1))
+    (set! hn1 (grsp-matrix-esi 4 res1))
+    
+    (cond ((equal? p_s "#Delc")
+
+           ; Create new matrix.
+	   (set! res2 (grsp-matrix-create res2 (+ (- hm1 lm1) 1) (+ (- hn1 ln1) 0)))
+
+	   (set! i1 lm1)
+	   (set! i2 lm1)
+	   (while (<= i1 hm1)
+		  (set! j1 ln1)
+		  (set! j2 ln1)
+		  (while (<= j1 ln1)
+			 (cond ((equal? (grsp-gtels i1 p_n) #f)
+				(array-set! res2 (array-ref res1 i1 j1) i2 j2)
+				(set! j2 (+ j2 1))
+				(set! j1 (+ j1 1)))
+			       (else (set! j1 (+ j2 1)))))
+		  (set! i1 (+ i1 1))
+		  (set! i2 (+ i2 1)))
+			       
+	  ((equal? p_s "#Delr")
+
+           ; Create new matrix.
+	   (set! res2 (grsp-matrix-create res2 (+ (- hm1 lm1) 0) (+ (- hn1 ln1) 1))))))
+
+	  ;(else (set! res2 res1))))
+	     
+    res2))
+
+
+
+
+
+
+; grsp-matrix-subexp - Add p_am columns and p_an rows to a matrix p_a, increasing its size.
 ;
 ; Arguments:
 ; - p_a: matrix to expand.
 ; - p_am: rows to add.
 ; - p_an: cols to add.
 ;
-(define (grsp-matrix-exp p_a p_am p_an)
+(define (grsp-matrix-subexp p_a p_am p_an)
   (let ((res1 p_a)
 	(res2 0)
 	(lm 0)
