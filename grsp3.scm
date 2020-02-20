@@ -61,7 +61,7 @@
 	    grsp-matrix-opmm
 	    grsp-matrix-subcpy
 	    grsp-matrix-subrep
-	    ;grsp-matrix-subdel
+	    grsp-matrix-subdel
 	    grsp-matrix-subexp
 	    grsp-matrix-is-equal
 	    grsp-matrix-is-square))
@@ -812,6 +812,7 @@
 
 
 
+
     
 
 
@@ -827,48 +828,81 @@
 (define (grsp-matrix-subdel p_s p_a p_n)
   (let ((res1 p_a)
 	(res2 0)
+	(res3 p_a)
+	(res4 p_a)
+	(n p_n)
+	(c 0)
 	(lm1 0)
 	(hm1 0)
 	(ln1 0)
 	(hn1 0)
-	(i1 0)
-	(j1 0)
-	(i2 0)
-	(j2 0))
+	(lm3 0)
+	(hm3 0)
+	(ln3 0)
+	(hn3 0)	
+	(lm4 0)
+	(hm4 0)
+	(ln4 0)
+	(hn4 0))	
 
-     ; Extract the boundaries of the first matrix.
+    ; Extract the boundaries of the first matrix.
     (set! lm1 (grsp-matrix-esi 1 res1))
     (set! hm1 (grsp-matrix-esi 2 res1))
     (set! ln1 (grsp-matrix-esi 3 res1))
     (set! hn1 (grsp-matrix-esi 4 res1))
     
-    (cond ((equal? p_s "#Delc")
+    (cond ((equal? p_s "#Delr")
+	   (cond ((equal? n lm1)
+		  (set! res2 (grsp-matrix-subcpy res1 (+ lm1 1) hm1 ln1 hn1)))
+		 ((equal? n hm1)
+		  (set! res2 (grsp-matrix-subcpy res1 lm1 (- hm1 1) ln1 hn1)))
+		 (else (;(set! res3 (grsp-matrix-subcpy res1 lm1 (- hm1 1) ln1 hn1))
+			;(set! res4 (grsp-matrix-subcpy res1 (+ lm1 (+ n 1)) hm1 ln1 hn1))
 
-           ; Create new matrix.
-	   (set! res2 (grsp-matrix-create res2 (+ (- hm1 lm1) 1) (+ (- hn1 ln1) 0)))
+			;(array-set! res3 res1)
+			;(array-set! res4 res1)
 
-	   (set! i1 lm1)
-	   (set! i2 lm1)
-	   (while (<= i1 hm1)
-		  (set! j1 ln1)
-		  (set! j2 ln1)
-		  (while (<= j1 ln1)
-			 (cond ((equal? (grsp-gtels i1 p_n) #f)
-				(array-set! res2 (array-ref res1 i1 j1) i2 j2)
-				(set! j2 (+ j2 1))
-				(set! j1 (+ j1 1)))
-			       (else (set! j1 (+ j2 1)))))
-		  (set! i1 (+ i1 1))
-		  (set! i2 (+ i2 1)))
-			       
-	  ((equal? p_s "#Delr")
+		        ; Build the top submatrix.
+			(set! c hm1)
+			(while (>= c (+ lm1 n))
 
-           ; Create new matrix.
-	   (set! res2 (grsp-matrix-create res2 (+ (- hm1 lm1) 0) (+ (- hn1 ln1) 1))))))
+			       ; Get structural data from the fourth submatix.
+			       (set! lm3 (grsp-matrix-esi 1 res3))
+			       (set! hm3 (grsp-matrix-esi 2 res3))
+			       (set! ln3 (grsp-matrix-esi 3 res3))
+			       (set! hn3 (grsp-matrix-esi 4 res3))
 
-	  ;(else (set! res2 res1))))
-	     
+			       ; Delete the current first row of res4
+			       (set! res4 (grsp-matrix-subcpy res4 lm4 (- hm4 1) ln4 hn4))
+
+			       (set! c (- c 1)))			
+
+			; Build the bottom aubmatrix.
+			(set! c lm1)
+			(while (<= c (+ lm1 n))
+
+			       ; Get structural data from the fourth submatix.
+			       (set! lm4 (grsp-matrix-esi 1 res4))
+			       (set! hm4 (grsp-matrix-esi 2 res4))
+			       (set! ln4 (grsp-matrix-esi 3 res4))
+			       (set! hn4 (grsp-matrix-esi 4 res4))
+
+			       ; Delete the current first row of res4
+			       (set! res4 (grsp-matrix-subcpy res4 (+ lm4 1) hm4 ln4 hn4))
+
+			       (set! c (+ c 1)))
+
+
+			; Expand the first submatrix in order to paste to it the second one.
+			(set! res3 (grsp-matrix-subexp res3 (+ (- hm4 lm4) 1) (+ (- hn4 ln4) 1)))
+
+			; Move the data of the second submatrix to the expanded part 
+			; of the first one.
+			(set! res2 (grsp-matrix-subrep res3 res4 (+ hm1 1) ln1)))))))
+			;(set! res2 res3))))))
     res2))
+
+
 
 
 
