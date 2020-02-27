@@ -53,7 +53,6 @@
 	    grsp-matrix-create
 	    grsp-matrix-change
 	    grsp-matrix-transpose
-	    grsp-matrix-decompose
 	    grsp-matrix-opio
 	    grsp-matrix-opsc
 	    grsp-matrix-opew
@@ -64,7 +63,12 @@
 	    grsp-matrix-subdel
 	    grsp-matrix-subexp
 	    grsp-matrix-is-equal
-	    grsp-matrix-is-square))
+	    grsp-matrix-is-square
+	    grsp-matrix-row-opar
+	    grsp-matrix-row-opmm
+	    grsp-matrix-row-opsc
+	    grsp-matrix-row-opsw
+	    grsp-matrix-decompose))
 
 
 ; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -95,7 +99,7 @@
     res))
   
 
-; grsp-matrix-create - Creates a p_m x p_n matrix and fill it with element value 
+; grsp-matrix-create - Creates a p_m x p_n matrix and fills it with element value 
 ; p_s.
 ;
 ; Arguments:
@@ -153,7 +157,7 @@
     res))
 
 
-; grsp-matrix-change - Change the value to p_v2 where the value of a matrix's
+; grsp-matrix-change - Changes the value to p_v2 where the value of a matrix's
 ; element equals p_v1.
 ;
 ; Arguments:
@@ -229,48 +233,6 @@
     res2))
 
 
-; grsp-matrix-decompose - Applies decomposition p_s to matrix p_a1.
-;
-; Arguments:
-; - p_s: decomposition type.
-;   - "#LU": LU.
-; - p_a1: matrix to be decomposed.
-; - This function does not perform viability checks on p_a1 for the 
-;   required operation; the user or an additional shell function should take 
-;   care of that.
-;
-; Sources:
-; - Es.wikipedia.org. (2020). Factorización LU. [online] Available at:
-;   https://es.wikipedia.org/wiki/Factorizaci%C3%B3n_LU [Accessed 12 Feb. 2020].
-;
-(define (grsp-matrix-decompose p_s p_a1)
-  (let ((res1 p_a1)
-	(res2 '())
-	(L 0)
-	(U 0)
-	(lm 0)
-	(hm 0)
-	(ln 0)
-	(hn 0)
-	(i 0)
-	(j 0))
-
-    ; Extract the boundaries of the matrix.
-    (set! lm (grsp-matrix-esi 1 res1))
-    (set! hm (grsp-matrix-esi 2 res1))
-    (set! ln (grsp-matrix-esi 3 res1))
-    (set! hn (grsp-matrix-esi 4 res1))	
-
-    (cond ((equal? p_s "#LU")
-	   (set! L (grsp-matrix-create L (+ (- hm ln) 1) (+ (- hn ln) 1)))
-	   (set! U (grsp-matrix-create U (+ (- hm ln) 1) (+ (- hn ln) 1)))
-
-	   (list-set! res2 1 L)
-	   (list-set! res2 2 U)))
-	   ;(set! res2 '(L U)))) 
-    
-    res2))
-	   
 ; grsp-matrix-opio - Internal operations that produce a scalar result.
 ;
 ; Arguments;
@@ -810,24 +772,21 @@
     res1))
 
 
-
-
-
-    
-
-
 ; grsp-matrix-subdel - Deletes column or row p_n from matrix p_a.
 ;
 ; Arguments:
-; - p_s: string describin the required operation.
+; - p_s: string describing the required operation.
 ;   - "#Delc": delete column.
 ;   - "#Delr": delete row. 
 ; - p_a: matrix.
 ; - p_n: row or col number to delete.
 ;
+; Notes:
+; - Still buggy.
+;
 (define (grsp-matrix-subdel p_s p_a p_n)
   (let ((res1 p_a)
-	(res2 0)
+	(res2 p_a)
 	(res3 p_a)
 	(res4 p_a)
 	(n p_n)
@@ -856,28 +815,20 @@
 		  (set! res2 (grsp-matrix-subcpy res1 (+ lm1 1) hm1 ln1 hn1)))
 		 ((equal? n hm1)
 		  (set! res2 (grsp-matrix-subcpy res1 lm1 (- hm1 1) ln1 hn1)))
-		 (else (;(set! res3 (grsp-matrix-subcpy res1 lm1 (- hm1 1) ln1 hn1))
-			;(set! res4 (grsp-matrix-subcpy res1 (+ lm1 (+ n 1)) hm1 ln1 hn1))
-
-			;(array-set! res3 res1)
-			;(array-set! res4 res1)
-
-		        ; Build the top submatrix.
-			(set! c hm1)
+		 (else ((set! c hm1)
 			(while (>= c (+ lm1 n))
 
-			       ; Get structural data from the fourth submatix.
+			       ; Get structural data from the THIRD submatix.
 			       (set! lm3 (grsp-matrix-esi 1 res3))
 			       (set! hm3 (grsp-matrix-esi 2 res3))
 			       (set! ln3 (grsp-matrix-esi 3 res3))
 			       (set! hn3 (grsp-matrix-esi 4 res3))
 
-			       ; Delete the current first row of res4
-			       (set! res4 (grsp-matrix-subcpy res4 lm4 (- hm4 1) ln4 hn4))
-
+			       ; Delete the current first row of res3
+			       (set! res3 (grsp-matrix-subcpy res3 lm3 (- hm3 1) ln3 hn3))
 			       (set! c (- c 1)))			
 
-			; Build the bottom aubmatrix.
+			; Build the bottom submatrix.
 			(set! c lm1)
 			(while (<= c (+ lm1 n))
 
@@ -889,24 +840,15 @@
 
 			       ; Delete the current first row of res4
 			       (set! res4 (grsp-matrix-subcpy res4 (+ lm4 1) hm4 ln4 hn4))
-
 			       (set! c (+ c 1)))
 
-
 			; Expand the first submatrix in order to paste to it the second one.
-			(set! res3 (grsp-matrix-subexp res3 (+ (- hm4 lm4) 1) (+ (- hn4 ln4) 1)))
-
+			;(set! res3 (grsp-matrix-subexp res3 (+ (- hm4 lm4) 1) 0))
+			(set! res3 (grsp-matrix-subexp res3 (- hm4 lm4) 0))			
 			; Move the data of the second submatrix to the expanded part 
 			; of the first one.
-			(set! res2 (grsp-matrix-subrep res3 res4 (+ hm1 1) ln1)))))))
-			;(set! res2 res3))))))
+			(set! res2 (grsp-matrix-subrep res3 res4 (+ (+ lm1 n) 0) ln1))))))) ; This call is causing problems.
     res2))
-
-
-
-
-
-
 
 
 ; grsp-matrix-subexp - Add p_am columns and p_an rows to a matrix p_a, increasing its size.
@@ -1030,4 +972,217 @@
     res2))
 
 
+; grsp-matrix-row-opar - Finds the inverse amultiple res of p_a1[p_m2,p_n2] so that
+; p_a1[p_m2,p_n2] + ( p_a1[p_m1,p_n1] * res ) = 0
+;
+; or
+;
+; res = -1 * ( p_a1[p_m2,p_n2] / p_a1[p_m1,p_n1])
+;
+; and
+;
+; Replaces p_a1[p_m2,p_n2] with 0.
+;
+; and
+;
+; Replaces p_a2[p_m2,p_n2] with res.
+;
+; Arguments:
+; - p_a1: matrix 1.
+; - p_a2: matrix 2.
+; - p_m1: m coord of upper row element.
+; - p_n1: n coord of upper row element.
+; - p_m2: m coord of lower row element.
+; - p_n2: n coord of lower row element.
+;
+; Output:
+; - Note that the function does not return a value but modifies the values of
+;   elements in two matrices directly.
+;
+; Sources:
+; - En.wikipedia.org. (2020). Elementary matrix. [online] Available at:
+;   https://en.wikipedia.org/wiki/Elementary_matrix#Operations
+;   [Accessed 24 Feb. 2020].
+;
+(define (grsp-matrix-row-opar p_a1 p_a2 p_m1 p_n1 p_m2 p_n2)
+  (let ((res 0))
+    (set! res (* -1 (/ (array-ref p_a1 p_m2 p_n2) (array-ref p_a1 p_m1 p_n1))))
+    (array-set! p_a1 0 p_m2 p_n2)
+    (array-set! p_a2 res p_m2 p_n2)
+    res))
+
+
+; grsp-matrix-row-opmm - Replaces the value of element p_a1[p_m1,p_n1] with
+; ( p_a1[p_m1,p_n1] * p_a2[p_m2,p_n2] )
+;
+; Arguments:
+; - p_a1: matrix 1.
+; - p_a2: matrix 2.
+; - p_m1: m coord of p_a1 element.
+; - p_n1: n coord of p_a1 element.
+; - p_m2: m coord of p_a2 element.
+; - p_n2: n coord of p_a2 element.
+;
+; Output:
+; - Note that the function does not return a value but modifies the values of
+;   elements in one matrix.
+;
+; Sources:
+; - En.wikipedia.org. (2020). Elementary matrix. [online] Available at:
+;   https://en.wikipedia.org/wiki/Elementary_matrix#Operations
+;   [Accessed 24 Feb. 2020].
+;
+(define (grsp-matrix-row-opmm p_a1 p_a2 p_m1 p_n1 p_m2 p_n2)
+  (array-set! p_a1 (* (array-ref p_a1 p_m1 p_n1) (array-ref p_a2 p_m2 p_n2)) p_m1 p_n1))
+
+
+; grsp-matrix-row-opsc - Performs operation p_s1 between all elements belonging to 
+; row p_m1 of matrix p_a1 and scalar p_v1.
+;
+; Arguments:
+; - p_s1: operation described as a string:
+;   - "#+": sum.
+;   - "#-": substraction.
+;   - "#*": multiplication.
+;   - "#/": division.
+;
+; Output:
+; - Note that the function does not return a value but modifies the values of
+;   elements in row p_m1 of matrix p_a1.
+;
+; Sources:
+; - En.wikipedia.org. (2020). Elementary matrix. [online] Available at:
+;   https://en.wikipedia.org/wiki/Elementary_matrix#Operations
+;   [Accessed 24 Feb. 2020].
+;
+(define (grsp-matrix-row-opsc p_s1 p_a1 p_m1 p_v1)
+  (let ((ln 0)
+	(hn 0)
+	(j 0))
+
+    ; Extract the boundaries of the row.
+    (set! ln (grsp-matrix-esi 3 p_a1))
+    (set! hn (grsp-matrix-esi 4 p_a1))
+
+    (set! j ln)
+    (while (<= j hn)
+	   (cond ((equal? p_s1 "#+")
+		  (array-set! p_a1 (+ (array-ref p_a1 p_m1 j) p_v1) p_m1 j))
+		 ((equal? p_s1 "#-")
+		  (array-set! p_a1 (+ (array-ref p_a1 p_m1 j) p_v1) p_m1 j))		 
+		 ((equal? p_s1 "#*")
+		  (array-set! p_a1 (* (array-ref p_a1 p_m1 j) p_v1) p_m1 j))
+		 ((equal? p_s1 "#/")
+		  (array-set! p_a1 (+ (array-ref p_a1 p_m1 j) p_v1) p_m1 j)))
+	   (set! j (+ j 1)))))
+
+
+; grsp-matrix-row-opsw - Swaps rows p_m1 and p_m2 in matrix p_a1.
+;
+; Arguments:
+; - p_a1: matrix.
+; - p_m1: row of p_a1.
+; - p_m2: row of p_a1.
+;
+; Output:
+; - Note that the function does not return a value but modifies the values of
+;   elements in matrix p_a1.
+;
+; Sources:
+; - En.wikipedia.org. (2020). Elementary matrix. [online] Available at:
+;   https://en.wikipedia.org/wiki/Elementary_matrix#Operations
+;   [Accessed 24 Feb. 2020].
+;
+(define (grsp-matrix-row-opsw p_a1 p_m1 p_m2)
+  (let ((res1 p_a1)
+	(res2 0)
+	(res3 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0))
+	
+    ; Extract the boundaries of the argument matrix.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1))
+
+    ; Copy elements of p_a1, rows p_m1 and p_m2 to separeate arrays.
+    (set! res2 (grsp-matrix-subcpy p_a1 p_m1 p_m1 ln1 hn1))
+    (set! res3 (grsp-matrix-subcpy p_a1 p_m2 p_m2 ln1 hn1))
+
+    ; Swap positions.
+    (set! p_a1 (grsp-matrix-subrep p_a1 res2 p_m2 ln1))
+    (set! p_a1 (grsp-matrix-subrep p_a1 res3 p_m1 ln1))))
+
+
+; grsp-matrix-decompose - Applies decomposition p_s to matrix p_a1.
+;
+; Arguments:
+; - p_s: decomposition type.
+;   - "#LU": LU.
+; - p_a1: matrix to be decomposed.
+; - This function does not perform viability checks on p_a1 for the 
+;   required operation; the user or an additional shell function should take 
+;   care of that.
+;
+; Sources:
+; - Es.wikipedia.org. (2020). Factorización LU. [online] Available at:
+;   https://es.wikipedia.org/wiki/Factorizaci%C3%B3n_LU [Accessed 12 Feb. 2020].
+;
+(define (grsp-matrix-decompose p_s p_a1)
+  (let ((res1 p_a1)
+	(res2 '())
+	(res3 0)
+	(res4 0)
+	(L 0)
+	(U 0)
+	(lm 0)
+	(hm 0)
+	(ln 0)
+	(hn 0)
+	(i 0)
+	(j 0)
+	(k 0))
+
+    ; Extract the boundaries of the matrix.
+    (set! lm (grsp-matrix-esi 1 res1))
+    (set! hm (grsp-matrix-esi 2 res1))
+    (set! ln (grsp-matrix-esi 3 res1))
+    (set! hn (grsp-matrix-esi 4 res1))	
+
+    (cond ((equal? p_s "#LU")
+	   (set! L (grsp-matrix-create "#I" (+ (- hm ln) 1) (+ (- hn ln) 1)))
+	   (set! U (grsp-matrix-create "#I" (+ (- hm ln) 1) (+ (- hn ln) 1)))
+
+	   ; Copy first row of p_a1 to U
+	   (set! res3 (grsp-matrix-subcpy res1 lm lm ln hn))
+	   (set! U (grsp-matrix-subrep U res3 lm ln))
+	   (set! i (+ lm 1))
+	   (display "\nP1\n")
+	   (display res1)
+	   (display "\n")
+	   (display L)
+	   (display "\n")
+	   (display U)
+	   (display "\n")
+	   
+	   ; Column cycle.
+	   (while (<= i hm)
+		  (set! j ln)
+		  (display "\nP2\n")
+		  (while (< j i)
+			 (set! res4 (grsp-matrix-row-opar res1 L i j i j))
+			 (set! j (+ j 1))
+			 (display "\nP3\n")
+			 (display res1)
+			 (display "\n")
+			 (display L)
+			 (display "\n")
+			 (display U)
+			 (display "\n"))
+		  (set! i (+ i 1)))
+	   (set! res2 (list L U))))
+    res2))
 
