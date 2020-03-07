@@ -41,7 +41,7 @@
 ;   [Accessed 28 Jan. 2020].
 ;
 ; REPL examples:
-; (use-modules (grsp grsp0)(grsp grsp1)(grsp grsp2)(grsp grsp3))
+; (use-modules (grsp grsp0)(grsp grsp1)(grsp grsp2)(grsp grsp3)(grsp grsp4)
 ; (define X (grsp-matrix-create 1 4 4))
 ; (define Y (grsp-matrix-create 2 4 4))
 ; (define R (grsp-matrix-opew "#+" X Y))
@@ -64,6 +64,8 @@
 	    grsp-matrix-subexp
 	    grsp-matrix-is-equal
 	    grsp-matrix-is-square
+	    grsp-matrix-is-symmetric
+	    grsp-matrix-is-diagonal
 	    grsp-matrix-row-opar
 	    grsp-matrix-row-opmm
 	    grsp-matrix-row-opsc
@@ -106,8 +108,15 @@
 ; - p_s: matrix type or element that will fill it initially.
 ;   - "#I": Identity matrix.
 ;   - "#Q": Quincunx matrix.
-; - p_m: rows, positive integer.
+;   - "#Test1": Test matrix 1 (LU decomposable)[1].
+;   - "#Test2": Test matrix 2 (LU decomposable)[2].
+;
+;- p_m: rows, positive integer.
 ; - p_n: cols, positive integer.
+;
+; Sources:
+; - [1][2] Mathispower4u. (2020). LU Decomposition. [online] Available at:
+;   https://www.youtube.com/watch?v=UlWcofkUDDU [Accessed 5 Mar. 2020].
 ;
 (define (grsp-matrix-create p_s p_m p_n)
   (let ((res 0)
@@ -127,6 +136,14 @@
 			 (set! s 1)
 			 (set! m 2)
 			 (set! n 2))
+			((equal? p_s "#Test1")
+			 (set! s 0)
+			 (set! m 3)
+			 (set! n 3))
+			((equal? p_s "#Test2")
+			 (set! s 0)
+			 (set! m 3)
+			 (set! n 3))			
 			((equal? p_s "#Ladder")
 			 (set! s 1))
 			(else (set! s p_s)))
@@ -144,6 +161,26 @@
 					      (array-set! res 1 i j)))
 				       (set! j (+ j 1)))
 				(set! i (+ i 1))))
+			((equal? p_s "#Test1")
+			 (array-set! res 1 0 0)
+			 (array-set! res 4 0 1)
+			 (array-set! res -3 0 2)
+			 (array-set! res -2 1 0)
+			 (array-set! res 8 1 1)
+			 (array-set! res 5 1 2)
+			 (array-set! res 3 2 0)
+			 (array-set! res 4 2 1)
+			 (array-set! res 7 2 2))
+			((equal? p_s "#Test2")
+			 (array-set! res 2 0 0)
+			 (array-set! res 4 0 1)
+			 (array-set! res -4 0 2)
+			 (array-set! res 1 1 0)
+			 (array-set! res -4 1 1)
+			 (array-set! res 3 1 2)
+			 (array-set! res -6 2 0)
+			 (array-set! res -9 2 1)
+			 (array-set! res 5 2 2))			
 			((equal? p_s "#Ladder")
 			 (while (< i m)
 				(set! j 0)
@@ -972,6 +1009,58 @@
     res2))
 
 
+; grsp-matrix-is-symmetric - Returns #t if p_a1 is a symmetrix matrix. #f otherwise.
+; 
+; Arguments:
+; - p_a1: matrix.
+;
+; Notes:
+; - For non-complex numbers.
+;
+(define (grsp-matrix-is-symmetric p_a1)
+  (let ((res1 #f))
+    (cond ((equal? (grsp-matrix-is-square p_a1) #t)
+	   (set! res1 (grsp-matrix-is-equal p_a1 (grsp-matrix-transpose p_a1)))))
+    res1))
+
+
+; grsp-matrix-is-diagonal - Returns #t if p_a1 is a square diagonal matrix,
+; #f otherise.
+;
+; Arguments:
+; - p_a1: matrix.
+;
+(define (grsp-matrix-is-diagonal p_a1)
+  (let ((res1 #f)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(i 0)
+	(j 0)
+	(k 0))
+
+    ; Extract the boundaries of the argument matrix.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1))    
+
+    (cond ((equal? (grsp-matrix-is-square p_a1) #t)
+	   (set! i lm1)
+	   (while (<= i hm1)
+		  (set! j ln1)
+		  (while (<= j hn1)
+			 (cond ((equal? (equal? (array-ref p_a1 i j) 0) #f)
+				(cond ((equal? (equal? i j) #f)
+				       (set! k (+ k 1))))))
+			 (set! j (+ j 1)))
+		  (set! i (+ i 1)))
+	   (cond ((equal? k 0)
+		  (set! res1 #t)))))
+    res1))
+		  
+
 ; grsp-matrix-row-opar - Finds the inverse amultiple res of p_a1[p_m2,p_n2] so that
 ; p_a1[p_m2,p_n2] + ( p_a1[p_m1,p_n1] * res ) = 0
 ;
@@ -1006,7 +1095,7 @@
 ;
 (define (grsp-matrix-row-opar p_a1 p_a2 p_m1 p_n1 p_m2 p_n2)
   (let ((res 0))
-    (set! res (* -1 (/ (array-ref p_a1 p_m2 p_n2) (array-ref p_a1 p_m1 p_n1))))
+    (set! res (* 1 (/ (array-ref p_a1 p_m2 p_n2) (array-ref p_a1 p_m1 p_n1))))
     (array-set! p_a1 0 p_m2 p_n2)
     (array-set! p_a2 res p_m2 p_n2)
     res))
@@ -1121,7 +1210,7 @@
 ;
 ; Arguments:
 ; - p_s: decomposition type.
-;   - "#LU": LU.
+;   - "#LU": LU by Gaussian elimination.
 ; - p_a1: matrix to be decomposed.
 ; - This function does not perform viability checks on p_a1 for the 
 ;   required operation; the user or an additional shell function should take 
@@ -1160,29 +1249,29 @@
 	   (while (<= i hm)
 		  (set! j ln)
 		  (set! k ln)
-		  (display "\nP2\n")
+		  ;(display "\nP2\n")
 		  (while (< j i)
-			 (display "\nP2.1\n")
+			 ;(display "\nP2.1\n")
 			 (cond ((> k ln)
 				(while (<= k j)
-				       (display "\nP2.1.1\n")				       
+				       ;(display "\nP2.1.1\n")				       
 				       (array-set! U (* (array-ref U (- k 1) j) res4) k j)
 				       (set! k (+ k 1)))
 				(set! k ln)))
 			 (cond ((equal? k ln)
-				(display "\nP2.1.2\n")
+				;(display "\nP2.1.2\n")
 				(set! res4 (grsp-matrix-row-opar U L k j i j))				
 				(set! k (+ k 1))))
-			 (set! j (+ j 1))
-			 (display "\nP3\n")
-			 (display L)
-			 (display "\n")
-			 (display res4)
-			 (display "\n")
-			 (display U)
-			 (display "\n")
-			 (display "\nP4\n"))
-		  (display "\nP5\n")
+			 (set! j (+ j 1)))
+			 ;(display "\nP3\n")
+			 ;(display L)
+			 ;(display "\n")
+			 ;(display res4)
+			 ;(display "\n")
+			 ;(display U)
+			 ;(display "\n")
+			 ;(display "\nP4\n"))
+		  ;(display "\nP5\n")
 		  (set! i (+ i 1)))
 	   (set! res2 (list L U))))
     res2))
