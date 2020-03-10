@@ -39,6 +39,8 @@
 ; - En.wikipedia.org. (2020). Matrix theory. [online] Available at:
 ;   https://en.wikipedia.org/wiki/Category:Matrix_theory
 ;   [Accessed 28 Jan. 2020].
+; - En.wikipedia.org. (2020). List of matrices. [online] Available at:
+;   https://en.wikipedia.org/wiki/List_of_matrices [Accessed 8 Mar. 2020].
 ;
 ; REPL examples:
 ; (use-modules (grsp grsp0)(grsp grsp1)(grsp grsp2)(grsp grsp3)(grsp grsp4)
@@ -49,10 +51,14 @@
 
 (define-module (grsp grsp3)
   #:use-module (grsp grsp2)
+  #:use-module (grsp grsp4)  
   #:export (grsp-matrix-esi
 	    grsp-matrix-create
 	    grsp-matrix-change
+	    grsp-matrix-find
 	    grsp-matrix-transpose
+	    grsp-matrix-conjugate
+	    grsp-matrix-conjugate-transpose
 	    grsp-matrix-opio
 	    grsp-matrix-opsc
 	    grsp-matrix-opew
@@ -66,6 +72,7 @@
 	    grsp-matrix-is-square
 	    grsp-matrix-is-symmetric
 	    grsp-matrix-is-diagonal
+	    grsp-matrix-is-hermitian
 	    grsp-matrix-row-opar
 	    grsp-matrix-row-opmm
 	    grsp-matrix-row-opsc
@@ -107,9 +114,11 @@
 ; Arguments:
 ; - p_s: matrix type or element that will fill it initially.
 ;   - "#I": Identity matrix.
+;   - "#AI": Anti Identity matrix (anti diagonal).
 ;   - "#Q": Quincunx matrix.
 ;   - "#Test1": Test matrix 1 (LU decomposable)[1].
 ;   - "#Test2": Test matrix 2 (LU decomposable)[2].
+;   - "#Arrow": Arrowhead matrix.
 ;
 ;- p_m: rows, positive integer.
 ; - p_n: cols, positive integer.
@@ -132,6 +141,8 @@
 		  ; For an identity matrix, First set all elements to 0.
 		  (cond ((equal? p_s "#I")
 			 (set! s 0))
+			((equal? p_s "#AI")
+			 (set! s 0))			
 			((equal? p_s "#Q")
 			 (set! s 1)
 			 (set! m 2)
@@ -146,6 +157,10 @@
 			 (set! n 3))			
 			((equal? p_s "#Ladder")
 			 (set! s 1))
+			((equal? p_s "#Arrow")
+			 (set! s 0)
+			 (set! n m))
+			
 			(else (set! s p_s)))
 
 		  ; Build the matrix.
@@ -188,7 +203,24 @@
 				       (array-set! res s i j)
 				       (set! s (+ s 1))
 				       (set! j (+ j 1)))
-				(set! i (+ i 1))))			
+				(set! i (+ i 1))))
+			((equal? p_s "#Arrow")
+			 (set! res (grsp-matrix-create "#I" m n))
+			 (grsp-matrix-row-opsc "#+" res 0 1)
+			 (set! res (grsp-matrix-transpose res))
+			 (grsp-matrix-row-opsc "#+" res 0 1)
+			 (set! res (grsp-matrix-transpose res))
+			 (set! res (grsp-matrix-transpose res))
+			 (array-set! res 1 0 0))
+			((equal? p_s "#AI")
+			 (set! i (- m 1))
+			 (while (>= i 0)
+				(set! j (- n 1))
+				(while (>= j 0)
+				       (cond ((equal? (+ i j) (- m 1))
+					      (array-set! res 1 i j)))
+				       (set! j (- j 1)))
+				(set! i (- i 1))))			
 			((equal? p_s "#Q")
 			 (array-set! res -1 (- m 2) (- n 1))))))))
     res))
@@ -234,6 +266,78 @@
     res))
 
 
+
+; grsp-matrix-find - Find all occurrences of p_v1 in matrix p_a1 that statisfy 
+; condition p_s1.
+
+(define (grsp-matrix-find p_s1 p_a1 p_v1)
+  (let ((res1 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(hm2 0)
+	(i1 0)
+	(j1 0)
+	(k1 0)
+	(c1 #f))
+
+    ; Extract the boundaries of the matrix.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1))	
+	      
+    ; Fnd the elements.
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+	   (set! j1 ln1)
+	   (while (<= j1 hn1)
+		  (cond ((equal? p_s1 "#=")
+			 (cond ((equal? p_v1 (array-ref p_a1 i1 j1))
+				(set! k1 (+ k1 1))
+				(set! c1 #t))))
+			((equal? p_s1 "#>")
+			 (cond ((> (array-ref p_a1 i1 j1) p_v1)
+				(set! k1 (+ k1 1))
+				(set! c1 #t))))		
+			((equal? p_s1 "#<")
+			 (cond ((< (array-ref p_a1 i1 j1) p_v1)
+				(set! k1 (+ k1 1))
+				(set! c1 #t))))
+			((equal? p_s1 "#>=")
+			 (cond ((>= (array-ref p_a1 i1 j1) p_v1)
+				(set! k1 (+ k1 1))
+				(set! c1 #t))))				
+			((equal? p_s1 "#<=")
+			 (cond ((<= (array-ref p_a1 i1 j1) p_v1)
+				(set! k1 (+ k1 1))
+				(set! c1 #t))))
+			((equal? p_s1 "#!=")
+			 (cond ((equal? p_v1 (array-ref p_a1 i1 j1))
+				(set! c1 #f))
+			       (else ((set! k1 (+ k1 1))
+				      (set! c1 #t))))))
+		  
+		  (cond ((equal? c1 #t)
+			 ; Create row1 or increase the number of its rows.
+			 (cond ((equal? k1 1)
+				(set! res1 (grsp-matrix-create 0 1 2)))
+			       ((> k1 1)
+				(set! res1 (grsp-matrix-subexp res1 1 0))))
+
+			 ; Fill a new row of res1 with data.
+			 (set! hm2 (grsp-matrix-esi 2 res1))
+			 (array-set! res1 i1 hm2 0)
+			 (array-set! res1 j1 hm2 1)
+
+			 (set! c1 #f)))
+		  
+		  (set! j1 (+ j1 1)))
+	   (set! i1 (+ i1 1)))
+    res1))
+    
+
 ; grsp-matrix-transpose - Transposes a matrix of shape m x n into another with
 ; shape n x m.
 ;
@@ -267,6 +371,31 @@
 		  (array-set! res2 (array-ref res1 i j) j i)
 		  (set! j (+ j 1)))
 	   (set! i (+ i 1)))
+    res2))
+
+
+; grsp-matrix-conjugate - Calculates the conjugate matrix of p_a1.
+;
+; Arguments:
+; - p_a1: matrix.
+;
+(define (grsp-matrix-conjugate p_a1)
+  (let ((res1 p_a1)
+	(res2 0))
+    (set! res2 (grsp-matrix-opsc "#si" res1 0))
+    res2))
+
+
+; grsp-matrix-transpose-conjugate - Calculates the transpose conjugate matrix
+; of p_a1.
+;
+; Arguments:
+; - p_a1: matrix.
+;
+(define (grsp-matrix-conjugate-transpose p_a1)
+  (let ((res1 p_a1)
+	(res2 0))
+    (set! res2 (grsp-matrix-conjugate (grsp-matrix-transpose res1)))
     res2))
 
 
@@ -387,6 +516,12 @@
 ;   - "#rw": replace all elements of p_a with p_v regardless of their value.
 ;   - "#rprnd": replace all elements of p_a with pseudo random numbers in a
 ;      normal distribution with mean 0.0 and standard deviation equal to p_v.
+;   - "#si": applies (grsp-complex-inv "#si" z) to each element z of p_a
+;     (complex conjugate).
+;   - "#is": applies (grsp-complex-inv "#is" z) to each element z of p_a (sign
+;     inversion of real element of compelx number).
+;   - "#ii": applies (grsp-complex-inv "#ii" z) to each element z of p_a (sign
+;     inversion of both elements of a complex number). 
 ; - p_a: matrix.
 ; - p_v: scalar value.
 ;
@@ -445,7 +580,13 @@
 			((equal? p_s "#rw")
 			 (array-set! res2 p_v i j))			  
 			((equal? p_s "#rprnd")
-			 (array-set! res2 (+ 0.0 (* p_v (random:normal))) i j)))
+			 (array-set! res2 (+ 0.0 (* p_v (random:normal))) i j))
+			((equal? p_s "#si")
+			 (array-set! res2 (grsp-complex-inv p_s (array-ref res1 i j)) i j))
+			((equal? p_s "#is")
+			 (array-set! res2 (grsp-complex-inv p_s (array-ref res1 i j)) i j))			  
+			((equal? p_s "#ii")
+			 (array-set! res2 (grsp-complex-inv p_s (array-ref res1 i j)) i j)))
 		  (set! j (+ j 1)))
 	   (set! i (+ i 1)))
     res2))
@@ -712,7 +853,7 @@
     
 
 ; grsp-matrix-subcpy - Extracts a block or sub matrix from matrix p_a. The process is
-; not destructive with regards to p_a. The user is responsable for providing
+; not destructive with regards to p_a. The user is responsible for providing
 ; correct boundaries since the function does not check those parameters in 
 ; relation to p_a.
 ;
@@ -888,7 +1029,7 @@
     res2))
 
 
-; grsp-matrix-subexp - Add p_am columns and p_an rows to a matrix p_a, increasing its size.
+; grsp-matrix-subexp - Add p_am rows and p_an cols to a matrix p_a, increasing its size.
 ;
 ; Arguments:
 ; - p_a: matrix to expand.
@@ -1059,7 +1200,20 @@
 	   (cond ((equal? k 0)
 		  (set! res1 #t)))))
     res1))
-		  
+
+
+; grsp-matrix-is-hermitian - Returns #t if p_a1 is equal to its conjugate transpose.
+;
+; Arguments:
+; - p_a1: matrix.
+;
+(define (grsp-matrix-is-hermitian p_a1)
+  (let ((res1 #f))
+    (cond ((equal? (grsp-matrix-is-square p_a1) #t)
+	   (cond ((grsp-matrix-is-equal p_a1 (grsp-matrix-conjugate-transpose p_a1))
+		  (set! res1 #t)))))
+    res1))
+    
 
 ; grsp-matrix-row-opar - Finds the inverse amultiple res of p_a1[p_m2,p_n2] so that
 ; p_a1[p_m2,p_n2] + ( p_a1[p_m1,p_n1] * res ) = 0
