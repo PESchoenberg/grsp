@@ -73,11 +73,19 @@
 	    grsp-matrix-is-symmetric
 	    grsp-matrix-is-diagonal
 	    grsp-matrix-is-hermitian
+	    grsp-matrix-is-binary
+	    grsp-matrix-is-nonnegative
 	    grsp-matrix-row-opar
 	    grsp-matrix-row-opmm
 	    grsp-matrix-row-opsc
 	    grsp-matrix-row-opsw
-	    grsp-matrix-decompose))
+	    grsp-matrix-decompose
+	    grsp-matrix-density
+	    grsp-matrix-is-sparse
+	    grsp-matrix-is-symmetric-md
+	    grsp-matrix-total-elements
+	    grsp-matrix-total-element
+	    grsp-matrix-is-hadamard))
 
 
 ; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -266,10 +274,26 @@
     res))
 
 
-
 ; grsp-matrix-find - Find all occurrences of p_v1 in matrix p_a1 that statisfy 
 ; condition p_s1.
-
+;
+; Arguments:
+; - p_s1: search criteria.
+;   - "#=": searches for all elements equal to p_v1.
+;   - "#>": searches for all elements greather than p_v1.
+;   - "#<": searches for all elements smaller than p_v1.
+;   - "#>=": searches for all elements greather or equal than p_v1.
+;   - "#<=": searches for all elements smaller or equal than p_v1.
+;   - "#!=": searches for all elements not equal to p_v1.
+; - p_a1: matrix.
+; - P_v1: reference value for searching.
+;
+; Output:
+; - A matrix of m x 2 elements, being m the number of ocurrences that statisfy
+;   the search criteria. On row 0 goes the row coordinate of each element found,
+;   and on row 1 goes the corresponding col coordinate. This, this matrix shows
+;   both he number of foudn elements as well as their positions within p_a1.
+;
 (define (grsp-matrix-find p_s1 p_a1 p_v1)
   (let ((res1 0)
 	(lm1 0)
@@ -314,10 +338,12 @@
 				(set! k1 (+ k1 1))
 				(set! c1 #t))))
 			((equal? p_s1 "#!=")
-			 (cond ((equal? p_v1 (array-ref p_a1 i1 j1))
-				(set! c1 #f))
-			       (else ((set! k1 (+ k1 1))
-				      (set! c1 #t))))))
+			 (cond ((< (array-ref p_a1 i1 j1) p_v1)
+				(set! k1 (+ k1 1))
+				(set! c1 #t))
+			       ((> (array-ref p_a1 i1 j1) p_v1)
+				(set! k1 (+ k1 1))
+				(set! c1 #t)))))
 		  
 		  (cond ((equal? c1 #t)
 			 ; Create row1 or increase the number of its rows.
@@ -1213,7 +1239,32 @@
 	   (cond ((grsp-matrix-is-equal p_a1 (grsp-matrix-conjugate-transpose p_a1))
 		  (set! res1 #t)))))
     res1))
-    
+
+
+; grsp-matrix-is-binary - Returns #t if p_a1 contains only values 0 or 1.
+;
+; Arguments:
+; - p_a1: matrix.
+;
+(define (grsp-matrix-is-binary p_a1)
+  (let ((res1 #f))
+    (cond ((equal? (grsp-matrix-find "#>" p_a1 1) 0)
+	   (cond ((equal? (grsp-matrix-find "#<" p_a1 0) 0)
+		  (set! res1 #t)))))
+    res1))
+
+
+; grsp-matrix-is-nonnegative - Returns #t if p_a1 contains only values >= 0.
+;
+; Arguments:
+; - p_a1: matrix.
+;
+(define (grsp-matrix-is-nonnegative p_a1)
+  (let ((res1 #f))
+    (cond ((equal? (grsp-matrix-find "#<" p_a1 0) 0)
+	   (set! res1 #t)))
+    res1))
+
 
 ; grsp-matrix-row-opar - Finds the inverse amultiple res of p_a1[p_m2,p_n2] so that
 ; p_a1[p_m2,p_n2] + ( p_a1[p_m1,p_n1] * res ) = 0
@@ -1429,4 +1480,167 @@
 		  (set! i (+ i 1)))
 	   (set! res2 (list L U))))
     res2))
+
+
+(define (grsp-matrix-density p_a1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(lm2 0)
+	(hm2 0)
+	(d 0)
+	(t1 0)
+	(t2 0))
+
+    ; Extract the boundaries of the matrix.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1))    
+
+    ;(set! t1 (* (+ (- hm1 lm1) 1) (+ (- hn1 ln1) 1)))
+    (set! t1 (grsp-matrix-total-elements p_a1))
+    (set! res1 (grsp-matrix-find "#=" p_a1 0))   
+    (cond ((equal? res1 0)
+	   (set! d 1)))
+    (cond ((< d 1)
+	   (set! lm2 (grsp-matrix-esi 1 res1))
+	   (set! hm2 (grsp-matrix-esi 2 res1))
+	   (set! t2 (+ (- hm2 lm2) 1))
+	   (set! d (- 1 (/ t2 t1)))))
+    (set! res2 d)
+    res2))
+
+
+; grsp-matrix-is-sparse - Returns #t if matrix density of p_a1 is < 0.5, #f
+; otherwise.
+;
+; Arguments:
+; - p_a1: matrix.
+;
+(define (grsp-matrix-is-sparse p_a1)
+  (let ((res1 #f)
+	(d 0))
+    (cond ((< (grsp-matrix-density p_a1) 0.5)
+	   (set! res1 #t)))
+    res1))
+
+
+; grsp-matrix-is-symmetric-md - Returns #t if matrix p_a1 is symmetric along its 
+; main diagonal, #f otherwise.
+;
+; Arguments:
+; - p_a1: matrix.
+;
+(define (grsp-matrix-is-symmetric-md p_a1)
+  (let ((res1 #f)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(i1 0)
+	(j1 0)
+	(d1 0))
+
+    (cond ((equal? (grsp-matrix-is-square p_a1))
+	   
+	   ; Extract the boundaries of the matrix.
+	   (set! lm1 (grsp-matrix-esi 1 p_a1))
+	   (set! hm1 (grsp-matrix-esi 2 p_a1))
+	   (set! ln1 (grsp-matrix-esi 3 p_a1))
+	   (set! hn1 (grsp-matrix-esi 4 p_a1))	
+
+	   (set! i1 lm1)
+	   (while (<= i1 hm1)
+		  (set! j1 ln1)
+		  (while (<= j1 hn1)
+			 (cond ((equal? (array-ref p_a1 i1 j1) (array-ref p_a1 j1 i1))
+				(set! d1 (+ d1 1))))
+			 (set! j1 (+ j1 1)))
+		  (set! i1 (+ i1 1)))
+
+	   (cond ((equal? d1 (grsp-matrix-total-elements p_a1))
+		  (set! res1 #t)))))
+
+    res1))
+
+
+; grsp-matrix-total-elements - Calculates the number of elements in matrix p_a1.
+;
+; Arguments:
+; - p_a1: matrix.
+;
+(define (grsp-matrix-total-elements p_a1)
+  (let ((res1 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0))
+
+    ; Extract the boundaries of the matrix.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1))
+    
+    (set! res1 (* (+ (- hm1 lm1) 1) (+ (- hn1 ln1) 1)))
+    res1))
+
+
+; grsp-matrix-total-element - Count the number of ocurrences of p_v1 in p_a1.
+;
+; Arguments:
+; - p_a1: matrix.
+; - p_v1: element value.
+;
+(define (grsp-matrix-total-element p_a1 p_v1)
+  (let ((res1 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(i1 0)
+	(j1 0))
+
+    ; Extract the boundaries of the matrix.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1))
+
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+	   (set! j1 ln1)
+	   (while (<= j1 hn1)
+		  (cond ((equal? p_v1 (array-ref p_a1 i1 j1))
+			 (set! res1 (+ res1 1))))
+		  (set! j1 (+ j1 1)))
+	   (set! i1 (+ i1 1)))
+    res1))
+
+    
+; grsp-matrix-is-hadamard - Returns #t if matrix p_a1 is of Hadamard type, #f
+; otherwise.
+;
+; Arguments:
+; - p_a1: matrix.
+;
+(define (grsp-matrix-is-hadamard p_a1)
+  (let ((res1 #f)
+	(t1 0)
+	(t2 0)
+	(t3 0))
+
+    (cond ((equal? (grsp-matrix-is-symmetric-md p_a1) #t)
+	   (set! t1 (grsp-matrix-total-elements p_a1))
+	   (set! t2 (grsp-matrix-total-element p_a1 -1))
+	   (set! t3 (grsp-matrix-total-element p_a1 1))
+	   (cond ((equal? t1 (+ t2 t3))
+		  (set! res1 #t)))))
+    res1))
+	   
 
