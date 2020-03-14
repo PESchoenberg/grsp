@@ -2,7 +2,7 @@
 ;
 ; grsp4.scm
 ;
-; Matrices.
+; Complex numbers.
 ;
 ; ==============================================================================
 ;
@@ -33,8 +33,7 @@
 	    grsp-complex-inv))
   
 
-
-; grsp-complex-inv-imag - Calculates the invese of the imaginary component of a
+; grsp-complex-inv-imag - Calculates the inverse of the imaginary component of a
 ; complex number.
 ;
 ; Arguments:
@@ -55,7 +54,7 @@
     res1))
 
 
-; grsp-complex-inv-real - Calculates the invese of he real component of a
+; grsp-complex-inv-real - Calculates the inverse of the real component of a
 ; complex number.
 ;
 ; Arguments:
