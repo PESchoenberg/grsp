@@ -75,6 +75,7 @@
 	    grsp-matrix-is-hermitian
 	    grsp-matrix-is-binary
 	    grsp-matrix-is-nonnegative
+	    grsp-matrix-is-positive
 	    grsp-matrix-row-opar
 	    grsp-matrix-row-opmm
 	    grsp-matrix-row-opsc
@@ -441,7 +442,14 @@
 ;   - "#-c": substraction of all elements of col p_l.
 ;   - "#*c": product of all elements of col p_l.
 ;   - "#/c": division of all elements of col p_l.
-;   - "#trace": sum of the diagonal elements.
+;   - "#+md": sum of the main diagonal elements (trace).
+;   - "#-md": substraction of the main diagonal elements.
+;   - "#*md": product of the main diagonal elements.
+;   - "#/md": division of the main diagonal elements.
+;   - "#+ad": sum of the anti diagonal elements.
+;   - "#-ad": substraction of the anti diagonal elements.
+;   - "#*ad": product of the anti diagonal elements.
+;   - "#/ad": division of the ant diagonal elements.
 ; - p_a: matrix. 
 ; - p_l: column or row number.
 ;
@@ -459,7 +467,8 @@
 	(ln 0)
 	(hn 0)
 	(i 0)
-	(j 0))
+	(j 0)
+	(k 0))
 
     ; Extract the boundaries of the matrix.
     (set! lm (grsp-matrix-esi 1 res1))
@@ -468,6 +477,7 @@
     (set! hn (grsp-matrix-esi 4 res1))
 
     (set! l p_l)
+    (set! k hm)
     (cond ((equal? p_s "#*")
 	   (set! res2 1))
 	  ((equal? p_s "#/")
@@ -479,7 +489,15 @@
 	  ((equal? p_s "#*c")
 	   (set! res2 1))
 	  ((equal? p_s "#/c")
-	   (set! res2 1)))	  
+	   (set! res2 1))	  
+	  ((equal? p_s "#*md")
+	   (set! res2 1))
+	  ((equal? p_s "#/md")
+	   (set! res2 1))
+	  ((equal? p_s "#*ad")
+	   (set! res2 1))
+	  ((equal? p_s "#/ad")
+	   (set! res2 1)))
 	  
     ; Apply internal operation.
     (set! i lm)
@@ -495,10 +513,33 @@
 			((equal? p_s "#/")
 			 (set! res2 (/ res2 (array-ref res1 i j))))
 
-			; Diagonal operations.
-			((equal? p_s "#trace")
+			; Main diagonal operations.
+			((equal? p_s "#+md")
 			 (cond ((equal? (grsp-gtels i j) 0)
-				(set! res2 (+ res2 (array-ref res1 i j)))))))
+				(set! res2 (+ res2 (array-ref res1 i j))))))
+			((equal? p_s "#-md")
+			 (cond ((equal? (grsp-gtels i j) 0)
+				(set! res2 (- res2 (array-ref res1 i j))))))
+			((equal? p_s "#*md")
+			 (cond ((equal? (grsp-gtels i j) 0)
+				(set! res2 (* res2 (array-ref res1 i j))))))
+			((equal? p_s "#/md")
+			 (cond ((equal? (grsp-gtels i j) 0)
+				(set! res2 (/ res2 (array-ref res1 i j))))))
+
+			; Anti diagonal operations.
+			((equal? p_s "#+ad")
+			 (cond ((equal? k (+ i j))
+				(set! res2 (+ res2 (array-ref res1 i j))))))
+			((equal? p_s "#-ad")
+			 (cond ((equal? k (+ i j))
+				(set! res2 (- res2 (array-ref res1 i j))))))
+			((equal? p_s "#*ad")
+			 (cond ((equal? k (+ i j))
+				(set! res2 (* res2 (array-ref res1 i j))))))
+			((equal? p_s "#/ad")
+			 (cond ((equal? k (+ i j))
+				(set! res2 (/ res2 (array-ref res1 i j)))))))			
 			
 		  ; Row operations.
 		  (cond ((= l i)
@@ -1266,6 +1307,18 @@
     res1))
 
 
+; grsp-matrix-is-positive - Returns #t if p_a1 contains only values > 0.
+;
+; Arguments:
+; - p_a1: matrix.
+;
+(define (grsp-matrix-is-positive p_a1)
+  (let ((res1 #f))
+    (cond ((equal? (grsp-matrix-find "#<=" p_a1 0) 0)
+	   (set! res1 #t)))
+    res1))
+
+
 ; grsp-matrix-row-opar - Finds the inverse amultiple res of p_a1[p_m2,p_n2] so that
 ; p_a1[p_m2,p_n2] + ( p_a1[p_m1,p_n1] * res ) = 0
 ;
@@ -1482,6 +1535,11 @@
     res2))
 
 
+; grsp-matrix-density - Returns the density value of matrix p_a1.
+;
+; Arguments:
+; - p_a1: matrix.
+;
 (define (grsp-matrix-density p_a1)
   (let ((res1 0)
 	(res2 0)
@@ -1502,7 +1560,6 @@
     (set! ln1 (grsp-matrix-esi 3 p_a1))
     (set! hn1 (grsp-matrix-esi 4 p_a1))    
 
-    ;(set! t1 (* (+ (- hm1 lm1) 1) (+ (- hn1 ln1) 1)))
     (set! t1 (grsp-matrix-total-elements p_a1))
     (set! res1 (grsp-matrix-find "#=" p_a1 0))   
     (cond ((equal? res1 0)
