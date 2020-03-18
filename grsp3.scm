@@ -86,7 +86,11 @@
 	    grsp-matrix-is-symmetric-md
 	    grsp-matrix-total-elements
 	    grsp-matrix-total-element
-	    grsp-matrix-is-hadamard))
+	    grsp-matrix-is-hadamard
+	    grsp-matrix-is-markov
+	    grsp-matrix-is-signature
+	    grsp-matrix-is-single-entry
+	    grsp-matrix-identify))
 
 
 ; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -128,8 +132,11 @@
 ;   - "#Test1": Test matrix 1 (LU decomposable)[1].
 ;   - "#Test2": Test matrix 2 (LU decomposable)[2].
 ;   - "#Arrow": Arrowhead matrix.
+;   - "#Hilbert": Hilbert matrix.
+;   - "#Lehmer": Lehmer matrix.
+;   - "#Pascal": Pascal matrix.
 ;
-;- p_m: rows, positive integer.
+; - p_m: rows, positive integer.
 ; - p_n: cols, positive integer.
 ;
 ; Sources:
@@ -167,6 +174,15 @@
 			((equal? p_s "#Ladder")
 			 (set! s 1))
 			((equal? p_s "#Arrow")
+			 (set! s 0)
+			 (set! n m))
+			((equal? p_s "#Hilbert")
+			 (set! s 0)
+			 (set! n m))
+			((equal? p_s "#Lehmer")
+			 (set! s 0)
+			 (set! n m))
+			((equal? p_s "#Pascal")
 			 (set! s 0)
 			 (set! n m))
 			
@@ -229,7 +245,29 @@
 				       (cond ((equal? (+ i j) (- m 1))
 					      (array-set! res 1 i j)))
 				       (set! j (- j 1)))
-				(set! i (- i 1))))			
+				(set! i (- i 1))))
+			((equal? p_s "#Hilbert")
+			 (while (< i m)
+				(set! j 0)
+				(while (< j n)			        
+				       (array-set! res (/ 1 (- (+ (+ i 1) (+ j 1)) 1)) i j)
+				       (set! j (+ j 1)))
+				(set! i (+ i 1))))
+			((equal? p_s "#Lehmer")
+			 (while (< i m)
+				(set! j 0)
+				(while (< j n)			        
+				       (array-set! res (/ (min (+ i 1) (+ j 1)) (max (+ i 1) (+ j 1))) i j)
+				       (set! j (+ j 1)))
+				(set! i (+ i 1))))
+			((equal? p_s "#Pascal")
+			 (while (< i m)
+				(set! j 0)
+				(while (< j n)			        
+				       (array-set! res (grsp-biconr (+ i j) i) i j)
+				       (set! j (+ j 1)))
+				(set! i (+ i 1))))			
+			
 			((equal? p_s "#Q")
 			 (array-set! res -1 (- m 2) (- n 1))))))))
     res))
@@ -1580,8 +1618,8 @@
 ; - p_a1: matrix.
 ;
 (define (grsp-matrix-is-sparse p_a1)
-  (let ((res1 #f)
-	(d 0))
+  (let ((res1 #f))
+	;(d 0))
     (cond ((< (grsp-matrix-density p_a1) 0.5)
 	   (set! res1 #t)))
     res1))
@@ -1700,4 +1738,195 @@
 		  (set! res1 #t)))))
     res1))
 	   
+
+; grsp-matrix-is-markov - Returns #t if matrix p_a1 is of Markov type, #f
+; otherwise.
+;
+; Arguments:
+; - p_a1: matrix.
+;
+(define (grsp-matrix-is-markov p_a1)
+  (let ((res1 #f)
+	(res2 0)
+	(res3 #t)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(i1 0)
+	(j1 0)
+	(k1 0))
+
+    ; Extract the boundaries of the matrix.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1))
+
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+	   (set! res2 (grsp-matrix-subcpy p_a1 i1 i1 ln1 hn1))
+	   (cond ((equal? (grsp-matrix-is-nonnegative res2) #t)
+		  (set! k1 (+ k1 (grsp-matrix-opio "#+" res2 0))))
+		 (else (set! res3 #f)))
+	   (set! i1 (+ i1 1)))
+    (cond ((equal? res3 #t)
+	   (cond ((equal? (/ k1 (+ (- hm1 lm1) 1)) 1)
+		  (set! res1 #t)))))
+    res1))
+
+
+; grsp-matrix-is-signature - Returns #t if matrix p_a1 is of signature type, #f
+; otherwise.
+;
+; Arguments:
+; - p_a1: matrix.
+;
+(define (grsp-matrix-is-signature p_a1)
+  (let ((res1 #f)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(i1 0)
+	(j1 0)
+	(k1 0)
+	(k2 0))
+
+    ; Extract the boundaries of the matrix.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1))
+
+    (cond ((equal? (grsp-matrix-is-diagonal p_a1) #t)    
+	   (set! i1 lm1)
+	   (set! res1 #t)
+	   (while (<= i1 hm1)
+		  (set! j1 ln1)
+		  (while (<= j1 hn1)
+			 (cond ((equal? i1 j1)
+				(cond ((equal? (abs (array-ref p_a1 i1 j1)) 1)
+				       (set! k1 (+ k1 1)))
+				      (else ((set! res1 #f))))))
+			 (set! j1 (+ j1 1)))
+		  (set! i1 (+ i1 1)))))
+    res1))
+
+
+; grsp-matrix-is-single-entry - Returns #t if matrix p_a1 is of single entry type
+; for value p_v1, #f otherwise.
+;
+; Arguments:
+; - p_a1: matrix.
+; - p_v1: value.
+;
+(define (grsp-matrix-is-single-entry p_a1 p_v1)
+  (let ((res1 #f)
+	(i1 0)
+	(k1 0)
+	(k2 0)
+	(k3 0))
+
+    (set! k1 (grsp-matrix-total-elements p_a1))
+    (set! k2 (grsp-matrix-total-element p_a1 p_v1))
+    (set! k3 (grsp-matrix-total-element p_a1 0))
+
+    (cond ((equal? k2 1)
+	   (cond ((equal? (- k1 1) k3)
+		  (set! res1 #t)))))
+    res1))
+
+
+; grsp-matrix-identify - Returns #t if matrix p_a1 is of type p_s1. This function
+; aggregates several specific identification functions into one single interface.
+
+; Arguments:
+; - p_s1: matrix type.
+;   - "#Square".
+;   - "#S": symetric.
+;   - "#MD": main diagonal.
+;   - "#Hermitian".
+;   - "#Binary".
+;   - "#P": positive.
+;   - "#NN": non negative.
+;   - "#Sparse".
+;   - "#SMD": symmetric along main diagonal.
+;   - "#Markov".
+;   - "#Signature": signature.
+;   - "#SE": single entry.
+;   - "#Q": quincunx.
+;   - "#Ladder".
+;   - "#Arrow".
+;   - "#Lehmer".
+;   - "#Pascal".
+;- p_a1: matrix.
+;
+(define (grsp-matrix-identify p_s1 p_a1)
+  (let ((res1 #f)
+	(res2 0)
+	(v1 #f)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(m1 0)
+	(n1 0))
+
+    ; Calls for specific-type functions.
+    (cond ((equal? p_s1 "#SE")
+	   (set! v1 #t)
+	   (set! res1 (grsp-matrix-is-single-entry p_a1 1)))
+	  ((equal? p_s1 "#Signature")
+	   (set! v1 #t)
+	   (set! res1 (grsp-matrix-is-signature p_a1)))
+	  ((equal? p_s1 "#Markov")
+	   (set! v1 #t)
+	   (set! res1 (grsp-matrix-is-markov p_a1)))
+	  ((equal? p_s1 "#Hadamard")
+	   (set! v1 #t)
+	   (set! res1 (grsp-matrix-is-hadamard p_a1)))
+	  ((equal? p_s1 "#SMD")
+	   (set! v1 #t)
+	   (set! res1 (grsp-matrix-is-symmetric-md p_a1)))
+	  ((equal? p_s1 "#Sparse")
+	   (set! v1 #t)
+	   (set! res1 (grsp-matrix-is-sparse p_a1)))
+	  ((equal? p_s1 "#NN")
+	   (set! v1 #t)
+	   (set! res1 (grsp-matrix-is-nonnegative p_a1)))
+	  ((equal? p_s1 "#P")
+	   (set! v1 #t)
+	   (set! res1 (grsp-matrix-is-positive p_a1)))
+	  ((equal? p_s1 "#Binary")
+	   (set! v1 #t)
+	   (set! res1 (grsp-matrix-is-binary p_a1)))
+	  ((equal? p_s1 "#Hermitian")
+	   (set! v1 #t)
+	   (set! res1 (grsp-matrix-is-hermitian p_a1)))
+	  ((equal? p_s1 "#S")
+	   (set! v1 #t)
+	   (set! res1 (grsp-matrix-is-symmetric p_a1)))
+	  ((equal? p_s1 "#MD")
+	   (set! v1 #t)
+	   (set! res1 (grsp-matrix-is-diagonal p_a1)))
+	  ((equal? p_s1 "#Square")
+	   (set! v1 #t)
+	   (set! res1 (grsp-matrix-is-square p_a1))))
+
+    ; Default identification by comparison call.
+    ; Needs to be placed in a different conditional. Otherwise does not work well (bug?).
+    (cond ((equal? v1 #f)
+           ; Extract the boundaries of the matrix.
+	   (set! lm1 (grsp-matrix-esi 1 p_a1))
+	   (set! hm1 (grsp-matrix-esi 2 p_a1))
+	   (set! ln1 (grsp-matrix-esi 3 p_a1))
+	   (set! hn1 (grsp-matrix-esi 4 p_a1))
+
+	   (set! m1 (+ (- hm1 lm1) 1))
+	   (set! n1 (+ (- hn1 ln1) 1))	   
+	   (set! res1 (grsp-matrix-is-equal p_a1 (grsp-matrix-create p_s1 m1 n1) ))))
+
+    res1))
+
 
