@@ -109,6 +109,7 @@
 (define (grsp-matrix-esi p_e p_m)
   (let ((res 0)
 	(s 0))
+
     (set! s (array-shape p_m))
     (cond ((equal? p_e 1)
 	   (set! res (car (car s))))
@@ -118,6 +119,7 @@
 	   (set! res (car (car (cdr s)))))
 	  ((equal? p_e 4)
 	   (set! res (car (cdr (car (cdr s)))))))
+
     res))
   
 
@@ -135,6 +137,7 @@
 ;   - "#Hilbert": Hilbert matrix.
 ;   - "#Lehmer": Lehmer matrix.
 ;   - "#Pascal": Pascal matrix.
+;   - "#CH": 0-1 checkerboard pattern matrix.
 ;
 ; - p_m: rows, positive integer.
 ; - p_n: cols, positive integer.
@@ -151,6 +154,7 @@
 	(j 0)
 	(m p_m)
 	(n p_n))
+
     (cond ((eq? (grsp-eiget m 0) #t)
 	   (cond ((eq? (grsp-eiget n 0) #t)
 
@@ -185,7 +189,9 @@
 			((equal? p_s "#Pascal")
 			 (set! s 0)
 			 (set! n m))
-			
+			((equal? p_s "#CH")
+			 (set! s 0))
+       
 			(else (set! s p_s)))
 
 		  ; Build the matrix.
@@ -267,9 +273,21 @@
 				       (array-set! res (grsp-biconr (+ i j) i) i j)
 				       (set! j (+ j 1)))
 				(set! i (+ i 1))))			
+			((equal? p_s "#CH")
+			 (while (< i m)
+				(set! j 0)
+				(while (< j n)			        
+				       (array-set! res s i j)
+				       (cond ((equal? s 0)
+					      (set! s 1))
+					     ((equal? s 1)
+					      (set! s 0)))
+				       (set! j (+ j 1)))
+				(set! i (+ i 1))))
 			
 			((equal? p_s "#Q")
 			 (array-set! res -1 (- m 2) (- n 1))))))))
+
     res))
 
 
@@ -310,6 +328,7 @@
 			 (array-set! res p_v2 i j)))
 		  (set! j (+ j 1)))
 	   (set! i (+ i 1)))
+
     res))
 
 
@@ -400,6 +419,7 @@
 		  
 		  (set! j1 (+ j1 1)))
 	   (set! i1 (+ i1 1)))
+
     res1))
     
 
@@ -436,6 +456,7 @@
 		  (array-set! res2 (array-ref res1 i j) j i)
 		  (set! j (+ j 1)))
 	   (set! i (+ i 1)))
+
     res2))
 
 
@@ -447,7 +468,9 @@
 (define (grsp-matrix-conjugate p_a1)
   (let ((res1 p_a1)
 	(res2 0))
+
     (set! res2 (grsp-matrix-opsc "#si" res1 0))
+
     res2))
 
 
@@ -460,7 +483,9 @@
 (define (grsp-matrix-conjugate-transpose p_a1)
   (let ((res1 p_a1)
 	(res2 0))
+
     (set! res2 (grsp-matrix-conjugate (grsp-matrix-transpose res1)))
+
     res2))
 
 
@@ -603,6 +628,7 @@
 
 		  (set! j (+ j 1)))
 	   (set! i (+ i 1)))
+
     res2))
 
 
@@ -694,6 +720,7 @@
 			 (array-set! res2 (grsp-complex-inv p_s (array-ref res1 i j)) i j)))
 		  (set! j (+ j 1)))
 	   (set! i (+ i 1)))
+
     res2))
 
 
@@ -758,6 +785,7 @@
 			 (array-set! res3 (min (array-ref res1 i j) (array-ref res2 i j)) i j)))			
 		  (set! j (+ j 1)))
 	   (set! i (+ i 1)))
+
     res3))
 
 
@@ -861,6 +889,7 @@
 			 (array-set! res3 (atanh (array-ref res1 i j)) i j)))						
 		  (set! j (+ j 1)))
 	   (set! i (+ i 1)))
+
     res3))
 
 
@@ -954,6 +983,7 @@
 	   (set! res3 (grsp-matrix-opew p_s res1 res2)))
 	  ((equal? p_s "#-")
 	   (set! res3 (grsp-matrix-opew p_s res1 res2))))
+
     res3))
     
 
@@ -991,6 +1021,7 @@
 		  (set! j1 (+ j1 1)))
 	   (set! i2 (+ i2 1))
 	   (set! i1 (+ i1 1)))
+
     res2))
 
 
@@ -1052,6 +1083,7 @@
 		  (set! j1 (+ j1 1)))
 	   (set! i3 (+ i3 1))
 	   (set! i1 (+ i1 1)))
+
     res1))
 
 
@@ -1131,6 +1163,7 @@
 			; Move the data of the second submatrix to the expanded part 
 			; of the first one.
 			(set! res2 (grsp-matrix-subrep res3 res4 (+ (+ lm1 n) 0) ln1))))))) ; This call is causing problems.
+
     res2))
 
 
@@ -1168,6 +1201,7 @@
 		  (array-set! res2 (array-ref res1 i j) i j)
 		  (set! j (+ j 1)))
 	   (set! i (+ i 1)))
+
     res2))
 
 
@@ -1226,6 +1260,7 @@
 		  (set! i (+ i 1)))))
     (cond ((> res5 0)
 	   (set! res3 #f)))
+
     res3))
 
 
@@ -1265,8 +1300,10 @@
 ;
 (define (grsp-matrix-is-symmetric p_a1)
   (let ((res1 #f))
+
     (cond ((equal? (grsp-matrix-is-square p_a1) #t)
 	   (set! res1 (grsp-matrix-is-equal p_a1 (grsp-matrix-transpose p_a1)))))
+
     res1))
 
 
@@ -1304,6 +1341,7 @@
 		  (set! i (+ i 1)))
 	   (cond ((equal? k 0)
 		  (set! res1 #t)))))
+
     res1))
 
 
@@ -1314,9 +1352,11 @@
 ;
 (define (grsp-matrix-is-hermitian p_a1)
   (let ((res1 #f))
+
     (cond ((equal? (grsp-matrix-is-square p_a1) #t)
 	   (cond ((grsp-matrix-is-equal p_a1 (grsp-matrix-conjugate-transpose p_a1))
 		  (set! res1 #t)))))
+
     res1))
 
 
@@ -1327,9 +1367,11 @@
 ;
 (define (grsp-matrix-is-binary p_a1)
   (let ((res1 #f))
+
     (cond ((equal? (grsp-matrix-find "#>" p_a1 1) 0)
 	   (cond ((equal? (grsp-matrix-find "#<" p_a1 0) 0)
 		  (set! res1 #t)))))
+
     res1))
 
 
@@ -1340,8 +1382,10 @@
 ;
 (define (grsp-matrix-is-nonnegative p_a1)
   (let ((res1 #f))
+
     (cond ((equal? (grsp-matrix-find "#<" p_a1 0) 0)
 	   (set! res1 #t)))
+
     res1))
 
 
@@ -1352,8 +1396,10 @@
 ;
 (define (grsp-matrix-is-positive p_a1)
   (let ((res1 #f))
+
     (cond ((equal? (grsp-matrix-find "#<=" p_a1 0) 0)
 	   (set! res1 #t)))
+
     res1))
 
 
@@ -1391,9 +1437,11 @@
 ;
 (define (grsp-matrix-row-opar p_a1 p_a2 p_m1 p_n1 p_m2 p_n2)
   (let ((res 0))
+
     (set! res (* 1 (/ (array-ref p_a1 p_m2 p_n2) (array-ref p_a1 p_m1 p_n1))))
     (array-set! p_a1 0 p_m2 p_n2)
     (array-set! p_a2 res p_m2 p_n2)
+
     res))
 
 
@@ -1570,6 +1618,7 @@
 		  ;(display "\nP5\n")
 		  (set! i (+ i 1)))
 	   (set! res2 (list L U))))
+
     res2))
 
 
@@ -1608,6 +1657,7 @@
 	   (set! t2 (+ (- hm2 lm2) 1))
 	   (set! d (- 1 (/ t2 t1)))))
     (set! res2 d)
+    
     res2))
 
 
@@ -1619,9 +1669,10 @@
 ;
 (define (grsp-matrix-is-sparse p_a1)
   (let ((res1 #f))
-	;(d 0))
+
     (cond ((< (grsp-matrix-density p_a1) 0.5)
 	   (set! res1 #t)))
+    
     res1))
 
 
@@ -1736,6 +1787,7 @@
 	   (set! t3 (grsp-matrix-total-element p_a1 1))
 	   (cond ((equal? t1 (+ t2 t3))
 		  (set! res1 #t)))))
+
     res1))
 	   
 
@@ -1773,6 +1825,7 @@
     (cond ((equal? res3 #t)
 	   (cond ((equal? (/ k1 (+ (- hm1 lm1) 1)) 1)
 		  (set! res1 #t)))))
+
     res1))
 
 
@@ -1811,6 +1864,7 @@
 				      (else ((set! res1 #f))))))
 			 (set! j1 (+ j1 1)))
 		  (set! i1 (+ i1 1)))))
+
     res1))
 
 
@@ -1822,19 +1876,12 @@
 ; - p_v1: value.
 ;
 (define (grsp-matrix-is-single-entry p_a1 p_v1)
-  (let ((res1 #f)
-	(i1 0)
-	(k1 0)
-	(k2 0)
-	(k3 0))
+  (let ((res1 #f))
 
-    (set! k1 (grsp-matrix-total-elements p_a1))
-    (set! k2 (grsp-matrix-total-element p_a1 p_v1))
-    (set! k3 (grsp-matrix-total-element p_a1 0))
-
-    (cond ((equal? k2 1)
-	   (cond ((equal? (- k1 1) k3)
+    (cond ((equal? (grsp-matrix-total-element p_a1 p_v1) 1)
+	   (cond ((equal? (- (grsp-matrix-total-elements p_a1) 1) (grsp-matrix-total-element p_a1 0))
 		  (set! res1 #t)))))
+
     res1))
 
 
@@ -1843,6 +1890,8 @@
 
 ; Arguments:
 ; - p_s1: matrix type.
+;   - "#I": identity.
+;   - "#AI": anti-identity.
 ;   - "#Square".
 ;   - "#S": symetric.
 ;   - "#MD": main diagonal.
@@ -1860,7 +1909,8 @@
 ;   - "#Arrow".
 ;   - "#Lehmer".
 ;   - "#Pascal".
-;- p_a1: matrix.
+;   - "#Idempotent".
+; - p_a1: matrix.
 ;
 (define (grsp-matrix-identify p_s1 p_a1)
   (let ((res1 #f)
@@ -1869,9 +1919,7 @@
 	(lm1 0)
 	(hm1 0)
 	(ln1 0)
-	(hn1 0)
-	(m1 0)
-	(n1 0))
+	(hn1 0))
 
     ; Calls for specific-type functions.
     (cond ((equal? p_s1 "#SE")
@@ -1910,12 +1958,15 @@
 	  ((equal? p_s1 "#MD")
 	   (set! v1 #t)
 	   (set! res1 (grsp-matrix-is-diagonal p_a1)))
+	  ((equal? p_s1 "#Idempotent")
+	   (set! v1 #t)
+	   (set! res1 (grsp-matrix-is-equal p_a1 (grsp-matrix-opmm "#*" p_a1 p_a1))))	  
 	  ((equal? p_s1 "#Square")
 	   (set! v1 #t)
 	   (set! res1 (grsp-matrix-is-square p_a1))))
 
-    ; Default identification by comparison call.
-    ; Needs to be placed in a different conditional. Otherwise does not work well (bug?).
+    ; Default identification by comparison call. Needs to be placed in a different
+    ; conditional. Otherwise does not work well (bug?).
     (cond ((equal? v1 #f)
            ; Extract the boundaries of the matrix.
 	   (set! lm1 (grsp-matrix-esi 1 p_a1))
@@ -1923,9 +1974,8 @@
 	   (set! ln1 (grsp-matrix-esi 3 p_a1))
 	   (set! hn1 (grsp-matrix-esi 4 p_a1))
 
-	   (set! m1 (+ (- hm1 lm1) 1))
-	   (set! n1 (+ (- hn1 ln1) 1))	   
-	   (set! res1 (grsp-matrix-is-equal p_a1 (grsp-matrix-create p_s1 m1 n1) ))))
+	   ; Compare.
+	   (set! res1 (grsp-matrix-is-equal p_a1 (grsp-matrix-create p_s1 (+ (- hm1 lm1) 1) (+ (- hn1 ln1) 1)) ))))
 
     res1))
 
