@@ -53,6 +53,7 @@
 ;
 (define (gconst p_n1)
   (let ((res 0))
+
     (cond ((equal? p_n1 "gr")(set! res 1.00))
 
 	  ; --------------------------------------------------------------------
@@ -564,6 +565,7 @@
 	  ((equal? p_n1 "Eddington-Dirac")(set! res (expt 10 40)))
 	  
 	  (else (set! res 0)))
-  res))
+
+    res))
 
 
