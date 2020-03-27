@@ -2,7 +2,7 @@
 ;
 ; grsp4.scm
 ;
-; Complex numbers.
+; Complex number functions.
 ;
 ; ==============================================================================
 ;
@@ -30,7 +30,8 @@
   #:use-module (grsp grsp2)
   #:export (grsp-complex-inv-imag
 	    grsp-complex-inv-real
-	    grsp-complex-inv))
+	    grsp-complex-inv
+	    grsp-complex-sign))
   
 
 ; grsp-complex-inv-imag - Calculates the inverse of the imaginary component of a
@@ -46,11 +47,13 @@
   (let ((res1 0)
 	(vr 0)
 	(vi 0))
+
     (cond ((complex? p_v1)
 	   (set! vr (real-part p_v1))
 	   (set! vi (* -1 (imag-part p_v1)))
 	   (set! res1 (make-rectangular vr vi)))
 	  (else((set! res1 p_v1))))
+
     res1))
 
 
@@ -64,11 +67,13 @@
   (let ((res1 0)
 	(vr 0)
 	(vi 0))
+
     (cond ((complex? p_v1)
 	   (set! vr (* -1 (real-part p_v1)))
 	   (set! vi (imag-part p_v1))
 	   (set! res1 (make-rectangular vr vi)))
 	  (else((set! res1 (* -1 p_v1)))))
+
     res1))
 
 
@@ -85,6 +90,7 @@
   (let ((res1 p_v1)
 	(vr 0)
 	(v 0))
+
     (cond ((equal? p_s1 "#si")
 	   (set! res1 (grsp-complex-inv-imag res1)))
 	  ((equal? p_s1 "#is")
@@ -92,5 +98,34 @@
 	  ((equal? p_s1 "#ii")
 	   (set! res1 (grsp-complex-inv-imag res1))
 	   (set! res1 (grsp-complex-inv-real res1))))	  
+
     res1))
+
+
+; grsp-complex-sign: returns a list conaining 1 if p_n1 >= 0, -1 otherwise per 
+; real and imaginary components.
+;
+; Arguments:
+; - p_n1: complex number.
+;
+; Output:
+; - (1 1) if both components are positive or real is positive and imaginary is zero.
+; - (-1 -1) if both components are negative
+; - (-1 1) if the real component is negative and the imaginary positive or zero.
+; - (1 -1) if the real component is positive and the imaginary is negative.
+;
+(define (grsp-complex-sign p_v1)
+  (let ((res1 '())
+	(vr 0)
+	(vi 0))
+
+    (cond ((complex? p_v1)
+	   (set! vr (grsp-sign (real-part p_v1)))
+	   (set! vi (grsp-sign (imag-part p_v1))))	  
+	  (else((set! vr (grsp-sign p_v1))
+		(set! vi 1))))
+    (set! res1 (list vr vi))
+    
+    res1))
+
 

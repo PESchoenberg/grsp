@@ -53,6 +53,7 @@
 ;
 (define (pline p_c p_l)
   (let ((str ""))
+
     (let loop ((i 0))
       (if (= i p_l)
 	  (begin (newlines 1)
@@ -104,6 +105,7 @@
 ;
 (define (pres p_s1 p_s2)
   (let ((res " "))
+
     (set! res (string-append p_s1 (string-append " = " p_s2)))
       (display res)
       (newline)))
@@ -121,6 +123,7 @@
 (define (newspaces p_n p_l p_s)
   (let ((res " ")
 	(sp ""))
+
     (let loop ((i 0))
       
       ; Create a string of blanks.
@@ -133,6 +136,7 @@
   	  (set! res (string-append sp p_l)))
       (if (= p_s 1)
 	  (set! res (string-append p_l sp)))
+
       res))
 
 
@@ -149,6 +153,7 @@
 (define (strings-append p_l p_s)
   (let ((res "")
 	(elem #f))
+
     (set! elem (car p_l))
     (while (not (equal? elem #f))
 	   (if (equal? p_s 1)(set! elem (string-append elem " ")))
@@ -156,6 +161,7 @@
 	   (set! p_l (cdr p_l))
 	   (if (> (length p_l) 0)(set! elem (car p_l)))
 	   (if (= (length p_l) 0)(set! elem #f)))
+
     res))
 
 
@@ -199,9 +205,11 @@
 (define (grsp-lang-effective-version p_s p_v)
   (let ((res #f)
 	(ev (string->number (effective-version))))
+
     (if (equal? p_s "lt")(set! res (< ev p_v)))
     (if (equal? p_s "eq")(set! res (= ev p_v)))
     (if (equal? p_s "ht")(set! res (> ev p_v)))
+
     res))
 
 
@@ -227,6 +235,7 @@
 
 (define (grsp-save-to-file p_s p_f p_m)
   (let ((output-port (open-file p_f p_m)))    
+
     (display p_s output-port)
     (newline output-port)
     (close output-port)))
@@ -240,7 +249,9 @@
 ;
 (define (grsp-n2s p_n)
   (let ((res ""))
+
     (set! res (number->string p_n))
+
     res))
 
 
@@ -252,7 +263,9 @@
 ;
 (define (grsp-s2n p_s)
   (let ((res 0.0))
+
     (set! res (string->number p_s))
+
     res))
 
 
@@ -305,9 +318,11 @@
 ;
 (define (grsp-ask p_q)
   (let ((res " "))
+
     (newline)
     (grsp-ld p_q)
     (set! res (read))
+
     res))
 	  
 

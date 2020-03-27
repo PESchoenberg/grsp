@@ -138,7 +138,9 @@
 ;   - "#Lehmer": Lehmer matrix.
 ;   - "#Pascal": Pascal matrix.
 ;   - "#CH": 0-1 checkerboard pattern matrix.
-;
+;   - "#+IJ": matrix containing the sum of i and j values.
+;   - "#-IJ": matrix containing the substraction of i and j values.
+
 ; - p_m: rows, positive integer.
 ; - p_n: cols, positive integer.
 ;
@@ -191,7 +193,19 @@
 			 (set! n m))
 			((equal? p_s "#CH")
 			 (set! s 0))
-       
+			((equal? p_s "#+IJ")
+			 (set! s 0)
+			 (set! n m))
+			((equal? p_s "#-IJ")
+			 (set! s 0)
+			 (set! n m))
+			((equal? p_s "#*IJ")
+			 (set! s 1)
+			 (set! n m))
+			((equal? p_s "#/IJ")
+			 (set! s 1)
+			 (set! n m))
+			
 			(else (set! s p_s)))
 
 		  ; Build the matrix.
@@ -282,6 +296,37 @@
 					      (set! s 1))
 					     ((equal? s 1)
 					      (set! s 0)))
+				       (set! j (+ j 1)))
+				(set! i (+ i 1))))
+			((equal? p_s "#+IJ")
+			 (while (< i m)
+				(set! j 0)
+				(while (< j n)			        
+				       (array-set! res (+ i j) i j)
+				       (set! j (+ j 1)))
+				(set! i (+ i 1))))
+			((equal? p_s "#-IJ")
+			 (while (< i m)
+				(set! j 0)
+				(while (< j n)			        
+				       (array-set! res (- i j) i j)
+				       (set! j (+ j 1)))
+				(set! i (+ i 1))))
+			((equal? p_s "#*IJ")
+			 (while (< i m)
+				(set! j 0)
+				(while (< j n)			        
+				       (array-set! res (* i j) i j)
+				       (set! j (+ j 1)))
+				(set! i (+ i 1))))
+			((equal? p_s "#/IJ")
+			 (while (< i m)
+				(set! j 0)
+				(while (< j n)
+				       (cond ((equal? j 0)
+					      (array-set! res 0 i j)))
+				       (cond ((> j 0)
+					      (array-set! res (/ i j) i j)))
 				       (set! j (+ j 1)))
 				(set! i (+ i 1))))
 			
@@ -1980,3 +2025,4 @@
     res1))
 
 
+    

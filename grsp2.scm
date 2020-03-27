@@ -2,7 +2,7 @@
 ;
 ; grsp2.scm
 ;
-; Math stuff.
+; Real number functions.
 ;
 ; ==============================================================================
 ;
@@ -28,6 +28,7 @@
   #:use-module (grsp grsp0)
   #:use-module (grsp grsp1)
   #:export (grsp-gtels
+	    grsp-sign
 	    grsp-eiget
 	    grsp-is-prime
 	    grsp-fact
@@ -54,10 +55,12 @@
 	    grsp-dobinski-formula
 	    grsp-method-newton
 	    grsp-method-euler
-	    grsp-lerp))
+	    grsp-lerp
+	    grsp-givens-rotation))
 
 
 ; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
+; this function is equivalent to the sgn math function.
 ;
 ; Arguments:
 ; - p_n1: number.
@@ -70,10 +73,27 @@
 ;
 (define (grsp-gtels p_n1 p_n2)
   (let ((res 0))
+
     (cond ((> p_n1 p_n2)(set! res 1))
 	  ((< p_n1 p_n2)(set! res -1)))
+
     res))
-	   
+
+
+; grsp-sign: returns 1 if p_n1 >= 0, -1 otherwise.
+;
+; Arguments:
+; - p_n1: real number.
+;
+(define (grsp-sign p_n1)
+  (let ((res1 0))
+
+	(set! res1 (grsp-gtels p_n1 0))
+	(cond ((equal? res1 0)
+	       (set! res1 1)))
+	
+	res1))
+
 
 ; grsp-eiget - Finds out if p_n1 is an exact integer equal or greater than p_n2.
 ;
@@ -87,9 +107,11 @@
 ;
 (define (grsp-eiget p_n1 p_n2)
   (let ((res #f))
+
     (cond ((exact-integer? p_n1)
 	   (cond ((>= p_n1 p_n2)    
 		  (set! res #t)))))
+
     res))
 
 
@@ -107,6 +129,7 @@
   (let ((res #t)
 	(cyc #f)
 	(i 2))
+
     (while (eq? cyc #f)
 	   (cond ((= 0 (remainder p_n i))
 		  (set! res #f)
@@ -116,6 +139,7 @@
 		  (set! cyc #t))))
     (cond ((grsp-getles p_n -1 1)
 	   (set! res #f)))
+
     res))
 
 
@@ -129,8 +153,10 @@
 ;
 (define (grsp-fact p_n)
   (let ((res 1))
+
     (cond ((eq? (grsp-eiget p_n 1) #t)
 	   (set! res (* p_n (grsp-fact (- p_n 1))))))
+
     res))
 
 
@@ -144,8 +170,10 @@
 ;
 (define (grsp-sumat p_n)
   (let ((res 0))
+
     (cond ((eq? (grsp-eiget p_n 0) #t)
 	   (set! res (+ p_n (grsp-sumat (- p_n 1))))))
+
     res))
 
 
@@ -162,10 +190,12 @@
 ;
 (define (grsp-biconr p_n p_k)
   (let ((res 0))
+
     (cond ((eq? (grsp-eiget p_n 0) #t)		  
 	   (cond ((eq? (grsp-eiget p_k 0) #t)				
 		  (cond ((>= p_n p_k)
 			 (set! res (/ (grsp-fact p_n) (* (grsp-fact (- p_n p_k)) (grsp-fact p_k))))))))))
+
     res))
 
 
@@ -182,7 +212,9 @@
 ;
 (define (grsp-bicowr p_n p_k)
   (let ((res 0))
+
     (set! res (grsp-biconr (+ p_n (- p_k 1)) p_k))
+
     res))
 
 
@@ -199,9 +231,11 @@
 ;
 (define (grsp-gtls p_n1 p_n2 p_n3)
   (let ((res #f))
+
     (cond ((> p_n1 p_n2)
 	   (cond ((< p_n1 p_n3)
 		  (set! res #t)))))
+
     res))
 
 
@@ -218,9 +252,11 @@
 ;
 (define (grsp-getles p_n1 p_n2 p_n3)
   (let ((res #f))
+
     (cond ((>= p_n1 p_n2)
 	   (cond ((<= p_n1 p_n3)
 		  (set! res #t)))))
+
     res))
 
 
@@ -234,7 +270,9 @@
 ; 
 (define (grsp-krnb p_k p_r p_n p_b)
   (let ((res 0))
+
     (set! res (+ (* p_k (expt p_r p_n)) p_b))
+
     res))
 
 
@@ -254,11 +292,13 @@
 (define (grsp-bpp p_k p_b p_pf p_qf)
   (let ((res 0)
 	(k 0))
+
     (cond ((exact-integer? p_k)
 	   (cond ((eq? (grsp-eiget p_b 2) #t)
 		  (begin (while (< k p_k)
 				(set! res (+ res (* (/ 1 (expt p_b k)) (/ (p_pf k) (p_qf k)))))
 				(set! k (+ k 1))))))))
+
     res))
 			 
 
@@ -282,12 +322,14 @@
 	(n p_n)
 	(i 1)
 	(res 0))
+
     (cond ((= n 0)(set! res 1))
 	  ((< n 0)(set! res 0))
 	  ((> n 0)(begin (set! res x)
 			 (while (< i n)
 				(set! res (expt x res))
 				(set! i (+ i 1))))))
+
     res))
 
 
@@ -305,8 +347,10 @@
 ;
 (define (grsp-slog p_x p_n)
   (let ((res 0))
-     (set! res (/ 1 (grsp-sexp p_x p_n)))
-     res))
+
+    (set! res (/ 1 (grsp-sexp p_x p_n)))
+
+    res))
 
 
 ; grsp-woodall-number - Calculates the Woodall number of p_n.
@@ -325,8 +369,10 @@
 ;
 (define (grsp-woodall-number p_n)
   (let ((res 1))
+
     (cond ((eq? (grsp-eiget p_n 1) #t)		  
 	   (set! res (grsp-krnb p_n 2 p_n -1))))
+
     res))
 
 
@@ -345,8 +391,10 @@
 ;
 (define (grsp-cullen-number p_n)
   (let ((res 1))
+
     (cond ((eq? (grsp-eiget p_n 1) #t)		  
 	   (set! res (grsp-krnb p_n 2 p_n 1))))
+
     res))
 
 
@@ -369,11 +417,13 @@
 ;
 (define (grsp-proth-number p_n p_k)
   (let ((res 0))
+
     (cond ((exact-integer? p_n)
 	   (cond ((exact-integer? p_k)
 		  (cond ((odd? p_k)
 			 (cond ((> (expt 2 p_n) p_k)
 				(set! res (grsp-krnb p_k 2 p_n 1))))))))))
+
     res))
 
 
@@ -395,8 +445,10 @@
 ;
 (define (grsp-mersenne-number p_n)
   (let ((res 0))
+
     (cond ((exact-integer? p_n)
 	   (set! res (grsp-krnb 1 2 p_n -1))))
+
     res))
 	  
 
@@ -414,6 +466,7 @@
 (define (grsp-repdigit-number p_n p_d)
   (let ((res 0)
 	(i 0))
+
     (cond ((exact-integer? p_n)
 	   (cond ((exact-integer? p_d)
 		  (cond ((eq? (grsp-gtls p_n 0 10) #t)
@@ -422,7 +475,8 @@
 				(set! i (+ i 1))
 				(cond ((< i p_d)
 				       (set! res (* res 10)))))))))))
-  res))
+
+    res))
 
 
 ; grsp-wagstaff-number - Producesa Wagstaff number of base p_b.
@@ -441,9 +495,11 @@
 ;
 (define (grsp-wagstaff-number p_n p_b)
   (let ((res 0))
+
     (cond ((eq? (grsp-eiget p_n 1) #t)
 	   (cond ((eq? (grsp-eiget p_b 2) #t)
 		  (set! res (* 1.0 (/ (+ (expt p_b p_n) 1) (+ p_b 1))))))))
+
     res))
 
 
@@ -463,9 +519,11 @@
 ;
 (define (grsp-williams-number p_n p_b)
   (let ((res 0))
+
     (cond ((eq? (grsp-eiget p_n 1) #t)		  
 	   (cond ((eq? (grsp-eiget p_b 2) #t)				
 		  (set! res (- (* (- p_b 1) (expt p_b p_n)) 1))))))
+
     res))
 
 
@@ -480,8 +538,10 @@
 ;
 (define (grsp-thabit-number p_n)
   (let ((res 0))
+
     (cond ((eq? (grsp-eiget p_n 0) #t)		  
 	   (set! res (- (* 3 (expt 2 p_n)) 1))))
+
     res))
 
 
@@ -496,8 +556,10 @@
 ;
 (define (grsp-fermat-number p_n)
   (let ((res 0))
+
     (cond ((eq? (grsp-eiget p_n 0) #t)		  
 	   (set! res (+ (expt 2 (expt 2 p_n)) 1))))
+
     res))
 
 
@@ -515,8 +577,10 @@
 ;
 (define (grsp-catalan-number p_n)
   (let ((res 0))
+
     (cond ((eq? (grsp-eiget p_n 0) #t)		      
 	   (set! res (* (/ 1 (+ p_n 1)) (grsp-biconr (* 2 p_n) p_n)))))
+
     res))
 
 			
@@ -534,9 +598,11 @@
 ;
 (define (grsp-wagstaff-prime p_n)
   (let ((res 0))
+
     (cond ((eq? (grsp-eiget p_n 1) #t)    
 	   (cond ((eq? (odd? p_n) #t)
 		  (set! res (/ (+ (expt 2 p_n) 1) 3))))))
+
     res))
 
 
@@ -557,12 +623,14 @@
 (define (grsp-dobinski-formula p_n p_k)
   (let ((res 0)
 	(i 0))
+
     (cond ((eq? (grsp-eiget p_n 0) #t)
 	   (cond ((eq? (grsp-eiget p_k 0) #t)
 		  (while (<= i p_n)
 			 (set! res (+ (/ (expt p_k p_n) (grsp-fact p_k))))
 			 (set! i (+ i 1)))))))
     (set! res (* res (/ 1 (gconst "A001113"))))
+
     res))
 
 
@@ -583,7 +651,9 @@
 ;
 (define (grsp-method-newton p_x p_fx p_dx)
   (let ((res 0))
+
     (set! res (- p_x (/ p_fx p_dx)))
+
     res))
 
 
@@ -605,7 +675,9 @@
 ;
 (define (grsp-method-euler p_y p_h p_f)
   (let ((res 0))
+
     (set! res (+ p_y (* p_h p_f)))
+
     res))
 
 
@@ -628,7 +700,61 @@
 ;
 (define (grsp-lerp p_x1 p_x2 p_x3 p_y1 p_y2)
   (let ((res 0))
+
     (set! res (+ p_y1 (* (- p_x3 p_x1) (/ (- p_y2 p_y1) (- p_x2 p_x1)))))
+
     res))
 
-  
+
+; grsp-matrix-givens-rotation - Givens rotation. The code for this function
+; is adapted to Scheme from the original Octave code presented in the source.
+;
+; Arguments:
+; - p_v1
+; - p_v2
+;
+; Sources:
+; - En.wikipedia.org. 2020. Givens Rotation. [online] Available at:
+;   https://en.wikipedia.org/wiki/Givens_rotation [Accessed 25 March 2020].
+;
+; Output:
+; - A list containing the values for c, s, and r, in that order.
+;
+(define (grsp-givens-rotation p_v1 p_v2)
+  (let ((res1 '())
+	(v1 p_v1) ;a
+	(v2 p_v2) ;b
+	(v3 0) ;c
+	(v4 0) ; s
+	(v5 0) ; r
+	(v6 0) ; t
+	(v7 0) ; u
+	(b1 #f))
+
+    (cond ((equal? v2 0)
+	   (set! v3 (grsp-sign v1))
+	   (set! v4 0)
+	   (set! v5 (abs v1))
+	   (set! b1 #t)))
+    (cond ((equal? v1 0)
+	   (set! v3 0)
+	   (set! v4 (grsp-sign v2))	   
+	   (set! v5 (abs v2))
+	   (set! b1 #t)))
+    (cond ((> (abs v1) (abs v2))
+	   (set! v6 (/ v2 v1))
+	   (set! v7 (* (grsp-sign v1) (sqrt (+ 1 (expt v6 2)))))
+	   (set! v3 (/ 1 v7))
+	   (set! v4 (* v3 v7))
+	   (set! v5 (* v1 v7))
+	   (set! b1 #t)))
+    (cond ((equal? b1 #f)
+	   (set! v6 (/ v1 v2))
+	   (set! v7 (* (grsp-sign v2) (sqrt (+ 1 (expt v6 2)))))
+	   (set! v4 (/ 1 v7))
+	   (set! v3 (* v4 v6))
+	   (set! v5 (* v2 v7))))
+    (set! res1 (list v3 v4 v5))
+    
+    res1))
+
