@@ -90,7 +90,8 @@
 	    grsp-matrix-is-markov
 	    grsp-matrix-is-signature
 	    grsp-matrix-is-single-entry
-	    grsp-matrix-identify))
+	    grsp-matrix-identify
+	    grsp-matrix-is-metzler))
 
 
 ; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -1955,7 +1956,8 @@
 ;   - "#Lehmer".
 ;   - "#Pascal".
 ;   - "#Idempotent".
-; - p_a1: matrix.
+;   - "#Metzler".
+- p_a1: matrix.
 ;
 (define (grsp-matrix-identify p_s1 p_a1)
   (let ((res1 #f)
@@ -2003,6 +2005,9 @@
 	  ((equal? p_s1 "#MD")
 	   (set! v1 #t)
 	   (set! res1 (grsp-matrix-is-diagonal p_a1)))
+	  ((equal? p_s1 "#Metzler")
+	   (set! v1 #t)
+	   (set! res1 (grsp-matrix-is-metzler p_a1)))	  
 	  ((equal? p_s1 "#Idempotent")
 	   (set! v1 #t)
 	   (set! res1 (grsp-matrix-is-equal p_a1 (grsp-matrix-opmm "#*" p_a1 p_a1))))	  
@@ -2025,4 +2030,40 @@
     res1))
 
 
+; grsp-matrix-is-metzler - Returns #t if matrix p_a1 is of metzler type, #f
+; otherwise.
+;
+; Arguments:
+; - p_a1: matrix.
+;
+(define (grsp-matrix-is-metzler p_a1)
+  (let ((res1 #f)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(i1 0)
+	(j1 0)
+	(k1 1))
+
+    ; Extract the boundaries of the matrix.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1))
     
+    (cond ((equal? (grsp-matrix-is-square p_a1) #t)
+	   (set! i1 lm1)
+	   (set! res1 #t)
+	   (while (<= i1 hm1)
+		  (set! j1 ln1)
+		  (while (<= j1 hn1)
+			 (cond ((< (array-ref p_a1 i1 j1) 0)
+				(cond ((equal? (equal? i1 j1) #f)
+				       (set! res1 #f)))))
+			 (set! j1 (+ j1 1)))
+		  (set! i1 (+ i1 1)))))
+
+    res1))
+    
+
