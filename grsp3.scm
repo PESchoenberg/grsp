@@ -1957,7 +1957,7 @@
 ;   - "#Pascal".
 ;   - "#Idempotent".
 ;   - "#Metzler".
-- p_a1: matrix.
+; - p_a1: matrix.
 ;
 (define (grsp-matrix-identify p_s1 p_a1)
   (let ((res1 #f)
