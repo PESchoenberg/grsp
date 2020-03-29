@@ -102,9 +102,9 @@
     res1))
 
 
-; grsp-complex-sign: returns a list conaining 1 if p_n1 >= 0, -1 otherwise per 
-; real and imaginary components.
-;
+; grsp-complex-sign: returns a list containing boolean values indicating the  
+; signs of the real and imaginary parts of a complex number.
+
 ; Arguments:
 ; - p_n1: complex number.
 ;
