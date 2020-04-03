@@ -141,6 +141,10 @@
 ;   - "#CH": 0-1 checkerboard pattern matrix.
 ;   - "#+IJ": matrix containing the sum of i and j values.
 ;   - "#-IJ": matrix containing the substraction of i and j values.
+;   - "#+IJ": matrix containing the product of i and j values.
+;   - "#-IJ": matrix containing the quotient of i and j values.
+;   - "#US": upper shift matrix.
+;   - "#LS": lower shift matrix.
 
 ; - p_m: rows, positive integer.
 ; - p_n: cols, positive integer.
@@ -206,6 +210,12 @@
 			((equal? p_s "#/IJ")
 			 (set! s 1)
 			 (set! n m))
+			((equal? p_s "#US")
+			 (set! s 0)
+			 (set! n m))
+			((equal? p_s "#LS")
+			 (set! s 0)
+			 (set! n m))			
 			
 			(else (set! s p_s)))
 
@@ -330,6 +340,17 @@
 					      (array-set! res (/ i j) i j)))
 				       (set! j (+ j 1)))
 				(set! i (+ i 1))))
+			((equal? p_s "#US")
+			 (while (< i m)
+				(set! j 0)
+				(while (< j (- n 1))
+				       (cond ((eq? i j)
+					      (array-set! res 1 i (+ j 1))))
+				       (set! j (+ j 1)))
+				(set! i (+ i 1))))
+			((equal? p_s "#LS")
+			 (set! res (grsp-matrix-create "#US" m n))
+			 (set! res (grsp-matrix-transpose res)))
 			
 			((equal? p_s "#Q")
 			 (array-set! res -1 (- m 2) (- n 1))))))))
@@ -1957,7 +1978,7 @@
 ;   - "#Pascal".
 ;   - "#Idempotent".
 ;   - "#Metzler".
-- p_a1: matrix.
+; - p_a1: matrix.
 ;
 (define (grsp-matrix-identify p_s1 p_a1)
   (let ((res1 #f)
@@ -2066,4 +2087,4 @@
 
     res1))
     
-
+    

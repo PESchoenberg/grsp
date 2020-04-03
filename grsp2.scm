@@ -56,7 +56,8 @@
 	    grsp-method-newton
 	    grsp-method-euler
 	    grsp-lerp
-	    grsp-givens-rotation))
+	    grsp-givens-rotation
+	    grsp-fitin))
 
 
 ; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -545,7 +546,7 @@
     res))
 
 
-; grsp-fermat-number - Produces a Fermat numbernumber.
+; grsp-fermat-number - Produces a Fermat number.
 ;
 ; Arguments:
 ; - p_n: non-negative integer.
@@ -758,3 +759,26 @@
     
     res1))
 
+
+; grsp-fitin - truncates p_n1 if it does not fit in the interval [p_nmin, p_nmax].
+;
+; Arguments:
+; - p_n1: real.
+; - p_nmin: lower bounday of interval.
+; - p_nmax: higher boundary of th interval.
+;
+; Output:
+; - p_n1 if it is in [p_nmin,p:nmax]
+; - p_nmin if p_n1 < p_nmin.
+; - p_nmax if p_n1 > p_nmax.
+;
+(define (grsp-fitin p_n1 p_nmin p_nmax)
+  (let ((res1 p_n1))
+
+    (cond ((> p_n1 p_nmax)
+	   (set! res1 p_nmax))
+	  ((< p_n1 p_nmin)
+	   (set! res1 p_nmin)))
+
+  res1))
+	  
