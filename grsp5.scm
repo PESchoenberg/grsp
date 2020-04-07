@@ -23,7 +23,9 @@
 ;
 ; ==============================================================================
 
+
 ; https://en.wikipedia.org/wiki/Probability
+; https://en.wikipedia.org/wiki/Bayes%27_theorem
 
 (define-module (grsp grsp5)
   #:use-module (grsp grsp0)
@@ -42,20 +44,29 @@
 	    grsp-pcond))
 
 
-; grsp-feature-scaling - scales (normalizes) p_n between [0,1].
+; grsp-feature-scaling - scales p_n to the interval [p_nmin, p_nmax].
 ;
 ; Arguments:
-; - p_n: scalar.
+; - p_n1: scalar, real.
 ; - p_nmin: min value for p_n.
 ; - p_max: max value for p_x.
 ;
 ; Sources:
 ; - https://www.statisticshowto.datasciencecentral.com/normalized/
 ;
-(define (grsp-feature-scaling p_n p_nmin p_nmax)
-  (let ((res1 0))
+; Notes:
+; - If p_n1 lies outside the interval [p_nmin, p_nmax] the function will trunctate 
+; p_n1 to fit it within the interval.
+;
+(define (grsp-feature-scaling p_n1 p_nmin p_nmax)
+  (let ((res1 0.0))
 
-    (set! res1 (* 1.0 (/ (- p_n p_nmin) (- p_nmax p_nmin))))
+    (cond ((> p_n1 p_nmax)
+	   (set! p_nmax p_n1))
+	  ((< p_n1 p_nmin)
+	   (set! p_nmin p_n1)))
+    (set! res1 (* 1.0 (/ (- p_n1 p_nmin) (- p_nmax p_nmin))))
+    
     res1))
 
 
@@ -70,9 +81,10 @@
 ; - https://www.statisticshowto.datasciencecentral.com/normalized/
 ;
 (define (grsp-z-score p_n1 p_m1 p_s1)
-  (let ((res1 0))
+  (let ((res1 0.0))
 
     (set! res1 (* 1.0 (/ (- p_n1 p_m1) p_s1)))
+    
     res1))
 
 
@@ -90,7 +102,7 @@
 ; - p_n3: real.
 ;
 (define (grsp-binop p_s1 p_n1 p_n2 p_n3)
-  (let ((res1 0))
+  (let ((res1 0.0))
 
     (cond  ((equal? p_s1 "#+")
 	    (set! res1 (expt (+ p_n1 p_n2) p_n3)))
@@ -110,9 +122,9 @@
 ;- p_n1: real representing a probability in [0,1]
 ;
 (define (grsp-pnot p_n1)
-  (let ((res1 1))
+  (let ((res1 1.0))
 
-    (set! res1 (- res1 (grsp-fitin p_n1 0.0 1.0)))
+    (set! res1 (- res1 (grsp-fitin-0-1 p_n1)))
 
     res1))
 
@@ -125,28 +137,28 @@
 ;- p_n2: real repesenting a probability in [0,1]
 ;
 (define (grsp-pand p_n1 p_n2)
-  (let ((res1 1))
+  (let ((res1 1.0))
 
-    (set! res1 (* (grsp-fitin p_n1 0.0 1.0) (grsp-fitin p_n2 0.0 1.0)))
+    (set! res1 (* (grsp-fitin-0-1 p_n1) (grsp-fitin-0-1 p_n2)))
 
     res1))
 
 
 ; grsp-pnand - calculates the probability of p_n1 and p_n2 happening, 
-; being not independent.
+; being those not independent.
 ;
 ; Arguments:
 ;- p_n1: real repesenting a probability in [0,1]
 ;- p_n2: real repesenting a probability in [0,1]
 ;
 (define (grsp-pnand p_n1 p_n2)
-  (let ((res1 1)
-	(n1 0)
-	(n2 0))
+  (let ((res1 1.0)
+	(n1 0.0)
+	(n2 0.0))
 
-    (set! n1 (grsp-fitin p_n1 0.0 1.0))
-    (set! n2 (grsp-fitin p_n2 0.0 1.0)) 
-    (set! res1 (* (grsp-pcond n1 n2) n2))
+    (set! n1 (grsp-fitin-0-1 p_n1))
+    (set! n2 (grsp-fitin-0-1 p_n2)) 
+    (set! res1 (* (grsp-pand n1 n2) n2))
     
     res1))
 
@@ -158,12 +170,12 @@
 ;- p_n2: real repesenting a probability in [0,1]
 ;
 (define (grsp-por p_n1 p_n2)
-  (let ((res1 1)
-	(n1 0)
-	(n2 0))
+  (let ((res1 1.0)
+	(n1 0.0)
+	(n2 0.0))
 
-    (set! n1 (grsp-fitin p_n1 0.0 1.0))
-    (set! n2 (grsp-fitin p_n2 0.0 1.0))    
+    (set! n1 (grsp-fitin-0-1 p_n1))
+    (set! n2 (grsp-fitin-0-1 p_n2))    
     (set! res1 (- (+ n1 n2) (grsp-pand n1 n2)))
 
     res1))
@@ -177,12 +189,12 @@
 ;- p_n2: real repesenting a probability in [0,1]
 ;
 (define (grsp-pxor p_n1 p_n2)
-  (let ((res1 0)
-	(n1 0)
-	(n2 0))
+  (let ((res1 0.0)
+	(n1 0.0)
+	(n2 0.0))
 
-    (set! n1 (grsp-fitin p_n1 0.0 1.0))
-    (set! n2 (grsp-fitin p_n2 0.0 1.0))    
+    (set! n1 (grsp-fitin-0-1 p_n1))
+    (set! n2 (grsp-fitin-0-1 p_n2))    
     (cond ((<= (+ n1 n2) 1)
 	   (set! res1 (+ n1 n2))))
 
@@ -196,13 +208,13 @@
 ;- p_n2: real repesenting a probability in [0,1]
 ;
 (define (grsp-pcond p_n1 p_n2)
-  (let ((res1 0)
-	(n1 0)
-	(n2 0))
+  (let ((res1 0.0)
+	(n1 p_n1)
+	(n2 p_n2))
 
-    (set! n1 (grsp-fitin p_n1 0.0 1.0))
-    (set! n2 (grsp-fitin p_n2 0.0 1.0))
-    (cond ((> n2 0)
+    (set! n1 (grsp-fitin-0-1 p_n1))
+    (set! n2 (grsp-fitin-0-1 p_n2))
+    (cond ((> n2 0.0)
 	   (set! res1 (/ (grsp-pand n1 n2) n2))))
 
     res1))
