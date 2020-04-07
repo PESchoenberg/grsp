@@ -57,7 +57,8 @@
 	    grsp-method-euler
 	    grsp-lerp
 	    grsp-givens-rotation
-	    grsp-fitin))
+	    grsp-fitin
+	    grsp-fitin-0-1))
 
 
 ; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -780,5 +781,16 @@
 	  ((< p_n1 p_nmin)
 	   (set! res1 p_nmin)))
 
-  res1))
+    res1))
+
+
+; grsp-fitin-0-1 - applies grsp-fitin to p_n1 within the interval [0.0,1.0]
+;
+; Arguments:
+; p_n1: real.
+;
+(define (grsp-fitin-0-1 p_n1)
+
+  (grsp-fitin p_n1 0.0 1.0))
+
 	  
