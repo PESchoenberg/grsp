@@ -583,7 +583,7 @@
 ; - p_a: matrix. 
 ; - p_l: column or row number.
 ;
-; Note:
+; Notes:
 ; - Value for argument p_l should be passed as 0 if not used. It is only
 ;   needed for row and column operations.
 ;
@@ -1164,7 +1164,7 @@
 ; - p_n: row or col number to delete.
 ;
 ; Notes:
-; - Still buggy.
+; - Unstable.
 ;
 (define (grsp-matrix-subdel p_s p_a p_n)
   (let ((res1 p_a)
@@ -2051,7 +2051,7 @@
     res1))
 
 
-; grsp-matrix-is-metzler - Returns #t if matrix p_a1 is of metzler type, #f
+; grsp-matrix-is-metzler - Returns #t if matrix p_a1 is of Metzler type, #f
 ; otherwise.
 ;
 ; Arguments:

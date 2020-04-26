@@ -82,7 +82,7 @@
     res))
 
 
-; grsp-sign: returns 1 if p_n1 >= 0, -1 otherwise.
+; grsp-sign - Returns 1 if p_n1 >= 0, -1 otherwise.
 ;
 ; Arguments:
 ; - p_n1: real number.
@@ -481,7 +481,7 @@
     res))
 
 
-; grsp-wagstaff-number - Producesa Wagstaff number of base p_b.
+; grsp-wagstaff-number - Produces a Wagstaff number of base p_b.
 ;
 ; Arguments:
 ; - p_n: natural number.
@@ -512,7 +512,7 @@
 ; - p_b: Natural number >= 2.
 ;
 ; Output:
-; - If conditions for arguments are met, the result is a Wagstaff number. Otherwise
+; - If conditions for arguments are met, the result is a Williams number. Otherwise
 ; the function returns zero.
 ;
 ; Sources:
@@ -761,7 +761,7 @@
     res1))
 
 
-; grsp-fitin - truncates p_n1 if it does not fit in the interval [p_nmin, p_nmax].
+; grsp-fitin - Truncates p_n1 if it does not fit in the interval [p_nmin, p_nmax].
 ;
 ; Arguments:
 ; - p_n1: real.
@@ -784,7 +784,7 @@
     res1))
 
 
-; grsp-fitin-0-1 - applies grsp-fitin to p_n1 within the interval [0.0,1.0]
+; grsp-fitin-0-1 - Applies grsp-fitin to p_n1 within the interval [0.0,1.0]
 ;
 ; Arguments:
 ; p_n1: real.
