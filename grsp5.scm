@@ -41,10 +41,11 @@
 	    grsp-pnand
 	    grsp-por
 	    grsp-pxor
-	    grsp-pcond))
+	    grsp-pcond
+		grsp-pcomp))
 
 
-; grsp-feature-scaling - scales p_n to the interval [p_nmin, p_nmax].
+; grsp-feature-scaling - Scales p_n to the interval [p_nmin, p_nmax].
 ;
 ; Arguments:
 ; - p_n1: scalar, real.
@@ -70,7 +71,7 @@
     res1))
 
 
-; grsp-z-score - calculates the z score for a sample data point.
+; grsp-z-score - Calculates the z score for a sample data point.
 ;
 ; Arguments:
 ; - p_n1: data point.
@@ -88,7 +89,7 @@
     res1))
 
 
-; grsp-binop - performs operation p_s1 on p_n1 and p_n2 and calculates the p_n3
+; grsp-binop - Performs operation p_s1 on p_n1 and p_n2 and calculates the p_n3
 ; power of that binomial operation.
 ;
 ; Arguments:
@@ -116,7 +117,7 @@
     res1))
 
 
-; grsp-pnot - calculates the complementary probability of p_n1.
+; grsp-pnot - Calculates the complementary probability of p_n1.
 ;
 ; Arguments:
 ;- p_n1: real representing a probability in [0,1]
@@ -129,7 +130,7 @@
     res1))
 
 
-; grsp-pand - calculates the probability of p_n1 and p_n2 happening, 
+; grsp-pand - Calculates the probability of p_n1 and p_n2 happening, 
 ; being independent.
 ;
 ; Arguments:
@@ -144,7 +145,7 @@
     res1))
 
 
-; grsp-pnand - calculates the probability of p_n1 and p_n2 happening, 
+; grsp-pnand - Calculates the probability of p_n1 and p_n2 happening, 
 ; being those not independent.
 ;
 ; Arguments:
@@ -163,7 +164,7 @@
     res1))
 
 
-; grsp-por - calculates the probability of p_n1 or p_n2 happening.
+; grsp-por - Calculates the probability of p_n1 or p_n2 happening.
 ;
 ; Arguments:
 ;- p_n1: real repesenting a probability in [0,1]
@@ -181,7 +182,7 @@
     res1))
 
 
-; grsp-pxor - calculates the probability of p_n1 or p_n2 happening, 
+; grsp-pxor - Calculates the probability of p_n1 or p_n2 happening, 
 ; beign mutually exclusive.
 ;
 ; Arguments:
@@ -201,7 +202,7 @@
     res1))
 
 
-; grsp-pcond - calculates the probability of p_n1 given p_n2 happening.
+; grsp-pcond - Calculates the probability of p_n1 given p_n2 happening.
 ;
 ; Arguments:
 ;- p_n1: real repesenting a probability in [0,1]
@@ -218,4 +219,20 @@
 	   (set! res1 (/ (grsp-pand n1 n2) n2))))
 
     res1))
+
+
+; grsp-pcomp - Given that (expt (abs p_n1) 2) + (expt (abs n2) 2) = 1, and given 
+; p_n1 as a parameter, it returns (abs n2) as result.
+;
+; Arguments:
+;- p_n1: real repesenting a probability in [0,1]
+;
+(define (grsp-pcomp p_n1)
+  (let ((res1 0.0))
+
+	(set! res1 (sqrt (- 1 (expt (abs p_n1) 2))))
+
+	res1))
+
+
 

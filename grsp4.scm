@@ -102,7 +102,7 @@
     res1))
 
 
-; grsp-complex-sign: returns a list containing boolean values indicating the  
+; grsp-complex-sign - Returns a list containing boolean values indicating the  
 ; signs of the real and imaginary parts of a complex number.
 
 ; Arguments:
