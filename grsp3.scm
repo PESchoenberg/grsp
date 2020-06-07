@@ -43,7 +43,7 @@
 ;   https://en.wikipedia.org/wiki/List_of_matrices [Accessed 8 Mar. 2020].
 ;
 ; REPL examples:
-; (use-modules (grsp grsp0)(grsp grsp1)(grsp grsp2)(grsp grsp3)(grsp grsp4)
+; (use-modules (grsp grsp0)(grsp grsp1)(grsp grsp2)(grsp grsp3)(grsp grsp4)(grsp grsp5))
 ; (define X (grsp-matrix-create 1 4 4))
 ; (define Y (grsp-matrix-create 2 4 4))
 ; (define R (grsp-matrix-opew "#+" X Y))
@@ -51,6 +51,8 @@
 
 (define-module (grsp grsp3)
   #:use-module (grsp grsp2)
+  #:use-module (grsp grsp1)
+  #:use-module (grsp grsp0)
   #:use-module (grsp grsp4)  
   #:export (grsp-matrix-esi
 	    grsp-matrix-create
@@ -91,7 +93,13 @@
 	    grsp-matrix-is-signature
 	    grsp-matrix-is-single-entry
 	    grsp-matrix-identify
-	    grsp-matrix-is-metzler))
+	    grsp-matrix-is-metzler
+	    grsp-l2m
+	    grsp-m2l
+	    grsp-dbc2mc
+	    grsp-mc2dbc
+	    grsp-mc2dbc-sqlite3
+	    grsp-mc2dbc-hdf5))
 
 
 ; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -2087,4 +2095,192 @@
 
     res1))
     
+
+; grsp-l2m - Casts a list p_l1 of n elements as a 1 x n matrix.
+;
+;  Arguments:
+;  p_l1: list.
+;
+(define (grsp-l2m p_l1)
+  (let ((res1 (grsp-matrix-create 0 1 (length p_l1)))
+	(i1 0)
+	(n1 (- (length p_l1) 1)))
+
+    ; Cycle over the list and copy its elements to the matrix.
+    (while (<= i1 n1)
+	   (array-set! res1 (list-ref p_l1 i1) 0 i1)
+	   (set! i1 (+ i1 1)))
     
+    res1))
+    
+
+; grsp-m2l - Casts a 1 x n matrix p_a1 as a list of n elements.
+;
+; Arguments:
+; - p_a1: matrix.
+;
+(define (grsp-m2l p_a1)
+  (let ((res1 '())
+	(i1 0)
+	(n1 0)
+	(ln1 0)
+	(hn1 0))
+
+    ; Extract the boundaries of the matrix.
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1))
+
+    ; Create the list based on the dimensions of the matrix.
+    (set! n1 (+ 1 (- hn1 ln1)))
+    (set! res1 (make-list n1 0))
+
+    ; Cycle over the matrix and copy its elements to the list.
+    (while (< i1 n1)
+	   (list-set! res1 i1 (array-ref p_a1 0 i1))
+	   (set! i1 (+ i1 1)))
+    
+    res1))
+
+
+; grsp-dbc2cm - Fills a matrix of complex or complex-subset numbers with the
+; contents of a database containing serializaed complex or complex-subset
+; numbers.
+;
+; Arguments;
+; - p_db1: database name.
+; - p_q1: database query.
+;
+(define (grsp-dbc2mc p_db1 p_q1)
+  (let ((res1 0))
+
+    res1))
+
+
+; grsp-mc2dbc - Creates a database table or dataset for complex or complex-subset
+; numbers from matrix p_a1, which contains complex or complex-subset numbers. 
+;
+; Arguments:
+; - p_d1: database name.
+; - p_a1: matrix.
+; - p_t1: table name.
+;
+(define (grsp-mc2dbc p_d1 p_a1 p_t1)
+  (cond ((>= (string-contains p_d1 ".db") 0)
+	 (grsp-mc2dbc-sqlite3 p_d1 p_a1 p_t1))
+	((>= (string-contains p_d1 ".h5") 0)
+	 (grsp-mc2dbc-hdf5 p_d1 p_a1 p_t1))))
+	
+
+; grsp-mc2dbc-sqlite3 - Creates a Sqlite3 table or dataset for complex or complex-subset
+; numbers from matrix p_a1, which contains complex or complex-subset numbers. 
+;
+; Arguments:
+; - p_d1: database name.
+; - p_a1: matrix.
+; - p_t1: table name.
+;
+(define (grsp-mc2dbc-sqlite3 p_d1 p_a1 p_t1)
+  (let ((q1 "")
+	(q2 "")
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(i1 0)
+	(j1 0)
+	(vr 0)
+	(vi 0)
+	(vm 0)
+	(vn 0)
+	(ve 0))
+
+    ; Extract the boundaries of the matrix.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1))
+
+    ; Define its size.
+    (set! vm (+ (- hm1 lm1) 1))
+    (set! vn (+ (- hn1 ln1) 1))    
+	
+    ; We have to create the table and, if necessary, the database.
+    (set! q1 (strings-append (list "CREATE TABLE" p_t1 "(Id INTEGER PRIMARY KEY UNIQUE, Vm INTEGER, Vn INTEGER, Vr REAL, Vi REAL);") 1))
+    (system (strings-append (list "./sqlp " p_d1 " \"" q1 "\"") 0))
+
+    ; Loop over p_a1 and extract each value and insert it into the new table.
+    (set! i1 0)
+    (while (< i1 vm)
+	   (set! j1 0)
+	   (while (< j1 vn)
+		  ; Extract and analize each element of the matrix.
+		  (set! ve (array-ref p_a1 i1 j1))
+		  (set! vi 0)
+		  (cond ((complex? ve)
+			 (set! vr (real-part ve))
+			 (set! vi (imag-part ve))))
+
+		  ; Insert each element as a record in the database.
+		  (set! q2 (strings-append (list (grsp-n2s i1) ", " (grsp-n2s j1) ", " (grsp-n2s vr) ", " (grsp-n2s vi)) 0))
+		  (set! q1 (strings-append (list "INSERT INTO " p_t1 " (Vm, Vn, Vr, Vi) VALUES (" q2 ");") 0))
+		  (system (strings-append (list "./sqlp " p_d1 " \"" q1 "\"") 0))
+		  (set! j1 (+ j1 1)))
+	   (set! i1 (+ i1 1)))))
+
+
+; grsp-mc2dbc-hdf5 - Creates an HDF5 table or dataset for complex or complex-subset
+; numbers from matrix p_a1, which contains complex or complex-subset numbers. 
+;
+; Arguments:
+; - p_d1: database name.
+; - p_a1: matrix.
+; - p_t1: table name.
+;
+(define (grsp-mc2dbc-hdf5 p_d1 p_a1 p_t1)
+  (let ((q1 "")
+	(q2 "")
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(i1 0)
+	(j1 0)
+	(vr 0)
+	(vi 0)
+	(vm 0)
+	(vn 0)
+	(ve 0))
+
+    ; Extract the boundaries of the matrix.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1))
+
+    ; Define its size.
+    (set! vm (+ (- hm1 lm1) 1))
+    (set! vn (+ (- hn1 ln1) 1))    
+	
+    ; We have to create the table and, if necessary, the database.
+    (set! q1 (strings-append (list "CREATE TABLE" p_t1 "(Id INTEGER PRIMARY KEY UNIQUE, Vm INTEGER, Vn INTEGER, Vr REAL, Vi REAL);") 1))
+    (system (strings-append (list "./sqlp " p_d1 " \"" q1 "\"") 0))
+
+    ; Loop over p_a1 and extract each value and insert it into the new table.
+    (set! i1 0)
+    (while (< i1 vm)
+	   (set! j1 0)
+	   (while (< j1 vn)
+		  ; Extract and analize each element of the matrix.
+		  (set! ve (array-ref p_a1 i1 j1))
+		  (set! vi 0)
+		  (cond ((complex? ve)
+			 (set! vr (real-part ve))
+			 (set! vi (imag-part ve))))
+
+		  ; Insert each element as a record in the database.
+		  (set! q2 (strings-append (list (grsp-n2s i1) ", " (grsp-n2s j1) ", " (grsp-n2s vr) ", " (grsp-n2s vi)) 0))
+		  (set! q1 (strings-append (list "INSERT INTO " p_t1 " (Vm, Vn, Vr, Vi) VALUES (" q2 ");") 0))
+		  (system (strings-append (list "./sqlp " p_d1 " \"" q1 "\"") 0))
+		  (set! j1 (+ j1 1)))
+	   (set! i1 (+ i1 1)))))
+
