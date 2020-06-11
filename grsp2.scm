@@ -1,27 +1,27 @@
-; ==============================================================================
-;
-; grsp2.scm
-;
-; Real number functions.
-;
-; ==============================================================================
-;
-; Copyright (C) 2018  Pablo Edronkin (pablo.edronkin at yahoo.com)
-;
-;   This program is free software: you can redistribute it and/or modify
-;   it under the terms of the GNU Lesser General Public License as published by
-;   the Free Software Foundation, either version 3 of the License, or
-;   (at your option) any later version.
-;
-;   This program is distributed in the hope that it will be useful,
-;   but WITHOUT ANY WARRANTY; without even the implied warranty of
-;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;   GNU Lesser General Public License for more details.
-;
-;   You should have received a copy of the GNU Lesser General Public License
-;   along with this program. If not, see <https://www.gnu.org/licenses/>.
-;
-; ==============================================================================
+;; =============================================================================
+;;
+;; grsp2.scm
+;;
+;; Real number functions.
+;;
+;; =============================================================================
+;;
+;; Copyright (C) 2018  Pablo Edronkin (pablo.edronkin at yahoo.com)
+;;
+;;   This program is free software: you can redistribute it and/or modify
+;;   it under the terms of the GNU Lesser General Public License as published by
+;;   the Free Software Foundation, either version 3 of the License, or
+;;   (at your option) any later version.
+;;
+;;   This program is distributed in the hope that it will be useful,
+;;   but WITHOUT ANY WARRANTY; without even the implied warranty of
+;;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;;   GNU Lesser General Public License for more details.
+;;
+;;   You should have received a copy of the GNU Lesser General Public License
+;;   along with this program. If not, see <https://www.gnu.org/licenses/>.
+;;
+;; =============================================================================
 
 
 (define-module (grsp grsp2)
@@ -61,18 +61,18 @@
 	    grsp-fitin-0-1))
 
 
-; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
-; this function is equivalent to the sgn math function.
-;
-; Arguments:
-; - p_n1: number.
-; - p_n2: number.
-;
-; Output:
-; - 1 if (> p_n1 p_n2).
-; - 0 if (= p_n1 p_n2).
-; - -1 if (< p_n1 p_n2).
-;
+;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
+;; this function is equivalent to the sgn math function.
+;;
+;; Arguments:
+;; - p_n1: number.
+;; - p_n2: number.
+;;
+;; Output:
+;; - 1 if (> p_n1 p_n2).
+;; - 0 if (= p_n1 p_n2).
+;; - (-1) if (< p_n1 p_n2).
+;;
 (define (grsp-gtels p_n1 p_n2)
   (let ((res 0))
 
@@ -82,11 +82,11 @@
     res))
 
 
-; grsp-sign - Returns 1 if p_n1 >= 0, -1 otherwise.
-;
-; Arguments:
-; - p_n1: real number.
-;
+;; grsp-sign - Returns 1 if p_n1 >= 0, -1 otherwise.
+;;
+;; Arguments:
+;; - p_n1: real number.
+;;
 (define (grsp-sign p_n1)
   (let ((res1 0))
 
@@ -97,16 +97,17 @@
 	res1))
 
 
-; grsp-eiget - Finds out if p_n1 is an exact integer equal or greater than p_n2.
-;
-; Arguments:
-; - p_n1: integer.
-; - p_n2: integer.
-;
-; Output:
-; - Returns #t if p_n1 is an integer and equal or greater than p_n2. Returns #f
-;   otherwise.
-;
+;; grsp-eiget - Finds out if p_n1 is an exact integer equal or greater than
+;; p_n2.
+;;
+;; Arguments:
+;; - p_n1: integer.
+;; - p_n2: integer.
+;;
+;; Output:
+;; - Returns #t if p_n1 is an integer and equal or greater than p_n2. Returns #f
+;;   otherwise.
+;;
 (define (grsp-eiget p_n1 p_n2)
   (let ((res #f))
 
@@ -117,16 +118,16 @@
     res))
 
 
-; grsp-is-prime - This is a very simple procedure, inefficient but sufficient for
-; small numbers to find if they are prime or not. For large numbers other methods
-; qill likely be more adequate.
-;
-; Arguments:
-; - p_n: integer.
-;
-; Output: 
-; - Returns #f of p_n is prime, #f otherwise.
-;
+;; grsp-is-prime - This is a very simple procedure, inefficient but sufficient 
+;; for small numbers to find if they are prime or not. For large numbers other
+;; methods qill likely be more adequate.
+;;
+;; Arguments:
+;; - p_n: integer.
+;;
+;; Output: 
+;; - Returns #f of p_n is prime, #f otherwise.
+;;
 (define (grsp-is-prime p_n)
   (let ((res #t)
 	(cyc #f)
@@ -145,14 +146,14 @@
     res))
 
 
-; grsp-fact - Calculates the factorial of p_n.
-;
-; Arguments:
-; - p_n: natural number.
-; 
-; Output:
-; - Returns 1 if p_n is not a natural number. Factorial of p_n otherwise.
-;
+;; grsp-fact - Calculates the factorial of p_n.
+;;
+;; Arguments:
+;; - p_n: natural number.
+;; 
+;; Output:
+;; - Returns 1 if p_n is not a natural number. Factorial of p_n otherwise.
+;;
 (define (grsp-fact p_n)
   (let ((res 1))
 
@@ -162,14 +163,14 @@
     res))
 
 
-; grsp-sumat - Calculates the summation of p_n.
-;
-; Arguments:
-; - p_n: integer >= 0.
-; 
-; Output:
-; - Returns 0 if p_n is not a natural number. Summation value of p_n otherwise.
-;
+;; grsp-sumat - Calculates the summation of p_n.
+;;
+;; Arguments:
+;; - p_n: integer >= 0.
+;; 
+;; Output:
+;; - Returns 0 if p_n is not a natural number. Summation value of p_n otherwise.
+;;
 (define (grsp-sumat p_n)
   (let ((res 0))
 
@@ -179,17 +180,17 @@
     res))
 
 
-; grsp-biconr - Binomial coefficient. Les you choose p_k elements from a set of
-; p_n elements without repetition.
-; 
-; Arguemnts:
-; - p_n: integer >= 0
-; - p_k: integer between [0, p_n].
-;
-; Sources:
-; - En.wikipedia.org. (2020). Binomial coefficient. [online] Available at:
-;   https://en.wikipedia.org/wiki/Binomial_coefficient [Accessed 13 Jan. 2020].
-;
+;; grsp-biconr - Binomial coefficient. Les you choose p_k elements from a set of
+;; p_n elements without repetition.
+;; 
+;; Arguemnts:
+;; - p_n: integer >= 0
+;; - p_k: integer between [0, p_n].
+;;
+;; Sources:
+;; - En.wikipedia.org. (2020). Binomial coefficient. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Binomial_coefficient [Accessed 13 Jan. 2020].
+;;
 (define (grsp-biconr p_n p_k)
   (let ((res 0))
 
@@ -201,17 +202,17 @@
     res))
 
 
-; grsp-bicowr - Binomial coefficient. Les you choose p_k elements from a set of
-; p_n elements with repetition.
-; 
-; Arguemnts:
-; - p_n: integer >= 0
-; - p_k: integer >= 0 and <= p_n.
-;
-; Sources:
-; - En.wikipedia.org. (2020). Binomial coefficient. [online] Available at:
-;   https://en.wikipedia.org/wiki/Binomial_coefficient [Accessed 13 Jan. 2020].
-;
+;; grsp-bicowr - Binomial coefficient. Les you choose p_k elements from a set of
+;; p_n elements with repetition.
+;; 
+;; Arguemnts:
+;; - p_n: integer >= 0
+;; - p_k: integer >= 0 and <= p_n.
+;;
+;; Sources:
+;; - En.wikipedia.org. (2020). Binomial coefficient. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Binomial_coefficient [Accessed 13 Jan. 2020].
+;;
 (define (grsp-bicowr p_n p_k)
   (let ((res 0))
 
@@ -220,17 +221,17 @@
     res))
 
 
-; grsp-gtls - "gtls = Greater than, less than" Finds if number p_n1 is greater
-; than p_n2 and smaller than p_n3, or in the interval (p_n2:p_n3).
-;
-; Arguments:
-; - p_n1
-; - p_n2
-; - p_n3
-; 
-; Output:
-; - Returns #t if the condition holds. #f otherwise.
-;
+;; grsp-gtls - "gtls = Greater than, less than" Finds if number p_n1 is greater
+;; than p_n2 and smaller than p_n3, or in the interval (p_n2:p_n3).
+;;
+;; Arguments:
+;; - p_n1
+;; - p_n2
+;; - p_n3
+;; 
+;; Output:
+;; - Returns #t if the condition holds. #f otherwise.
+;;
 (define (grsp-gtls p_n1 p_n2 p_n3)
   (let ((res #f))
 
@@ -241,17 +242,17 @@
     res))
 
 
-; grsp-getles - "getles = Greater or equal than, less or equal than" Finds if
-; number p_n1 is greater or equal than p_n2 and smaller or equal than p_n3.
-;
-; Arguments:
-; - p_n1
-; - p_n2
-; - p_n3
-; 
-; Output:
-; - Returns #t if the condition holds. #f otherwise.
-;
+;; grsp-getles - "getles = Greater or equal than, less or equal than" Finds if
+;; number p_n1 is greater or equal than p_n2 and smaller or equal than p_n3.
+;;
+;; Arguments:
+;; - p_n1
+;; - p_n2
+;; - p_n3
+;; 
+;; Output:
+;; - Returns #t if the condition holds. #f otherwise.
+;;
 (define (grsp-getles p_n1 p_n2 p_n3)
   (let ((res #f))
 
@@ -262,14 +263,14 @@
     res))
 
 
-; grsp-k2nb - Returns the value of (p_k * (p_r**p_n)) + p_b
-;
-; Arguments:
-; - p_k
-; - p_r
-; - p_n
-; - p_b
-; 
+;; grsp-k2nb - Returns the value of (p_k * (p_r**p_n)) + p_b
+;;
+;; Arguments:
+;; - p_k
+;; - p_r
+;; - p_n
+;; - p_b
+;; 
 (define (grsp-krnb p_k p_r p_n p_b)
   (let ((res 0))
 
@@ -278,19 +279,19 @@
     res))
 
 
-; grsp-bpp - Bailey–Borwein–Plouffe formula.
-;
-; Arguments:
-; - p_k: summation iterations desired.
-; - p_b: integer base.
-; - p_pf: polynomial with integer coef.
-; - p_qf: polynomial with integer coef.
-;
-; Sources:
-; - En.wikipedia.org. (2020). Bailey–Borwein–Plouffe formula. [online]
-;   Available at: https://en.wikipedia.org/wiki/Bailey%E2%80%93Borwein%E2%80%93
-;   Plouffe_formula [Accessed 9 Jan. 2020].
-;
+;; grsp-bpp - Bailey–Borwein–Plouffe formula.
+;;
+;; Arguments:
+;; - p_k: summation iterations desired.
+;; - p_b: integer base.
+;; - p_pf: polynomial with integer coef.
+;; - p_qf: polynomial with integer coef.
+;;
+;; Sources:
+;; - En.wikipedia.org. (2020). Bailey–Borwein–Plouffe formula. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Bailey%E2%80%93Borwein%E2%80%93
+;;   Plouffe_formula [Accessed 9 Jan. 2020].
+;;
 (define (grsp-bpp p_k p_b p_pf p_qf)
   (let ((res 0)
 	(k 0))
@@ -304,21 +305,21 @@
     res))
 			 
 
-; grsp-sexp - Performs a non-recursive tetration operation on p_x of height
-; p_n. sexp stands for super exponential.
-;
-; Arguments;
-; - p_x: base.
-; - p_n: rank or height of the power tower.
-;
-; Note:
-; - This operation might have a significant impact on the performance of your 
-;   computer due to its very fast function growth. Use with care.
-;
-; Sources:
-; - En.wikipedia.org. (2020). Hyperoperation. [online] Available at:
-;   https://en.wikipedia.org/wiki/Hyperoperation [Accessed 1 Jan. 2020].
-;
+;; grsp-sexp - Performs a non-recursive tetration operation on p_x of height
+;; p_n. sexp stands for super exponential.
+;;
+;; Arguments;
+;; - p_x: base.
+;; - p_n: rank or height of the power tower.
+;;
+;; Note:
+;; - This operation might have a significant impact on the performance of your 
+;;   computer due to its very fast function growth. Use with care.
+;;
+;; Sources:
+;; - En.wikipedia.org. (2020). Hyperoperation. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Hyperoperation [Accessed 1 Jan. 2020].
+;;
 (define (grsp-sexp p_x p_n)
   (let ((x p_x)
 	(n p_n)
@@ -335,18 +336,18 @@
     res))
 
 
-; grsp-slog - Performs a non-recursive super logarithm operation on p_x of height
-; p_n.
-;
-; Arguments;
-; - p_x: base.
-; - p_n: rank or height of the power tower of the super exponentiation for which.
-;   grsp-slog is inverse.
-;
-; Note:
-; - This operation might have a significant impact on the performance of your 
-;   computer due to its very fast function growth. Use with care.
-;
+;; grsp-slog - Performs a non-recursive super logarithm operation on p_x of
+;; height p_n.
+;;
+;; Arguments;
+;; - p_x: base.
+;; - p_n: rank or height of the power tower of the super exponentiation for
+;;   which grsp-slog is inverse.
+;;
+;; Note:
+;; - This operation might have a significant impact on the performance of your 
+;;   computer due to its very fast function growth. Use with care.
+;;
 (define (grsp-slog p_x p_n)
   (let ((res 0))
 
@@ -355,20 +356,20 @@
     res))
 
 
-; grsp-woodall-number - Calculates the Woodall number of p_n.
-;
-; Arguments:
-; - p_n: natural number.
-;
-; Output:
-; - If p_n is not a natural number, the function returns 1. Otherwise, it
-;   returns the Woodall number of p_n.
-;
-; Sources:
-; - En.wikipedia.org. (2020). Woodall number. [online] Available at:
-;   https://en.wikipedia.org/wiki/Woodall_number
-;   [Accessed 6 Jan. 2020].En.wikipedia.org. (2020).
-;
+;; grsp-woodall-number - Calculates the Woodall number of p_n.
+;;
+;; Arguments:
+;; - p_n: natural number.
+;;
+;; Output:
+;; - If p_n is not a natural number, the function returns 1. Otherwise, it
+;;   returns the Woodall number of p_n.
+;;
+;; Sources:
+;; - En.wikipedia.org. (2020). Woodall number. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Woodall_number
+;;   [Accessed 6 Jan. 2020].En.wikipedia.org. (2020).
+;;
 (define (grsp-woodall-number p_n)
   (let ((res 1))
 
@@ -378,19 +379,19 @@
     res))
 
 
-; grsp-cullen-number - Calculates the Cullen number of p_n.
-;
-; Arguments:
-; - p_n: any natural number.
-;
-; Output:
-; - If p_n is not a natural number, the function returns 1. Otherwise, it
-;   returns the Cullen number of p_n.
-;
-; Sources:
-; - En.wikipedia.org. (2020). Cullen number. [online] Available at:
-;   https://en.wikipedia.org/wiki/Cullen_number [Accessed 6 Jan. 2020].
-;
+;; grsp-cullen-number - Calculates the Cullen number of p_n.
+;;
+;; Arguments:
+;; - p_n: any natural number.
+;;
+;; Output:
+;; - If p_n is not a natural number, the function returns 1. Otherwise, it
+;;   returns the Cullen number of p_n.
+;;
+;; Sources:
+;; - En.wikipedia.org. (2020). Cullen number. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Cullen_number [Accessed 6 Jan. 2020].
+;;
 (define (grsp-cullen-number p_n)
   (let ((res 1))
 
@@ -400,23 +401,23 @@
     res))
 
 
-; grsp-proth-number - Returns the value of a Proth number if:
-; - Both p_n and p_k are positive integers.
-; - p_k s odd.
-; - 2**p_n > p_k.
-;
-; Arguments:
-; - p_k: positive integer.
-; - p_n: positive integer.
-;
-; Output:
-; - 0 if p_n and p_k do not fill the requisites to calculate a Proth number.
-; - The Proth number if both p_n and p_k satisfy the conditions mentioned.
-;
-; Sources:
-; - En.wikipedia.org. (2020). Proth prime. [online] Available at:
-;   https://en.wikipedia.org/wiki/Proth_prime [Accessed 9 Jan. 2020].
-;
+;; grsp-proth-number - Returns the value of a Proth number if:
+;; - Both p_n and p_k are positive integers.
+;; - p_k s odd.
+;; - 2**p_n > p_k.
+;;
+;; Arguments:
+;; - p_k: positive integer.
+;; - p_n: positive integer.
+;;
+;; Output:
+;; - 0 if p_n and p_k do not fill the requisites to calculate a Proth number.
+;; - The Proth number if both p_n and p_k satisfy the conditions mentioned.
+;;
+;; Sources:
+;; - En.wikipedia.org. (2020). Proth prime. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Proth_prime [Accessed 9 Jan. 2020].
+;;
 (define (grsp-proth-number p_n p_k)
   (let ((res 0))
 
@@ -429,22 +430,23 @@
     res))
 
 
-; grsp-mersenne-number - Calculates a Mersenne number according to Mn = 2**p_n -1 .
-;
-; Arguments:
-; - p_n: positive integer.
-;
-; Output:
-; - 0 if p_n is not a positive integer.
-; - Mn if p_n is a positive integer.
-;
-; Sources:
-; - Mersenne.org. (2020). Great Internet Mersenne Prime Search - PrimeNet.
-;   [online] Available at: https://www.mersenne.org/ [Accessed 9 Jan. 2020].
-; - Mathworld.wolfram.com. (2020). Mersenne Number -- from Wolfram MathWorld.
-;   [online] Available at: http://mathworld.wolfram.com/MersenneNumber.html
-;   [Accessed 16 Jan. 2020].
-;
+;; grsp-mersenne-number - Calculates a Mersenne number according to
+;; Mn = 2**p_n -1 .
+;;
+;; Arguments:
+;; - p_n: positive integer.
+;;
+;; Output:
+;; - 0 if p_n is not a positive integer.
+;; - Mn if p_n is a positive integer.
+;;
+;; Sources:
+;; - Mersenne.org. (2020). Great Internet Mersenne Prime Search - PrimeNet.
+;;   [online] Available at: https://www.mersenne.org/ [Accessed 9 Jan. 2020].
+;; - Mathworld.wolfram.com. (2020). Mersenne Number -- from Wolfram MathWorld.
+;;   [online] Available at: http://mathworld.wolfram.com/MersenneNumber.html
+;;   [Accessed 16 Jan. 2020].
+;;
 (define (grsp-mersenne-number p_n)
   (let ((res 0))
 
@@ -454,17 +456,17 @@
     res))
 	  
 
-; grsp-repdigit-number - Produces a repdigit number composed by p_n repeated
-; p_d instances.
-;
-; Arguments:
-; - p_n: natural number between [1,9].
-; - p_d: natural number.
-;
-; Sources:
-; - En.wikipedia.org. (2020). Repdigit. [online] Available at:
-;   https://en.wikipedia.org/wiki/Repdigit [Accessed 11 Jan. 2020].
-;
+;; grsp-repdigit-number - Produces a repdigit number composed by p_n repeated
+;; p_d instances.
+;;
+;; Arguments:
+;; - p_n: natural number between [1,9].
+;; - p_d: natural number.
+;;
+;; Sources:
+;; - En.wikipedia.org. (2020). Repdigit. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Repdigit [Accessed 11 Jan. 2020].
+;;
 (define (grsp-repdigit-number p_n p_d)
   (let ((res 0)
 	(i 0))
@@ -481,20 +483,20 @@
     res))
 
 
-; grsp-wagstaff-number - Produces a Wagstaff number of base p_b.
-;
-; Arguments:
-; - p_n: natural number.
-; - p_b: natural number >= 2.
-;
-; Output:
-; - If conditions for arguments are met, the result is a Wagstaff number. Otherwise
-; the function returns zero.
-;
-; Sources:
-; - En.wikipedia.org. (2020). Wagstaff prime. [online] Available at:
-; https://en.wikipedia.org/wiki/Wagstaff_prime [Accessed 11 Jan. 2020].
-;
+;; grsp-wagstaff-number - Produces a Wagstaff number of base p_b.
+;;
+;; Arguments:
+;; - p_n: natural number.
+;; - p_b: natural number >= 2.
+;;
+;; Output:
+;; - If conditions for arguments are met, the result is a Wagstaff number.
+;;   Otherwise the function returns zero.
+;;
+;; Sources:
+;; - En.wikipedia.org. (2020). Wagstaff prime. [online] Available at:
+;; https://en.wikipedia.org/wiki/Wagstaff_prime [Accessed 11 Jan. 2020].
+;;
 (define (grsp-wagstaff-number p_n p_b)
   (let ((res 0))
 
@@ -505,20 +507,20 @@
     res))
 
 
-; grsp-williams-number - Produces a Williams number of base p_b.
-;
-; Arguments:
-; - p_n: Natural number >= 1.
-; - p_b: Natural number >= 2.
-;
-; Output:
-; - If conditions for arguments are met, the result is a Williams number. Otherwise
-; the function returns zero.
-;
-; Sources:
-; - En.wikipedia.org. (2020). Williams number. [online] Available at:
-; https://en.wikipedia.org/wiki/Williams_number [Accessed 11 Jan. 2020].
-;
+;; grsp-williams-number - Produces a Williams number of base p_b.
+;;
+;; Arguments:
+;; - p_n: Natural number >= 1.
+;; - p_b: Natural number >= 2.
+;;
+;; Output:
+;; - If conditions for arguments are met, the result is a Williams number.
+;;   Otherwise the function returns zero.
+;;
+;; Sources:
+;; - En.wikipedia.org. (2020). Williams number. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Williams_number [Accessed 11 Jan. 2020].
+;;
 (define (grsp-williams-number p_n p_b)
   (let ((res 0))
 
@@ -529,15 +531,15 @@
     res))
 
 
-; grsp-thabit-number - Produces a Thabit number.
-;
-; Arguments:
-; - p_n: positive integer.
-;
-; Output:
-; - If conditions for arguments are met, the result is a Thabit number. Otherwise
-; the function returns zero.
-;
+;; grsp-thabit-number - Produces a Thabit number.
+;;
+;; Arguments:
+;; - p_n: positive integer.
+;;
+;; Output:
+;; - If conditions for arguments are met, the result is a Thabit number.
+;;   Otherwise the function returns zero.
+;;
 (define (grsp-thabit-number p_n)
   (let ((res 0))
 
@@ -547,15 +549,15 @@
     res))
 
 
-; grsp-fermat-number - Produces a Fermat number.
-;
-; Arguments:
-; - p_n: non-negative integer.
-;
-; Output:
-; - If conditions for arguments are met, the result is a Fermat number. Otherwise
-; the function returns zero.
-;
+;; grsp-fermat-number - Produces a Fermat number.
+;;
+;; Arguments:
+;; - p_n: non-negative integer.
+;;
+;; Output:
+;; - If conditions for arguments are met, the result is a Fermat number.
+;;   Otherwise the function returns zero.
+;;
 (define (grsp-fermat-number p_n)
   (let ((res 0))
 
@@ -565,18 +567,18 @@
     res))
 
 
-; grsp-catalan-number - Calculates the p_n(th) Catalan number.
-;
-; Arguments:
-; - p_n: non-negative integer.
-;
-; Output:
-; - Returns 0 if conditions for p_n are not met.
-;
-; Sources:
-; - En.wikipedia.org. (2020). Catalan number. [online] Available at:
-; https://en.wikipedia.org/wiki/Catalan_number [Accessed 13 Jan. 2020].
-;
+;; grsp-catalan-number - Calculates the p_n(th) Catalan number.
+;;
+;; Arguments:
+;; - p_n: non-negative integer.
+;;
+;; Output:
+;; - Returns 0 if conditions for p_n are not met.
+;;
+;; Sources:
+;; - En.wikipedia.org. (2020). Catalan number. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Catalan_number [Accessed 13 Jan. 2020].
+;;
 (define (grsp-catalan-number p_n)
   (let ((res 0))
 
@@ -586,18 +588,18 @@
     res))
 
 			
-; grsp-wagstaff-prime - Produces a Wagstaff prime number.
-;
-; Arguments:
-; - p_n: Prime number.
-;
-; Output:
-; - A Wagstaff prime if p_n is prime, zero otherwise.
-;
-; Sources:
-; - En.wikipedia.org. (2020). Wagstaff prime. [online] Available at:
-; https://en.wikipedia.org/wiki/Wagstaff_prime [Accessed 11 Jan. 2020].
-;
+;; grsp-wagstaff-prime - Produces a Wagstaff prime number.
+;;
+;; Arguments:
+;; - p_n: Prime number.
+;;
+;; Output:
+;; - A Wagstaff prime if p_n is prime, zero otherwise.
+;;
+;; Sources:
+;; - En.wikipedia.org. (2020). Wagstaff prime. [online] Available at:
+;;    https://en.wikipedia.org/wiki/Wagstaff_prime [Accessed 11 Jan. 2020].
+;;
 (define (grsp-wagstaff-prime p_n)
   (let ((res 0))
 
@@ -608,20 +610,20 @@
     res))
 
 
-; grsp-dobinski-formula - Implementation of the Dobinski formula.
-;
-; Arguments:
-; - p_n: non-negative integer.
-; - p_k: non-negative integer.
-;
-; Output:
-; - Zero if conditions for p_n and p_k are not met. p_n(th) Bell number. 
-;
-; Sources:
-; - En.wikipedia.org. (2020). Dobiński's formula. [online] Available at:
-;   https://en.wikipedia.org/wiki/Dobi%C5%84ski%27s_formula
-;   [Accessed 14 Jan. 2020].
-;
+;; grsp-dobinski-formula - Implementation of the Dobinski formula.
+;;
+;; Arguments:
+;; - p_n: non-negative integer.
+;; - p_k: non-negative integer.
+;;
+;; Output:
+;; - Zero if conditions for p_n and p_k are not met. p_n(th) Bell number. 
+;;
+;; Sources:
+;; - En.wikipedia.org. (2020). Dobiński's formula. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Dobi%C5%84ski%27s_formula
+;;   [Accessed 14 Jan. 2020].
+;;
 (define (grsp-dobinski-formula p_n p_k)
   (let ((res 0)
 	(i 0))
@@ -636,21 +638,21 @@
     res))
 
 
-; grsp-method-netwton - Simple implementation of the Newton-Rapson method.
-; 
-; - p_x: x(n)
-; - p_fx: f(x(b))
-; - p_dx: f'(x(n))
-;
-; Output:
-; - x(n+1)
-;
-; Sources:
-; - En.wikipedia.org. (2020). Newton's method. [online] Available at:
-;  https://en.wikipedia.org/wiki/Newton%27s_method [Accessed 23 Jan. 2020].
-; - En.wikipedia.org. (2020). Numerical analysis. [online] Available at:
-;   https://en.wikipedia.org/wiki/Numerical_analysis [Accessed 24 Jan. 2020].
-;
+;; grsp-method-netwton - Simple implementation of the Newton-Rapson method.
+;; 
+;; - p_x: x(n)
+;; - p_fx: f(x(b))
+;; - p_dx: f'(x(n))
+;;
+;; Output:
+;; - x(n+1)
+;;
+;; Sources:
+;; - En.wikipedia.org. (2020). Newton's method. [online] Available at:
+;;  https://en.wikipedia.org/wiki/Newton%27s_method [Accessed 23 Jan. 2020].
+;; - En.wikipedia.org. (2020). Numerical analysis. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Numerical_analysis [Accessed 24 Jan. 2020].
+;;
 (define (grsp-method-newton p_x p_fx p_dx)
   (let ((res 0))
 
@@ -659,22 +661,22 @@
     res))
 
 
-; grsp-method-euler - Simple implementation of the Euler method.
-; 
-; Arguments:
-; - p_y: y(n).
-; - p_h: h (step).
-; - p_f: f(t,y).
-;
-; Output:
-; - x(n+1)
-;
-; Sources:
-; - En.wikipedia.org. (2020). Euler method. [online] Available at:
-;   https://en.wikipedia.org/wiki/Euler_method [Accessed 24 Jan. 2020].
-; - En.wikipedia.org. (2020). Numerical analysis. [online] Available at:
-;   https://en.wikipedia.org/wiki/Numerical_analysis [Accessed 24 Jan. 2020].
-;
+;; grsp-method-euler - Simple implementation of the Euler method.
+;; 
+;; Arguments:
+;; - p_y: y(n).
+;; - p_h: h (step).
+;; - p_f: f(t,y).
+;;
+;; Output:
+;; - x(n+1)
+;;
+;; Sources:
+;; - En.wikipedia.org. (2020). Euler method. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Euler_method [Accessed 24 Jan. 2020].
+;; - En.wikipedia.org. (2020). Numerical analysis. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Numerical_analysis [Accessed 24 Jan. 2020].
+;;
 (define (grsp-method-euler p_y p_h p_f)
   (let ((res 0))
 
@@ -683,23 +685,23 @@
     res))
 
 
-; grsp-lerp - Linear interpolation. Interpolates p_y3 in the interval (p_x1, p_x2) 
-; given p_x3.
-;
-; Arguments:
-; - p_x1: x1
-; - p_x2: x2
-; - p_x3: x3
-; - p_y1: y1
-; - p_y2: y2
-; 
-; Output:
-; - y3.
-;
-; Sources:
-; - En.wikipedia.org. (2020). Linear interpolation. [online] Available at:
-;   https://en.wikipedia.org/wiki/Linear_interpolation [Accessed 24 Jan. 2020].
-;
+;; grsp-lerp - Linear interpolation. Interpolates p_y3 in the interval
+;; (p_x1, p_x2) given p_x3.
+;;
+;; Arguments:
+;; - p_x1: x1
+;; - p_x2: x2
+;; - p_x3: x3
+;; - p_y1: y1
+;; - p_y2: y2
+;; 
+;; Output:
+;; - y3.
+;;
+;; Sources:
+;; - En.wikipedia.org. (2020). Linear interpolation. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Linear_interpolation [Accessed 24 Jan. 2020].
+;;
 (define (grsp-lerp p_x1 p_x2 p_x3 p_y1 p_y2)
   (let ((res 0))
 
@@ -708,25 +710,25 @@
     res))
 
 
-; grsp-matrix-givens-rotation - Givens rotation. The code for this function
-; is adapted to Scheme from the original Octave code presented in the source.
-;
-; Arguments:
-; - p_v1
-; - p_v2
-;
-; Sources:
-; - En.wikipedia.org. 2020. Givens Rotation. [online] Available at:
-;   https://en.wikipedia.org/wiki/Givens_rotation [Accessed 25 March 2020].
-;
-; Output:
-; - A list containing the values for c, s, and r, in that order.
-;
+;; grsp-matrix-givens-rotation - Givens rotation. The code for this function
+;; is adapted to Scheme from the original Octave code presented in the source.
+;;
+;; Arguments:
+;; - p_v1
+;; - p_v2
+;;
+;; Sources:
+;; - En.wikipedia.org. 2020. Givens Rotation. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Givens_rotation [Accessed 25 March 2020].
+;;
+;; Output:
+;; - A list containing the values for c, s, and r, in that order.
+;;
 (define (grsp-givens-rotation p_v1 p_v2)
   (let ((res1 '())
-	(v1 p_v1) ;a
-	(v2 p_v2) ;b
-	(v3 0) ;c
+	(v1 p_v1) ; a
+	(v2 p_v2) ; b
+	(v3 0) ; c
 	(v4 0) ; s
 	(v5 0) ; r
 	(v6 0) ; t
@@ -761,18 +763,19 @@
     res1))
 
 
-; grsp-fitin - Truncates p_n1 if it does not fit in the interval [p_nmin, p_nmax].
-;
-; Arguments:
-; - p_n1: real.
-; - p_nmin: lower bounday of interval.
-; - p_nmax: higher boundary of th interval.
-;
-; Output:
-; - p_n1 if it is in [p_nmin,p:nmax]
-; - p_nmin if p_n1 < p_nmin.
-; - p_nmax if p_n1 > p_nmax.
-;
+;; grsp-fitin - Truncates p_n1 if it does not fit in the interval
+;; [p_nmin, p_nmax].
+;;
+;; Arguments:
+;; - p_n1: real.
+;; - p_nmin: lower bounday of interval.
+;; - p_nmax: higher boundary of th interval.
+;;
+;; Output:
+;; - p_n1 if it is in [p_nmin,p:nmax]
+;; - p_nmin if p_n1 < p_nmin.
+;; - p_nmax if p_n1 > p_nmax.
+;;
 (define (grsp-fitin p_n1 p_nmin p_nmax)
   (let ((res1 p_n1))
 
@@ -784,11 +787,11 @@
     res1))
 
 
-; grsp-fitin-0-1 - Applies grsp-fitin to p_n1 within the interval [0.0,1.0]
-;
-; Arguments:
-; p_n1: real.
-;
+;; grsp-fitin-0-1 - Applies grsp-fitin to p_n1 within the interval [0.0,1.0]
+;;
+;; Arguments:
+;; p_n1: real.
+;;
 (define (grsp-fitin-0-1 p_n1)
 
   (grsp-fitin p_n1 0.0 1.0))
