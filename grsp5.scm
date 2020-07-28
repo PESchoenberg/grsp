@@ -24,8 +24,12 @@
 ;; =============================================================================
 
 
-;; https://en.wikipedia.org/wiki/Probability
-;; https://en.wikipedia.org/wiki/Bayes%27_theorem
+;; Sources:
+;; - En.wikipedia.org. 2020. Probability. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Probability [Accessed 23 July 2020].
+;; - En.wikipedia.org. 2020. Bayes' Theorem [online] Available at:
+;;   https://en.wikipedia.org/wiki/Bayes%27_theorem [Accessed 23 July 2020].
+
 
 (define-module (grsp grsp5)
   #:use-module (grsp grsp0)
@@ -42,7 +46,9 @@
 	    grsp-por
 	    grsp-pxor
 	    grsp-pcond
-		grsp-pcomp))
+	    grsp-pcomp
+	    grsp-osbv
+	    grsp-obsv))
 
 
 ;; grsp-feature-scaling - Scales p_n to the interval [p_nmin, p_nmax].
@@ -53,7 +59,9 @@
 ;; - p_max: max value for p_x.
 ;;
 ;; Sources:
-;; - https://www.statisticshowto.datasciencecentral.com/normalized/
+;; - Statistics How To. 2020. Normalized Data / Normalization - Statistics How
+;;   To. [online] Available at: https://www.statisticshowto.datasciencecentral.com/normalized/
+;;   [Accessed 23 July 2020].
 ;;
 ;; Notes:
 ;; - If p_n1 lies outside the interval [p_nmin, p_nmax] the function will  
@@ -79,7 +87,9 @@
 ;; - p_s1: sample standard deviation.
 ;;
 ;; Sources:
-;; - https://www.statisticshowto.datasciencecentral.com/normalized/
+;; - Statistics How To. 2020. Normalized Data / Normalization - Statistics How
+;;   To. [online] Available at: https://www.statisticshowto.datasciencecentral.com/normalized/
+;;   [Accessed 23 July 2020].
 ;;
 (define (grsp-z-score p_n1 p_m1 p_s1)
   (let ((res1 0.0))
@@ -235,4 +245,56 @@
     res1))
 
 
+;; grsp-osbv - Calculates expt operation p_s1 between p_n1 and p_n2 according
+;; to exponent p_e1. Can be used to calculate, for example, the squared
+;; difference between two numbers.
+;;
+;; Arguments:
+;; - p_s1: operation.
+;;   - "#+": addition.
+;;   - "#-": substraction.
+;;   - "#*": multiplication.
+;;   - "#/": division.
+;; - p_n1
+;; - p_n2
+;;
+(define (grsp-osbv p_s1 p_e1 p_n1 p_n2)
+  (let ((res1 0.0))
+    
+    (cond ((equal? p_s1 "#-")
+	   (set! res1 (expt (- p_n1 p_n2) p_e1)))
+	  ((equal? p_s1 "#*")
+	   (set! res1 (expt (* p_n1 p_n2) p_e1)))	  
+	  ((equal? p_s1 "#/")
+	   (set! res1 (expt (/ p_n1 p_n2) p_e1)))
+	  (else (set! res1 (expt (+ p_n1 p_n2) p_e1))))
+	  
+    res1))
 
+
+;; grsp-obsv - Calculates expt operation to p_e1 power for p_n1 and p_n2 and
+;; then perfoms operation p_s1 between those values.
+;;
+;; Arguments:
+;; - p_s1: operation.
+;;   - "#+": addition.
+;;   - "#-": substraction.
+;;   - "#*": multiplication.
+;;   - "#/": division.
+;; - p_n1
+;; - p_n2
+;;
+(define (grsp-obsv p_s1 p_e1 p_n1 p_n2)
+  (let ((res1 0.0)
+	(n1 (expt p_n1 p_e1))
+	(n2 (expt p_n2 p_e1)))	
+    
+    (cond ((equal? p_s1 "#-")
+	   (set! res1 (- p_n1 p_n2)))
+	  ((equal? p_s1 "#*")
+	   (set! res1 (* p_n1 p_n2)))
+	  ((equal? p_s1 "#/")
+	   (set! res1 (/ p_n1 p_n2)))
+	  (else (set! res1 (+ p_n1 p_n2))))
+	  
+    res1))

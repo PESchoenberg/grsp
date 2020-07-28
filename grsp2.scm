@@ -120,7 +120,7 @@
 
 ;; grsp-is-prime - This is a very simple procedure, inefficient but sufficient 
 ;; for small numbers to find if they are prime or not. For large numbers other
-;; methods qill likely be more adequate.
+;; methods will likely be more adequate.
 ;;
 ;; Arguments:
 ;; - p_n: integer.
@@ -368,7 +368,7 @@
 ;; Sources:
 ;; - En.wikipedia.org. (2020). Woodall number. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Woodall_number
-;;   [Accessed 6 Jan. 2020].En.wikipedia.org. (2020).
+;;   [Accessed 6 Jan. 2020]. En.wikipedia.org. (2020).
 ;;
 (define (grsp-woodall-number p_n)
   (let ((res 1))
@@ -495,7 +495,7 @@
 ;;
 ;; Sources:
 ;; - En.wikipedia.org. (2020). Wagstaff prime. [online] Available at:
-;; https://en.wikipedia.org/wiki/Wagstaff_prime [Accessed 11 Jan. 2020].
+;;   https://en.wikipedia.org/wiki/Wagstaff_prime [Accessed 11 Jan. 2020].
 ;;
 (define (grsp-wagstaff-number p_n p_b)
   (let ((res 0))
@@ -598,7 +598,7 @@
 ;;
 ;; Sources:
 ;; - En.wikipedia.org. (2020). Wagstaff prime. [online] Available at:
-;;    https://en.wikipedia.org/wiki/Wagstaff_prime [Accessed 11 Jan. 2020].
+;;   https://en.wikipedia.org/wiki/Wagstaff_prime [Accessed 11 Jan. 2020].
 ;;
 (define (grsp-wagstaff-prime p_n)
   (let ((res 0))
@@ -649,7 +649,7 @@
 ;;
 ;; Sources:
 ;; - En.wikipedia.org. (2020). Newton's method. [online] Available at:
-;;  https://en.wikipedia.org/wiki/Newton%27s_method [Accessed 23 Jan. 2020].
+;;   https://en.wikipedia.org/wiki/Newton%27s_method [Accessed 23 Jan. 2020].
 ;; - En.wikipedia.org. (2020). Numerical analysis. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Numerical_analysis [Accessed 24 Jan. 2020].
 ;;

@@ -22,9 +22,13 @@
 ;;   along with this program. If not, see <https://www.gnu.org/licenses/>.
 ;;
 ;; =============================================================================
-;;
 
-;; https://www.gnu.org/software/guile/manual/html_node/Complex.html
+
+;; Sources:
+;; - Gnu.org. 2020. Complex (Guile Reference Manual). [online] Available at:
+;;   https://www.gnu.org/software/guile/manual/html_node/Complex.html
+;;   [Accessed 24 July 2020].
+
 
 (define-module (grsp grsp4)
   #:use-module (grsp grsp2)
