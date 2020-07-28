@@ -22,11 +22,12 @@
 ;;   along with this program. If not, see <https://www.gnu.org/licenses/>.
 ;;
 ;; =============================================================================
-;;
+
+
 ;; Notes:
 ;; - grsp3 provides some level of matrix algebra functionality for Guile, but in
-;;  its current version it is not intended to be particulary fast. It does not 
-;;  make use of any additional non-Scheme library like BLAS or Lapack.
+;;   its current version it is not intended to be particulary fast. It does not 
+;;   make use of any additional non-Scheme library like BLAS or Lapack.
 ;; - As a convention here, m represents rows, n represents columns.
 ;;
 ;; Sources:
@@ -99,7 +100,8 @@
 	    grsp-dbc2mc
 	    grsp-mc2dbc
 	    grsp-mc2dbc-sqlite3
-	    grsp-mc2dbc-hdf5))
+	    grsp-mc2dbc-hdf5
+	    grsp-matrix-interval-mean))
 
 
 ;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -113,7 +115,7 @@
 ;;
 ;; Output:
 ;; - A number corresponding to the shape element value desired. Returns 0 
-;;    if p_e is incorrect.
+;;   if p_e is incorrect.
 ;;
 (define (grsp-matrix-esi p_e p_m)
   (let ((res 0)
@@ -2043,6 +2045,7 @@
     ;; Default identification by comparison call. Needs to be placed in a 
     ;; different conditional. Otherwise does not work well (bug?).
     (cond ((equal? v1 #f)
+	   
            ;; Extract the boundaries of the matrix.
 	   (set! lm1 (grsp-matrix-esi 1 p_a1))
 	   (set! hm1 (grsp-matrix-esi 2 p_a1))
@@ -2283,3 +2286,40 @@
 		  (set! j1 (+ j1 1)))
 	   (set! i1 (+ i1 1)))))
 
+
+;; grsp-matrix-interval-mean - Creates a 3 x 1 matrix containing the following
+;; values:
+;; - (- p_n1 p_min)
+;; - (p_min + p_max) / 2
+;; - (+ p_n1 p_max)
+;; thus creating an interval [p_min, p_max] in which
+;; - p_min <= p_n1 <= p_max
+;; - p_min <= m <= p_max, being m the mean value of l1 and h1 (see var def).
+;;
+;; Arguments:
+;; - p_n1: reference value.
+;; - p_min: what needs to be substraced to p_n1 to define the lower bounday of
+;;   the interval
+;; - p_max: what needs to be added to p_n1 to define the higher boundary of
+;;   the interval.
+;;
+;; Output:
+;; - A 3 x1 matrix in which:
+;;   - The first element is l1.
+;;   - The second is ((h1 + l1)/2)
+;;   - The third element is h1.
+;;
+(define (grsp-matrix-interval-mean p_n1 p_min p_max)
+  (let ((res (grsp-matrix-create 0 3 1))
+	(l1 (- p_n1 p_min))
+	(h1 (+ p_n1 p_max)))	   
+
+    (array-set! res l1 0 0)
+    (array-set! res (/ (+ h1 l1) 2) 1 0)
+    (array-set! res h1 2 0)
+
+    res))
+
+	
+  
+  

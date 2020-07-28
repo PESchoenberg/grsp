@@ -72,10 +72,13 @@
 ;; - p_t: title to display.
 ;;
 (define (ptit p_c p_l p_n p_t)
-  (if (<= p_n 1)(pline p_c p_l))
-  (if (>= p_n 2)(pline p_c p_l))
+  (if (<= p_n 1)
+      (pline p_c p_l))
+  (if (>= p_n 2)
+      (pline p_c p_l))
   (display p_t)
-  (if (>= p_n 2)(pline p_c p_l))
+  (if (>= p_n 2)
+      (pline p_c p_l))
   (newline))
 
 
@@ -156,11 +159,14 @@
 
     (set! elem (car p_l))
     (while (not (equal? elem #f))
-	   (if (equal? p_s 1)(set! elem (string-append elem " ")))
+	   (if (equal? p_s 1)
+	       (set! elem (string-append elem " ")))
 	   (set! res (string-append res elem))
 	   (set! p_l (cdr p_l))
-	   (if (> (length p_l) 0)(set! elem (car p_l)))
-	   (if (= (length p_l) 0)(set! elem #f)))
+	   (if (> (length p_l) 0)
+	       (set! elem (car p_l)))
+	   (if (= (length p_l) 0)
+	       (set! elem #f)))
 
     res))
 
