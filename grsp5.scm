@@ -255,8 +255,8 @@
 ;;   - "#-": substraction.
 ;;   - "#*": multiplication.
 ;;   - "#/": division.
-;; - p_n1
-;; - p_n2
+;; - p_n1: real number.
+;; - p_n2: real number.
 ;;
 (define (grsp-osbv p_s1 p_e1 p_n1 p_n2)
   (let ((res1 0.0))
@@ -281,8 +281,8 @@
 ;;   - "#-": substraction.
 ;;   - "#*": multiplication.
 ;;   - "#/": division.
-;; - p_n1
-;; - p_n2
+;; - p_n1: real number.
+;; - p_n2: real number.
 ;;
 (define (grsp-obsv p_s1 p_e1 p_n1 p_n2)
   (let ((res1 0.0)

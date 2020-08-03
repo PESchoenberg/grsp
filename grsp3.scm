@@ -101,7 +101,9 @@
 	    grsp-mc2dbc
 	    grsp-mc2dbc-sqlite3
 	    grsp-mc2dbc-hdf5
-	    grsp-matrix-interval-mean))
+	    grsp-matrix-interval-mean
+	    grsp-matrix-determinant-lu
+	    grsp-matrix-is-invertible))
 
 
 ;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -426,7 +428,7 @@
 ;; - A matrix of m x 2 elements, being m the number of ocurrences that statisfy
 ;;   the search criteria. On row 0 goes the row coordinate of each element
 ;;   found, and on row 1 goes the corresponding col coordinate. This, this
-;;   matrix shows both he number of foudn elements as well as their positions
+;;   matrix shows both he number of found elements as well as their positions
 ;;   within p_a1.
 ;;
 (define (grsp-matrix-find p_s1 p_a1 p_v1)
@@ -1236,9 +1238,9 @@
 			       (set! c (+ c 1)))
 
 			;; Expand the first submatrix in order to paste to
-			;; the second one.
-			;; (set! res3 (grsp-matrix-subexp res3 (+ (- hm4 lm4) 1) 0))
-			(set! res3 (grsp-matrix-subexp res3 (- hm4 lm4) 0))			
+			;; the second one.		    
+			(set! res3 (grsp-matrix-subexp res3 (- hm4 lm4) 0))
+			
 			;; Move the data of the second submatrix to the expanded part 
 			;; of the first one.
 			(set! res2 (grsp-matrix-subrep res3 res4 (+ (+ lm1 n) 0) ln1))))))) ; This call is causing problems.
@@ -1485,7 +1487,7 @@
     res1))
 
 
-;; grsp-matrix-row-opar - Finds the inverse amultiple res of p_a1[p_m2,p_n2] so
+;; grsp-matrix-row-opar - Finds the inverse multiple res of p_a1[p_m2,p_n2] so
 ;; that p_a1[p_m2,p_n2] + ( p_a1[p_m1,p_n1] * res ) = 0
 ;;
 ;; or
@@ -1528,7 +1530,7 @@
 
 
 ;; grsp-matrix-row-opmm - Replaces the value of element p_a1[p_m1,p_n1] with
-;; ( p_a1[p_m1,p_n1] * p_a2[p_m2,p_n2] )
+;; ( p_a1[p_m1,p_n1] * p_a2[p_m2,p_n2] ).
 ;;
 ;; Arguments:
 ;; - p_a1: matrix 1.
@@ -2142,7 +2144,7 @@
 
 
 ;; grsp-dbc2cm - Fills a matrix of complex or complex-subset numbers with the
-;; contents of a database containing serializaed complex or complex-subset
+;; contents of a database containing serialized complex or complex-subset
 ;; numbers.
 ;;
 ;; Arguments;
@@ -2272,6 +2274,7 @@
     (while (< i1 vm)
 	   (set! j1 0)
 	   (while (< j1 vn)
+		  
 		  ;; Extract and analize each element of the matrix.
 		  (set! ve (array-ref p_a1 i1 j1))
 		  (set! vi 0)
@@ -2289,17 +2292,17 @@
 
 ;; grsp-matrix-interval-mean - Creates a 3 x 1 matrix containing the following
 ;; values:
-;; - (- p_n1 p_min)
-;; - (p_min + p_max) / 2
-;; - (+ p_n1 p_max)
-;; thus creating an interval [p_min, p_max] in which
-;; - p_min <= p_n1 <= p_max
+;; - (- p_n1 p_min).
+;; - (p_min + p_max) / 2.
+;; - (+ p_n1 p_max).
+;; thus creating an interval [p_min, p_max] in which:
+;; - p_min <= p_n1 <= p_max.
 ;; - p_min <= m <= p_max, being m the mean value of l1 and h1 (see var def).
 ;;
 ;; Arguments:
 ;; - p_n1: reference value.
 ;; - p_min: what needs to be substraced to p_n1 to define the lower bounday of
-;;   the interval
+;;   the interval.
 ;; - p_max: what needs to be added to p_n1 to define the higher boundary of
 ;;   the interval.
 ;;
@@ -2320,6 +2323,54 @@
 
     res))
 
-	
-  
-  
+
+;; grsp-matrix-determinant-lu - Finds the determinant of matrix p_a1 using the
+;; LU decompostion.  
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;;
+;; Sources:
+;; - En.wikipedia.org. 2020. Determinant. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Determinant> [Accessed 2 August 2020].
+;; - https://en.wikipedia.org/wiki/Leibniz_formula_for_determinants
+;; - https://en.wikipedia.org/wiki/Invertible_matrix
+;;
+(define (grsp-matrix-determinant-lu p_a1)
+  (let ((res1 0)
+	(L 0)
+	(U 0)
+	(a2 '())
+	(detl 1)
+	(detu 1))
+
+    ;; Perform a LU decomposition over p_a1
+    (set! a2 (grsp-matrix-decompose "#LU" p_a1))
+    (set! L (car a2))
+    (set! U (car (cdr a2)))
+
+    ;; Calculate the determinant of L
+    (set! detl (grsp-matrix-opio "#*md" L 0))
+    
+    ;; Calculate the determinant of U.
+    (set! detu (grsp-matrix-opio "#*md" U 0))
+
+    ;; Calculate the determinant of p_a1.
+    (set! res1 (* detl detu))
+    
+    res1))
+
+
+;; grsp-matrix-is-invertible - Returns #t if matrix si invertible if its
+;; determinant is != 0, #f  otherwise.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;;
+(define (grsp-matrix-is-invertible p_a1)
+  (let ((res1 #t))
+
+    (cond ((= (grsp-matrix-determinant-lu p_a1) 0)
+	   (set! res1 #f)))
+    
+    res1))

@@ -263,7 +263,7 @@
     res))
 
 
-;; grsp-k2nb - Returns the value of (p_k * (p_r**p_n)) + p_b
+;; grsp-k2nb - Returns the value of (p_k * (p_r**p_n)) + p_b .
 ;;
 ;; Arguments:
 ;; - p_k
@@ -431,7 +431,7 @@
 
 
 ;; grsp-mersenne-number - Calculates a Mersenne number according to
-;; Mn = 2**p_n -1 .
+;; Mn = 2**p_n - 1 .
 ;;
 ;; Arguments:
 ;; - p_n: positive integer.
@@ -787,7 +787,7 @@
     res1))
 
 
-;; grsp-fitin-0-1 - Applies grsp-fitin to p_n1 within the interval [0.0,1.0]
+;; grsp-fitin-0-1 - Applies grsp-fitin to p_n1 within the interval [0.0,1.0].
 ;;
 ;; Arguments:
 ;; p_n1: real.
