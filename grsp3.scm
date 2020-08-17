@@ -103,7 +103,8 @@
 	    grsp-mc2dbc-hdf5
 	    grsp-matrix-interval-mean
 	    grsp-matrix-determinant-lu
-	    grsp-matrix-is-invertible))
+	    grsp-matrix-is-invertible
+	    grsp-eigenval-opio))
 
 
 ;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -171,7 +172,11 @@
 	(i 0)
 	(j 0)
 	(m p_m)
-	(n p_n))
+	(n p_n)
+	(p0 0)
+	(p1 0)
+	(p2 0)
+	(p3 0))
 
     (cond ((eq? (grsp-eiget m 0) #t)
 	   (cond ((eq? (grsp-eiget n 0) #t)
@@ -207,6 +212,9 @@
 			((equal? p_s "#Pascal")
 			 (set! s 0)
 			 (set! n m))
+			((equal? p_s "#Fibonacci")
+			 (set! s 0)
+			 (set! n m))			
 			((equal? p_s "#CH")
 			 (set! s 0))
 			((equal? p_s "#+IJ")
@@ -307,6 +315,36 @@
 				(set! j 0)
 				(while (< j n)			        
 				       (array-set! res (grsp-biconr (+ i j) i) i j)
+				       (set! j (+ j 1)))
+				(set! i (+ i 1))))
+			((equal? p_s "#Fibonacci")
+			 (set! p0 0)
+			 (set! p1 1)
+			 (set! p2 0)
+			 (while (< i m)
+				(set! j 0)
+				(while (< j n)
+
+				       ;; Non-recursive calculation of Fibonacci terms in
+				       ;; order to fill the matrix easily.
+				       (cond ((equal? s 0)
+					      (set! p0 0)
+					      (set! s 1))
+					     ((equal? s 1)
+					      (set! p0 1)
+					      (set! s 2))
+					     ((equal? s 2)
+					      (set! p0 1)
+					      (set! s 3))
+					     ((equal? s 3)				       
+					      (set! p0 (+ p1 p2))))
+
+				       ;; Insert the Fibonacci term.
+				       (array-set! res p0 i j)
+
+				       ;; Update indexes and values.
+				       (set! p2 p1)
+				       (set! p1 p0)
 				       (set! j (+ j 1)))
 				(set! i (+ i 1))))			
 			((equal? p_s "#CH")
@@ -592,7 +630,7 @@
 ;;   - "#+ad": sum of the anti diagonal elements.
 ;;   - "#-ad": substraction of the anti diagonal elements.
 ;;   - "#*ad": product of the anti diagonal elements.
-;;   - "#/ad": division of the ant diagonal elements.
+;;   - "#/ad": division of the anti diagonal elements.
 ;; - p_a: matrix. 
 ;; - p_l: column or row number.
 ;;
@@ -1272,7 +1310,7 @@
     (set! ln (grsp-matrix-esi 3 res1))
     (set! hn (grsp-matrix-esi 4 res1))
 
-    ;; Create ex[anded matrix.
+    ;; Create expanded matrix.
     (set! res2 (grsp-matrix-create res2 (+ (- (+ hm p_am) ln) 1) (+ (- (+ hn p_an) ln) 1)))
 
     ;; Copy to submatrix.
@@ -2333,8 +2371,16 @@
 ;; Sources:
 ;; - En.wikipedia.org. 2020. Determinant. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Determinant> [Accessed 2 August 2020].
-;; - https://en.wikipedia.org/wiki/Leibniz_formula_for_determinants
-;; - https://en.wikipedia.org/wiki/Invertible_matrix
+;; - En.wikipedia.org. 2020. Leibniz Formula For Determinants. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Leibniz_formula_for_determinants
+;;   [Accessed 4 August 2020].
+;; - En.wikipedia.org. 2020. Invertible Matrix. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Invertible_matrix [Accessed 5 August 2020].
+;; - En.wikipedia.org. 2020. Permanent (Mathematics). [online] Available at:
+;;   https://en.wikipedia.org/wiki/Permanent_(mathematics)
+;;   [Accessed 7 August 2020].
+;; - En.wikipedia.org. 2020. Immanant. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Immanant [Accessed 14 August 2020].
 ;;
 (define (grsp-matrix-determinant-lu p_a1)
   (let ((res1 0)
@@ -2362,7 +2408,7 @@
 
 
 ;; grsp-matrix-is-invertible - Returns #t if matrix si invertible if its
-;; determinant is != 0, #f  otherwise.
+;; determinant is != 0, #f otherwise.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -2374,3 +2420,34 @@
 	   (set! res1 #f)))
     
     res1))
+
+
+;; grsp-eigenval-opio - Eigenvalue operations that return a scalar. 
+;;
+;; Arguments:
+;; - p_s1: string.
+;;   - "#*": product of all eigenvalues.
+;;   - "#+": sum of all eigenvalues.
+;; - p_a1: matrix.
+;;
+;; Output:
+;; - Returns zero if no proper string p_s1 is passed, or a scalar otherwise.
+;;
+;; Sources:
+;; - En.wikipedia.org. 2020. Eigendecomposition Of A Matrix. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Eigendecomposition_of_a_matrix
+;; - https://en.wikipedia.org/wiki/Eigenvalue_algorithm
+;; - En.wikipedia.org. 2020. Eigenvalue Algorithm. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Eigenvalue_algorithm
+;;   [Accessed 12 August 2020].
+;;
+(define (grsp-eigenval-opio p_s1 p_a1)
+  (let ((res1 0))
+
+    (cond ((equal? p_s1 "#*")
+	   (set! res1 (grsp-matrix-determinant-lu p_a1)))
+	  ((equal? p_s1 "#+")
+	   (set! res1 (grsp-matrix-opio "#+md" p_a1 0))))
+    
+    res1))
+
