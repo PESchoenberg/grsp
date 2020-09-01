@@ -640,9 +640,9 @@
 
 ;; grsp-method-netwton - Simple implementation of the Newton-Rapson method.
 ;; 
-;; - p_x: x(n)
-;; - p_fx: f(x(b))
-;; - p_dx: f'(x(n))
+;; - p_x: x(n).
+;; - p_fx: f(x(b)).
+;; - p_dx: f'(x(n)).
 ;;
 ;; Output:
 ;; - x(n+1)
@@ -689,11 +689,11 @@
 ;; (p_x1, p_x2) given p_x3.
 ;;
 ;; Arguments:
-;; - p_x1: x1
-;; - p_x2: x2
-;; - p_x3: x3
-;; - p_y1: y1
-;; - p_y2: y2
+;; - p_x1: x1.
+;; - p_x2: x2.
+;; - p_x3: x3.
+;; - p_y1: y1.
+;; - p_y2: y2.
 ;; 
 ;; Output:
 ;; - y3.
@@ -714,8 +714,8 @@
 ;; is adapted to Scheme from the original Octave code presented in the source.
 ;;
 ;; Arguments:
-;; - p_v1
-;; - p_v2
+;; - p_v1.
+;; - p_v2.
 ;;
 ;; Sources:
 ;; - En.wikipedia.org. 2020. Givens Rotation. [online] Available at:

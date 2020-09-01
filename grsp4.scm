@@ -115,9 +115,8 @@
 ;; Output:
 ;; - (1 1) if both components are positive or real is positive and imaginary is
 ;;   zero.
-;; - (-1 -1) if both components are negative
-;; - (-1 1) if the real component is negative and the imaginary positive or
-;;   zero.
+;; - (-1 -1) if both components are negative.
+;; - (-1 1) if the real component is negative and the imaginary positive or zero.
 ;; - (1 -1) if the real component is positive and the imaginary is negative.
 ;;
 (define (grsp-complex-sign p_v1)
