@@ -660,63 +660,63 @@
 	  ;; -------------------------------------------------------------------
 	  ;; Physics
 	  
-          ;; Light speed. m/s
+          ;; Light speed. m/s.
 	  ((equal? p_n1 "c")
 	   (set! res 299792458))
 
-          ;; Gravitational constant. (N * ( m ** 2)) /(kg ** 2)
+          ;; Gravitational constant. (N * ( m ** 2)) /(kg ** 2).
 	  ((equal? p_n1 "G")
 	   (set! res (* 6.674 (expt 10 -11))))
 
-          ;; Planck's constant. (2019) (kg * (m ** 2) * (s ** -1))
+          ;; Planck's constant. (2019) (kg * (m ** 2) * (s ** -1)).
 	  ((equal? p_n1 "ht")
 	   (set! res (* 6.62607015 (expt 10 -34))))
 
-          ;; Coulomb's constant. (N * (m ** 2) / (c ** 2))
+          ;; Coulomb's constant. (N * (m ** 2) / (c ** 2)).
 	  ((equal? p_n1 "ke")
 	   (set! res (* 8.9875517873681764 (expt 10 9))))
 
-          ;; Boltzmann's constant. ((m ** 2) * kg * (s ** -2) * (K ** -1))
+          ;; Boltzmann's constant. ((m ** 2) * kg * (s ** -2) * (K ** -1)).
 	  ((equal? p_n1 "h")
 	   (set! res (* 1.38064852 (expt 10 -23))))
 
-          ;; Planck's length. (m)
+          ;; Planck's length. (m).
 	  ((equal? p_n1 "lp")
 	   (set! res (* 1.616255 (expt 10 -35))))	  
 
-          ;; Planck's time. (s)
+          ;; Planck's time. (s).
 	  ((equal? p_n1 "tp")
 	   (set! res (* 5.39124 (expt 10 -44))))
 
-          ;; Planck's mass. (kg)
+          ;; Planck's mass. (kg).
 	  ((equal? p_n1 "mp")
 	   (set! res (* 2.17644 (expt 10 -8))))
 
-          ;; Planck's charge. (C)
+          ;; Planck's charge. (C).
 	  ((equal? p_n1 "qp")
 	   (set! res (* 1.875545870 (expt 10 -18))))
 
-          ;; Planck's temperature. (K)
+          ;; Planck's temperature. (K).
 	  ((equal? p_n1 "tp")
 	   (set! res (* 1.416785 (expt 10 32))))
 	  
-          ;; Avogadro. (entities)
+          ;; Avogadro. (entities).
 	  ((equal? p_n1 "Na")
 	   (set! res (* 6.02214076 (expt 10 23))))
 
-          ;; Elementary positive charge. (C)
+          ;; Elementary positive charge. (C)..
 	  ((equal? p_n1 "qe")
 	   (set! res (* 1.602176634 (expt 10 -19))))
 
-          ;; Electron rest mass. (kg)
+          ;; Electron rest mass. (kg).
 	  ((equal? p_n1 "me")
 	   (set! res (* 9.1093837015 (expt 10 -31))))
 
-          ;; Proton mass. (kg)
+          ;; Proton mass. (kg).
 	  ((equal? p_n1 "mpr")
 	   (set! res (* 1.67262192369 (expt 10 -27))))
 	  
-          ;; Vacuum permittivity. (F * (m ** -1))
+          ;; Vacuum permittivity. (F * (m ** -1)).
 	  ((equal? p_n1 "e0")
 	   (set! res (* 8.8541878128 (expt 10 -12))))	  
 

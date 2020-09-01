@@ -99,7 +99,7 @@
     res1))
 
 
-;; grsp-binop - Performs operation p_s1 on p_n1 and p_n2 and calculates the p_n3
+;; grsp-binop - Performs an operation p_s1 on p_n1 and p_n2 and calculates the p_n3
 ;; power of that binomial operation.
 ;;
 ;; Arguments:
@@ -140,8 +140,7 @@
     res1))
 
 
-;; grsp-pand - Calculates the probability of p_n1 and p_n2 happening, 
-;; being independent.
+;; grsp-pand - Calculates the probability of p_n1 and p_n2, being independent.
 ;;
 ;; Arguments:
 ;; - p_n1: real repesenting a probability in [0,1].
@@ -156,7 +155,7 @@
 
 
 ;; grsp-pnand - Calculates the probability of p_n1 and p_n2 happening, 
-;; being those not independent.
+;; being p_n1 and p_n2 not independent.
 ;;
 ;; Arguments:
 ;; - p_n1: real repesenting a probability in [0,1].
@@ -174,7 +173,7 @@
     res1))
 
 
-;; grsp-por - Calculates the probability of p_n1 or p_n2 happening.
+;; grsp-por - Calculates the probability of p_n1 or p_n2.
 ;;
 ;; Arguments:
 ;; - p_n1: real repesenting a probability in [0,1].
@@ -193,7 +192,7 @@
 
 
 ;; grsp-pxor - Calculates the probability of p_n1 or p_n2 happening, 
-;; beign mutually exclusive.
+;; beign p_n1 and p_n2 mutually exclusive.
 ;;
 ;; Arguments:
 ;; - p_n1: real repesenting a probability in [0,1].
@@ -212,7 +211,7 @@
     res1))
 
 
-;; grsp-pcond - Calculates the probability of p_n1 given p_n2 happening.
+;; grsp-pcond - Calculates the probability of p_n1 given p_n2.
 ;;
 ;; Arguments:
 ;; - p_n1: real repesenting a probability in [0,1].
@@ -232,7 +231,7 @@
 
 
 ;; grsp-pcomp - Given that (expt (abs p_n1) 2) + (expt (abs n2) 2) = 1, and 
-;; given p_n1 as a parameter, it returns (abs n2) as result.
+;; given p_n1 as a parameter, returns (abs n2).
 ;;
 ;; Arguments:
 ;; - p_n1: real repesenting a probability in [0,1]
@@ -246,7 +245,7 @@
 
 
 ;; grsp-osbv - Calculates expt operation p_s1 between p_n1 and p_n2 according
-;; to exponent p_e1. Can be used to calculate, for example, the squared
+;; to exponent p_e1. Can be used to calculate - for example - the squared
 ;; difference between two numbers.
 ;;
 ;; Arguments:
@@ -255,6 +254,7 @@
 ;;   - "#-": substraction.
 ;;   - "#*": multiplication.
 ;;   - "#/": division.
+;; - p_e1: exponent (power).
 ;; - p_n1: real number.
 ;; - p_n2: real number.
 ;;
@@ -298,3 +298,5 @@
 	  (else (set! res1 (+ p_n1 p_n2))))
 	  
     res1))
+
+    

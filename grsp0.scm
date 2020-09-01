@@ -104,7 +104,7 @@
 ;;
 ;; Arguments:
 ;; - p_s1: reference, string.
-;; - p_s2: result, string
+;; - p_s2: result, string.
 ;;
 (define (pres p_s1 p_s2)
   (let ((res " "))
@@ -119,7 +119,7 @@
 ;; Arguments:
 ;; - p_n: number of blanks to add.
 ;; - p_l: string to display.
-;; - p_s: side where to add spaces
+;; - p_s: side where to add spaces,
 ;;   - 0 for left side.
 ;;   - 1 for right side.
 ;;

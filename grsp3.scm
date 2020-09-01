@@ -44,7 +44,7 @@
 ;;   https://en.wikipedia.org/wiki/List_of_matrices [Accessed 8 Mar. 2020].
 ;;
 ;; REPL examples:
-;; (use-modules (grsp grsp0)(grsp grsp1)(grsp grsp2)(grsp grsp3)(grsp grsp4)(grsp grsp5))
+;; (use-modules (grsp grsp0)(grsp grsp1)(grsp grsp2)(grsp grsp3)(grsp grsp4)(grsp grsp5)(grsp grsp6))
 ;; (define X (grsp-matrix-create 1 4 4))
 ;; (define Y (grsp-matrix-create 2 4 4))
 ;; (define R (grsp-matrix-opew "#+" X Y))
@@ -117,7 +117,7 @@
 ;; - 4: high boundary for n (cols).
 ;;
 ;; Output:
-;; - A number corresponding to the shape element value desired. Returns 0 
+;; - A number corresponding to the shape element value desired. Returns zero  
 ;;   if p_e is incorrect.
 ;;
 (define (grsp-matrix-esi p_e p_m)
@@ -317,6 +317,9 @@
 				       (array-set! res (grsp-biconr (+ i j) i) i j)
 				       (set! j (+ j 1)))
 				(set! i (+ i 1))))
+			((equal? p_s "#Pfsum")
+			 ;; https://en.wikipedia.org/wiki/Prefix_sum
+			 )
 			((equal? p_s "#Fibonacci")
 			 (set! p0 0)
 			 (set! p1 1)
@@ -417,7 +420,7 @@
 ;;
 ;; Output:
 ;; - A modified matrix p_a in which all p_v1 values would have been replaced by
-;;   p_v2
+;;   p_v2.
 ;;
 (define (grsp-matrix-change p_a p_v1 p_v2)
   (let ((res p_a)
@@ -2254,6 +2257,7 @@
     (while (< i1 vm)
 	   (set! j1 0)
 	   (while (< j1 vn)
+		  
 		  ;; Extract and analize each element of the matrix.
 		  (set! ve (array-ref p_a1 i1 j1))
 		  (set! vi 0)
@@ -2325,6 +2329,7 @@
 		  (set! q1 (strings-append (list "INSERT INTO " p_t1 " (Vm, Vn, Vr, Vi) VALUES (" q2 ");") 0))
 		  (system (strings-append (list "./sqlp " p_d1 " \"" q1 "\"") 0))
 		  (set! j1 (+ j1 1)))
+	   
 	   (set! i1 (+ i1 1)))))
 
 
@@ -2347,7 +2352,7 @@
 ;; Output:
 ;; - A 3 x1 matrix in which:
 ;;   - The first element is l1.
-;;   - The second is ((h1 + l1)/2)
+;;   - The second is ((h1 + l1)/2).
 ;;   - The third element is h1.
 ;;
 (define (grsp-matrix-interval-mean p_n1 p_min p_max)
@@ -2431,7 +2436,7 @@
 ;; - p_a1: matrix.
 ;;
 ;; Output:
-;; - Returns zero if no proper string p_s1 is passed, or a scalar otherwise.
+;; - Returns a scalar (zero if no proper string p_s1 is passed).
 ;;
 ;; Sources:
 ;; - En.wikipedia.org. 2020. Eigendecomposition Of A Matrix. [online] Available
