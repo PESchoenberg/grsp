@@ -157,9 +157,9 @@
 ;; Arguments: 
 ;; - p_v1: relative velocity.
 ;; - p_t1: proper time.
-;; - p_x1: x coord.
-;; - p_y2: y coord.
-;; - p_z1: z coord.
+;; - p_x1: x rel. coord.
+;; - p_y2: y rel. coord.
+;; - p_z1: z rel/ coord.
 ;;
 ;; Sources:
 ;; - En.wikipedia.org. 2020. List Of Relativistic Equations. [online] Available
