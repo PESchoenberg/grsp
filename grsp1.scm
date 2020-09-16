@@ -50,6 +50,8 @@
 ;; - En.wikipedia.org. (2020). Orders of magnitude (numbers). [online] Available
 ;;   at: https://en.wikipedia.org/wiki/Orders_of_magnitude_(numbers)
 ;;   [Accessed 6 Jan. 2020].
+;; - En.wikipedia.org. 2020. Parsec. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Parsec [Accessed 13 September 2020].
 ;;
 (define (gconst p_n1)
   (let ((res 0))
@@ -664,6 +666,46 @@
 	  ((equal? p_n1 "c")
 	   (set! res 299792458))
 
+	  ;; Astronomical unit, m.
+	  ((equal? p_n1 "AU")
+	   (set! res 149597870700))
+
+	  ;; Parsec, m.
+	  ((equal? p_n1 "PC")
+	   (set! res (* 206264.806247096 (gconst "AU"))))
+
+	  ;; Light year, m.
+	  ((equal? p_n1 "LY")
+	   (set! res (* (* (gconst "c") (gconst "ED")) (gconst "JY"))))
+
+	  ;; Julian year, ephemeris days.
+	  ((equal? p_n1 "JY")
+	   (set! res 365.25))	   
+
+	  ;; Tropical year, ephemeris days (2000). - https://en.wikipedia.org/wiki/Tropical_year
+	  ((equal? p_n1 "TY")
+	   (set! res 365.24219))	  
+
+	  ;; Ephemeris day, s.
+	  ((equal? p_n1 "ED")
+	   (set! res 86400))	  
+
+	  ;; Mean solar day, s. - https://en.wikipedia.org/wiki/Solar_time#Mean_solar_time
+	  ((equal? p_n1 "MSD")
+	   (set! res 86400.002))	  
+
+	  ;; Sidereal day, s. - https://en.wikipedia.org/wiki/Sidereal_time
+	  ((equal? p_n1 "SID")
+	   (set! res 86164.0905))
+
+	  ;; Stellar day, s. - https://en.wikipedia.org/wiki/Sidereal_time
+	  ((equal? p_n1 "STD")
+	   (set! res 86164.098903691))
+	  
+	  ;; Spat, m. (Astronomy).
+	  ((equal? p_n1 "S")
+	   (set! res (* 1.0 (expt 10 12))))
+	  
           ;; Gravitational constant. (N * ( m ** 2)) /(kg ** 2).
 	  ((equal? p_n1 "G")
 	   (set! res (* 6.674 (expt 10 -11))))
@@ -723,6 +765,10 @@
           ;; Eddington-Dirac number.
 	  ((equal? p_n1 "Eddington-Dirac")
 	   (set! res (expt 10 40)))
+
+          ;; Chronon. (s) (Caldirola, 1980). -  https://en.wikipedia.org/wiki/Chronon
+	  ((equal? p_n1 "ch")
+	   (set! res (* 6.27 (expt 10 -24))))
 	  
 	  (else (set! res 0)))
 

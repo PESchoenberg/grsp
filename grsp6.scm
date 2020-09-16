@@ -42,7 +42,11 @@
 	    grsp-frequency-observed
 	    grsp-frequency-emitted
 	    grsp-frequency-osrel
-	    grsp-redshift))
+	    grsp-redshift
+	    grsp-velocity-un
+	    grsp-velocity-ac
+	    grsp-distance-parallax
+	    grsp-particle-mass))
 
 
 ;; grsp-ds - Calculate intervals in Euclidean space or Minkowski spacetime (norm
@@ -114,7 +118,6 @@
 (define (grsp-lorentz-factor p_v1)
   (let ((res1 0))
 
-    ;; (set! res1 (/ 1 (sqrt (- 1 (/ (expt p_v1 2) (expt (gconst "c") 2))))))
     (set! res1 (/ 1 (sqrt (- 1 (expt (grsp-beta p_v1) 2)))))
     
     res1))
@@ -271,7 +274,7 @@
 ;; - p_v1: see grsp-frequency-osrel.
 ;; - p_v2: see grsp-frequency-osrel.
 ;; - p_v3: see grsp-frequency-osrel.
-;; - p_f2: observed frequency
+;; - p_f2: observed frequency.
 ;;
 ;; Sources:
 ;; - En.wikipedia.org. 2020. Doppler Effect. [online] Available at:
@@ -347,4 +350,58 @@
     res1))
 
 
+;; grsp-velocity-un - Calculates velocity as distance / time.
+;;
+;; Arguments:
+;; - p_l1: distance.
+;; - p_t1: time.
+;;
+(define (grsp-velocity-un p_l1 p_t1)
+  (let ((res1 0))
+
+    (set! res1 (/ p_l1 p_t1))
+
+    res1))
+
+
+;; grsp-velocity-ac - Calculates velocity as accelertion * time.
+;;
+;; Arguments:
+;; - p_a1: acceleration.
+;; - p_t1: time.
+;;
+(define (grsp-velocity-ac p_a1 p_t1)
+  (let ((res1 0))
+
+    (set! res1 (* p_a1 p_t1))
+
+    res1))
+
+
+;; grsp-distance-parallax - Measures the distance (PC) to a star.
+;;
+;; Arguments:
+;; - p_g1: parallax (arcseconds).
+;;
+(define (grsp-distance-parallax p_g1)
+  (let ((res1 0))
+
+    ;;(set! res1 (/ (gconst "PC") (tan (/ p_g1 3600))))
+    (set! res1 (/ 1 p_g1))
+
+    res1))
+
+
+;; grsp-particle-mass - Energy of a particle.
+;;
+;; Arguments:
+;; - p_v1: speed of the particle.
+;; - p_m1: rest mass of the particle.
+;;
+(define (grsp-particle-mass p_v1 p_m1)
+  (let ((res1 0))
+
+    (set! res1 (* (grsp-lorentz-factor p_v1) (* p_m1 (expt (gconst "c") 2))))
+
+    res1))
 
