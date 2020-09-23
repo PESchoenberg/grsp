@@ -24,6 +24,23 @@
 ;; =============================================================================
 
 
+;; Sources:
+;; - [1] En.wikipedia.org. 2020. Standard Gravitational Parameter. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Standard_gravitational_parameter
+;;   [Accessed 22 September 2020].
+;; - [2] En.wikipedia.org. 2020. Minkowski Space. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Minkowski_space [Accessed 31 August 2020].
+;; - [3] En.wikipedia.org. 2020. Lorentz Factor. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Lorentz_factor [Accessed 19 September 2020].
+;; - [4] En.wikipedia.org. 2020. List Of Relativistic Equations. [online]
+;;   Available at: https://en.wikipedia.org/wiki/List_of_relativistic_equations
+;;   [Accessed 4 September 2020].
+;; - [5] En.wikipedia.org. 2020. Doppler Effect. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Doppler_effect [Accessed 7 September 2020].
+;; - [6] En.wikipedia.org. 2020. Redshift. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Redshift [Accessed 9 September 2020].
+
+
 (define-module (grsp grsp6)
   #:use-module (grsp grsp0)
   #:use-module (grsp grsp1)
@@ -46,7 +63,9 @@
 	    grsp-velocity-un
 	    grsp-velocity-ac
 	    grsp-distance-parallax
-	    grsp-particle-mass))
+	    grsp-particle-mass
+	    grsp-sgp-mass
+	    grsp-sgp-ellip))
 
 
 ;; grsp-ds - Calculate intervals in Euclidean space or Minkowski spacetime (norm
@@ -63,8 +82,7 @@
 ;; - p_z2: z2.
 ;;
 ;; Sources:
-;; - En.wikipedia.org. 2020. Minkowski Space. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Minkowski_space [Accessed 31 August 2020].
+;; - [2].
 ;;
 (define (grsp-ds p_t1 p_t2 p_x1 p_x2 p_y1 p_y2 p_z1 p_z2)
   (let ((res1 0)
@@ -110,10 +128,8 @@
 ;; - p_v1: relative velocity between inertial frames (should be p_v1 < c).
 ;;
 ;; Sources:
-;; - https://en.wikipedia.org/wiki/Lorentz_factor
-;; - En.wikipedia.org. 2020. List Of Relativistic Equations. [online] Available
-;;   at: https://en.wikipedia.org/wiki/List_of_relativistic_equations
-;;   [Accessed 4 September 2020].
+;; - [3].
+;; - [4].
 ;;
 (define (grsp-lorentz-factor p_v1)
   (let ((res1 0))
@@ -131,9 +147,7 @@
 ;; - p_t1: proper time.
 ;;
 ;; Sources:
-;; - En.wikipedia.org. 2020. List Of Relativistic Equations. [online] Available
-;;   at: https://en.wikipedia.org/wiki/List_of_relativistic_equations
-;;   [Accessed 4 September 2020].
+;; - [4].
 ;;
 (define (grsp-time-dilation p_v1 p_t1)
   (let ((res1 0))
@@ -151,9 +165,7 @@
 ;; - p_d1: proper length.
 ;;
 ;; Sources:
-;; - En.wikipedia.org. 2020. List Of Relativistic Equations. [online] Available
-;;   at: https://en.wikipedia.org/wiki/List_of_relativistic_equations
-;;   [Accessed 4 September 2020].
+;; - [4].
 ;;
 (define (grsp-length-contraction p_v1 p_d1)
   (let ((res1 0))
@@ -173,9 +185,7 @@
 ;; - p_z1: z rel/ coord.
 ;;
 ;; Sources:
-;; - En.wikipedia.org. 2020. List Of Relativistic Equations. [online] Available
-;;   at: https://en.wikipedia.org/wiki/List_of_relativistic_equations
-;;   [Accessed 4 September 2020].
+;; - [4].
 ;;
 (define (grsp-lorentz-transf-x p_v1 p_t1 p_x1 p_y1 p_z1)
   (let ((res1 '())
@@ -202,9 +212,7 @@
 ;; - p_v1: relative velocity between two intertial frames.
 ;;
 ;; Sources:
-;; - En.wikipedia.org. 2020. List Of Relativistic Equations. [online] Available
-;;   at: https://en.wikipedia.org/wiki/List_of_relativistic_equations
-;;   [Accessed 4 September 2020].
+;; - [4].
 ;;
 (define (grsp-beta p_v1)
   (let ((res1 0))
@@ -256,8 +264,7 @@
 ;; - p_f1: emitted frequency
 ;;
 ;; Sources:
-;; - En.wikipedia.org. 2020. Doppler Effect. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Doppler_effect [Accessed 7 September 2020].
+;; - [5].
 ;;
 (define (grsp-frequency-observed p_s1 p_v1 p_v2 p_v3 p_f1)
   (let ((res1 0))
@@ -277,8 +284,7 @@
 ;; - p_f2: observed frequency.
 ;;
 ;; Sources:
-;; - En.wikipedia.org. 2020. Doppler Effect. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Doppler_effect [Accessed 7 September 2020].
+;; - [5].
 ;;
 (define (grsp-frequency-emitted p_s1 p_v1 p_v2 p_v3 p_f2)
   (let ((res1 0))
@@ -286,6 +292,7 @@
     (set! res1 (/ p_f2 (grsp-frequency-osrel p_s1 p_v1 p_v2 p_v3)))
 
     res1))
+
 
 ;; grsp-frequency-osrel - Observer - source relationship.
 ;;
@@ -304,8 +311,7 @@
 ;; - p_v3: speed of the source.
 ;;
 ;; Sources:
-;; - En.wikipedia.org. 2020. Doppler Effect. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Doppler_effect [Accessed 7 September 2020].
+;; - [5].
 ;;
 (define (grsp-frequency-osrel p_s1 p_v1 p_v2 p_v3)
   (let ((res1 0)
@@ -336,8 +342,7 @@
 ;; - p_n2: value that corresponds to the observer (wl or fr).
 ;;
 ;; Sources:
-;; - En.wikipedia.org. 2020. Redshift. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Redshift [Accessed 9 September 2020].
+;; - [6].
 ;;
 (define (grsp-redshift p_s1 p_n1 p_n2)
   (let ((res1 0))
@@ -386,7 +391,6 @@
 (define (grsp-distance-parallax p_g1)
   (let ((res1 0))
 
-    ;;(set! res1 (/ (gconst "PC") (tan (/ p_g1 3600))))
     (set! res1 (/ 1 p_g1))
 
     res1))
@@ -405,3 +409,39 @@
 
     res1))
 
+
+;; grsp-sgp=mass - Calculates the standard gravitational parameter of a body of
+;; mass m1.
+;;
+;; Arguments:
+;; - p_m1: mass of the body (kg).
+;;
+;; Sources:
+;; - [1].
+;;
+(define (grsp-sgp-mass p_m1)
+  (let ((res1 0))
+
+    (set! res1 (* p_m1 (gconst "G")))
+
+    res1))
+
+
+;; grsp-sgp=mass - Calculates the standard gravitational parameter of a bodt at
+;; relative distance p_a1 and orbital period p_t1.
+;;
+;; Arguments:
+;; - p_a1: relative distance between the main and secodary bodies.
+;; - p_t1: orbital period of secondary arond main body.
+;;
+;; Sources:
+;; - [1].
+;;
+(define (grsp-sgp-ellip p_a1 p_t1)
+  (let ((res1 0))
+
+    (set! res1 (/ (* (* 4 (gconst "Pi")) (expt p_a1 3)) (expt p_t1 2)))
+
+    res1))
+
+	  
