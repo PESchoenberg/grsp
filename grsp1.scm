@@ -56,9 +56,14 @@
 ;;   https://en.wikipedia.org/wiki/Astronomical_unit [Accessed 18 September 2020].
 ;; - [9] En.wikipedia.org. 2020. Sidereal Time. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Sidereal_time [Accessed 20 September 2020].
-;; - [10] https://en.wikipedia.org/wiki/Tropical_year
+;; - [10] En.wikipedia.org. 2020. Tropical Year. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Tropical_year [Accessed 24 September 2020].
 ;; - [11] https://en.wikipedia.org/wiki/Solar_time#Mean_solar_time
 ;; - [12] https://en.wikipedia.org/wiki/List_of_gravitationally_rounded_objects_of_the_Solar_System
+;; - [13] En.wikipedia.org. 2020. Energy Density. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Energy_density> [Accessed 30 September 2020].
+;; - [14] https://en.wikipedia.org/wiki/Standard_gravity
+;; - [15] https://en.wikipedia.org/wiki/Gravitational_acceleration
 ;;
 (define (gconst p_n1)
   (let ((res 0))
@@ -717,6 +722,18 @@
 	  ((equal? p_n1 "G")
 	   (set! res (* 6.674 (expt 10 -11))))
 
+          ;; Standard gravity, m/s**2 [14].
+	  ((equal? p_n1 "g0")
+	   (set! res 9.80665))
+
+          ;; Gravity at equator, m/s**2 [14][15].
+	  ((equal? p_n1 "gequator")
+	   (set! res 9.780))
+
+          ;; Gravity at poles, m/s**2 [14][15].
+	  ((equal? p_n1 "gpoles")
+	   (set! res 9.832))	  
+	  
           ;; Planck's constant. (2019) (kg * (m ** 2) * (s ** -1)).
 	  ((equal? p_n1 "ht")
 	   (set! res (* 6.62607015 (expt 10 -34))))
@@ -864,6 +881,26 @@
           ;; Distance (est) from the Sun to the galactic center (AU) [8][9].
 	  ((equal? p_n1 "Milky Way center")
 	   (set! res 1700000000))
+
+	  ;; Specific energy (W * h / kg). Antimatter [13].
+	  ((equal? p_n1 "Specific energy of antimatter")
+	   (set! res 24965421631578))
+
+	  ;; Specific energy (W * h / kg). Natural gas [13].
+	  ((equal? p_n1 "Specific energy of natural gas")
+	   (set! res 14888.9))
+
+	  ;; Specific energy (W * h / kg). Uranium [13].
+	  ((equal? p_n1 "Specific energy of uranium")
+	   (set! res 22394000000))
+
+	  ;; Specific energy (W * h / kg). Deuterium [13].
+	  ((equal? p_n1 "Specific energy of deuterium")
+	   (set! res 158661876600))
+
+	  ;; Specific energy (W * h / kg). Hidrogen fusion [13].
+	  ((equal? p_n1 "Specific energy of hidrogen fusion")
+	   (set! res 177716755600))	  
 	  
 	  (else (set! res 0)))
 

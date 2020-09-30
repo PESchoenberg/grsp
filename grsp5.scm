@@ -2,7 +2,7 @@
 ;;
 ;; grsp5.scm
 ;;
-;; Statisitical and probabilistic functions.
+;; Statistical and probabilistic functions.
 ;;
 ;; =============================================================================
 ;;
@@ -25,11 +25,13 @@
 
 
 ;; Sources:
-;; - En.wikipedia.org. 2020. Probability. [online] Available at:
+;; - [1] En.wikipedia.org. 2020. Probability. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Probability [Accessed 23 July 2020].
-;; - En.wikipedia.org. 2020. Bayes' Theorem [online] Available at:
+;; - [2] En.wikipedia.org. 2020. Bayes' Theorem [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Bayes%27_theorem [Accessed 23 July 2020].
-
+;; - [3] Statistics How To. 2020. Normalized Data / Normalization - Statistics How
+;;   To. [online] Available at: https://www.statisticshowto.datasciencecentral.com/normalized/
+;;   [Accessed 23 July 2020].
 
 (define-module (grsp grsp5)
   #:use-module (grsp grsp0)
@@ -59,9 +61,7 @@
 ;; - p_max: max value for p_x.
 ;;
 ;; Sources:
-;; - Statistics How To. 2020. Normalized Data / Normalization - Statistics How
-;;   To. [online] Available at: https://www.statisticshowto.datasciencecentral.com/normalized/
-;;   [Accessed 23 July 2020].
+;; - [3].
 ;;
 ;; Notes:
 ;; - If p_n1 lies outside the interval [p_nmin, p_nmax] the function will  
@@ -87,9 +87,7 @@
 ;; - p_s1: sample standard deviation.
 ;;
 ;; Sources:
-;; - Statistics How To. 2020. Normalized Data / Normalization - Statistics How
-;;   To. [online] Available at: https://www.statisticshowto.datasciencecentral.com/normalized/
-;;   [Accessed 23 July 2020].
+;; - [3].
 ;;
 (define (grsp-z-score p_n1 p_m1 p_s1)
   (let ((res1 0.0))
@@ -112,6 +110,9 @@
 ;; - p_n2: real.
 ;; - p_n3: real.
 ;;
+;; Sources:
+;; - [1].
+;;
 (define (grsp-binop p_s1 p_n1 p_n2 p_n3)
   (let ((res1 0.0))
 
@@ -132,6 +133,9 @@
 ;; Arguments:
 ;; - p_n1: real representing a probability in [0,1].
 ;;
+;; Sources:
+;; - [1].
+;;
 (define (grsp-pnot p_n1)
   (let ((res1 1.0))
 
@@ -145,6 +149,9 @@
 ;; Arguments:
 ;; - p_n1: real repesenting a probability in [0,1].
 ;; - p_n2: real repesenting a probability in [0,1].
+;;
+;; Sources:
+;; - [1].
 ;;
 (define (grsp-pand p_n1 p_n2)
   (let ((res1 1.0))
@@ -160,6 +167,9 @@
 ;; Arguments:
 ;; - p_n1: real repesenting a probability in [0,1].
 ;; - p_n2: real repesenting a probability in [0,1].
+;;
+;; Sources:
+;; - [1].
 ;;
 (define (grsp-pnand p_n1 p_n2)
   (let ((res1 1.0)
@@ -178,6 +188,9 @@
 ;; Arguments:
 ;; - p_n1: real repesenting a probability in [0,1].
 ;; - p_n2: real repesenting a probability in [0,1].
+;;
+;; Sources:
+;; - [1].
 ;;
 (define (grsp-por p_n1 p_n2)
   (let ((res1 1.0)
@@ -198,6 +211,9 @@
 ;; - p_n1: real repesenting a probability in [0,1].
 ;; - p_n2: real repesenting a probability in [0,1].
 ;;
+;; Sources:
+;; - [1].
+;;
 (define (grsp-pxor p_n1 p_n2)
   (let ((res1 0.0)
 	(n1 0.0)
@@ -217,6 +233,10 @@
 ;; - p_n1: real repesenting a probability in [0,1].
 ;; - p_n2: real repesenting a probability in [0,1].
 ;;
+;; Sources:
+;; - [1].
+;; - [2].
+;;
 (define (grsp-pcond p_n1 p_n2)
   (let ((res1 0.0)
 	(n1 p_n1)
@@ -235,6 +255,9 @@
 ;;
 ;; Arguments:
 ;; - p_n1: real repesenting a probability in [0,1]
+;;
+;; Sources:
+;; - [1].
 ;;
 (define (grsp-pcomp p_n1)
   (let ((res1 0.0))
@@ -257,6 +280,9 @@
 ;; - p_e1: exponent (power).
 ;; - p_n1: real number.
 ;; - p_n2: real number.
+;;
+;; Sources:
+;; - [1].
 ;;
 (define (grsp-osbv p_s1 p_e1 p_n1 p_n2)
   (let ((res1 0.0))
@@ -283,6 +309,9 @@
 ;;   - "#/": division.
 ;; - p_n1: real number.
 ;; - p_n2: real number.
+;;
+;; Sources:
+;; - [1].
 ;;
 (define (grsp-obsv p_s1 p_e1 p_n1 p_n2)
   (let ((res1 0.0)

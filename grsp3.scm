@@ -31,18 +31,47 @@
 ;; - As a convention here, m represents rows, n represents columns.
 ;;
 ;; Sources:
-;; - Hep.by. (2020). Array Procedures - Guile Reference Manual. [online] Available
+;; - [1] Hep.by. (2020). Array Procedures - Guile Reference Manual. [online] Available
 ;;   at: http://www.hep.by/gnu/guile/Array-Procedures.html#Array-Procedures
 ;;   [Accessed 28 Jan. 2020].
-;; - En.wikipedia.org. (2020). Numerical linear algebra. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Numerical_linear_algebra
+;; - [2] En.wikipedia.org. (2020). Numerical linear algebra. [online] Available 
+;;   at: https://en.wikipedia.org/wiki/Numerical_linear_algebra
 ;;   [Accessed 28 Jan. 2020].
-;; - En.wikipedia.org. (2020). Matrix theory. [online] Available at:
+;; - [3] En.wikipedia.org. (2020). Matrix theory. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Category:Matrix_theory
 ;;   [Accessed 28 Jan. 2020].
-;; - En.wikipedia.org. (2020). List of matrices. [online] Available at:
+;; - [4] En.wikipedia.org. (2020). List of matrices. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/List_of_matrices [Accessed 8 Mar. 2020].
-;;
+;; - [5] Gnu.org. (2020). Random (Guile Reference Manual). [online] Available at:
+;;   https://www.gnu.org/software/guile/manual/html_node/Random.html
+;;   [Accessed 26 Jan. 2020].
+;; - [6] Es.wikipedia.org. (2020). Factorización LU. [online] Available at:
+;;   https://es.wikipedia.org/wiki/Factorizaci%C3%B3n_LU
+;;   [Accessed 28 Jan. 2020].
+;; - [7] Gnu.org. (2020). Guile Reference Manual. [online] Available at:
+;;   https://www.gnu.org/software/guile/manual/guile.html#Arithmetic
+;;   [Accessed 6 Feb. 2020].
+;; - [8] En.wikipedia.org. (2020). Elementary matrix. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Elementary_matrix#Operations
+;;   [Accessed 24 Feb. 2020].
+;; - [9] En.wikipedia.org. 2020. Determinant. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Determinant> [Accessed 2 August 2020].
+;; - [10] En.wikipedia.org. 2020. Leibniz Formula For Determinants. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Leibniz_formula_for_determinants
+;;   [Accessed 4 August 2020].
+;; - [11] En.wikipedia.org. 2020. Invertible Matrix. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Invertible_matrix [Accessed 5 August 2020].
+;; - [12] En.wikipedia.org. 2020. Permanent (Mathematics). [online] Available at:
+;;   https://en.wikipedia.org/wiki/Permanent_(mathematics)
+;;   [Accessed 7 August 2020].
+;; - [13] En.wikipedia.org. 2020. Immanant. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Immanant [Accessed 14 August 2020].
+;; - [14] En.wikipedia.org. 2020. Eigendecomposition Of A Matrix. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Eigendecomposition_of_a_matrix
+;; - [15] En.wikipedia.org. 2020. Eigenvalue Algorithm. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Eigenvalue_algorithm
+;;   [Accessed 12 August 2020].
+
 ;; REPL examples:
 ;; (use-modules (grsp grsp0)(grsp grsp1)(grsp grsp2)(grsp grsp3)(grsp grsp4)(grsp grsp5)(grsp grsp6))
 ;; (define X (grsp-matrix-create 1 4 4))
@@ -115,6 +144,9 @@
 ;; - 2: high boundary for m (rows).
 ;; - 3: low boundary for n (cols).
 ;; - 4: high boundary for n (cols).
+;;
+;; Sources:
+;; - [1][2][3][4].
 ;;
 ;; Output:
 ;; - A number corresponding to the shape element value desired. Returns zero  
@@ -418,6 +450,9 @@
 ;; - p_v1: value to be replaced within p_a.
 ;; - p_v2: value to replace p_v1 with.
 ;;
+;; Sources:
+;; - [1][2][3][4].
+;;
 ;; Output:
 ;; - A modified matrix p_a in which all p_v1 values would have been replaced by
 ;;   p_v2.
@@ -464,6 +499,9 @@
 ;;   - "#!=": searches for all elements not equal to p_v1.
 ;; - p_a1: matrix.
 ;; - P_v1: reference value for searching.
+;;
+;; Sources:
+;; - [1][2][3][4].
 ;;
 ;; Output:
 ;; - A matrix of m x 2 elements, being m the number of ocurrences that statisfy
@@ -549,6 +587,9 @@
 ;;
 ;; Arguments:
 ;; - p_a: matrix to be transposed.
+;;
+;; Sources:
+;; - [1][2][3][4].
 ;;
 (define (grsp-matrix-transpose p_a)
   (let ((res1 p_a)
@@ -636,6 +677,9 @@
 ;;   - "#/ad": division of the anti diagonal elements.
 ;; - p_a: matrix. 
 ;; - p_l: column or row number.
+;;
+;; Sources:
+;; - [1][2][3][4].
 ;;
 ;; Notes:
 ;; - Value for argument p_l should be passed as 0 if not used. It is only
@@ -784,12 +828,7 @@
 ;;   care of that.
 ;;
 ;; Sources:
-;; - Gnu.org. (2020). Random (Guile Reference Manual). [online] Available at:
-;;   https://www.gnu.org/software/guile/manual/html_node/Random.html
-;;   [Accessed 26 Jan. 2020].
-;; - Es.wikipedia.org. (2020). Factorización LU. [online] Available at:
-;;   https://es.wikipedia.org/wiki/Factorizaci%C3%B3n_LU
-;;   [Accessed 28 Jan. 2020].
+;; - [5][6].
 ;;
 (define (grsp-matrix-opsc p_s p_a p_v)
   (let ((res1 p_a)
@@ -938,9 +977,7 @@
 ;; - p_a1: matrix.
 ;;
 ;; Sources:
-;; - Gnu.org. (2020). Guile Reference Manual. [online] Available at:
-;;   https://www.gnu.org/software/guile/manual/guile.html#Arithmetic
-;;   [Accessed 6 Feb. 2020].
+;; - [7].
 ;;
 (define (grsp-matrix-opfn p_s p_a1)
   (let ((res1 p_a1)
@@ -1556,9 +1593,7 @@
 ;;   elements in two matrices directly.
 ;;
 ;; Sources:
-;; - En.wikipedia.org. (2020). Elementary matrix. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Elementary_matrix#Operations
-;;   [Accessed 24 Feb. 2020].
+;; - [8].
 ;;
 (define (grsp-matrix-row-opar p_a1 p_a2 p_m1 p_n1 p_m2 p_n2)
   (let ((res 0))
@@ -1586,9 +1621,7 @@
 ;;   elements in one matrix.
 ;;
 ;; Sources:
-;; - En.wikipedia.org. (2020). Elementary matrix. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Elementary_matrix#Operations
-;;   [Accessed 24 Feb. 2020].
+;; - [8].
 ;;
 (define (grsp-matrix-row-opmm p_a1 p_a2 p_m1 p_n1 p_m2 p_n2)
   (array-set! p_a1 (* (array-ref p_a1 p_m1 p_n1) (array-ref p_a2 p_m2 p_n2)) p_m1 p_n1))
@@ -1609,9 +1642,7 @@
 ;;   elements in row p_m1 of matrix p_a1.
 ;;
 ;; Sources:
-;; - En.wikipedia.org. (2020). Elementary matrix. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Elementary_matrix#Operations
-;;   [Accessed 24 Feb. 2020].
+;; - [8].
 ;;
 (define (grsp-matrix-row-opsc p_s1 p_a1 p_m1 p_v1)
   (let ((ln 0)
@@ -1647,9 +1678,7 @@
 ;;   elements in matrix p_a1.
 ;;
 ;; Sources:
-;; - En.wikipedia.org. (2020). Elementary matrix. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Elementary_matrix#Operations
-;;   [Accessed 24 Feb. 2020].
+;; - [8].
 ;;
 (define (grsp-matrix-row-opsw p_a1 p_m1 p_m2)
   (let ((res1 p_a1)
@@ -1686,9 +1715,7 @@
 ;;   care of that.
 ;;
 ;; Sources:
-;; - Es.wikipedia.org. (2020). Factorización LU. [online] Available at:
-;;   https://es.wikipedia.org/wiki/Factorizaci%C3%B3n_LU
-;;   [Accessed 12 Feb. 2020].
+;; - [6].
 ;;
 (define (grsp-matrix-decompose p_s p_a1)
   (let ((res1 p_a1)
@@ -2374,18 +2401,7 @@
 ;; - p_a1: matrix.
 ;;
 ;; Sources:
-;; - En.wikipedia.org. 2020. Determinant. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Determinant> [Accessed 2 August 2020].
-;; - En.wikipedia.org. 2020. Leibniz Formula For Determinants. [online]
-;;   Available at: https://en.wikipedia.org/wiki/Leibniz_formula_for_determinants
-;;   [Accessed 4 August 2020].
-;; - En.wikipedia.org. 2020. Invertible Matrix. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Invertible_matrix [Accessed 5 August 2020].
-;; - En.wikipedia.org. 2020. Permanent (Mathematics). [online] Available at:
-;;   https://en.wikipedia.org/wiki/Permanent_(mathematics)
-;;   [Accessed 7 August 2020].
-;; - En.wikipedia.org. 2020. Immanant. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Immanant [Accessed 14 August 2020].
+;; - [9][10][11][12][13].
 ;;
 (define (grsp-matrix-determinant-lu p_a1)
   (let ((res1 0)
@@ -2439,12 +2455,7 @@
 ;; - Returns a scalar (zero if no proper string p_s1 is passed).
 ;;
 ;; Sources:
-;; - En.wikipedia.org. 2020. Eigendecomposition Of A Matrix. [online] Available
-;;   at: https://en.wikipedia.org/wiki/Eigendecomposition_of_a_matrix
-;; - https://en.wikipedia.org/wiki/Eigenvalue_algorithm
-;; - En.wikipedia.org. 2020. Eigenvalue Algorithm. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Eigenvalue_algorithm
-;;   [Accessed 12 August 2020].
+;; - [14][15].
 ;;
 (define (grsp-eigenval-opio p_s1 p_a1)
   (let ((res1 0))
