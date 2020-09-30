@@ -39,7 +39,12 @@
 ;;   https://en.wikipedia.org/wiki/Doppler_effect [Accessed 7 September 2020].
 ;; - [6] En.wikipedia.org. 2020. Redshift. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Redshift [Accessed 9 September 2020].
-
+;; - [7]  En.wikipedia.org. 2020. Modern Physics. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Modern_physics [Accessed 26 September 2020].
+;; - [8] See grsp1 [14].
+;; - [9] Es.wikipedia.org. 2020. Ecuación Del Cohete De Tsiolkovski. [online]
+;;   Available at: https://es.wikipedia.org/wiki/Ecuaci%C3%B3n_del_cohete_de_Tsiolkovski
+;;   [Accessed 29 September 2020].
 
 (define-module (grsp grsp6)
   #:use-module (grsp grsp0)
@@ -65,7 +70,10 @@
 	    grsp-distance-parallax
 	    grsp-particle-mass
 	    grsp-sgp-mass
-	    grsp-sgp-ellip))
+	    grsp-sgp-ellip
+	    grsp-effective-exhaust-velocity
+	    grsp-ideal-rocket
+	    grsp-weight-earth-lat))
 
 
 ;; grsp-ds - Calculate intervals in Euclidean space or Minkowski spacetime (norm
@@ -440,8 +448,58 @@
 (define (grsp-sgp-ellip p_a1 p_t1)
   (let ((res1 0))
 
-    (set! res1 (/ (* (* 4 (gconst "Pi")) (expt p_a1 3)) (expt p_t1 2)))
+    (set! res1 (/ (* (* 4 (gconst "A000796")) (expt p_a1 3)) (expt p_t1 2)))
 
     res1))
 
 	  
+;; grsp-effective-exhaust-velocity - Calculates eev.
+;;
+;; Arguments:
+;; - p_x1: specific impulse in dimension of time.
+;;
+;; Sources:
+;; - [8][15].
+;;
+(define (grsp-effective-exhaust-velocity p_x1)
+  (let ((res1 0))
+
+    (set! res1 (* p_x1 (gconst "g0")))
+
+    res1))
+
+
+;; grsp-ideal-rocket - Ideal rocket equation.
+;;
+;; Arguments:
+;; - p_x1: specific impulse.
+;; - p_m1: initial mass.
+;; - p_m2: final mass.
+;;
+;; Sources:
+;; - [8][15].
+;;
+(define (grsp-ideal-rocket p_x1 p_m1 p_m2)
+  (let ((res1 0))
+
+    (set! res1 (* (grsp-effective-exhaust-velocity p_x1) (log (/ p_m1 p_m2))))
+
+    res1))
+
+
+;; grsp-weight-earth-lat - Weight on Earth as a function of latitude.
+;;
+;; Arguments:
+;; - p_l1: latitude [-90, 90].
+;;
+;; Sources:
+;; - [15].
+;;
+(define (grsp-weight-earth-lat p_l1)
+  (let ((res1 0))
+
+    (set! res1 (- (gconst "g0") (* (* 0.5 (-(gconst "gpoles") (gconst "gequator"))) (cos (* p_l1 (/ (gconst "A000796") 180))))))
+
+    res1))
+
+

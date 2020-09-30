@@ -25,17 +25,20 @@
 
 
 ;; Sources:
-;; - Gnu.org. 2020. Complex (Guile Reference Manual). [online] Available at:
+;; - [1] Gnu.org. 2020. Complex (Guile Reference Manual). [online] Available at:
 ;;   https://www.gnu.org/software/guile/manual/html_node/Complex.html
 ;;   [Accessed 24 July 2020].
-
+;; - [2] https://en.wikipedia.org/wiki/Mandelbrot_set
+;; - [3] https://en.wikipedia.org/wiki/Feigenbaum_constants
 
 (define-module (grsp grsp4)
   #:use-module (grsp grsp2)
   #:export (grsp-complex-inv-imag
 	    grsp-complex-inv-real
 	    grsp-complex-inv
-	    grsp-complex-sign))
+	    grsp-complex-sign
+	    grsp-complex-logistic
+	    grsp-complex-mandelbrot))
   
 
 ;; grsp-complex-inv-imag - Calculates the inverse of the imaginary component of a
@@ -46,6 +49,9 @@
 ;;
 ;; Output:
 ;; - The conjugate of p_v1 (imaginary part negated).
+;;
+;; Sources:
+;; - [1].
 ;;
 (define (grsp-complex-inv-imag p_v1)
   (let ((res1 0)
@@ -66,6 +72,9 @@
 ;;
 ;; Arguments:
 ;; - p_v1: complex number.
+;;
+;; Sources:
+;; - [1].
 ;;
 (define (grsp-complex-inv-real p_v1)
   (let ((res1 0)
@@ -89,6 +98,9 @@
 ;;   - "#is": inverts the real component only.
 ;;   - "#ii": inverts both.
 ;; - p_v1: complex number.
+;;
+;; Sources:
+;; - [1].
 ;;
 (define (grsp-complex-inv p_s1 p_v1)
   (let ((res1 p_v1)
@@ -119,6 +131,9 @@
 ;; - (-1 1) if the real component is negative and the imaginary positive or zero.
 ;; - (1 -1) if the real component is positive and the imaginary is negative.
 ;;
+;; Sources:
+;; - [1].
+;;
 (define (grsp-complex-sign p_v1)
   (let ((res1 '())
 	(vr 0)
@@ -131,6 +146,41 @@
 		(set! vi 1))))
     (set! res1 (list vr vi))
     
+    res1))
+
+
+;; grsp-complex-logistic - Logistic map equation. Pseudo-random number
+;; generator.
+;;
+;; Arguments:
+;; - p_r1: growth rate.
+;; - p_x1
+;;
+;; Sources:
+;; - [2][3].
+;;
+(define (grsp-complex-logistic p_r1 p_x1)
+  (let ((res1 0))
+
+    (set! res1 (* p_r1 (* p_x1 (- 1 p_x1))))
+
+    res1))
+
+
+;; grsp-complex-mandelbrot - Quadratic map function for the Mandelbrot set.
+;;
+;; Arguments:
+;; - p_z1
+;; - p_c1
+;;
+;; Sources:
+;; - [2][3].
+;;
+(define (grsp-complex-mandelbrot p_z1 p_c1)
+  (let ((res1 0))
+
+    (set! res1 (+ (expt p_z1 2) p_c1))
+
     res1))
 
 

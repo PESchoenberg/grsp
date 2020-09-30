@@ -25,6 +25,16 @@
 ;; =============================================================================
 
 
+;; Sources:
+;; - [1] Shido.info. (2019). 9. IO. [online] Available at:
+;;   http://www.shido.info/lisp/scheme9_e.html [Accessed 15 Sep. 2019].
+;; - [2] Gnu.org. (2019). File Ports (Guile Reference Manual). [online] Available
+;;   at: https://www.gnu.org/software/guile/manual/html_node/File-Ports.html
+;;   [Accessed 15 Sep. 2019].
+;; - [3] Edronkin, P. (2019). sqlp - Simple terminal query and .sql file processing 
+;;   for  Sqlite3. [online] sqlp. Available at: https://peschoenberg.github.io/sqlp/
+;;   [Accessed 5 Oct. 2019].
+
 (define-module (grsp grsp0)
   #:export (pline
 	    ptit
@@ -180,8 +190,7 @@
 ;; - p_f: file name.
 ;;
 ;; Sources:
-;; - Shido.info. (2019). 9. IO. [online] Available at:
-;;   http://www.shido.info/lisp/scheme9_e.html [Accessed 15 Sep. 2019].
+;; - [1].
 ;;
 (define (read-file-as-string p_f)
   (call-with-input-file p_f
@@ -238,9 +247,7 @@
 ;;  - "a": open for append. Create if does not exist.
 ;;
 ;; Sources;
-;; - Gnu.org. (2019). File Ports (Guile Reference Manual). [online] Available
-;;   at: https://www.gnu.org/software/guile/manual/html_node/File-Ports.html
-;;   [Accessed 15 Sep. 2019].
+;; - [2].
 ;;
 (define (grsp-save-to-file p_s p_f p_m)
   (let ((output-port (open-file p_f p_m)))    
@@ -288,9 +295,7 @@
 ;; - p_a: sqlp macro (see sqlp's documentation for more on this).
 ;;
 ;; Sources: 
-;; - Edronkin, P. (2019). sqlp - Simple terminal query and .sql file processing 
-;;   for  Sqlite3. [online] sqlp. Available at: https://peschoenberg.github.io/sqlp/
-;;   [Accessed 5 Oct. 2019].
+;; - [3].
 ;;
 (define (grsp-sqlp p_p p_d p_s p_a)
   (system (strings-append (list p_p p_d p_s p_a) 1)))
