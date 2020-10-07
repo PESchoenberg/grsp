@@ -28,8 +28,11 @@
 ;; - [1] Gnu.org. 2020. Complex (Guile Reference Manual). [online] Available at:
 ;;   https://www.gnu.org/software/guile/manual/html_node/Complex.html
 ;;   [Accessed 24 July 2020].
-;; - [2] https://en.wikipedia.org/wiki/Mandelbrot_set
-;; - [3] https://en.wikipedia.org/wiki/Feigenbaum_constants
+;; - [2] En.wikipedia.org. 2020. Mandelbrot Set. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Mandelbrot_set [Accessed 4 October 2020].
+;; - [3] En.wikipedia.org. 2020. Feigenbaum Constants. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Feigenbaum_constants
+;;   [Accessed 5 October 2020].
 
 (define-module (grsp grsp4)
   #:use-module (grsp grsp2)

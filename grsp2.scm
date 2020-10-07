@@ -58,7 +58,8 @@
 	    grsp-lerp
 	    grsp-givens-rotation
 	    grsp-fitin
-	    grsp-fitin-0-1))
+	    grsp-fitin-0-1
+	    grsp-eccentricity-spheroid))
 
 
 ;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -797,3 +798,22 @@
   (grsp-fitin p_n1 0.0 1.0))
 
 
+;; grsp-eccentricity-spheroid - Eccentricity of a spheroid.
+;;
+;; Arguments:
+;; p_x1: semi major axis.
+;; p_x2: semi minor axis.
+;;
+;; Sources:
+;; - See grsp6 [14].
+;;
+(define (grsp-eccentricity-spheroid p_x1 p_y1)
+  (let ((res1 0)
+	(x1 0)
+	(x2 0))
+
+    (set! x1 (expt p_x1 2))
+    (set! x2 (expt p_x2 2))
+    (set! res1 (/ (- x1 x2) x1))
+
+    res1))
