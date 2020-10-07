@@ -802,7 +802,7 @@
 ;;
 ;; Arguments:
 ;; p_x1: semi major axis.
-;; p_x2: semi minor axis.
+;; p_y|: semi minor axis.
 ;;
 ;; Sources:
 ;; - See grsp6 [14].
@@ -810,10 +810,10 @@
 (define (grsp-eccentricity-spheroid p_x1 p_y1)
   (let ((res1 0)
 	(x1 0)
-	(x2 0))
+	(y1 0))
 
     (set! x1 (expt p_x1 2))
-    (set! x2 (expt p_x2 2))
-    (set! res1 (/ (- x1 x2) x1))
+    (set! y1 (expt p_y1 2))
+    (set! res1 (/ (- x1 y1) x1))
 
     res1))
