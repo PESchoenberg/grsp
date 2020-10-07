@@ -572,9 +572,9 @@
 ;; - [15].
 ;;
 (define (grsp-grav-iforh p_x1 p_x2 p_x3 p_y1)
-  (let ((res1 0))h
+  (let ((res1 0))
 
-    (set! (- (grsp-grav-ifor p_x1 p_x2 p_x3) (* (* 3.086 (expt 10 -6)) p_y1)))
+    (set! res1 (- (grsp-grav-ifor p_x1 p_x2 p_x3) (* (* 3.086 (expt 10 -6)) p_y1)))
 
     res1))
 
