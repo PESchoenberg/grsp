@@ -62,8 +62,11 @@
 ;; - [12] https://en.wikipedia.org/wiki/List_of_gravitationally_rounded_objects_of_the_Solar_System
 ;; - [13] En.wikipedia.org. 2020. Energy Density. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Energy_density> [Accessed 30 September 2020].
-;; - [14] https://en.wikipedia.org/wiki/Standard_gravity
+;; - [14] En.wikipedia.org. 2020. Standard Gravity. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Standard_gravity [Accessed 30 September 2020].
 ;; - [15] https://en.wikipedia.org/wiki/Gravitational_acceleration
+;; - [16] https://en.wikipedia.org/wiki/Earth_radius
+;; - [17] See grsp6 [14].
 ;;
 (define (gconst p_n1)
   (let ((res 0))
@@ -726,13 +729,13 @@
 	  ((equal? p_n1 "g0")
 	   (set! res 9.80665))
 
-          ;; Gravity at equator, m/s**2 [14][15].
+          ;; Gravity at equator, m/s**2 [14][15][17].
 	  ((equal? p_n1 "gequator")
-	   (set! res 9.780))
+	   (set! res 9.7803253359))
 
-          ;; Gravity at poles, m/s**2 [14][15].
+          ;; Gravity at poles, m/s**2 [14][15][17].
 	  ((equal? p_n1 "gpoles")
-	   (set! res 9.832))	  
+	   (set! res 9.8321849378))	  
 	  
           ;; Planck's constant. (2019) (kg * (m ** 2) * (s ** -1)).
 	  ((equal? p_n1 "ht")
@@ -900,7 +903,12 @@
 
 	  ;; Specific energy (W * h / kg). Hidrogen fusion [13].
 	  ((equal? p_n1 "Specific energy of hidrogen fusion")
-	   (set! res 177716755600))	  
+	   (set! res 177716755600))
+
+	  ;; Mean radius, Earth (m) [16].
+	  ((equal? p_n1 "RE")
+	   (set! res (* 6.3781 (expt 10 6))))
+	  
 	  
 	  (else (set! res 0)))
 

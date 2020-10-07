@@ -45,6 +45,16 @@
 ;; - [9] Es.wikipedia.org. 2020. Ecuación Del Cohete De Tsiolkovski. [online]
 ;;   Available at: https://es.wikipedia.org/wiki/Ecuaci%C3%B3n_del_cohete_de_Tsiolkovski
 ;;   [Accessed 29 September 2020].
+;; - [10] En.wikipedia.org. 2020. Eötvös Effect. [online] Available at:
+;;   https://en.wikipedia.org/wiki/E%C3%B6tv%C3%B6s_effect
+;;   [Accessed 2 October 2020].
+;; - [11] En.wikipedia.org. 2020. Gravity Of Earth. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Gravity_of_Earth [Accessed 3 October 2020].
+;; - [12] https://en.wikipedia.org/wiki/Gravitational_acceleration
+;; - [13] https://en.wikipedia.org/wiki/Theoretical_gravity
+;; - [14] https://en.wikipedia.org/wiki/Clairaut%27s_theorem#Somigliana_equation
+;; - [15] https://pl.wikipedia.org/wiki/Przyspieszenie_ziemskie
+
 
 (define-module (grsp grsp6)
   #:use-module (grsp grsp0)
@@ -73,7 +83,12 @@
 	    grsp-sgp-ellip
 	    grsp-effective-exhaust-velocity
 	    grsp-ideal-rocket
-	    grsp-weight-earth-lat))
+	    grsp-grav-earth-lat
+	    grsp-grav-earth-alt
+	    grsp-grav-radius
+	    grsp-grav-ifor
+	    grsp-grav-iforh
+	    grsp-grav-somigliana))
 
 
 ;; grsp-ds - Calculate intervals in Euclidean space or Minkowski spacetime (norm
@@ -477,7 +492,7 @@
 ;; - p_m2: final mass.
 ;;
 ;; Sources:
-;; - [8][15].
+;; - [8][9].
 ;;
 (define (grsp-ideal-rocket p_x1 p_m1 p_m2)
   (let ((res1 0))
@@ -487,19 +502,92 @@
     res1))
 
 
-;; grsp-weight-earth-lat - Weight on Earth as a function of latitude.
+;; grsp-grav-earth-lat - Gravity on Earth as a function of latitude.
 ;;
 ;; Arguments:
 ;; - p_l1: latitude [-90, 90].
 ;;
 ;; Sources:
-;; - [15].
+;; - [9].
 ;;
-(define (grsp-weight-earth-lat p_l1)
+(define (grsp-grav-earth-lat p_l1)
   (let ((res1 0))
 
-    (set! res1 (- (gconst "g0") (* (* 0.5 (-(gconst "gpoles") (gconst "gequator"))) (cos (* p_l1 (/ (gconst "A000796") 180))))))
+    (set! res1 (- (gconst "g0") (* (* 0.5 (-(gconst "gpoles") (gconst "gequator"))) (cos (* (* 2 p_l1) (/ (gconst "A000796") 180))))))
 
     res1))
 
 
+;; grsp-grav-earth-alt - Gravity on Earth as a function of altitude.
+;;
+;; Arguments:
+;; - p_z1: altitude.
+;;
+(define (grsp-grav-earth-alt p_z1)
+  (let ((res1 0))
+
+    (set! res1 (* (gconst "g0") (expt (/ (gconst "Re") (+ (gconst "Re") p_z1)) 2)))
+    
+    res1))
+
+
+;; grsp-grav-raadius - Gravity on a body of radius p_pr1 and mass p_m1.
+;;
+;; Arguments:
+;; - p_r1: radius.
+;; - p_m1: mass within p_r1.
+;;
+(define (grsp-grav-radius p_m1 p_r1)
+  (let ((res1 0))
+
+    (set! res1 (* -1 (/ (* (gconst "G") p_m1) (expt p_r1 2))))
+
+    res1))
+
+
+;; grsp-grav-ifor - International gravity formula.
+;;
+;; Arguments:
+;; - p_x1: latitude.
+;; - p_x2: param A.
+;; - p_x3: param B.
+;;
+(define (grsp-grav-ifor p_x1 p_x2 p_x3)
+  (let ((res1 0))
+
+    (set! res1 (* (gconst "gequator") (+ 1 (- (* p_x2 (expt (sin p_x1) 2)) (* p_x3 (expt (sin (* 2 p_x1)) 2))))))
+
+    res1))
+
+
+;; grsp-grav-iforh - International gravity formula + height.
+;;
+;; Arguments:
+;; - p_x1: latitude.
+;; - p_x2: param A.
+;; - p_x3: param B.
+;; - p_y1: altitude.
+;;
+;; Sources:
+;; - [15].
+;;
+(define (grsp-grav-iforh p_x1 p_x2 p_x3 p_y1)
+  (let ((res1 0))h
+
+    (set! (- (grsp-grav-ifor p_x1 p_x2 p_x3) (* (* 3.086 (expt 10 -6)) p_y1)))
+
+    res1))
+
+
+;; grsp-grav-somigliana - Somigliana equation.
+;;
+;; Arguments:
+;; - p_x1: latitude.
+;;
+;; Sources:
+;; - [14].
+;;
+(define (grsp-grav-somigliana p_x1)
+  (let ((res1 0))
+
+    res1))
