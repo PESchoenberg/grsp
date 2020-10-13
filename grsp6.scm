@@ -50,10 +50,17 @@
 ;;   [Accessed 2 October 2020].
 ;; - [11] En.wikipedia.org. 2020. Gravity Of Earth. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Gravity_of_Earth [Accessed 3 October 2020].
-;; - [12] https://en.wikipedia.org/wiki/Gravitational_acceleration
-;; - [13] https://en.wikipedia.org/wiki/Theoretical_gravity
-;; - [14] https://en.wikipedia.org/wiki/Clairaut%27s_theorem#Somigliana_equation
-;; - [15] https://pl.wikipedia.org/wiki/Przyspieszenie_ziemskie
+;; - [12] En.wikipedia.org. 2020. Gravitational Acceleration. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Gravitational_acceleration
+;;   [Accessed 8 October 2020].
+;; - [13] En.wikipedia.org. 2020. Theoretical Gravity. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Theoretical_gravity [Accessed 8 October 2020].
+;; - [14] En.wikipedia.org. 2020. Clairaut's Theorem. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Clairaut%27s_theorem#Somigliana_equation
+;;   [Accessed 10 October 2020].
+;; - [15] Pl.wikipedia.org. 2020. Przyspieszenie Ziemskie. [online] Available
+;;   at: https://pl.wikipedia.org/wiki/Przyspieszenie_ziemskie
+;;   [Accessed 12 October 2020].
 
 
 (define-module (grsp grsp6)
@@ -588,6 +595,20 @@
 ;; - [14].
 ;;
 (define (grsp-grav-somigliana p_x1)
-  (let ((res1 0))
-
+  (let ((res1 0)
+	(x2 0)
+	(y2 0)
+	(n 0)
+	(s 0)
+	(e 0)
+	(k 0))
+	
+    (set! x2 (gconst "requator"))
+    (set! y2 (gconst "rpoles"))
+    (set! n (* x2 (gconst "gequator")))
+    (set! s (expt (sin p_x1) 2))
+    (set! e (grsp-eccentricity-spheroid x2 y2))
+    (set! k (/ (- (* y2 (gconst "gpoles")) n) n)) 
+    (set! res1 (* (gconst "gequator") (/ (+ 1 (* k s)) (sqrt (- 1 (* e s))))))
+    
     res1))
