@@ -59,7 +59,11 @@
 	    grsp-givens-rotation
 	    grsp-fitin
 	    grsp-fitin-0-1
-	    grsp-eccentricity-spheroid))
+	    grsp-eccentricity-spheroid
+	    grsp-rcurv-oblate-ellipsoid
+	    grsp-volume-ellipsoid
+	    grsp-third-flattening-ellipsoid
+	    grsp-flattening-ellipsoid))
 
 
 ;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -801,8 +805,8 @@
 ;; grsp-eccentricity-spheroid - Eccentricity of a spheroid.
 ;;
 ;; Arguments:
-;; p_x1: semi major axis.
-;; p_y|: semi minor axis.
+;; - p_x1: semi major axis.
+;; - p_y1: semi minor axis.
 ;;
 ;; Sources:
 ;; - See grsp6 [14].
@@ -817,3 +821,80 @@
     (set! res1 (/ (- x1 y1) x1))
 
     res1))
+
+
+;; grsp-rcurv-oblate-ellipsoid - Calculates the specified radius of curvature 
+;; of an oblate ellipsoid.
+;;
+;; Arguments:
+;; - p_s1: string
+;;   - "#p": polar radius.
+;;   - "#e": equatorial radius.
+;; - p_x1: semi major axis.
+;; - p_y1: semi minor axis.
+;;
+;; Sources:
+;; - See grsp1 [19][21].
+;;
+(define (grsp-rcurv-oblate-ellipsoid p_s1 p_x1 p_y1)
+  (let ((res1 0))
+
+    (cond ((equal? p_s1 "#p")
+	   (set! res1 (/ (expt p_x1 2) p_y1)))
+	  ((equal? p_s1 "#e")
+	   (set! res1 (/ (expt p_y1 2) p_x1))))	  
+    
+    res1))
+    
+
+;; grsp-volume-ellipsoid - Volume of an ellipsoid.
+;;
+;; Arguments:
+;; - p_x1: semi major axis.
+;; - p_y1: semi minor axis.
+;;
+;; Sources:
+;; - See grsp1 [19].
+;;
+(define (grsp-volume-ellipsoid p_x1 p_y1)
+  (let ((res1 0))
+
+    (set! res1 (* (/ 4 3) (* (gconst "A000796") (* (expt p_x1 2) p_y1))))
+
+    res1))
+
+
+;; grsp-tird-flattening-ellipsoid - Third flattening of an ellipsoid.
+;;
+;; Arguments:
+;; - p_x1: semi major axis.
+;; - p_y1: semi minor axis.
+;;
+;; Sources:
+;; - See grsp1 [21].
+;;
+(define (grsp-third-flattening-ellipsoid p_x1 p_y1)
+  (let ((res1 0))
+
+    (set! res1 (/ (- p_x1 p_y1) (+ p_x1 p_y1)))
+
+    res1))
+
+
+;; grsp-flattening-ellipsoid - Flattening of an ellipsoid.
+;;
+;; Arguments:
+;; - p_x1: semi major axis.
+;; - p_y1: semi minor axis.
+;;
+;; Sources:
+;; - See grsp1 [21].
+;;
+(define (grsp-flattening-ellipsoid p_x1 p_y1)
+  (let ((res1 0))
+
+    (set! res1 (/ (- p_x1 p_y1) p_x1))
+
+    res1))
+
+    

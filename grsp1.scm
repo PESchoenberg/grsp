@@ -67,6 +67,16 @@
 ;; - [15] https://en.wikipedia.org/wiki/Gravitational_acceleration
 ;; - [16] https://en.wikipedia.org/wiki/Earth_radius
 ;; - [17] See grsp6 [14].
+;; - [18] https://en.wikipedia.org/wiki/Earth
+;; - [19] https://en.wikipedia.org/wiki/Figure_of_the_Earth
+;; - [20] https://en.wikipedia.org/wiki/Spherical_Earth
+;; - [21] https://en.wikipedia.org/wiki/Meridian_arc
+
+
+;; gconst - Constants.
+;;
+;; Arguments:
+;; - p_n1: constant identifier.
 ;;
 (define (gconst p_n1)
   (let ((res 0))
@@ -736,8 +746,24 @@
           ;; Gravity at poles, m/s**2 [14][15][17].
 	  ((equal? p_n1 "gpoles")
 	   (set! res 9.8321849378))	  
+
+          ;; Earth, radius, mean (m) [18].
+	  ((equal? p_n1 "rmean")
+	   (set! res 6371000))
+
+          ;; Earth, radius, equatorial (m) [18].
+	  ((equal? p_n1 "requator")
+	   (set! res 6378100))	  
+
+          ;; Earth, radius, polar (m) [18].
+	  ((equal? p_n1 "rpoles")
+	   (set! res 6356800))	  
 	  
-          ;; Planck's constant. (2019) (kg * (m ** 2) * (s ** -1)).
+          ;; Earth, oblateness [19].
+	  ((equal? p_n1 "Earth oblateness")
+	   (set! res (/ 1 298.257223563)))	
+
+	  ;; Planck's constant. (2019) (kg * (m ** 2) * (s ** -1)).
 	  ((equal? p_n1 "ht")
 	   (set! res (* 6.62607015 (expt 10 -34))))
 
