@@ -63,7 +63,10 @@
 	    grsp-rcurv-oblate-ellipsoid
 	    grsp-volume-ellipsoid
 	    grsp-third-flattening-ellipsoid
-	    grsp-flattening-ellipsoid))
+	    grsp-flattening-ellipsoid
+	    grsp-eccentricityf-ellipsoid
+	    grsp-mrc-ellipsoid
+	    grsp-pvrc-ellipsoid))
 
 
 ;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -894,6 +897,66 @@
   (let ((res1 0))
 
     (set! res1 (/ (- p_x1 p_y1) p_x1))
+
+    res1))
+
+
+;; grsp-eccentricityf-ellipsoid - Calculates the eccentricity of an ellipsoid
+;; based on its flattening.
+;;
+;; Arguments:
+;; - p_f1: flattening.
+;;
+;; Sources:
+;; - See grsp1 [21].
+;;
+(define (grsp-eccentricityf-ellipsoid p_f1)
+  (let ((res1 0))
+
+    (set! res1 (sqrt (* p_f1 (- 2 p_f1))))
+
+    res1))
+
+
+;; grsp-mrc-ellipsoid - Meridian radius of curvature (N S).
+;;
+;; Arguments:
+;; p_x1: semi major axis.
+;; p_e1: ecenticity.
+;; p_l1: longitude.
+;;
+;; Sources:
+;; - See grsp1 [21].
+;; - See grsp1 [22].
+;;  
+(define (grsp-mrc-ellipsoid p_x1 p_e1 p_l1)
+  (let ((res1 0)
+	(n1 0)
+	(n2 0))
+    
+    (set! n1 (* p_x1 (- 1 (expt p_e1 2))))
+    (set! n2 (expt (- 1 (* (expt p_e1 2) (expt (sin p_l1) 2))) (/ 3 2)))
+    (set! res1 (/ n1 n2))
+
+    res1))
+
+
+;; grsp-pvrc-ellipsoid - Prime vertical radius of curvature (W E).
+;;
+;; Arguments:
+;; p_x1: semi major axis.
+;; p_y1: semi minor axis.
+;; p_l1: geodetic latitude.
+;;
+;; Sources:
+;; - See grsp1 [22].
+;;  
+(define (grsp-pvrc-ellipsoid p_x1 p_y1 p_l1)
+  (let ((res1 0)
+	(e1 0))
+
+    (set! e1 (grsp-eccentricityf-ellipsoid (grsp-flattening-ellipsoid p_x1 p_y1)))
+    (set! res1 (/ p_x1 (sqrt (- 1 (* (expt e1 2) (expt (sin p_l1) 2))))))
 
     res1))
 
