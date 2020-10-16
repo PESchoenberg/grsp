@@ -67,10 +67,14 @@
 ;; - [15] https://en.wikipedia.org/wiki/Gravitational_acceleration
 ;; - [16] https://en.wikipedia.org/wiki/Earth_radius
 ;; - [17] See grsp6 [14].
-;; - [18] https://en.wikipedia.org/wiki/Earth
-;; - [19] https://en.wikipedia.org/wiki/Figure_of_the_Earth
+;; - [18] En.wikipedia.org. 2020. Earth. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Earth [Accessed 14 October 2020].
+;; - [19] En.wikipedia.org. 2020. Figure Of The Earth. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Figure_of_the_Earth
+;;   [Accessed 15 October 2020].
 ;; - [20] https://en.wikipedia.org/wiki/Spherical_Earth
 ;; - [21] https://en.wikipedia.org/wiki/Meridian_arc
+;; - [22] https://en.wikipedia.org/wiki/Earth_radius#Meridional
 
 
 ;; gconst - Constants.
