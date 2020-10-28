@@ -72,9 +72,15 @@
 ;; - [19] En.wikipedia.org. 2020. Figure Of The Earth. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Figure_of_the_Earth
 ;;   [Accessed 15 October 2020].
-;; - [20] https://en.wikipedia.org/wiki/Spherical_Earth
-;; - [21] https://en.wikipedia.org/wiki/Meridian_arc
-;; - [22] https://en.wikipedia.org/wiki/Earth_radius#Meridional
+;; - [20] En.wikipedia.org. 2020. Spherical Earth. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Spherical_Earth [Accessed 17 October 2020].
+;; - [21] En.wikipedia.org. 2020. Meridian Arc. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Meridian_arc [Accessed 17 October 2020].
+;; - [22] En.wikipedia.org. 2020. Earth Radius. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Earth_radius#Meridional
+;;   [Accessed 18 October 2020].
+;; - [23] En.wikipedia.org. 2020. Earth Mass. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Earth_mass [Accessed 27 October 2020].
 
 
 ;; gconst - Constants.
@@ -939,6 +945,33 @@
 	  ((equal? p_n1 "RE")
 	   (set! res (* 6.3781 (expt 10 6))))
 	  
+	  ;; Mass, Earth (kg) [23].
+	  ((equal? p_n1 "Mass Earth")
+	   (set! res (* 5.9742 (expt 10 24))))
+
+	  ;; Mass, Sun (Earth masses) [23].
+	  ((equal? p_n1 "Mass Sun")
+	   (set! res 332946.0487))
+	  
+	  ;; Mass, Nercury (Earth masses) [23].
+	  ((equal? p_n1 "Mass Mercury")
+	   (set! res 0.0553))
+
+	  ;; Mass, Venus (Earth masses) [23].
+	  ((equal? p_n1 "Mass Venus")
+	   (set! res 0.815))	  
+
+	  ;; Mass, Mars (Earth masses) [23].
+	  ((equal? p_n1 "Mass Mars")
+	   (set! res 0.107))
+
+	  ;; Mass, jupiter (Earth masses) [23].
+	  ((equal? p_n1 "Mass Mars")
+	   (set! res 317.8))
+
+	  ;; Mass, Saturn (Earth masses) [23].
+	  ((equal? p_n1 "Mass Mars")
+	   (set! res 95.2))
 	  
 	  (else (set! res 0)))
 

@@ -66,7 +66,13 @@
 	    grsp-flattening-ellipsoid
 	    grsp-eccentricityf-ellipsoid
 	    grsp-mrc-ellipsoid
-	    grsp-pvrc-ellipsoid))
+	    grsp-pvrc-ellipsoid
+	    grsp-dirc-ellipsoid
+	    grsp-urc-ellipsoid
+	    grsp-r1-iugg
+	    grsp-r2-iugg
+	    grsp-r3-iugg
+	    grsp-r4-iugg))
 
 
 ;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -921,22 +927,19 @@
 ;; grsp-mrc-ellipsoid - Meridian radius of curvature (N S).
 ;;
 ;; Arguments:
-;; p_x1: semi major axis.
-;; p_e1: ecenticity.
-;; p_l1: longitude.
+;; - p_x1: semi major axis.
+;; - p_e1: eccenticity.
+;; - p_l1: longitude.
 ;;
 ;; Sources:
 ;; - See grsp1 [21].
 ;; - See grsp1 [22].
 ;;  
 (define (grsp-mrc-ellipsoid p_x1 p_e1 p_l1)
-  (let ((res1 0)
-	(n1 0)
-	(n2 0))
-    
-    (set! n1 (* p_x1 (- 1 (expt p_e1 2))))
-    (set! n2 (expt (- 1 (* (expt p_e1 2) (expt (sin p_l1) 2))) (/ 3 2)))
-    (set! res1 (/ n1 n2))
+  (let ((res1 0))
+
+    (set! res1 (/ (* p_x1 (- 1 (expt p_e1 2)))
+		  (expt (- 1 (* (expt p_e1 2) (expt (sin p_l1) 2))) (/ 3 2))))
 
     res1))
 
@@ -944,9 +947,9 @@
 ;; grsp-pvrc-ellipsoid - Prime vertical radius of curvature (W E).
 ;;
 ;; Arguments:
-;; p_x1: semi major axis.
-;; p_y1: semi minor axis.
-;; p_l1: geodetic latitude.
+;; - p_x1: semi major axis.
+;; - p_y1: semi minor axis.
+;; - p_l1: geodetic latitude.
 ;;
 ;; Sources:
 ;; - See grsp1 [22].
@@ -960,4 +963,124 @@
 
     res1))
 
+
+;; grsp-dirrc-ellipsoid - Directional radius of curvature on an ellipsoid at
+;; and azimuth p_a1.
+;;
+;; Arguments:
+;; - p_x1: semi major axis.
+;; - p_y1: semi minor axis.
+;; - p_l1: geodetic latitude.
+;; - p_a1: azimuth.
+;;
+;; Sources:
+;; - See grsp1 [21].
+;; - See grsp1 [22].
+;;  
+(define (grsp-dirc-ellipsoid p_x1 p_y1 p_l1 p_a1)
+  (let ((res1 0))
+	  
+    (set! res1 (/ 1 (+ (/ (expt (cos p_a1) 2)
+			  (grsp-mrc-ellipsoid p_x1 (grsp-eccentricityf-ellipsoid (grsp-flattening-ellipsoid p_x1 p_y1)) p_l1))
+		       (/ (expt (sin p_a1) 2)
+			  (grsp-pvrc-ellipsoid p_x1 p_y1 p_l1))))) ; N
     
+    res1))    
+
+;; grsp-urc-ellipsoid - Mean radius of curvature at p_l1.
+;;
+;; Arguments:
+;; - p_x1: semi major axis.
+;; - p_y1: semi minor axis.
+;; - p_l1: geodetic latitude.
+;; - p_a1: azimuth.
+;;
+;; Sources:
+;; - See grsp1 [21].
+;; - See grsp1 [22].
+;; 
+(define (grsp-urc-ellipsoid p_x1 p_y1 p_l1)
+  (let ((res1 0))
+	  
+    (set! res1 (/ 2 (+ (/ 1 (grsp-mrc-ellipsoid p_x1 (grsp-eccentricityf-ellipsoid (grsp-flattening-ellipsoid p_x1 p_y1)) p_l1))
+		       (/ 1 (grsp-pvrc-ellipsoid p_x1 p_y1 p_l1)))))
+    
+    res1))    
+
+
+;; grsp-r1-iugg - Mean radius of curvature (IUGG).
+;;
+;; Arguments:
+;; - p_x1: semi major axis.
+;; - p_y1: semi minor axis.
+;;
+;; Sources:
+;; - See grsp1 [22].
+;; 
+(define (grsp-r1-iugg p_x1 p_y1)
+  (let ((res1 0))
+
+    (set! res1 (/ (+ (* 2 p_x1) p_y1) 3))
+    
+    res1))
+
+
+;; grsp-r2-iugg - Authalic radius (IUGG).
+;;
+;; Arguments:
+;; - p_x1: semi major axis.
+;; - p_y1: semi minor axis.
+;;
+;; Sources:
+;; - See grsp1 [22].
+;;
+;; Notes:
+;; - requires that p_x1 > p_y1
+;;
+(define (grsp-r2-iugg p_x1 p_y1)
+  (let ((res1 0)
+	(e1 0)
+	(x1 0)
+	(y1 0))
+    
+    (set! x1 (expt p_x1 2))
+    (set! y1 (expt p_y1 2))    
+    (set! e1 (sqrt (/ (- x1 y1) x1))) 
+    (set! res1 (sqrt (/ (+ x1 (* (/ y1 e1) (log (/ (+ 1 e1) (/ p_y1 p_x1))))) 2)))
+    
+    res1))
+
+
+;; grsp-r3-iugg - Volumetric radius (IUGG).
+;;
+;; Arguments:
+;; - p_x1: semi major axis.
+;; - p_y1: semi minor axis.
+;;
+;; Sources:
+;; - See grsp1 [22].
+;;
+(define (grsp-r3-iugg p_x1 p_y1)
+  (let ((res1 0))
+
+    (set! res1 (expt (* (expt p_x1 2) p_y1) (/ 1 3)))
+
+    res1))
+
+
+;; grsp-r4-iugg - Mean curvature (IUGG).
+;;
+;; Arguments:
+;; - p_x1: semi major axis.
+;; - p_e1: eccentricity.
+;;
+;; Sources:
+;; - See grsp1 [22].
+;;
+(define (grsp-r4-iugg p_x1 p_e1)
+  (let ((res1 0))
+
+    (set! res1 (* (/ p_x1 2) (sqrt (- (/ 1 (expt p_e1 2)) 1)) (log (/ (+ 1 p_e1) (- 1 p_e1)))))
+
+    res1))
+
