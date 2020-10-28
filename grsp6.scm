@@ -520,7 +520,7 @@
 (define (grsp-grav-earth-lat p_l1)
   (let ((res1 0))
 
-    (set! res1 (- (gconst "g0") (* (* 0.5 (-(gconst "gpoles") (gconst "gequator"))) (cos (* (* 2 p_l1) (/ (gconst "A000796") 180))))))
+    (set! res1 (- (gconst "g0") (* (* 0.5 (- (gconst "gpoles") (gconst "gequator"))) (cos (* (* 2 p_l1) (/ (gconst "A000796") 180))))))
 
     res1))
 
