@@ -61,6 +61,9 @@
 ;; - [15] Pl.wikipedia.org. 2020. Przyspieszenie Ziemskie. [online] Available
 ;;   at: https://pl.wikipedia.org/wiki/Przyspieszenie_ziemskie
 ;;   [Accessed 12 October 2020].
+;; - [16] Es.wikipedia.org. 2020. Métrica De Alcubierre. [online] Available at:
+;;   https://es.wikipedia.org/wiki/M%C3%A9trica_de_Alcubierre
+;;   [Accessed 5 November 2020].
 
 
 (define-module (grsp grsp6)

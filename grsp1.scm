@@ -81,6 +81,25 @@
 ;;   [Accessed 18 October 2020].
 ;; - [23] En.wikipedia.org. 2020. Earth Mass. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Earth_mass [Accessed 27 October 2020].
+;; - [24] En.wikipedia.org. 2020. Solar Mass. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Solar_mass [Accessed 29 October 2020].
+;; - [25] En.wikipedia.org. 2020. List Of Most Massive Stars. [online] Available
+;;   at: https://en.wikipedia.org/wiki/List_of_most_massive_stars
+;;   [Accessed 31 October 2020].
+;; - [26] En.wikipedia.org. 2020. List Of Most Massive Black Holes. [online]
+;;   Available at: https://en.wikipedia.org/wiki/List_of_most_massive_black_holes
+;;   [Accessed 2 November 2020].
+;; - [27] En.wikipedia.org. 2020. Manifold. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Manifold [Accessed 2 November 2020].
+;; - [28] En.wikipedia.org. 2020. Riemannian Manifold. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Riemannian_manifold#Riemannian_metrics
+;;   [Accessed 3 November 2020].
+;; - [29] En.wikipedia.org. 2020. List Of Manifolds. [online] Available at:
+;;   https://en.wikipedia.org/wiki/List_of_manifolds
+;;   [Accessed 3 November 2020].
+;; - [30] En.wikipedia.org. 2020. Fine-Structure Constant. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Fine-structure_constant
+;;   [Accessed 4 November 2020].
 
 
 ;; gconst - Constants.
@@ -696,6 +715,10 @@
  	  	  	  	  	  	  
 	  ;; -------------------------------------------------------------------
 	  ;; Physics
+
+          ;; Fine structure constant [30].
+	  ((equal? p_n1 "Alpha")
+	   (set! res 0.0072973525713))
 	  
           ;; Light speed. m/s [7][8].
 	  ((equal? p_n1 "c")
@@ -965,13 +988,53 @@
 	  ((equal? p_n1 "Mass Mars")
 	   (set! res 0.107))
 
-	  ;; Mass, jupiter (Earth masses) [23].
-	  ((equal? p_n1 "Mass Mars")
+	  ;; Mass, Jupiter (Earth masses) [23].
+	  ((equal? p_n1 "Mass Jupiter")
 	   (set! res 317.8))
 
 	  ;; Mass, Saturn (Earth masses) [23].
-	  ((equal? p_n1 "Mass Mars")
+	  ((equal? p_n1 "Mass Saturn")
 	   (set! res 95.2))
+
+	  ;; Mass, Uranus (Earth masses) [23].
+	  ((equal? p_n1 "Mass Uranus")
+	   (set! res 14.5))
+
+	  ;; Mass, Neptune (Earth masses) [23].
+	  ((equal? p_n1 "Mass Neptune")
+	   (set! res 17.1))
+
+	  ;; Mass, Pluto (Earth masses) [23].
+	  ((equal? p_n1 "Mass Pluto")
+	   (set! res 0.0025))
+
+	  ;; Mass, Moon (Earth masses) [23].
+	  ((equal? p_n1 "Mass Moon")
+	   (set! res 0.0123000371))
+
+	  ;; Mass loss rate of the Sun at present stage (Earth masses) [24].
+	  ((equal? p_n1 "Mass loss rate Sun G2V")
+	   (set! res (* (gconst "Mass Sun") 2.5 (expt 10 -14))))
+
+	  ;; Mass WR124 (Solar masses) [25].
+	  ((equal? p_n1 "Mass WR124")
+	   (set! res 33.0))
+
+	  ;; Mass R136a1 (Solar masses) [25].
+	  ((equal? p_n1 "Mass R136a1")
+	   (set! res 215.0))
+
+	  ;; Mass TON618 (Solar masses) [26].
+	  ((equal? p_n1 "Mass TON618")
+	   (set! res (* 6.6 (expt 10 10))))
+
+	  ;; Mass Powehi (Solar masses) [26].
+	  ((equal? p_n1 "Mass Powehi")
+	   (set! res (* 7.22 (expt 10 9))))
+
+	  ;; Mass Sagittarius A* (Solar masses) [26].
+	  ((equal? p_n1 "Mass Sagittarius A*")
+	   (set! res (* 4.3 (expt 10 6))))
 	  
 	  (else (set! res 0)))
 

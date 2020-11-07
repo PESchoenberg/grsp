@@ -72,7 +72,9 @@
 	    grsp-r1-iugg
 	    grsp-r2-iugg
 	    grsp-r3-iugg
-	    grsp-r4-iugg))
+	    grsp-r4-iugg
+	    grsp-fxyz-torus
+	    grsp-binet-formula))
 
 
 ;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -1084,3 +1086,44 @@
 
     res1))
 
+
+;; grsp-fxyz-torus - Solution for f(x,y,z)
+;;
+;; Arguments:
+;; - p_r1: R, distance from the center of the tube to the center of the torus.
+;; - p_r2: r, tube radius.
+;; - p_x1: x.
+;; - p_y1: y.
+;; - p_z1: z.
+;;
+;; Sources:
+;; - En.wikipedia.org. 2020. Torus. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Torus [Accessed 3 November 2020].
+;;
+(define (grsp-fxyz-torus p_r1 p_r2 p_x1 p_y1 p_z1)
+  (let ((res1 0))
+
+    (set! res1 (+ (expt (- (sqrt (+ (expt p_x1 2) (expt p_y1 2))) p_r1) 2) (expt p_z1 2) (* -1 (expt p_r1 2))))
+
+    res1))
+
+
+;; grsp-binet-formula - Closed form expression of the Fibonacci sequence. It
+;; provides as a result the p_n1th value of the Fibonnaci series.
+;;
+;; - p_n1: ordinal of the desired Fibonacci number.
+;;
+;; Sources:
+;; - En.wikipedia.org. 2020. Fibonacci Number. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Fibonacci_number#Binet's_formula
+;;   [Accessed 5 November 2020].
+;;
+(define (grsp-binet-formula p_n1)
+  (let ((res1 0)
+	(g1 (gconst "A001622"))
+	(g2 0))
+
+    (set! g2 (- 1 g1))
+    (set! res1 (/ (- (expt g1 p_n1) (expt g2 p_n1)) (sqrt 5)))
+
+    res1))
