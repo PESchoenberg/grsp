@@ -74,7 +74,8 @@
 	    grsp-r3-iugg
 	    grsp-r4-iugg
 	    grsp-fxyz-torus
-	    grsp-binet-formula))
+	    grsp-stirling-approximation
+	    grsp-airy-function))
 
 
 ;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -1108,22 +1109,43 @@
     res1))
 
 
-;; grsp-binet-formula - Closed form expression of the Fibonacci sequence. It
-;; provides as a result the p_n1th value of the Fibonnaci series.
+;; grsp-stirling-approximation - Approximation function for factorials. Allows
+;; to estimate the factorial pf p_n1.
 ;;
-;; - p_n1: ordinal of the desired Fibonacci number.
+;; - p_n1: number for which its factorial is to be approximated.
 ;;
 ;; Sources:
-;; - En.wikipedia.org. 2020. Fibonacci Number. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Fibonacci_number#Binet's_formula
-;;   [Accessed 5 November 2020].
+;; - En.wikipedia.org. 2020. Asymptotic Analysis. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Asymptotic_analysis
+;;   [Accessed 8 November 2020].
+;; - En.wikipedia.org. 2020. Stirling's Approximation. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Stirling%27s_approximation
+;;   [Accessed 8 November 2020].
 ;;
-(define (grsp-binet-formula p_n1)
-  (let ((res1 0)
-	(g1 (gconst "A001622"))
-	(g2 0))
+(define (grsp-stirling-approximation p_n1)
+  (let ((res1 0))
 
-    (set! g2 (- 1 g1))
-    (set! res1 (/ (- (expt g1 p_n1) (expt g2 p_n1)) (sqrt 5)))
+    (set! res1 (* (sqrt (* 2 (gconst "A000796") p_n1)) (expt (/ p_n1 (gconst "A001113")) 2)))
+    
+    res1))
+
+
+;; grsp-airy-function - Solution to y'' − xy = 0.
+;;
+;; arguments:
+;; - p_x1.
+;;
+;; Sources:
+;; - En.wikipedia.org. 2020. Asymptotic Analysis. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Asymptotic_analysis
+;;   [Accessed 8 November 2020].
+;; - En.wikipedia.org. 2020. Airy Function. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Airy_function [Accessed 9 November 2020].
+;;
+(define (grsp-airy-function p_x1)
+  (let ((res1 0))
+
+    (set! res1 (/ (expt (expt (gconst "A001113") (* (/ -2 3) p_x1)) (/ 3 2))
+		  (* 2 (sqrt (gconst "A000796")) (expt p_x1 (/ 1 4)))))    
 
     res1))
