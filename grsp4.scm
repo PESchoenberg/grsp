@@ -35,13 +35,17 @@
 ;;   [Accessed 5 October 2020].
 
 (define-module (grsp grsp4)
+  #:use-module (grsp grsp1)  
   #:use-module (grsp grsp2)
   #:export (grsp-complex-inv-imag
 	    grsp-complex-inv-real
 	    grsp-complex-inv
 	    grsp-complex-sign
 	    grsp-complex-logistic
-	    grsp-complex-mandelbrot))
+	    grsp-complex-mandelbrot
+	    grsp-complex-binet
+	    grsp-complex-dirichlet-eta
+	    grsp-complex-f1))
   
 
 ;; grsp-complex-inv-imag - Calculates the inverse of the imaginary component of a
@@ -187,3 +191,60 @@
     res1))
 
 
+;; grsp-complex-binet - Closed form expression of the Fibonacci sequence. It
+;; provides as a result the p_n1th value of the Fibonnaci series. 
+;;
+;; - p_n1: ordinal of the desired Fibonacci number.
+;;
+;; Sources:
+;; - En.wikipedia.org. 2020. Fibonacci Number. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Fibonacci_number#Binet's_formula
+;;   [Accessed 5 November 2020].
+;;
+(define (grsp-complex-binet p_n1)
+  (let ((res1 0)
+	(g1 (gconst "A001622")))
+
+    (set! res1 (/ (- (expt g1 p_n1) (expt (- 1 g1) p_n1)) (sqrt 5)))
+
+    res1))
+
+
+;; grsp-complex-dirichlet-eta - Dirichlet eta function.
+;;
+;; Arguments:
+;; - p_s1: s.
+;; - p_l1: iterations.
+;;
+;; Sources:
+;; - En.wikipedia.org. 2020. Dirichlet Eta Function. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Dirichlet_eta_function
+;;   [Accessed 10 November 2020].
+;;
+(define (grsp-complex-dirichlet-eta p_s1 p_l1)
+  (let ((res1 0)
+	(n1 1))
+
+    (while (< n1 p_l1)
+	   (set! res1 (+ res1 (/ (expt -1 (- n1 1)) (expt n1 p_s1))))
+	   (set! n1 (+ n1 1)))
+
+    res1))
+
+
+;; grsp-complex-f1 - Calculates (p_a1 * (p_x1 ** p_n1)) / (1 + (p_a2 (p_x1 ** p_b2)))
+;;
+;; Arguments:
+;; - p_a1
+;; - p_a2
+;; - p_x1
+;; - p_x2
+;; - p_n1
+;; - p_n2
+;;
+(define (grsp-complex-f1 p_a1 p_a2 p_x1 p_n1 p_n2)
+  (let ((res1 0))
+
+    (set! res1 (/ (* p_a1 (expt p_x1 p_n1)) (+ 1 (* p_a2 (expt p_x1 p_n2)))))
+
+    res1))
