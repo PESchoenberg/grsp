@@ -340,8 +340,12 @@
 ;; - p_k1: number oences. natural number >= 0.
 ;;
 ;; Sources:
-;; - https://en.wikipedia.org/wiki/Poisson_distribution
-;; - https://en.wikipedia.org/wiki/Probability_mass_function
+;; - En.wikipedia.org. 2020. Poisson Distribution. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Poisson_distribution
+;;   [Accessed 23 November 2020].
+;; - En.wikipedia.org. 2020. Probability Mass Function. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Probability_mass_function
+;;   [Accessed 23 November 2020].
 ;;
 (define (grsp-poisson-pmf p_l1 p_k1)
   (let ((res1 0))
@@ -357,7 +361,9 @@
 ;; - p_l1: mean, expected value. Lambda, >= 0.
 ;;
 ;; Sources:
-;; - https://en.wikipedia.org/wiki/Poisson_distribution
+;; - En.wikipedia.org. 2020. Poisson Distribution. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Poisson_distribution
+;;   [Accessed 23 November 2020].
 ;;
 (define (grsp-poisson-kurtosis p_l1)
   (let ((res1 0))
@@ -373,7 +379,9 @@
 ;; - p_l1: mean, expected value. Lambda, >= 0.
 ;;
 ;; Sources:
-;; - https://en.wikipedia.org/wiki/Poisson_distribution
+;; - En.wikipedia.org. 2020. Poisson Distribution. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Poisson_distribution
+;;   [Accessed 23 November 2020].
 ;;
 (define (grsp-poisson-skewness p_l1)
   (let ((res1 0))
@@ -389,7 +397,9 @@
 ;; - p_l1: mean, expected value. Lambda, >= 0.
 ;;
 ;; Sources:
-;; - https://en.wikipedia.org/wiki/Poisson_distribution
+;; - En.wikipedia.org. 2020. Poisson Distribution. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Poisson_distribution
+;;   [Accessed 23 November 2020].
 ;;
 (define (grsp-poisson-fisher p_l1)
   (let ((res1 0))
