@@ -45,7 +45,7 @@
     res1))
 
 
-;; grsp-geo-circle - Area of a circle.
+;; grsp-geo-sphere - Volume of a sphere.
 ;;
 ;; Arguments:
 ;; - p_r1: radius.
