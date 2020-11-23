@@ -75,7 +75,14 @@
 	    grsp-r4-iugg
 	    grsp-fxyz-torus
 	    grsp-stirling-approximation
-	    grsp-airy-function))
+	    grsp-airy-function
+	    grsp-sfact-pickover
+	    grsp-sfact-sp
+	    grsp-hfact
+	    grsp-fact-alt
+	    grsp-fact-exp
+	    grsp-fact-sub
+	    grsp-ratio-derper))
 
 
 ;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -180,13 +187,17 @@
     res))
 
 
-;; grsp-sumat - Calculates the summation of p_n.
+;; grsp-sumat - Calculates the summation of p_n (triangular number).
 ;;
 ;; Arguments:
 ;; - p_n: integer >= 0.
 ;; 
 ;; Output:
 ;; - Returns 0 if p_n is not a natural number. Summation value of p_n otherwise.
+;;
+;; Sources:
+;; - En.wikipedia.org. 2020. Triangular Number. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Triangular_number [Accessed 20 November 2020].
 ;;
 (define (grsp-sumat p_n)
   (let ((res 0))
@@ -728,7 +739,7 @@
 
 
 ;; grsp-matrix-givens-rotation - Givens rotation. The code for this function
-;; is adapted to Scheme from the original Octave code presented in the source.
+;; is adapted to Scheme from the original Octave code presented in the sources.
 ;;
 ;; Arguments:
 ;; - p_v1.
@@ -1149,3 +1160,164 @@
 		  (* 2 (sqrt (gconst "A000796")) (expt p_x1 (/ 1 4)))))    
 
     res1))
+
+
+;; grsp-sfact-pickover - Returns Pickover's superfactorial.
+;;
+;; Arguments:
+;; - p_n1: positive integer.
+;;
+;; Notes:
+;; - This operation might have a significant impact on the performance of your 
+;;   computer due to its very fast function growth. Use with care.
+;;
+;; Sources:
+;; - En.wikipedia.org. 2020. Factorial. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Factorial#Superfactorial
+;;   [Accessed 17 November 2020].
+;;
+(define (grsp-sfact-pickover p_n1)
+  (let ((res1 0)
+	(n2 0))
+
+    (set! n2 (grsp-fact p_n1))
+    (set! res1 (grsp-sexp n2 n2))
+    
+    res1))
+
+
+;; grsp-sfact-sp - Returns Sloane-Plouffe's superfactorial.
+;;
+;; Arguments:
+;; - p_n1: positive integer.
+;;
+;; Notes:
+;; - This operation might have a significant impact on the performance of your 
+;;   computer due to its very fast function growth. Use with care.
+;;
+;; Sources:
+;; - En.wikipedia.org. 2020. Factorial. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Factorial#Superfactorial
+;;   [Accessed 17 November 2020].
+;;
+(define (grsp-sfact-sp p_n1)
+  (let ((res1 1)
+	(i 1))
+
+    (while (<= i p_n1)
+	   (set! res1 (* res1 (grsp-fact i)))
+	   (set! i (+ i 1)))
+    
+    res1))
+
+
+;; grsp-hfact - Hyperfactorial.
+;;
+;; Arguments:
+;; - p_n1: positive integer.
+;;
+;; Notes:
+;; - This operation might have a significant impact on the performance of your 
+;;   computer due to its very fast function growth. Use with care.
+;;
+;; Sources:
+;; - En.wikipedia.org. 2020. Factorial. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Factorial#Hyperfactorial
+;;   [Accessed 17 November 2020].
+;;
+(define (grsp-hfact p_n1)
+  (let ((res1 1)
+	(i 1))
+
+    (while (<= i p_n1)
+	   (set! res1 (* res1 (expt i i)))
+	   (set! i (+ i 1)))
+    
+    res1))
+
+
+;; grsp-fact-alt - alternating factorial.
+;;
+;; Arguments:
+;; - p_n1: positive integer.
+;;
+;; Sources:
+;; - En.wikipedia.org. 2020. Alternating Factorial. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Alternating_factorial
+;;   [Accessed 17 November 2020].
+;;
+(define (grsp-fact-alt p_n1)
+  (let ((res1 1))
+
+    (cond ((> p_n1 1)
+	   (set! res1 (- (grsp-fact p_n1) (grsp-fact-alt (- p_n1 1))))))
+    
+    res1))
+
+
+;; grsp-fact-exp - exponential factorial.
+;;
+;; Arguments:
+;; - p_n1: positive integer.
+;;
+;; Notes:
+;; - This operation might have a significant impact on the performance of your 
+;;   computer due to its very fast function growth. Use with care.
+;;
+;; Sources:
+;; - En.wikipedia.org. 2020. Exponential Factorial. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Exponential_factorial
+;;   [Accessed 17 November 2020].
+;;
+(define (grsp-fact-exp p_n1)
+  (let ((res1 1))
+
+    (cond ((> p_n1 1)
+	   (set! res1 (expt p_n1 (grsp-fact-exp (- p_n1 1))))))
+    
+    res1))
+
+
+;; grsp-fact-sub - sub factorial (derangement). Calculates the number of
+;; permutations with no fixed points or repetitions in a set.
+;;
+;; Arguments:
+;; - p_n1: positive integer.
+;;
+;; Sources:
+;; - En.wikipedia.org. 2020. Derangement. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Derangement [Accessed 18 November 2020].
+;;
+(define (grsp-fact-sub p_n1)
+  (let ((res1 0.0))
+
+    (cond ((<= p_n1 0)
+	   (set! res1 1.0))
+	  ((= p_n1 1)
+	   (set! res1 0.0))
+	  ((> p_n1 1)
+	   (set! res1 (round (/ (grsp-fact p_n1) (gconst "A001113"))))))
+    
+    res1))
+
+
+;; grsp-ratio-derper - Calculates the ratio between derangement (sub factorial)
+;; and permutations (factorial) in a set. As p_n1 tends to infinity, this ratio
+;; should approach 1/e. Limit of the probability that a permutation is a
+;; derangement.
+;;
+;; Arguments:
+;; - p_n1: positive integer.
+;;
+;; Sources:
+;; - En.wikipedia.org. 2020. Derangement. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Derangement [Accessed 18 November 2020].
+;;
+(define (grsp-ratio-derper p_n1)
+  (let ((res1 0.0))
+
+    (set! res1 (/ (grsp-fact-sub p_n1) (grsp-fact p_n1)))
+
+    res1))
+
+

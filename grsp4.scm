@@ -33,6 +33,10 @@
 ;; - [3] En.wikipedia.org. 2020. Feigenbaum Constants. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Feigenbaum_constants
 ;;   [Accessed 5 October 2020].
+;; - [4] En.wikipedia.org. 2020. Dirichlet Eta Function. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Dirichlet_eta_function
+;;   [Accessed 10 November 2020].
+
 
 (define-module (grsp grsp4)
   #:use-module (grsp grsp1)  
@@ -52,24 +56,24 @@
 ;; complex number.
 ;;
 ;; Arguments:
-;; - p_v1: complex number.
+;; - p_z1: complex number.
 ;;
 ;; Output:
-;; - The conjugate of p_v1 (imaginary part negated).
+;; - The conjugate of p_z1 (imaginary part negated).
 ;;
 ;; Sources:
 ;; - [1].
 ;;
-(define (grsp-complex-inv-imag p_v1)
+(define (grsp-complex-inv-imag p_z1)
   (let ((res1 0)
 	(vr 0)
 	(vi 0))
 
-    (cond ((complex? p_v1)
-	   (set! vr (real-part p_v1))
-	   (set! vi (* -1 (imag-part p_v1)))
+    (cond ((complex? p_z1)
+	   (set! vr (real-part p_z1))
+	   (set! vi (* -1 (imag-part p_z1)))
 	   (set! res1 (make-rectangular vr vi)))
-	  (else((set! res1 p_v1))))
+	  (else((set! res1 p_z1))))
 
     res1))
 
@@ -78,21 +82,21 @@
 ;; complex number.
 ;;
 ;; Arguments:
-;; - p_v1: complex number.
+;; - p_z1: complex number.
 ;;
 ;; Sources:
 ;; - [1].
 ;;
-(define (grsp-complex-inv-real p_v1)
+(define (grsp-complex-inv-real p_z1)
   (let ((res1 0)
 	(vr 0)
 	(vi 0))
 
-    (cond ((complex? p_v1)
-	   (set! vr (* -1 (real-part p_v1)))
-	   (set! vi (imag-part p_v1))
+    (cond ((complex? p_z1)
+	   (set! vr (* -1 (real-part p_z1)))
+	   (set! vi (imag-part p_z1))
 	   (set! res1 (make-rectangular vr vi)))
-	  (else((set! res1 (* -1 p_v1)))))
+	  (else((set! res1 (* -1 p_z1)))))
 
     res1))
 
@@ -104,13 +108,13 @@
 ;;   - "#si": inverts the imaginary component only.
 ;;   - "#is": inverts the real component only.
 ;;   - "#ii": inverts both.
-;; - p_v1: complex number.
+;; - p_z1: complex number.
 ;;
 ;; Sources:
 ;; - [1].
 ;;
-(define (grsp-complex-inv p_s1 p_v1)
-  (let ((res1 p_v1)
+(define (grsp-complex-inv p_s1 p_z1)
+  (let ((res1 p_z1)
 	(vr 0)
 	(v 0))
 
@@ -129,7 +133,7 @@
 ;; signs of the real and imaginary parts of a complex number.
 ;;
 ;; Arguments:
-;; - p_n1: complex number.
+;; - p_z1: complex number.
 ;;
 ;; Output:
 ;; - (1 1) if both components are positive or real is positive and imaginary is
@@ -141,15 +145,15 @@
 ;; Sources:
 ;; - [1].
 ;;
-(define (grsp-complex-sign p_v1)
+(define (grsp-complex-sign p_z1)
   (let ((res1 '())
 	(vr 0)
 	(vi 0))
 
-    (cond ((complex? p_v1)
-	   (set! vr (grsp-sign (real-part p_v1)))
-	   (set! vi (grsp-sign (imag-part p_v1))))	  
-	  (else((set! vr (grsp-sign p_v1))
+    (cond ((complex? p_z1)
+	   (set! vr (grsp-sign (real-part p_z1)))
+	   (set! vi (grsp-sign (imag-part p_z1))))	  
+	  (else((set! vr (grsp-sign p_z1))
 		(set! vi 1))))
     (set! res1 (list vr vi))
     
@@ -194,18 +198,18 @@
 ;; grsp-complex-binet - Closed form expression of the Fibonacci sequence. It
 ;; provides as a result the p_n1th value of the Fibonnaci series. 
 ;;
-;; - p_n1: ordinal of the desired Fibonacci number.
+;; - p_z1: ordinal of the desired Fibonacci number.
 ;;
 ;; Sources:
 ;; - En.wikipedia.org. 2020. Fibonacci Number. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Fibonacci_number#Binet's_formula
 ;;   [Accessed 5 November 2020].
 ;;
-(define (grsp-complex-binet p_n1)
+(define (grsp-complex-binet p_z1)
   (let ((res1 0)
 	(g1 (gconst "A001622")))
 
-    (set! res1 (/ (- (expt g1 p_n1) (expt (- 1 g1) p_n1)) (sqrt 5)))
+    (set! res1 (/ (- (expt g1 p_z1) (expt (- 1 g1) p_z1)) (sqrt 5)))
 
     res1))
 
@@ -217,9 +221,7 @@
 ;; - p_l1: iterations.
 ;;
 ;; Sources:
-;; - En.wikipedia.org. 2020. Dirichlet Eta Function. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Dirichlet_eta_function
-;;   [Accessed 10 November 2020].
+;; - [4].
 ;;
 (define (grsp-complex-dirichlet-eta p_s1 p_l1)
   (let ((res1 0)
@@ -232,13 +234,12 @@
     res1))
 
 
-;; grsp-complex-f1 - Calculates (p_a1 * (p_x1 ** p_n1)) / (1 + (p_a2 (p_x1 ** p_b2)))
+;; grsp-complex-f1 - Solves (p_a1 * (p_x1 ** p_n1)) / (1 + (p_a2 (p_x1 ** p_b2)))
 ;;
 ;; Arguments:
 ;; - p_a1
 ;; - p_a2
 ;; - p_x1
-;; - p_x2
 ;; - p_n1
 ;; - p_n2
 ;;

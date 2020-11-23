@@ -50,7 +50,11 @@
 	    grsp-pcond
 	    grsp-pcomp
 	    grsp-osbv
-	    grsp-obsv))
+	    grsp-obsv
+	    grsp-poisson-pmf
+	    grsp-poisson-kurtosis
+	    grsp-poisson-skewness
+	    grsp-poisson-fisher))
 
 
 ;; grsp-feature-scaling - Scales p_n to the interval [p_nmin, p_nmax].
@@ -328,4 +332,69 @@
 	  
     res1))
 
+
+;; grsp-poisson-pmf - Poisson distribution, progability mass function.
+;;
+;; Arguments:
+;; - p_l1: mean, expected value. Lambda, >= 0.
+;; - p_k1: number oences. natural number >= 0.
+;;
+;; Sources:
+;; - https://en.wikipedia.org/wiki/Poisson_distribution
+;; - https://en.wikipedia.org/wiki/Probability_mass_function
+;;
+(define (grsp-poisson-pmf p_l1 p_k1)
+  (let ((res1 0))
+
+    (set! res1 (/ (* (expt p_l1 p_k1) (expt (gconst "A001113") (* -1 p_l1))) (grsp-fact p_k1)))
+
+    res1))
+
+
+;; grsp-poisson-kurtosis
+;;
+;; Arguments:
+;; - p_l1: mean, expected value. Lambda, >= 0.
+;;
+;; Sources:
+;; - https://en.wikipedia.org/wiki/Poisson_distribution
+;;
+(define (grsp-poisson-kurtosis p_l1)
+  (let ((res1 0))
+
+    (set! res1 (expt p_l1 -1))
+
+    res))
+
+
+;; grsp-poisson-skewness
+;;
+;; Arguments:
+;; - p_l1: mean, expected value. Lambda, >= 0.
+;;
+;; Sources:
+;; - https://en.wikipedia.org/wiki/Poisson_distribution
+;;
+(define (grsp-poisson-skewness p_l1)
+  (let ((res1 0))
+
+    (set! res1 (expt p_l1 (/ -1 2)))
+
+    res))
+
+
+;; grsp-poisson-fisher - Fisher information.
+;;
+;; Arguments:
+;; - p_l1: mean, expected value. Lambda, >= 0.
+;;
+;; Sources:
+;; - https://en.wikipedia.org/wiki/Poisson_distribution
+;;
+(define (grsp-poisson-fisher p_l1)
+  (let ((res1 0))
+
+    (set! res1 (/ 1 p_l1))
+
+    res))
     
