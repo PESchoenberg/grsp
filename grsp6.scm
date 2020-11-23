@@ -460,7 +460,7 @@
     res1))
 
 
-;; grsp-sgp=mass - Calculates the standard gravitational parameter of a bodt at
+;; grsp-sgp=mass - Calculates the standard gravitational parameter of a body at
 ;; relative distance p_a1 and orbital period p_t1.
 ;;
 ;; Arguments:
