@@ -82,7 +82,8 @@
 	    grsp-fact-alt
 	    grsp-fact-exp
 	    grsp-fact-sub
-	    grsp-ratio-derper))
+	    grsp-ratio-derper
+	    grsp-intifint))
 
 
 ;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -1321,3 +1322,26 @@
     res1))
 
 
+;; grsp-intifint - If p_z1 is an integer, rounds p_z2 to zero decimals. This
+;; might be necessary to satisfy exactness rquirements as per R5RS criteria as
+;; describe in the sources.
+;;
+;; Arguments:
+;; - p_z1: complex.
+;; - p_z2: complex
+;;
+;; Sources:
+;; - Gnu.org. 2020. Exactness (Guile Reference Manual). [online] Available at:
+;;   https://www.gnu.org/software/guile/manual/html_node/Exactness.html
+;;   [Accessed 28 November 2020].
+;;
+(define (grsp-intifint p_z1 p_z2)
+  (let ((res1 0)
+	(z1 p_z1))
+
+    (cond ((integer? z1)
+	   (set! res1 (round p_z2)))
+	  ((not (integer? z1))
+	   (set! res1 p_z2)))
+
+    res1))
