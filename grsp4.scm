@@ -49,7 +49,11 @@
 	    grsp-complex-mandelbrot
 	    grsp-complex-binet
 	    grsp-complex-dirichlet-eta
-	    grsp-complex-f1))
+	    grsp-complex-f1
+	    grsp-complex-gamma-euler
+	    grsp-complex-gamma-weierstrass
+	    grsp-complex-pigamma
+	    grsp-complex-lngamma))
   
 
 ;; grsp-complex-inv-imag - Calculates the inverse of the imaginary component of a
@@ -247,5 +251,113 @@
   (let ((res1 0))
 
     (set! res1 (/ (* p_a1 (expt p_x1 p_n1)) (+ 1 (* p_a2 (expt p_x1 p_n2)))))
+
+    res1))
+
+
+;; grsp-complex-gamma-euler - Complex extension of the gamma function according
+;; to Euler's infinite product representation. 
+;;
+;; Arguments:
+;; - p_z1: complex.
+;; - p_n1: Desired product iterations.
+;;
+;; Output:
+;; - For negative integers, the function returns +inf.0 (Riemann sphere).
+;;
+;; Sources:
+;; - En.wikipedia.org. 2020. Gamma Function. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Gamma_function [Accessed 24 November 2020].
+;;
+(define (grsp-complex-gamma-euler p_z1 p_n1)
+  (let ((res1 0)
+	(res2 1)
+	(i1 1)
+	(res3 0)
+	(res4 0)
+	(defined #t))
+
+    (cond ((integer? p_z1)
+	   (cond ((< p_z1 0)
+		  (set! defined #f)))))
+    (cond ((eq? defined #t)
+	   (while (<= i1 p_n1)
+		  (set! res3 (expt (+ 1 (/ 1 i1)) p_z1))
+		  (set! res4 (+ 1 (/ p_z1 i1)))
+		  (set! res2 (* res2 (/ res3 res4)))
+		  (set! i1 (+ i1 1)))
+	   (set! res1 (* 1.00 (/ 1 p_z1) res2)))
+	  ((eq? defined #f)
+	   (set! res1 +inf.0)))
+
+    (set! res1 (grsp-intifint p_z1 res1))
+    
+    res1))
+
+
+;; grsp-complex-gamma-weierstrass - Complex extension of the gamma function
+;; according to Weierstrass.
+;;
+;; Arguments:
+;; - p_z1: complex.
+;; - p_n1: Desired product iterations.
+;;
+;; Output:
+;; - For negative integers, the function returns +inf.0 (Riemann sphere).
+;;
+;; Sources:
+;; - En.wikipedia.org. 2020. Gamma Function. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Gamma_function [Accessed 24 November 2020].
+;;
+(define (grsp-complex-gamma-weierstrass p_z1 p_n1)
+  (let ((res1 0)
+	(res2 1)
+	(i1 1)
+	(e1 (gconst "A001113"))
+	(g1 (gconst "A001620"))
+	(z2 0)
+	(res3 0)
+	(res4 0)
+	(res5 0)
+	(defined #t))
+
+    (cond ((integer? p_z1)
+	   (cond ((< p_z1 0)
+		  (set! defined #f)))))
+    (cond ((eq? defined #t)
+	   (set! res3 (/ (expt e1 (* -1 g1 p_z1)) p_z1))
+	   (while (<= i1 p_n1)
+		  (set! z2 (/ p_z1 i1))
+		  (set! res4 (/ 1 (+ 1 z2)))
+		  (set! res5 (expt e1 z2))
+		  (set! res2 (* res2 res4 res5))
+		  (set! i1 (+ i1 1)))
+	   (set! res1 (* 1.00 res3 res2)))
+	  ((eq? defined #f)
+	   (set! res1 +inf.0)))
+
+    (set! res1 (grsp-intifint p_z1 res1))
+    
+    res1))
+
+
+(define (grsp-complex-pigamma p_s1 p_z1 p_n1)
+  (let ((res1 0)
+	(z2 (+ p_z1 1))
+	(s1 "#e"))
+
+    (cond ((equal? p_s1 "#w")
+	   (set! s1 p_s1)))
+    (cond ((equal? s1 "#e")
+	   (set! res1 (grsp-complex-gamma-euler z2 p_n1)))
+	  ((equal? s1 "#w")
+	   (set! res1 (grsp-complex-gamma-weierstrass z2 p_n1))))
+    
+    res1))
+
+
+(define (grsp-complex-lngamma p_s1 p_z1 p_n1)
+  (let ((res1 0))
+
 
     res1))
