@@ -36,6 +36,14 @@
 ;; - [4] En.wikipedia.org. 2020. Dirichlet Eta Function. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Dirichlet_eta_function
 ;;   [Accessed 10 November 2020].
+;; - [5] En.wikipedia.org. 2020. Gamma Function. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Gamma_function [Accessed 24 November
+;;   2020].
+;; - [6] En.wikipedia.org. 2020. Fibonacci Number. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Fibonacci_number#Binet's_formula
+;;   [Accessed 5 November 2020].
+;; - [7] En.wikipedia.org. 2020. Digamma Function. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Digamma_function> [Accessed 1 December 2020].
 
 
 (define-module (grsp grsp4)
@@ -53,11 +61,12 @@
 	    grsp-complex-gamma-euler
 	    grsp-complex-gamma-weierstrass
 	    grsp-complex-pigamma
-	    grsp-complex-lngamma))
+	    grsp-complex-lngamma
+	    grsp-complex-digamma))
   
 
-;; grsp-complex-inv-imag - Calculates the inverse of the imaginary component of a
-;; complex number.
+;; grsp-complex-inv-imag - Calculates the inverse of the imaginary
+;; component of a complex number.
 ;;
 ;; Arguments:
 ;; - p_z1: complex number.
@@ -133,17 +142,18 @@
     res1))
 
 
-;; grsp-complex-sign - Returns a list containing boolean values indicating the  
-;; signs of the real and imaginary parts of a complex number.
+;; grsp-complex-sign - Returns a list containing boolean values indicating
+;; the signs of the real and imaginary parts of a complex number.
 ;;
 ;; Arguments:
 ;; - p_z1: complex number.
 ;;
 ;; Output:
-;; - (1 1) if both components are positive or real is positive and imaginary is
-;;   zero.
+;; - (1 1) if both components are positive or real is positive and
+;;   imaginary is zero.
 ;; - (-1 -1) if both components are negative.
-;; - (-1 1) if the real component is negative and the imaginary positive or zero.
+;; - (-1 1) if the real component is negative and the imaginary positive or
+;;   zero.
 ;; - (1 -1) if the real component is positive and the imaginary is negative.
 ;;
 ;; Sources:
@@ -205,9 +215,7 @@
 ;; - p_z1: ordinal of the desired Fibonacci number.
 ;;
 ;; Sources:
-;; - En.wikipedia.org. 2020. Fibonacci Number. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Fibonacci_number#Binet's_formula
-;;   [Accessed 5 November 2020].
+;; [6].
 ;;
 (define (grsp-complex-binet p_z1)
   (let ((res1 0)
@@ -238,7 +246,7 @@
     res1))
 
 
-;; grsp-complex-f1 - Solves (p_a1 * (p_x1 ** p_n1)) / (1 + (p_a2 (p_x1 ** p_b2)))
+;; grsp-complex-f1 - Solves (p_a1 * (p_x1**p_n1)) / (1 + (p_a2 (p_x1**p_b2)))
 ;;
 ;; Arguments:
 ;; - p_a1
@@ -255,21 +263,23 @@
     res1))
 
 
-;; grsp-complex-gamma-euler - Complex extension of the gamma function according
-;; to Euler's infinite product representation. 
+;; grsp-complex-gamma-euler - Complex extension of the gamma function
+;; according to Euler's infinite product representation. 
 ;;
 ;; Arguments:
+;; - p_b1: for integers.
+;;   - #t: if rounding is desired.
+;;   - #f: if rounding is not desired.
 ;; - p_z1: complex.
-;; - p_n1: Desired product iterations.
+;; - p_n1: desired product iterations.
 ;;
 ;; Output:
 ;; - For negative integers, the function returns +inf.0 (Riemann sphere).
 ;;
 ;; Sources:
-;; - En.wikipedia.org. 2020. Gamma Function. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Gamma_function [Accessed 24 November 2020].
+;; - [5].
 ;;
-(define (grsp-complex-gamma-euler p_z1 p_n1)
+(define (grsp-complex-gamma-euler p_b1 p_z1 p_n1)
   (let ((res1 0)
 	(res2 1)
 	(i1 1)
@@ -290,7 +300,7 @@
 	  ((eq? defined #f)
 	   (set! res1 +inf.0)))
 
-    (set! res1 (grsp-intifint p_z1 res1))
+    (set! res1 (grsp-intifint p_b1 p_z1 res1))
     
     res1))
 
@@ -299,17 +309,19 @@
 ;; according to Weierstrass.
 ;;
 ;; Arguments:
+;; - p_b1: for integers.
+;;   - #t: if rounding is desired.
+;;   - #f: if rounding is not desired.
 ;; - p_z1: complex.
-;; - p_n1: Desired product iterations.
+;; - p_n1: desired product iterations.
 ;;
 ;; Output:
 ;; - For negative integers, the function returns +inf.0 (Riemann sphere).
 ;;
 ;; Sources:
-;; - En.wikipedia.org. 2020. Gamma Function. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Gamma_function [Accessed 24 November 2020].
+;; - [5].
 ;;
-(define (grsp-complex-gamma-weierstrass p_z1 p_n1)
+(define (grsp-complex-gamma-weierstrass p_b1 p_z1 p_n1)
   (let ((res1 0)
 	(res2 1)
 	(i1 1)
@@ -336,12 +348,27 @@
 	  ((eq? defined #f)
 	   (set! res1 +inf.0)))
 
-    (set! res1 (grsp-intifint p_z1 res1))
+    (set! res1 (grsp-intifint p_b1 p_z1 res1))
     
     res1))
 
 
-(define (grsp-complex-pigamma p_s1 p_z1 p_n1)
+;; grsp-complex-pigamma - Pi Gauss function. Calculates gamma for p_z1 + 1.
+;;
+;; Arguments:
+;; - p_b1: for integers.
+;;   - #t: if rounding is desired.
+;;   - #f: if rounding is not desired.
+;; - p_s1: desired gamma repesentation:
+;;   - "#e": Euler.
+;    - "#w": Weierstrass.
+;; - p_z1: complex.
+;; - p_n1: desired product iterations.
+;;
+;; Sources:
+;; - [5].
+;;
+(define (grsp-complex-pigamma p_b1 p_s1 p_z1 p_n1)
   (let ((res1 0)
 	(z2 (+ p_z1 1))
 	(s1 "#e"))
@@ -349,15 +376,78 @@
     (cond ((equal? p_s1 "#w")
 	   (set! s1 p_s1)))
     (cond ((equal? s1 "#e")
-	   (set! res1 (grsp-complex-gamma-euler z2 p_n1)))
+	   (set! res1 (grsp-complex-gamma-euler p_b1 z2 p_n1)))
 	  ((equal? s1 "#w")
-	   (set! res1 (grsp-complex-gamma-weierstrass z2 p_n1))))
+	   (set! res1 (grsp-complex-gamma-weierstrass p_b1 z2 p_n1))))
     
     res1))
 
 
-(define (grsp-complex-lngamma p_s1 p_z1 p_n1)
-  (let ((res1 0))
+;; grsp-complex-lngamma - Calculates the natural logarythm of gamma.
+;;
+;; Arguments:
+;; - p_z1: complex.
+;; - p_n1: desired product iterations.
+;;
+;; Sources:
+;; - [5].
+;;
+(define (grsp-complex-lngamma p_z1 p_n1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(res4 0)
+	(res5 0)
+	(res6 0)
+	(i1 1)
+	(g1 (gconst "A001620")))
 
+    (set! res2 (* -1 g1 p_z1))
+    (set! res3 (* -1 (log p_z1)))
+    (while (<= i1 p_n1)
+	   (set! res6 (/ p_z1 i1))
+	   (set! res4 (- res6 (log (+ 1 res6))))
+	   (set! res5 (+ res5 res4))
+	   (set! i1 (+ i1 1)))    
 
     res1))
+
+
+;; grsp-complex-digamma - Digamma function for p_z| - |.
+;;
+;; Arguments:
+;; - p_b1: for integers.
+;;   - #t: if rounding is desired.
+;;   - #f: if rounding is not desired.
+;; - p_z1: complex.
+;; - p_n1: Desired product iterations.
+;;
+;; Sources:
+;; - [5].
+;;
+(define (grsp-complex-digamma p_b1 p_z1 p_n1)
+  (let ((res1 0)
+	(res2 1)
+	(i1 1)
+	(z2 (- p_z1 1))
+	(g1 (gconst "A001620"))
+	(defined #t))
+
+    (cond ((integer? z2)
+	   (cond ((< z2 0)
+		  (set! defined #f)))))
+    (cond ((eq? defined #t)
+	   (while (<= i1 p_n1)
+		  (set! res2 (/ z2 (* i1 (+ i1 z2))))		  
+		  (set! i1 (+ i1 1)))
+	   (set! res1 (* -1.00 g1 res2)))
+	  ((eq? defined #f)
+	   (set! res1 +inf.0)))
+
+    (set! res1 (grsp-intifint p_b1 z2 res1))
+    
+    res1))
+
+
+
+;; https://en.wikipedia.org/wiki/Gamma_distribution

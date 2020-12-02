@@ -29,16 +29,17 @@
 ;;   https://en.wikipedia.org/wiki/Probability [Accessed 23 July 2020].
 ;; - [2] En.wikipedia.org. 2020. Bayes' Theorem [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Bayes%27_theorem [Accessed 23 July 2020].
-;; - [3] Statistics How To. 2020. Normalized Data / Normalization - Statistics How
-;;   To. [online] Available at: https://www.statisticshowto.datasciencecentral.com/normalized/
+;; - [3] Statistics How To. 2020. Normalized Data / Normalization - Statistics
+;;   How To. [online] Available at:
+;;   https://www.statisticshowto.datasciencecentral.com/normalized/
 ;;   [Accessed 23 July 2020].
 ;; - [4] En.wikipedia.org. 2020. Poisson Distribution. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Poisson_distribution
 ;;   [Accessed 23 November 2020].
-;; - [5] En.wikipedia.org. 2020. Probability Mass Function. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Probability_mass_function
+;; - [5] En.wikipedia.org. 2020. Probability Mass Function. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Probability_mass_function
 ;;   [Accessed 23 November 2020].
-
+;; - [6] https://en.wikipedia.org/wiki/Gamma_distribution
 
 (define-module (grsp grsp5)
   #:use-module (grsp grsp0)
@@ -61,7 +62,9 @@
 	    grsp-poisson-pmf
 	    grsp-poisson-kurtosis
 	    grsp-poisson-skewness
-	    grsp-poisson-fisher))
+	    grsp-poisson-fisher
+	    grsp-gamma-mean1
+	    grsp-gamma-mean2))
 
 
 ;; grsp-feature-scaling - Scales p_n to the interval [p_nmin, p_nmax].
@@ -108,8 +111,8 @@
     res1))
 
 
-;; grsp-binop - Performs an operation p_s1 on p_n1 and p_n2 and calculates the p_n3
-;; power of that binomial operation.
+;; grsp-binop - Performs an operation p_s1 on p_n1 and p_n2 and calculates the
+;; p_n3 power of that binomial operation.
 ;;
 ;; Arguments:
 ;; - p_s1: string determining the operation.
@@ -352,7 +355,9 @@
 (define (grsp-poisson-pmf p_l1 p_k1)
   (let ((res1 0))
 
-    (set! res1 (/ (* (expt p_l1 p_k1) (expt (gconst "A001113") (* -1 p_l1))) (grsp-fact p_k1)))
+    (set! res1 (/ (* (expt p_l1 p_k1)
+		     (expt (gconst "A001113") (* -1 p_l1)))
+		  (grsp-fact p_k1)))
 
     res1))
 
@@ -404,3 +409,36 @@
 
     res1))
     
+
+;; grsp-gamma-mean1 - Mean.
+;;
+;; Arguments:
+;; - p_k1: k. Shape. p_k1 > 0.
+;; - p_t1: theta. Scale p_t1 > 0.
+;;
+;; Sources:
+;; - [6].
+;;
+(define (grsp-gamma-mean1 p_k1 p_t1)
+  (let ((res1 0))
+
+    (set! res1 (* p_k1 p_t1))
+
+    res1))
+
+
+;; grsp-gamma-mean2 - Mean.
+;;
+;; Arguments:
+;; - p_a1: alpha. Shape. p_a1 > 0.
+;; - p_b1: beta. Scale p_b1 > 0.
+;;
+;; Sources:
+;; - [6].
+;;
+(define (grsp-gamma-mean2 p_a1 p_b1)
+  (let ((res1 0))
+
+    (set! res1 (/ p_a1 p_b1))
+
+    res1))
