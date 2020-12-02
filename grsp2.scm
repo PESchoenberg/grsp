@@ -198,7 +198,8 @@
 ;;
 ;; Sources:
 ;; - En.wikipedia.org. 2020. Triangular Number. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Triangular_number [Accessed 20 November 2020].
+;;   https://en.wikipedia.org/wiki/Triangular_number [Accessed 20 November
+;;   2020].
 ;;
 (define (grsp-sumat p_n)
   (let ((res 0))
@@ -226,7 +227,9 @@
     (cond ((eq? (grsp-eiget p_n 0) #t)		  
 	   (cond ((eq? (grsp-eiget p_k 0) #t)				
 		  (cond ((>= p_n p_k)
-			 (set! res (/ (grsp-fact p_n) (* (grsp-fact (- p_n p_k)) (grsp-fact p_k))))))))))
+			 (set! res (/ (grsp-fact p_n)
+				      (* (grsp-fact (- p_n p_k))
+					 (grsp-fact p_k))))))))))
 
     res))
 
@@ -328,7 +331,10 @@
     (cond ((exact-integer? p_k)
 	   (cond ((eq? (grsp-eiget p_b 2) #t)
 		  (begin (while (< k p_k)
-				(set! res (+ res (* (/ 1 (expt p_b k)) (/ (p_pf k) (p_qf k)))))
+				(set! res (+ res (* (/ 1
+						       (expt p_b k))
+						    (/ (p_pf k)
+						       (p_qf k)))))
 				(set! k (+ k 1))))))))
 
     res))
@@ -1017,7 +1023,8 @@
 (define (grsp-urc-ellipsoid p_x1 p_y1 p_l1)
   (let ((res1 0))
 	  
-    (set! res1 (/ 2 (+ (/ 1 (grsp-mrc-ellipsoid p_x1 (grsp-eccentricityf-ellipsoid (grsp-flattening-ellipsoid p_x1 p_y1)) p_l1))
+    (set! res1 (/ 2 (+ (/ 1
+			  (grsp-mrc-ellipsoid p_x1 (grsp-eccentricityf-ellipsoid (grsp-flattening-ellipsoid p_x1 p_y1)) p_l1))
 		       (/ 1 (grsp-pvrc-ellipsoid p_x1 p_y1 p_l1)))))
     
     res1))    
@@ -1061,7 +1068,8 @@
     (set! x1 (expt p_x1 2))
     (set! y1 (expt p_y1 2))    
     (set! e1 (sqrt (/ (- x1 y1) x1))) 
-    (set! res1 (sqrt (/ (+ x1 (* (/ y1 e1) (log (/ (+ 1 e1) (/ p_y1 p_x1))))) 2)))
+    (set! res1 (sqrt (/ (+ x1 (* (/ y1 e1) (log (/ (+ 1 e1) (/ p_y1 p_x1)))))
+			2)))
     
     res1))
 
@@ -1095,7 +1103,9 @@
 (define (grsp-r4-iugg p_x1 p_e1)
   (let ((res1 0))
 
-    (set! res1 (* (/ p_x1 2) (sqrt (- (/ 1 (expt p_e1 2)) 1)) (log (/ (+ 1 p_e1) (- 1 p_e1)))))
+    (set! res1 (* (/ p_x1 2)
+		  (sqrt (- (/ 1 (expt p_e1 2)) 1))
+		  (log (/ (+ 1 p_e1) (- 1 p_e1)))))
 
     res1))
 
@@ -1327,6 +1337,9 @@
 ;; describe in the sources.
 ;;
 ;; Arguments:
+;; - p_b1:
+;;   - #t: if rounding is desired.
+;;   - #f: if rounding is not desired.
 ;; - p_z1: complex.
 ;; - p_z2: complex
 ;;
@@ -1335,13 +1348,12 @@
 ;;   https://www.gnu.org/software/guile/manual/html_node/Exactness.html
 ;;   [Accessed 28 November 2020].
 ;;
-(define (grsp-intifint p_z1 p_z2)
-  (let ((res1 0)
+(define (grsp-intifint p_b1 p_z1 p_z2)
+  (let ((res1 p_z2) ; 0
 	(z1 p_z1))
 
-    (cond ((integer? z1)
-	   (set! res1 (round p_z2)))
-	  ((not (integer? z1))
-	   (set! res1 p_z2)))
+    (cond ((equal? p_b1 #t)
+	   (cond ((integer? z1)
+		  (set! res1 (round p_z2))))))
 
     res1))

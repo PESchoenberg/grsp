@@ -26,7 +26,8 @@
 
 ;; Sources:
 ;; - [1] En.wikipedia.org. 2020. Standard Gravitational Parameter. [online]
-;;   Available at: https://en.wikipedia.org/wiki/Standard_gravitational_parameter
+;;   Available at:
+;;   https://en.wikipedia.org/wiki/Standard_gravitational_parameter
 ;;   [Accessed 22 September 2020].
 ;; - [2] En.wikipedia.org. 2020. Minkowski Space. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Minkowski_space [Accessed 31 August 2020].
@@ -43,7 +44,8 @@
 ;;   https://en.wikipedia.org/wiki/Modern_physics [Accessed 26 September 2020].
 ;; - [8] See grsp1 [14].
 ;; - [9] Es.wikipedia.org. 2020. Ecuación Del Cohete De Tsiolkovski. [online]
-;;   Available at: https://es.wikipedia.org/wiki/Ecuaci%C3%B3n_del_cohete_de_Tsiolkovski
+;;   Available at:
+;;   https://es.wikipedia.org/wiki/Ecuaci%C3%B3n_del_cohete_de_Tsiolkovski
 ;;   [Accessed 29 September 2020].
 ;; - [10] En.wikipedia.org. 2020. Eötvös Effect. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/E%C3%B6tv%C3%B6s_effect
@@ -54,7 +56,8 @@
 ;;   at: https://en.wikipedia.org/wiki/Gravitational_acceleration
 ;;   [Accessed 8 October 2020].
 ;; - [13] En.wikipedia.org. 2020. Theoretical Gravity. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Theoretical_gravity [Accessed 8 October 2020].
+;;   https://en.wikipedia.org/wiki/Theoretical_gravity
+;;   [Accessed 8 October 2020].
 ;; - [14] En.wikipedia.org. 2020. Clairaut's Theorem. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Clairaut%27s_theorem#Somigliana_equation
 ;;   [Accessed 10 October 2020].
@@ -338,7 +341,8 @@
 ;;   - "$-+": p_v2 is substracted from p_v1 (receiver moves away from source),
 ;;     and p_v1 is added to p_v2 (source moves away from the receiver).
 ;;   - "$--": p_v2 is substracted from p_v1 (receiver moves away from source),
-;;     and p_v3 is substracted from p_v1 (source is moving towards the receiver).
+;;     and p_v3 is substracted from p_v1 (source is moving towards the
+;;     receiver).
 ;; - p_v1: propagation speed in the medium.
 ;; - p_v2: speed of the receiver.
 ;; - p_v3: speed of the source.
@@ -523,7 +527,9 @@
 (define (grsp-grav-earth-lat p_l1)
   (let ((res1 0))
 
-    (set! res1 (- (gconst "g0") (* (* 0.5 (- (gconst "gpoles") (gconst "gequator"))) (cos (* (* 2 p_l1) (/ (gconst "A000796") 180))))))
+    (set! res1 (- (gconst "g0")
+		  (* (* 0.5 (- (gconst "gpoles") (gconst "gequator")))
+		     (cos (* (* 2 p_l1) (/ (gconst "A000796") 180))))))
 
     res1))
 
@@ -536,7 +542,8 @@
 (define (grsp-grav-earth-alt p_z1)
   (let ((res1 0))
 
-    (set! res1 (* (gconst "g0") (expt (/ (gconst "Re") (+ (gconst "Re") p_z1)) 2)))
+    (set! res1 (* (gconst "g0")
+		  (expt (/ (gconst "Re") (+ (gconst "Re") p_z1)) 2)))
     
     res1))
 
@@ -565,7 +572,10 @@
 (define (grsp-grav-ifor p_x1 p_x2 p_x3)
   (let ((res1 0))
 
-    (set! res1 (* (gconst "gequator") (+ 1 (- (* p_x2 (expt (sin p_x1) 2)) (* p_x3 (expt (sin (* 2 p_x1)) 2))))))
+    (set! res1 (* (gconst "gequator")
+		  (+ 1
+		     (- (* p_x2 (expt (sin p_x1) 2))
+			(* p_x3 (expt (sin (* 2 p_x1)) 2))))))
 
     res1))
 
@@ -584,7 +594,8 @@
 (define (grsp-grav-iforh p_x1 p_x2 p_x3 p_y1)
   (let ((res1 0))
 
-    (set! res1 (- (grsp-grav-ifor p_x1 p_x2 p_x3) (* (* 3.086 (expt 10 -6)) p_y1)))
+    (set! res1 (- (grsp-grav-ifor p_x1 p_x2 p_x3)
+		  (* (* 3.086 (expt 10 -6)) p_y1)))
 
     res1))
 
@@ -611,7 +622,9 @@
     (set! n (* x2 (gconst "gequator")))
     (set! s (expt (sin p_x1) 2))
     (set! e (grsp-eccentricity-spheroid x2 y2))
-    (set! k (/ (- (* y2 (gconst "gpoles")) n) n)) 
-    (set! res1 (* (gconst "gequator") (/ (+ 1 (* k s)) (sqrt (- 1 (* e s))))))
+    (set! k (/ (- (* y2 (gconst "gpoles"))
+		  n) n)) 
+    (set! res1 (* (gconst "gequator")
+		  (/ (+ 1 (* k s)) (sqrt (- 1 (* e s))))))
     
     res1))

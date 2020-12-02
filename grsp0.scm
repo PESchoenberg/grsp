@@ -28,11 +28,14 @@
 ;; Sources:
 ;; - [1] Shido.info. (2019). 9. IO. [online] Available at:
 ;;   http://www.shido.info/lisp/scheme9_e.html [Accessed 15 Sep. 2019].
-;; - [2] Gnu.org. (2019). File Ports (Guile Reference Manual). [online] Available
-;;   at: https://www.gnu.org/software/guile/manual/html_node/File-Ports.html
+;; - [2] Gnu.org. (2019). File Ports (Guile Reference Manual). [online]
+;;   Available at:
+;;   https://www.gnu.org/software/guile/manual/html_node/File-Ports.html
 ;;   [Accessed 15 Sep. 2019].
-;; - [3] Edronkin, P. (2019). sqlp - Simple terminal query and .sql file processing 
-;;   for  Sqlite3. [online] sqlp. Available at: https://peschoenberg.github.io/sqlp/
+;; - [3] Edronkin, P. (2019). sqlp - Simple terminal query and .sql file
+;;   processing 
+;;   for  Sqlite3. [online] sqlp. Available at:
+;;   https://peschoenberg.github.io/sqlp/
 ;;   [Accessed 5 Oct. 2019].
 
 (define-module (grsp grsp0)

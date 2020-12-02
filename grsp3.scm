@@ -31,8 +31,9 @@
 ;; - As a convention here, m represents rows, n represents columns.
 ;;
 ;; Sources:
-;; - [1] Hep.by. (2020). Array Procedures - Guile Reference Manual. [online] Available
-;;   at: http://www.hep.by/gnu/guile/Array-Procedures.html#Array-Procedures
+;; - [1] Hep.by. (2020). Array Procedures - Guile Reference Manual. [online]
+;;   Available at:
+;;   http://www.hep.by/gnu/guile/Array-Procedures.html#Array-Procedures
 ;;   [Accessed 28 Jan. 2020].
 ;; - [2] En.wikipedia.org. (2020). Numerical linear algebra. [online] Available 
 ;;   at: https://en.wikipedia.org/wiki/Numerical_linear_algebra
