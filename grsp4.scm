@@ -43,7 +43,10 @@
 ;;   https://en.wikipedia.org/wiki/Fibonacci_number#Binet's_formula
 ;;   [Accessed 5 November 2020].
 ;; - [7] En.wikipedia.org. 2020. Digamma Function. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Digamma_function> [Accessed 1 December 2020].
+;;   https://en.wikipedia.org/wiki/Digamma_function [Accessed 1 December 2020].
+;; - [8] En.wikipedia.org. 2020. Incomplete Gamma Function. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Incomplete_gamma_function
+;;   [Accessed 9 December 2020].
 
 
 (define-module (grsp grsp4)
@@ -60,9 +63,13 @@
 	    grsp-complex-f1
 	    grsp-complex-gamma-euler
 	    grsp-complex-gamma-weierstrass
+	    grsp-complex-gamma
 	    grsp-complex-pigamma
 	    grsp-complex-lngamma
-	    grsp-complex-digamma))
+	    grsp-complex-digamma
+	    grsp-complex-ligamma
+	    grsp-complex-llgamma
+	    grsp-complex-uigamma))
   
 
 ;; grsp-complex-inv-imag - Calculates the inverse of the imaginary
@@ -267,7 +274,7 @@
 ;; according to Euler's infinite product representation. 
 ;;
 ;; Arguments:
-;; - p_b1: for integers.
+;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
 ;; - p_z1: complex.
@@ -279,7 +286,7 @@
 ;; Sources:
 ;; - [5].
 ;;
-(define (grsp-complex-gamma-euler p_b1 p_z1 p_n1)
+(define (grsp-complex-gamma-euler p_b2 p_z1 p_n1)
   (let ((res1 0)
 	(res2 1)
 	(i1 1)
@@ -300,7 +307,7 @@
 	  ((eq? defined #f)
 	   (set! res1 +inf.0)))
 
-    (set! res1 (grsp-intifint p_b1 p_z1 res1))
+    (set! res1 (grsp-intifint p_b2 p_z1 res1))
     
     res1))
 
@@ -309,7 +316,7 @@
 ;; according to Weierstrass.
 ;;
 ;; Arguments:
-;; - p_b1: for integers.
+;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
 ;; - p_z1: complex.
@@ -321,7 +328,7 @@
 ;; Sources:
 ;; - [5].
 ;;
-(define (grsp-complex-gamma-weierstrass p_b1 p_z1 p_n1)
+(define (grsp-complex-gamma-weierstrass p_b2 p_z1 p_n1)
   (let ((res1 0)
 	(res2 1)
 	(i1 1)
@@ -348,37 +355,60 @@
 	  ((eq? defined #f)
 	   (set! res1 +inf.0)))
 
-    (set! res1 (grsp-intifint p_b1 p_z1 res1))
+    (set! res1 (grsp-intifint p_b2 p_z1 res1))
     
     res1))
 
 
-;; grsp-complex-pigamma - Pi Gauss function. Calculates gamma for p_z1 + 1.
+;; grsp-complex-gamma - Calculating gamma using different representations. 
 ;;
 ;; Arguments:
-;; - p_b1: for integers.
+;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
 ;; - p_s1: desired gamma repesentation:
 ;;   - "#e": Euler.
-;    - "#w": Weierstrass.
+;;   - "#w": Weierstrass.
 ;; - p_z1: complex.
 ;; - p_n1: desired product iterations.
 ;;
 ;; Sources:
 ;; - [5].
 ;;
-(define (grsp-complex-pigamma p_b1 p_s1 p_z1 p_n1)
+(define (grsp-complex-gamma p_b2 p_s1 p_z1 p_n1)
   (let ((res1 0)
-	(z2 (+ p_z1 1))
 	(s1 "#e"))
 
     (cond ((equal? p_s1 "#w")
 	   (set! s1 p_s1)))
     (cond ((equal? s1 "#e")
-	   (set! res1 (grsp-complex-gamma-euler p_b1 z2 p_n1)))
+	   (set! res1 (grsp-complex-gamma-euler p_b2 p_z1 p_n1)))
 	  ((equal? s1 "#w")
-	   (set! res1 (grsp-complex-gamma-weierstrass p_b1 z2 p_n1))))
+	   (set! res1 (grsp-complex-gamma-weierstrass p_b2 p_z1 p_n1))))
+
+    res1))
+
+
+;; grsp-complex-pigamma - Pi Gauss function. Calculates gamma for p_z1 + 1.
+;;
+;; Arguments:
+;; - p_b2: for integers.
+;;   - #t: if rounding is desired.
+;;   - #f: if rounding is not desired.
+;; - p_s1: desired gamma repesentation:
+;;   - "#e": Euler.
+;;   - "#w": Weierstrass.
+;; - p_z1: complex.
+;; - p_n1: desired product iterations.
+;;
+;; Sources:
+;; - [5].
+;;
+(define (grsp-complex-pigamma p_b2 p_s1 p_z1 p_n1)
+  (let ((res1 0)
+	(z2 (+ p_z1 1)))
+
+    (set! res1 (grsp-complex-gamma p_b2 p_s1 z2 p_n1))
     
     res1))
 
@@ -413,10 +443,10 @@
     res1))
 
 
-;; grsp-complex-digamma - Digamma function for p_z| - |.
+;; grsp-complex-digamma - Digamma function for p_z1 - 1.
 ;;
 ;; Arguments:
-;; - p_b1: for integers.
+;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
 ;; - p_z1: complex.
@@ -425,7 +455,7 @@
 ;; Sources:
 ;; - [5].
 ;;
-(define (grsp-complex-digamma p_b1 p_z1 p_n1)
+(define (grsp-complex-digamma p_b2 p_z1 p_n1)
   (let ((res1 0)
 	(res2 1)
 	(i1 1)
@@ -444,10 +474,99 @@
 	  ((eq? defined #f)
 	   (set! res1 +inf.0)))
 
-    (set! res1 (grsp-intifint p_b1 z2 res1))
+    (set! res1 (grsp-intifint p_b2 z2 res1))
     
     res1))
 
 
+;; grsp-complex-ligamma - Lower incomplete gamma function.
+;;
+;; Arguments:
+;; - p_b2: for integers.
+;;   - #t: if rounding is desired.
+;;   - #f: if rounding is not desired.
+;; - p_s1: desired gamma repesentation:
+;;   - "#e": Euler.
+;;   - "#w": Weierstrass.
+;; - p_z1: complex.
+;; - p_z2: complex.
+;; - p_n1: Desired product iterations.
+;;
+;; Sources:
+;; - [5][7].
+;;
+(define (grsp-complex-ligamma p_b2 p_s1 p_z1 p_z2 p_n1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(res4 0))
 
-;; https://en.wikipedia.org/wiki/Gamma_distribution
+    (set! res1 (* (expt p_z2 p_z1)
+		  (grsp-complex-gamma p_b2 p_s1 p_z1 p_n1)
+		  (grsp-complex-llgamma p_b2 p_s1 p_z1 p_z2 p_n1)))
+
+    res1))
+
+
+;; grsp-complex-llgamma - Lower incomplete limiting gamma function.
+;;
+;; Arguments:
+;; - p_b2: for integers.
+;;   - #t: if rounding is desired.
+;;   - #f: if rounding is not desired.
+;; - p_s1: desired gamma repesentation:
+;;   - "#e": Euler.
+;;   - "#w": Weierstrass.
+;; - p_z1: complex.
+;; - p_z2: complex.
+;; - p_n1: Desired product iterations.
+;;
+;; Sources:
+;; - [5][7].
+;;  
+(define (grsp-complex-llgamma p_b2 p_s1 p_z1 p_z2 p_n1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(res4 0)
+	(i1 0))
+
+    ;; res2
+    (set! res2 (expt (gconst "A001113") (* -1 p_z2)))
+
+    ;; res3
+    (while (<= i1 p_n1)
+	   (set! res3 (+ res3 (/ (expt p_z2 i1) (grsp-complex-gamma p_b2 p_s1 (+ p_z1 i1 1) p_n1))))		 
+	   (set! i1 (+ i1 1)))   
+
+    ;; Complete.
+    (set! res1 (* res2 res3))
+
+    res1))
+
+
+;; grsp-complex-uigamma - Upper incomplete gamma function.
+;;
+;; Arguments:
+;; - p_b2: for integers.
+;;   - #t: if rounding is desired.
+;;   - #f: if rounding is not desired.
+;; - p_s1: desired gamma repesentation:
+;;   - "#e": Euler.
+;;   - "#w": Weierstrass.
+;; - p_z1: complex.
+;; - p_z2: complex.
+;; - p_n1: Desired product iterations.
+;;
+;; Sources:
+;; - [5][7].
+;; 
+(define (grsp-complex-uigamma p_b2 p_s1 p_z1 p_z2 p_n1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0))
+
+    (set! res1 (- (grsp-complex-gamma p_b2 p_s1 p_z1 p_n1)
+      		  (grsp-complex-ligamma p_b2 p_s1 p_z1 p_z2 p_n1))) 
+
+    res1))

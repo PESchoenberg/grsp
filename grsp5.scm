@@ -39,7 +39,10 @@
 ;; - [5] En.wikipedia.org. 2020. Probability Mass Function. [online] Available
 ;;   at: https://en.wikipedia.org/wiki/Probability_mass_function
 ;;   [Accessed 23 November 2020].
-;; - [6] https://en.wikipedia.org/wiki/Gamma_distribution
+;; - [6] En.wikipedia.org. 2020. Gamma Distribution. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Gamma_distribution
+;;   [Accessed 3 December 2020].
+
 
 (define-module (grsp grsp5)
   #:use-module (grsp grsp0)
@@ -64,7 +67,17 @@
 	    grsp-poisson-skewness
 	    grsp-poisson-fisher
 	    grsp-gamma-mean1
-	    grsp-gamma-mean2))
+	    grsp-gamma-mean2
+	    grsp-gamma-variance1
+	    grsp-gamma-variance2
+	    grsp-gamma-kurtosis
+	    grsp-gamma-skewness
+	    grsp-gamma-mode1
+	    grsp-gamma-mode2
+	    grsp-gamma-pdf1
+	    grsp-gamma-pdf2
+	    grsp-gamma-cdf1
+	    grsp-gamma-cdf2))
 
 
 ;; grsp-feature-scaling - Scales p_n to the interval [p_nmin, p_nmax].
@@ -346,8 +359,8 @@
 ;; grsp-poisson-pmf - Poisson distribution, progability mass function.
 ;;
 ;; Arguments:
-;; - p_l1: mean, expected value. Lambda, >= 0.
-;; - p_k1: number oences. natural number >= 0.
+;; - p_l1: mean, expected value. Lambda, [0, +inf).
+;; - p_k1: number oc. Int, [0, +inf).
 ;;
 ;; Sources:
 ;; - [4][5].
@@ -365,7 +378,7 @@
 ;; grsp-poisson-kurtosis
 ;;
 ;; Arguments:
-;; - p_l1: mean, expected value. Lambda, >= 0.
+;; - p_l1: mean, expected value. Lambda, [0, +inf).
 ;;
 ;; Sources:
 ;; - [4].
@@ -381,7 +394,7 @@
 ;; grsp-poisson-skewness
 ;;
 ;; Arguments:
-;; - p_l1: mean, expected value. Lambda, >= 0.
+;; - p_l1: mean, expected value. Lambda, [0, +inf).
 ;;
 ;; Sources:
 ;; - [4].
@@ -397,7 +410,7 @@
 ;; grsp-poisson-fisher - Fisher information.
 ;;
 ;; Arguments:
-;; - p_l1: mean, expected value. Lambda, >= 0.
+;; - p_l1: mean, expected value. Lambda, [0, +inf).
 ;;
 ;; Sources:
 ;; - [4].
@@ -410,11 +423,11 @@
     res1))
     
 
-;; grsp-gamma-mean1 - Mean.
+;; grsp-gamma-mean1 - Mean, parametrization k-t.
 ;;
 ;; Arguments:
-;; - p_k1: k. Shape. p_k1 > 0.
-;; - p_t1: theta. Scale p_t1 > 0.
+;; - p_k1: k. Shape, (0, +inf).
+;; - p_t1: theta. Scale, (0, +inf).
 ;;
 ;; Sources:
 ;; - [6].
@@ -427,11 +440,11 @@
     res1))
 
 
-;; grsp-gamma-mean2 - Mean.
+;; grsp-gamma-mean2 - Mean, parametrization a-b.
 ;;
 ;; Arguments:
-;; - p_a1: alpha. Shape. p_a1 > 0.
-;; - p_b1: beta. Scale p_b1 > 0.
+;; - p_a1: alpha. Shape, (0, +inf).
+;; - p_b1: beta. Scale, (0, +inf).
 ;;
 ;; Sources:
 ;; - [6].
@@ -442,3 +455,253 @@
     (set! res1 (/ p_a1 p_b1))
 
     res1))
+
+
+;; grsp-gamma-variance1 - Variance, parametrization k-t.
+;;
+;; Arguments:
+;; - p_k1: k. Shape, (0, +inf).
+;; - p_t1: theta, (0, +inf).
+;;
+;; Sources:
+;; - [6].
+;;
+(define (grsp-gamma-variance1 p_k1 p_t1)
+  (let ((res1 0))
+
+    (set! res1 (* p_k1 (expt p_t1 2)))
+
+    res1))
+
+
+;; grsp-gamma-variance2 - Variance, parametrization a-b.
+;;
+;; Arguments:
+;; - p_a1: alpha. Shape, (0, +inf).
+;; - p_b1: beta. Scale, (0, +inf).
+;;
+;; Sources:
+;; - [6].
+;;
+(define (grsp-gamma-variance2 p_a1 p_b1)
+  (let ((res1 0))
+
+    (set! res1 (/ p_a1 (expt p_b1 2)))
+
+    res1))
+
+
+;; grsp-gamma-kurtosis - Kurtosis, parametrizationa k-t and a-b.
+;;
+;; Arguments:
+;; - p_n1:
+;;   - k: for parametrization k-t.
+;;   - alpha: for parametrization a-b.
+;;
+;; Sources:
+;; - [6].
+;;
+(define (grsp-gamma-kurtosis p_n1)
+  (let ((res1 0))
+
+    (set! res1 (/ 6 p_n1))
+
+    res1))
+
+
+;; grsp-gamma-skewness - Skewness, parametrizationa k-t and a-b.
+;;
+;; Arguments:
+;; - p_n1:
+;;   - k: for parametrization k-t.
+;;   - alpha: for parametrization a-b.
+;;
+;; Sources:
+;; - [6].
+;;
+(define (grsp-gamma-skewness p_n1)
+  (let ((res1 0))
+
+    (set! res1 (/ 2 (sqrt p_n1)))
+
+    res1))
+
+
+;; grsp-gamma-mode1 - Mode, parametrization k-t.
+;;
+;; Arguments:
+;; - p_k1: k. Shape. Mode requires [0, +inf).
+;; - p_t1: theta. Scale, (0, +inf).
+;;
+;; Sources:
+;; - [6].
+;;
+(define (grsp-gamma-mode1 p_k1 p_t1)
+  (let ((res1 0))
+
+    (set! res1 (* (- p_k1 1) p_t1))
+
+    res1))
+
+
+;; grsp-gamma-mode2 - Mode, parametrization a-b.
+;;
+;; Arguments:
+;; - p_a1: alpha. Shape. Mode requires [1, +inf).
+;; - p_b1: beta. Scale, (0, +inf).
+;;
+;; Sources:
+;; - [6].
+;;
+(define (grsp-gamma-mode2 p_a1 p_b1)
+  (let ((res1 0))
+
+    (set! res1 (/ (- p_a1 1) p_b1))
+
+    res1))
+
+
+;; grsp-gamma-pdf1 - Probability density function, parametrization k-t.
+;;
+;; Arguments:
+;; - p_b2: for integers.
+;;   - #t: if rounding is desired.
+;;   - #f: if rounding is not desired.
+;; - p_s1: desired gamma repesentation:
+;;   - "#e": Euler.
+;;   - "#w": Weierstrass.
+;; - p_k1: k. Shape.
+;; - p_t1: theta.
+;; - p_x1: sample, (0, +inf)
+;; - p_n1: desired product iterations.
+;;
+;; Sources:
+;; - [6].
+;;
+(define (grsp-gamma-pdf1 p_b2 p_s1 p_k1 p_t1 p_x1 p_n1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(res4 0))
+   
+    ;; res2
+    (set! res2 (/ 1 (* (grsp-complex-gamma p_b2 p_s1 p_k1 p_n1) (expt p_t1 p_k1))))
+    
+    ;; res3
+    (set! res3 (expt p_x1 (- p_k1 1)))
+    
+    ;; res4
+    (set! res4 (expt (gconst "A001113") (* -1 (/ p_x1 p_t1))))
+
+    ;; Complete formula.
+    (set! res1 (* res2 res3 res4))
+    
+    res1))
+
+
+;; grsp-gamma-pdf2 - Probability density function, parametrization a-b.
+;;
+;; Arguments:
+;; - p_b2: for integers.
+;;   - #t: if rounding is desired.
+;;   - #f: if rounding is not desired.
+;; - p_s1: desired gamma repesentation:
+;;   - "#e": Euler.
+;;   - "#w": Weierstrass.
+;; - p_a1: alpha. 
+;; - p_b1: beta.
+;; - p_x1: sample, (0, +inf).
+;; - p_n1: desired product iterations.
+;;
+;; Sources:
+;; - [6].
+;;
+(define (grsp-gamma-pdf2 p_b2 p_s1 p_a1 p_b1 p_x1 p_n1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(res4 0))
+   
+    ;; res2
+    (set! res2 (/ (expt p_b1 p_a1) (grsp-complex-gamma p_b2 p_s1 p_a1 p_n1)))
+    
+    ;; res3
+    (set! res3 (expt p_x1 (- p_a1 1)))
+    
+    ;; res4
+    (set! res4 (expt (gconst "A001113") (* -1 p_b1 p_x1)))
+
+    ;; Complete.
+    (set! res1 (* res2 res3 res4))
+    
+    res1))
+
+
+;; grsp-gamma-cdf1 - Cumulative distribution function, parametrization k-t.
+;;
+;; Arguments:
+;; - p_b2: for integers.
+;;   - #t: if rounding is desired.
+;;   - #f: if rounding is not desired.
+;; - p_s1: desired gamma repesentation:
+;;   - "#e": Euler.
+;;   - "#w": Weierstrass.
+;; - p_a1: alpha. 
+;; - p_b1: beta.
+;; - p_x1: sample, (0, +inf).
+;; - p_n1: desired product iterations.
+;;
+;; Sources:
+;; - [6].
+;;
+(define (grsp-gamma-cdf1 p_b2 p_s1 p_k1 p_t1 p_x1 p_n1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0))
+
+    ;; res2
+    (set! res2 (/ 1 (grsp-complex-gamma p_b2 p_s1 p_k1 p_n1)))
+    
+    ;; res3
+    (set! res3 (grsp-complex-ligamma p_b2 p_s1 p_k1 (/ p_x1 p_t1) p_n1))
+
+    ;; Complete.
+    (set! res1 (* res2 res3)) 
+    
+    res1))
+
+
+;; grsp-gamma-cdf2 - Cumulative distribution function, parametrization a-b.
+;;
+;; Arguments:
+;; - p_b2: for integers.
+;;   - #t: if rounding is desired.
+;;   - #f: if rounding is not desired.
+;; - p_s1: desired gamma repesentation:
+;;   - "#e": Euler.
+;;   - "#w": Weierstrass.
+;; - p_a1: alpha. 
+;; - p_b1: beta.
+;; - p_x1: sample, (0, +inf).
+;; - p_n1: desired product iterations.
+;;
+;; Sources:
+;; - [6].
+;;
+(define (grsp-gamma-cdf2 p_b2 p_s1 p_a1 p_b1 p_x1 p_n1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0))
+
+    ;; res2
+    (set! res2 (/ 1 (grsp-complex-gamma p_b2 p_s1 p_a1 p_n1)))
+    
+    ;; res3
+    (set! res3 (grsp-complex-ligamma p_b2 p_s1 p_a1 (* p_b1 p_x1) p_n1))
+
+    ;; Complete.
+    (set! res1 (* res2 res3)) 
+    
+    res1))
+
+  
