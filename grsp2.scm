@@ -83,7 +83,8 @@
 	    grsp-fact-exp
 	    grsp-fact-sub
 	    grsp-ratio-derper
-	    grsp-intifint))
+	    grsp-intifint
+	    grsp-log))
 
 
 ;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -101,8 +102,10 @@
 (define (grsp-gtels p_n1 p_n2)
   (let ((res 0))
 
-    (cond ((> p_n1 p_n2)(set! res 1))
-	  ((< p_n1 p_n2)(set! res -1)))
+    (cond ((> p_n1 p_n2)
+	   (set! res 1))
+	  ((< p_n1 p_n2)
+	   (set! res -1)))
 
     res))
 
@@ -331,8 +334,7 @@
     (cond ((exact-integer? p_k)
 	   (cond ((eq? (grsp-eiget p_b 2) #t)
 		  (begin (while (< k p_k)
-				(set! res (+ res (* (/ 1
-						       (expt p_b k))
+				(set! res (+ res (* (/ 1 (expt p_b k))
 						    (/ (p_pf k)
 						       (p_qf k)))))
 				(set! k (+ k 1))))))))
@@ -361,12 +363,15 @@
 	(i 1)
 	(res 0))
 
-    (cond ((= n 0)(set! res 1))
-	  ((< n 0)(set! res 0))
-	  ((> n 0)(begin (set! res x)
-			 (while (< i n)
-				(set! res (expt x res))
-				(set! i (+ i 1))))))
+    (cond ((= n 0)
+	   (set! res 1))
+	  ((< n 0)
+	   (set! res 0))
+	  ((> n 0)
+	   (begin (set! res x)
+		  (while (< i n)
+			 (set! res (expt x res))
+			 (set! i (+ i 1))))))
 
     res))
 
@@ -454,15 +459,15 @@
 ;;   https://en.wikipedia.org/wiki/Proth_prime [Accessed 9 Jan. 2020].
 ;;
 (define (grsp-proth-number p_n p_k)
-  (let ((res 0))
+  (let ((res1 0))
 
     (cond ((exact-integer? p_n)
 	   (cond ((exact-integer? p_k)
 		  (cond ((odd? p_k)
 			 (cond ((> (expt 2 p_n) p_k)
-				(set! res (grsp-krnb p_k 2 p_n 1))))))))))
+				(set! res1 (grsp-krnb p_k 2 p_n 1))))))))))
 
-    res))
+    res1))
 
 
 ;; grsp-mersenne-number - Calculates a Mersenne number according to
@@ -483,12 +488,12 @@
 ;;   [Accessed 16 Jan. 2020].
 ;;
 (define (grsp-mersenne-number p_n)
-  (let ((res 0))
+  (let ((res1 0))
 
     (cond ((exact-integer? p_n)
-	   (set! res (grsp-krnb 1 2 p_n -1))))
+	   (set! res1 (grsp-krnb 1 2 p_n -1))))
 
-    res))
+    res1))
 	  
 
 ;; grsp-repdigit-number - Produces a repdigit number composed by p_n repeated
@@ -503,19 +508,19 @@
 ;;   https://en.wikipedia.org/wiki/Repdigit [Accessed 11 Jan. 2020].
 ;;
 (define (grsp-repdigit-number p_n p_d)
-  (let ((res 0)
+  (let ((res1 0)
 	(i 0))
 
     (cond ((exact-integer? p_n)
 	   (cond ((exact-integer? p_d)
 		  (cond ((eq? (grsp-gtls p_n 0 10) #t)
 			 (while (< i p_d)
-				(set! res (+ res p_n))
+				(set! res1 (+ res1 p_n))
 				(set! i (+ i 1))
 				(cond ((< i p_d)
-				       (set! res (* res 10)))))))))))
+				       (set! res1 (* res1 10)))))))))))
 
-    res))
+    res1))
 
 
 ;; grsp-wagstaff-number - Produces a Wagstaff number of base p_b.
@@ -618,7 +623,8 @@
   (let ((res 0))
 
     (cond ((eq? (grsp-eiget p_n 0) #t)		      
-	   (set! res (* (/ 1 (+ p_n 1)) (grsp-biconr (* 2 p_n) p_n)))))
+	   (set! res (* (/ 1 (+ p_n 1))
+			(grsp-biconr (* 2 p_n) p_n)))))
 
     res))
 
@@ -666,7 +672,8 @@
     (cond ((eq? (grsp-eiget p_n 0) #t)
 	   (cond ((eq? (grsp-eiget p_k 0) #t)
 		  (while (<= i p_n)
-			 (set! res (+ (/ (expt p_k p_n) (grsp-fact p_k))))
+			 (set! res (+ (/ (expt p_k p_n)
+					 (grsp-fact p_k))))
 			 (set! i (+ i 1)))))))
     (set! res (* res (/ 1 (gconst "A001113"))))
 
@@ -740,7 +747,9 @@
 (define (grsp-lerp p_x1 p_x2 p_x3 p_y1 p_y2)
   (let ((res 0))
 
-    (set! res (+ p_y1 (* (- p_x3 p_x1) (/ (- p_y2 p_y1) (- p_x2 p_x1)))))
+    (set! res (+ p_y1 (* (- p_x3 p_x1)
+			 (/ (- p_y2 p_y1)
+			    (- p_x2 p_x1)))))
 
     res))
 
@@ -782,14 +791,16 @@
 	   (set! b1 #t)))
     (cond ((> (abs v1) (abs v2))
 	   (set! v6 (/ v2 v1))
-	   (set! v7 (* (grsp-sign v1) (sqrt (+ 1 (expt v6 2)))))
+	   (set! v7 (* (grsp-sign v1)
+		       (sqrt (+ 1 (expt v6 2)))))
 	   (set! v3 (/ 1 v7))
 	   (set! v4 (* v3 v7))
 	   (set! v5 (* v1 v7))
 	   (set! b1 #t)))
     (cond ((equal? b1 #f)
 	   (set! v6 (/ v1 v2))
-	   (set! v7 (* (grsp-sign v2) (sqrt (+ 1 (expt v6 2)))))
+	   (set! v7 (* (grsp-sign v2)
+		       (sqrt (+ 1 (expt v6 2)))))
 	   (set! v4 (/ 1 v7))
 	   (set! v3 (* v4 v6))
 	   (set! v5 (* v2 v7))))
@@ -889,7 +900,9 @@
 (define (grsp-volume-ellipsoid p_x1 p_y1)
   (let ((res1 0))
 
-    (set! res1 (* (/ 4 3) (* (gconst "A000796") (* (expt p_x1 2) p_y1))))
+    (set! res1 (* (/ 4 3)
+		  (* (gconst "A000796")
+		     (* (expt p_x1 2) p_y1))))
 
     res1))
 
@@ -906,7 +919,8 @@
 (define (grsp-third-flattening-ellipsoid p_x1 p_y1)
   (let ((res1 0))
 
-    (set! res1 (/ (- p_x1 p_y1) (+ p_x1 p_y1)))
+    (set! res1 (/ (- p_x1 p_y1)
+		  (+ p_x1 p_y1)))
 
     res1))
 
@@ -980,7 +994,8 @@
 	(e1 0))
 
     (set! e1 (grsp-eccentricityf-ellipsoid (grsp-flattening-ellipsoid p_x1 p_y1)))
-    (set! res1 (/ p_x1 (sqrt (- 1 (* (expt e1 2) (expt (sin p_l1) 2))))))
+    (set! res1 (/ p_x1 (sqrt (- 1 (* (expt e1 2)
+				     (expt (sin p_l1) 2))))))
 
     res1))
 
@@ -1068,8 +1083,9 @@
     (set! x1 (expt p_x1 2))
     (set! y1 (expt p_y1 2))    
     (set! e1 (sqrt (/ (- x1 y1) x1))) 
-    (set! res1 (sqrt (/ (+ x1 (* (/ y1 e1) (log (/ (+ 1 e1) (/ p_y1 p_x1)))))
-			2)))
+    (set! res1 (sqrt (/ (+ x1 (* (/ y1 e1)
+				 (log (/ (+ 1 e1)
+					 (/ p_y1 p_x1))))) 2)))
     
     res1))
 
@@ -1105,7 +1121,8 @@
 
     (set! res1 (* (/ p_x1 2)
 		  (sqrt (- (/ 1 (expt p_e1 2)) 1))
-		  (log (/ (+ 1 p_e1) (- 1 p_e1)))))
+		  (log (/ (+ 1 p_e1)
+			  (- 1 p_e1)))))
 
     res1))
 
@@ -1126,7 +1143,10 @@
 (define (grsp-fxyz-torus p_r1 p_r2 p_x1 p_y1 p_z1)
   (let ((res1 0))
 
-    (set! res1 (+ (expt (- (sqrt (+ (expt p_x1 2) (expt p_y1 2))) p_r1) 2) (expt p_z1 2) (* -1 (expt p_r1 2))))
+    (set! res1 (+ (expt (- (sqrt (+ (expt p_x1 2)
+				    (expt p_y1 2))) p_r1) 2)
+		  (expt p_z1 2)
+		  (* -1 (expt p_r1 2))))
 
     res1))
 
@@ -1147,7 +1167,8 @@
 (define (grsp-stirling-approximation p_n1)
   (let ((res1 0))
 
-    (set! res1 (* (sqrt (* 2 (gconst "A000796") p_n1)) (expt (/ p_n1 (gconst "A001113")) 2)))
+    (set! res1 (* (sqrt (* 2 (gconst "A000796") p_n1))
+		  (expt (/ p_n1 (gconst "A001113")) 2)))
     
     res1))
 
@@ -1261,7 +1282,8 @@
   (let ((res1 1))
 
     (cond ((> p_n1 1)
-	   (set! res1 (- (grsp-fact p_n1) (grsp-fact-alt (- p_n1 1))))))
+	   (set! res1 (- (grsp-fact p_n1)
+			 (grsp-fact-alt (- p_n1 1))))))
     
     res1))
 
@@ -1307,7 +1329,8 @@
 	  ((= p_n1 1)
 	   (set! res1 0.0))
 	  ((> p_n1 1)
-	   (set! res1 (round (/ (grsp-fact p_n1) (gconst "A001113"))))))
+	   (set! res1 (round (/ (grsp-fact p_n1)
+				(gconst "A001113"))))))
     
     res1))
 
@@ -1327,7 +1350,8 @@
 (define (grsp-ratio-derper p_n1)
   (let ((res1 0.0))
 
-    (set! res1 (/ (grsp-fact-sub p_n1) (grsp-fact p_n1)))
+    (set! res1 (/ (grsp-fact-sub p_n1)
+		  (grsp-fact p_n1)))
 
     res1))
 
@@ -1356,4 +1380,19 @@
 	   (cond ((integer? z1)
 		  (set! res1 (round p_z2))))))
 
+    res1))
+
+
+;; grsp-log - Calculates the logarithm of p_x1 in base p_g1.
+;;
+;; Arguments:
+;; - p_g1: base.
+;; - p_x1: exponent.
+;;
+(define (grsp-log p_g1 p_x1)
+  (let ((res1 0))
+
+    (set! res1 (/ (log10 p_x1)
+		  (log10 p_g1)))
+    
     res1))

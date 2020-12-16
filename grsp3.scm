@@ -975,6 +975,9 @@
 ;;   - "#asinh".
 ;;   - "#acosh".
 ;;   - "#atanh".
+;;   - "#xlog2x": x * log(2) x
+;;   - "#xlognx": x * log(2.71) x
+;;   - "#xlog10x": x * log(10) x
 ;; - p_a1: matrix.
 ;;
 ;; Sources:
@@ -1045,7 +1048,16 @@
 			((equal? p_s "#acosh")
 			 (array-set! res3 (acosh (array-ref res1 i j)) i j))
 			((equal? p_s "#atanh")
-			 (array-set! res3 (atanh (array-ref res1 i j)) i j)))						
+			 (array-set! res3 (atanh (array-ref res1 i j)) i j))
+			((equal? p_s "#xlog2x")
+			 (array-set! res3 (* (array-ref res1 i j)
+					     (grsp-log 2 (array-ref res1 i j))) i j))			
+			((equal? p_s "#xlognx")
+			 (array-set! res3 (* (array-ref res1 i j)
+					     (log (array-ref res1 i j))) i j))
+			((equal? p_s "#xlog10x")
+			 (array-set! res3 (* (array-ref res1 i j)
+					     (log10 (array-ref res1 i j))) i j)))			
 		  (set! j (+ j 1)))
 	   (set! i (+ i 1)))
 
@@ -1120,7 +1132,8 @@
 			 (set! res4 0)
 			 (set! i2 0)
 			 (while (<= i2 hm3)
-				(set! res4 (+ res4 (* (array-ref res1 i1 i2) (array-ref res2 i2 j1))))
+				(set! res4 (+ res4 (* (array-ref res1 i1 i2)
+						      (array-ref res2 i2 j1))))
 				(set! i2 (+ i2 1)))
 			 (array-set! res3 res4 i1 j1)
 			 (set! j1 (+ j1 1)))
@@ -1133,7 +1146,8 @@
 			 (set! res4 0)
 			 (set! i2 0)
 			 (while (<= i2 hm3)
-				(set! res4 (+ res4 (/ (array-ref res1 i1 i2) (array-ref res2 i2 j1))))
+				(set! res4 (+ res4 (/ (array-ref res1 i1 i2)
+						      (array-ref res2 i2 j1))))
 				(set! i2 (+ i2 1)))
 			 (array-set! res3 res4 i1 j1)
 			 (set! j1 (+ j1 1)))
@@ -1599,7 +1613,8 @@
 (define (grsp-matrix-row-opar p_a1 p_a2 p_m1 p_n1 p_m2 p_n2)
   (let ((res 0))
 
-    (set! res (* 1 (/ (array-ref p_a1 p_m2 p_n2) (array-ref p_a1 p_m1 p_n1))))
+    (set! res (* 1 (/ (array-ref p_a1 p_m2 p_n2)
+		      (array-ref p_a1 p_m1 p_n1))))
     (array-set! p_a1 0 p_m2 p_n2)
     (array-set! p_a2 res p_m2 p_n2)
 
@@ -1625,7 +1640,8 @@
 ;; - [8].
 ;;
 (define (grsp-matrix-row-opmm p_a1 p_a2 p_m1 p_n1 p_m2 p_n2)
-  (array-set! p_a1 (* (array-ref p_a1 p_m1 p_n1) (array-ref p_a2 p_m2 p_n2)) p_m1 p_n1))
+  (array-set! p_a1 (* (array-ref p_a1 p_m1 p_n1)
+		      (array-ref p_a2 p_m2 p_n2)) p_m1 p_n1))
 
 
 ;; grsp-matrix-row-opsc - Performs operation p_s1 between all elements

@@ -442,7 +442,8 @@
 (define (grsp-particle-mass p_v1 p_m1)
   (let ((res1 0))
 
-    (set! res1 (* (grsp-lorentz-factor p_v1) (* p_m1 (expt (gconst "c") 2))))
+    (set! res1 (* (grsp-lorentz-factor p_v1)
+		  (* p_m1 (expt (gconst "c") 2))))
 
     res1))
 
@@ -477,7 +478,9 @@
 (define (grsp-sgp-ellip p_a1 p_t1)
   (let ((res1 0))
 
-    (set! res1 (/ (* (* 4 (gconst "A000796")) (expt p_a1 3)) (expt p_t1 2)))
+    (set! res1 (/ (* (* 4 (gconst "A000796"))
+		     (expt p_a1 3))
+		  (expt p_t1 2)))
 
     res1))
 
@@ -511,7 +514,8 @@
 (define (grsp-ideal-rocket p_x1 p_m1 p_m2)
   (let ((res1 0))
 
-    (set! res1 (* (grsp-effective-exhaust-velocity p_x1) (log (/ p_m1 p_m2))))
+    (set! res1 (* (grsp-effective-exhaust-velocity p_x1)
+		  (log (/ p_m1 p_m2))))
 
     res1))
 
@@ -528,8 +532,10 @@
   (let ((res1 0))
 
     (set! res1 (- (gconst "g0")
-		  (* (* 0.5 (- (gconst "gpoles") (gconst "gequator")))
-		     (cos (* (* 2 p_l1) (/ (gconst "A000796") 180))))))
+		  (* (* 0.5 (- (gconst "gpoles")
+			       (gconst "gequator")))
+		     (cos (* (* 2 p_l1)
+			     (/ (gconst "A000796") 180))))))
 
     res1))
 
@@ -543,7 +549,9 @@
   (let ((res1 0))
 
     (set! res1 (* (gconst "g0")
-		  (expt (/ (gconst "Re") (+ (gconst "Re") p_z1)) 2)))
+		  (expt (/ (gconst "Re")
+			   (+ (gconst "Re") p_z1))
+			2)))
     
     res1))
 
@@ -557,7 +565,8 @@
 (define (grsp-grav-radius p_m1 p_r1)
   (let ((res1 0))
 
-    (set! res1 (* -1 (/ (* (gconst "G") p_m1) (expt p_r1 2))))
+    (set! res1 (* -1 (/ (* (gconst "G") p_m1)
+			(expt p_r1 2))))
 
     res1))
 

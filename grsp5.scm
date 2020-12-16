@@ -42,6 +42,22 @@
 ;; - [6] En.wikipedia.org. 2020. Gamma Distribution. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Gamma_distribution
 ;;   [Accessed 3 December 2020].
+;; - [7] En.wikipedia.org. 2020. Erlang Distribution. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Erlang_distribution
+;;   [Accessed 11 December 2020].
+;; - [8] En.wikipedia.org. 2020. Entropy (Information Theory). [online]
+;;   Available at: https://en.wikipedia.org/wiki/Entropy_(information_theory)
+;;   [Accessed 13 December 2020].
+;; - [9] En.wikipedia.org. 2020. Information Content. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Information_content
+;;   [Accessed 13 December 2020].
+;; - [10] En.wikipedia.org. 2020. Standard Deviation. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Standard_deviation
+;;   [Accessed 15 December 2020].
+;; - [11] En.wikipedia.org. 2020. Normal Distribution. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Normal_distribution
+;;   [Accessed 15 December 2020].
+;; - {12} https://en.wikipedia.org/wiki/Bessel%27s_correction
 
 
 (define-module (grsp grsp5)
@@ -62,6 +78,11 @@
 	    grsp-pcomp
 	    grsp-osbv
 	    grsp-obsv
+	    grsp-mean
+	    grsp-sd1
+	    grsp-sd2
+	    grsp-surprisal
+	    grsp-entropy-dvar
 	    grsp-poisson-pmf
 	    grsp-poisson-kurtosis
 	    grsp-poisson-skewness
@@ -77,7 +98,19 @@
 	    grsp-gamma-pdf1
 	    grsp-gamma-pdf2
 	    grsp-gamma-cdf1
-	    grsp-gamma-cdf2))
+	    grsp-gamma-cdf2
+	    grsp-gamma-mgf1
+	    grsp-gamma-mgf2
+	    grsp-erlang-mean
+	    grsp-erlang-variance
+	    grsp-erlang-kurtosis
+	    grsp-erlang-skewness
+	    grsp-erlang-mode
+	    grsp-erlang-pdf
+	    grsp-erlang-cdf
+	    grsp-erlang-mgf
+	    grsp-erlang-scale
+	    grsp-bessel-corrector))
 
 
 ;; grsp-feature-scaling - Scales p_n to the interval [p_nmin, p_nmax].
@@ -101,7 +134,8 @@
 	   (set! p_nmax p_n1))
 	  ((< p_n1 p_nmin)
 	   (set! p_nmin p_n1)))
-    (set! res1 (* 1.0 (/ (- p_n1 p_nmin) (- p_nmax p_nmin))))
+    (set! res1 (* 1.0 (/ (- p_n1 p_nmin)
+			 (- p_nmax p_nmin))))
     
     res1))
 
@@ -183,7 +217,8 @@
 (define (grsp-pand p_n1 p_n2)
   (let ((res1 1.0))
 
-    (set! res1 (* (grsp-fitin-0-1 p_n1) (grsp-fitin-0-1 p_n2)))
+    (set! res1 (* (grsp-fitin-0-1 p_n1)
+		  (grsp-fitin-0-1 p_n2)))
 
     res1))
 
@@ -226,7 +261,8 @@
 
     (set! n1 (grsp-fitin-0-1 p_n1))
     (set! n2 (grsp-fitin-0-1 p_n2))    
-    (set! res1 (- (+ n1 n2) (grsp-pand n1 n2)))
+    (set! res1 (- (+ n1 n2)
+		  (grsp-pand n1 n2)))
 
     res1))
 
@@ -356,7 +392,133 @@
     res1))
 
 
-;; grsp-poisson-pmf - Poisson distribution, progability mass function.
+;; grsp-entropy-dvar - Calculates the entropy of a discrete random variable in
+;; an m x n matix.
+;;
+;; Arguments:
+;; - p_g1: logarithm base.
+;;   - 2: base 2.
+;;   - 2.71: natural base.
+;;   - 10: base 10.
+;; - p_a1: matrix of outcomes x(1)...(x(nxm) of drv X.
+;;
+;; Output:
+;; - m x n matrix, with entropy values expressed in:
+;;   - Bits, if p_g1 = 2.
+;;   - Nats, if p_g1 = 2.71.
+;;   - Dits, if p_g1 = 10.
+;;
+;; Sources:
+;; - [8].
+;;
+(define (grsp-entropy-dvar p_g1 p_a1)
+  (let ((res1 0)
+	(g2 "#xlognx"))
+
+    (cond ((equal? p_g1 10)
+	   (set! g2 "#xlog10x"))
+	  ((equal? p_g1 2)
+	   (set! g2 "#xlog2x")))	  
+    
+    (set! res1 (grsp-matrix-opio "#+" (grsp-matrix-opfn g2 p_a1) 0))
+
+    res1))
+
+
+;; grsp-mean - mean.
+;;
+;; Arguments:
+;; - p_a1: sample (matrix).
+;;
+(define (grsp-mean p_a1)
+  (let ((res1 0))
+
+    (set! res1 (/ (grsp-matrix-opio "#+" p_a1 0) ; Sum of all elements.
+		  (grsp-matrix-total-elements p_a1))) ; Number of elements.
+
+    res1))
+
+
+;; grsp-sd1 - variance standard deviation.
+;;
+;; Arguments:
+;; - p_v1: variance.
+;;
+(define (grsp-sd1 p_v1)
+  (let ((res1 0))
+
+    (set! res1 (sqrt p_v1))
+
+    res1))
+
+
+;; grsp-sd2 - sample standard deviation.
+;;
+;; Arguments:
+;; - p_a1: sample (matrix).
+;;
+;; Sources:
+;; - [10].
+;;
+(define (grsp-sd2 p_a1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(u1 0)
+	(n1 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(i1 0)
+	(j1 0))
+
+    ;; Extract the boundaries of the matrix.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1))
+
+    (set! n1 (grsp-matrix-total-elements p_a1))
+    (set! u1 (grsp-mean p_a1))
+    (set! res3 (/ 1 (- n1 1)))
+    
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+	   (set! j1 ln1)
+	   (while (<= j1 hn1)
+		  (set! res2 (+ res2 (expt (- (array-ref p_a1 i1 j1) u1) 2))) 
+		  (set! j1 (+ j1 1)))
+	   (set! i1 (+ i1 1)))   
+
+    (set! res1 (sqrt (* res3 res2)))
+    
+    res1))
+
+
+;; grsp-surprisal - Information content of a random variable.
+;;
+;; Arguments:
+;; - p_g1: logarithm base.
+;; - p_x1: probability, [0, 1].
+;;
+;; Output:
+;;   - Bits, if p_g1 = 2.
+;;   - Nats, if p_g1 = (gconst "A001113") (e).
+;;   - Dits, if p_g1 = 10.
+;;
+;; Sources:
+;; - [9].
+;;
+(define (grsp-surprisal p_g1 p_x1)
+  (let ((res1 0))
+
+    (set! res1 (* -1 (grsp-log p_g1 p_x1)))
+
+    res1))
+
+
+;; grsp-poisson-pmf - Probability mass function, Poisson distribution.
 ;;
 ;; Arguments:
 ;; - p_l1: mean, expected value. Lambda, [0, +inf).
@@ -375,7 +537,7 @@
     res1))
 
 
-;; grsp-poisson-kurtosis
+;; grsp-poisson-kurtosis - Kurtosis, Poisson distribution.
 ;;
 ;; Arguments:
 ;; - p_l1: mean, expected value. Lambda, [0, +inf).
@@ -391,7 +553,7 @@
     res1))
 
 
-;; grsp-poisson-skewness
+;; grsp-poisson-skewness - Skwness, Poisson distribution.
 ;;
 ;; Arguments:
 ;; - p_l1: mean, expected value. Lambda, [0, +inf).
@@ -407,7 +569,7 @@
     res1))
 
 
-;; grsp-poisson-fisher - Fisher information.
+;; grsp-poisson-fisher - Fisher information, Poisson distribution.
 ;;
 ;; Arguments:
 ;; - p_l1: mean, expected value. Lambda, [0, +inf).
@@ -423,7 +585,7 @@
     res1))
     
 
-;; grsp-gamma-mean1 - Mean, parametrization k-t.
+;; grsp-gamma-mean1 - Mean, gamma distribution, parametrization k-t.
 ;;
 ;; Arguments:
 ;; - p_k1: k. Shape, (0, +inf).
@@ -440,7 +602,7 @@
     res1))
 
 
-;; grsp-gamma-mean2 - Mean, parametrization a-b.
+;; grsp-gamma-mean2 - Mean, gamma distribution, parametrization a-b.
 ;;
 ;; Arguments:
 ;; - p_a1: alpha. Shape, (0, +inf).
@@ -457,7 +619,7 @@
     res1))
 
 
-;; grsp-gamma-variance1 - Variance, parametrization k-t.
+;; grsp-gamma-variance1 - Variance, gamma distribution, parametrization k-t.
 ;;
 ;; Arguments:
 ;; - p_k1: k. Shape, (0, +inf).
@@ -474,7 +636,7 @@
     res1))
 
 
-;; grsp-gamma-variance2 - Variance, parametrization a-b.
+;; grsp-gamma-variance2 - Variance, gamma distribution, parametrization a-b.
 ;;
 ;; Arguments:
 ;; - p_a1: alpha. Shape, (0, +inf).
@@ -491,7 +653,8 @@
     res1))
 
 
-;; grsp-gamma-kurtosis - Kurtosis, parametrizationa k-t and a-b.
+;; grsp-gamma-kurtosis - Kurtosis, gamma distribution, parametrizationa k-t
+;; and a-b.
 ;;
 ;; Arguments:
 ;; - p_n1:
@@ -509,7 +672,8 @@
     res1))
 
 
-;; grsp-gamma-skewness - Skewness, parametrizationa k-t and a-b.
+;; grsp-gamma-skewness - Skewness, gamma distribution, parametrizationa k-t
+;; and a-b.
 ;;
 ;; Arguments:
 ;; - p_n1:
@@ -527,7 +691,7 @@
     res1))
 
 
-;; grsp-gamma-mode1 - Mode, parametrization k-t.
+;; grsp-gamma-mode1 - Mode, gamma distribution, parametrization k-t.
 ;;
 ;; Arguments:
 ;; - p_k1: k. Shape. Mode requires [0, +inf).
@@ -544,7 +708,7 @@
     res1))
 
 
-;; grsp-gamma-mode2 - Mode, parametrization a-b.
+;; grsp-gamma-mode2 - Mode, gamma distribution, parametrization a-b.
 ;;
 ;; Arguments:
 ;; - p_a1: alpha. Shape. Mode requires [1, +inf).
@@ -561,7 +725,8 @@
     res1))
 
 
-;; grsp-gamma-pdf1 - Probability density function, parametrization k-t.
+;; grsp-gamma-pdf1 - Probability density function, gamma distribution,
+;; parametrization k-t.
 ;;
 ;; Arguments:
 ;; - p_b2: for integers.
@@ -585,7 +750,8 @@
 	(res4 0))
    
     ;; res2
-    (set! res2 (/ 1 (* (grsp-complex-gamma p_b2 p_s1 p_k1 p_n1) (expt p_t1 p_k1))))
+    (set! res2 (/ 1 (* (grsp-complex-gamma p_b2 p_s1 p_k1 p_n1)
+		       (expt p_t1 p_k1))))
     
     ;; res3
     (set! res3 (expt p_x1 (- p_k1 1)))
@@ -599,7 +765,8 @@
     res1))
 
 
-;; grsp-gamma-pdf2 - Probability density function, parametrization a-b.
+;; grsp-gamma-pdf2 - Probability density function, gamma distribution,
+;; parametrization a-b.
 ;;
 ;; Arguments:
 ;; - p_b2: for integers.
@@ -623,7 +790,8 @@
 	(res4 0))
    
     ;; res2
-    (set! res2 (/ (expt p_b1 p_a1) (grsp-complex-gamma p_b2 p_s1 p_a1 p_n1)))
+    (set! res2 (/ (expt p_b1 p_a1)
+		  (grsp-complex-gamma p_b2 p_s1 p_a1 p_n1)))
     
     ;; res3
     (set! res3 (expt p_x1 (- p_a1 1)))
@@ -637,7 +805,8 @@
     res1))
 
 
-;; grsp-gamma-cdf1 - Cumulative distribution function, parametrization k-t.
+;; grsp-gamma-cdf1 - Cumulative distribution function, gamma distribution,
+;; parametrization k-t.
 ;;
 ;; Arguments:
 ;; - p_b2: for integers.
@@ -671,7 +840,8 @@
     res1))
 
 
-;; grsp-gamma-cdf2 - Cumulative distribution function, parametrization a-b.
+;; grsp-gamma-cdf2 - Cumulative distribution function, gamma distribution,
+;; parametrization a-b.
 ;;
 ;; Arguments:
 ;; - p_b2: for integers.
@@ -704,4 +874,229 @@
     
     res1))
 
-  
+
+;; grsp-gamma-mgf2 - Moment generating function, gamma distribution,
+;; parametrization k-t.
+;;
+;; Arguments:
+;; - p_k1: k. Shape, (0, +inf).
+;; - p_t1: theta. Scale, (0, +inf).
+;; - p_t2: for (-inf, p_b1).
+;;
+;; Sources:
+;; - [6].
+;;
+(define (grsp-gamma-mgf1 p_k1 p_t1 p_t2)
+  (let ((res1 0))
+
+    (set! res1 (expt (- 1 (* p_t1 p_t2)) (* -1 p_k1)))
+    
+    res1))
+
+
+;; grsp-gamma-mgf2 - Moment generating function, gamma distribution,
+;; parametrization a-b.
+;;
+;; Arguments:
+;; - p_a1: alpha. 
+;; - p_b1: beta.
+;; - p_t2: for (-inf, p_b1).
+;;
+;; Sources:
+;; - [6].
+;;
+(define (grsp-gamma-mgf2 p_a1 p_b1 p_t2)
+  (let ((res1 0))
+
+    (set! res1 (expt (- 1 (/ p_t2 p_b1)) (* -1 p_a1)))
+    
+    res1))
+
+
+;; grsp-erlang-mean - Mean, Erlang distribution.
+;;
+;; Arguments:
+;; - p_k1: k. Shape, [1, +inf). 
+;; - p_l1: lambda. Rate, (0, +inf).
+;;
+;; Sources:
+;; - [7].
+;;
+(define (grsp-erlang-mean p_k1 p_l1)
+  (let ((res1 0))
+
+    (set! res1 (/ p_k1 p_l1))
+
+    res1))
+
+
+;; grsp-erlang-mode - Mode, Erlang distribution.
+;;
+;; Arguments:
+;; - p_k1: k. Shape, [1, +inf). 
+;; - p_l1: lambda. Rate, (0, +inf).
+;;
+;; Sources:
+;; - [7].
+;;
+(define (grsp-erlang-mode p_k1 p_l1)
+  (let ((res1 0))
+
+    (set! res1 (* (/ 1 p_l1)
+		  (- p_k1 1)))
+
+    res1))
+
+
+;; grsp-erlang-variance - Variance, Erlang distribution.
+;;
+;; Arguments:
+;; - p_k1: k. Shape, [1, +inf). 
+;; - p_l1: lambda. Rate, (0, +inf).
+;;
+;; Sources:
+;; - [7].
+;;
+(define (grsp-erlang-variance p_k1 p_l1)
+  (let ((res1 0))
+
+    (set! res1 (/ p_k1 (expt p_l1 2)))
+
+    res1))
+
+
+;; grsp-erlang-kurtosis - Kurtosis, Erlang distribution.
+;;
+;; Arguments:
+;; - p_k1: k. Shape, [1, +inf). 
+;;
+;; Sources:
+;; - [7].
+;;
+(define (grsp-erlang-kurtosis p_k1)
+  (let ((res1 0))
+
+    (set! res1 (/ 6 p_k1))
+
+    res1))
+
+
+;; grsp-erlang-skewness - Variance, Erlang distribution.
+;;
+;; Arguments:
+;; - p_k1: k. Shape, [1, +inf). 
+;;
+;; Sources:
+;; - [7].
+;;
+(define (grsp-erlang-skewness p_k1)
+  (let ((res1 0))
+
+    (set! res1 (/ 2 (sqrt p_k1)))
+
+    res1))
+
+
+;; grsp-erlang-pdf - Probability density function, Erlang distribution.
+;;
+;; Arguments:
+;; - p_k1: k. Shape parameter, [1, +inf). 
+;; - p_l1: lambda, (0, +inf).
+;; - p_x1: [0, +inf).
+;;
+;; Notes:
+;; - See desription of grsp4.grsp-complex-gamma for details about arguments
+;;   above.
+;;
+;; Sources:
+;; - [5][7].
+;;
+(define (grsp-erlang-pdf p_k1 p_l1 p_x1)
+  (let ((res1 0)
+	(k2 0))
+
+    (set! k2 (- p_k1 1))
+    (set! res1 (/ (* (expt p_l1 p_k1)
+		     (expt p_x1 k2)
+		     (expt (gconst "A001113") (* -1 p_l1 p_x1)))
+		  (grsp-fact k2)))
+
+    res1))
+
+
+;; grsp-erlang-cdf - Cumulative distribution function, Erlang distribution.
+;;
+;; Arguments:
+;; - p_b2: for integers.
+;;   - #t: if rounding is desired.
+;;   - #f: if rounding is not desired.
+;; - p_s1: desired gamma repesentation:
+;;   - "#e": Euler.
+;;   - "#w": Weierstrass.
+;; - p_k1: k. Shape parameter, [1, +inf). 
+;; - p_l1: lambda, (0, +inf).
+;; - p_x1: [0, +inf).
+;; - p_n1: Desired product iterations.
+;;
+;; Notes:
+;; - See desription of grsp4.grsp-complex-gamma for details about arguments
+;;   above.
+;;
+;; Sources:
+;; - [5][7].
+;; 
+(define (grsp-erlang-cdf p_b2 p_s1 p_k1 p_l1 p_x1 p_n1)
+  (let ((res1 0))
+
+    (set! res1 (grsp-complex-prgamma p_b2 p_s1 p_k1 (* p_x1 p_l1) p_n1))
+
+    res1))
+
+
+;; grsp-erlang-variance - Moment generating function, Erlang distribution.
+;;
+;; Arguments:
+;; - p_k1: k. Shape, [1, +inf). 
+;; - p_l1: lambda. Rate, (0, +inf).
+;; - p_t1: p_t1 < p_l1.
+;;
+;; Sources:
+;; - [7].
+;;
+(define (grsp-erlang-mgf p_k1 p_l1 p_t1)
+  (let ((res1 0))
+
+    (set! res1 (expt (- 1 (/ p_t1 p_l1)) (* -1 p_k1)))
+
+    res1))
+
+
+;; grsp-erlang-scale - Scale, Erlang distribution.
+;;
+;; Arguments: 
+;; - p_l1: lambda. Rate, (0, +inf).
+;;
+;; Sources:
+;; - [7].
+;;
+(define (grsp-erlang-scale p_l1)
+  (let ((res1 0))
+
+    (set! res1 (/ 1 p_l1))
+
+    res1))
+
+;; grsp-bessel-corector - Bessel corrector for biased samples.
+;;
+;; Arguments:
+;; p_n1: n.
+;;
+;; Sources:
+;; - [12].
+;;
+(define (grsp-bessel-corector p_n1)
+  (let ((res1 0))
+
+    (set! res1 (/ p_n1 (- p_n1 1)))
+
+    res1))
