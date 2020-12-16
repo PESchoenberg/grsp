@@ -69,7 +69,9 @@
 	    grsp-complex-digamma
 	    grsp-complex-ligamma
 	    grsp-complex-llgamma
-	    grsp-complex-uigamma))
+	    grsp-complex-uigamma
+	    grsp-complex-prgamma
+	    grsp-complex-qrgamma))
   
 
 ;; grsp-complex-inv-imag - Calculates the inverse of the imaginary
@@ -228,7 +230,9 @@
   (let ((res1 0)
 	(g1 (gconst "A001622")))
 
-    (set! res1 (/ (- (expt g1 p_z1) (expt (- 1 g1) p_z1)) (sqrt 5)))
+    (set! res1 (/ (- (expt g1 p_z1)
+		     (expt (- 1 g1) p_z1))
+		  (sqrt 5)))
 
     res1))
 
@@ -247,7 +251,8 @@
 	(n1 1))
 
     (while (< n1 p_l1)
-	   (set! res1 (+ res1 (/ (expt -1 (- n1 1)) (expt n1 p_s1))))
+	   (set! res1 (+ res1 (/ (expt -1 (- n1 1))
+				 (expt n1 p_s1))))
 	   (set! n1 (+ n1 1)))
 
     res1))
@@ -265,7 +270,8 @@
 (define (grsp-complex-f1 p_a1 p_a2 p_x1 p_n1 p_n2)
   (let ((res1 0))
 
-    (set! res1 (/ (* p_a1 (expt p_x1 p_n1)) (+ 1 (* p_a2 (expt p_x1 p_n2)))))
+    (set! res1 (/ (* p_a1 (expt p_x1 p_n1))
+		  (+ 1 (* p_a2 (expt p_x1 p_n2)))))
 
     res1))
 
@@ -562,11 +568,59 @@
 ;; - [5][7].
 ;; 
 (define (grsp-complex-uigamma p_b2 p_s1 p_z1 p_z2 p_n1)
-  (let ((res1 0)
-	(res2 0)
-	(res3 0))
+  (let ((res1 0))
 
     (set! res1 (- (grsp-complex-gamma p_b2 p_s1 p_z1 p_n1)
       		  (grsp-complex-ligamma p_b2 p_s1 p_z1 p_z2 p_n1))) 
 
     res1))
+
+
+;; grsp-complex-prgamma - Lower regularized gamma function P.
+;;
+;; Arguments:
+;; - p_b2: for integers.
+;;   - #t: if rounding is desired.
+;;   - #f: if rounding is not desired.
+;; - p_s1: desired gamma repesentation:
+;;   - "#e": Euler.
+;;   - "#w": Weierstrass.
+;; - p_z1: complex.
+;; - p_z2: complex.
+;; - p_n1: Desired product iterations.
+;;
+;; Sources:
+;; - [5][7].
+;; 
+(define (grsp-complex-prgamma p_b2 p_s1 p_z1 p_z2 p_n1)
+  (let ((res1 0))
+
+    (set! res1 (/ (grsp-complex-ligamma p_b2 p_s1 p_z1 p_z2 p_n1)
+		  (grsp-complex-gamma p_b2 p_s1 p_z1 p_n1)))
+
+    res1))
+
+
+;; grsp-complex-qrgamma - Lower regularized gamma function Q.
+;;
+;; Arguments:
+;; - p_b2: for integers.
+;;   - #t: if rounding is desired.
+;;   - #f: if rounding is not desired.
+;; - p_s1: desired gamma repesentation:
+;;   - "#e": Euler.
+;;   - "#w": Weierstrass.
+;; - p_z1: complex.
+;; - p_z2: complex.
+;; - p_n1: Desired product iterations.
+;;
+;; Sources:
+;; - [5][7].
+;; 
+(define (grsp-complex-qrgamma p_b2 p_s1 p_z1 p_z2 p_n1)
+  (let ((res1 0))
+
+    (set! res1 (- 1 (grsp-complex-prgamma p_b2 p_s1 p_z1 p_z2 p_n1)))
+
+    res1))
+    
