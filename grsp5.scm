@@ -57,7 +57,43 @@
 ;; - [11] En.wikipedia.org. 2020. Normal Distribution. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Normal_distribution
 ;;   [Accessed 15 December 2020].
-;; - {12} https://en.wikipedia.org/wiki/Bessel%27s_correction
+;; - [12] En.wikipedia.org. 2020. Bessel's Correction. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Bessel%27s_correction
+;;   [Accessed 16 December 2020].
+;; - [13] En.wikipedia.org. 2020. Expected Value. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Expected_value [Accessed 21 December 2020].
+;; - [14] En.wikipedia.org. 2020. Variance. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Variance [Accessed 21 December 2020].
+;; - [15] En.wikipedia.org. 2020. Coefficient Of Variation. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Coefficient_of_variation
+;;   [Accessed 21 December 2020].
+;; - [16] En.wikipedia.org. 2020. Average Absolute Deviation. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Average_absolute_deviation
+;;   [Accessed 21 December 2020].
+;; - [17] En.wikipedia.org. 2020. Kullback–Leibler Divergence. [online] Available
+;    at: https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence
+;;   [Accessed 23 December 2020].
+;; - [18] En.wikipedia.org. 2020. Moment-Generating Function. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Moment-generating_function [Accessed 23
+;;   December 2020].
+;; - [19] En.wikipedia.org. 2020. Fisher Information. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Fisher_information [Accessed 29 December
+;;   2020].
+;; - [20] En.wikipedia.org. 2020. Skewness. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Skewness [Accessed 29 December 2020].
+;; - [21] En.wikipedia.org. 2020. Nonparametric Skew. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Nonparametric_skew [Accessed 29 December
+;;   2020].
+;; - [22] En.wikipedia.org. 2020. Moment (Mathematics). [online] Available at:
+;;   https://en.wikipedia.org/wiki/Moment_(mathematics) [Accessed 29 December
+;;   2020].
+;; - [23] En.wikipedia.org. 2020. Kurtosis. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Kurtosis [Accessed 29 December 2020].
+;; - [24] En.wikipedia.org. 2020. Quartile. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Quartile [Accessed 29 December 2020].
+;; - [25] En.wikipedia.org. 2020. Interquartile Range. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Interquartile_range> [Accessed 29 December
+;;   2020].
 
 
 (define-module (grsp grsp5)
@@ -78,10 +114,27 @@
 	    grsp-pcomp
 	    grsp-osbv
 	    grsp-obsv
-	    grsp-mean
+	    grsp-mean1
+	    grsp-mean2
 	    grsp-sd1
 	    grsp-sd2
+	    grsp-variance1
+	    grsp-variance2
 	    grsp-surprisal
+	    grsp-median1
+	    grsp-cv
+	    grsp-mad
+	    grsp-bessel-corrector
+	    grsp-np-skew
+	    grsp-pearson-mode-skewness 
+	    grsp-pearson-median-skewness
+	    grsp-standardized-3cm
+	    grsp-standardized-4cm
+	    grsp-excess-kurtosis
+	    grsp-sample-skewness
+	    grsp-yule-coefficient
+	    grsp-iqr
+	    grsp-quartiles
 	    grsp-entropy-dvar
 	    grsp-poisson-pmf
 	    grsp-poisson-kurtosis
@@ -110,7 +163,10 @@
 	    grsp-erlang-cdf
 	    grsp-erlang-mgf
 	    grsp-erlang-scale
-	    grsp-bessel-corrector))
+	    grsp-normal-pdf
+	    grsp-normal-entropy
+	    grsp-normal-entropy-relative
+	    grsp-normal-fisher))
 
 
 ;; grsp-feature-scaling - Scales p_n to the interval [p_nmin, p_nmax].
@@ -425,12 +481,12 @@
     res1))
 
 
-;; grsp-mean - mean.
+;; grsp-mean1 - Expected value of a random variable X.
 ;;
 ;; Arguments:
 ;; - p_a1: sample (matrix).
 ;;
-(define (grsp-mean p_a1)
+(define (grsp-mean1 p_a1)
   (let ((res1 0))
 
     (set! res1 (/ (grsp-matrix-opio "#+" p_a1 0) ; Sum of all elements.
@@ -439,7 +495,33 @@
     res1))
 
 
-;; grsp-sd1 - variance standard deviation.
+;; grsp-mean2 - Expected value of a non-negative, random variable X
+;; and the probability P for each outcome of X.
+;;
+;; Arguments:
+;; - p_a1: matrix, instances of X.
+;; - p_a2: matrix, probabilities corresponding to each instance of X in p_a1.
+;;
+;; Notes:
+;; - p_a1 and p_a2 should be of the same shape and dimensions.
+;;
+;; Sources:
+;; - [13].
+;;
+(define (grsp-mean2 p_a1 p_a2)
+  (let ((res1 0)
+	(res2 0))
+
+    ;; Multiply each instance of x by its probability.
+    (set! res2 (grsp-matrix-opew "#*" p_a1 p_a2))
+
+    ;; Summation of res2 elements.
+    (set! res1 (grsp-matrix-opio "#+" res2 0))
+	  
+    res1))
+
+
+;; grsp-sd1 - standard deviation based on variance.
 ;;
 ;; Arguments:
 ;; - p_v1: variance.
@@ -480,7 +562,7 @@
     (set! hn1 (grsp-matrix-esi 4 p_a1))
 
     (set! n1 (grsp-matrix-total-elements p_a1))
-    (set! u1 (grsp-mean p_a1))
+    (set! u1 (grsp-mean1 p_a1))
     (set! res3 (/ 1 (- n1 1)))
     
     (set! i1 lm1)
@@ -492,6 +574,78 @@
 	   (set! i1 (+ i1 1)))   
 
     (set! res1 (sqrt (* res3 res2)))
+    
+    res1))
+
+
+;; grsp-variance1 - Variance, as the square of standard deviation.
+;;
+;; Arguments:
+;; - p_x1: standard deviation.
+;;
+(define (grsp-variance1 p_x1)
+  (let ((res1 0))
+
+    (set! res1 (expt p_x1 2))
+
+    res1))
+
+
+;; grsp-variance2 - Variance, semivariance and supervariance as the expected
+;; value of the squared difference of a random variable.
+;;
+;; Arguments:
+;; - p_s1:
+;;   - "#v": for variance.
+;;   - "#s": for semivariance.
+;;   - "#u": for supervariance.
+;; - p_a1: matrix containing occurrences of the random variable.
+;;
+;; Sources:
+;; - [14].
+;;
+(define (grsp-variance2 p_s1 p_a1)
+  (let ((res1 0)
+	(res2 0)
+	(u1 0)
+	(n1 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(i1 0)
+	(j1 0))
+
+    ;; Extract the boundaries of the matrix.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1))
+
+    (set! n1 (grsp-matrix-total-elements p_a1))
+    (set! u1 (grsp-mean1 p_a1))
+
+    ;; Summation of squared differences of X and mean.
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+	   (set! j1 ln1)
+	   (while (<= j1 hn1)
+		  (cond ((equal? p_s1 "#v")
+			 ;; Summation of all elements.
+			 (set! res2 (+ res2 (expt (- (array-ref p_a1 i1 j1) u1) 2))))
+			((equal? p_s1 "#u")
+			 (cond ((> (array-ref p_a1 i1 j1) u1)
+				;; Summation of elements with value > mean.
+				(set! res2 (+ res2 (expt (- (array-ref p_a1 i1 j1) u1) 2))))))			
+			((equal? p_s1 "#s")
+			 (cond ((< (array-ref p_a1 i1 j1) u1)
+				;; summation of elements with values < mean.
+				(set! res2 (+ res2 (expt (- (array-ref p_a1 i1 j1) u1) 2)))))))
+		  (set! j1 (+ j1 1)))
+	   (set! i1 (+ i1 1)))   
+
+    ;; Mean of the summation of squared differences.
+    (set! res1 (/ res2 n1))
     
     res1))
 
@@ -515,6 +669,354 @@
 
     (set! res1 (* -1 (grsp-log p_g1 p_x1)))
 
+    res1))
+
+
+;; grsp-median1 - Finds the median of the data in p_a1.
+;;
+;; Arguments:
+;; - p_v1: sorted, 1 x n matrix (vector).
+;;
+(define (grsp-median1 p_a1)
+  (let ((res1 0)
+	(n1 0)
+	(lm1 0)
+	(ln1 0)
+	(j1 0))
+
+    ;; Extract the boundaries of the matrix.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+
+    ;; Prepare vector.
+    (set! n1 (grsp-matrix-total-elements p_a1))
+    (set! j1 (car (grsp-dtr "#rt" n1)))
+    (set! j1 (- j1 1))
+    
+    ;; Define middle element.
+    (cond ((odd? n1)
+	   (set! res1 (array-ref p_a1 ln1 (+ lm1 j1))))
+	  ((even? n1)
+	   (set! res1 (/ (+ (array-ref p_a1 ln1 (+ lm1 j1)) (array-ref p_a1 ln1 (+ lm1 j1 1))) 2))))
+
+    (set! res1 (grsp-opz res1))
+	    
+    res1))
+
+
+;; grsp-cv - Coefficient of variation.
+;;
+;; Arguments:
+;; - p_n1: standard deviation.
+;; - p_n2: mean.
+;;
+;; Sources:
+;; - [15].
+;;
+(define (grsp-cv p_n1 p_n2)
+  (let ((res1 0))
+
+    (set! res1 (/ p_n1 p_n2))
+
+    res1))
+
+
+;; grsp-mean - sample mean absolute deviation.
+;;
+;; Arguments:
+;; - p_a1: sample (matrix).
+;; - p_x1: measure of central tendency.
+;;
+;; Sources:
+;; - [16].
+;;
+(define (grsp-mad p_a1 p_x1)
+  (let ((res1 0)
+	(n1 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(i1 0)
+	(j1 0))
+
+    ;; Extract the boundaries of the matrix.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1))
+
+    (set! n1 (grsp-matrix-total-elements p_a1))
+    
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+	   (set! j1 ln1)
+	   (while (<= j1 hn1)
+		  (set! res1 (+ res1 (abs (- (array-ref p_a1 i1 j1) p_x1))))
+		  (set! j1 (+ j1 1)))
+	   (set! i1 (+ i1 1)))   
+
+    (set! res1 (* (/ 1 n1) res1))
+    
+    res1))
+
+
+;; grsp-bessel-corrector - Bessel corrector.
+;;
+;; Arguments:
+;; p_n1: n.
+;;
+;; Sources:
+;; - [12].
+;;
+(define (grsp-bessel-corrector p_n1)
+  (let ((res1 0))
+
+    (set! res1 (/ p_n1 (- p_n1 1)))
+
+    res1))
+
+
+;; grsp-np-skew - Non parametric skew.
+;;
+;; Arguments:
+;; p_x1: mean.
+;; p_x2: median.
+;; p_x3: standard deviation.
+;;
+;; Sources:
+;; - [1].
+;;
+(define (grsp-np-skew p_x1 p_x2 p_x3)
+  (let ((res1 0))
+
+    (set! res1 (/ (- p_x1 p_x2) p_x3))
+
+    res1))
+
+
+;; grsp-pearson-mode-skewness - Pearson's first skewness coefficient.
+;;
+;; Arguments:
+;; p_x1: mean.
+;; p_x2: mode.
+;; p_x3: standard deviation.
+;;
+;; Sources:
+;; - [20].
+;;
+(define (grsp-pearson-mode-skewness p_x1 p_x2 p_x3)
+  (let ((res1 0))
+
+    (set! res1 (/ (- p_x1 p_x2) p_x3))
+
+    res1))
+
+
+;; grsp-pearson-median-skewness - Pearson's secnd skewness coefficient.
+;;
+;; Arguments:
+;; p_x1: mean.
+;; p_x2: median.
+;; p_x3: standard deviation.
+;;
+;; Sources:
+;; - [20].
+;;
+(define (grsp-pearson-median-skewness p_x1 p_x2 p_x3)
+  (let ((res1 0))
+
+    (set! res1 (* 3 (grsp-np-skew p_x1 p_x2 p_x3)))
+
+    res1))
+
+
+;; grsp-standardized-3cm - Standardized third central moment (skewness).
+;;
+;; Arguments:
+;; p_a1: sample (matrix).
+;; p_x1: sample mean.
+;;
+;; Sources:
+;; - [20][22].
+;;
+(define (grsp-standardized-3cm p_a1 p_x1)
+  (let ((res1 0)
+	(res2 p_a1))
+
+    ;; Calculate (x - p_x1).
+    (set! res2 (grsp-matrix-opsc "#-" res2 p_x1))    
+
+    ;; Calculate (res2)**3.
+    (set! res2 (grsp-matrix-opsc "#expt" res2 3))
+
+    ;; Final result.
+    (set! res1 (* (/ 1 (grsp-matrix-total-elements res2))
+		  (grsp-matrix-opio "#+" res2 0)))
+
+    res1))
+
+
+;; grsp-standardized-4cm - Standardized fourth central moment (kurtosis).
+;;
+;; Arguments:
+;; p_a1: sample (matrix).
+;; p_x1: sample mean.
+;; p_x3: standard deviation.
+;;
+;; Sources:
+;; - [22][23].
+;;
+(define (grsp-standardized-4cm p_a1 p_x1 p_x3)
+  (let ((res1 0)
+	(res2 p_a1))
+
+    ;; Calculate (x - p_x1).
+    (set! res2 (grsp-matrix-opsc "#-" res2 p_x1))    
+
+    ;; Calculate (res2)**4.
+    (set! res2 (grsp-matrix-opsc "#expt" res2 4))
+
+    ;; Final result.  
+    (set! res1 (/ (grsp-mean1 res2) (expt p_x3 4)))
+
+    res1))
+
+
+;; grsp-excess-kurtosis - Exess kurtosis.
+;;
+;; Arguments:
+;; p_x4: kurtosis.
+;;
+;; Sources:
+;; - [23].
+;;
+(define (grsp-excess-kurtosis p_k4)
+  (let ((res1 0))
+  
+    (set! res1 (- p_k4 3))
+
+    res1))
+
+  
+;; grsp-sample-skewness - Sample skewness.
+;;
+;; Arguments:
+;; p_x1: sample mean.
+;; p_x3: sample standard deviation.
+;;
+;; Sources:
+;; - [20].
+;;
+(define (grsp-sample-skewness p_a1 p_x1 p_x3)
+  (let ((res1 p_a1))
+
+    (set! res1 (/ (grsp-standardized-3cm p_a1 p_x1) (expt p_x3 3)))
+
+    res1))
+
+;; grsp-yule-coefficient - Yule's coefficient, skewness.
+;;
+;; Arguments:
+;; - p_q1: quartile 1 (median of upper half).
+;; - p_q2: quartile 2 (median of whole sample).
+;; - p_q3: quartile 3 (median of lower half).
+;;
+;; Arguments:
+;; - [23][24].
+;;
+(define (grsp-yule-coefficient p_q1 p_q2 p_q3)
+  (let ((res1 0))
+
+    (set! res1 (/ (+ p_q3 p_q1 (* -2 p_q2)) (- p_q3 p_q1)))
+
+    res1))
+
+
+;; grsp-iqr - Inter quartile range.
+;;
+;; Arguments:
+;; - p_q1: quartile 1 (median of upper half).
+;; - p_q3: quartile 3 (median of lower half).
+;;
+;; Arguments:
+;; - [25].
+;;
+(define (grsp-iqr p_q1 p_q3)
+  (let ((res1 0))
+
+    (set! res1 (- p_q3 p_q1))
+
+    res1))
+
+
+;; grsp-quartiles - Find Q1, Q2 and Q3.
+;;
+;; Arguments:
+;; - p_a1: sample (matrix).
+;;
+;; Output:
+;; - 1 x 3 matrix containg the values for Q1, Q2 and Q3.
+;;
+;; Sources:
+;; - [24].
+;;
+(define (grsp-quartiles p_a1)
+  (let ((res1 0)
+	(res2 p_a1)
+	(res3 0)
+	(res4 0)
+	(res5 0)
+	(n3 0)
+	(n4 0)
+	(n5 0)
+	(lm2 0)
+	(hm2 0)
+	(ln2 0)
+	(hn2 0)
+	(i2 0)
+	(j2 0)
+	(l1 '())
+	(ll1 0)
+	(ll2 0)
+	(lh1 0)
+	(lh2 0))
+
+    ;; Extract the boundaries of the matrix.
+    (set! lm2 (grsp-matrix-esi 1 res2))
+    (set! hm2 (grsp-matrix-esi 2 res2))
+    (set! ln2 (grsp-matrix-esi 3 res2))
+    (set! hn2 (grsp-matrix-esi 4 res2))	
+
+    ;; Create results vector.
+    (set! res1 (grsp-matrix-create 0 1 3))
+
+    ;; Sort elements and convert to vector.
+    (set! res3 (grsp-m2v (grsp-matrix-sort "#asc" res2)))
+    (set! n3 (grsp-matrix-total-elements res3))
+
+    ;; Q2
+    (array-set! res1 (grsp-median1 res3) 0 1)
+
+    ;; Calculate coordinates for quartile sub vectors.
+    (set! l1 (grsp-dtr "#rt" n3))
+    (set! ll1 (car l1))
+    (set! ll2 (cadr l1))
+    (cond ((equal? ll1 ll2)
+	   (set! n4 (+ ln2 (- ll1 1)))
+	   (set! n5 (+ n4 1)))
+	  ((not (equal? ll1 ll2))
+	   (set! n4 (+ ln2 (- ll1 2)))
+	   (set! n5 (+ n4 2))))
+
+    ;; Q1
+    (set! res4 (grsp-matrix-subcpy res2 lm2 hm2 ln2 n4))
+    (array-set! res1 (grsp-median1 res4) 0 0)
+
+    ;; Q3
+    (set! res5 (grsp-matrix-subcpy res2 lm2 hm2 n5 hn2))
+    (array-set! res1 (grsp-median1 res5) 0 2)
+    
     res1))
 
 
@@ -884,7 +1386,7 @@
 ;; - p_t2: for (-inf, p_b1).
 ;;
 ;; Sources:
-;; - [6].
+;; - [6][11].
 ;;
 (define (grsp-gamma-mgf1 p_k1 p_t1 p_t2)
   (let ((res1 0))
@@ -903,7 +1405,7 @@
 ;; - p_t2: for (-inf, p_b1).
 ;;
 ;; Sources:
-;; - [6].
+;; - [6][11].
 ;;
 (define (grsp-gamma-mgf2 p_a1 p_b1 p_t2)
   (let ((res1 0))
@@ -1086,17 +1588,105 @@
 
     res1))
 
-;; grsp-bessel-corector - Bessel corrector for biased samples.
+
+;; grsp-normal-pdf - Probability density function, normal distribution.
 ;;
-;; Arguments:
-;; p_n1: n.
+;; Arguments: 
+;; - p_x1: x.
+;; - p_x2: mean.
+;; - p_x3: standard deviation.
 ;;
 ;; Sources:
-;; - [12].
+;; - [11].
 ;;
-(define (grsp-bessel-corector p_n1)
+(define (grsp-normal-pdf p_x1 p_x2 p_x3)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(res4 0))
+
+    ;; res2
+    (set! res2 (/ 1 (* p_x3 (sqrt (* 2 (gconst "A000796"))))))
+    
+    ;; res3
+    (set! res3 (* -0.5 (expt (/ (- p_x1 p_x2) p_x3) 2)))
+
+    ;; res4
+    (set! res4 (expt (gconst "A001113") res3))
+
+    ;; res1
+    (set! res1 (* res2 res4))
+    
+    res1))
+
+
+;; grsp-normal-entropy - Entropy, normal distribution.
+;;
+;; Arguments:
+;; - p_g1: logarithm base.
+;;   - 2: base 2.
+;;   - 2.71: natural base.
+;;   - 10: base 10.
+;; - p_x3: standard deviation.
+;;
+;; Sources:
+;; - [11].
+;;
+(define (grsp-normal-entropy p_g1 p_x3)
   (let ((res1 0))
 
-    (set! res1 (/ p_n1 (- p_n1 1)))
+    (set! res1 (* 0.5 (grsp-log p_g1 (* 2 (gconst "A000796") (gconst "A001113") p_x3))))
 
+    res1))
+
+
+;; grsp-normal-entropy-relative - Relative entropy, Kullback-Leibler divergence
+;; (DKL), normal distribution.
+;;
+;; Arguments:
+;; - p_x1: mean 1.
+;; - p_x2; mean 2.
+;; - p_x3: standard deviation 1.
+;; - p_x4: standard deviation 2.
+;;
+;; Sources:
+;; - [11][17].
+;;
+(define (grsp-normal-entropy-relative p_x1 p_x2 p_x3 p_x4)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(res4 0))
+
+    ;; res2
+    (set! res2 (expt (/ p_x3 p_x4) 2))
+
+    ;; res3
+    (set! res3 (/ (expt (- p_x2 p_x1) 2) (grsp-variance1 p_x4)))
+
+    ;; res4
+    (set! res4 (* 2 (log (/ p_x4 p_x3))))
+
+    ;; res1
+    (set! res1 (* 0.5 (+ res2 res3 -1 res4)))
+
+    res1))
+  
+
+;; grsp-normal-fisher - Fisher infromation matrix, normal distribution.
+;;
+;; Arguments:
+;; - p_x1: mean 1.
+;; - p_x2: standard deviation.
+;;
+;; Sources:
+;; - [11][19].
+;;
+(define (grsp-normal-fisher p_x1 p_x2)
+  (let ((res1 0))
+
+    (set! res1 (grsp-matrix-create "#I" 2 2))
+    (array-set! res1 (/ 1 (grsp-variance1 p_x2) 0 0))
+    (array-set! res1 (/ 2 (grsp-variance1 p_x2)) 1 1)
+    
     res1))

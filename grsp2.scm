@@ -84,7 +84,9 @@
 	    grsp-fact-sub
 	    grsp-ratio-derper
 	    grsp-intifint
-	    grsp-log))
+	    grsp-log
+	    grsp-dtr
+	    grsp-opz))
 
 
 ;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -1396,3 +1398,63 @@
 		  (log10 p_g1)))
     
     res1))
+
+
+;; grsp-dtr - Divides p_n1 into two natural numbers and returns a list.
+;; If p_n1 is even then bo values returned are equal. If p_n1 is odd then the
+;; function truncates one and rounds the other according to p_s1.
+;;
+;; Arguments:
+;; - p_s1: determines which half is rounded and wich one is truncted if p_n1 is
+;;   odd:
+;;   - "#rt": rounnd the first value, truncae the second.
+;;   - "#tr": truncate the first and round the second.
+;;
+;; Output:
+;; - As an example, for p_n1 = 4, will return 2,2 regardless of p_s1.
+;; - Or if, for example  p_n1 = 5, will return 3,2 if p_s1 = "#rt" or 2,3 if
+;;   p_s1 = "#tr". 
+;;
+(define (grsp-dtr p_s1 p_n1)
+  (let ((res1 '())
+	(n1 0)
+	(n2 0)
+	(n3 0)
+	(s1 "#rt"))
+
+    (cond ((not (equal? p_s1 "#rt"))
+	   (set! s1 "#tr")))
+    
+    (set! n1 (abs p_n1))
+    
+    (cond ((even? n1)
+	   (set! n2 (/ n1 2))
+	   (set! n3 n2))
+	  ((odd? n1)
+	   (set! n1 (- n1 1))
+	   (set! n2 (/ n1 2))
+	   (cond ((equal? s1 "#rt")
+		  (set! n3 n2)
+		  (set! n2 (+ n2 1)))
+		 ((equal? s1 "#tr")
+		  (set! n3 (+ n2 1))))))
+   
+    (set! res1 (list n2 n3))
+    
+    res1))
+
+
+;; grsp-opz - One point zero. Multiplies p_n1 by 1.0 in order to cast an exact 
+;; number as real.
+;;
+;; Arguments:
+;; - p_n1: number.
+;;
+(define (grsp-opz p_n1)
+  (let ((res1 0))
+
+    (set! res1 (* p_n1 1.00))
+
+    res1))
+
+	  
