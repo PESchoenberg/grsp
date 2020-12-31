@@ -62,13 +62,13 @@
 ;;   [Accessed 4 August 2020].
 ;; - [11] En.wikipedia.org. 2020. Invertible Matrix. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Invertible_matrix [Accessed 5 August 2020].
-;; - [12] En.wikipedia.org. 2020. Permanent (Mathematics). [online] Available at:
-;;   https://en.wikipedia.org/wiki/Permanent_(mathematics)
+;; - [12] En.wikipedia.org. 2020. Permanent (Mathematics). [online] Available
+;;   at: https://en.wikipedia.org/wiki/Permanent_(mathematics)
 ;;   [Accessed 7 August 2020].
 ;; - [13] En.wikipedia.org. 2020. Immanant. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Immanant [Accessed 14 August 2020].
-;; - [14] En.wikipedia.org. 2020. Eigendecomposition Of A Matrix. [online] Available
-;;   at: https://en.wikipedia.org/wiki/Eigendecomposition_of_a_matrix
+;; - [14] En.wikipedia.org. 2020. Eigendecomposition Of A Matrix. [online]
+;    Available at: https://en.wikipedia.org/wiki/Eigendecomposition_of_a_matrix
 ;; - [15] En.wikipedia.org. 2020. Eigenvalue Algorithm. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Eigenvalue_algorithm
 ;;   [Accessed 12 August 2020].
@@ -127,6 +127,7 @@
 	    grsp-matrix-is-metzler
 	    grsp-l2m
 	    grsp-m2l
+	    grsp-m2v
 	    grsp-dbc2mc
 	    grsp-mc2dbc
 	    grsp-mc2dbc-sqlite3
@@ -134,7 +135,10 @@
 	    grsp-matrix-interval-mean
 	    grsp-matrix-determinant-lu
 	    grsp-matrix-is-invertible
-	    grsp-eigenval-opio))
+	    grsp-eigenval-opio
+	    grsp-matrix-sort
+	    grsp-matrix-opsm
+	    grsp-matrix-opsm-t1))
 
 
 ;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -818,7 +822,7 @@
 ;;   - "#is": applies (grsp-complex-inv "#is" z) to each element z of p_a (sign
 ;;     inversion of real element of compelx number).
 ;;   - "#ii": applies (grsp-complex-inv "#ii" z) to each element z of p_a (sign
-;;     inversion of both elements of a complex number). 
+;;     inversion of both elements of a complex number).
 ;; - p_a: matrix.
 ;; - p_v: scalar value.
 ;;
@@ -2228,6 +2232,43 @@
     res1))
 
 
+;; grsp-m2v - Casts a matrix p_a1 of m x n elements as a 1 x (m x n) vector.
+;;
+;;  Arguments:
+;;  p_a1: matrix.
+;;
+(define (grsp-m2v p_a1)
+  (let ((res1 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(i1 0)
+	(j1 0)
+	(j2 0))
+
+    ;; Extract the boundaries of the matrix.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1))
+
+    ;; Create vector.
+    ;; (set! n1 (grsp-matrix-total-elements p_a1))
+    (set! res1 (grsp-matrix-create 0 1 (grsp-matrix-total-elements p_a1)))
+
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+	   (set! j1 ln1)
+	   (while (<= j1 hn1)
+		  (array-set! res1 (array-ref p_a1 i1 j1) 0 j2)
+		  (set! j2 (+ j2 1))
+		  (set! j1 (+ j1 1)))
+	   (set! i1 (+ i1 1)))  
+    
+    res1))
+
+
 ;; grsp-dbc2cm - Fills a matrix of complex or complex-subset numbers with the
 ;; contents of a database containing serialized complex or complex-subset
 ;; numbers.
@@ -2484,3 +2525,149 @@
     
     res1))
 
+
+;; grsp-matrix-sort - Sort elements in matrix p_a1 in ascending or descending
+;; order.
+;;
+;; Arguments
+;; - p_s1: sort type-
+;;   - "#asc": ascending.
+;;   - "#des": descending.
+;; - p_a1: matrix.
+;;
+(define (grsp-matrix-sort p_s1 p_a1)
+  (let ((res1 0)
+	(res2 0)
+	(s1 "#asc")
+	(f1 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(lm2 0)
+	(hm2 0)
+	(ln2 0)
+	(hn2 0)	
+	(i1 0)
+	(j1 0)
+	(i2 0)
+	(j2 0)
+	(i3 0)
+	(j3 0)
+        (v2 0)
+	(v3 0))
+
+    ;; Create res1 with the same size as rs2 and fill it with zeros.
+    (set! res2 p_a1)
+    (set! res1 res2)
+    (set! res1 (grsp-matrix-opsc "#*" res1 0))
+    
+    ;; Extract the boundaries of the matrix.
+    (set! lm1 (grsp-matrix-esi 1 res1))
+    (set! hm1 (grsp-matrix-esi 2 res1))
+    (set! ln1 (grsp-matrix-esi 3 res1))
+    (set! hn1 (grsp-matrix-esi 4 res1))	
+
+    ;; Extract the boundaries of the matrix.
+    (set! lm2 (grsp-matrix-esi 1 res2))
+    (set! hm2 (grsp-matrix-esi 2 res2))
+    (set! ln2 (grsp-matrix-esi 3 res2))
+    (set! hn2 (grsp-matrix-esi 4 res2))	
+    
+    ;; Define sort order.
+    (cond ((not (equal? p_s1 "#asc"))
+	   (set! s1 "#des")))
+    
+    ;; Main cycle
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+	   (set! j1 ln1)
+	   (while (<= j1 hn1)
+
+		  (set! v2 (array-ref res2 i1 j1))
+
+		  (set! i3 lm2)
+		  (set! j3 ln2)
+
+		  ;; Compare v2 with the rest of the values.
+		  (set! i2 lm2)
+		  (while (<= i2 hm2)
+			 (set! j2 ln2)
+			 (while (<= j2 hn2)		  
+
+				;; Read value in res2.
+				(set! v3 (array-ref res2 i2 j2))
+
+				; Compare.
+				(cond ((eq? s1 "#asc")
+				       (cond ((< v3 v2)
+					      (set! i3 i2)
+					      (set! j3 j2)
+					      (set! f1 +inf.0)
+					      (set! v2 v3))))
+				      ((eq? s1 "#des")
+				       (cond ((> v3 v2)
+					      (set! i3 i2)
+					      (set! j3 j2)					      
+					      (set! f1 -inf.0)
+					      (set! v2 v3)))))					      
+				
+				(set! j2 (+ j2 1)))
+			 (set! i2 (+ i2 1))) 
+
+		  ;; Mark res2 element as read.
+		  (array-set! res2 f1 i3 j3)
+
+		  ;; Put sorted element in res1.
+		  (array-set! res1 v2 i1 j1)
+		  
+		  (set! j1 (+ j1 1)))
+	   (set! i1 (+ i1 1)))
+
+    res1))
+
+
+;;
+;;    
+(define (grsp-matrix-opsm p_s1 p_a1 p_p1)
+  (let ((res1 0)
+	(res2 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(i1 0)
+	(j1 0))
+
+    ;; Extract the boundaries of the matrix.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1))
+
+    ;; eval
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+	   (set! j1 ln1)
+	   (while (<= j1 hn1)
+		  ;; https://www.gnu.org/software/guile/manual/html_node/Eval-Special.html
+		  ;;(array-set! p_a1 (eval l1 (interaction-environment)) i1 j1)
+		  (set! res2 p_p1)
+		  (array-set! p_a1 res2 i1 j1)
+		  (set! j1 (+ j1 1)))
+	   (set! i1 (+ i1 1)))   
+
+
+    ;; Operate on all elements.
+    (cond ((not (equal? p_s1 "#noop"))
+	   (set! res1 (grsp-matrix-opio p_s1 p_a1 0))))
+    
+    res1))
+
+
+(define (grsp-matrix-opsm-t1 p_a1 p_i2 p_j2)
+  (let ((res1 0))
+
+    (set! res1 (+ p_i2 p_j2))
+
+    res1))
