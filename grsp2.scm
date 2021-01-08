@@ -1401,11 +1401,11 @@
 
 
 ;; grsp-dtr - Divides p_n1 into two natural numbers and returns a list.
-;; If p_n1 is even then bo values returned are equal. If p_n1 is odd then the
+;; If p_n1 is even then both values returned are equal. If p_n1 is odd then the
 ;; function truncates one and rounds the other according to p_s1.
 ;;
 ;; Arguments:
-;; - p_s1: determines which half is rounded and wich one is truncted if p_n1 is
+;; - p_s1: determines which half is rounded and wich one is truncated if p_n1 is
 ;;   odd:
 ;;   - "#rt": rounnd the first value, truncae the second.
 ;;   - "#tr": truncate the first and round the second.

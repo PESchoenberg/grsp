@@ -94,6 +94,22 @@
 ;; - [25] En.wikipedia.org. 2020. Interquartile Range. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Interquartile_range> [Accessed 29 December
 ;;   2020].
+;; - [26] En.wikipedia.org. 2021. Summary Statistics. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Summary_statistics [Accessed 1 January 2021].
+;; - [27] En.wikipedia.org. 2021. Five-Number Summary. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Five-number_summary [Accessed 1 January 2021].
+;; - [28] En.wikipedia.org. 2021. Range (Statistics). [online] Available at:
+;;   https://en.wikipedia.org/wiki/Range_(statistics) [Accessed 1 January 2021].
+;; - [29] En.wikipedia.org. 2021. Algorithms For Calculating Variance. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance
+;;   [Accessed 3 January 2021].
+;; - [30] En.wikipedia.org. 2021. Mode (statistics). [online] Available at:
+;;   https://en.wikipedia.org/wiki/Mode_(statistics) [Accessed 3 January 2021].
+;; - [31] En.wikipedia.org. 2021. Frequency (statistics). [online] Available at:
+;;   https://en.wikipedia.org/wiki/Frequency_(statistics) [Accessed 3 January
+;;   2021].
+;; - [32] En.wikipedia.org. 2021. Unimodality. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Unimodality [Accessed 3 January 2021].
 
 
 (define-module (grsp grsp5)
@@ -114,6 +130,7 @@
 	    grsp-pcomp
 	    grsp-osbv
 	    grsp-obsv
+	    grsp-entropy-dvar
 	    grsp-mean1
 	    grsp-mean2
 	    grsp-sd1
@@ -134,8 +151,10 @@
 	    grsp-sample-skewness
 	    grsp-yule-coefficient
 	    grsp-iqr
-	    grsp-quartiles
-	    grsp-entropy-dvar
+	    grsp-5ns
+	    grsp-range
+	    grsp-covariance1
+	    grsp-frequency-absolute
 	    grsp-poisson-pmf
 	    grsp-poisson-kurtosis
 	    grsp-poisson-skewness
@@ -950,23 +969,24 @@
     res1))
 
 
-;; grsp-quartiles - Find Q1, Q2 and Q3.
+;; grsp-5ns - Five number summary. Extract min, quartles and max values from a
+;; sample.
 ;;
 ;; Arguments:
-;; - p_a1: sample (matrix).
+;; - p_a1: sample (vector).
 ;;
 ;; Output:
-;; - 1 x 3 matrix containg the values for Q1, Q2 and Q3.
+;; - 1 x 5 matrix (vector) containg the values (in order) for min, Q1, Q2, Q3 and
+;;   max.
 ;;
 ;; Sources:
-;; - [24].
+;; - [26][27].
 ;;
-(define (grsp-quartiles p_a1)
+(define (grsp-5ns p_a1)
   (let ((res1 0)
 	(res2 p_a1)
 	(res3 0)
-	(res4 0)
-	(res5 0)
+	(res6 0)
 	(n3 0)
 	(n4 0)
 	(n5 0)
@@ -982,22 +1002,24 @@
 	(lh1 0)
 	(lh2 0))
 
-    ;; Extract the boundaries of the matrix.
-    (set! lm2 (grsp-matrix-esi 1 res2))
-    (set! hm2 (grsp-matrix-esi 2 res2))
-    (set! ln2 (grsp-matrix-esi 3 res2))
-    (set! hn2 (grsp-matrix-esi 4 res2))	
-
-    ;; Create results vector.
-    (set! res1 (grsp-matrix-create 0 1 3))
-
-    ;; Sort elements and convert to vector.
-    (set! res3 (grsp-m2v (grsp-matrix-sort "#asc" res2)))
+    ;; Extract basic data.
+    (set! res3 res2)
     (set! n3 (grsp-matrix-total-elements res3))
+    (set! res6 res3)
+
+    ;; Extract the boundaries of the matrix.
+    (set! lm2 (grsp-matrix-esi 1 res3))
+    (set! hm2 (grsp-matrix-esi 2 res3))
+    (set! ln2 (grsp-matrix-esi 3 res3))
+    (set! hn2 (grsp-matrix-esi 4 res3))	
+    
+    ;; Create results vector.
+    (set! res1 (grsp-matrix-create 0 1 5))
 
     ;; Q2
-    (array-set! res1 (grsp-median1 res3) 0 1)
-
+    (array-set! res1 (grsp-median1 res3) 0 2)
+    (set! res3 res6)
+    
     ;; Calculate coordinates for quartile sub vectors.
     (set! l1 (grsp-dtr "#rt" n3))
     (set! ll1 (car l1))
@@ -1010,13 +1032,152 @@
 	   (set! n5 (+ n4 2))))
 
     ;; Q1
-    (set! res4 (grsp-matrix-subcpy res2 lm2 hm2 ln2 n4))
-    (array-set! res1 (grsp-median1 res4) 0 0)
+    (array-set! res1 (grsp-median1 (grsp-matrix-subcpy res3 lm2 hm2 ln2 n4)) 0 1)
 
     ;; Q3
-    (set! res5 (grsp-matrix-subcpy res2 lm2 hm2 n5 hn2))
-    (array-set! res1 (grsp-median1 res5) 0 2)
+    (set! res3 res6)
+    (array-set! res1 (grsp-median1 (grsp-matrix-subcpy res3 lm2 hm2 n5 hn2)) 0 3)
+
+    ;; Set min and max values.
+    (array-set! res1 (array-ref res3 lm2 ln2) 0 0)
+    (array-set! res1 (array-ref res3 hm2 hn2) 0 4)  
     
+    res1))
+
+
+;; grsp-range - Sample range.
+;;
+;; Arguments:
+;; - p_a1: sample (vector).
+;;
+;; Sources:
+;; - [28].
+;;
+(define (grsp-range p_a1)
+  (let ((res1 0)
+	(res2 0))
+
+    (set! res2 (grsp-5ns p_a1))
+    (set! res1 (- (array-ref res2 0 4) (array-ref res2 0 4)))
+    
+    res1))
+
+
+;; grsp-covariance1 - Calculates covariance between two random variables X and Y,
+;; naive algorithm.
+;;
+;; Arguments:
+;; - p_a1: 1 x n matrix (vector) containing instances of X.
+;; - p_a2: 1 x n matrix (vector) containing instances of Y.
+;;
+;; Notes:
+;; - p_a1 and p_a2 should be structurally the same:
+;;   - same number of elements.
+;;   - Same odrinality on indexes.
+;;
+;; Sources:
+;; - [29].
+;;
+(define (grsp-covariance1 p_a1 p_a2)
+  (let ((res1 0)
+	(n1 0)
+	(n2 0)
+	(n3 0))
+
+    (set! n1 (grsp-matrix-total-elements p_a1))
+    (set! n2 (grsp-matrix-opio "#+" (grsp-matrix-opew "#*" p_a1 p_a2) 0))
+    (set! n3 (* (grsp-matrix-opio "#+" p_a1 0)
+		(grsp-matrix-opio "#+" p_a2 0)
+		(/ 1 n1)))
+
+    (set! res1 (/ (- n2 n3) n1))
+
+    res1))
+
+
+;; grsp-frequency-absolute - Absolute frequency of a value in sample p_a1.
+;;
+;; Arguments:
+;; - p_a1: sample.
+;;
+;; Output:
+;; - Unsorted matrix containing the values of sample p_a1 and their
+;;   frequencies. The sample mode(s) are represented by the higest-valued
+;;   elements of the matrix, since a sample can be uni or multi-modal.
+;;
+;; Notes:
+;; - With regards to p_a1, the function is destructive.
+;;
+;; Sources:
+;; - [30][31][32].
+;;
+(define (grsp-frequency-absolute p_a1)
+  (let ((res1 0)
+	(res2 p_a1)
+	(res3 0)
+ 	(lm2 0)
+	(hm2 0)
+	(ln2 0)
+	(hn2 0)
+	(lm3 0)
+	(hm3 0)
+	(ln3 0)
+	(hn3 0)	
+	(i2 0)
+	(j2 0) 
+	(n1 +nan.0)
+	(n2 0)
+	(n3 0)
+	(n4 0)
+	(n5 0))
+
+    (set! n4 (grsp-matrix-total-elements res2))
+    
+    ;; Extract the boundaries of the matrix.
+    (set! lm2 (grsp-matrix-esi 1 res2))
+    (set! hm2 (grsp-matrix-esi 2 res2))
+    (set! ln2 (grsp-matrix-esi 3 res2))
+    (set! hn2 (grsp-matrix-esi 4 res2))	   
+
+    ;; Create frequency matrix.
+    (set! res3 (grsp-matrix-create 0 1 2))
+    
+    ;; Eval.
+    (set! i2 lm2)
+    (while (<= i2 hm2)
+	   (set! j2 ln2)
+	   (while (<= j2 hn2)
+
+		  ;; Read value from res2.
+		  (set! n2 (array-ref res2 i2 j2))
+		  (set! n5 (+ n5 1))
+		  (cond ((equal? (equal? n2 n1) #f)
+
+			 ;; Count the number of occurrences of n2 in res2.
+			 (set! n3 (grsp-matrix-total-element res2 n2))
+			 
+			 ;; Extract the boundaries of the matrix.
+			 (set! lm3 (grsp-matrix-esi 1 res3))
+			 (set! hm3 (grsp-matrix-esi 2 res3))
+			 (set! ln3 (grsp-matrix-esi 3 res3))
+			 (set! hn3 (grsp-matrix-esi 4 res3))	
+
+			 ;; Add values n2 (sought value) and n3 (total
+			 ;; occurrences) to res3.
+			 (array-set! res3 n2 hm3 ln3)
+			 (array-set! res3 n3 hm3 hn3)			 
+			 
+			 ;; Void occurrences of n2 in res2 by setting each
+			 ;; element to value n1 once counted.
+			 (set! res2 (grsp-matrix-change res2 n2 n1))
+			 (cond ((< n5 n4)
+				(set! res3 (grsp-matrix-subexp res3 1 0))))))
+		  		  
+		  (set! j2 (+ j2 1)))
+	   (set! i2 (+ i2 1)))
+
+    (set! res1 res3)
+  
     res1))
 
 
