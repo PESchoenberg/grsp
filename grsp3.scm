@@ -184,6 +184,7 @@
 ;;   - "#Q": Quincunx matrix.
 ;;   - "#Test1": Test matrix 1 (LU decomposable)[1].
 ;;   - "#Test2": Test matrix 2 (LU decomposable)[2].
+;;   - "#Ladder": Ladder matrix.
 ;;   - "#Arrow": Arrowhead matrix.
 ;;   - "#Hilbert": Hilbert matrix.
 ;;   - "#Lehmer": Lehmer matrix.
@@ -195,6 +196,7 @@
 ;;   - "#-IJ": matrix containing the quotient of i and j values.
 ;;   - "#US": upper shift matrix.
 ;;   - "#LS": lower shift matrix.
+;;   - "#rprnd": pseduo random values, normal distribution, sd = 0.15.
 ;; - p_m: rows, positive integer.
 ;; - p_n: cols, positive integer.
 ;;
@@ -272,6 +274,8 @@
 			((equal? p_s "#LS")
 			 (set! s 0)
 			 (set! n m))			
+			((equal? p_s "#rprnd")
+			 (set! s 0))
 			
 			(else (set! s p_s)))
 
@@ -440,6 +444,9 @@
 			((equal? p_s "#LS")
 			 (set! res (grsp-matrix-create "#US" m n))
 			 (set! res (grsp-matrix-transpose res)))
+			((equal? p_s "#rprnd")
+			 (set! res (grsp-matrix-create 1 m n))
+			 (set! res (grsp-matrix-opsc "#rprnd" res 0.15)))
 			
 			((equal? p_s "#Q")
 			 (array-set! res -1 (- m 2) (- n 1))))))))
@@ -2555,7 +2562,8 @@
 	(i3 0)
 	(j3 0)
         (v2 0)
-	(v3 0))
+	(v3 0)
+	(n1 +nan.0))
 
     ;; Create res1 with the same size as rs2 and fill it with zeros.
     (set! res2 p_a1)
@@ -2578,7 +2586,7 @@
     (cond ((not (equal? p_s1 "#asc"))
 	   (set! s1 "#des")))
     
-    ;; Main cycle
+    ;; Main cycle.
     (set! i1 lm1)
     (while (<= i1 hm1)
 	   (set! j1 ln1)
@@ -2600,18 +2608,18 @@
 
 				; Compare.
 				(cond ((eq? s1 "#asc")
-				       (cond ((< v3 v2)
+				       (cond ((<= v3 v2)
 					      (set! i3 i2)
 					      (set! j3 j2)
 					      (set! f1 +inf.0)
 					      (set! v2 v3))))
 				      ((eq? s1 "#des")
-				       (cond ((> v3 v2)
+				       (cond ((>= v3 v2)
 					      (set! i3 i2)
 					      (set! j3 j2)					      
 					      (set! f1 -inf.0)
 					      (set! v2 v3)))))					      
-				
+				 
 				(set! j2 (+ j2 1)))
 			 (set! i2 (+ i2 1))) 
 
@@ -2645,13 +2653,11 @@
     (set! ln1 (grsp-matrix-esi 3 p_a1))
     (set! hn1 (grsp-matrix-esi 4 p_a1))
 
-    ;; eval
+    ;; Eval
     (set! i1 lm1)
     (while (<= i1 hm1)
 	   (set! j1 ln1)
 	   (while (<= j1 hn1)
-		  ;; https://www.gnu.org/software/guile/manual/html_node/Eval-Special.html
-		  ;;(array-set! p_a1 (eval l1 (interaction-environment)) i1 j1)
 		  (set! res2 p_p1)
 		  (array-set! p_a1 res2 i1 j1)
 		  (set! j1 (+ j1 1)))
