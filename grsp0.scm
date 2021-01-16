@@ -55,7 +55,8 @@
 	    grsp-sqlp
 	    grsp-ld
 	    grsp-cd
-	    grsp-ask))
+	    grsp-ask
+	    grsp-placebo))
 
 
 ;; pline - Displays character p_n p_m times in one line at the console.
@@ -334,12 +335,27 @@
 ;; - Returns a string with the user's input.
 ;;
 (define (grsp-ask p_q)
-  (let ((res " "))
+  (let ((res1 " "))
 
     (newline)
     (grsp-ld p_q)
-    (set! res (read))
+    (set! res1 (read))
 
-    res))
-	  
+    res1))
 
+  
+;; grsp-placebo - This function is a placebo.
+;;
+;; Arguments:
+;; p_s1: strng or number.
+;;
+;; Output:
+;; - Returns p_s1.
+;;
+(define (grsp-placebo p_s1)
+  (let ((res1 p_s1))
+    
+    ;; Does nothing, which sometimes can be useful.
+    
+    res1))
+  

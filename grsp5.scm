@@ -155,6 +155,7 @@
 	    grsp-range
 	    grsp-covariance1
 	    grsp-frequency-absolute
+	    grsp-mode
 	    grsp-poisson-pmf
 	    grsp-poisson-kurtosis
 	    grsp-poisson-skewness
@@ -934,6 +935,7 @@
 
     res1))
 
+
 ;; grsp-yule-coefficient - Yule's coefficient, skewness.
 ;;
 ;; Arguments:
@@ -1178,6 +1180,77 @@
 
     (set! res1 res3)
   
+    res1))
+
+
+;; grsp-mode - Mode.
+;;
+;; Arguments:
+;; - p_a1: sample (matrix).
+;; - p_n1: number of desired modes to be searched for.
+;;   - 1: unimodal.
+;;   - n: n-modal search.
+;;
+;; Output:
+;; - A matrix containing the desired number of modes, if they exist.
+;;
+;; Notes:
+;; - With regards to p_a1, the function is destructive.
+;;
+;; Sources:
+;; - [30][31][32].
+;;
+(define (grsp-mode p_a1 p_n1)
+  (let ((res1 0)
+	(res2 0)
+ 	(lm2 0)
+	(hm2 0)
+	(ln2 0)
+	(hn2 0)
+	(i1 0)
+	(i2 0)
+	(j2 0) 
+	(n1 p_n1)
+	(n2 0)
+	(n3 0))
+
+    ;; Get abs freq.
+    (set! res2 (grsp-frequency-absolute p_a1))
+  
+    ;; Extract the boundaries of the matrix.
+    (set! lm2 (grsp-matrix-esi 1 res2))
+    (set! hm2 (grsp-matrix-esi 2 res2))
+    (set! ln2 (grsp-matrix-esi 3 res2))
+    (set! hn2 (grsp-matrix-esi 4 res2))    
+
+    ;; Check p_n1.
+    (cond ((< p_n1 1)
+	   (set! n1 1))
+	  ((> p_n1 hm2)
+	   (set! n1 (- hm2 lm2))))
+
+    ;; Create a matrix to hold the values related to the mode(s).
+    (set! res1 (grsp-matrix-create -inf.0 n1 2))
+    
+    ;; Repeat as many times as modes are to be found.
+    (while (< i1 n1)
+
+	   (set! n2 -inf.0)
+	   (set! n3 -inf.0)
+	   
+	   ;; Find a mode.
+	   (set! i2 lm2)
+	   (while (<= i2 hm2)
+		  (cond ((> (array-ref res2 i2 1) n3)
+			 (set! n2 (array-ref res2 i2 0))
+			 (set! n3 (array-ref res2 i2 1))
+			 (array-set! res2 -inf.0 i2 0)
+			 (array-set! res2 -inf.0 i2 1)))		  
+		  (set! i2 (+ i2 1)))	   
+	   (array-set! res1 n2 i1 0)
+	   (array-set! res1 n3 i1 1)
+	   (set! i1 (+ i1 1)))    
+    
     res1))
 
 
