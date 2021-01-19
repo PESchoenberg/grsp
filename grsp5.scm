@@ -110,6 +110,8 @@
 ;;   2021].
 ;; - [32] En.wikipedia.org. 2021. Unimodality. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Unimodality [Accessed 3 January 2021].
+;; - [33] https://en.wikipedia.org/wiki/Central_tendency
+;; - [34] https://en.wikipedia.org/wiki/Geometric_mean
 
 
 (define-module (grsp grsp5)
@@ -133,6 +135,7 @@
 	    grsp-entropy-dvar
 	    grsp-mean1
 	    grsp-mean2
+	    grsp-mean-geometric
 	    grsp-sd1
 	    grsp-sd2
 	    grsp-variance1
@@ -509,8 +512,8 @@
 (define (grsp-mean1 p_a1)
   (let ((res1 0))
 
-    (set! res1 (/ (grsp-matrix-opio "#+" p_a1 0) ; Sum of all elements.
-		  (grsp-matrix-total-elements p_a1))) ; Number of elements.
+    (set! res1 (grsp-opz (/ (grsp-matrix-opio "#+" p_a1 0)
+			    (grsp-matrix-total-elements p_a1))))
 
     res1))
 
@@ -538,6 +541,22 @@
     ;; Summation of res2 elements.
     (set! res1 (grsp-matrix-opio "#+" res2 0))
 	  
+    res1))
+
+
+;; grsp-mean-geometric - Geometric mean of elements of p_a1.
+;;
+;; Arguments:
+;; p_a1: sample (matrix).
+;;
+(define (grsp-mean-geometric p_a1)
+  (let ((res1 0)
+	(n1 0)
+	(n2 0))
+
+    (set! res1 (expt (grsp-matrix-opio "#*" p_a1 0)
+		     (/ 1 (grsp-matrix-total-elements p_a1))))
+
     res1))
 
 
@@ -1107,15 +1126,12 @@
 ;;   frequencies. The sample mode(s) are represented by the higest-valued
 ;;   elements of the matrix, since a sample can be uni or multi-modal.
 ;;
-;; Notes:
-;; - With regards to p_a1, the function is destructive.
-;;
 ;; Sources:
 ;; - [30][31][32].
 ;;
 (define (grsp-frequency-absolute p_a1)
   (let ((res1 0)
-	(res2 p_a1)
+	(res2 0)
 	(res3 0)
  	(lm2 0)
 	(hm2 0)
@@ -1133,6 +1149,7 @@
 	(n4 0)
 	(n5 0))
 
+    (set! res2 (grsp-matrix-cpy p_a1))
     (set! n4 (grsp-matrix-total-elements res2))
     
     ;; Extract the boundaries of the matrix.
@@ -1187,20 +1204,15 @@
 ;;
 ;; Arguments:
 ;; - p_a1: sample (matrix).
-;; - p_n1: number of desired modes to be searched for.
-;;   - 1: unimodal.
-;;   - n: n-modal search.
 ;;
 ;; Output:
-;; - A matrix containing the desired number of modes, if they exist.
-;;
-;; Notes:
-;; - With regards to p_a1, the function is destructive.
+;; - A matrix containing the value that corresponds to the mode and the mode
+;;   itself.
 ;;
 ;; Sources:
 ;; - [30][31][32].
 ;;
-(define (grsp-mode p_a1 p_n1)
+(define (grsp-mode p_a1)
   (let ((res1 0)
 	(res2 0)
  	(lm2 0)
@@ -1209,13 +1221,13 @@
 	(hn2 0)
 	(i1 0)
 	(i2 0)
-	(j2 0) 
-	(n1 p_n1)
+	(n1 1)
 	(n2 0)
-	(n3 0))
-
+	(n3 0)
+	(n4 -inf.0))
+   
     ;; Get abs freq.
-    (set! res2 (grsp-frequency-absolute p_a1))
+    (set! res2 (grsp-frequency-absolute (grsp-matrix-cpy p_a1)))
   
     ;; Extract the boundaries of the matrix.
     (set! lm2 (grsp-matrix-esi 1 res2))
@@ -1223,33 +1235,24 @@
     (set! ln2 (grsp-matrix-esi 3 res2))
     (set! hn2 (grsp-matrix-esi 4 res2))    
 
-    ;; Check p_n1.
-    (cond ((< p_n1 1)
-	   (set! n1 1))
-	  ((> p_n1 hm2)
-	   (set! n1 (- hm2 lm2))))
-
     ;; Create a matrix to hold the values related to the mode(s).
-    (set! res1 (grsp-matrix-create -inf.0 n1 2))
+    (set! res1 (grsp-matrix-create n4 n1 2))
+    (set! n2 n4)
+    (set! n3 n4)
     
-    ;; Repeat as many times as modes are to be found.
-    (while (< i1 n1)
+    ;; Find mode among the abs freq results qas the highest
+    ;; value.
+    (set! i2 lm2)
+    (while (<= i2 hm2)
+	   (cond ((> (array-ref res2 i2 hn2) n3)
+		  (set! n2 (array-ref res2 i2 ln2))
+		  (set! n3 (array-ref res2 i2 hn2))
+		  (array-set! res2 n4 i2 hn2)))		  
+	   (set! i2 (+ i2 1)))
 
-	   (set! n2 -inf.0)
-	   (set! n3 -inf.0)
-	   
-	   ;; Find a mode.
-	   (set! i2 lm2)
-	   (while (<= i2 hm2)
-		  (cond ((> (array-ref res2 i2 1) n3)
-			 (set! n2 (array-ref res2 i2 0))
-			 (set! n3 (array-ref res2 i2 1))
-			 (array-set! res2 -inf.0 i2 0)
-			 (array-set! res2 -inf.0 i2 1)))		  
-		  (set! i2 (+ i2 1)))	   
-	   (array-set! res1 n2 i1 0)
-	   (array-set! res1 n3 i1 1)
-	   (set! i1 (+ i1 1)))    
+    ;; Results.
+    (array-set! res1 n2 i1 0)
+    (array-set! res1 n3 i1 1)   
     
     res1))
 
