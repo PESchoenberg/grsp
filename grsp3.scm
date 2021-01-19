@@ -97,6 +97,7 @@
 	    grsp-matrix-opew
 	    grsp-matrix-opfn
 	    grsp-matrix-opmm
+	    grsp-matrix-cpy
 	    grsp-matrix-subcpy
 	    grsp-matrix-subrep
 	    grsp-matrix-subdel
@@ -137,6 +138,7 @@
 	    grsp-matrix-is-invertible
 	    grsp-eigenval-opio
 	    grsp-matrix-sort
+	    grsp-matrix-minmax
 	    grsp-matrix-opsm
 	    grsp-matrix-opsm-t1))
 
@@ -1169,7 +1171,34 @@
 	   (set! res3 (grsp-matrix-opew p_s res1 res2))))
 
     res3))
+
+
+;; grsp-matrix-cpy - Copies matrix p_a1, element wise.
+;;
+;; Arguments:
+;; p_a1: matrix to be copied.
+;;
+;; Output:
+;; - A copy of p_a1
+;;
+(define (grsp-matrix-cpy p_a1)
+  (let ((res1 0)
+ 	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0))	
+
+    ;; Extract the boundaries of the matrix.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1)) 
     
+    ;; Copy elements.
+    (set! res1 (grsp-matrix-subcpy p_a1 lm1 hm1 ln1 hn1))
+
+    res1))
+
 
 ;; grsp-matrix-subcpy - Extracts a block or sub matrix from matrix p_a. The
 ;; process is not destructive with regards to p_a. The user is responsible for
@@ -2566,7 +2595,8 @@
 	(n1 +nan.0))
 
     ;; Create res1 with the same size as rs2 and fill it with zeros.
-    (set! res2 p_a1)
+    ;;(set! res2 p_a1)
+    (set! res2 (grsp-matrix-cpy p_a1))
     (set! res1 res2)
     (set! res1 (grsp-matrix-opsc "#*" res1 0))
     
@@ -2635,6 +2665,38 @@
     res1))
 
 
+;; grsp-matrix-minmax - Finds the maximum and minimum values in p_a1.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;;
+;; Output:
+;; - A 1 x 2 matrix containing the min and max values, respectively.
+;;
+(define (grsp-matrix-minmax p_a1)
+  (let ((res1 0)
+	(res2 0)
+	(lm2 0)
+	(hm2 0)
+	(ln2 0)
+	(hn2 0))	
+
+    (set! res1 (grsp-matrix-create 0 1 2))
+    (set! res2 (grsp-matrix-sort "#asc" p_a1))
+
+    ;; Extract the boundaries of the matrix.
+    (set! lm2 (grsp-matrix-esi 1 res2))
+    (set! hm2 (grsp-matrix-esi 2 res2))
+    (set! ln2 (grsp-matrix-esi 3 res2))
+    (set! hn2 (grsp-matrix-esi 4 res2))    
+
+    ;; Results
+    (array-set! res1 (array-ref res2 lm2 ln2) 0 0)
+    (array-set! res1 (array-ref res2 hm2 hn2) 0 1)    
+    
+    res1))
+
+
 ;;
 ;;    
 (define (grsp-matrix-opsm p_s1 p_a1 p_p1)
@@ -2677,3 +2739,4 @@
     (set! res1 (+ p_i2 p_j2))
 
     res1))
+
