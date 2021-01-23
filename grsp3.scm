@@ -140,7 +140,8 @@
 	    grsp-matrix-sort
 	    grsp-matrix-minmax
 	    grsp-matrix-opsm
-	    grsp-matrix-opsm-t1))
+	    grsp-matrix-opsm-t1
+	    grsp-matrix-trim))
 
 
 ;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -2694,6 +2695,94 @@
     (array-set! res1 (array-ref res2 lm2 ln2) 0 0)
     (array-set! res1 (array-ref res2 hm2 hn2) 0 1)    
     
+    res1))
+
+
+;; grsp-matrix-trim - Trim matrix data.
+;;
+;; Arguments:
+;; - p_s1: type of operaton.
+;; - p_a1: matrix
+;;
+;; Output:
+;; - Trimmed data as a 1 x n vector.
+;;
+(define (grsp-matrix-trim p_s1 p_a1 p_n1)
+  (let ((res1 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(lm2 0)
+	(hm2 0)
+	(ln2 0)
+	(hn2 0)	
+	(i1 0)
+	(j1 0)
+	(n1 0)
+	(b1 #f)
+	(b2 #f))
+
+    ;; Extract the boundaries of the matrix.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1))
+    
+    ;; Eval
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+	   (set! j1 ln1)
+	   (while (<= j1 hn1)
+
+		  ;; Read value from matrix.
+		  (set! n1 (array-ref p_a1 i1 j1))
+
+		  ;; Check if the value meets the conditions to be trimmed or not.
+		  (cond ((equal? p_s1 "#=")
+			 (cond ((not (equal? n1 p_n1))
+				(set! b2 #t))))
+			((equal? p_s1 "#>")
+			 (cond ((<= n1 p_n1)
+				(set! b2 #t))))
+			((equal? p_s1 "#<")
+			 (cond ((>= n1 p_n1)
+				(set! b2 #t))))
+			((equal? p_s1 "#>=")
+			 (cond ((< n1 p_n1)
+				(set! b2 #t))))
+			((equal? p_s1 "#<=")
+			 (cond ((> n1 p_n1)
+				(set! b2 #t))))			
+			((equal? p_s1 "#!=")
+			 (cond ((equal? n1 p_n1)
+				(set! b2 #t)))))
+			
+		  ;; Add value to vector. If this is the first pass, create the
+		  ;; vector first. If not, increase the vector size by one
+		  ;; element to contain the new value passed from p_a1.
+		  (cond ((equal? b2 #t)
+			 (cond ((equal? b1 #f)				
+				;; Create empty vector.
+				(set! res1 (grsp-matrix-create 0 1 1))
+				(set! b1 #t))			       
+			       ((equal? b1 #t)				
+				;; Add element to vector.
+				(set! res1 (grsp-matrix-subexp res1 0 1))))
+
+			 ;; Extract the boundaries of the matrix.
+			 (set! lm2 (grsp-matrix-esi 1 res1))
+			 (set! hm2 (grsp-matrix-esi 2 res1))
+			 (set! ln2 (grsp-matrix-esi 3 res1))
+			 (set! hn2 (grsp-matrix-esi 4 res1))
+
+			 ;; Add approved number to the last element of the vector.
+			 (array-set! res1 n1 lm2 hn2)			 
+			 (set! b2 #f)))		  
+		  
+		  (set! j1 (+ j1 1)))
+	   (set! i1 (+ i1 1)))      
+
     res1))
 
 

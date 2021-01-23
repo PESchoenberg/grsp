@@ -112,6 +112,7 @@
 ;;   https://en.wikipedia.org/wiki/Unimodality [Accessed 3 January 2021].
 ;; - [33] https://en.wikipedia.org/wiki/Central_tendency
 ;; - [34] https://en.wikipedia.org/wiki/Geometric_mean
+;; - [35] https://en.wikipedia.org/wiki/Central_tendency
 
 
 (define-module (grsp grsp5)
@@ -136,6 +137,9 @@
 	    grsp-mean1
 	    grsp-mean2
 	    grsp-mean-geometric
+	    grsp-mean-interquartile
+	    grsp-mean-quadratic
+	    grsp-midrange
 	    grsp-sd1
 	    grsp-sd2
 	    grsp-variance1
@@ -509,6 +513,9 @@
 ;; Arguments:
 ;; - p_a1: sample (matrix).
 ;;
+;; Sources:
+;; - [35].
+;;
 (define (grsp-mean1 p_a1)
   (let ((res1 0))
 
@@ -529,7 +536,7 @@
 ;; - p_a1 and p_a2 should be of the same shape and dimensions.
 ;;
 ;; Sources:
-;; - [13].
+;; - [13][35].
 ;;
 (define (grsp-mean2 p_a1 p_a2)
   (let ((res1 0)
@@ -547,7 +554,10 @@
 ;; grsp-mean-geometric - Geometric mean of elements of p_a1.
 ;;
 ;; Arguments:
-;; p_a1: sample (matrix).
+;; - p_a1: sample (matrix).
+;;
+;; Sources:
+;; - [35].
 ;;
 (define (grsp-mean-geometric p_a1)
   (let ((res1 0)
@@ -557,6 +567,82 @@
     (set! res1 (expt (grsp-matrix-opio "#*" p_a1 0)
 		     (/ 1 (grsp-matrix-total-elements p_a1))))
 
+    res1))
+
+
+;; grsp-mean-interquartile - Interquartile ean of elements of p_a1.
+;;
+;; Arguments:
+;; - p_a1: sample (matrix).
+;;
+;; Sources:
+;; - [35].
+;;
+(define (grsp-mean-interquartile p_a1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0))
+
+    ;; Safe copy.
+    (set! res3 (grsp-matrix-cpy p_a1))
+    
+    ;; Find quartiles.
+    (set! res2 (grsp-5ns res3))
+
+    ;; Trim sample to interquartile range.
+    (set! res3 (grsp-matrix-trim "#<" res3 (array-ref res2 0 1)))
+    (set! res3 (grsp-matrix-trim "#>" res3 (array-ref res2 0 3)))
+
+    ;; Results.
+    (set! res1 (grsp-mean1 res3))
+
+    res1))
+
+
+;; grsp-mean-quadratic - Quadratic mean of elements of p_a1. Requires that all
+;; elements of p_a1 should be >= 0.
+;;
+;; Arguments:
+;; - p_a1: sample (matrix).
+;;
+;; Sources:
+;; - [35].
+;;
+(define (grsp-mean-quadratic p_a1)
+  (let ((res1 0)
+	(res2 0)
+	(n2 0))
+
+    ;; Security copy.
+    (set! res2 (grsp-matrix-cpy p_a1))
+
+    ;; Inverse of total number of elements in p_a1.
+    (set! n2 (/ 1 (grsp-matrix-total-elements res2)))
+
+    ;; Square every element in matrix.
+    (set! res2 (grsp-matrix-opsc "#expt" res2 2))
+
+    ;; Results.
+    (set! res1 (sqrt (* n2 (grsp-matrix-opio "#+" res2 0))))
+
+    res1))
+
+
+;; grsp-mean-midrange - Calculates the midrange of p_a1.
+;;
+;; Arguments:
+;; - p_a1: sample (matrix).
+;;
+;; Sources:
+;; - [35].
+;;
+(define (grsp-midrange p_a1)
+  (let ((res1 0)
+	(res2 0))
+
+    (set! res2 (grsp-matrix-minmax p_a1))
+    (set! res1 (grsp-opz (/ (+ (array-ref res2 0 0) (array-ref res2 0 1)) 2)))
+    
     res1))
 
 
@@ -922,7 +1008,7 @@
     res1))
 
 
-;; grsp-excess-kurtosis - Exess kurtosis.
+;; grsp-excess-kurtosis - Excess kurtosis.
 ;;
 ;; Arguments:
 ;; p_x4: kurtosis.
@@ -990,7 +1076,7 @@
     res1))
 
 
-;; grsp-5ns - Five number summary. Extract min, quartles and max values from a
+;; grsp-5ns - Five number summary. Extract min, quartiles and max values from a
 ;; sample.
 ;;
 ;; Arguments:
@@ -1024,7 +1110,8 @@
 	(lh2 0))
 
     ;; Extract basic data.
-    (set! res3 res2)
+    ;;(set! res3 res2)
+    (set! res3 (grsp-m2v res2))
     (set! n3 (grsp-matrix-total-elements res3))
     (set! res6 res3)
 
