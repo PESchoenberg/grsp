@@ -61,6 +61,9 @@
 
 ;; pline - Displays character p_n p_m times in one line at the console.
 ;;
+;; Keywords:
+;; - console, strings.
+;;
 ;; Arguments:
 ;; - p_c: line character to display.
 ;; - p_l: line length.
@@ -78,6 +81,9 @@
 
 
 ;; ptit - Displays a console title with one or two lines.
+;;
+;; Keywords:
+;; - console, strings.
 ;;
 ;; Arguments:
 ;; - p_c: line character to display.
@@ -98,6 +104,9 @@
 
 ;; newlines - Repeats function newline p_n times.
 ;;
+;; Keywords:
+;; - console, strings.
+;;
 ;; Arguments:
 ;; - p_n: number of iterations.
 ;;
@@ -110,11 +119,17 @@
 
 ;; clear - Clears the shell by inserting 100 blank lines.
 ;;
+;; Keywords:
+;; - console, strings.
+;;
 (define (clear)
   (newlines 100))
 
 
 ;; pres - Display results.
+;;
+;; Keywords:
+;; - console, strings.
 ;;
 ;; Arguments:
 ;; - p_s1: reference, string.
@@ -129,6 +144,9 @@
 
 
 ;; newspaces - Adds p_n blank spaces to string p_l.
+;;
+;; Keywords:
+;; - console, strings.
 ;;
 ;; Arguments:
 ;; - p_n: number of blanks to add.
@@ -161,6 +179,9 @@
 ;; it to avoid complex, nested calls to string-append when you have to join 
 ;; several strings into one.
 ;;
+;; Keywords:
+;; - console, strings.
+;;
 ;; Arguments:
 ;; - p_l: list of strings.
 ;; - p_s: add a blank space after each list element.
@@ -190,6 +211,9 @@
 ;; characters such as \n and \r. What this does in practice is to read a 
 ;; file and return it as one single string. 
 ;;
+;; Keywords:
+;; - console, strings.
+;;
 ;; Arguments:
 ;; - p_f: file name.
 ;;
@@ -210,6 +234,9 @@
 ;; grsp-lang-effective-version - Checks if currently instaled GNU Guile's
 ;; effective version is less, equal or higher than value of the version
 ;; argument vakue.
+;;
+;; Keywords:
+;; - console, strings.
 ;;
 ;; Arguments:
 ;; - p_s: enter the one of the following strings.
@@ -237,12 +264,18 @@
 
 ;; grsp-test - A simple test function.
 ;;
+;; Keywords:
+;; - console, strings.
+;;
 (define (grsp-test)
   (grsp-ld "grsp-test"))
 	      
 
 ;; grsp-save-to-file - Saves a string to file p_f.   
-;;	   
+;;
+;; Keywords:
+;; - console, strings.
+;;
 ;; Arguments: 
 ;; - p_s: string to save.
 ;; - p_f: file.
@@ -264,6 +297,9 @@
 ;; grsp-n2s - A convenience function, shorter to write than number->string that
 ;; performs the same function. That is, to convert a number to a string.
 ;;
+;; Keywords:
+;; - console, strings.
+;;
 ;; Arguments:
 ;; - p_n: number to convert.
 ;;
@@ -278,6 +314,9 @@
 ;; grsp-s2n - A convenience function, shorter to write than string->number that
 ;; performs the same function. That is, to convert a string to a number.
 ;;
+;; Keywords:
+;; - console, strings.
+;;
 ;; Arguments:
 ;; p_s: string to convert.
 ;;
@@ -291,6 +330,9 @@
 
 ;; grsp-sqlp - Calls sqlp to access Sqlite3 or HDF5 databases from within a  
 ;; Guile program. Requires sqlp to be installed.
+;;
+;; Keywords:
+;; - console, strings.
 ;;
 ;; Arguments:
 ;; - p_p: path to the sqlp executable.
@@ -307,6 +349,9 @@
 
 ;; grsp-ld - Line and display. Displays a string after a newline.
 ;;
+;; Keywords:
+;; - console, strings.
+;;
 ;; Arguments:
 ;; - p_s: string.
 ;;
@@ -318,6 +363,9 @@
 ;; grsp-cd - Same as grsp-ld, but performs a clear instead of newline, meaning
 ;; that it clears the screen or console instead of just adding a line break.
 ;;
+;; Keywords:
+;; - console, strings.
+;;
 ;; Arguments:
 ;; - p_s: string.
 ;;
@@ -327,6 +375,9 @@
 
 
 ;; grsp-ask - Input query.
+;;
+;; Keywords:
+;; - console, strings.
 ;;
 ;; Arguments:
 ;; p_q: string representing the question to ask.
@@ -345,6 +396,9 @@
 
   
 ;; grsp-placebo - This function is a placebo.
+;;
+;; Keywords:
+;; - console, strings.
 ;;
 ;; Arguments:
 ;; p_s1: strng or number.

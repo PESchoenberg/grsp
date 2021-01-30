@@ -77,6 +77,9 @@
 ;; grsp-complex-inv-imag - Calculates the inverse of the imaginary
 ;; component of a complex number.
 ;;
+;; Keywords:
+;; - complex.
+;;
 ;; Arguments:
 ;; - p_z1: complex number.
 ;;
@@ -103,6 +106,9 @@
 ;; grsp-complex-inv-real - Calculates the inverse of the real component of a
 ;; complex number.
 ;;
+;; Keywords:
+;; - complex.
+;;
 ;; Arguments:
 ;; - p_z1: complex number.
 ;;
@@ -124,6 +130,9 @@
 
 
 ;; grsp-complex-inv - Calculates various inverses of complex numbers.
+;;
+;; Keywords:
+;; - complex.
 ;;
 ;; Arguments:
 ;; - p_s1: operation.
@@ -153,6 +162,9 @@
 
 ;; grsp-complex-sign - Returns a list containing boolean values indicating
 ;; the signs of the real and imaginary parts of a complex number.
+;;
+;; Keywords:
+;; - complex.
 ;;
 ;; Arguments:
 ;; - p_z1: complex number.
@@ -186,6 +198,9 @@
 ;; grsp-complex-logistic - Logistic map equation. Pseudo-random number
 ;; generator.
 ;;
+;; Keywords:
+;; - complex.
+;;
 ;; Arguments:
 ;; - p_r1: growth rate.
 ;; - p_x1
@@ -202,6 +217,9 @@
 
 
 ;; grsp-complex-mandelbrot - Quadratic map function for the Mandelbrot set.
+;;
+;; Keywords:
+;; - complex.
 ;;
 ;; Arguments:
 ;; - p_z1
@@ -221,6 +239,10 @@
 ;; grsp-complex-binet - Closed form expression of the Fibonacci sequence. It
 ;; provides as a result the p_n1th value of the Fibonnaci series. 
 ;;
+;; Keywords:
+;; - complex.
+;;
+;; Arguments:
 ;; - p_z1: ordinal of the desired Fibonacci number.
 ;;
 ;; Sources:
@@ -238,6 +260,9 @@
 
 
 ;; grsp-complex-dirichlet-eta - Dirichlet eta function.
+;;
+;; Keywords:
+;; - complex.
 ;;
 ;; Arguments:
 ;; - p_s1: s.
@@ -260,6 +285,9 @@
 
 ;; grsp-complex-f1 - Solves (p_a1 * (p_x1**p_n1)) / (1 + (p_a2 (p_x1**p_b2)))
 ;;
+;; Keywords:
+;; - complex.
+;;
 ;; Arguments:
 ;; - p_a1
 ;; - p_a2
@@ -278,6 +306,9 @@
 
 ;; grsp-complex-gamma-euler - Complex extension of the gamma function
 ;; according to Euler's infinite product representation. 
+;;
+;; Keywords:
+;; - complex.
 ;;
 ;; Arguments:
 ;; - p_b2: for integers.
@@ -320,6 +351,9 @@
 
 ;; grsp-complex-gamma-weierstrass - Complex extension of the gamma function
 ;; according to Weierstrass.
+;;
+;; Keywords:
+;; - complex.
 ;;
 ;; Arguments:
 ;; - p_b2: for integers.
@@ -368,6 +402,9 @@
 
 ;; grsp-complex-gamma - Calculating gamma using different representations. 
 ;;
+;; Keywords:
+;; - complex.
+;;
 ;; Arguments:
 ;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
@@ -397,6 +434,9 @@
 
 ;; grsp-complex-pigamma - Pi Gauss function. Calculates gamma for p_z1 + 1.
 ;;
+;; Keywords:
+;; - complex.
+;;
 ;; Arguments:
 ;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
@@ -420,6 +460,9 @@
 
 
 ;; grsp-complex-lngamma - Calculates the natural logarythm of gamma.
+;;
+;; Keywords:
+;; - complex.
 ;;
 ;; Arguments:
 ;; - p_z1: complex.
@@ -450,6 +493,9 @@
 
 
 ;; grsp-complex-digamma - Digamma function for p_z1 - 1.
+;;
+;; Keywords:
+;; - complex.
 ;;
 ;; Arguments:
 ;; - p_b2: for integers.
@@ -487,6 +533,9 @@
 
 ;; grsp-complex-ligamma - Lower incomplete gamma function.
 ;;
+;; Keywords:
+;; - complex.
+;;
 ;; Arguments:
 ;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
@@ -515,6 +564,9 @@
 
 
 ;; grsp-complex-llgamma - Lower incomplete limiting gamma function.
+;;
+;; Keywords:
+;; - complex.
 ;;
 ;; Arguments:
 ;; - p_b2: for integers.
@@ -553,6 +605,9 @@
 
 ;; grsp-complex-uigamma - Upper incomplete gamma function.
 ;;
+;; Keywords:
+;; - complex.
+;;
 ;; Arguments:
 ;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
@@ -578,6 +633,9 @@
 
 ;; grsp-complex-prgamma - Lower regularized gamma function P.
 ;;
+;; Keywords:
+;; - complex.
+;;
 ;; Arguments:
 ;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
@@ -602,6 +660,9 @@
 
 
 ;; grsp-complex-qrgamma - Lower regularized gamma function Q.
+;;
+;; Keywords:
+;; - complex.
 ;;
 ;; Arguments:
 ;; - p_b2: for integers.

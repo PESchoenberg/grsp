@@ -86,11 +86,29 @@
 	    grsp-intifint
 	    grsp-log
 	    grsp-dtr
-	    grsp-opz))
+	    grsp-opz
+	    grsp-eex
+	    grsp-identity
+	    grsp-binary-step
+	    grsp-sigmoid
+	    grsp-tanh
+	    grsp-relu
+	    grsp-softplus
+	    grsp-elu
+	    grsp-lrelu
+	    grsp-selu
+	    grsp-gelu
+	    grsp-prelu
+	    grsp-softsign
+	    grsp-sqnl
+	    grsp-bent-identity))
 
 
 ;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
 ;; this function is equivalent to the sgn math function.
+;;
+;; Keywords:
+;; - function, comparison.
 ;;
 ;; Arguments:
 ;; - p_n1: number.
@@ -114,6 +132,9 @@
 
 ;; grsp-sign - Returns 1 if p_n1 >= 0, -1 otherwise.
 ;;
+;; Keywords:
+;; - function, comparison.
+;;
 ;; Arguments:
 ;; - p_n1: real number.
 ;;
@@ -129,6 +150,9 @@
 
 ;; grsp-eiget - Finds out if p_n1 is an exact integer equal or greater than
 ;; p_n2.
+;;
+;; Keywords:
+;; - function, comparison.
 ;;
 ;; Arguments:
 ;; - p_n1: integer.
@@ -151,6 +175,9 @@
 ;; grsp-is-prime - This is a very simple procedure, inefficient but sufficient 
 ;; for small numbers to find if they are prime or not. For large numbers other
 ;; methods will likely be more adequate.
+;;
+;; Keywords:
+;; - function, primes, prime number.
 ;;
 ;; Arguments:
 ;; - p_n: integer.
@@ -178,6 +205,9 @@
 
 ;; grsp-fact - Calculates the factorial of p_n.
 ;;
+;; Keywords:
+;; - function, factorial.
+;;
 ;; Arguments:
 ;; - p_n: natural number.
 ;; 
@@ -194,6 +224,9 @@
 
 
 ;; grsp-sumat - Calculates the summation of p_n (triangular number).
+;;
+;; Keywords:
+;; - function, summation.
 ;;
 ;; Arguments:
 ;; - p_n: integer >= 0.
@@ -217,7 +250,10 @@
 
 ;; grsp-biconr - Binomial coefficient. Les you choose p_k elements from a set of
 ;; p_n elements without repetition.
-;; 
+;;
+;; Keywords:
+;; - function, combinatorics.
+;;
 ;; Arguemnts:
 ;; - p_n: integer >= 0
 ;; - p_k: integer between [0, p_n].
@@ -241,7 +277,10 @@
 
 ;; grsp-bicowr - Binomial coefficient. Les you choose p_k elements from a set of
 ;; p_n elements with repetition.
-;; 
+;;
+;; Keywords:
+;; - function, combinatorics.
+;;
 ;; Arguemnts:
 ;; - p_n: integer >= 0
 ;; - p_k: integer >= 0 and <= p_n.
@@ -260,6 +299,9 @@
 
 ;; grsp-gtls - "gtls = Greater than, less than" Finds if number p_n1 is greater
 ;; than p_n2 and smaller than p_n3, or in the interval (p_n2:p_n3).
+;;
+;; Keywords:
+;; - function, comparison.
 ;;
 ;; Arguments:
 ;; - p_n1
@@ -282,6 +324,9 @@
 ;; grsp-getles - "getles = Greater or equal than, less or equal than" Finds if
 ;; number p_n1 is greater or equal than p_n2 and smaller or equal than p_n3.
 ;;
+;; Keywords:
+;; - function, comparison.
+;;
 ;; Arguments:
 ;; - p_n1
 ;; - p_n2
@@ -302,6 +347,9 @@
 
 ;; grsp-k2nb - Returns the value of (p_k * (p_r**p_n)) + p_b .
 ;;
+;; Keywords:
+;; - function.
+;;
 ;; Arguments:
 ;; - p_k
 ;; - p_r
@@ -317,6 +365,9 @@
 
 
 ;; grsp-bpp - Bailey–Borwein–Plouffe formula.
+;;
+;; Keywords:
+;; - function.
 ;;
 ;; Arguments:
 ;; - p_k: summation iterations desired.
@@ -346,6 +397,9 @@
 
 ;; grsp-sexp - Performs a non-recursive tetration operation on p_x of height
 ;; p_n. sexp stands for super exponential.
+;;
+;; Keywords:
+;; - function, exp, expt.
 ;;
 ;; Arguments;
 ;; - p_x: base.
@@ -381,6 +435,9 @@
 ;; grsp-slog - Performs a non-recursive super logarithm operation on p_x of
 ;; height p_n.
 ;;
+;; Keywords:
+;; - function, logarithm.
+;;
 ;; Arguments;
 ;; - p_x: base.
 ;; - p_n: rank or height of the power tower of the super exponentiation for
@@ -399,6 +456,9 @@
 
 
 ;; grsp-woodall-number - Calculates the Woodall number of p_n.
+;;
+;; Keywords:
+;; - function, number.
 ;;
 ;; Arguments:
 ;; - p_n: natural number.
@@ -422,6 +482,9 @@
 
 
 ;; grsp-cullen-number - Calculates the Cullen number of p_n.
+;;
+;; Keywords:
+;; - function, number.
 ;;
 ;; Arguments:
 ;; - p_n: any natural number.
@@ -447,6 +510,9 @@
 ;; - Both p_n and p_k are positive integers.
 ;; - p_k s odd.
 ;; - 2**p_n > p_k.
+;;
+;; Keywords:
+;; - function, number.
 ;;
 ;; Arguments:
 ;; - p_k: positive integer.
@@ -475,6 +541,9 @@
 ;; grsp-mersenne-number - Calculates a Mersenne number according to
 ;; Mn = 2**p_n - 1 .
 ;;
+;; Keywords:
+;; - function, number.
+;;
 ;; Arguments:
 ;; - p_n: positive integer.
 ;;
@@ -500,6 +569,9 @@
 
 ;; grsp-repdigit-number - Produces a repdigit number composed by p_n repeated
 ;; p_d instances.
+;;
+;; Keywords:
+;; - function, number.
 ;;
 ;; Arguments:
 ;; - p_n: natural number between [1,9].
@@ -527,6 +599,9 @@
 
 ;; grsp-wagstaff-number - Produces a Wagstaff number of base p_b.
 ;;
+;; Keywords:
+;; - function, number.
+;;
 ;; Arguments:
 ;; - p_n: natural number.
 ;; - p_b: natural number >= 2.
@@ -550,6 +625,9 @@
 
 
 ;; grsp-williams-number - Produces a Williams number of base p_b.
+;;
+;; Keywords:
+;; - function, number.
 ;;
 ;; Arguments:
 ;; - p_n: Natural number >= 1.
@@ -575,6 +653,9 @@
 
 ;; grsp-thabit-number - Produces a Thabit number.
 ;;
+;; Keywords:
+;; - function, number.
+;;
 ;; Arguments:
 ;; - p_n: positive integer.
 ;;
@@ -593,6 +674,9 @@
 
 ;; grsp-fermat-number - Produces a Fermat number.
 ;;
+;; Keywords:
+;; - function, number.
+;;
 ;; Arguments:
 ;; - p_n: non-negative integer.
 ;;
@@ -610,6 +694,9 @@
 
 
 ;; grsp-catalan-number - Calculates the p_n(th) Catalan number.
+;;
+;; Keywords:
+;; - function, number.
 ;;
 ;; Arguments:
 ;; - p_n: non-negative integer.
@@ -633,6 +720,9 @@
 			
 ;; grsp-wagstaff-prime - Produces a Wagstaff prime number.
 ;;
+;; Keywords:
+;; - function, primes, prime number.
+;;
 ;; Arguments:
 ;; - p_n: Prime number.
 ;;
@@ -654,6 +744,9 @@
 
 
 ;; grsp-dobinski-formula - Implementation of the Dobinski formula.
+;;
+;; Keywords:
+;; - function, dobinski.
 ;;
 ;; Arguments:
 ;; - p_n: non-negative integer.
@@ -683,7 +776,11 @@
 
 
 ;; grsp-method-netwton - Simple implementation of the Newton-Rapson method.
-;; 
+;;
+;; Keywords:
+;; - function, newton, numerical.
+;;
+;; Arguments:
 ;; - p_x: x(n).
 ;; - p_fx: f(x(b)).
 ;; - p_dx: f'(x(n)).
@@ -706,7 +803,10 @@
 
 
 ;; grsp-method-euler - Simple implementation of the Euler method.
-;; 
+;;
+;; Keywords:
+;; - function, euler, numerical.
+;;
 ;; Arguments:
 ;; - p_y: y(n).
 ;; - p_h: h (step).
@@ -731,6 +831,9 @@
 
 ;; grsp-lerp - Linear interpolation. Interpolates p_y3 in the interval
 ;; (p_x1, p_x2) given p_x3.
+;;
+;; Keywords:
+;; - function, interpolation.
 ;;
 ;; Arguments:
 ;; - p_x1: x1.
@@ -758,6 +861,9 @@
 
 ;; grsp-matrix-givens-rotation - Givens rotation. The code for this function
 ;; is adapted to Scheme from the original Octave code presented in the sources.
+;;
+;; Keywords:
+;; - function, givens.
 ;;
 ;; Arguments:
 ;; - p_v1.
@@ -814,6 +920,9 @@
 ;; grsp-fitin - Truncates p_n1 if it does not fit in the interval
 ;; [p_nmin, p_nmax].
 ;;
+;; Keywords:
+;; - function, trim, truncation.
+;;
 ;; Arguments:
 ;; - p_n1: real.
 ;; - p_nmin: lower bounday of interval.
@@ -837,6 +946,9 @@
 
 ;; grsp-fitin-0-1 - Applies grsp-fitin to p_n1 within the interval [0.0,1.0].
 ;;
+;; Keywords:
+;; - function, trim, truncation.
+;;
 ;; Arguments:
 ;; p_n1: real.
 ;;
@@ -846,6 +958,9 @@
 
 
 ;; grsp-eccentricity-spheroid - Eccentricity of a spheroid.
+;;
+;; Keywords:
+;; - function, curves, sphere, spheroid.
 ;;
 ;; Arguments:
 ;; - p_x1: semi major axis.
@@ -868,6 +983,9 @@
 
 ;; grsp-rcurv-oblate-ellipsoid - Calculates the specified radius of curvature 
 ;; of an oblate ellipsoid.
+;;
+;; Keywords:
+;; - function, curves, ellipsoid.
 ;;
 ;; Arguments:
 ;; - p_s1: string
@@ -892,6 +1010,9 @@
 
 ;; grsp-volume-ellipsoid - Volume of an ellipsoid.
 ;;
+;; Keywords:
+;; - function, curves, ellipsoid, volume.
+;;
 ;; Arguments:
 ;; - p_x1: semi major axis.
 ;; - p_y1: semi minor axis.
@@ -911,6 +1032,9 @@
 
 ;; grsp-tird-flattening-ellipsoid - Third flattening of an ellipsoid.
 ;;
+;; Keywords:
+;; - function, curves, ellipsoid.
+;;
 ;; Arguments:
 ;; - p_x1: semi major axis.
 ;; - p_y1: semi minor axis.
@@ -928,6 +1052,9 @@
 
 
 ;; grsp-flattening-ellipsoid - Flattening of an ellipsoid.
+;;
+;; Keywords:
+;; - function, curves, ellipsoid.
 ;;
 ;; Arguments:
 ;; - p_x1: semi major axis.
@@ -947,6 +1074,9 @@
 ;; grsp-eccentricityf-ellipsoid - Calculates the eccentricity of an ellipsoid
 ;; based on its flattening.
 ;;
+;; Keywords:
+;; - function, curves, ellipsoid.
+;;
 ;; Arguments:
 ;; - p_f1: flattening.
 ;;
@@ -962,6 +1092,9 @@
 
 
 ;; grsp-mrc-ellipsoid - Meridian radius of curvature (N S).
+;;
+;; Keywords:
+;; - function, curves, ellipsoid.
 ;;
 ;; Arguments:
 ;; - p_x1: semi major axis.
@@ -982,6 +1115,9 @@
 
 
 ;; grsp-pvrc-ellipsoid - Prime vertical radius of curvature (W E).
+;;
+;; Keywords:
+;; - function, curves, ellipsoid.
 ;;
 ;; Arguments:
 ;; - p_x1: semi major axis.
@@ -1005,6 +1141,9 @@
 ;; grsp-dirrc-ellipsoid - Directional radius of curvature on an ellipsoid at
 ;; and azimuth p_a1.
 ;;
+;; Keywords:
+;; - function, curves, ellipsoid.
+;;
 ;; Arguments:
 ;; - p_x1: semi major axis.
 ;; - p_y1: semi minor axis.
@@ -1025,7 +1164,11 @@
     
     res1))    
 
+
 ;; grsp-urc-ellipsoid - Mean radius of curvature at p_l1.
+;;
+;; Keywords:
+;; - function, curves.
 ;;
 ;; Arguments:
 ;; - p_x1: semi major axis.
@@ -1049,6 +1192,9 @@
 
 ;; grsp-r1-iugg - Mean radius of curvature (IUGG).
 ;;
+;; Keywords:
+;; - function, curves.
+;;
 ;; Arguments:
 ;; - p_x1: semi major axis.
 ;; - p_y1: semi minor axis.
@@ -1065,6 +1211,9 @@
 
 
 ;; grsp-r2-iugg - Authalic radius (IUGG).
+;;
+;; Keywords:
+;; - function, curves.
 ;;
 ;; Arguments:
 ;; - p_x1: semi major axis.
@@ -1094,6 +1243,9 @@
 
 ;; grsp-r3-iugg - Volumetric radius (IUGG).
 ;;
+;; Keywords:
+;; - function, volume.
+;;
 ;; Arguments:
 ;; - p_x1: semi major axis.
 ;; - p_y1: semi minor axis.
@@ -1110,6 +1262,9 @@
 
 
 ;; grsp-r4-iugg - Mean curvature (IUGG).
+;;
+;; Keywords:
+;; - function, curves.
 ;;
 ;; Arguments:
 ;; - p_x1: semi major axis.
@@ -1130,6 +1285,9 @@
 
 
 ;; grsp-fxyz-torus - Solution for f(x,y,z)
+;;
+;; Keywords:
+;; - function, torus.
 ;;
 ;; Arguments:
 ;; - p_r1: R, distance from the center of the tube to the center of the torus.
@@ -1156,6 +1314,9 @@
 ;; grsp-stirling-approximation - Approximation function for factorials. Allows
 ;; to estimate the factorial pf p_n1.
 ;;
+;; Keywords:
+;; - function, factorial, stirling.
+;;
 ;; - p_n1: number for which its factorial is to be approximated.
 ;;
 ;; Sources:
@@ -1177,6 +1338,9 @@
 
 ;; grsp-airy-function - Solution to y'' − xy = 0.
 ;;
+;; Keywords:
+;; - function, airy.
+;;
 ;; arguments:
 ;; - p_x1.
 ;;
@@ -1197,6 +1361,9 @@
 
 
 ;; grsp-sfact-pickover - Returns Pickover's superfactorial.
+;;
+;; Keywords:
+;; - function, factorial.
 ;;
 ;; Arguments:
 ;; - p_n1: positive integer.
@@ -1221,6 +1388,9 @@
 
 
 ;; grsp-sfact-sp - Returns Sloane-Plouffe's superfactorial.
+;;
+;; Keywords:
+;; - function, factorial.
 ;;
 ;; Arguments:
 ;; - p_n1: positive integer.
@@ -1247,6 +1417,9 @@
 
 ;; grsp-hfact - Hyperfactorial.
 ;;
+;; Keywords:
+;; - function, factorial.
+;;
 ;; Arguments:
 ;; - p_n1: positive integer.
 ;;
@@ -1272,6 +1445,9 @@
 
 ;; grsp-fact-alt - alternating factorial.
 ;;
+;; Keywords:
+;; - function, factorial.
+;;
 ;; Arguments:
 ;; - p_n1: positive integer.
 ;;
@@ -1291,6 +1467,9 @@
 
 
 ;; grsp-fact-exp - exponential factorial.
+;;
+;; Keywords:
+;; - function, factorial.
 ;;
 ;; Arguments:
 ;; - p_n1: positive integer.
@@ -1315,6 +1494,9 @@
 
 ;; grsp-fact-sub - sub factorial (derangement). Calculates the number of
 ;; permutations with no fixed points or repetitions in a set.
+;;
+;; Keywords:
+;; - function, factorial.
 ;;
 ;; Arguments:
 ;; - p_n1: positive integer.
@@ -1342,6 +1524,9 @@
 ;; should approach 1/e. Limit of the probability that a permutation is a
 ;; derangement.
 ;;
+;; Keywords:
+;; - function, ratio.
+;;
 ;; Arguments:
 ;; - p_n1: positive integer.
 ;;
@@ -1361,6 +1546,9 @@
 ;; grsp-intifint - If p_z1 is an integer, rounds p_z2 to zero decimals. This
 ;; might be necessary to satisfy exactness rquirements as per R5RS criteria as
 ;; describe in the sources.
+;;
+;; Keywords:
+;; - function, cast, rounding.
 ;;
 ;; Arguments:
 ;; - p_b1:
@@ -1387,6 +1575,9 @@
 
 ;; grsp-log - Calculates the logarithm of p_x1 in base p_g1.
 ;;
+;; Keywords:
+;; - function.
+;;
 ;; Arguments:
 ;; - p_g1: base.
 ;; - p_x1: exponent.
@@ -1403,6 +1594,9 @@
 ;; grsp-dtr - Divides p_n1 into two natural numbers and returns a list.
 ;; If p_n1 is even then both values returned are equal. If p_n1 is odd then the
 ;; function truncates one and rounds the other according to p_s1.
+;;
+;; Keywords:
+;; - function, classificatin, sorting.
 ;;
 ;; Arguments:
 ;; - p_s1: determines which half is rounded and wich one is truncated if p_n1 is
@@ -1447,6 +1641,9 @@
 ;; grsp-opz - One point zero. Multiplies p_n1 by 1.0 in order to cast an exact 
 ;; number as real.
 ;;
+;; Keywords:
+;; - function, cast.
+;;
 ;; Arguments:
 ;; - p_n1: number.
 ;;
@@ -1457,4 +1654,320 @@
 
     res1))
 
-	  
+
+;; grsp-eex - Calculates e**p_n1.
+;;
+;; Keywords:
+;; - function, exp.
+;;
+;; Arguments:
+;; - p_n1: number.
+;;
+(define (grsp-eex p_n1)
+  (let ((res1 0))
+
+    (set! res1 (expt (gconst "A001113") p_n1))
+
+    res1))
+
+
+;; grsp-identity - Identity function.
+;;
+;; Keywords:
+;; - function, activation, ann.
+;;
+;; Arguments:
+;; - p_n1: number.
+;;
+;; Sources:
+;; - grsp8.[5]
+;;
+(define (grsp-identity p_n1)
+  (let ((res1 0))
+
+    (set! res1 p_n1)
+
+    res1))
+
+
+;; grsp-binary-step - Binary step function.
+;;
+;; Keywords:
+;; - function, activation, ann.
+;;
+;; Arguments:
+;; - p_n1: number.
+;;
+;; Sources:
+;; - grsp8.[5]
+;;
+(define (grsp-binary-step p_n1)
+  (let ((res1 0))
+
+    (cond ((>= p_n1 0)
+	   (set! res1 1)))
+
+    res1))
+
+
+;; grsp-sigmoid - Sigmoid function.
+;;
+;; Keywords:
+;; - function, activation, ann.
+;;
+;; Arguments:
+;; - p_n1: number.
+;;
+;; Sources:
+;; - grsp8.[5]
+;;
+(define (grsp-sigmoid p_n1)
+  (let ((res1 0))
+   
+    (set! res1 (/ 1 (+ 1 (grsp-eex (* -1 p_n1)))))
+
+    res1))
+
+
+;; grsp-tanh - Tanh function.
+;;
+;; Keywords:
+;; - function, activation, ann.
+;;
+;; Arguments:
+;; - p_n1: number.
+;;
+;; Sources:
+;; - grsp8.[5]
+;;
+(define (grsp-tanh p_n1)
+  (let ((res1 0)
+	(e1 0)
+	(e2 0))
+
+    (set! e1 (grsp-eex p_n1))
+    (set! e2 (grsp-eex (* -1 p_n1)))
+    (set! res1 (/ (- e1 e2) (+ e1 e2)))
+
+    res1))
+
+
+;; grsp-relu - Rectified linear unit function.
+;;
+;; Keywords:
+;; - function, activation, ann.
+;;
+;; Arguments:
+;; - p_n1: number.
+;;
+;; Sources:
+;; - grsp8.[5]
+;;
+(define (grsp-relu p_n1)
+  (let ((res1 0))
+
+    (cond ((> p_n1 0)
+	   (set! res1 p_n1)))
+
+    res1))
+
+
+;; grsp-softplus - Softplus function.
+;;
+;; Keywords:
+;; - function, activation, ann.
+;;
+;; Arguments:
+;; - p_n1: number.
+;;
+;; Sources:
+;; - grsp8.[5]
+;;
+(define (grsp-softplus p_n1)
+  (let ((res1 0))
+ 
+    (set! res1 (grsp-log 2 (+ 1 (grsp-eex p_n1))))
+
+    res1))
+
+
+;; grsp-elu - Exponential linear unit function.
+;;
+;; Keywords:
+;; - function, activation, ann.
+;;
+;; Arguments:
+;; - p_n1: number.
+;; - p_n2: alpha.
+;;
+;; Sources:
+;; - grsp8.[5]
+;;
+(define (grsp-elu p_n1 p_n2)
+  (let ((res1 0))
+
+    (cond ((> p_n1 0)
+	   (set! res1 p_n1))
+	  ((<= p_n1 0)
+	   (set! res1 (* p_n2 (- (grsp-eex p_n1) 1)))))
+
+    res1))
+
+
+;; grsp-lrelu - Leaky rectified linear unit function.
+;;
+;; Keywords:
+;; - function, activation, ann.
+;;
+;; Arguments:
+;; - p_n1: number.
+;;
+;; Sources:
+;; - grsp8.[5]
+;;
+(define (grsp-lrelu p_n1)
+  (let ((res1 0))
+
+    (cond ((< p_n1 0)
+	   (set! res1 0.01))
+	  ((>= p_n1 0)
+	   (set! res1 p_n1)))
+
+    res1))
+
+
+;; grsp-selu - Scaled exponential linear unit function.
+;;
+;; Keywords:
+;; - function, activation, ann.
+;;
+;; Arguments:
+;; - p_n1: number.
+;; - p_a1: alpha.
+;; - p_l1: lambda.
+;;
+;; Sources:
+;; - grsp8.[5], grsp8-[6].
+;;
+(define (grsp-selu p_n1 p_a1 p_l1)
+  (let ((res1 0))
+
+    (cond ((< p_n1 0)
+	   (set! res1 (* p_l1 (- (grsp-eex p_n1) 1))))
+	  ((>= p_n1 0)
+	   (set! res1 (* p_l1 p_n1))))
+
+    res1))
+
+
+;; grsp-gelu - Gaussian error linear unit function.
+;;
+;; Keywords:
+;; - function, activation, ann.
+;;
+;; Arguments:
+;; - p_n1: number.
+;; - p_a1: alpha.
+;;
+;; Sources:
+;; - grsp8.[5], grsp8-[6].
+;;
+(define (grsp-gelu p_n1 p_a1)
+  (let ((res1 0)
+	(n2 0))
+
+    (set! n2 (* (sqrt (/2 (gconst "A000796"))) (+ p_n1 (* p_a1 (expt p_n1 3)))))
+    (set! res1 (* (/ p_n1 2) (+ 1 (tanh n2))))
+
+    res1))
+
+
+;; grsp-prelu - Parametric rectified linear unit function.
+;;
+;; Keywords:
+;; - function, activation, ann.
+;;
+;; Arguments:
+;; - p_n1: number.
+;; - p_a1: alpha.
+;;
+;; Sources:
+;; - grsp8.[5].
+;;
+(define (grsp-prelu p_n1 p_a1)
+  (let ((res1 0))
+
+    (cond ((< p_n1 0)
+	   (set! res1 (* p_a1 p_n1)))
+	  ((>= p_n1 0)
+	   (set! res1 p_n1)))
+
+    res1))
+
+
+;; grsp-softsign - Softsign function.
+;;
+;; Keywords:
+;; - function, activation, ann.
+;;
+;; Arguments:
+;; - p_n1: number.
+;;
+;; Sources:
+;; - grsp8.[5]
+;;
+(define (grsp-softsign p_n1)
+  (let ((res1 0))
+ 
+    (set! res1 (/ p_n1 (+ (abs p_n1))))
+
+    res1))
+
+
+;; grsp-sqnl - Square nonlinearity unit function.
+;;
+;; Keywords:
+;; - function, activation, ann.
+;;
+;; Arguments:
+;; - p_n1: number.
+;;
+;; Sources:
+;; - grsp8.[5].
+;;
+(define (grsp-sqnl p_n1)
+  (let ((res1 0)
+	(n1 0))
+
+    (set! n1 (expt p_n1 2))
+    (cond ((< p_n1 0.0)
+	   (cond ((< p_n1 -2.0)
+		  (set! res1 -1.0))
+		 ((>= p_n1 -2.0)
+		  (set! res1 (+ p_n1 (/ n1 4))))))
+	  ((>= p_n1 0.0)
+	   (cond ((<= p_n1 2.0)
+		  (set! res1 (- p_n1 (/ n1 4))))
+		 ((> p_n1 2.0)
+		  (set! res1 1.0)))))
+
+    res1))
+
+
+;; grsp-bent-identity - Bent identity activation function.
+;;
+;; Keywords:
+;; - function, activation, ann.
+;;
+;; Arguments:
+;; - p_n1: number.
+;;
+;; Sources:
+;; - grsp8.[5]
+;;
+(define (grsp-bent-identity p_n1)
+  (let ((res1 0))
+ 
+    (set! res1 (* (/ (- (sqrt (+ (expt p_n1 2))) 1) 2) p_n1))
+
+    res1))

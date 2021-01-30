@@ -104,6 +104,9 @@
 
 ;; gconst - Constants.
 ;;
+;; Keywords:
+;; - constants.
+;;
 ;; Arguments:
 ;; - p_n1: constant identifier.
 ;;
