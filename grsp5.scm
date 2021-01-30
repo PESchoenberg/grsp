@@ -110,9 +110,16 @@
 ;;   2021].
 ;; - [32] En.wikipedia.org. 2021. Unimodality. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Unimodality [Accessed 3 January 2021].
-;; - [33] https://en.wikipedia.org/wiki/Central_tendency
-;; - [34] https://en.wikipedia.org/wiki/Geometric_mean
-;; - [35] https://en.wikipedia.org/wiki/Central_tendency
+;; - [33] En.wikipedia.org. 2021. Central Tendency. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Central_tendency [Accessed 23 January 2021].
+;; - [34] En.wikipedia.org. 2021. Geometric Mean. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Geometric_mean [Accessed 23 January 2021].
+;; - [35] https://en.wikipedia.org/wiki/Interquartile_mean
+;; - [36] https://en.wikipedia.org/wiki/Quadratic_mean
+;; - [37] https://en.wikipedia.org/wiki/Mid-range
+;; - [38]
+;; - [39]
+;; - [40]
 
 
 (define-module (grsp grsp5)
@@ -576,7 +583,7 @@
 ;; - p_a1: sample (matrix).
 ;;
 ;; Sources:
-;; - [35].
+;; - [33][35].
 ;;
 (define (grsp-mean-interquartile p_a1)
   (let ((res1 0)
@@ -606,7 +613,7 @@
 ;; - p_a1: sample (matrix).
 ;;
 ;; Sources:
-;; - [35].
+;; - [33][36].
 ;;
 (define (grsp-mean-quadratic p_a1)
   (let ((res1 0)
@@ -634,7 +641,7 @@
 ;; - p_a1: sample (matrix).
 ;;
 ;; Sources:
-;; - [35].
+;; - [33][37].
 ;;
 (define (grsp-midrange p_a1)
   (let ((res1 0)

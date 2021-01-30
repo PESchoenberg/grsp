@@ -34,6 +34,9 @@
 
 ;; grsp-geo-circle - Area of a circle.
 ;;
+;; Keywords:
+;; - geometry, curves.
+;;
 ;; Arguments:
 ;; - p_r1: radius.
 ;;
@@ -47,6 +50,9 @@
 
 
 ;; grsp-geo-sphere - Volume of a sphere.
+;;
+;; Keywords:
+;; - geometry, curves, volume.
 ;;
 ;; Arguments:
 ;; - p_r1: radius.
