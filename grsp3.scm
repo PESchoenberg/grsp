@@ -100,6 +100,7 @@
 	    grsp-matrix-cpy
 	    grsp-matrix-subcpy
 	    grsp-matrix-subrep
+	    grsp-matrix-subdcn
 	    grsp-matrix-subdel
 	    grsp-matrix-subexp
 	    grsp-matrix-is-equal
@@ -1250,7 +1251,6 @@
 ;;
 (define (grsp-matrix-subrep p_a1 p_a2 p_m1 p_n1)
   (let ((res1 p_a1)
-	(res2 p_a2)
 	(lm1 0)
 	(hm1 0)
 	(ln1 0)
@@ -1259,14 +1259,10 @@
 	(hm2 0)
 	(ln2 0)
 	(hn2 0)
-	(m1 p_m1)
-	(n1 p_n1)
-	(i1 0)
-	(j1 0)
+	(i1 p_m1)
+	(j1 p_n1)
 	(i2 0)
-	(j2 0)
-	(i3 0)
-	(j3 0))
+	(j2 0))
 
     ;; Extract the boundaries of the first matrix.
     (set! lm1 (grsp-matrix-esi 1 res1))
@@ -1275,29 +1271,84 @@
     (set! hn1 (grsp-matrix-esi 4 res1))
 
     ;; Extract the boundaries of the second matrix.
-    (set! lm2 (grsp-matrix-esi 1 res2))
-    (set! hm2 (grsp-matrix-esi 2 res2))
-    (set! ln2 (grsp-matrix-esi 3 res2))
-    (set! hn2 (grsp-matrix-esi 4 res2))    
-
-    ;; Define initial position counter values.
-    (set! i1 m1)
-    (set! j1 n1)
-
-    ;; Define the span of the count.
-    (set! i2 (+ i1 (- hm2 lm2)))
-    (set! j2 (+ j1 (- hn2 ln2)))
+    (set! lm2 (grsp-matrix-esi 1 p_a2))
+    (set! hm2 (grsp-matrix-esi 2 p_a2))
+    (set! ln2 (grsp-matrix-esi 3 p_a2))
+    (set! hn2 (grsp-matrix-esi 4 p_a2))    
 
     ;; Replacement loop.
-    (while (<= i1 i2)
-	   (set! j3 0)
-	   (while (<= j1 j2)
-		  (array-set! res1 (array-ref res2 i3 j3) i1 j1)
-		  (set! j3 (+ j3 1))
+    (set! i2 lm2)
+    (while (<= i1 hm1)
+	   (set! j1 ln1)
+	   (set! j2 ln2)
+	   (while (<= j1 hn1)
+		  (array-set! res1 (array-ref p_a2 i2 j2) i1 j1)
+		  (set! j2 (+ j2 1))
 		  (set! j1 (+ j1 1)))
-	   (set! i3 (+ i3 1))
+	   (set! i2 (+ i2 1))
 	   (set! i1 (+ i1 1)))
 
+    res1))
+
+
+;; grsp-matrix-subdcn - Deletes row from matrix p_a1 that fulfills condition
+;; p_s2 for column p_j1 with regards to value p_n2.
+;;
+;; Arguments:
+;; - p_s2 query:
+;;   - "#=": equal.
+;; - p_a1: matrix.
+;; - p_j1: col number to query.
+;; - p_n2: element value to query according to p_s1 and p_j1.
+;;
+;; Notes:
+;; - Unstable.
+;;
+(define (grsp-matrix-subdcn p_s2 p_a1 p_j1 p_n2)
+  (let ((res1 p_a1)
+	(i1 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(b1 #f))
+    
+    ;; Extract boundaries of the matrix.
+    (set! lm1 (grsp-matrix-esi 1 res1))
+    (set! hm1 (grsp-matrix-esi 2 res1))
+    (set! ln1 (grsp-matrix-esi 3 res1))
+    (set! hn1 (grsp-matrix-esi 4 res1))
+    
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+
+	   ;; Find out if the row meets the conditions to be deleted.
+	   (cond ((equal? p_s2 "#=")
+		  (cond ((equal? (array-ref res1 i1 p_j1) p_n2)
+			 (set! b1 #t)))))
+
+	   ;; Check col range.
+	   (cond ((< p_j1 ln1)
+		  (set! b1 #f))
+		 ((> p_j1 hn1)
+		  (set! b1 #f)))
+	   
+	   ;; Delete row, if applicable.
+	   (cond ((equal? b1 #t)
+
+		  ;; Delete row where the p_n1th col element has value p_n2
+		  (set! res1 (grsp-matrix-subdel "#Delr" res1 i1))
+
+		  ;; Extract boundaries of the now row-rerduced matrix.
+		  (set! lm1 (grsp-matrix-esi 1 res1))
+		  (set! hm1 (grsp-matrix-esi 2 res1))
+		  (set! b1 #f)
+
+		  ;; Reset loop counter.
+		  (set! i1 (- lm1 1))))
+	   
+	   (set! i1 (+ i1 1)))
+	   
     res1))
 
 
@@ -1315,10 +1366,11 @@
 ;;
 (define (grsp-matrix-subdel p_s p_a p_n)
   (let ((res1 p_a)
-	(res2 p_a)
-	(res3 p_a)
-	(res4 p_a)
-	(n p_n)
+	(res2 0)
+	(res3 0)
+	(res4 0)
+	(n1 p_n)
+	(n2 0)
 	(c 0)
 	(lm1 0)
 	(hm1 0)
@@ -1340,45 +1392,35 @@
     (set! hn1 (grsp-matrix-esi 4 res1))
     
     (cond ((equal? p_s "#Delr")
-	   (cond ((equal? n lm1)
+	   (cond ((equal? n1 lm1)
 		  (set! res2 (grsp-matrix-subcpy res1 (+ lm1 1) hm1 ln1 hn1)))
-		 ((equal? n hm1)
+		 ((equal? n1 hm1)
 		  (set! res2 (grsp-matrix-subcpy res1 lm1 (- hm1 1) ln1 hn1)))
-		 (else ((set! c hm1)
-			(while (>= c (+ lm1 n))
+		 ((and (> n1 lm1) (< n1 hm1))		  
+		  (set! res3 (grsp-matrix-subcpy res1 lm1 (- n1 1) ln1 hn1))
+		  (set! res4 (grsp-matrix-subcpy res1 (+ n1 1) hm1 ln1 hn1))
 
-			       ;; Get structural data from the THIRD submatix.
-			       (set! lm3 (grsp-matrix-esi 1 res3))
-			       (set! hm3 (grsp-matrix-esi 2 res3))
-			       (set! ln3 (grsp-matrix-esi 3 res3))
-			       (set! hn3 (grsp-matrix-esi 4 res3))
+		  ;; Get structural data from the third submatix.
+		  (set! lm3 (grsp-matrix-esi 1 res3))
+		  (set! hm3 (grsp-matrix-esi 2 res3))
+		  (set! ln3 (grsp-matrix-esi 3 res3))
+		  (set! hn3 (grsp-matrix-esi 4 res3))			
 
-			       ;; Delete the current first row of res3
-			       (set! res3 (grsp-matrix-subcpy res3 lm3 (- hm3 1) ln3 hn3))
-			       (set! c (- c 1)))			
+		  ;; Get structural data from the fourth submatix.
+		  (set! lm4 (grsp-matrix-esi 1 res4))
+		  (set! hm4 (grsp-matrix-esi 2 res4))
+		  (set! ln4 (grsp-matrix-esi 3 res4))
+		  (set! hn4 (grsp-matrix-esi 4 res4))
 
-			;; Build the bottom submatrix.
-			(set! c lm1)
-			(while (<= c (+ lm1 n))
-
-			       ;; Get structural data from the fourth submatix.
-			       (set! lm4 (grsp-matrix-esi 1 res4))
-			       (set! hm4 (grsp-matrix-esi 2 res4))
-			       (set! ln4 (grsp-matrix-esi 3 res4))
-			       (set! hn4 (grsp-matrix-esi 4 res4))
-
-			       ;; Delete the current first row of res4
-			       (set! res4 (grsp-matrix-subcpy res4 (+ lm4 1) hm4 ln4 hn4))
-			       (set! c (+ c 1)))
-
-			;; Expand the first submatrix in order to paste to
-			;; the second one.		    
-			(set! res3 (grsp-matrix-subexp res3 (- hm4 lm4) 0))
-			
-			;; Move the data of the second submatrix to the expanded part 
-			;; of the first one.
-			(set! res2 (grsp-matrix-subrep res3 res4 (+ (+ lm1 n) 0) ln1))))))) ; This call is causing problems.
-
+		  ;; Expand the third submatrix in order to paste to
+		  ;; the fourh one.		    
+		  ;;(set! res3 (grsp-matrix-subexp res3 (- hm4 lm4) 0))
+		  (set! res3 (grsp-matrix-subexp res3 (+ 1 (- hm4 lm4)) 0))		  
+		  
+		  ;; Move the data of the fourth submatrix to the expanded part 
+		  ;; of the third one.
+		  (set! res2 (grsp-matrix-subrep res3 res4 (+ hm3 1) ln3))))))	;; Bug.		
+    
     res2))
 
 
@@ -2703,6 +2745,7 @@
 ;; Arguments:
 ;; - p_s1: type of operaton.
 ;; - p_a1: matrix
+;; - p_n1: number.
 ;;
 ;; Output:
 ;; - Trimmed data as a 1 x n vector.
