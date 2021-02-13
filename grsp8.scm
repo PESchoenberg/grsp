@@ -54,13 +54,10 @@
   #:use-module (grsp grsp5)  
   #:export (grsp-ann-net-create
 	    grsp-ann-net-iter
-	    grsp-ann-net-edit
+	    grsp-ann-net-preb
 	    grsp-ann-counter-upd
-	    grsp-ann-node-create
-	    grsp-ann-node-edit
-	    grsp-ann-conn-create
-	    grsp-ann-conn-edit
-	    grsp-ann-neuron-calc))
+	    grsp-ann-id-create
+	    grsp-ann-item-create))
 
 
 ;; grsp-ann-net-create - Create a base neural network.
@@ -110,33 +107,29 @@
 ;; - Col 1: conns id counter.
 ;;
 (define (grsp-ann-net-create)
-  (let ((nodes 0)
+  (let ((res1 '())
+	(res2 '())
+	(nodes 0)
 	(conns 0)
-	(count 0)
-	(res1 '()))
+	(count 0))
 
     ;; Create matrices with one row.
     (set! nodes (grsp-matrix-create 0 1 9))
     (set! conns (grsp-matrix-create 0 1 9))
     (set! count (grsp-matrix-create 0 1 2))
-
+   
     ;; Add data corresponding to the new nodes in the ann.
+    (set! nodes (grsp-ann-item-create nodes conns count 0 (list 1 1 1 1 1 1 1 1 1))) ;; Input node.
+    (set! nodes (grsp-ann-item-create nodes conns count 0 (list 1 2 1 1 1 1 1 1 1))) ;; Neuron.
+    (set! nodes (grsp-ann-item-create nodes conns count 0 (list 1 3 1 1 1 1 1 1 1))) ;; Output node.
+
+    ;; Add data corresponding to the new connections in the ann.
+    (set! conns (grsp-ann-item-create nodes conns count 1 (list 1 1 1 1 1 1 1 1 1))) ;; Input node.
+    (set! conns (grsp-ann-item-create nodes conns count 1 (list 1 2 1 1 1 1 1 1 1))) ;; Neuron.    
     
     ;; Results.
-    (set! res1 (list nodes conns count))
+    (set! res1 (grsp-ann-net-preb nodes conns count))
     
-    res1))
-
-
-;; grsp-ann-net-edit - Edit and modify an existing ann.
-;;
-;; Arguments:
-;; p_l1: ann.
-;; p_l2: edition plan.
-;;
-(define (grsp-ann-net-edit p_l1 p_l2)
-  (let ((res1 '()))
-
     res1))
 
 
@@ -155,6 +148,7 @@
   (let ((res1 '())
 	(nodes 0)
 	(conns 0)
+	(count 0)
 	(lm1 0)
 	(hm1 0)
 	(ln1 0)
@@ -169,8 +163,9 @@
 	(j2 0))
 
     ;; Extract matrices from list.
-    (set! nodes (car p_l1))
-    (set! conns (cadr p_l1))
+    (set! nodes (list-ref p_l1 0))
+    (set! conns (list-ref p_l1 1))
+    (set! count (list-ref p_l1 2))
 
     ;; Extract the boundaries of the nodes matrix.
     (set! lm1 (grsp-matrix-esi 1 nodes))
@@ -179,10 +174,10 @@
     (set! hn1 (grsp-matrix-esi 4 nodes))
 
     ;; Extract the boundaries of the comms matrix.
-    (set! lm1 (grsp-matrix-esi 1 nodes))
-    (set! hm1 (grsp-matrix-esi 2 nodes))
-    (set! ln1 (grsp-matrix-esi 3 nodes))
-    (set! hn1 (grsp-matrix-esi 4 nodes))
+    (set! lm2 (grsp-matrix-esi 1 conns))
+    (set! hm2 (grsp-matrix-esi 2 conns))
+    (set! ln2 (grsp-matrix-esi 3 conns))
+    (set! hn2 (grsp-matrix-esi 4 conns))
 
     ;; Eval row by row input nodes.
     (set! i1 ln1)
@@ -197,7 +192,31 @@
 			 (set! i1 (+ i1 1)))))
 	   
 	   (set! i1 (+ i1 1)))
-    
+
+    ;; Results.
+    (set! res1 (grsp-ann-net-preb nodes conns count))
+
+    res1))
+
+
+;; grsp-ann-net-preb - Purges and rebuilds the net from discarded connections
+;; and nodes.
+;;
+;; Arguments:
+;; p_a1: nodes matrix.
+;; p_a2: conns matrix.
+;; p_a3: count matrix.
+;;
+(define (grsp-ann-net-preb p_a1 p_a2 p_a3)
+  (let ((res1 '()))
+
+    ;; Delete rows where the value of col 1 is zero, meaning that connections
+    ;; and nodes are dead.
+    ;;(set! p_a2 (grsp-matrix-subdcn "#=" p_a2 1 0))
+    ;;(set! p_a1 (grsp-matrix-subdcn "#=" p_a1 1 0))	  
+
+    ;; Rebuild the list.
+    (set! res1 (list p_a1 p_a2 p_a3))
 
     res1))
 
@@ -205,83 +224,82 @@
 ;; grsp-ann-counter-upd - Updates the ann id counter.
 ;;
 ;; Arguments:
-;; - p_a1: count matrix.
+;; - p_a3: count matrix.
 ;; - p_n1: marix element to increment. 
 ;;
 ;; Output:
 ;; - Returns a new id number, either for nodes or conns.
 ;;
-(define (grsp-ann-counter-upd p_a1 p_n1)
+(define (grsp-ann-counter-upd p_a3 p_n1)
   (let ((res1 0))
 
-    (set! res1 (+ (array-ref p_a1 0 p_n1) 1))
-    (array-set! p_a1 res1 0 p_n1)
+    (set! res1 (+ (array-ref p_a3 0 p_n1) 1))
+    (array-set! p_a3 res1 0 p_n1)
 
     res1))
 
 
-;; grsp-ann-node-create - Create in ann p_l1 a node with argument list p_l2.
+;; grsp-ann-id-create - Created a new id number for a row in nodes or conns and
+;; updates the corresponding 
 ;;
 ;; Arguments:
-;; p_l1: ann.
-;; p_l2: edition plan.
+;; - p_a1: nodes.
+;; - p_a2: conns.
+;; - p_a3: count.
+;; - p_n1:
+;;   - 0: new id for nodes.
+;;   - 1: new id for conns.
 ;;
-(define (grsp-ann-node-create p_l1 p_l2)
-  (let ((res1 0)
-	(nodes 0)
-	(conns 0)
-	(count 0))
+(define (grsp-ann-id-create p_a1 p_a3 p_n1)
+  (let ((res1 p_a1)
+	(hm1 1))
 
-    (set! nodes (list-ref p_l1 0))
-    (set! conns (list-ref p_l1 1))
-    (set! count (list-ref p_l1 2))
+    ;; Extract the boundaries of the matrix.
+    (set! hm1 (grsp-matrix-esi 2 res1))
     
-
+    (array-set! res1 (grsp-ann-counter-upd p_a3 p_n1) hm1 0)
+   
     res1))
 
 
-;; grsp-ann-node-edit - Edit nodes for p_l1.
-;;
-;; Keywords:
-;; - function, ann, neural network.
+;; grsp-ann-item-create - Create in p_l1 a node or connection with argument
+;; list p_l2.
 ;;
 ;; Arguments:
-;; - p_l1: ann (list).
+;, - p_l1: ann.
+;; - p_n1:
+;;   - 0: for nodes.
+;;   - 1: for conns
+;; - p_l2: list containing the values for the matix row.
 ;;
-(define (grsp-ann-node-edit p_l1)
-  (let ((res1 0))
-
-    res1))
-
-
-;; grsp-ann-conn-edit - Edit connections for p_l1.
-;;
-;; Keywords:
-;; - function, ann, neural network.
-;;
-;; Arguments:
-;; - p_l1: ann (list).
-;;
-(define (grsp-ann-conn-edit p_l1)
-  (let ((res1 0))
-
-    res1))
-
-
-;; grsp-ann-neuron-calc - Process neurons.
-;;
-;; Keywords:
-;; - function, ann, neural network.
-;;
-;; Arguments:
-;; - p_l1: ann (list).
-;;
-(define (grsp-ann-neuron-calc p_l1)
+(define (grsp-ann-item-create p_a1 p_a2 p_a3 p_n1 p_l2) 
   (let ((res1 0)
-	(nodes 0)
-	(conns 0))
+	(res2 0)
+	(ln1 0)
+	(hm1 0)	
+	(nodes p_a1)
+	(conns p_a2)
+	(count p_a3)) 
+  
+    ;; Select matrix.
+    (set! res1 (grsp-matrix-select nodes conns p_n1))
+    
+    ;; Add row in selected matrix.
+    (set! res1 (grsp-matrix-subexp res1 1 0))
 
-    (set! nodes (car p_l1))
-    (set! conns (cadr p_l1))
+    ;; Vectorize list.
+    (set! res2 (grsp-l2m p_l2))
+	  
+    ;; Extract required boundaries of the ann matrix selected.
+    (set! hm1 (grsp-matrix-esi 2 res1))
+    (set! ln1 (grsp-matrix-esi 3 res1))
 
+    ;; Add vector to matrix.
+    (set! res1 (grsp-matrix-subrep res1 res2 hm1 ln1))
+
+    ;; Update matrix id counter and set new id on the new row in matrix.
+    (set! res1 (grsp-ann-id-create res1 count p_n1))
+    
     res1))
+
+

@@ -142,7 +142,8 @@
 	    grsp-matrix-minmax
 	    grsp-matrix-opsm
 	    grsp-matrix-opsm-t1
-	    grsp-matrix-trim))
+	    grsp-matrix-trim
+	    grsp-matrix-select))
 
 
 ;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -201,6 +202,8 @@
 ;;   - "#US": upper shift matrix.
 ;;   - "#LS": lower shift matrix.
 ;;   - "#rprnd": pseduo random values, normal distribution, sd = 0.15.
+;;   - "#zrow": zebra row.
+;;   - "#zcol": zebra col.
 ;; - p_m: rows, positive integer.
 ;; - p_n: cols, positive integer.
 ;;
@@ -279,6 +282,10 @@
 			 (set! s 0)
 			 (set! n m))			
 			((equal? p_s "#rprnd")
+			 (set! s 0))
+			((equal? p_s "#zrow")
+			 (set! s 0))
+			((equal? p_s "#zcol")
 			 (set! s 0))
 			
 			(else (set! s p_s)))
@@ -451,6 +458,22 @@
 			((equal? p_s "#rprnd")
 			 (set! res (grsp-matrix-create 1 m n))
 			 (set! res (grsp-matrix-opsc "#rprnd" res 0.15)))
+			((equal? p_s "#zrow")
+			 (set! res (grsp-matrix-create 0 m n))
+			 (while (< i m)
+				(set! j 0)
+				(while (< j n)
+				       (array-set! res i i j)
+				       (set! j (+ j 1)))
+				(set! i (+ i 1))))			 
+			((equal? p_s "#zcol")
+			 (set! res (grsp-matrix-create 0 m n))
+			 (while (< i m)
+				(set! j 0)
+				(while (< j n)
+				       (array-set! res j i j)
+				       (set! j (+ j 1)))
+				(set! i (+ i 1))))
 			
 			((equal? p_s "#Q")
 			 (array-set! res -1 (- m 2) (- n 1))))))))
@@ -1325,7 +1348,23 @@
 	   ;; Find out if the row meets the conditions to be deleted.
 	   (cond ((equal? p_s2 "#=")
 		  (cond ((equal? (array-ref res1 i1 p_j1) p_n2)
-			 (set! b1 #t)))))
+			 (set! b1 #t))))
+		 ((equal? p_s2 "#<")
+		  (cond ((< (array-ref res1 i1 p_j1) p_n2)
+			 (set! b1 #t))))
+		 ((equal? p_s2 "#>")
+		  (cond ((> (array-ref res1 i1 p_j1) p_n2)
+			 (set! b1 #t))))
+		 ((equal? p_s2 "#<=")
+		  (cond ((<= (array-ref res1 i1 p_j1) p_n2)
+			 (set! b1 #t))))
+		 ((equal? p_s2 "#>=")
+		  (cond ((>= (array-ref res1 i1 p_j1) p_n2)
+			 (set! b1 #t))))
+		 ((equal? p_s2 "#!=")
+		  (cond ((or (< (array-ref res1 i1 p_j1) p_n2)
+			     (> (array-ref res1 i1 p_j1) p_n2))
+			 (set! b1 #t)))))		 
 
 	   ;; Check col range.
 	   (cond ((< p_j1 ln1)
@@ -1391,7 +1430,12 @@
     (set! ln1 (grsp-matrix-esi 3 res1))
     (set! hn1 (grsp-matrix-esi 4 res1))
     
-    (cond ((equal? p_s "#Delr")
+    (cond ((equal? p_s "#Delc")
+	   (set! res2 (grsp-matrix-transpose res1))
+	   (set! res2 (grsp-matrix-subdel "#Delr" res2 p_n))
+	   (set! res2 (grsp-matrix-transpose res2))
+	   (set! res2 (grsp-matrix-transpose res2)))
+	  ((equal? p_s "#Delr")
 	   (cond ((equal? n1 lm1)
 		  (set! res2 (grsp-matrix-subcpy res1 (+ lm1 1) hm1 ln1 hn1)))
 		 ((equal? n1 hm1)
@@ -2825,6 +2869,26 @@
 		  
 		  (set! j1 (+ j1 1)))
 	   (set! i1 (+ i1 1)))      
+
+    res1))
+
+
+;; grsp-matrix-select - Select between p_a1 and p_a2 based on the value of p_n1. 
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_a2: matrix.
+;; - p_n1:
+;;   - 0: new id for nodes.
+;;   - 1: new id for conns.
+;;
+(define (grsp-matrix-select p_a1 p_a2 p_n1)
+  (let ((res1 0))
+
+    (cond ((= p_n1 0)
+	   (set! res1 p_a1))
+	  ((or (> p_n1 0) (< p_n1 0))
+	   (set! res1 p_a2)))
 
     res1))
 
