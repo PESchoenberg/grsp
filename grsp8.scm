@@ -24,6 +24,9 @@
 ;; =============================================================================
 
 
+;; General notes:
+;; - Read sources for limitations on function parameters.
+;;
 ;; Sources:
 ;; - [1] En.wikipedia.org. 2021. Artificial Neural Network. [online] Available
 ;;   at: https://en.wikipedia.org/wiki/Artificial_neural_network [Accessed 25
@@ -41,7 +44,7 @@
 ;    2021].  
 ;; - [6] Machine Learning From Scratch. 2021. Activation Functions Explained -
 ;;   GELU, SELU, ELU, ReLU and more. [online] Available at:
-;;   https://mlfromscratch.com/activation-functions-explained/#/> [Accessed 28
+;;   https://mlfromscratch.com/activation-functions-explained [Accessed 28
 ;;   January 2021].
 
 
@@ -80,12 +83,14 @@
 ;;       - 0: input.
 ;;       - 1: neuron.
 ;;       - 2: output.
-;;     - Col 3: bias.
-;;     - Col 4: output value.
-;;     - Col 5: associated function.
-;;     - Col 6: evol.
-;;     - Col 7: weight.
-;;     - Col 8: iter.
+;;     - Col 3: layer.
+;;     - Col 4: layer pos.
+;;     - Col 5: bias.
+;;     - Col 6: output value.
+;;     - Col 7: associated function.
+;;     - Col 8: evol.
+;;     - Col 9: weight.
+;;     - Col 10: iter.
 ;;   - conns:
 ;;     - Col 0: id.
 ;;     - Col 1: status.
@@ -102,7 +107,7 @@
 ;;     - Col 8: iter.
 ;;
 ;; and the third element is a 1x2 counter matrix that defines the id of
-;; nods and conns elements according to:
+;; nodes and conns elements according to:
 ;; - Col 0: nodes id counter.
 ;; - Col 1: conns id counter.
 ;;
@@ -113,19 +118,19 @@
 	(conns 0)
 	(count 0))
 
-    ;; Create matrices with one row.
-    (set! nodes (grsp-matrix-create 0 1 9))
+    ;; Create matrices with just one row.
+    (set! nodes (grsp-matrix-create 0 1 11))
     (set! conns (grsp-matrix-create 0 1 9))
-    (set! count (grsp-matrix-create 0 1 2))
+    (set! count (grsp-matrix-create -1 1 2))
    
-    ;; Add data corresponding to the new nodes in the ann.
-    (set! nodes (grsp-ann-item-create nodes conns count 0 (list 1 1 1 1 1 1 1 1 1))) ;; Input node.
-    (set! nodes (grsp-ann-item-create nodes conns count 0 (list 1 2 1 1 1 1 1 1 1))) ;; Neuron.
-    (set! nodes (grsp-ann-item-create nodes conns count 0 (list 1 3 1 1 1 1 1 1 1))) ;; Output node.
+    ;; Add data corresponding to the new nodes in the basic ann.
+    (set! nodes (grsp-ann-item-create nodes conns count 0 (list 0 2 0 0 1 0 0 1 0 1 0))) ;; Input node.
+    (set! nodes (grsp-ann-item-create nodes conns count 0 (list 0 2 1 0 1 0 1 1 0 1 0))) ;; Neuron.
+    (set! nodes (grsp-ann-item-create nodes conns count 0 (list 0 2 2 0 1 0 0 1 0 1 0))) ;; Output node.
 
-    ;; Add data corresponding to the new connections in the ann.
-    (set! conns (grsp-ann-item-create nodes conns count 1 (list 1 1 1 1 1 1 1 1 1))) ;; Input node.
-    (set! conns (grsp-ann-item-create nodes conns count 1 (list 1 2 1 1 1 1 1 1 1))) ;; Neuron.    
+    ;; Add data corresponding to the new connections in basic ann.
+    (set! conns (grsp-ann-item-create nodes conns count 1 (list 0 2 1 0 1 0 1 1 0))) ;; Input node to neuron.
+    (set! conns (grsp-ann-item-create nodes conns count 1 (list 0 2 1 1 2 0 1 1 0))) ;; Neuron to output node.    
     
     ;; Results.
     (set! res1 (grsp-ann-net-preb nodes conns count))
@@ -139,7 +144,7 @@
 ;; - function, ann, neural network.
 ;;
 ;; Arguments:
-;; - p_l1: ann (list) created with grsp-ann-net-edit.
+;; - p_l1: ann (list).
 ;;
 ;; Output:
 ;; - p_l1 updated.
@@ -185,10 +190,10 @@
 
 	   ;; If row (record) corresponds to an input
 	   (cond ((= (array-ref nodes i1 2) 2)
+		  
 		  ;; Eval row by row conns related to it.
 		  (set! i1 ln2)
-		  (while (<= i1 hn2)
-			 
+		  (while (<= i1 hn2)			 
 			 (set! i1 (+ i1 1)))))
 	   
 	   (set! i1 (+ i1 1)))
@@ -202,6 +207,9 @@
 ;; grsp-ann-net-preb - Purges and rebuilds the net from discarded connections
 ;; and nodes.
 ;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
 ;; Arguments:
 ;; p_a1: nodes matrix.
 ;; p_a2: conns matrix.
@@ -212,8 +220,8 @@
 
     ;; Delete rows where the value of col 1 is zero, meaning that connections
     ;; and nodes are dead.
-    ;;(set! p_a2 (grsp-matrix-subdcn "#=" p_a2 1 0))
-    ;;(set! p_a1 (grsp-matrix-subdcn "#=" p_a1 1 0))	  
+    (set! p_a2 (grsp-matrix-subdcn "#=" p_a2 1 0))
+    (set! p_a1 (grsp-matrix-subdcn "#=" p_a1 1 0))	  
 
     ;; Rebuild the list.
     (set! res1 (list p_a1 p_a2 p_a3))
@@ -223,9 +231,12 @@
 
 ;; grsp-ann-counter-upd - Updates the ann id counter.
 ;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
 ;; Arguments:
 ;; - p_a3: count matrix.
-;; - p_n1: marix element to increment. 
+;; - p_n1: matrix element to increment. 
 ;;
 ;; Output:
 ;; - Returns a new id number, either for nodes or conns.
@@ -240,7 +251,10 @@
 
 
 ;; grsp-ann-id-create - Created a new id number for a row in nodes or conns and
-;; updates the corresponding 
+;; updates the corresponding matrix element.
+;;
+;; Keywords:
+;; - function, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_a1: nodes.
@@ -265,12 +279,15 @@
 ;; grsp-ann-item-create - Create in p_l1 a node or connection with argument
 ;; list p_l2.
 ;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
 ;; Arguments:
 ;, - p_l1: ann.
 ;; - p_n1:
 ;;   - 0: for nodes.
 ;;   - 1: for conns
-;; - p_l2: list containing the values for the matix row.
+;; - p_l2: list containing the values for the matrix row.
 ;;
 (define (grsp-ann-item-create p_a1 p_a2 p_a3 p_n1 p_l2) 
   (let ((res1 0)

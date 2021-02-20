@@ -24,6 +24,11 @@
 ;; =============================================================================
 
 
+;; General notes:
+;; - Read sources for limitations on function parameters.
+;;
+
+
 (define-module (grsp grsp1)
   #:export (gconst))
 	    
@@ -34,38 +39,48 @@
 ;; - p_n1: constant name, string.
 ;;
 ;; Sources:
-;; - [1] En.wikipedia.org. (2020). List of mathematical constants. [online] Available
-;;   at: https://en.wikipedia.org/wiki/List_of_mathematical_constants
+;; - [1] En.wikipedia.org. (2020). List of mathematical constants. [online]
+;;   Available at: https://en.wikipedia.org/wiki/List_of_mathematical_constants
 ;;   [Accessed 1 Jan. 2020].
-;; - [2] Oeis.org. (2020). The On-Line Encyclopedia of Integer Sequences® (OEIS®).
-;;   [online] Available at: https://oeis.org/ [Accessed 1 Jan. 2020].
-;; - [3] En.wikipedia.org. (2020). Particular values of the Riemann zeta function.
-;;   [online] Available at: https://en.wikipedia.org/wiki/Particular_values_of
-;;   _the_Riemann_zeta_function [Accessed 1 Jan. 2020].
+;; - [2] Oeis.org. (2020). The On-Line Encyclopedia of Integer Sequences®
+;;   (OEIS®). [online] Available at: https://oeis.org/ [Accessed 1 Jan. 2020].
+;; - [3] En.wikipedia.org. (2020). Particular values of the Riemann zeta
+;;   function. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Particular_values_of_the_Riemann_zeta_function
+;;   [Accessed 1 Jan. 2020].
 ;; - [4] En.wikipedia.org. (2020). Names of large numbers. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Names_of_large_numbers#The_googol_family
 ;;   [Accessed 1 Jan. 2020].
 ;; - [5] En.wikipedia.org. (2020). Power of 10. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Power_of_10 [Accessed 1 Jan. 2020].
-;; - [6] En.wikipedia.org. (2020). Orders of magnitude (numbers). [online] Available
-;;   at: https://en.wikipedia.org/wiki/Orders_of_magnitude_(numbers)
+;; - [6] En.wikipedia.org. (2020). Orders of magnitude (numbers). [online]
+;;   Available at: https://en.wikipedia.org/wiki/Orders_of_magnitude_(numbers)
 ;;   [Accessed 6 Jan. 2020].
 ;; - [7] En.wikipedia.org. 2020. Parsec. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Parsec [Accessed 13 September 2020].
 ;; - [8] En.wikipedia.org. 2020. Astronomical Unit. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Astronomical_unit [Accessed 18 September 2020].
+;;   https://en.wikipedia.org/wiki/Astronomical_unit [Accessed 18 September
+;;   2020].
 ;; - [9] En.wikipedia.org. 2020. Sidereal Time. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Sidereal_time [Accessed 20 September 2020].
 ;; - [10] En.wikipedia.org. 2020. Tropical Year. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Tropical_year [Accessed 24 September 2020].
-;; - [11] https://en.wikipedia.org/wiki/Solar_time#Mean_solar_time
-;; - [12] https://en.wikipedia.org/wiki/List_of_gravitationally_rounded_objects_of_the_Solar_System
+;; - [11] En.wikipedia.org. 2021. Solar time. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Solar_time#Mean_solar_time
+;;   [Accessed 13 February 2021].
+;; - [12] En.wikipedia.org. 2021. List of gravitationally rounded objects of
+;;   the Solar System. [online] Available at:
+;;   https://en.wikipedia.org/wiki/List_of_gravitationally_rounded_objects_of_the_Solar_System
+;;   [Accessed 13 February 2021].
 ;; - [13] En.wikipedia.org. 2020. Energy Density. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Energy_density> [Accessed 30 September 2020].
+;;   https://en.wikipedia.org/wiki/Energy_density [Accessed 30 September 2020].
 ;; - [14] En.wikipedia.org. 2020. Standard Gravity. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Standard_gravity [Accessed 30 September 2020].
-;; - [15] https://en.wikipedia.org/wiki/Gravitational_acceleration
-;; - [16] https://en.wikipedia.org/wiki/Earth_radius
+;; - [15] En.wikipedia.org. 2021. Gravitational acceleration. [online]
+;;   Available at: <https://en.wikipedia.org/wiki/Gravitational_acceleration
+;;   [Accessed 13 February 2021].
+;; - [16] En.wikipedia.org. 2021. Earth radius. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Earth_radius [Accessed 13 February 2021].
 ;; - [17] See grsp6 [14].
 ;; - [18] En.wikipedia.org. 2020. Earth. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Earth [Accessed 14 October 2020].

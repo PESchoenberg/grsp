@@ -24,6 +24,9 @@
 ;; =============================================================================
 
 
+;; General notes:
+;; - Read sources for limitations on function parameters.
+;;
 ;; Sources:
 ;; - [1] Gnu.org. 2020. Complex (Guile Reference Manual). [online] Available at:
 ;;   https://www.gnu.org/software/guile/manual/html_node/Complex.html
@@ -47,6 +50,10 @@
 ;; - [8] En.wikipedia.org. 2020. Incomplete Gamma Function. [online] Available
 ;;   at: https://en.wikipedia.org/wiki/Incomplete_gamma_function
 ;;   [Accessed 9 December 2020].
+;; - [10] En.wikipedia.org. 2021. Confluent hypergeometric function. [online]
+;;   Available at:
+;;   https://en.wikipedia.org/wiki/Confluent_hypergeometric_function
+;;   [Accessed 19 February 2021].
 
 
 (define-module (grsp grsp4)
@@ -71,7 +78,9 @@
 	    grsp-complex-llgamma
 	    grsp-complex-uigamma
 	    grsp-complex-prgamma
-	    grsp-complex-qrgamma))
+	    grsp-complex-qrgamma
+	    grsp-complex-chm
+	    grsp-complex-chu))
   
 
 ;; grsp-complex-inv-imag - Calculates the inverse of the imaginary
@@ -98,7 +107,7 @@
 	   (set! vr (real-part p_z1))
 	   (set! vi (* -1 (imag-part p_z1)))
 	   (set! res1 (make-rectangular vr vi)))
-	  (else((set! res1 p_z1))))
+	  (else ((set! res1 p_z1))))
 
     res1))
 
@@ -124,7 +133,7 @@
 	   (set! vr (* -1 (real-part p_z1)))
 	   (set! vi (imag-part p_z1))
 	   (set! res1 (make-rectangular vr vi)))
-	  (else((set! res1 (* -1 p_z1)))))
+	  (else ((set! res1 (* -1 p_z1)))))
 
     res1))
 
@@ -188,8 +197,8 @@
     (cond ((complex? p_z1)
 	   (set! vr (grsp-sign (real-part p_z1)))
 	   (set! vi (grsp-sign (imag-part p_z1))))	  
-	  (else((set! vr (grsp-sign p_z1))
-		(set! vi 1))))
+	  (else ((set! vr (grsp-sign p_z1))
+		 (set! vi 1))))
     (set! res1 (list vr vi))
     
     res1))
@@ -685,3 +694,74 @@
 
     res1))
     
+
+;; grsp-complex-kummer-ch1 - Kummer's complex hypergeometric function (M).
+;;
+;; Keywords:
+;; - complex, hypergeometric.
+;;
+;; Arguments:
+;; - p_a1: a.
+;; - p_b1: b.
+;; - p_z1: z.
+;; - p_n1: iterations.
+;;
+;; Sources:
+;; - [10].
+;;
+(define (grsp-complex-chm p_a1 p_b1 p_z1 p_n1)
+  (let ((res1 0)
+	(i1 0)
+	(n2 0)
+	(n3 0))
+
+    (while (< i1 p_n1)
+	   (set! n2 (* (grsp-fact-upp p_a1 i1) (expt p_z1 i1)))
+	   (set! n3 (* (grsp-fact-upp p_b1 i1) (grsp-fact i1)))
+	   (set! res1 (+ res1 (/ n2 n3)))
+	   (set! i1 (+ i1 1)))
+    
+    res1))
+
+
+;; grsp-complex-chu - Tricomi's complex hypergeometric function (U).
+;;
+;; Keywords:
+;; - complex, hypergeometric.
+;;
+;; Arguments:
+;; - p_a1: a.
+;; - p_b1: b. Non-integer.
+;; - p_z1: z.
+;; - p_n1: iterations (M component).
+;; - p_b2: see grsp4.grsp-complex-gamma.
+;; - p_s2: see grsp4.grsp-complex-gamma.
+;; - p_n2; see grsp4.grsp-complex-gamma.
+;;
+;;
+;; Sources:
+;; - [10].
+;;
+(define (grsp-complex-chu p_a1 p_b1 p_z1 p_n1 p_b2 p_s2 p_n2)
+  (let ((res1 0)
+	(i1 0)
+	(n21 0)
+	(n22 0)
+	(n31 0)
+	(n32 0))
+    
+    ;; First term.
+    (set! n21 (/ (grsp-complex-gamma p_b2 p_s2 (- 1 p_b1) p_n2)
+		 (grsp-complex-gamma p_b2 p_s2 (+ p_a1 (- 1 p_b1)) p_n2)))
+    (set! n22 (grsp-complex-chm p_a1 p_b1 p_z1 p_n1))
+
+    ;; Second term.
+    (set! n31 (* (/ (grsp-complex-gamma p_b2 p_s2 (- p_b1 1) p_n2)
+		    (grsp-complex-gamma p_b2 p_s2 p_a1 p_n2))
+		 (expt p_z1 (- 1 p_b1))))
+    (set! n32 (grsp-complex-chm (+ p_a1 (- 1 p_b1)) (- 2 p_b1) p_z1 p_n1))
+    
+    ;; Final result.
+    (set! res1 (+ (* n21 n22) (* n31 n32)))
+    
+    res1))

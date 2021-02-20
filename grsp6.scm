@@ -24,6 +24,9 @@
 ;; =============================================================================
 
 
+;; General notes:
+;; - Read sources for limitations on function parameters.
+;;
 ;; Sources:
 ;; - [1] En.wikipedia.org. 2020. Standard Gravitational Parameter. [online]
 ;;   Available at:
@@ -170,8 +173,7 @@
 ;; - p_v1: relative velocity between inertial frames (should be p_v1 < c).
 ;;
 ;; Sources:
-;; - [3].
-;; - [4].
+;; - [3][4].
 ;;
 (define (grsp-lorentz-factor p_v1)
   (let ((res1 0))
@@ -622,7 +624,7 @@
     res1))
 
 
-;; grsp-grav-raadius - Gravity on a body of radius p_pr1 and mass p_m1.
+;; grsp-grav-radius - Gravity on a body of radius p_pr1 and mass p_m1.
 ;;
 ;; Keywords:
 ;; - astro.
