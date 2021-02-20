@@ -25,6 +25,9 @@
 ;; =============================================================================
 
 
+;; General notes:
+;; - Read sources for limitations on function parameters.
+;;
 ;; Sources:
 ;; - [1] Shido.info. (2019). 9. IO. [online] Available at:
 ;;   http://www.shido.info/lisp/scheme9_e.html [Accessed 15 Sep. 2019].
@@ -33,10 +36,9 @@
 ;;   https://www.gnu.org/software/guile/manual/html_node/File-Ports.html
 ;;   [Accessed 15 Sep. 2019].
 ;; - [3] Edronkin, P. (2019). sqlp - Simple terminal query and .sql file
-;;   processing 
-;;   for  Sqlite3. [online] sqlp. Available at:
-;;   https://peschoenberg.github.io/sqlp/
-;;   [Accessed 5 Oct. 2019].
+;;   processing for  Sqlite3. [online] sqlp. Available at:
+;;   https://peschoenberg.github.io/sqlp/ [Accessed 5 Oct. 2019].
+
 
 (define-module (grsp grsp0)
   #:export (pline
@@ -65,19 +67,19 @@
 ;; - console, strings.
 ;;
 ;; Arguments:
-;; - p_c: line character to display.
-;; - p_l: line length.
+;; - p_c1: line character to display.
+;; - p_l1: line length.
 ;;
-(define (pline p_c p_l)
-  (let ((str ""))
+(define (pline p_c1 p_l1)
+  (let ((s1 ""))
 
-    (let loop ((i 0))
-      (if (= i p_l)
+    (let loop ((i1 0))
+      (if (= i1 p_l1)
 	  (begin (newlines 1)
-		 (display str)
+		 (display s1)
 		 (newlines 1))
-	  (begin (set! str (string-append str p_c))
-	         (loop (+ i 1)))))))
+	  (begin (set! s1 (string-append s1 p_c1))
+	         (loop (+ i1 1)))))))
 
 
 ;; ptit - Displays a console title with one or two lines.
@@ -86,19 +88,19 @@
 ;; - console, strings.
 ;;
 ;; Arguments:
-;; - p_c: line character to display.
-;; - p_l: line length.
-;; - p_n: number of lines (1 or 2, defaults to 1 line above title).
-;; - p_t: title to display.
+;; - p_c1: line character to display.
+;; - p_l1: line length.
+;; - p_n1: number of lines (1 or 2, defaults to 1 line above title).
+;; - p_t1: title to display.
 ;;
-(define (ptit p_c p_l p_n p_t)
-  (if (<= p_n 1)
-      (pline p_c p_l))
-  (if (>= p_n 2)
-      (pline p_c p_l))
-  (display p_t)
-  (if (>= p_n 2)
-      (pline p_c p_l))
+(define (ptit p_c1 p_l1 p_n1 p_t1)
+  (if (<= p_n1 1)
+      (pline p_c1 p_l1))
+  (if (>= p_n1 2)
+      (pline p_c1 p_l1))
+  (display p_t1)
+  (if (>= p_n1 2)
+      (pline p_c1 p_l1))
   (newline))
 
 
@@ -110,11 +112,11 @@
 ;; Arguments:
 ;; - p_n: number of iterations.
 ;;
-(define (newlines p_n)
-  (let loop ((i 0))
-    (if (<= i p_n)
+(define (newlines p_n1)
+  (let loop ((i1 0))
+    (if (<= i1 p_n1)
 	(begin (newline)
-	       (loop (+ i 1))))))
+	       (loop (+ i1 1))))))
 
 
 ;; clear - Clears the shell by inserting 100 blank lines.
@@ -136,10 +138,10 @@
 ;; - p_s2: result, string.
 ;;
 (define (pres p_s1 p_s2)
-  (let ((res " "))
+  (let ((res1 " "))
 
-    (set! res (string-append p_s1 (string-append " = " p_s2)))
-      (display res)
+    (set! res1 (string-append p_s1 (string-append " = " p_s2)))
+      (display res1)
       (newline)))
 
 
@@ -155,24 +157,24 @@
 ;;   - 0 for left side.
 ;;   - 1 for right side.
 ;;
-(define (newspaces p_n p_l p_s)
-  (let ((res " ")
-	(sp ""))
+(define (newspaces p_n1 p_l1 p_s1)
+  (let ((res1 " ")
+	(s1 ""))
 
-    (let loop ((i 0))
+    (let loop ((i1 0))
       
       ;; Create a string of blanks.
-      (if (< i p_n)
-	  (begin (set! sp (string-append sp " "))
-		 (loop (+ i 1)))))
+      (if (< i1 p_n1)
+	  (begin (set! s1 (string-append s1 " "))
+		 (loop (+ i1 1)))))
       
       ;; Add the blank string.
-      (if (= p_s 0)
-  	  (set! res (string-append sp p_l)))
-      (if (= p_s 1)
-	  (set! res (string-append p_l sp)))
+      (if (= p_s1 0)
+  	  (set! res1 (string-append s1 p_l1)))
+      (if (= p_s1 1)
+	  (set! res1 (string-append p_l1 s1)))
 
-      res))
+      res1))
 
 
 ;; strings-append - Appends strings entered in a list as one larger string. Use 
@@ -183,27 +185,27 @@
 ;; - console, strings.
 ;;
 ;; Arguments:
-;; - p_l: list of strings.
-;; - p_s: add a blank space after each list element.
+;; - p_l1: list of strings.
+;; - p_s1: add a blank space after each list element.
 ;;   - 0 for no spaces.
 ;;   - 1 to add one blank space.
 ;;
-(define (strings-append p_l p_s)
-  (let ((res "")
+(define (strings-append p_l1 p_s1)
+  (let ((res1 "")
 	(elem #f))
 
-    (set! elem (car p_l))
+    (set! elem (car p_l1))
     (while (not (equal? elem #f))
-	   (if (equal? p_s 1)
+	   (if (equal? p_s1 1)
 	       (set! elem (string-append elem " ")))
-	   (set! res (string-append res elem))
-	   (set! p_l (cdr p_l))
-	   (if (> (length p_l) 0)
-	       (set! elem (car p_l)))
-	   (if (= (length p_l) 0)
+	   (set! res1 (string-append res1 elem))
+	   (set! p_l1 (cdr p_l1))
+	   (if (> (length p_l1) 0)
+	       (set! elem (car p_l1)))
+	   (if (= (length p_l1) 0)
 	       (set! elem #f)))
 
-    res))
+    res1))
 
 
 ;; read-file-as-string - Reads a file as a string; adapted from an example 
@@ -215,20 +217,20 @@
 ;; - console, strings.
 ;;
 ;; Arguments:
-;; - p_f: file name.
+;; - p_f1: file name.
 ;;
 ;; Sources:
 ;; - [1].
 ;;
-(define (read-file-as-string p_f)
-  (call-with-input-file p_f
-    (lambda (p)
-      (let loop((ls1 '()) (c (read-char p)))
-	(if (eof-object? c)
+(define (read-file-as-string p_f1)
+  (call-with-input-file p_f1
+    (lambda (p1)
+      (let loop((ls1 '()) (c1 (read-char p1)))
+	(if (eof-object? c1)
 	    (begin
-	      (close-input-port p)
+	      (close-input-port p1)
 	      (list->string (reverse ls1)))
-	    (loop (cons c ls1) (read-char p)))))))
+	    (loop (cons c1 ls1) (read-char p1)))))))
 
 
 ;; grsp-lang-effective-version - Checks if currently instaled GNU Guile's
@@ -239,27 +241,27 @@
 ;; - console, strings.
 ;;
 ;; Arguments:
-;; - p_s: enter the one of the following strings.
+;; - p_s1: enter the one of the following strings.
 ;;   - "lt" less than.
 ;;   - "eq" equal to.
 ;;   - "ht" higher than.
-;; - p_v: version number to check against.
+;; - p_v1: version number to check against.
 ;;
 ;; Output:
-;; - Boolean. Defaults to #f if p_s is entered incorrectly.
+;; - Boolean. Defaults to #f if p_s1 is entered incorrectly.
 ;;
-(define (grsp-lang-effective-version p_s p_v)
-  (let ((res #f)
+(define (grsp-lang-effective-version p_s1 p_v1)
+  (let ((res1 #f)
 	(ev (string->number (effective-version))))
 
-    (if (equal? p_s "lt")
-	(set! res (< ev p_v)))
-    (if (equal? p_s "eq")
-	(set! res (= ev p_v)))
-    (if (equal? p_s "ht")
-	(set! res (> ev p_v)))
+    (if (equal? p_s1 "lt")
+	(set! res1 (< ev p_v1)))
+    (if (equal? p_s1 "eq")
+	(set! res1 (= ev p_v1)))
+    (if (equal? p_s1 "ht")
+	(set! res1 (> ev p_v1)))
 
-    res))
+    res1))
 
 
 ;; grsp-test - A simple test function.
@@ -271,25 +273,25 @@
   (grsp-ld "grsp-test"))
 	      
 
-;; grsp-save-to-file - Saves a string to file p_f.   
+;; grsp-save-to-file - Saves a string to file p_f1.   
 ;;
 ;; Keywords:
 ;; - console, strings.
 ;;
 ;; Arguments: 
-;; - p_s: string to save.
-;; - p_f: file.
-;; - p_m: save mode.
+;; - p_s1: string to save.
+;; - p_f1: file.
+;; - p_m1: save mode.
 ;;  - "w": open for input. Rewrite if exists.
 ;;  - "a": open for append. Create if does not exist.
 ;;
 ;; Sources;
 ;; - [2].
 ;;
-(define (grsp-save-to-file p_s p_f p_m)
-  (let ((output-port (open-file p_f p_m)))    
+(define (grsp-save-to-file p_s1 p_f1 p_m1)
+  (let ((output-port (open-file p_f1 p_m1)))    
 
-    (display p_s output-port)
+    (display p_s1 output-port)
     (newline output-port)
     (close output-port)))
 
@@ -301,14 +303,14 @@
 ;; - console, strings.
 ;;
 ;; Arguments:
-;; - p_n: number to convert.
+;; - p_n1: number to convert.
 ;;
-(define (grsp-n2s p_n)
-  (let ((res ""))
+(define (grsp-n2s p_n1)
+  (let ((res1 ""))
 
-    (set! res (number->string p_n))
+    (set! res1 (number->string p_n1))
 
-    res))
+    res1))
 
 
 ;; grsp-s2n - A convenience function, shorter to write than string->number that
@@ -318,14 +320,14 @@
 ;; - console, strings.
 ;;
 ;; Arguments:
-;; p_s: string to convert.
+;; p_s1: string to convert.
 ;;
-(define (grsp-s2n p_s)
-  (let ((res 0.0))
+(define (grsp-s2n p_s1)
+  (let ((res1 0.0))
 
-    (set! res (string->number p_s))
+    (set! res1 (string->number p_s1))
 
-    res))
+    res1))
 
 
 ;; grsp-sqlp - Calls sqlp to access Sqlite3 or HDF5 databases from within a  
@@ -335,16 +337,16 @@
 ;; - console, strings.
 ;;
 ;; Arguments:
-;; - p_p: path to the sqlp executable.
-;; - p_d: database file, with path.
-;; - p_s: SQL or HDFQL snippet or file, with path.
-;; - p_a: sqlp macro (see sqlp's documentation for more on this).
+;; - p_p1: path to the sqlp executable.
+;; - p_d1: database file, with path.
+;; - p_s1: SQL or HDFQL snippet or file, with path.
+;; - p_a1: sqlp macro (see sqlp's documentation for more on this).
 ;;
 ;; Sources: 
 ;; - [3].
 ;;
-(define (grsp-sqlp p_p p_d p_s p_a)
-  (system (strings-append (list p_p p_d p_s p_a) 1)))
+(define (grsp-sqlp p_p1 p_d1 p_s1 p_a1)
+  (system (strings-append (list p_p1 p_d1 p_s1 p_a1) 1)))
 
 
 ;; grsp-ld - Line and display. Displays a string after a newline.
@@ -353,11 +355,11 @@
 ;; - console, strings.
 ;;
 ;; Arguments:
-;; - p_s: string.
+;; - p_s1: string.
 ;;
-(define (grsp-ld p_s)
+(define (grsp-ld p_s1)
   (newline)
-  (display p_s))
+  (display p_s1))
 
 
 ;; grsp-cd - Same as grsp-ld, but performs a clear instead of newline, meaning
@@ -367,11 +369,11 @@
 ;; - console, strings.
 ;;
 ;; Arguments:
-;; - p_s: string.
+;; - p_s1: string.
 ;;
-(define (grsp-cd p_s)
+(define (grsp-cd p_s1)
   (clear)
-  (display p_s))
+  (display p_s1))
 
 
 ;; grsp-ask - Input query.
@@ -380,16 +382,16 @@
 ;; - console, strings.
 ;;
 ;; Arguments:
-;; p_q: string representing the question to ask.
+;; p_s1: string representing the question to ask.
 ;;
 ;; Output:
 ;; - Returns a string with the user's input.
 ;;
-(define (grsp-ask p_q)
+(define (grsp-ask p_s1)
   (let ((res1 " "))
 
     (newline)
-    (grsp-ld p_q)
+    (grsp-ld p_s1)
     (set! res1 (read))
 
     res1))
