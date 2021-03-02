@@ -24,6 +24,11 @@
 ;; =============================================================================
 
 
+;;;; General notes:
+;; - Read sources for limitations on function parameters.
+;;
+
+
 (define-module (grsp grsp7)
   #:use-module (grsp grsp0)
   #:use-module (grsp grsp1)
@@ -32,7 +37,7 @@
 	    grsp-geo-sphere))
 
 
-;; grsp-geo-circle - Area of a circle.
+;;;; grsp-geo-circle - Area of a circle.
 ;;
 ;; Keywords:
 ;; - geometry, curves.
@@ -49,7 +54,7 @@
     res1))
 
 
-;; grsp-geo-sphere - Volume of a sphere.
+;;;; grsp-geo-sphere - Volume of a sphere.
 ;;
 ;; Keywords:
 ;; - geometry, curves, volume.
@@ -65,3 +70,4 @@
 		  (expt p_r1 3)))
 
     res1))
+

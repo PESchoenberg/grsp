@@ -24,7 +24,7 @@
 ;; =============================================================================
 
 
-;; General notes:
+;;;; General notes:
 ;; - Read sources for limitations on function parameters.
 ;;
 ;; Sources:
@@ -54,6 +54,7 @@
 ;;   Available at:
 ;;   https://en.wikipedia.org/wiki/Confluent_hypergeometric_function
 ;;   [Accessed 19 February 2021].
+;; - [11] https://en.wikipedia.org/wiki/Error_function
 
 
 (define-module (grsp grsp4)
@@ -80,10 +81,14 @@
 	    grsp-complex-prgamma
 	    grsp-complex-qrgamma
 	    grsp-complex-chm
-	    grsp-complex-chu))
+	    grsp-complex-chu
+	    grsp-complex-erf
+	    grsp-complex-erfi
+	    grsp-complex-erfc
+	    grsp-complex-erfci))
   
 
-;; grsp-complex-inv-imag - Calculates the inverse of the imaginary
+;;;; grsp-complex-inv-imag - Calculates the inverse of the imaginary
 ;; component of a complex number.
 ;;
 ;; Keywords:
@@ -112,7 +117,7 @@
     res1))
 
 
-;; grsp-complex-inv-real - Calculates the inverse of the real component of a
+;;;; grsp-complex-inv-real - Calculates the inverse of the real component of a
 ;; complex number.
 ;;
 ;; Keywords:
@@ -138,7 +143,7 @@
     res1))
 
 
-;; grsp-complex-inv - Calculates various inverses of complex numbers.
+;;;; grsp-complex-inv - Calculates various inverses of complex numbers.
 ;;
 ;; Keywords:
 ;; - complex.
@@ -169,7 +174,7 @@
     res1))
 
 
-;; grsp-complex-sign - Returns a list containing boolean values indicating
+;;;; grsp-complex-sign - Returns a list containing boolean values indicating
 ;; the signs of the real and imaginary parts of a complex number.
 ;;
 ;; Keywords:
@@ -204,7 +209,7 @@
     res1))
 
 
-;; grsp-complex-logistic - Logistic map equation. Pseudo-random number
+;;;; grsp-complex-logistic - Logistic map equation. Pseudo-random number
 ;; generator.
 ;;
 ;; Keywords:
@@ -225,7 +230,7 @@
     res1))
 
 
-;; grsp-complex-mandelbrot - Quadratic map function for the Mandelbrot set.
+;;;; grsp-complex-mandelbrot - Quadratic map function for the Mandelbrot set.
 ;;
 ;; Keywords:
 ;; - complex.
@@ -245,7 +250,7 @@
     res1))
 
 
-;; grsp-complex-binet - Closed form expression of the Fibonacci sequence. It
+;;;; grsp-complex-binet - Closed form expression of the Fibonacci sequence. It
 ;; provides as a result the p_n1th value of the Fibonnaci series. 
 ;;
 ;; Keywords:
@@ -268,7 +273,7 @@
     res1))
 
 
-;; grsp-complex-dirichlet-eta - Dirichlet eta function.
+;;;; grsp-complex-dirichlet-eta - Dirichlet eta function.
 ;;
 ;; Keywords:
 ;; - complex.
@@ -292,7 +297,7 @@
     res1))
 
 
-;; grsp-complex-f1 - Solves (p_a1 * (p_x1**p_n1)) / (1 + (p_a2 (p_x1**p_b2)))
+;;;; grsp-complex-f1 - Solves (p_a1 * (p_x1**p_n1)) / (1 + (p_a2 (p_x1**p_b2)))
 ;;
 ;; Keywords:
 ;; - complex.
@@ -313,7 +318,7 @@
     res1))
 
 
-;; grsp-complex-gamma-euler - Complex extension of the gamma function
+;;;; grsp-complex-gamma-euler - Complex extension of the gamma function
 ;; according to Euler's infinite product representation. 
 ;;
 ;; Keywords:
@@ -358,7 +363,7 @@
     res1))
 
 
-;; grsp-complex-gamma-weierstrass - Complex extension of the gamma function
+;;;; grsp-complex-gamma-weierstrass - Complex extension of the gamma function
 ;; according to Weierstrass.
 ;;
 ;; Keywords:
@@ -409,7 +414,7 @@
     res1))
 
 
-;; grsp-complex-gamma - Calculating gamma using different representations. 
+;;;; grsp-complex-gamma - Calculating gamma using different representations. 
 ;;
 ;; Keywords:
 ;; - complex.
@@ -441,7 +446,7 @@
     res1))
 
 
-;; grsp-complex-pigamma - Pi Gauss function. Calculates gamma for p_z1 + 1.
+;;;; grsp-complex-pigamma - Pi Gauss function. Calculates gamma for p_z1 + 1.
 ;;
 ;; Keywords:
 ;; - complex.
@@ -468,7 +473,7 @@
     res1))
 
 
-;; grsp-complex-lngamma - Calculates the natural logarythm of gamma.
+;;;; grsp-complex-lngamma - Calculates the natural logarythm of gamma.
 ;;
 ;; Keywords:
 ;; - complex.
@@ -501,7 +506,7 @@
     res1))
 
 
-;; grsp-complex-digamma - Digamma function for p_z1 - 1.
+;;;; grsp-complex-digamma - Digamma function for p_z1 - 1.
 ;;
 ;; Keywords:
 ;; - complex.
@@ -540,7 +545,7 @@
     res1))
 
 
-;; grsp-complex-ligamma - Lower incomplete gamma function.
+;;;; grsp-complex-ligamma - Lower incomplete gamma function.
 ;;
 ;; Keywords:
 ;; - complex.
@@ -572,7 +577,7 @@
     res1))
 
 
-;; grsp-complex-llgamma - Lower incomplete limiting gamma function.
+;;;; grsp-complex-llgamma - Lower incomplete limiting gamma function.
 ;;
 ;; Keywords:
 ;; - complex.
@@ -612,7 +617,7 @@
     res1))
 
 
-;; grsp-complex-uigamma - Upper incomplete gamma function.
+;;;; grsp-complex-uigamma - Upper incomplete gamma function.
 ;;
 ;; Keywords:
 ;; - complex.
@@ -640,7 +645,7 @@
     res1))
 
 
-;; grsp-complex-prgamma - Lower regularized gamma function P.
+;;;; grsp-complex-prgamma - Lower regularized gamma function P.
 ;;
 ;; Keywords:
 ;; - complex.
@@ -668,7 +673,7 @@
     res1))
 
 
-;; grsp-complex-qrgamma - Lower regularized gamma function Q.
+;;;; grsp-complex-qrgamma - Lower regularized gamma function Q.
 ;;
 ;; Keywords:
 ;; - complex.
@@ -695,7 +700,7 @@
     res1))
     
 
-;; grsp-complex-kummer-ch1 - Kummer's complex hypergeometric function (M).
+;;;; grsp-complex-kummer-ch1 - Kummer's complex hypergeometric function (M).
 ;;
 ;; Keywords:
 ;; - complex, hypergeometric.
@@ -724,7 +729,7 @@
     res1))
 
 
-;; grsp-complex-chu - Tricomi's complex hypergeometric function (U).
+;;;; grsp-complex-chu - Tricomi's complex hypergeometric function (U).
 ;;
 ;; Keywords:
 ;; - complex, hypergeometric.
@@ -763,5 +768,109 @@
     
     ;; Final result.
     (set! res1 (+ (* n21 n22) (* n31 n32)))
+    
+    res1))
+
+
+;;;; grsp-complex-erf - Gauss error function.
+;;
+;; Arguments:
+;; - p_z1: complex.
+;; - p_n1: iterations.
+;;
+;; Sources:
+;; - [11].
+;;
+(define (grsp-complex-erf p_z1 p_n1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(res4 0)
+	(res5 0)
+	(res6 0)
+	(i1 0))
+
+    ;; Res2.
+    (set! res2 (/ 2 (sqrt (gconst "A000796"))))
+
+    ;; Res3.
+    (while (< i1 p_n1)
+	   (set! res6 (+ (* 2 i1) 1))
+	   (set! res4 (* (expt -1 i1) (expt p_z1 res6)))
+	   (set! res5 (* (grsp-fact i1) res6))
+	   (set! res3 (+ res2 (/ res4 res5)))
+	   (set! i1 (+ i1 1)))
+
+    ;; Final.
+    (set! res1 (* res2 res3))
+	   
+    res1))
+
+
+;;;; grsp-complex-erf - Gauss imaginary error function.
+;;
+;; Arguments:
+;; - p_z1: complex.
+;; - p_n1: interations.
+;;
+;; Sources:
+;; - [11].
+;;
+(define (grsp-complex-erfi p_z1 p_n1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(res4 0)
+	(res5 0)
+	(res6 0)
+	(i1 0))
+
+    ;; Res2.
+    (set! res2 (/ 2 (sqrt (gconst "A000796"))))
+
+    ;; Res3.
+    (while (< i1 p_n1)
+	   (set! res6 (+ (* 2 i1) 1))
+	   (set! res4 (expt p_z1 res6))
+	   (set! res5 (* (grsp-fact i1) res6))
+	   (set! res3 (+ res2 (/ res4 res5)))
+	   (set! i1 (+ i1 1)))
+
+    ;; Final.
+    (set! res1 (* res2 res3))
+	   
+    res1))
+
+
+;;;; grsp-complex-erfc - Gauss complementary error function.
+;;
+;; Arguments:
+;; - p_z1: complex.
+;; - p_n1: iterations.
+;;
+;; Sources:
+;; - [11].
+;;
+(define (grsp-complex-erfc p_z1 p_n1)
+  (let ((res1 0))
+
+    (set! res1 (- 1 (grsp-complex-erf p_z1 p_n1)))
+    
+    res1))
+
+
+;;;; grsp-complex-erfci - Gauss complementary imaginary error function.
+;;
+;; Arguments:
+;; - p_z1: complex.
+;; - p_n1: iterations.
+;;
+;; Sources:
+;; - [11].
+;;
+(define (grsp-complex-erfci p_z1 p_n1)
+  (let ((res1 0))
+
+    (set! res1 (- 1 (grsp-complex-erfi p_z1 p_n1)))
     
     res1))

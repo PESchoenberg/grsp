@@ -24,7 +24,7 @@
 ;; =============================================================================
 
 
-;; General notes:
+;;;; General notes:
 ;; - Read sources for limitations on function parameters.
 ;;
 ;; Sources:
@@ -229,7 +229,7 @@
 	    grsp-weibull-cf))
 
 
-;; grsp-feature-scaling - Scales p_n to the interval [p_nmin, p_nmax].
+;;;; grsp-feature-scaling - Scales p_n to the interval [p_nmin, p_nmax].
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -259,7 +259,7 @@
     res1))
 
 
-;; grsp-z-score - Calculates the z score for a sample data point.
+;;;; grsp-z-score - Calculates the z score for a sample data point.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -280,7 +280,7 @@
     res1))
 
 
-;; grsp-binop - Performs an operation p_s1 on p_n1 and p_n2 and calculates the
+;;;; grsp-binop - Performs an operation p_s1 on p_n1 and p_n2 and calculates the
 ;; p_n3 power of that binomial operation.
 ;;
 ;; Keywords:
@@ -314,7 +314,7 @@
     res1))
 
 
-;; grsp-pnot - Calculates the complementary probability of p_n1.
+;;;; grsp-pnot - Calculates the complementary probability of p_n1.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -333,7 +333,7 @@
     res1))
 
 
-;; grsp-pand - Calculates the probability of p_n1 and p_n2, being independent.
+;;;; grsp-pand - Calculates the probability of p_n1 and p_n2, being independent.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -354,7 +354,7 @@
     res1))
 
 
-;; grsp-pnand - Calculates the probability of p_n1 and p_n2 happening, 
+;;;; grsp-pnand - Calculates the probability of p_n1 and p_n2 happening, 
 ;; being p_n1 and p_n2 not independent.
 ;;
 ;; Keywords:
@@ -379,7 +379,7 @@
     res1))
 
 
-;; grsp-por - Calculates the probability of p_n1 or p_n2.
+;;;; grsp-por - Calculates the probability of p_n1 or p_n2.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -404,7 +404,7 @@
     res1))
 
 
-;; grsp-pxor - Calculates the probability of p_n1 or p_n2 happening, 
+;;;; grsp-pxor - Calculates the probability of p_n1 or p_n2 happening, 
 ;; beign p_n1 and p_n2 mutually exclusive.
 ;;
 ;; Keywords:
@@ -430,7 +430,7 @@
     res1))
 
 
-;; grsp-pcond - Calculates the probability of p_n1 given p_n2.
+;;;; grsp-pcond - Calculates the probability of p_n1 given p_n2.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -455,7 +455,7 @@
     res1))
 
 
-;; grsp-pcomp - Given that (expt (abs p_n1) 2) + (expt (abs n2) 2) = 1, and 
+;;;; grsp-pcomp - Given that (expt (abs p_n1) 2) + (expt (abs n2) 2) = 1, and 
 ;; given p_n1 as a parameter, returns (abs n2).
 ;;
 ;; Keywords:
@@ -475,7 +475,7 @@
     res1))
 
 
-;; grsp-osbv - Calculates expt operation p_s1 between p_n1 and p_n2 according
+;;;; grsp-osbv - Calculates expt operation p_s1 between p_n1 and p_n2 according
 ;; to exponent p_e1. Can be used to calculate - for example - the squared
 ;; difference between two numbers.
 ;;
@@ -509,7 +509,7 @@
     res1))
 
 
-;; grsp-obsv - Calculates expt operation to p_e1 power for p_n1 and p_n2 and
+;;;; grsp-obsv - Calculates expt operation to p_e1 power for p_n1 and p_n2 and
 ;; then perfoms operation p_s1 between those values.
 ;;
 ;; Keywords:
@@ -543,7 +543,7 @@
     res1))
 
 
-;; grsp-entropy-dvar - Calculates the entropy of a discrete random variable in
+;;;; grsp-entropy-dvar - Calculates the entropy of a discrete random variable in
 ;; an m x n matix.
 ;;
 ;; Keywords:
@@ -579,7 +579,7 @@
     res1))
 
 
-;; grsp-mean1 - Expected value of a random variable X.
+;;;; grsp-mean1 - Expected value of a random variable X.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -599,7 +599,7 @@
     res1))
 
 
-;; grsp-mean2 - Expected value of a non-negative, random variable X
+;;;; grsp-mean2 - Expected value of a non-negative, random variable X
 ;; and the probability P for each outcome of X.
 ;;
 ;; Keywords:
@@ -628,7 +628,7 @@
     res1))
 
 
-;; grsp-mean-geometric - Geometric mean of elements of p_a1.
+;;;; grsp-mean-geometric - Geometric mean of elements of p_a1.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -650,7 +650,7 @@
     res1))
 
 
-;; grsp-mean-interquartile - Interquartile ean of elements of p_a1.
+;;;; grsp-mean-interquartile - Interquartile ean of elements of p_a1.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -682,7 +682,7 @@
     res1))
 
 
-;; grsp-mean-quadratic - Quadratic mean of elements of p_a1. Requires that all
+;;;; grsp-mean-quadratic - Quadratic mean of elements of p_a1. Requires that all
 ;; elements of p_a1 should be >= 0.
 ;;
 ;; Keywords:
@@ -714,7 +714,7 @@
     res1))
 
 
-;; grsp-mean-midrange - Calculates the midrange of p_a1.
+;;;; grsp-mean-midrange - Calculates the midrange of p_a1.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -735,7 +735,7 @@
     res1))
 
 
-;; grsp-sd1 - standard deviation based on variance.
+;;;; grsp-sd1 - standard deviation based on variance.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -798,7 +798,7 @@
     res1))
 
 
-;; grsp-variance1 - Variance, as the square of standard deviation.
+;;;; grsp-variance1 - Variance, as the square of standard deviation.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -814,7 +814,7 @@
     res1))
 
 
-;; grsp-variance2 - Variance, semivariance and supervariance as the expected
+;;;; grsp-variance2 - Variance, semivariance and supervariance as the expected
 ;; value of the squared difference of a random variable.
 ;;
 ;; Keywords:
@@ -879,7 +879,7 @@
     res1))
 
 
-;; grsp-surprisal - Information content of a random variable.
+;;;; grsp-surprisal - Information content of a random variable.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -904,7 +904,7 @@
     res1))
 
 
-;; grsp-median1 - Finds the median of the data in p_a1.
+;;;; grsp-median1 - Finds the median of the data in p_a1.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -939,7 +939,7 @@
     res1))
 
 
-;; grsp-cv - Coefficient of variation.
+;;;; grsp-cv - Coefficient of variation.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -959,7 +959,7 @@
     res1))
 
 
-;; grsp-mean - sample mean absolute deviation.
+;;;; grsp-mean - sample mean absolute deviation.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -1002,7 +1002,7 @@
     res1))
 
 
-;; grsp-bessel-corrector - Bessel corrector.
+;;;; grsp-bessel-corrector - Bessel corrector.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -1021,7 +1021,7 @@
     res1))
 
 
-;; grsp-np-skew - Non parametric skew.
+;;;; grsp-np-skew - Non parametric skew.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -1042,7 +1042,7 @@
     res1))
 
 
-;; grsp-pearson-mode-skewness - Pearson's first skewness coefficient.
+;;;; grsp-pearson-mode-skewness - Pearson's first skewness coefficient.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -1063,7 +1063,7 @@
     res1))
 
 
-;; grsp-pearson-median-skewness - Pearson's secnd skewness coefficient.
+;;;; grsp-pearson-median-skewness - Pearson's secnd skewness coefficient.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -1084,7 +1084,7 @@
     res1))
 
 
-;; grsp-standardized-3cm - Standardized third central moment (skewness).
+;;;; grsp-standardized-3cm - Standardized third central moment (skewness).
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -1113,7 +1113,7 @@
     res1))
 
 
-;; grsp-standardized-4cm - Standardized fourth central moment (kurtosis).
+;;;; grsp-standardized-4cm - Standardized fourth central moment (kurtosis).
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -1142,7 +1142,7 @@
     res1))
 
 
-;; grsp-excess-kurtosis - Excess kurtosis.
+;;;; grsp-excess-kurtosis - Excess kurtosis.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -1181,7 +1181,7 @@
     res1))
 
 
-;; grsp-yule-coefficient - Yule's coefficient, skewness.
+;;;; grsp-yule-coefficient - Yule's coefficient, skewness.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -1202,7 +1202,7 @@
     res1))
 
 
-;; grsp-iqr - Inter quartile range.
+;;;; grsp-iqr - Inter quartile range.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -1222,8 +1222,8 @@
     res1))
 
 
-;; grsp-5ns - Five number summary. Extract min, quartiles and max values from a
-;; sample.
+;;;; grsp-5ns - Five number summary. Extract min, quartiles and max values from 
+;; a sample.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -1232,8 +1232,8 @@
 ;; - p_a1: sample (vector).
 ;;
 ;; Output:
-;; - 1 x 5 matrix (vector) containg the values (in order) for min, Q1, Q2, Q3 and
-;;   max.
+;; - 1 x 5 matrix (vector) containg the values (in order) for min, Q1, Q2, Q3 
+;;   and max.
 ;;
 ;; Sources:
 ;; - [26][27].
@@ -1301,7 +1301,7 @@
     res1))
 
 
-;; grsp-range - Sample range.
+;;;; grsp-range - Sample range.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -1322,8 +1322,8 @@
     res1))
 
 
-;; grsp-covariance1 - Calculates covariance between two random variables X and Y,
-;; naive algorithm.
+;;;; grsp-covariance1 - Calculates covariance between two random variables X and
+;; Y, naive algorithm.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -1357,7 +1357,7 @@
     res1))
 
 
-;; grsp-frequency-absolute - Absolute frequency of a value in sample p_a1.
+;;;; grsp-frequency-absolute - Absolute frequency of a value in sample p_a1.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -1444,7 +1444,7 @@
     res1))
 
 
-;; grsp-mode - Mode.
+;;;; grsp-mode - Mode.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -1503,7 +1503,7 @@
     res1))
 
 
-;; grsp-poisson-pmf - Probability mass function, Poisson distribution.
+;;;; grsp-poisson-pmf - Probability mass function, Poisson distribution.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -1525,7 +1525,7 @@
     res1))
 
 
-;; grsp-poisson-kurtosis - Kurtosis, Poisson distribution.
+;;;; grsp-poisson-kurtosis - Kurtosis, Poisson distribution.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -1544,7 +1544,7 @@
     res1))
 
 
-;; grsp-poisson-skewness - Skwness, Poisson distribution.
+;;;; grsp-poisson-skewness - Skwness, Poisson distribution.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -1563,7 +1563,7 @@
     res1))
 
 
-;; grsp-poisson-fisher - Fisher information, Poisson distribution.
+;;;; grsp-poisson-fisher - Fisher information, Poisson distribution.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -1582,7 +1582,7 @@
     res1))
     
 
-;; grsp-gamma-mean1 - Mean, gamma distribution, parametrization k-t.
+;;;; grsp-gamma-mean1 - Mean, gamma distribution, parametrization k-t.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -1602,7 +1602,7 @@
     res1))
 
 
-;; grsp-gamma-mean2 - Mean, gamma distribution, parametrization a-b.
+;;;; grsp-gamma-mean2 - Mean, gamma distribution, parametrization a-b.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -1622,7 +1622,7 @@
     res1))
 
 
-;; grsp-gamma-variance1 - Variance, gamma distribution, parametrization k-t.
+;;;; grsp-gamma-variance1 - Variance, gamma distribution, parametrization k-t.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -1662,7 +1662,7 @@
     res1))
 
 
-;; grsp-gamma-kurtosis - Kurtosis, gamma distribution, parametrizationa k-t
+;;;; grsp-gamma-kurtosis - Kurtosis, gamma distribution, parametrizationa k-t
 ;; and a-b.
 ;;
 ;; Keywords:
@@ -1684,7 +1684,7 @@
     res1))
 
 
-;; grsp-gamma-skewness - Skewness, gamma distribution, parametrizationa k-t
+;;;; grsp-gamma-skewness - Skewness, gamma distribution, parametrizationa k-t
 ;; and a-b.
 ;;
 ;; Keywords:
@@ -1706,7 +1706,7 @@
     res1))
 
 
-;; grsp-gamma-mode1 - Mode, gamma distribution, parametrization k-t.
+;;;; grsp-gamma-mode1 - Mode, gamma distribution, parametrization k-t.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -1726,7 +1726,7 @@
     res1))
 
 
-;; grsp-gamma-mode2 - Mode, gamma distribution, parametrization a-b.
+;;;; grsp-gamma-mode2 - Mode, gamma distribution, parametrization a-b.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -1746,7 +1746,7 @@
     res1))
 
 
-;; grsp-gamma-pdf1 - Probability density function, gamma distribution,
+;;;; grsp-gamma-pdf1 - Probability density function, gamma distribution,
 ;; parametrization k-t.
 ;;
 ;; Keywords:
@@ -1789,7 +1789,7 @@
     res1))
 
 
-;; grsp-gamma-pdf2 - Probability density function, gamma distribution,
+;;;; grsp-gamma-pdf2 - Probability density function, gamma distribution,
 ;; parametrization a-b.
 ;;
 ;; Keywords:
@@ -1832,7 +1832,7 @@
     res1))
 
 
-;; grsp-gamma-cdf1 - Cumulative distribution function, gamma distribution,
+;;;; grsp-gamma-cdf1 - Cumulative distribution function, gamma distribution,
 ;; parametrization k-t.
 ;;
 ;; Keywords:
@@ -1870,7 +1870,7 @@
     res1))
 
 
-;; grsp-gamma-cdf2 - Cumulative distribution function, gamma distribution,
+;;;; grsp-gamma-cdf2 - Cumulative distribution function, gamma distribution,
 ;; parametrization a-b.
 ;;
 ;; Keywords:
@@ -1908,7 +1908,7 @@
     res1))
 
 
-;; grsp-gamma-mgf2 - Moment generating function, gamma distribution,
+;;;; grsp-gamma-mgf2 - Moment generating function, gamma distribution,
 ;; parametrization k-t.
 ;;
 ;; Keywords:
@@ -1930,7 +1930,7 @@
     res1))
 
 
-;; grsp-gamma-mgf2 - Moment generating function, gamma distribution,
+;;;; grsp-gamma-mgf2 - Moment generating function, gamma distribution,
 ;; parametrization a-b.
 ;;
 ;; Keywords:
@@ -1952,7 +1952,7 @@
     res1))
 
 
-;; grsp-erlang-mean - Mean, Erlang distribution.
+;;;; grsp-erlang-mean - Mean, Erlang distribution.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -1972,7 +1972,7 @@
     res1))
 
 
-;; grsp-erlang-mode - Mode, Erlang distribution.
+;;;; grsp-erlang-mode - Mode, Erlang distribution.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -2013,7 +2013,7 @@
     res1))
 
 
-;; grsp-erlang-kurtosis - Kurtosis, Erlang distribution.
+;;;; grsp-erlang-kurtosis - Kurtosis, Erlang distribution.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -2032,7 +2032,7 @@
     res1))
 
 
-;; grsp-erlang-skewness - Variance, Erlang distribution.
+;;;; grsp-erlang-skewness - Variance, Erlang distribution.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -2051,7 +2051,7 @@
     res1))
 
 
-;; grsp-erlang-pdf - Probability density function, Erlang distribution.
+;;;; grsp-erlang-pdf - Probability density function, Erlang distribution.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -2081,7 +2081,7 @@
     res1))
 
 
-;; grsp-erlang-cdf - Cumulative distribution function, Erlang distribution.
+;;;; grsp-erlang-cdf - Cumulative distribution function, Erlang distribution.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -2113,7 +2113,7 @@
     res1))
 
 
-;; grsp-erlang-variance - Moment generating function, Erlang distribution.
+;;;; grsp-erlang-variance - Moment generating function, Erlang distribution.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -2134,7 +2134,7 @@
     res1))
 
 
-;; grsp-erlang-scale - Scale, Erlang distribution.
+;;;; grsp-erlang-scale - Scale, Erlang distribution.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -2153,7 +2153,7 @@
     res1))
 
 
-;; grsp-normal-pdf - Probability density function, normal distribution.
+;;;; grsp-normal-pdf - Probability density function, normal distribution.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -2187,7 +2187,7 @@
     res1))
 
 
-;; grsp-normal-entropy - Entropy, normal distribution.
+;;;; grsp-normal-entropy - Entropy, normal distribution.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -2210,8 +2210,8 @@
     res1))
 
 
-;; grsp-normal-entropy-relative - Relative entropy, Kullback-Leibler divergence
-;; (DKL), normal distribution.
+;;;; grsp-normal-entropy-relative - Relative entropy, Kullback-Leibler 
+;; divergence (DKL), normal distribution.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -2246,7 +2246,7 @@
     res1))
   
 
-;; grsp-normal-fisher - Fisher infromation matrix, normal distribution.
+;;;; grsp-normal-fisher - Fisher infromation matrix, normal distribution.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -2268,7 +2268,7 @@
     res1))
 
 
-;; grsp-weibull-median - Median, Weibull distribution.
+;;;; grsp-weibull-median - Median, Weibull distribution.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -2288,7 +2288,7 @@
     res1))
 
 
-;; grsp-weibull-meam - Mean, Weibull distribution.
+;;;; grsp-weibull-meam - Mean, Weibull distribution.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -2311,7 +2311,7 @@
     res1))
 
 
-;; grsp-weibull-mode - Mode, Weibull distribution.
+;;;; grsp-weibull-mode - Mode, Weibull distribution.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -2332,7 +2332,7 @@
     res1))
 
 
-;; grsp-weibull-cdf - CDF, Weibull distribution.
+;;;; grsp-weibull-cdf - CDF, Weibull distribution.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -2356,7 +2356,7 @@
     res1))
 
 
-;; grsp-weibull-pdf - PDF, Weibull distribution.
+;;;; grsp-weibull-pdf - PDF, Weibull distribution.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -2384,7 +2384,7 @@
     res1))
 
 
-;; grsp-weibull-entropy - Entropy, Weibull distribution.
+;;;; grsp-weibull-entropy - Entropy, Weibull distribution.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -2406,7 +2406,7 @@
     res1))
 
 
-;; grsp-weibull-variance - Variance, Weibull distribution.
+;;;; grsp-weibull-variance - Variance, Weibull distribution.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -2439,7 +2439,7 @@
     res1))
 
 
-;; grsp-weibull-skewness - Skewness, Weibull distribution.
+;;;; grsp-weibull-skewness - Skewness, Weibull distribution.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -2481,7 +2481,7 @@
     res1))
 
 
-;; grsp-weibull-mgf - Moment generating function, Weibull distribution.
+;;;; grsp-weibull-mgf - Moment generating function, Weibull distribution.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -2517,7 +2517,7 @@
     res1))
 
 
-;; grsp-weibull-cf - Characteristic function, Weibull distribution.
+;;;; grsp-weibull-cf - Characteristic function, Weibull distribution.
 ;;
 ;; Keywords:
 ;; - statistics, probability.

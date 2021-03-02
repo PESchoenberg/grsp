@@ -25,7 +25,7 @@
 ;; =============================================================================
 
 
-;; General notes:
+;;;; General notes:
 ;; - Read sources for limitations on function parameters.
 ;;
 ;; Sources:
@@ -61,7 +61,7 @@
 	    grsp-placebo))
 
 
-;; pline - Displays character p_n p_m times in one line at the console.
+;;;; pline - Displays character p_n p_m times in one line at the console.
 ;;
 ;; Keywords:
 ;; - console, strings.
@@ -82,7 +82,7 @@
 	         (loop (+ i1 1)))))))
 
 
-;; ptit - Displays a console title with one or two lines.
+;;;; ptit - Displays a console title with one or two lines.
 ;;
 ;; Keywords:
 ;; - console, strings.
@@ -104,7 +104,7 @@
   (newline))
 
 
-;; newlines - Repeats function newline p_n times.
+;;;; newlines - Repeats function newline p_n times.
 ;;
 ;; Keywords:
 ;; - console, strings.
@@ -119,7 +119,7 @@
 	       (loop (+ i1 1))))))
 
 
-;; clear - Clears the shell by inserting 100 blank lines.
+;;;; clear - Clears the shell by inserting 100 blank lines.
 ;;
 ;; Keywords:
 ;; - console, strings.
@@ -128,7 +128,7 @@
   (newlines 100))
 
 
-;; pres - Display results.
+;;;; pres - Display results.
 ;;
 ;; Keywords:
 ;; - console, strings.
@@ -145,7 +145,7 @@
       (newline)))
 
 
-;; newspaces - Adds p_n blank spaces to string p_l.
+;;;; newspaces - Adds p_n blank spaces to string p_l.
 ;;
 ;; Keywords:
 ;; - console, strings.
@@ -177,8 +177,8 @@
       res1))
 
 
-;; strings-append - Appends strings entered in a list as one larger string. Use 
-;; it to avoid complex, nested calls to string-append when you have to join 
+;;;; strings-append - Appends strings entered in a list as one larger string.
+;; Use it to avoid complex, nested calls to string-append when you have to join 
 ;; several strings into one.
 ;;
 ;; Keywords:
@@ -208,7 +208,7 @@
     res1))
 
 
-;; read-file-as-string - Reads a file as a string; adapted from an example 
+;;;; read-file-as-string - Reads a file as a string; adapted from an example 
 ;; from sources indicated below. The string will be formatted and include 
 ;; characters such as \n and \r. What this does in practice is to read a 
 ;; file and return it as one single string. 
@@ -233,7 +233,7 @@
 	    (loop (cons c1 ls1) (read-char p1)))))))
 
 
-;; grsp-lang-effective-version - Checks if currently instaled GNU Guile's
+;;;; grsp-lang-effective-version - Checks if currently instaled GNU Guile's
 ;; effective version is less, equal or higher than value of the version
 ;; argument vakue.
 ;;
@@ -264,7 +264,7 @@
     res1))
 
 
-;; grsp-test - A simple test function.
+;;;; grsp-test - A simple test function.
 ;;
 ;; Keywords:
 ;; - console, strings.
@@ -273,7 +273,7 @@
   (grsp-ld "grsp-test"))
 	      
 
-;; grsp-save-to-file - Saves a string to file p_f1.   
+;;;; grsp-save-to-file - Saves a string to file p_f1.   
 ;;
 ;; Keywords:
 ;; - console, strings.
@@ -313,8 +313,8 @@
     res1))
 
 
-;; grsp-s2n - A convenience function, shorter to write than string->number that
-;; performs the same function. That is, to convert a string to a number.
+;;;; grsp-s2n - A convenience function, shorter to write than string->number 
+;; that performs the same function. That is, to convert a string to a number.
 ;;
 ;; Keywords:
 ;; - console, strings.
@@ -330,7 +330,7 @@
     res1))
 
 
-;; grsp-sqlp - Calls sqlp to access Sqlite3 or HDF5 databases from within a  
+;;;; grsp-sqlp - Calls sqlp to access Sqlite3 or HDF5 databases from within a  
 ;; Guile program. Requires sqlp to be installed.
 ;;
 ;; Keywords:
@@ -349,7 +349,7 @@
   (system (strings-append (list p_p1 p_d1 p_s1 p_a1) 1)))
 
 
-;; grsp-ld - Line and display. Displays a string after a newline.
+;;;; grsp-ld - Line and display. Displays a string after a newline.
 ;;
 ;; Keywords:
 ;; - console, strings.
@@ -362,7 +362,7 @@
   (display p_s1))
 
 
-;; grsp-cd - Same as grsp-ld, but performs a clear instead of newline, meaning
+;;;; grsp-cd - Same as grsp-ld, but performs a clear instead of newline, meaning
 ;; that it clears the screen or console instead of just adding a line break.
 ;;
 ;; Keywords:
@@ -376,7 +376,7 @@
   (display p_s1))
 
 
-;; grsp-ask - Input query.
+;;;; grsp-ask - Input query.
 ;;
 ;; Keywords:
 ;; - console, strings.
@@ -397,7 +397,7 @@
     res1))
 
   
-;; grsp-placebo - This function is a placebo.
+;;;; grsp-placebo - This function is a placebo.
 ;;
 ;; Keywords:
 ;; - console, strings.

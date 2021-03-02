@@ -24,7 +24,7 @@
 ;; =============================================================================
 
 
-;; General notes:
+;;;; General notes:
 ;; - Read sources for limitations on function parameters.
 ;;
 ;; Sources:
@@ -107,8 +107,8 @@
 	    grsp-grav-somigliana))
 
 
-;; grsp-ds - Calculate intervals in Euclidean space or Minkowski spacetime (norm
-;; of a time-like vector).
+;;;; grsp-ds - Calculate intervals in Euclidean space or Minkowski spacetime
+;; (norm of a time-like vector).
 ;;
 ;; Keywords:
 ;; - relativity.
@@ -164,7 +164,7 @@
     res1))
 
 
-;; grsp-lorentz-factor - Calculates gamma, or Lorentz factor.
+;;;; grsp-lorentz-factor - Calculates gamma, or Lorentz factor.
 ;;
 ;; Keywords:
 ;; - relativity.
@@ -183,7 +183,7 @@
     res1))
 
 
-;; grsp-time-dilation - Calculates time t' from t at a given position x in
+;;;; grsp-time-dilation - Calculates time t' from t at a given position x in
 ;; same inertial frame
 ;;
 ;; Keywords:
@@ -204,7 +204,7 @@
     res1))
 
 
-;; grsp-length-contraction - Calculates length contraction under relativistic
+;;;; grsp-length-contraction - Calculates length contraction under relativistic
 ;; conditions.
 ;;
 ;; Keywords:
@@ -225,7 +225,7 @@
     res1))
 
 
-;; grsp-lorentz-transf-x - Lorentz transformations (x).
+;;;; grsp-lorentz-transf-x - Lorentz transformations (x).
 ;;
 ;; Keywords:
 ;; - relativity.
@@ -259,7 +259,7 @@
     res1))
 
 
-;; grsp-beta - Calculates the beta term of the Lortentz factor.
+;;;; grsp-beta - Calculates the beta term of the Lortentz factor.
 ;;
 ;; Keywords:
 ;; - relativity.
@@ -278,7 +278,7 @@
     res1))
 
 
-;; grsp-velocity - Calculates velocity on one axis.
+;;;; grsp-velocity - Calculates velocity on one axis.
 ;;
 ;; Keywords:
 ;; - dynamics.
@@ -297,7 +297,7 @@
     res1))
 
 
-;; grsp-acceleration - Calculates acceleration on one axis.
+;;;; grsp-acceleration - Calculates acceleration on one axis.
 ;;
 ;; Keywords:
 ;; - dynamics.
@@ -316,7 +316,7 @@
     res1))    
 
 
-;; grsp-frequency-observed - Calculates the observed frequency.
+;;;; grsp-frequency-observed - Calculates the observed frequency.
 ;;
 ;; Keywords:
 ;; - waves.
@@ -339,7 +339,7 @@
     res1))
 
 
-;; grsp-frequency-emitted - Calculates the emitted frequency.
+;;;; grsp-frequency-emitted - Calculates the emitted frequency.
 ;;
 ;; Keywords:
 ;; - waves.
@@ -362,7 +362,7 @@
     res1))
 
 
-;; grsp-frequency-osrel - Observer - source relationship.
+;;;; grsp-frequency-osrel - Observer - source relationship.
 ;;
 ;; Keywords:
 ;; - waves.
@@ -404,7 +404,7 @@
     res1))
 	
 
-;; grsp-redshift - Calculates redshift based on wavelength or frequency.
+;;;; grsp-redshift - Calculates redshift based on wavelength or frequency.
 ;;
 ;; Keywords:
 ;; - waves.
@@ -430,7 +430,7 @@
     res1))
 
 
-;; grsp-velocity-un - Calculates velocity as distance / time.
+;;;; grsp-velocity-un - Calculates velocity as distance / time.
 ;;
 ;; Keywords:
 ;; - dynamics.
@@ -447,7 +447,7 @@
     res1))
 
 
-;; grsp-velocity-ac - Calculates velocity as acceleration * time.
+;;;; grsp-velocity-ac - Calculates velocity as acceleration * time.
 ;;
 ;; Keywords:
 ;; - dynamics.
@@ -464,7 +464,7 @@
     res1))
 
 
-;; grsp-distance-parallax - Measures the distance (PC) to a star.
+;;;; grsp-distance-parallax - Measures the distance (PC) to a star.
 ;;
 ;; Keywords:
 ;; - astro.
@@ -480,7 +480,7 @@
     res1))
 
 
-;; grsp-particle-mass - Energy of a particle.
+;;;; grsp-particle-mass - Energy of a particle.
 ;;
 ;; Keywords:
 ;; - relativity.
@@ -498,8 +498,8 @@
     res1))
 
 
-;; grsp-sgp=mass - Calculates the standard gravitational parameter of a body of
-;; mass m1.
+;;;; grsp-sgp-mass - Calculates the standard gravitational parameter of a body
+;; of mass m1.
 ;;
 ;; Keywords:
 ;; - relativity, astro.
@@ -518,8 +518,8 @@
     res1))
 
 
-;; grsp-sgp=mass - Calculates the standard gravitational parameter of a body at
-;; relative distance p_a1 and orbital period p_t1.
+;;;; grsp-sgp=mass - Calculates the standard gravitational parameter of a body
+;; at relative distance p_a1 and orbital period p_t1.
 ;;
 ;; Keywords:
 ;; - relativity, astro.
@@ -541,7 +541,7 @@
     res1))
 
 	  
-;; grsp-effective-exhaust-velocity - Calculates eev.
+;;;; grsp-effective-exhaust-velocity - Calculates eev.
 ;;
 ;; Keywords:
 ;; - dynamics, astro.
@@ -560,7 +560,7 @@
     res1))
 
 
-;; grsp-ideal-rocket - Ideal rocket equation.
+;;;; grsp-ideal-rocket - Ideal rocket equation.
 ;;
 ;; Keywords:
 ;; - dynamics, astro.
@@ -582,7 +582,7 @@
     res1))
 
 
-;; grsp-grav-earth-lat - Gravity on Earth as a function of latitude.
+;;;; grsp-grav-earth-lat - Gravity on Earth as a function of latitude.
 ;;
 ;; Keywords:
 ;; - astro.
@@ -605,7 +605,7 @@
     res1))
 
 
-;; grsp-grav-earth-alt - Gravity on Earth as a function of altitude.
+;;;; grsp-grav-earth-alt - Gravity on Earth as a function of altitude.
 ;;
 ;; Keywords:
 ;; - astro.
@@ -624,7 +624,7 @@
     res1))
 
 
-;; grsp-grav-radius - Gravity on a body of radius p_pr1 and mass p_m1.
+;;;; grsp-grav-radius - Gravity on a body of radius p_pr1 and mass p_m1.
 ;;
 ;; Keywords:
 ;; - astro.
@@ -642,7 +642,7 @@
     res1))
 
 
-;; grsp-grav-ifor - International gravity formula.
+;;;; grsp-grav-ifor - International gravity formula.
 ;;
 ;; Keywords:
 ;; - astro.
@@ -663,7 +663,7 @@
     res1))
 
 
-;; grsp-grav-iforh - International gravity formula + height.
+;;;; grsp-grav-iforh - International gravity formula + height.
 ;;
 ;; Keywords:
 ;; - astro.
@@ -686,7 +686,7 @@
     res1))
 
 
-;; grsp-grav-somigliana - Somigliana equation.
+;;;; grsp-grav-somigliana - Somigliana equation.
 ;;
 ;; Keywords:
 ;; - astro.
@@ -717,3 +717,4 @@
 		  (/ (+ 1 (* k s)) (sqrt (- 1 (* e s))))))
     
     res1))
+
