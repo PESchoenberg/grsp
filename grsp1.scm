@@ -24,7 +24,7 @@
 ;; =============================================================================
 
 
-;; General notes:
+;;;; General notes:
 ;; - Read sources for limitations on function parameters.
 ;;
 
@@ -33,7 +33,7 @@
   #:export (gconst))
 	    
 
-;; gconst - Various constants.
+;;;; gconst - Various constants.
 ;;
 ;; Arguments:
 ;; - p_n1: constant name, string.
@@ -48,8 +48,8 @@
 ;;   function. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Particular_values_of_the_Riemann_zeta_function
 ;;   [Accessed 1 Jan. 2020].
-;; - [4] En.wikipedia.org. (2020). Names of large numbers. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Names_of_large_numbers#The_googol_family
+;; - [4] En.wikipedia.org. (2020). Names of large numbers. [online] Available 
+;;   at: https://en.wikipedia.org/wiki/Names_of_large_numbers#The_googol_family
 ;;   [Accessed 1 Jan. 2020].
 ;; - [5] En.wikipedia.org. (2020). Power of 10. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Power_of_10 [Accessed 1 Jan. 2020].
@@ -75,7 +75,8 @@
 ;; - [13] En.wikipedia.org. 2020. Energy Density. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Energy_density [Accessed 30 September 2020].
 ;; - [14] En.wikipedia.org. 2020. Standard Gravity. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Standard_gravity [Accessed 30 September 2020].
+;;   https://en.wikipedia.org/wiki/Standard_gravity [Accessed 30 September
+;;   2020].
 ;; - [15] En.wikipedia.org. 2021. Gravitational acceleration. [online]
 ;;   Available at: <https://en.wikipedia.org/wiki/Gravitational_acceleration
 ;;   [Accessed 13 February 2021].
@@ -117,7 +118,7 @@
 ;;   [Accessed 4 November 2020].
 
 
-;; gconst - Constants.
+;;;; gconst - Constants.
 ;;
 ;; Keywords:
 ;; - constants.
@@ -950,11 +951,13 @@
 	  ((equal? p_n1 "AU Sedna")
 	   (set! res 525.86))
 
-          ;; Mean distance from the Sun to the inner limit of the Kuiper belt (AU) [8][9].
+          ;; Mean distance from the Sun to the inner limit of the Kuiper belt
+	  ;; (AU) [8][9].
 	  ((equal? p_n1 "Inner Kuiper belt")
 	   (set! res 30.00))
 
-          ;; Distance (est) from the Sun to the outer limit of the Oort cloud (AU) [8][9].
+          ;; Distance (est) from the Sun to the outer limit of the Oort cloud
+	  ;; (AU) [8][9].
 	  ((equal? p_n1 "Outer Oort cloud")
 	   (set! res 75000))
 

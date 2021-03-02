@@ -24,7 +24,7 @@
 ;; =============================================================================
 
 
-;; General notes:
+;;;; General notes:
 ;; - Read sources for limitations on function parameters.
 ;; - grsp3 provides some level of matrix algebra functionality for Guile, but in
 ;;   its current version it is not intended to be particulary fast. It does not 
@@ -44,8 +44,8 @@
 ;;   [Accessed 28 Jan. 2020].
 ;; - [4] En.wikipedia.org. (2020). List of matrices. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/List_of_matrices [Accessed 8 Mar. 2020].
-;; - [5] Gnu.org. (2020). Random (Guile Reference Manual). [online] Available at:
-;;   https://www.gnu.org/software/guile/manual/html_node/Random.html
+;; - [5] Gnu.org. (2020). Random (Guile Reference Manual). [online] Available
+;;   at: https://www.gnu.org/software/guile/manual/html_node/Random.html
 ;;   [Accessed 26 Jan. 2020].
 ;; - [6] Es.wikipedia.org. (2020). Factorización LU. [online] Available at:
 ;;   https://es.wikipedia.org/wiki/Factorizaci%C3%B3n_LU
@@ -74,8 +74,19 @@
 ;;   https://en.wikipedia.org/wiki/Eigenvalue_algorithm
 ;;   [Accessed 12 August 2020].
 
-;; REPL examples:
-;; (use-modules (grsp grsp0)(grsp grsp1)(grsp grsp2)(grsp grsp3)(grsp grsp4)(grsp grsp5)(grsp grsp6)(grsp grsp7)(grsp grsp8))
+
+;; Compilation and REPL examples:
+;;(use-modules (grsp grsp0)
+;;	     (grsp grsp1)
+;;	     (grsp grsp2)
+;;	     (grsp grsp3)
+;;	     (grsp grsp4)
+;;	     (grsp grsp5)
+;;	     (grsp grsp6)
+;;	     (grsp grsp7)
+;;	     (grsp grsp8)
+;;           (grsp grsp9))
+;;
 ;; (define X (grsp-matrix-create 1 4 4))
 ;; (define Y (grsp-matrix-create 2 4 4))
 ;; (define R (grsp-matrix-opew "#+" X Y))
@@ -147,7 +158,7 @@
 	    grsp-matrix-select))
 
 
-;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
+;;;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
 ;;
 ;; Arguments:
 ;; - p_e1: number indicating the element value desired.
@@ -181,8 +192,8 @@
     res1))
   
 
-;; grsp-matrix-create - Creates a p_m1 x p_n1 matrix and fills it with element  
-;; value p_s1.
+;;;; grsp-matrix-create - Creates an p_m1 x p_n1 matrix and fills it with
+;; element value p_s1.
 ;;
 ;; Arguments:
 ;; - p_s1: matrix type or element that will fill it initially.
@@ -382,8 +393,9 @@
 				(set! j1 0)
 				(while (< j1 n1)
 
-				       ;; Non-recursive calculation of Fibonacci terms in
-				       ;; order to fill the matrix easily.
+				       ;; Non-recursive calculation of Fibonacci
+				       ;; terms in order to fill the matrix
+				       ;; easily.
 				       (cond ((equal? s1 0)
 					      (set! p0 0)
 					      (set! s1 1))
@@ -483,8 +495,8 @@
     res1))
 
 
-;; grsp-matrix-change - Changes the value to p_v2 where the value of a matrix's
-;; element equals p_v1.
+;;;; grsp-matrix-change - Changes the value to p_v2 where the value of a
+;; matrix's element equals p_v1.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix to operate on.
@@ -527,8 +539,8 @@
     res1))
 
 
-;; grsp-matrix-find - Find all occurrences of p_v1 in matrix p_a1 that statisfy 
-;; condition p_s1.
+;;;; grsp-matrix-find - Find all occurrences of p_v1 in matrix p_a1 that
+;; statisfy condition p_s1.
 ;;
 ;; Arguments:
 ;; - p_s1: search criteria.
@@ -623,8 +635,8 @@
     res1))
     
 
-;; grsp-matrix-transpose - Transposes a matrix of shape m x n into another with
-;; shape n x m.
+;;;; grsp-matrix-transpose - Transposes a matrix of shape m x n into another
+;; with shape n x m.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix to be transposed.
@@ -663,7 +675,7 @@
     res2))
 
 
-;; grsp-matrix-conjugate - Calculates the conjugate matrix of p_a1.
+;;;; grsp-matrix-conjugate - Calculates the conjugate matrix of p_a1.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -677,7 +689,7 @@
     res2))
 
 
-;; grsp-matrix-transpose-conjugate - Calculates the transpose conjugate matrix
+;;;; grsp-matrix-transpose-conjugate - Calculates the transpose conjugate matrix
 ;; of p_a1.
 ;;
 ;; Arguments:
@@ -692,7 +704,7 @@
     res2))
 
 
-;; grsp-matrix-opio - Internal operations that produce a scalar result.
+;;;; grsp-matrix-opio - Internal operations that produce a scalar result.
 ;;
 ;; Arguments;
 ;; - p_s1: string representing the desired operation.
@@ -838,8 +850,8 @@
     res2))
 
 
-;; grsp-matrix-opsc - Performs an operation p_s1 between matrix p_a1 and scalar
-;; p_v1 or a discrete operation on p_a1.
+;;;; grsp-matrix-opsc - Performs an operation p_s1 between matrix p_a1 and
+;; scalar p_v1 or a discrete operation on p_a1.
 ;;
 ;; Arguments:
 ;; - p_s: scalar operation.
@@ -855,10 +867,10 @@
 ;;      normal distribution with mean 0.0 and standard deviation equal to p_v1.
 ;;   - "#si": applies (grsp-complex-inv "#si" z1) to each element z1 of p_a1
 ;;     (complex conjugate).
-;;   - "#is": applies (grsp-complex-inv "#is" z1) to each element z1 of p_a1 (sign
-;;     inversion of real element of compelx number).
-;;   - "#ii": applies (grsp-complex-inv "#ii" z1) to each element z1 of p_a1 (sign
-;;     inversion of both elements of a complex number).
+;;   - "#is": applies (grsp-complex-inv "#is" z1) to each element z1 of p_a1
+;;     (sign inversion of real element of compelx number).
+;;   - "#ii": applies (grsp-complex-inv "#ii" z1) to each element z1 of p_a1
+;;     (sign inversion of both elements of a complex number).
 ;; - p_a1: matrix.
 ;; - p_v1: scalar value.
 ;;
@@ -925,8 +937,8 @@
     res2))
 
 
-;; grsp-matrix-opew - Performs element-wise operation p_s1 between matrices p_a1
-;; and p_a2.
+;;;; grsp-matrix-opew - Performs element-wise operation p_s1 between matrices
+;; p_a1 and p_a2.
 ;;
 ;; Arguments:
 ;; - p_s1: operation described as a string:
@@ -963,7 +975,7 @@
     (set! hn1 (grsp-matrix-esi 4 res1))
     
     ;; Create holding matrix.
-    (set! res3 (grsp-matrix-create res3 (+ (- hm1 ln1) 1) (+ (- hn1 ln1) 1)))    
+    (set! res3 (grsp-matrix-create res3 (+ (- hm1 ln1) 1) (+ (- hn1 ln1) 1)))
 
     ;; Apply bitwise operation.
     (set! i1 lm1)		 
@@ -990,7 +1002,7 @@
     res3))
 
 
-;; grsp-matrix-opfn - Applies function p_s to all elements of p_a1.
+;;;; grsp-matrix-opfn - Applies function p_s to all elements of p_a1.
 ;;
 ;; Arguments:
 ;; - p_s1: function as per sources, described as a string:
@@ -1104,7 +1116,7 @@
     res3))
 
 
-;; grsp-matrix-opmm - Performs operation p_s1 between matrices p_a1 and p_a2.
+;;;; grsp-matrix-opmm - Performs operation p_s1 between matrices p_a1 and p_a2.
 ;;
 ;; Arguments:
 ;; - p_s1: operation described as a string:
@@ -1200,7 +1212,7 @@
     res3))
 
 
-;; grsp-matrix-cpy - Copies matrix p_a1, element wise.
+;;;; grsp-matrix-cpy - Copies matrix p_a1, element wise.
 ;;
 ;; Arguments:
 ;; p_a1: matrix to be copied.
@@ -1227,7 +1239,7 @@
     res1))
 
 
-;; grsp-matrix-subcpy - Extracts a block or sub matrix from matrix p_a1. The
+;;;; grsp-matrix-subcpy - Extracts a block or sub matrix from matrix p_a1. The
 ;; process is not destructive with regards to p_a1. The user is responsible for
 ;; providing correct boundaries since the function does not check those
 ;; parameters in relation to p_a1.
@@ -1265,7 +1277,7 @@
     res2))
 
 
-;; grsp-matrix-subrep - Replaces a submatrix or section of matrix p_a1 with 
+;;;; grsp-matrix-subrep - Replaces a submatrix or section of matrix p_a1 with 
 ;; matrix p_a2.
 ;; 
 ;; Arguments:
@@ -1316,7 +1328,7 @@
     res1))
 
 
-;; grsp-matrix-subdcn - Deletes row from matrix p_a1 that fulfills condition
+;;;; grsp-matrix-subdcn - Deletes row from matrix p_a1 that fulfills condition
 ;; p_s2 for column p_j1 with regards to value p_n2.
 ;;
 ;; Arguments:
@@ -1395,7 +1407,7 @@
     res1))
 
 
-;; grsp-matrix-subdel - Deletes column or row p_n1 from matrix p_a1.
+;;;; grsp-matrix-subdel - Deletes column or row p_n1 from matrix p_a1.
 ;;
 ;; Arguments:
 ;; - p_s1: string describing the required operation.
@@ -1457,7 +1469,8 @@
 		  (set! ln4 (grsp-matrix-esi 3 res4))
 		  (set! hn4 (grsp-matrix-esi 4 res4))
 
-		  ;; Expand the third submatrix in order to paste to the fourh one.		    
+		  ;; Expand the third submatrix in order to paste to the fourh
+		  ;; one.		    
 		  (set! res3 (grsp-matrix-subexp res3 (+ 1 (- hm4 lm4)) 0))		  
 		  
 		  ;; Move the data of the fourth submatrix to the expanded part 
@@ -1467,7 +1480,7 @@
     res2))
 
 
-;; grsp-matrix-subexp - Add p_am1 rows and p_an1 cols to a matrix p_a1,
+;;;; grsp-matrix-subexp - Add p_am1 rows and p_an1 cols to a matrix p_a1,
 ;; increasing its size.
 ;;
 ;; Arguments:
@@ -1506,7 +1519,7 @@
     res2))
 
 
-;; grsp-matrix-is-equal - Returns #t if matrix p_a1 is equal to matrix p_a2.
+;;;; grsp-matrix-is-equal - Returns #t if matrix p_a1 is equal to matrix p_a2.
 ;; 
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -1565,7 +1578,7 @@
     res3))
 
 
-;; grsp-matrix-is-square - Returns #t if matrix p_a1 is square (i.e. m x m).
+;;;; grsp-matrix-is-square - Returns #t if matrix p_a1 is square (i.e. m x m).
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -1591,7 +1604,7 @@
     res2))
 
 
-;; grsp-matrix-is-symmetric - Returns #t if p_a1 is a symmetrix matrix. #f 
+;;;; grsp-matrix-is-symmetric - Returns #t if p_a1 is a symmetrix matrix. #f 
 ;; otherwise.
 ;;
 ;; Arguments:
@@ -1609,7 +1622,7 @@
     res1))
 
 
-;; grsp-matrix-is-diagonal - Returns #t if p_a1 is a square diagonal matrix,
+;;;; grsp-matrix-is-diagonal - Returns #t if p_a1 is a square diagonal matrix,
 ;; #f otherise.
 ;;
 ;; Arguments:
@@ -1647,7 +1660,7 @@
     res1))
 
 
-;; grsp-matrix-is-hermitian - Returns #t if p_a1 is equal to its conjugate 
+;;;; grsp-matrix-is-hermitian - Returns #t if p_a1 is equal to its conjugate 
 ;; transpose.
 ;;
 ;; Arguments:
@@ -1663,7 +1676,7 @@
     res1))
 
 
-;; grsp-matrix-is-binary - Returns #t if p_a1 contains only values 0 or 1.
+;;;; grsp-matrix-is-binary - Returns #t if p_a1 contains only values 0 or 1.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -1678,7 +1691,7 @@
     res1))
 
 
-;; grsp-matrix-is-nonnegative - Returns #t if p_a1 contains only values >= 0.
+;;;; grsp-matrix-is-nonnegative - Returns #t if p_a1 contains only values >= 0.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -1692,7 +1705,7 @@
     res1))
 
 
-;; grsp-matrix-is-positive - Returns #t if p_a1 contains only values > 0.
+;;;; grsp-matrix-is-positive - Returns #t if p_a1 contains only values > 0.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -1706,8 +1719,8 @@
     res1))
 
 
-;; grsp-matrix-row-opar - Finds the inverse multiple res1 of p_a1[p_m2, p_n2] so
-;; that p_a1[p_m2, p_n2] + ( p_a1[p_m1, p_n1] * res1 ) = 0
+;;;; grsp-matrix-row-opar - Finds the inverse multiple res1 of p_a1[p_m2, p_n2]
+;; so that p_a1[p_m2, p_n2] + ( p_a1[p_m1, p_n1] * res1 ) = 0
 ;;
 ;; or
 ;;
@@ -1747,7 +1760,7 @@
     res1))
 
 
-;; grsp-matrix-row-opmm - Replaces the value of element p_a1[p_m1, p_n1] with
+;;;; grsp-matrix-row-opmm - Replaces the value of element p_a1[p_m1, p_n1] with
 ;; ( p_a1[p_m1, p_n1] * p_a2[p_m2, p_n2] ).
 ;;
 ;; Arguments:
@@ -1770,7 +1783,7 @@
 		      (array-ref p_a2 p_m2 p_n2)) p_m1 p_n1))
 
 
-;; grsp-matrix-row-opsc - Performs operation p_s1 between all elements
+;;;; grsp-matrix-row-opsc - Performs operation p_s1 between all elements
 ;; belonging to row p_m1 of matrix p_a1 and scalar p_v1.
 ;;
 ;; Arguments:
@@ -1809,7 +1822,7 @@
 	   (set! j1 (+ j1 1)))))
 
 
-;; grsp-matrix-row-opsw - Swaps rows p_m1 and p_m2 in matrix p_a1.
+;;;; grsp-matrix-row-opsw - Swaps rows p_m1 and p_m2 in matrix p_a1.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -1847,7 +1860,7 @@
     (set! p_a1 (grsp-matrix-subrep p_a1 res3 p_m1 ln1))))
 
 
-;; grsp-matrix-decompose - Applies decomposition p_s1 to matrix p_a1.
+;;;; grsp-matrix-decompose - Applies decomposition p_s1 to matrix p_a1.
 ;;
 ;; Arguments:
 ;; - p_s1: decomposition type.
@@ -1905,7 +1918,7 @@
     res2))
 
 
-;; grsp-matrix-density - Returns the density value of matrix p_a1.
+;;;; grsp-matrix-density - Returns the density value of matrix p_a1.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -1944,7 +1957,7 @@
     res2))
 
 
-;; grsp-matrix-is-sparse - Returns #t if matrix density of p_a1 is < 0.5, #f
+;;;; grsp-matrix-is-sparse - Returns #t if matrix density of p_a1 is < 0.5, #f
 ;; otherwise.
 ;;
 ;; Arguments:
@@ -1959,7 +1972,7 @@
     res1))
 
 
-;; grsp-matrix-is-symmetric-md - Returns #t if matrix p_a1 is symmetric along 
+;;;; grsp-matrix-is-symmetric-md - Returns #t if matrix p_a1 is symmetric along 
 ;; its main diagonal, #f otherwise.
 ;;
 ;; Arguments:
@@ -1987,7 +2000,8 @@
 	   (while (<= i1 hm1)
 		  (set! j1 ln1)
 		  (while (<= j1 hn1)
-			 (cond ((equal? (array-ref p_a1 i1 j1) (array-ref p_a1 j1 i1))
+			 (cond ((equal? (array-ref p_a1 i1 j1)
+					(array-ref p_a1 j1 i1))
 				(set! d1 (+ d1 1))))
 			 (set! j1 (+ j1 1)))
 		  (set! i1 (+ i1 1)))
@@ -1998,7 +2012,7 @@
     res1))
 
 
-;; grsp-matrix-total-elements - Calculates the number of elements in matrix
+;;;; grsp-matrix-total-elements - Calculates the number of elements in matrix
 ;; p_a1.
 ;;
 ;; Arguments:
@@ -2022,7 +2036,7 @@
     res1))
 
 
-;; grsp-matrix-total-element - Count the number of ocurrences of p_v1 in p_a1.
+;;;; grsp-matrix-total-element - Count the number of ocurrences of p_v1 in p_a1.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -2054,7 +2068,7 @@
     res1))
 
     
-;; grsp-matrix-is-hadamard - Returns #t if matrix p_a1 is of Hadamard type, #f
+;;;; grsp-matrix-is-hadamard - Returns #t if matrix p_a1 is of Hadamard type, #f
 ;; otherwise.
 ;;
 ;; Arguments:
@@ -2076,7 +2090,7 @@
     res1))
 	   
 
-;; grsp-matrix-is-markov - Returns #t if matrix p_a1 is of Markov type, #f
+;;;; grsp-matrix-is-markov - Returns #t if matrix p_a1 is of Markov type, #f
 ;; otherwise.
 ;;
 ;; Arguments:
@@ -2114,8 +2128,8 @@
     res1))
 
 
-;; grsp-matrix-is-signature - Returns #t if matrix p_a1 is of signature type, #f
-;; otherwise.
+;;;; grsp-matrix-is-signature - Returns #t if matrix p_a1 is of signature
+;; type, #f otherwise.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -2153,7 +2167,7 @@
     res1))
 
 
-;; grsp-matrix-is-single-entry - Returns #t if matrix p_a1 is of single entry 
+;;;; grsp-matrix-is-single-entry - Returns #t if matrix p_a1 is of single entry 
 ;; type for value p_v1, #f otherwise.
 ;;
 ;; Arguments:
@@ -2164,13 +2178,14 @@
   (let ((res1 #f))
 
     (cond ((equal? (grsp-matrix-total-element p_a1 p_v1) 1)
-	   (cond ((equal? (- (grsp-matrix-total-elements p_a1) 1) (grsp-matrix-total-element p_a1 0))
+	   (cond ((equal? (- (grsp-matrix-total-elements p_a1) 1)
+			  (grsp-matrix-total-element p_a1 0))
 		  (set! res1 #t)))))
 
     res1))
 
 
-;; grsp-matrix-identify - Returns #t if matrix p_a1 is of type p_s1. This 
+;;;; grsp-matrix-identify - Returns #t if matrix p_a1 is of type p_s1. This 
 ;; function aggregates several specific identification functions into one
 ;; single interface.
 ;;
@@ -2271,7 +2286,7 @@
     res1))
 
 
-;; grsp-matrix-is-metzler - Returns #t if matrix p_a1 is of Metzler type, #f
+;;;; grsp-matrix-is-metzler - Returns #t if matrix p_a1 is of Metzler type, #f
 ;; otherwise.
 ;;
 ;; Arguments:
@@ -2308,7 +2323,7 @@
     res1))
     
 
-;; grsp-l2m - Casts a list p_l1 of n elements as a 1 x n matrix.
+;;;; grsp-l2m - Casts a list p_l1 of n elements as a 1 x n matrix.
 ;;
 ;;  Arguments:
 ;;  p_l1: list.
@@ -2326,7 +2341,7 @@
     res1))
     
 
-;; grsp-m2l - Casts a 1 x n matrix p_a1 as a list of n elements.
+;;;; grsp-m2l - Casts a 1 x n matrix p_a1 as a list of n elements.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -2354,7 +2369,7 @@
     res1))
 
 
-;; grsp-m2v - Casts a matrix p_a1 of m x n elements as a 1 x (m x n) vector.
+;;;; grsp-m2v - Casts a matrix p_a1 of m x n elements as a 1 x (m x n) vector.
 ;;
 ;;  Arguments:
 ;;  p_a1: matrix.
@@ -2391,7 +2406,7 @@
     res1))
 
 
-;; grsp-dbc2cm - Fills a matrix of complex or complex-subset numbers with the
+;;;; grsp-dbc2cm - Fills a matrix of complex or complex-subset numbers with the
 ;; contents of a database containing serialized complex or complex-subset
 ;; numbers.
 ;;
@@ -2405,7 +2420,7 @@
     res1))
 
 
-;; grsp-mc2dbc - Creates a database table or dataset for complex or complex
+;;;; grsp-mc2dbc - Creates a database table or dataset for complex or complex
 ;; subset numbers from matrix p_a1, which contains complex or complex-subset
 ;; numbers. 
 ;;
@@ -2421,7 +2436,7 @@
 	 (grsp-mc2dbc-hdf5 p_d1 p_a1 p_t1))))
 	
 
-;; grsp-mc2dbc-sqlite3 - Creates a Sqlite3 table or dataset for complex or
+;;;; grsp-mc2dbc-sqlite3 - Creates a Sqlite3 table or dataset for complex or
 ;; complex subset numbers from matrix p_a1, which contains complex or complex
 ;; subset numbers. 
 ;;
@@ -2480,7 +2495,7 @@
 	   (set! i1 (+ i1 1)))))
 
 
-;; grsp-mc2dbc-hdf5 - Creates an HDF5 table or dataset for complex or complex
+;;;; grsp-mc2dbc-hdf5 - Creates an HDF5 table or dataset for complex or complex
 ;; subset numbers from matrix p_a1, which contains complex or complex subset
 ;; numbers. 
 ;;
@@ -2540,7 +2555,7 @@
 	   (set! i1 (+ i1 1)))))
 
 
-;; grsp-matrix-interval-mean - Creates a 3 x 1 matrix containing the following
+;;;; grsp-matrix-interval-mean - Creates a 3 x 1 matrix containing the following
 ;; values:
 ;; - (- p_n1 p_min).
 ;; - (p_min + p_max) / 2.
@@ -2551,7 +2566,7 @@
 ;;
 ;; Arguments:
 ;; - p_n1: reference value.
-;; - p_min: what needs to be substraced to p_n1 to define the lower bounday of
+;; - p_min: what needs to be substracted to p_n1 to define the lower boundary of
 ;;   the interval.
 ;; - p_max: what needs to be added to p_n1 to define the higher boundary of
 ;;   the interval.
@@ -2574,7 +2589,7 @@
     res1))
 
 
-;; grsp-matrix-determinant-lu - Finds the determinant of matrix p_a1 using the
+;;;; grsp-matrix-determinant-lu - Finds the determinant of matrix p_a1 using the
 ;; LU decompostion.  
 ;;
 ;; Arguments:
@@ -2608,7 +2623,7 @@
     res1))
 
 
-;; grsp-matrix-is-invertible - Returns #t if matrix si invertible if its
+;;;; grsp-matrix-is-invertible - Returns #t if matrix si invertible if its
 ;; determinant is != 0, #f otherwise.
 ;;
 ;; Arguments:
@@ -2623,7 +2638,7 @@
     res1))
 
 
-;; grsp-eigenval-opio - Eigenvalue operations that return a scalar. 
+;;;; grsp-eigenval-opio - Eigenvalue operations that return a scalar. 
 ;;
 ;; Arguments:
 ;; - p_s1: string.
@@ -2648,7 +2663,7 @@
     res1))
 
 
-;; grsp-matrix-sort - Sort elements in matrix p_a1 in ascending or descending
+;;;; grsp-matrix-sort - Sort elements in matrix p_a1 in ascending or descending
 ;; order.
 ;;
 ;; Arguments
@@ -2751,7 +2766,7 @@
     res1))
 
 
-;; grsp-matrix-minmax - Finds the maximum and minimum values in p_a1.
+;;;; grsp-matrix-minmax - Finds the maximum and minimum values in p_a1.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -2783,7 +2798,7 @@
     res1))
 
 
-;; grsp-matrix-trim - Trim matrix data.
+;;;; grsp-matrix-trim - Trim matrix data.
 ;;
 ;; Arguments:
 ;; - p_s1: type of operaton.
@@ -2824,7 +2839,8 @@
 		  ;; Read value from matrix.
 		  (set! n1 (array-ref p_a1 i1 j1))
 
-		  ;; Check if the value meets the conditions to be trimmed or not.
+		  ;; Check if the value meets the conditions to be trimmed
+		  ;; or not.
 		  (cond ((equal? p_s1 "#=")
 			 (cond ((not (equal? n1 p_n1))
 				(set! b2 #t))))
@@ -2864,7 +2880,8 @@
 			 (set! ln2 (grsp-matrix-esi 3 res1))
 			 (set! hn2 (grsp-matrix-esi 4 res1))
 
-			 ;; Add approved number to the last element of the vector.
+			 ;; Add approved number to the last element of the
+			 ;; vector.
 			 (array-set! res1 n1 lm2 hn2)			 
 			 (set! b2 #f)))		  
 		  
@@ -2874,7 +2891,8 @@
     res1))
 
 
-;; grsp-matrix-select - Select between p_a1 and p_a2 based on the value of p_n1. 
+;;;; grsp-matrix-select - Select between p_a1 and p_a2 based on the value of
+;; p_n1. 
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -2894,7 +2912,7 @@
     res1))
 
 
-;;
+;;;;
 ;;    
 (define (grsp-matrix-opsm p_s1 p_a1 p_p1)
   (let ((res1 0)
@@ -2930,6 +2948,8 @@
     res1))
 
 
+;;;;
+;;
 (define (grsp-matrix-opsm-t1 p_a1 p_i2 p_j2)
   (let ((res1 0))
 
