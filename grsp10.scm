@@ -297,7 +297,7 @@
     
     (set! n1 (grsp-opz (list-ref p_l1 0)))
     (set! n2 (grsp-opz (list-ref p_l1 1)))
-    (set! n3 (* (sqrt (/ 2.0 (gconst "A000796"))) (+ n1 (* n2 (expt n1 3)))))
+    (set! n3 (* (sqrt (/ 2.0 (grsp-pi))) (+ n1 (* n2 (expt n1 3)))))
     (set! res1 (* (/ n1 2.0) (+ 1.0 (tanh n3))))
 
     res1))

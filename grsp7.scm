@@ -48,8 +48,7 @@
 (define (grsp-geo-circle p_r1)
   (let ((res1 0))
 
-    (set! res1 (* (gconst "A000796")
-		  (expt p_r1 2)))
+    (set! res1 (* (grsp-pi) (expt p_r1 2)))
 
     res1))
 
@@ -66,8 +65,7 @@
   (let ((res1 0))
 
     (set! res1 (* (/ 4 3)
-		  (gconst "A000796")
-		  (expt p_r1 3)))
+		  (grsp-pi) (expt p_r1 3)))
 
     res1))
 

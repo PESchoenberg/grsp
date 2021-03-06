@@ -890,7 +890,7 @@
 ;;
 ;; Output:
 ;;   - Bits, if p_g1 = 2.
-;;   - Nats, if p_g1 = (gconst "A001113") (e).
+;;   - Nats, if p_g1 = (grsp-e) (e).
 ;;   - Dits, if p_g1 = 10.
 ;;
 ;; Sources:
@@ -1519,7 +1519,7 @@
   (let ((res1 0))
 
     (set! res1 (/ (* (expt p_l1 p_k1)
-		     (expt (gconst "A001113") (* -1 p_l1)))
+		     (expt (grsp-e) (* -1 p_l1)))
 		  (grsp-fact p_k1)))
 
     res1))
@@ -1781,7 +1781,7 @@
     (set! res3 (expt p_x1 (- p_k1 1)))
     
     ;; res4
-    (set! res4 (expt (gconst "A001113") (* -1 (/ p_x1 p_t1))))
+    (set! res4 (expt (grsp-e) (* -1 (/ p_x1 p_t1))))
 
     ;; Complete formula.
     (set! res1 (* res2 res3 res4))
@@ -1824,7 +1824,7 @@
     (set! res3 (expt p_x1 (- p_a1 1)))
     
     ;; res4
-    (set! res4 (expt (gconst "A001113") (* -1 p_b1 p_x1)))
+    (set! res4 (expt (grsp-e) (* -1 p_b1 p_x1)))
 
     ;; Complete.
     (set! res1 (* res2 res3 res4))
@@ -2075,7 +2075,7 @@
     (set! k2 (- p_k1 1))
     (set! res1 (/ (* (expt p_l1 p_k1)
 		     (expt p_x1 k2)
-		     (expt (gconst "A001113") (* -1 p_l1 p_x1)))
+		     (expt (grsp-e) (* -1 p_l1 p_x1)))
 		  (grsp-fact k2)))
 
     res1))
@@ -2173,13 +2173,13 @@
 	(res4 0))
 
     ;; res2
-    (set! res2 (/ 1 (* p_x3 (sqrt (* 2 (gconst "A000796"))))))
+    (set! res2 (/ 1 (* p_x3 (sqrt (* 2 (grsp-pi))))))
     
     ;; res3
     (set! res3 (* -0.5 (expt (/ (- p_x1 p_x2) p_x3) 2)))
 
     ;; res4
-    (set! res4 (expt (gconst "A001113") res3))
+    (set! res4 (expt (grsp-e) res3))
 
     ;; res1
     (set! res1 (* res2 res4))
@@ -2205,7 +2205,7 @@
 (define (grsp-normal-entropy p_g1 p_x3)
   (let ((res1 0))
 
-    (set! res1 (* 0.5 (grsp-log p_g1 (* 2 (gconst "A000796") (gconst "A001113") p_x3))))
+    (set! res1 (* 0.5 (grsp-log p_g1 (* 2 (grsp-pi) (grsp-e) p_x3))))
 
     res1))
 
@@ -2399,7 +2399,7 @@
 (define (grsp-weibull-entropy p_k1 p_l1)
   (let ((res1 0))
 
-    (set! res1 (+ (* (gconst "A001620") (- 1 (/ 1 p_k1)))
+    (set! res1 (+ (* (grsp-em) (- 1 (/ 1 p_k1)))
 		  (grsp-log (/ p_l1 p_k1) 2)
 		  1))
 
