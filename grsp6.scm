@@ -534,9 +534,7 @@
 (define (grsp-sgp-ellip p_a1 p_t1)
   (let ((res1 0))
 
-    (set! res1 (/ (* (* 4 (gconst "A000796"))
-		     (expt p_a1 3))
-		  (expt p_t1 2)))
+    (set! res1 (/ (* (* 4 (grsp-pi)) (expt p_a1 3)) (expt p_t1 2)))
 
     res1))
 
@@ -600,7 +598,7 @@
 		  (* (* 0.5 (- (gconst "gpoles")
 			       (gconst "gequator")))
 		     (cos (* (* 2 p_l1)
-			     (/ (gconst "A000796") 180))))))
+			     (/ (grsp-pi) 180))))))
 
     res1))
 

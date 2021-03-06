@@ -264,7 +264,7 @@
 ;;
 (define (grsp-complex-binet p_z1)
   (let ((res1 0)
-	(g1 (gconst "A001622")))
+	(g1 (grsp-phi)))
 
     (set! res1 (/ (- (expt g1 p_z1)
 		     (expt (- 1 g1) p_z1))
@@ -386,8 +386,8 @@
   (let ((res1 0)
 	(res2 1)
 	(i1 1)
-	(e1 (gconst "A001113"))
-	(g1 (gconst "A001620"))
+	(e1 (grsp-e))
+	(g1 (grsp-em))
 	(z2 0)
 	(res3 0)
 	(res4 0)
@@ -492,10 +492,9 @@
 	(res4 0)
 	(res5 0)
 	(res6 0)
-	(i1 1)
-	(g1 (gconst "A001620")))
+	(i1 1))
 
-    (set! res2 (* -1 g1 p_z1))
+    (set! res2 (* -1 (grsp-em) p_z1))
     (set! res3 (* -1 (log p_z1)))
     (while (<= i1 p_n1)
 	   (set! res6 (/ p_z1 i1))
@@ -526,7 +525,6 @@
 	(res2 1)
 	(i1 1)
 	(z2 (- p_z1 1))
-	(g1 (gconst "A001620"))
 	(defined #t))
 
     (cond ((integer? z2)
@@ -536,7 +534,7 @@
 	   (while (<= i1 p_n1)
 		  (set! res2 (/ z2 (* i1 (+ i1 z2))))		  
 		  (set! i1 (+ i1 1)))
-	   (set! res1 (* -1.00 g1 res2)))
+	   (set! res1 (* -1.00 (grsp-em) res2)))
 	  ((eq? defined #f)
 	   (set! res1 +inf.0)))
 
@@ -604,11 +602,12 @@
 	(i1 0))
 
     ;; res2
-    (set! res2 (expt (gconst "A001113") (* -1 p_z2)))
+    (set! res2 (expt (grsp-e) (* -1 p_z2)))
 
     ;; res3
     (while (<= i1 p_n1)
-	   (set! res3 (+ res3 (/ (expt p_z2 i1) (grsp-complex-gamma p_b2 p_s1 (+ p_z1 i1 1) p_n1))))		 
+	   (set! res3 (+ res3 (/ (expt p_z2 i1)
+				 (grsp-complex-gamma p_b2 p_s1 (+ p_z1 i1 1) p_n1))))		 
 	   (set! i1 (+ i1 1)))   
 
     ;; Complete.
@@ -791,7 +790,7 @@
 	(i1 0))
 
     ;; Res2.
-    (set! res2 (/ 2 (sqrt (gconst "A000796"))))
+    (set! res2 (/ 2 (sqrt (grsp-pi))))
 
     ;; Res3.
     (while (< i1 p_n1)
@@ -826,7 +825,7 @@
 	(i1 0))
 
     ;; Res2.
-    (set! res2 (/ 2 (sqrt (gconst "A000796"))))
+    (set! res2 (/ 2 (sqrt (grsp-pi))))
 
     ;; Res3.
     (while (< i1 p_n1)

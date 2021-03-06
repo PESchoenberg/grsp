@@ -175,7 +175,11 @@
 	    grsp-log
 	    grsp-dtr
 	    grsp-opz
-	    grsp-eex))
+	    grsp-eex
+	    grsp-e
+	    grsp-pi
+	    grsp-em
+	    grsp-phi))
 
 
 ;;;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -823,7 +827,7 @@
 			 (set! res1 (+ (/ (expt p_k1 p_n1)
 					  (grsp-fact p_k1))))
 			 (set! i1 (+ i1 1)))))))
-    (set! res1 (* res1 (/ 1 (gconst "A001113"))))
+    (set! res1 (* res1 (/ 1 (grsp-e))))
 
     res1))
 
@@ -1069,9 +1073,7 @@
 (define (grsp-volume-ellipsoid p_x1 p_y1)
   (let ((res1 0))
 
-    (set! res1 (* (/ 4 3)
-		  (* (gconst "A000796")
-		     (* (expt p_x1 2) p_y1))))
+    (set! res1 (* (/ 4 3) (* (grsp-pi) (* (expt p_x1 2) p_y1))))
 
     res1))
 
@@ -1370,8 +1372,8 @@
 (define (grsp-stirling-approximation p_n1)
   (let ((res1 0))
 
-    (set! res1 (* (sqrt (* 2 (gconst "A000796") p_n1))
-		  (expt (/ p_n1 (gconst "A001113")) 2)))
+    (set! res1 (* (sqrt (* 2 (grsp-pi) p_n1))
+		  (expt (/ p_n1 (grsp-e)) 2)))
     
     res1))
 
@@ -1390,8 +1392,8 @@
 (define (grsp-airy-function p_x1)
   (let ((res1 0))
 
-    (set! res1 (/ (expt (expt (gconst "A001113") (* (/ -2 3) p_x1)) (/ 3 2))
-		  (* 2 (sqrt (gconst "A000796")) (expt p_x1 (/ 1 4)))))    
+    (set! res1 (/ (expt (expt (grsp-e) (* (/ -2 3) p_x1)) (/ 3 2))
+		  (* 2 (sqrt (grsp-pi)) (expt p_x1 (/ 1 4)))))    
 
     res1))
 
@@ -1539,7 +1541,7 @@
 	   (set! res1 0.0))
 	  ((> p_n1 1)
 	   (set! res1 (round (/ (grsp-fact p_n1)
-				(gconst "A001113"))))))
+				(grsp-e))))))
     
     res1))
 
@@ -1736,9 +1738,59 @@
 (define (grsp-eex p_n1)
   (let ((res1 0))
 
-    (set! res1 (expt (gconst "A001113") p_n1))
+    (set! res1 (expt (grsp-e) p_n1))
 
     res1))
 
 
-  
+;;;; grsp-e - Returns Euler's number.
+;;
+;; Keywords:
+;; - function, exp.
+;;
+(define (grsp-e)
+  (let ((res1 0))
+
+    (set! res1 (gconst "A001113"))
+
+    res1))
+
+
+;;;; grsp-pi - Returns Pi.
+;;
+;; Keywords:
+;; - function, exp.
+;;
+(define (grsp-pi)
+  (let ((res1 0))
+
+    (set! res1 (gconst "A000796"))
+
+    res1))
+
+
+;;;; grsp-em - Returns Euler-Mascheroni's Gamma.
+;;
+;; Keywords:
+;; - function, exp.
+;;
+(define (grsp-em)
+  (let ((res1 0))
+
+    (set! res1 (gconst "A001620"))
+
+    res1))
+
+
+;;;; grsp-phi - Returns Phi (Golden Ratio).
+;;
+;; Keywords:
+;; - function, exp.
+;;
+(define (grsp-phi)
+  (let ((res1 0))
+
+    (set! res1 (gconst "A001622"))
+
+    res1))
+

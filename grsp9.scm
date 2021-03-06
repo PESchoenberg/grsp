@@ -2,7 +2,7 @@
 ;;
 ;; grsp9.scm
 ;;
-;; Test functions for optimization.
+;; Test functitions and artificial landscapes for single-objective optimization.
 ;;
 ;; =============================================================================
 ;;
@@ -28,7 +28,10 @@
 ;; - Read sources for limitations on function parameters.
 ;;
 ;; Sources:
-;; - [1] https://en.wikipedia.org/wiki/Test_functions_for_optimization
+;; - [1] En.wikipedia.org. 2021. Test functions for optimization. [online]
+;;   Available at:
+;;   https://en.wikipedia.org/wiki/Test_functions_for_optimization
+;;   [Accessed 5 March 2021].
 
 
 (define-module (grsp grsp9)
@@ -37,22 +40,28 @@
   #:use-module (grsp grsp2)
   #:use-module (grsp grsp3)
   #:use-module (grsp grsp4)  
-  #:export (grsp-booth
+  #:export (grsp-sop-booth
 	    grsp-bukin6
-	    grsp-beale
-	    grsp-matyas
-	    grsp-rastrigin
-	    grsp-goldstein-price
-	    grsp-levi13
-	    grsp-himmelblau
-	    grsp-3camel
-	    grsp-mccormick
-	    grsp-schaffer2
-	    grsp-schaffer4
-	    grsp-spheret))
+	    grsp-sop-beale
+	    grsp-sop-matyas
+	    grsp-sop-rastrigin
+	    grsp-sop-goldstein-price
+	    grsp-sop-levi13
+	    grsp-sop-himmelblau
+	    grsp-sop-3camel
+	    grsp-sop-mccormick
+	    grsp-sop-schaffer2
+	    grsp-sop-schaffer4
+	    grsp-sop-spheret
+	    grsp-sop-rosenbrock
+	    grsp-sop-eggholder
+	    grsp-sop-styblinski-tang
+	    grsp-sop-ackley
+	    grsp-sop-easom
+	    grsp-sop-cit))
 
 
-;;;; grsp-booth - Booth test, single objective function.
+;;;; grsp-sop-booth - Booth test, single objective function.
 ;;
 ;; Keywords:
 ;; - function, test, optimization, artificial, landscape.
@@ -64,7 +73,7 @@
 ;; Sources:
 ;; - [1].
 ;;
-(define (grsp-booth p_x1 p_y1)
+(define (grsp-sop-booth p_x1 p_y1)
   (let ((res1 0))
 
     (set! res1 (+ (expt (+ p_x1 (* 2 p_y1) (* -1 7)) 2)
@@ -73,7 +82,7 @@
     res1))
 
 
-;;;; grsp-bukin6 - Bukin 6 test, single objective function.
+;;;; grsp-sop-bukin6 - Bukin 6 test, single objective function.
 ;;
 ;; Keywords:
 ;; - function, test, optimization, artificial, landscape.
@@ -85,7 +94,7 @@
 ;; Sources:
 ;; - [1].
 ;;
-(define (grsp-bukin6 p_x1 p_y1)
+(define (grsp-sop-bukin6 p_x1 p_y1)
   (let ((res1 0))
 
     (set! res1 (+ (* 100 (sqrt (abs (- p_y1 (* 0.001 (expt p_x1 2))))))
@@ -94,7 +103,7 @@
     res1))
 
 
-;;;; grsp-beale - Bukin 6 test, single objective function.
+;;;; grsp-sop-beale - Bukin 6 test, single objective function.
 ;;
 ;; Keywords:
 ;; - function, test, optimization, artificial, landscape.
@@ -106,7 +115,7 @@
 ;; Sources:
 ;; - [1].
 ;;
-(define (grsp-beale p_x1 p_y1)
+(define (grsp-sop-beale p_x1 p_y1)
   (let ((res1 0)
 	(res2 0)
 	(res3 0)
@@ -133,7 +142,7 @@
     res1))
 
 
-;;;; grsp-matyas - Matyas test, single objective function.
+;;;; grsp-sop-matyas - Matyas test, single objective function.
 ;;
 ;; Keywords:
 ;; - function, test, optimization, artificial, landscape.
@@ -145,7 +154,7 @@
 ;; Sources:
 ;; - [1].
 ;;
-(define (grsp-matyas p_x1 p_y1)
+(define (grsp-sop-matyas p_x1 p_y1)
   (let ((res1 0)
 	(res2 0)
 	(res3 0))
@@ -161,7 +170,7 @@
     res1))
 
 
-;;;; grsp-rastrigin - Rastrigin test, single objective function.
+;;;; grsp-sop-rastrigin - Rastrigin test, single objective function.
 ;;
 ;; Keywords:
 ;; - function, test, optimization, artificial, landscape.
@@ -175,7 +184,7 @@
 ;; Sources:
 ;; - [1].
 ;;
-(define (grsp-rastrigin p_a1)
+(define (grsp-sop-rastrigin p_a1)
   (let ((res1 0)
 	(res2 0)
 	(res3 0)
@@ -194,7 +203,7 @@
     (set! n1 (- hn1 ln1))
     
     ;; 2pi.
-    (set! p2 (* 2 (gconst "A000796")))
+    (set! p2 (* 2 (grsp-pi)))
 
     ;; res2.
     (set! res2 (* 10 n1))
@@ -211,7 +220,7 @@
     res1))
 
 
-;;;; grsp-goldstein-price - Goldstein-Price test, single objective function.
+;;;; grsp-sop-goldstein-price - Goldstein-Price test, single objective function.
 ;;
 ;; Keywords:
 ;; - function, test, optimization, artificial, landscape.
@@ -223,7 +232,7 @@
 ;; Sources:
 ;; - [1].
 ;;
-(define (grsp-goldstein-price p_x1 p_y1)
+(define (grsp-sop-goldstein-price p_x1 p_y1)
   (let ((res1 0)
 	(res2 0)
 	(res3 0)
@@ -260,7 +269,7 @@
     res1))
 
 
-;;;; grsp-levi13 - Levi test, single objective function.
+;;;; grsp-sop-levi13 - Levi test, single objective function.
 ;;
 ;; Keywords:
 ;; - function, test, optimization, artificial, landscape.
@@ -272,7 +281,7 @@
 ;; Sources:
 ;; - [1].
 ;;
-(define (grsp-levi13 p_x1 p_y1)
+(define (grsp-sop-levi13 p_x1 p_y1)
   (let ((res1 0)
 	(res2 0)
 	(res3 0)
@@ -285,8 +294,8 @@
     ;; Preparation.
     (set! x p_x1)
     (set! y p_y1)
-    (set! px (* x (gconst "A000796")))
-    (set! py (* y (gconst "A000796")))
+    (set! px (* x (grsp-pi)))
+    (set! py (* y (grsp-pi)))
 
     ;; res2.
     (set! res2 (expt (sin (* 3 px)) 2))
@@ -303,7 +312,7 @@
     res1))
 
 
-;;;; grsp-himmelblau - Himmelblau test, single objective function.
+;;;; grsp-sop-himmelblau - Himmelblau test, single objective function.
 ;;
 ;; Keywords:
 ;; - function, test, optimization, artificial, landscape.
@@ -315,7 +324,7 @@
 ;; Sources:
 ;; - [1].
 ;;
-(define (grsp-himmelblau p_x1 p_y1)
+(define (grsp-sop-himmelblau p_x1 p_y1)
   (let ((res1 0)
 	(res2 0)
 	(res3 0)
@@ -339,7 +348,7 @@
     res1))
 
 
-;;;; grsp-himmelblau - Three hump camel test, single objective function.
+;;;; grsp-sop-3camel - Three hump camel test, single objective function.
 ;;
 ;; Keywords:
 ;; - function, test, optimization, artificial, landscape.
@@ -351,7 +360,7 @@
 ;; Sources:
 ;; - [1].
 ;;
-(define (grsp-3camel p_x1 p_y1)
+(define (grsp-sop-3camel p_x1 p_y1)
   (let ((res1 0))
 
     (set! res1 (+ (* 2 (expt p_x1 2))
@@ -363,7 +372,7 @@
     res1))
 
 
-;;;; grsp-mccormick - McCormick test, single objective function.
+;;;; grsp-sop-mccormick - McCormick test, single objective function.
 ;;
 ;; Keywords:
 ;; - function, test, optimization, artificial, landscape.
@@ -375,7 +384,7 @@
 ;; Sources:
 ;; - [1].
 ;;
-(define (grsp-mccormick p_x1 p_y1)
+(define (grsp-sop-mccormick p_x1 p_y1)
   (let ((res1 0))
 
     (set! res1 (+ (sin (+ p_x1 p_y1))
@@ -387,7 +396,7 @@
     res1))
 
 
-;;;; grsp-schaffer2 - Schaffer 2 test, single objective function.
+;;;; grsp-sop-schaffer2 - Schaffer 2 test, single objective function.
 ;;
 ;; Keywords:
 ;; - function, test, optimization, artificial, landscape.
@@ -399,7 +408,7 @@
 ;; Sources:
 ;; - [1].
 ;;
-(define (grsp-schaffer2 p_x1 p_y1)
+(define (grsp-sop-schaffer2 p_x1 p_y1)
   (let ((res1 0)
 	(res2 0)
 	(res3 0)
@@ -422,7 +431,7 @@
     res1))
 
 
-;;;; grsp-schaffer4 - Schaffer 4 test, single objective function.
+;;;; grsp-sop-schaffer4 - Schaffer 4 test, single objective function.
 ;;
 ;; Keywords:
 ;; - function, test, optimization, artificial, landscape.
@@ -434,7 +443,7 @@
 ;; Sources:
 ;; - [1].
 ;;
-(define (grsp-schaffer4 p_x1 p_y1)
+(define (grsp-sop-schaffer4 p_x1 p_y1)
   (let ((res1 0)
 	(res2 0)
 	(res3 0)
@@ -457,7 +466,7 @@
     res1))
 
 
-;;;; grsp-spheret - Sphere test, single objective function.
+;;;; grsp-sop-spheret - Sphere test, single objective function.
 ;;
 ;; Keywords:
 ;; - function, test, optimization, artificial, landscape.
@@ -469,7 +478,7 @@
 ;; Sources:
 ;; - [1].
 ;;
-(define (grsp-spheret p_a1)
+(define (grsp-sop-spheret p_a1)
   (let ((res1 0)
 	(j1 0)
 	(ln1 0)
@@ -480,9 +489,221 @@
     (set! hn1 (grsp-matrix-esi 4 p_a1)) 
 
     (set! j1 ln1)
-    (while (<= j1 ln1)
+    (while (<= j1 hn1)
 	   (set! res1 (+ res1 (expt (array-ref p_a1 0 j1) 2)))
 	   (set! j1 (+ j1 1)))
     
     res1))
 	
+
+;;;; grsp-sop-rosenbrock - Rosenbrock test, single objective function.
+;;
+;; Keywords:
+;; - function, test, optimization, artificial, landscape.
+;;
+;; Arguments:
+;; - p_a1: 1 x n vector with n elements, representing an n-dimensinal problem.
+;;   [-inf.0, +inf.0]
+;;
+;; Sources:
+;; - [1].
+;;
+(define (grsp-sop-rosenbrock p_a1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(j1 0)
+	(n1 0)
+	(ln1 0)
+	(hn1 0))
+
+    ;; Extract the boundaries of the matrix (vector).
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1)) 
+
+    (set! j1 ln1)
+    (set! n1 (- hn1 1))
+    (while (<= j1 n1)
+
+	   ;; res2.
+	   (set! res2 (* 100
+			 (expt (- (array-ref p_a1 0 (+ j1 1))
+				  (expt (array-ref p_a1 0 j1) 2)) 2)))
+
+	   ;; res3.
+	   (set! res3 (expt (- 1 (array-ref p_a1 0 j1)) 2))
+	   
+	   (set! res1 (+ res1 res2 res3))
+	   (set! j1 (+ j1 1)))    
+
+    res1))
+
+
+;;;; grsp-sop-eggholder - Eggholder test, single objective function.
+;;
+;; Keywords:
+;; - function, test, optimization, artificial, landscape.
+;;
+;; Arguments:
+;; - p_x1: number, [-512.0, 512.0].
+;; - p_y1: number, [-512.0, 512.0].
+;;
+;; Sources:
+;; - [1].
+;;
+(define (grsp-sop-eggholder p_x1 p_y1)
+  (let ((res1 0)
+	(res3 0)
+	(res4 0)
+	(y1 0)
+	(x2 0)
+	(y2 0))
+
+    ;; Init.
+    (set! y1 (+ p_y1 47))
+
+    ;; res3.
+    (set! res3 (sin (sqrt (abs (+ (/ p_x1 2) y1)))))
+    
+    ;; res4.
+    (set! res4 (* p_x1 (sin (sqrt (abs (- p_x1 y1))))))
+    
+    ;; res1
+    (set! res1 (- (* (* -1 y1) res3) res4))
+
+    res1))
+
+
+;;;; grsp-sop-styblonski-tang - Rosenbrock test, single objective function.
+;;
+;; Keywords:
+;; - function, test, optimization, artificial, landscape.
+;;
+;; Arguments:
+;; - p_a1: 1 x n vector with n elements, representing an n-dimensinal problem.
+;;   [-5.0, +5.0]
+;;
+;; Sources:
+;; - [1].
+;;
+(define (grsp-sop-styblinski-tang p_a1)
+  (let ((res1 0)
+	(res2 0)
+	(j1 0)
+	(x1 0)
+	(ln1 0)
+	(hn1 0))
+
+    ;; Extract the boundaries of the matrix (vector).
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1)) 
+
+    (set! j1 ln1)
+    (while (<= j1 hn1)
+	   (set! x1 (array-ref p_a1 0 j1))
+	   (set! res2 (+ (expt x1 4) (* -16 (expt x1 2)) (* 5 x1)))
+	   (set! res1 (+ res1 (/ res2 2)))
+	   (set! j1 (+ j1 1)))
+
+    res1))
+
+
+;;;; grsp-sop-ackley - Ackley test, single objective function.
+;;
+;; Keywords:
+;; - function, test, optimization, artificial, landscape.
+;;
+;; Arguments:
+;; - p_x1: number, [-5.0, +5.0].
+;; - p_y1: number, [-5.0, +5.0].
+;;
+;; Sources:
+;; - [1].
+;;
+(define (grsp-sop-ackley p_x1 p_y1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(res4 0)
+	(res5 0)
+	(p2 0))
+
+    ;; Init.
+    (set! p2 (* 2 (grsp-pi)))
+    
+    ;; res4.
+    (set! res4 (* -0.2 (sqrt (* 0.5 (+ (expt p_x1 2) (expt p_y1 2))))))
+    
+    ;; res5.
+    (set! res5 (* 0.5 (+ (cos (* p2 p_x1)) (cos (* p2 p_y1)))))
+    
+    ;; res2.
+    (set! res2 (* -20 (grsp-eex res4)))
+    
+    ;; res3.
+    (set! res3 (* -1 (grsp-eex res5)))
+    
+    ;; res1.
+    (set! res1 (+ res2 res3 (grsp-e) 20))
+    
+    res1))
+
+
+;;;; grsp-sop-easom - Easom test, single objective function.
+;;
+;; Keywords:
+;; - function, test, optimization, artificial, landscape.
+;;
+;; Arguments:
+;; - p_x1: number, [-10.0, 10.0].
+;; - p_y1: number, [-10.0, 10.0].
+;;
+;; Sources:
+;; - [1].
+;;
+(define (grsp-sop-easom p_x1 p_y1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0))
+
+    ;; res2.
+    (set! res2 (* -1 (cos p_x1) (cos p_y1)))
+
+    ;; res3.
+    (set! res3 (grsp-eex (* -1 (+ (expt (- p_x1 (grsp-pi)) 2) 
+				  (expt (- p_y1 (grsp-pi)) 2)))))
+    
+    ;; res1.
+    (set! res1 (* res2 res3))
+    
+    res1))
+
+
+;;;; grsp-sop-cit - Cross-in-tray test, single objective function.
+;;
+;; Keywords:
+;; - function, test, optimization, artificial, landscape.
+;;
+;; Arguments:
+;; - p_x1: number, [-10.0, 10.0].
+;; - p_y1: number, [-10.0, 10.0].
+;;
+;; Sources:
+;; - [1].
+;;
+(define (grsp-sop-cit p_x1 p_y1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0))
+
+    ;; res2.
+    (set! res2 (* (sin p_x1) (sin p_y1)))
+
+    ;; res3.
+    (set! res3 (grsp-eex (abs (- 100 (/ (sqrt (+ (expt p_x1 2) (expt p_y1 2))) (grsp-pi))))))
+
+    ;; res1.
+    (set! res1 (* -1 0.0001 (expt (+ (abs (* res2 res3)) 1) 0.1)))
+    
+    res1))
+
