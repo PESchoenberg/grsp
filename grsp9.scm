@@ -32,6 +32,11 @@
 ;;   Available at:
 ;;   https://en.wikipedia.org/wiki/Test_functions_for_optimization
 ;;   [Accessed 5 March 2021].
+;; - [2] En.wikipedia.org. 2021. Mathematical optimization. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Mathematical_optimization
+;;   [Accessed 9 March 2021].
+;; - [3] En.wikipedia.org. 2021. List of algorithms. [online] Available at:
+;;   https://en.wikipedia.org/wiki/List_of_algorithms [Accessed 9 March 2021].
 
 
 (define-module (grsp grsp9)
@@ -41,7 +46,7 @@
   #:use-module (grsp grsp3)
   #:use-module (grsp grsp4)  
   #:export (grsp-sop-booth
-	    grsp-bukin6
+	    grsp-sop-bukin6
 	    grsp-sop-beale
 	    grsp-sop-matyas
 	    grsp-sop-rastrigin
@@ -58,7 +63,13 @@
 	    grsp-sop-styblinski-tang
 	    grsp-sop-ackley
 	    grsp-sop-easom
-	    grsp-sop-cit))
+	    grsp-sop-cit
+	    grsp-sop-hoelder
+	    grsp-cop-rosenbrock1
+	    grsp-cop-rosenbrock2
+	    grsp-cop-mbird
+	    grsp-cop-simionescu
+	    grsp-bffe))
 
 
 ;;;; grsp-sop-booth - Booth test, single objective function.
@@ -707,3 +718,186 @@
     
     res1))
 
+
+;;;; grsp-sop-hoelder - Hoelder test, single objective function.
+;;
+;; Keywords:
+;; - function, test, optimization, artificial, landscape.
+;;
+;; Arguments:
+;; - p_x1: number, [-10.0, 10.0].
+;; - p_y1: number, [-10.0, 10.0].
+;;
+;; Sources:
+;; - [1].
+;;
+(define (grsp-sop-hoelder p_x1 p_y1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0))
+
+    ;; res2.
+    (set! res2 (* (sin p_x1) (cos p_y1)))
+
+    ;; res3.
+    (set! res3 (grsp-eex (abs (- 1 (/ (sqrt (+ (expt p_x1 2) (expt p_y1 2))) (grsp-pi))))))
+
+    ;; res1.
+    (set! res1 (* -1 (abs (* res2 res3))))
+    
+    res1))
+
+
+;;;; grsp-cop-rosenbrock1 - Rosenbrock test, constrained objective function
+;; (cube, line). Returns +nan.0 for unconstraied arguments.
+;; - (p_x1 - 1)**3 - p_y1 + 1 <= 0
+;; - p_x1 = p_y1 - 2 <= 0
+;;
+;; Keywords:
+;; - function, test, optimization, artificial, landscape.
+;;
+;; Arguments:
+;; - p_x1: number [-1.5, 1.5].
+;; - p_y1: number [-0.5, 2.5].
+;;
+;; Sources:
+;; - [1].
+;;
+(define (grsp-cop-rosenbrock1 p_x1 p_y1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0))
+
+    ;; res2.
+    (set! res2 (+ (expt (- p_x1 1) 3) (* -1 p_y1) 1))
+    
+    ;; res3.
+    (set! res3 (+ p_x1 p_y1 -2))
+    
+    ;; res1.
+    (cond ((equal? (and (<= res2 0) (<= res3 0)) #t)
+	   (set! res1 (+ (expt (- 1 p_x1) 2)
+			 (* 100 (expt (- p_y1 (expt p_x1 2)) 2)))))
+	  (else (set! res1 +nan.0)))
+    
+    res1))
+
+
+;;;; grsp-cop-rosenbrock2 - Rosenbrock test, constrained objective function
+;; (disk). Returns +nan.0 for unconstraied arguments.
+;; - p_x1**2 + p_y1**2 <= 2
+;;
+;; Keywords:
+;; - function, test, optimization, artificial, landscape.
+;;
+;; Arguments:
+;; - p_x1: number [-1.5, 1.5].
+;; - p_y1: number [-1.5, 1.5].
+;;
+;; Sources:
+;; - [1].
+;;
+(define (grsp-cop-rosenbrock2 p_x1 p_y1)
+  (let ((res1 0)
+	(x2 0)
+	(y2 0))
+
+    ;; Init.
+    (set! x2 (expt p_x1 2))
+    (set! y2 (expt p_y1 2))
+    
+    ;; res1.
+    (cond ((equal? (<= (+ x2 y2) 2) #t)
+	   (set! res1 (+ (expt (- 1 p_x1) 2) (* 100 (expt (- p_x1 x2) 2))))) 
+	  (else (set! res1 +nan.0)))
+    
+    res1))
+
+
+;;;; grsp-cop-mbird - Mishra's bird test, constrained objective function
+;; (disk). Returns +nan.0 for unconstraied arguments.
+;;
+;; Keywords:
+;; - function, test, optimization, artificial, landscape.
+;;
+;; Arguments:
+;; - p_x1: number [-10.0, 0.0].
+;; - p_y1: number [-6.5, 0.0].
+;;
+;; Sources:
+;; - [1].
+;;
+(define (grsp-cop-mbird p_x1 p_y1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(res4 0)
+	(res5 0)
+	(x2 0)
+	(y2 0))
+
+    ;; Init.
+    (set! x2 (cos p_x1))
+    (set! y2 (sin p_y1))
+
+    ;; res2.
+    (set! res2 (+ (expt (+ p_x1 5) 2) (expt (+ p_y1 5) 2)))
+    
+    ;; res1.
+    (cond ((equal? (< res2 25) #t)
+
+	   ;; res3.
+	   (set! res3 (* y2 (grsp-eex (expt (- 1 x2) 2))))
+	   
+	   ;; res4.
+	   (set! res4 (* x2 (grsp-eex (expt (- 1 y2) 2))))
+	   
+	   ;; res5.
+	   (set! res5 (expt (- p_x1 p_y1) 2))
+	   
+	   (set! res1 (+ res3 res4 res5))) 
+	  (else (set! res1 +nan.0)))
+    
+    res1))
+
+
+;;;; grsp-cop-townsend - Simionescu test, constrained objective function
+;; (disk). Returns +nan.0 for unconstraied arguments.
+;;
+;; Keywords:
+;; - function, test, optimization, artificial, landscape.
+;;
+;; Arguments:
+;; - p_x1: number [-1.25, 1.25].
+;; - p_y1: number [-1.25, 1.25] != 0.
+;;
+;; Sources:
+;; - [1].
+;;
+(define (grsp-cop-simionescu p_x1 p_y1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0))
+
+    ;; res2.
+    (set! res2 (+ (expt p_x1 2) (expt p_y1 2)))
+
+    ;; res3.
+    (cond ((equal? (equal? p_y1 0) #f)
+	   (set! res3 (expt (+ 1 (* 0.2 (cos (* 8 (atan (/ p_x1 p_y1)))))) 2)))
+	  (else (set! res3 (- res2 1))))
+    
+    ;; res1.
+    (cond ((equal? (<= res2 res3) #t)
+	   (set! res1 (* 0.1 p_x1 p_y1)))
+	  (else (set! res1 +nan.0)))
+    
+    res1))
+    
+
+(define (grsp-bffe p_f1 p_i1 p_n1)
+  (let ((res1 0))
+
+    (set! res1 p_f1)
+
+    res1))

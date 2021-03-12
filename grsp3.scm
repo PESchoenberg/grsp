@@ -152,10 +152,15 @@
 	    grsp-eigenval-opio
 	    grsp-matrix-sort
 	    grsp-matrix-minmax
-	    grsp-matrix-opsm
-	    grsp-matrix-opsm-t1
+	    ;;grsp-matrix-opsm
+	    ;;grsp-matrix-opsm-t1
 	    grsp-matrix-trim
-	    grsp-matrix-select))
+	    grsp-matrix-select
+	    grsp-matrix-row-minmax
+	    grsp-matrix-row-select
+	    grsp-matrix-row-delete
+	    grsp-matrix-row-sort
+	    grsp-matrix-row-invert))
 
 
 ;;;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -2912,17 +2917,30 @@
     res1))
 
 
-;;;;
-;;    
-(define (grsp-matrix-opsm p_s1 p_a1 p_p1)
+;;;; grsp-matrix-row-minmax - Finds the min or max value for column p_j1 in 
+;; matrix p_a1 and returns a matrix containing the complete rows where that 
+;; value is found.
+;;
+;; Arguments:
+;; - p_s1: string.
+;;   - "#min".
+;;   - "#max".
+;; - p_a1: matrix.
+;; - p_j1: column number.
+;;
+(define (grsp-matrix-row-minmax p_s1 p_a1 p_j1)
   (let ((res1 0)
 	(res2 0)
+	(res3 0)
 	(lm1 0)
 	(hm1 0)
 	(ln1 0)
 	(hn1 0)
+	(hm2 0)
 	(i1 0)
-	(j1 0))
+	(n1 0)
+	(n2 0)
+	(n3 0))
 
     ;; Extract the boundaries of the matrix.
     (set! lm1 (grsp-matrix-esi 1 p_a1))
@@ -2930,30 +2948,346 @@
     (set! ln1 (grsp-matrix-esi 3 p_a1))
     (set! hn1 (grsp-matrix-esi 4 p_a1))
 
+    ;; Create intermediate matrices.
+    (set! res2 (grsp-matrix-subcpy p_a1 lm1 lm1 ln1 hn1))
+    (set! res3 res2)
+    
     ;; Eval
     (set! i1 lm1)
     (while (<= i1 hm1)
-	   (set! j1 ln1)
-	   (while (<= j1 hn1)
-		  (set! res2 p_p1)
-		  (array-set! p_a1 res2 i1 j1)
-		  (set! j1 (+ j1 1)))
-	   (set! i1 (+ i1 1)))   
 
+	   ;; Inter init.
+	   (set! n2 (array-ref p_a1 i1 p_j1))
+	   (set! n3 (array-ref res2 0 p_j1))
+	   (set! res3 (grsp-matrix-subcpy p_a1 i1 i1 ln1 hn1))
 
-    ;; Operate on all elements.
-    (cond ((not (equal? p_s1 "#noop"))
-	   (set! res1 (grsp-matrix-opio p_s1 p_a1 0))))
+	   ;; Compare.
+	   (cond ((equal? p_s1 "#min")
+		  (cond ((< n2 n3)
+			 (set! res2 res3))
+			((and (= n2 n3) (> i1 lm1))
+			 (set! res2 (grsp-matrix-subexp res2 1 0))
+			 (set! hm2 (grsp-matrix-esi 2 res2))
+			 (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1)))))
+		 ((equal? p_s1 "#max")
+		  (cond ((> n2 n3)
+			 (set! res2 res3))
+			((and (= n2 n3) (> i1 lm1))
+			 (set! res2 (grsp-matrix-subexp res2 1 0))
+			 (set! hm2 (grsp-matrix-esi 2 res2))
+			 (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1))))))			
+	   
+	   (set! i1 (+ i1 1)))
+
+    ;; res1.
+    (set! res1 res2)
     
     res1))
 
 
 ;;;;
+;;    
+;;(define (grsp-matrix-opsm p_s1 p_a1 p_p1)
+;;  (let ((res1 0)
+;;	(res2 0)
+;;	(lm1 0)
+;;	(hm1 0)
+;;	(ln1 0)
+;;	(hn1 0)
+;;	(i1 0)
+;;	(j1 0))
 ;;
-(define (grsp-matrix-opsm-t1 p_a1 p_i2 p_j2)
-  (let ((res1 0))
+    ;; Extract the boundaries of the matrix.
+;;    (set! lm1 (grsp-matrix-esi 1 p_a1))
+;;    (set! hm1 (grsp-matrix-esi 2 p_a1))
+;;    (set! ln1 (grsp-matrix-esi 3 p_a1))
+;;    (set! hn1 (grsp-matrix-esi 4 p_a1))
 
-    (set! res1 (+ p_i2 p_j2))
+    ;; Eval
+;;    (set! i1 lm1)
+;;    (while (<= i1 hm1)
+;;	   (set! j1 ln1)
+;;	   (while (<= j1 hn1)
+;;		  (set! res2 p_p1)
+;;		  (array-set! p_a1 res2 i1 j1)
+;;		  (set! j1 (+ j1 1)))
+;;	   (set! i1 (+ i1 1)))   
+;;
+;;
+    ;; Operate on all elements.
+;;    (cond ((not (equal? p_s1 "#noop"))
+;;	   (set! res1 (grsp-matrix-opio p_s1 p_a1 0))))
+;;    
+;;    res1))
 
+
+;;;;
+;;
+;;(define (grsp-matrix-opsm-t1 p_a1 p_i2 p_j2)
+;;  (let ((res1 0))
+;;
+;;    (set! res1 (+ p_i2 p_j2))
+;;
+;;    res1))
+
+
+;;;; grsp-matrix-row-select - Select rows from matrix p_a1 for which condition
+;; p_s1 is met with regards to value p_n1 in column p_j1.
+;;
+;; Arguments:
+;; - p_s1: string.
+;;   - "#<".
+;;   - "#>".
+;;   - "#>=".
+;;   - "#<=".
+;;   - "#!=".
+;;   - "#=".
+;; - p_a1: matrix.
+;; - p_j1: column number.
+;; - p_n1: number.
+;;
+(define (grsp-matrix-row-select p_s1 p_a1 p_j1 p_n1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(res4 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(hm2 0)
+	(i1 0)
+	(n1 0)
+	(n2 0))
+
+    ;; Extract the boundaries of the matrix.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1))
+
+    ;; Create intermediate matrices.
+    (set! res2 (grsp-matrix-create 0 1 (+ (- hn1 ln1) 1)))
+    (set! res3 res2)
+    
+    ;; Eval
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+
+	   ;; Iter init.
+	   (set! n2 (array-ref p_a1 i1 p_j1))
+	   (set! res3 (grsp-matrix-subcpy p_a1 i1 i1 ln1 hn1))
+
+	   ;; Compare.
+	   (cond ((equal? p_s1 "#<")
+		  (cond ((< n2 p_n1)
+			 (set! res2 (grsp-matrix-subexp res2 1 0))
+			 (set! hm2 (grsp-matrix-esi 2 res2))
+			 (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1)))))
+		 ((equal? p_s1 "#>")
+		  (cond ((> n2 p_n1)
+			 (set! res2 (grsp-matrix-subexp res2 1 0))
+			 (set! hm2 (grsp-matrix-esi 2 res2))
+			 (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1)))))
+		 ((equal? p_s1 "#<=")
+		  (cond ((<= n2 p_n1)
+			 (set! res2 (grsp-matrix-subexp res2 1 0))
+			 (set! hm2 (grsp-matrix-esi 2 res2))
+			 (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1)))))		 
+		 ((equal? p_s1 "#>=")
+		  (cond ((>= n2 p_n1)
+			 (set! res2 (grsp-matrix-subexp res2 1 0))
+			 (set! hm2 (grsp-matrix-esi 2 res2))
+			 (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1)))))
+		 ((equal? p_s1 "#!=")
+		  (cond ((not (= n2 p_n1))
+			 (set! res2 (grsp-matrix-subexp res2 1 0))
+			 (set! hm2 (grsp-matrix-esi 2 res2))
+			 (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1)))))
+		 ((equal? p_s1 "#=")
+		  (cond ((= n2 p_n1)
+			 (set! res2 (grsp-matrix-subexp res2 1 0))
+			 (set! hm2 (grsp-matrix-esi 2 res2))
+			 (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1))))))
+	   
+	   (set! i1 (+ i1 1)))
+
+    ;; res1.
+    (set! res1 (grsp-matrix-subdel "#Delr" res2 0))
+    
     res1))
 
+
+
+;;;; grsp-matrix-row-delete - Delete rows from matrix p_a1 for which condition
+;; p_s1 is met with regards to value p_n1 in column p_j1.
+;;
+;; Arguments:
+;; - p_s1: string.
+;;   - "#<".
+;;   - "#>".
+;;   - "#>=".
+;;   - "#<=".
+;;   - "#!=".
+;;   - "#=".
+;; - p_a1: matrix.
+;; - p_j1: column number.
+;; - p_n1: number.
+;;
+(define (grsp-matrix-row-delete p_s1 p_a1 p_j1 p_n1)
+  (let ((res1 0)
+	(s2 p_s1))
+
+    ;; Compare.
+    (cond ((equal? p_s1 "#<")
+	   (set! s2 "#>="))
+	  ((equal? p_s1 "#>")
+	   (set! s2 "#<="))
+	  ((equal? p_s1 "#<=")
+	   (set! s2 "#>"))
+	  ((equal? p_s1 "#>=")
+	   (set! s2 "#<"))
+	  ((equal? p_s1 "#=")
+	   (set! s2 "#!="))
+	  ((equal? p_s1 "#!=")
+	   (set! s2 "#=")))
+
+    (set! res1 (grsp-matrix-row-select s2 p_a1 p_j1 p_n1))
+    
+    res1))
+
+
+;;;; grsp-matrix-row-sort - Sorts rows from matrix p_a1 for which condition
+;; p_s1 is met with regards to column p_j1.
+;;
+;; Arguments:
+;; - p_s1: string.
+;;   - "#asc".
+;;   - "#des".
+;; - p_a1: matrix.
+;; - p_j1: column number.
+;;
+(define (grsp-matrix-row-sort p_s1 p_a1 p_j1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(res4 0)
+	(b1 #t)
+	(n2 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(lm2 0)
+	(hm2 0)
+	(ln2 0)
+	(hn2 0)
+	(lm3 0)
+	(hm3 0)
+	(ln3 0)
+	(hn3 0)
+	(hm4 0))	
+
+    (cond ((equal? p_s1 "#asc")
+	   
+	   ;; Extract the boundaries of the matrix.
+	   (set! lm1 (grsp-matrix-esi 1 p_a1))
+	   (set! hm1 (grsp-matrix-esi 2 p_a1))
+	   (set! ln1 (grsp-matrix-esi 3 p_a1))
+	   (set! hn1 (grsp-matrix-esi 4 p_a1))    
+
+	   ;; Create new matrices.
+	   (set! res3 (grsp-matrix-create 0 1 (+ hn1 1)))	   
+	   (set! res4 (grsp-matrix-cpy p_a1))
+
+	   (while (equal? b1 #t)
+
+		  ;; Get min rows.
+		  (set! res2 (grsp-matrix-row-minmax p_s1 res4 p_j1))
+		  (set! n2 (array-ref res2 0 p_j1))
+
+		  ;; Extract the boundaries of the matrix.
+		  (set! lm2 (grsp-matrix-esi 1 res2))
+		  (set! hm2 (grsp-matrix-esi 2 res2))
+		  (set! ln2 (grsp-matrix-esi 3 res2))
+		  (set! hn2 (grsp-matrix-esi 4 res2))  
+
+		  ;; Extract the boundaries of the matrix.
+		  (set! lm3 (grsp-matrix-esi 1 res3))
+		  (set! hm3 (grsp-matrix-esi 2 res3))
+		  (set! ln3 (grsp-matrix-esi 3 res3))
+		  (set! hn3 (grsp-matrix-esi 4 res3)) 
+		  
+		  ;; Add a similar number of rows to res3 that exist in row2.
+		  (set! res3 (grsp-matrix-subexp res3 (+ (- hm2 lm2) 1) 0))
+
+		  ;; Copy the info from res2 to res3.
+		  (set! res3 (grsp-matrix-subrep res3 res2 (+ hm3 1) ln3))
+
+		  ;; Delete.
+		  (set! res4 (grsp-matrix-row-delete "#=" res4 p_j1 n2))
+
+		  ;; Find out if res4 still has elements.
+		  (set! hm4 (grsp-matrix-esi 2 res4))
+		  (cond ((< hm4 0)
+			 (set! b1 #f))))
+
+	   (set! res1 (grsp-matrix-subdel "#Delr" res3 0)))
+	  ((equal? p_s1 "#des")
+	   (set! res1 (grsp-matrix-row-sort "#asc" p_a1 p_j1))
+	   (set! res1 (grsp-matrix-row-invert res1))))
+    
+    res1))
+
+
+;;;; grsp-matrix-row-invert - Inverts the order of all rows in p_a1, so that
+;; if p_a1 has rows [0, m] row 0 becomes row m, row 1 becomes row m -1 ...
+;; and row m becomes row 0.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;;
+(define (grsp-matrix-row-invert p_a1)
+  (let ((res1 0)
+	(res2 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(i1 0)
+	(i2 0)
+	(i3 0))
+
+
+    ;; Extract the boundaries of the matrix.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1))
+
+    ;; Create seed matrix.
+    (set! res1 (grsp-matrix-create 0 1 (+ hn1 1))) 
+    
+    (set! i1 lm1)
+    (set! i2 hm1)
+    (set! i3 1)
+    (while (<= i1 hm1)
+
+	   ;; Get row from input matrix (read in reverse row order).
+	   (set! res2 (grsp-matrix-subcpy p_a1 i2 i2 ln1 hn1))
+
+	   ;; Expand seed matrix by one row.
+	   (set! res1 (grsp-matrix-subexp res1 1 0))
+
+	   ;; Copy extracted row to expanded row in seed matrix.
+	   (set! res1 (grsp-matrix-subrep res1 res2 i3 ln1))
+
+	   ;; Update counters.
+	   (set! i1 (+ i1 1))
+	   (set! i2 (- i2 1))
+	   (set! i3 (+ i3 1)))
+
+    ;; Final.
+    (set! res1 (grsp-matrix-subdel "#Delr" res1 0))
+
+    res1))
