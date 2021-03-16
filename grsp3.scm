@@ -69,10 +69,11 @@
 ;; - [13] En.wikipedia.org. 2020. Immanant. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Immanant [Accessed 14 August 2020].
 ;; - [14] En.wikipedia.org. 2020. Eigendecomposition Of A Matrix. [online]
-;    Available at: https://en.wikipedia.org/wiki/Eigendecomposition_of_a_matrix
+;;   Available at: https://en.wikipedia.org/wiki/Eigendecomposition_of_a_matrix
 ;; - [15] En.wikipedia.org. 2020. Eigenvalue Algorithm. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Eigenvalue_algorithm
 ;;   [Accessed 12 August 2020].
+;; - https://en.wikipedia.org/wiki/Relational_algebra
 
 
 ;; Compilation and REPL examples:
@@ -102,6 +103,7 @@
 	    grsp-matrix-change
 	    grsp-matrix-find
 	    grsp-matrix-transpose
+	    grsp-matrix-transposer
 	    grsp-matrix-conjugate
 	    grsp-matrix-conjugate-transpose
 	    grsp-matrix-opio
@@ -152,15 +154,18 @@
 	    grsp-eigenval-opio
 	    grsp-matrix-sort
 	    grsp-matrix-minmax
-	    ;;grsp-matrix-opsm
-	    ;;grsp-matrix-opsm-t1
 	    grsp-matrix-trim
 	    grsp-matrix-select
 	    grsp-matrix-row-minmax
 	    grsp-matrix-row-select
 	    grsp-matrix-row-delete
 	    grsp-matrix-row-sort
-	    grsp-matrix-row-invert))
+	    grsp-matrix-row-invert
+	    grsp-matrix-commit
+	    grsp-matrix-row-selectn
+	    grsp-matrix-col-selectn
+	    grsp-martix-col-select
+	    grsp-matrix-njoin))
 
 
 ;;;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -678,6 +683,28 @@
 	   (set! i1 (+ i1 1)))
 
     res2))
+
+
+;;;; grsp-matrix-transposer - Transposes p_a1 pN1 times.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_n1: number, [0, 4].
+;;
+(define (grsp-matrix-transposer p_a1 p_n1)
+  (let ((res1 p_a1)
+	(i1 0))
+
+    (cond ((< p_n1 0)
+	   (set! p_n1 0))
+	  ((> p_n1 4)
+	   (set! p_n1 4)))
+    
+    (while (< i1 p_n1)
+	   (set! res1 (grsp-matrix-transpose res1))
+	   (set! i1 (+ i1 1)))
+    
+    res1))
 
 
 ;;;; grsp-matrix-conjugate - Calculates the conjugate matrix of p_a1.
@@ -2985,52 +3012,6 @@
     res1))
 
 
-;;;;
-;;    
-;;(define (grsp-matrix-opsm p_s1 p_a1 p_p1)
-;;  (let ((res1 0)
-;;	(res2 0)
-;;	(lm1 0)
-;;	(hm1 0)
-;;	(ln1 0)
-;;	(hn1 0)
-;;	(i1 0)
-;;	(j1 0))
-;;
-    ;; Extract the boundaries of the matrix.
-;;    (set! lm1 (grsp-matrix-esi 1 p_a1))
-;;    (set! hm1 (grsp-matrix-esi 2 p_a1))
-;;    (set! ln1 (grsp-matrix-esi 3 p_a1))
-;;    (set! hn1 (grsp-matrix-esi 4 p_a1))
-
-    ;; Eval
-;;    (set! i1 lm1)
-;;    (while (<= i1 hm1)
-;;	   (set! j1 ln1)
-;;	   (while (<= j1 hn1)
-;;		  (set! res2 p_p1)
-;;		  (array-set! p_a1 res2 i1 j1)
-;;		  (set! j1 (+ j1 1)))
-;;	   (set! i1 (+ i1 1)))   
-;;
-;;
-    ;; Operate on all elements.
-;;    (cond ((not (equal? p_s1 "#noop"))
-;;	   (set! res1 (grsp-matrix-opio p_s1 p_a1 0))))
-;;    
-;;    res1))
-
-
-;;;;
-;;
-;;(define (grsp-matrix-opsm-t1 p_a1 p_i2 p_j2)
-;;  (let ((res1 0))
-;;
-;;    (set! res1 (+ p_i2 p_j2))
-;;
-;;    res1))
-
-
 ;;;; grsp-matrix-row-select - Select rows from matrix p_a1 for which condition
 ;; p_s1 is met with regards to value p_n1 in column p_j1.
 ;;
@@ -3116,7 +3097,6 @@
     (set! res1 (grsp-matrix-subdel "#Delr" res2 0))
     
     res1))
-
 
 
 ;;;; grsp-matrix-row-delete - Delete rows from matrix p_a1 for which condition
@@ -3291,3 +3271,298 @@
     (set! res1 (grsp-matrix-subdel "#Delr" res1 0))
 
     res1))
+
+
+;;;; grsp-matrix-commit - Given that p_a2 is a processed submatrix of p_a1,
+;; this function copies the data of p_a2 to p_a1.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_a2: matrix.
+;; - p_n1: column number that corresponds to the shared primary key.
+;;
+;; Notes:
+;; - p_a1 and p_a2 should share a common id or primary key contained in a
+;;   column that will be used to identify each row of p_a1 that would be
+;;   updatd with the data of p_a2.
+;; - This function might not work well if during the processing of p_a2
+;;   the width (number of columns) has been changed.
+;;
+(define (grsp-matrix-commit p_a1 p_a2 p_n1)
+  (let ((res1 p_a1)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(lm2 0)
+	(hm2 0)
+	(ln2 0)
+	(hn2 0)
+	(n1 0)
+	(n2 0)
+	(i1 0)
+	;;(j1 0)
+	(i2 0)
+	(j2 0))
+
+    ;; Extract the boundaries of the p_a1 matrix.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1))
+
+    ;; Extract the boundaries of the p_a2 matrix.
+    (set! lm2 (grsp-matrix-esi 1 p_a2))
+    (set! hm2 (grsp-matrix-esi 2 p_a2))
+    (set! ln2 (grsp-matrix-esi 3 p_a2))
+    (set! hn2 (grsp-matrix-esi 4 p_a2))    
+
+    ;; Cycle p_a2.
+    (set! i2 lm2)
+    (while (< i2 hm2)
+
+	   ;; Get the key for each row of p_a2.
+	   (set! n2 (array-ref p_a2 i2 p_n1))
+	   
+	   ;; Cycle p_a1.
+	   (set! i1 lm1)
+	   (while (< i1 hm1)
+
+		  ;; Get the key for each row of p_a1.
+		  (set! n1 (array-ref p_a1 i1 p_n1))
+
+		  ;; If the keys for the current p_a2 and p_a1 rows are the same
+		  ;; then copy data from p_a2 into p_a1.
+		  (cond ((equal? n1 n2)
+			 (set! j2 ln2)
+			 (while (< j2 hn2)
+				(array-set! p_a1 (array-ref p_a2 i2 j2) i1 j2)
+				(set! j2 (+ j2 1)))))			 
+
+		  (set! i1 (+ i1 1)))
+	   
+	   (set! i2 (+ i1 )))    
+    
+    res1))
+
+
+;;;; grsp-matrix-row-selectn - Select from p_a1 only the rows specified in list
+;; p_l1.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_l1: list containing row numbers.
+;;
+(define (grsp-matrix-row-selectn p_a1 p_l1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(hm1 0)
+	(lm2 0)
+	(hm2 0)
+	(ln2 0)
+	(hn2 0)
+	(lm3 0)
+	(hm3 0)
+	(ln3 0)
+	(hn3 0)	
+	(j2 0)
+	(i3 0)
+	(j3 0))
+
+    ;; Create matrices.
+    (set! res2 (grsp-l2m p_l1))
+    (set! res3 (grsp-matrix-cpy p_a1))
+
+    ;; Extract the boundaries of the res2 matrix.
+    (set! ln2 (grsp-matrix-esi 3 res2))
+    (set! hn2 (grsp-matrix-esi 4 res2))
+    
+    ;; Extract the boundaries of the res3 matrix.
+    (set! lm3 (grsp-matrix-esi 1 res3))
+    (set! hm3 (grsp-matrix-esi 2 res3))
+    (set! ln3 (grsp-matrix-esi 3 res3))
+    (set! hn3 (grsp-matrix-esi 4 res3))
+
+    ;; Seed matrix.
+    (set! res1 (grsp-matrix-create 0 1 (+ (- hn3 ln3) 1)))
+    
+    (set! j2 ln2)
+    (while (<= j2 hn2)
+
+	   ;; Look for records stated in each res2 element in res3.
+	   (set! i3 lm3)
+	   (while (<= i3 hm3)
+
+		  ;; If row is the correct one, then copy.
+		  (cond ((equal? i3 (array-ref res2 0 j2))
+			 
+			 ;; Expand seed matrix by one row.
+			 (set! res1 (grsp-matrix-subexp res1 1 0))
+
+			 ;; Extract boundaries of the res1 matrix.
+			 (set! hm1 (grsp-matrix-esi 2 res1))
+			 
+			 ;; Copy row from res3 to res1.
+			 (set! j3 ln3)
+			 (while (<= j3 hn3)
+				(array-set! res1 (array-ref res3 i3 j3) hm1 j3)
+				(set! j3 (+ j3 1)))))
+
+		  (set! i3 (+ i3 1)))
+	   
+	   (set! j2 (+ j2 1)))
+
+    ;; Final.
+    (set! res1 (grsp-matrix-subdel "#Delr" res1 0))
+    
+    res1))
+
+
+;;;; grsp-matrix-col-selectn - Select from p_a1 only the columns specified in
+;; list p_l1.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_l1: list containing row numbers.
+;;
+(define (grsp-matrix-col-selectn p_a1 p_l1)
+  (let ((res1 0)
+	(i1 0))
+
+    ;; Create matrix. 
+    (set! res1 (grsp-matrix-cpy p_a1))
+
+    ;; Operate with transposed matix.
+    (set! res1 (grsp-matrix-transpose res1))
+    (set! res1 (grsp-matrix-row-selectn res1 p_l1))
+
+    ;; Transpose three times more to return to original state.
+    (set! res1 (grsp-matrix-transposer res1 3))
+    
+    res1))
+
+
+;;;; grsp-matrix-col-select - Select columns from matrix p_a1 for which condition
+;; p_s1 is met with regards to value p_n1 in row p_i1.
+;;
+;; Arguments:
+;; - p_s1: string.
+;;   - "#<".
+;;   - "#>".
+;;   - "#>=".
+;;   - "#<=".
+;;   - "#!=".
+;;   - "#=".
+;; - p_a1: matrix.
+;; - p_j1: column number.
+;; - p_n1: number.
+;;
+(define (grsp-matrix-col-select p_s1 p_a1 p_j1 p_n1)
+  (let ((res1 0))
+
+    ;; Create matrix. 
+    (set! res1 (grsp-matrix-cpy p_a1))
+
+    ;; Operate with transpoed matrix.
+    (set! res1 (grsp-matrix-transpose res1))
+    (set! res1 (grsp-matrix-row-select p_s1 p_a1 p_j1 p_n1)) ;;col
+
+    ;; Transpose three times more to return to original state.
+    (set! res1 (grsp-matrix-transposer res1 3))
+    
+    res1))
+
+
+;;;; grsp-matrix-njoin - Natural join of p_a1 with key p_n1 and p_a2 with key
+;; p_n2.
+;;
+;; Arguments:
+;; p_a1: matrix.
+;; p_n1: column number, key of p_a1.
+;; p_a2: matrix.
+;; p_a2: column number, key of p_a2.
+;;
+(define (grsp-matrix-njoin p_a1 p_n1 p_a2 p_n2)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(res4 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)	
+	(lm2 0)
+	(hm2 0)
+	(ln2 0)
+	(hn2 0)
+	(lm3 0)
+	(hm3 0)
+	(ln3 0)
+	(hn3 0)
+	(lm4 0)
+	(hm4 0)
+	(ln4 0)
+	(hn4 0)	
+	(i1 0)
+	(j1 0)
+	(i2 0)
+	(j2 0)
+	(i3 0)
+	(j3 0)
+	(i4 0)
+	(j4 0)
+	(n1 0)
+	(n4 0))
+
+    ;; Create matrices. 
+    (set! res1 (grsp-matrix-cpy p_a1))
+    (set! res2 (grsp-matrix-cpy p_a2))    
+
+    ;; Extract the boundaries of the res3 matrix.
+    (set! lm1 (grsp-matrix-esi 1 res1))
+    (set! hm1 (grsp-matrix-esi 2 res1))
+    (set! ln1 (grsp-matrix-esi 3 res1))
+    (set! hn1 (grsp-matrix-esi 4 res1))
+
+    ;; Extract the boundaries of the res3 matrix.
+    (set! lm2 (grsp-matrix-esi 1 res2))
+    (set! hm2 (grsp-matrix-esi 2 res2))
+    (set! ln2 (grsp-matrix-esi 3 res2))
+    (set! hn2 (grsp-matrix-esi 4 res2))   
+
+    ;; Create seed of joined matrix.
+    (set! res3 (grsp-matrix-create 0 1 (+ (+ (- hn1 ln1) 1) (- hn2 ln2))))
+    
+    ;; Extract the boundaries of the res3 matrix.
+    (set! lm3 (grsp-matrix-esi 1 res3))
+    (set! hm3 (grsp-matrix-esi 2 res3))
+    (set! ln3 (grsp-matrix-esi 3 res3))
+    (set! hn3 (grsp-matrix-esi 4 res3))
+
+
+    ;; Cycle over res1, read each key and for each instance copy the rows
+    ;; for the current res1 and all the records of res3 that have the same key.
+    (set! i1 lm1)
+    (while (< i1 hm1)
+
+	   ;; Read res1 key column for each row.
+	   (set! n1 (array-ref res1 i1 p_n1))
+	   (set! res4 (grsp-matrix-row-select "#=" res2 p_n2 n1))
+
+	   ;; Extract the boundaries of the res4 matrix.
+	   (set! lm4 (grsp-matrix-esi 1 res4))
+	   (set! hm4 (grsp-matrix-esi 2 res4))
+	   (set! ln4 (grsp-matrix-esi 3 res4))
+	   (set! hn4 (grsp-matrix-esi 4 res4))		 
+
+	   ;; Add rows to res3.
+	   
+	   
+	   ;; Increment main row cycle counter.
+	   (set! i1 (+ i1 1)))
+    
+    ;; Final.
+    (set! res3 (grsp-matrix-subdel "#Delr" res3 0))
+    
+    res3))
