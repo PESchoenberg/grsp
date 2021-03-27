@@ -73,8 +73,9 @@
 ;; - [15] En.wikipedia.org. 2020. Eigenvalue Algorithm. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Eigenvalue_algorithm
 ;;   [Accessed 12 August 2020].
-;; - En.wikipedia.org. 2021. Relational algebra. [online] Available at:
+;; - [16] En.wikipedia.org. 2021. Relational algebra. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Relational_algebra [Accessed 16 March 2021].
+;; - [17] https://en.wikipedia.org/wiki/Support_(mathematics)
 
 
 ;; Compilation and REPL examples:
@@ -168,10 +169,15 @@
 	    grsp-martix-col-select
 	    grsp-matrix-njoin
 	    grsp-matrix-sjoin
-	    grsp-matrix-ajoin))
+	    grsp-matrix-ajoin
+	    grsp-matrix-supp
+	    grsp-matrix-row-div))
 
 
 ;;;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments:
 ;; - p_e1: number indicating the element value desired.
@@ -207,6 +213,9 @@
 
 ;;;; grsp-matrix-create - Creates an p_m1 x p_n1 matrix and fills it with
 ;; element value p_s1.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments:
 ;; - p_s1: matrix type or element that will fill it initially.
@@ -511,6 +520,9 @@
 ;;;; grsp-matrix-change - Changes the value to p_v2 where the value of a
 ;; matrix's element equals p_v1.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_a1: matrix to operate on.
 ;; - p_v1: value to be replaced within p_a1.
@@ -555,6 +567,9 @@
 ;;;; grsp-matrix-find - Find all occurrences of p_v1 in matrix p_a1 that
 ;; statisfy condition p_s1.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_s1: search criteria.
 ;;   - "#=": searches for all elements equal to p_v1.
@@ -572,7 +587,7 @@
 ;; Output:
 ;; - A matrix of m x 2 elements, being m the number of ocurrences that statisfy
 ;;   the search criteria. On row 0 goes the row coordinate of each element
-;;   found, and on row 1 goes the corresponding col coordinate. This, this
+;;   found, and on row 1 goes the corresponding col coordinate. Thus, this
 ;;   matrix shows both he number of found elements as well as their positions
 ;;   within p_a1.
 ;;
@@ -651,6 +666,9 @@
 ;;;; grsp-matrix-transpose - Transposes a matrix of shape m x n into another
 ;; with shape n x m.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_a1: matrix to be transposed.
 ;;
@@ -690,6 +708,9 @@
 
 ;;;; grsp-matrix-transposer - Transposes p_a1 p_n1 times.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_a1: matrix.
 ;; - p_n1: number, [0, 4].
@@ -712,6 +733,9 @@
 
 ;;;; grsp-matrix-conjugate - Calculates the conjugate matrix of p_a1.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_a1: matrix.
 ;;
@@ -727,6 +751,9 @@
 ;;;; grsp-matrix-transpose-conjugate - Calculates the transpose conjugate matrix
 ;; of p_a1.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_a1: matrix.
 ;;
@@ -740,6 +767,9 @@
 
 
 ;;;; grsp-matrix-opio - Internal operations that produce a scalar result.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments;
 ;; - p_s1: string representing the desired operation.
@@ -888,6 +918,9 @@
 ;;;; grsp-matrix-opsc - Performs an operation p_s1 between matrix p_a1 and
 ;; scalar p_v1 or a discrete operation on p_a1.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_s: scalar operation.
 ;;   - "#+": scalar sum.
@@ -975,6 +1008,9 @@
 ;;;; grsp-matrix-opew - Performs element-wise operation p_s1 between matrices
 ;; p_a1 and p_a2.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_s1: operation described as a string:
 ;;   - "#+": sum.
@@ -1038,6 +1074,9 @@
 
 
 ;;;; grsp-matrix-opfn - Applies function p_s to all elements of p_a1.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments:
 ;; - p_s1: function as per sources, described as a string:
@@ -1153,6 +1192,9 @@
 
 ;;;; grsp-matrix-opmm - Performs operation p_s1 between matrices p_a1 and p_a2.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_s1: operation described as a string:
 ;;   - "#+": matrix to matrix sum.
@@ -1249,6 +1291,9 @@
 
 ;;;; grsp-matrix-cpy - Copies matrix p_a1, element wise.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; p_a1: matrix to be copied.
 ;;
@@ -1278,6 +1323,9 @@
 ;; process is not destructive with regards to p_a1. The user is responsible for
 ;; providing correct boundaries since the function does not check those
 ;; parameters in relation to p_a1.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix to be partitioned.
@@ -1314,6 +1362,9 @@
 
 ;;;; grsp-matrix-subrep - Replaces a submatrix or section of matrix p_a1 with 
 ;; matrix p_a2.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
 ;; 
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -1365,6 +1416,9 @@
 
 ;;;; grsp-matrix-subdcn - Deletes row from matrix p_a1 that fulfills condition
 ;; p_s2 for column p_j1 with regards to value p_n2.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments:
 ;; - p_s2 query:
@@ -1444,6 +1498,9 @@
 
 ;;;; grsp-matrix-subdel - Deletes column or row p_n1 from matrix p_a1.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_s1: string describing the required operation.
 ;;   - "#Delc": delete column.
@@ -1518,6 +1575,9 @@
 ;;;; grsp-matrix-subexp - Add p_am1 rows and p_an1 cols to a matrix p_a1,
 ;; increasing its size.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_a1: matrix to expand.
 ;; - p_am1: rows to add.
@@ -1555,6 +1615,9 @@
 
 
 ;;;; grsp-matrix-is-equal - Returns #t if matrix p_a1 is equal to matrix p_a2.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
 ;; 
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -1615,6 +1678,9 @@
 
 ;;;; grsp-matrix-is-square - Returns #t if matrix p_a1 is square (i.e. m x m).
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_a1: matrix.
 ;;
@@ -1642,6 +1708,9 @@
 ;;;; grsp-matrix-is-symmetric - Returns #t if p_a1 is a symmetrix matrix. #f 
 ;; otherwise.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_a1: matrix.
 ;;
@@ -1659,6 +1728,9 @@
 
 ;;;; grsp-matrix-is-diagonal - Returns #t if p_a1 is a square diagonal matrix,
 ;; #f otherise.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -1698,6 +1770,9 @@
 ;;;; grsp-matrix-is-hermitian - Returns #t if p_a1 is equal to its conjugate 
 ;; transpose.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_a1: matrix.
 ;;
@@ -1712,6 +1787,9 @@
 
 
 ;;;; grsp-matrix-is-binary - Returns #t if p_a1 contains only values 0 or 1.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -1728,6 +1806,9 @@
 
 ;;;; grsp-matrix-is-nonnegative - Returns #t if p_a1 contains only values >= 0.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_a1: matrix.
 ;;
@@ -1741,6 +1822,9 @@
 
 
 ;;;; grsp-matrix-is-positive - Returns #t if p_a1 contains only values > 0.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -1768,6 +1852,9 @@
 ;; and
 ;;
 ;; replaces p_a2[p_m2, p_n2] with res1.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix 1.
@@ -1798,6 +1885,9 @@
 ;;;; grsp-matrix-row-opmm - Replaces the value of element p_a1[p_m1, p_n1] with
 ;; ( p_a1[p_m1, p_n1] * p_a2[p_m2, p_n2] ).
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_a1: matrix 1.
 ;; - p_a2: matrix 2.
@@ -1820,6 +1910,9 @@
 
 ;;;; grsp-matrix-row-opsc - Performs operation p_s1 between all elements
 ;; belonging to row p_m1 of matrix p_a1 and scalar p_v1.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments:
 ;; - p_s1: operation described as a string:
@@ -1859,6 +1952,9 @@
 
 ;;;; grsp-matrix-row-opsw - Swaps rows p_m1 and p_m2 in matrix p_a1.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_a1: matrix.
 ;; - p_m1: row of p_a1.
@@ -1896,6 +1992,9 @@
 
 
 ;;;; grsp-matrix-decompose - Applies decomposition p_s1 to matrix p_a1.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments:
 ;; - p_s1: decomposition type.
@@ -1955,6 +2054,9 @@
 
 ;;;; grsp-matrix-density - Returns the density value of matrix p_a1.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_a1: matrix.
 ;;
@@ -1995,6 +2097,9 @@
 ;;;; grsp-matrix-is-sparse - Returns #t if matrix density of p_a1 is < 0.5, #f
 ;; otherwise.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_a1: matrix.
 ;;
@@ -2009,6 +2114,9 @@
 
 ;;;; grsp-matrix-is-symmetric-md - Returns #t if matrix p_a1 is symmetric along 
 ;; its main diagonal, #f otherwise.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -2050,6 +2158,9 @@
 ;;;; grsp-matrix-total-elements - Calculates the number of elements in matrix
 ;; p_a1.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_a1: matrix.
 ;;
@@ -2072,6 +2183,9 @@
 
 
 ;;;; grsp-matrix-total-element - Count the number of ocurrences of p_v1 in p_a1.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -2106,6 +2220,9 @@
 ;;;; grsp-matrix-is-hadamard - Returns #t if matrix p_a1 is of Hadamard type, #f
 ;; otherwise.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_a1: matrix.
 ;;
@@ -2127,6 +2244,9 @@
 
 ;;;; grsp-matrix-is-markov - Returns #t if matrix p_a1 is of Markov type, #f
 ;; otherwise.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -2165,6 +2285,9 @@
 
 ;;;; grsp-matrix-is-signature - Returns #t if matrix p_a1 is of signature
 ;; type, #f otherwise.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -2205,6 +2328,9 @@
 ;;;; grsp-matrix-is-single-entry - Returns #t if matrix p_a1 is of single entry 
 ;; type for value p_v1, #f otherwise.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_a1: matrix.
 ;; - p_v1: value.
@@ -2223,6 +2349,9 @@
 ;;;; grsp-matrix-identify - Returns #t if matrix p_a1 is of type p_s1. This 
 ;; function aggregates several specific identification functions into one
 ;; single interface.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments:
 ;; - p_s1: matrix type.
@@ -2324,6 +2453,9 @@
 ;;;; grsp-matrix-is-metzler - Returns #t if matrix p_a1 is of Metzler type, #f
 ;; otherwise.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_a1: matrix.
 ;;
@@ -2360,6 +2492,9 @@
 
 ;;;; grsp-l2m - Casts a list p_l1 of n elements as a 1 x n matrix.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;;  Arguments:
 ;;  p_l1: list.
 ;;
@@ -2377,6 +2512,9 @@
     
 
 ;;;; grsp-m2l - Casts a 1 x n matrix p_a1 as a list of n elements.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -2405,6 +2543,9 @@
 
 
 ;;;; grsp-m2v - Casts a matrix p_a1 of m x n elements as a 1 x (m x n) vector.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;;  Arguments:
 ;;  p_a1: matrix.
@@ -2459,6 +2600,9 @@
 ;; subset numbers from matrix p_a1, which contains complex or complex-subset
 ;; numbers. 
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_d1: database name.
 ;; - p_a1: matrix.
@@ -2474,6 +2618,9 @@
 ;;;; grsp-mc2dbc-sqlite3 - Creates a Sqlite3 table or dataset for complex or
 ;; complex subset numbers from matrix p_a1, which contains complex or complex
 ;; subset numbers. 
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, databases.
 ;;
 ;; Arguments:
 ;; - p_d1: database name.
@@ -2533,6 +2680,9 @@
 ;;;; grsp-mc2dbc-hdf5 - Creates an HDF5 table or dataset for complex or complex
 ;; subset numbers from matrix p_a1, which contains complex or complex subset
 ;; numbers. 
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, databases.
 ;;
 ;; Arguments:
 ;; - p_d1: database name.
@@ -2599,6 +2749,9 @@
 ;; - p_min <= p_n1 <= p_max.
 ;; - p_min <= m <= p_max, being m the mean value of l1 and h1 (see var def).
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_n1: reference value.
 ;; - p_min: what needs to be substracted to p_n1 to define the lower boundary of
@@ -2626,6 +2779,9 @@
 
 ;;;; grsp-matrix-determinant-lu - Finds the determinant of matrix p_a1 using the
 ;; LU decompostion.  
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -2661,6 +2817,9 @@
 ;;;; grsp-matrix-is-invertible - Returns #t if matrix si invertible if its
 ;; determinant is != 0, #f otherwise.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_a1: matrix.
 ;;
@@ -2674,6 +2833,9 @@
 
 
 ;;;; grsp-eigenval-opio - Eigenvalue operations that return a scalar. 
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments:
 ;; - p_s1: string.
@@ -2700,6 +2862,9 @@
 
 ;;;; grsp-matrix-sort - Sort elements in matrix p_a1 in ascending or descending
 ;; order.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments
 ;; - p_s1: sort type.
@@ -2803,6 +2968,9 @@
 
 ;;;; grsp-matrix-minmax - Finds the maximum and minimum values in p_a1.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_a1: matrix.
 ;;
@@ -2834,6 +3002,9 @@
 
 
 ;;;; grsp-matrix-trim - Trim matrix data.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments:
 ;; - p_s1: type of operaton.
@@ -2929,6 +3100,9 @@
 ;;;; grsp-matrix-select - Select between p_a1 and p_a2 based on the value of
 ;; p_n1. 
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
@@ -2951,12 +3125,18 @@
 ;; matrix p_a1 and returns a matrix containing the complete rows where that 
 ;; value is found.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, relational.
+;;
 ;; Arguments:
 ;; - p_s1: string.
 ;;   - "#min".
 ;;   - "#max".
 ;; - p_a1: matrix.
 ;; - p_j1: column number.
+;;
+;; Sources:
+;; - [16].
 ;;
 (define (grsp-matrix-row-minmax p_s1 p_a1 p_j1)
   (let ((res1 0)
@@ -3018,6 +3198,9 @@
 ;;;; grsp-matrix-row-select - Select rows from matrix p_a1 for which condition
 ;; p_s1 is met with regards to value p_n1 in column p_j1.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, relational.
+;;
 ;; Arguments:
 ;; - p_s1: string.
 ;;   - "#<".
@@ -3029,6 +3212,9 @@
 ;; - p_a1: matrix.
 ;; - p_j1: column number.
 ;; - p_n1: number.
+;;
+;; Sources:
+;; - [16].
 ;;
 (define (grsp-matrix-row-select p_s1 p_a1 p_j1 p_n1)
   (let ((res1 0)
@@ -3105,6 +3291,9 @@
 ;;;; grsp-matrix-row-delete - Delete rows from matrix p_a1 for which condition
 ;; p_s1 is met with regards to value p_n1 in column p_j1.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, relational.
+;;
 ;; Arguments:
 ;; - p_s1: string.
 ;;   - "#<".
@@ -3116,6 +3305,9 @@
 ;; - p_a1: matrix.
 ;; - p_j1: column number.
 ;; - p_n1: number.
+;;
+;; Sources:
+;; - [16].
 ;;
 (define (grsp-matrix-row-delete p_s1 p_a1 p_j1 p_n1)
   (let ((res1 0)
@@ -3143,12 +3335,18 @@
 ;;;; grsp-matrix-row-sort - Sorts rows from matrix p_a1 for which condition
 ;; p_s1 is met with regards to column p_j1.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, relational.
+;;
 ;; Arguments:
 ;; - p_s1: string.
 ;;   - "#asc".
 ;;   - "#des".
 ;; - p_a1: matrix.
 ;; - p_j1: column number.
+;;
+;; Sources:
+;; - [16].
 ;;
 (define (grsp-matrix-row-sort p_s1 p_a1 p_j1)
   (let ((res1 0)
@@ -3227,8 +3425,14 @@
 ;; if p_a1 has rows [0, m] row 0 becomes row m, row 1 becomes row m -1 ...
 ;; and row m becomes row 0.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, relational.
+;;
 ;; Arguments:
 ;; - p_a1: matrix.
+;;
+;; Sources:
+;; - [16].
 ;;
 (define (grsp-matrix-row-invert p_a1)
   (let ((res1 0)
@@ -3240,7 +3444,6 @@
 	(i1 0)
 	(i2 0)
 	(i3 0))
-
 
     ;; Extract the boundaries of the matrix.
     (set! lm1 (grsp-matrix-esi 1 p_a1))
@@ -3279,6 +3482,9 @@
 ;;;; grsp-matrix-commit - Given that p_a2 is a processed submatrix of p_a1,
 ;; this function copies the data of p_a2 to p_a1.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, relational.
+;;
 ;; Arguments:
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
@@ -3290,6 +3496,9 @@
 ;;   updatd with the data of p_a2.
 ;; - This function might not work well if during the processing of p_a2
 ;;   the width (number of columns) has been changed.
+;;
+;; Sources:
+;; - [16].
 ;;
 (define (grsp-matrix-commit p_a1 p_a2 p_n1)
   (let ((res1 p_a1)
@@ -3304,7 +3513,6 @@
 	(n1 0)
 	(n2 0)
 	(i1 0)
-	;;(j1 0)
 	(i2 0)
 	(j2 0))
 
@@ -3352,9 +3560,15 @@
 ;;;; grsp-matrix-row-selectn - Select from p_a1 only the rows specified in list
 ;; p_l1.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, relational.
+;;
 ;; Arguments:
 ;; - p_a1: matrix.
 ;; - p_l1: list containing row numbers.
+;;
+;; Sources:
+;; - [16].
 ;;
 (define (grsp-matrix-row-selectn p_a1 p_l1)
   (let ((res1 0)
@@ -3425,9 +3639,15 @@
 ;;;; grsp-matrix-col-selectn - Select from p_a1 only the columns specified in
 ;; list p_l1.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, relational.
+;;
 ;; Arguments:
 ;; - p_a1: matrix.
 ;; - p_l1: list containing row numbers.
+;;
+;; Sources:
+;; - [16].
 ;;
 (define (grsp-matrix-col-selectn p_a1 p_l1)
   (let ((res1 0)
@@ -3449,6 +3669,9 @@
 ;;;; grsp-matrix-col-select - Select columns from matrix p_a1 for which condition
 ;; p_s1 is met with regards to value p_n1 in row p_i1.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, relational.
+;;
 ;; Arguments:
 ;; - p_s1: string.
 ;;   - "#<".
@@ -3460,6 +3683,9 @@
 ;; - p_a1: matrix.
 ;; - p_j1: column number.
 ;; - p_n1: number.
+;;
+;; Sources:
+;; - [16].
 ;;
 (define (grsp-matrix-col-select p_s1 p_a1 p_j1 p_n1)
   (let ((res1 0))
@@ -3480,11 +3706,17 @@
 ;;;; grsp-matrix-njoin - Natural join of p_a1 with key p_n1 and p_a2 with key
 ;; p_n2.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, relational.
+;;
 ;; Arguments:
 ;; p_a1: matrix.
 ;; p_n1: column number, key of p_a1.
 ;; p_a2: matrix.
 ;; p_a2: column number, key of p_a2.
+;;
+;; Sources:
+;; - [16].
 ;;
 (define (grsp-matrix-njoin p_a1 p_n1 p_a2 p_n2)
   (let ((res1 0)
@@ -3595,11 +3827,17 @@
 ;;;; grsp-matrix-sjoin - Semi join of p_a1 with key p_n1 and p_a2 with key
 ;; p_n2.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, relational.
+;;
 ;; Arguments:
 ;; p_a1: matrix.
 ;; p_n1: column number, key of p_a1.
 ;; p_a2: matrix.
 ;; p_a2: column number, key of p_a2.
+;;
+;; Sources:
+;; - [16].
 ;;
 (define (grsp-matrix-sjoin p_a1 p_n1 p_a2 p_n2)
   (let ((res1 0)
@@ -3607,7 +3845,6 @@
 	(res3 0)	
 	(lm2 0)
 	(hm2 0)
-	;;(ln2 0)
 	(hn2 0))
 
     ;; Create matrices. 
@@ -3617,7 +3854,7 @@
     ;; Extract the boundaries of the res2 matrix.
     (set! lm2 (grsp-matrix-esi 1 res2))
     (set! hm2 (grsp-matrix-esi 2 res2))
-    ;;(set! ln2 (grsp-matrix-esi 3 res2))
+
     (set! hn2 (grsp-matrix-esi 4 res2))
 
     ;; Trim res2.
@@ -3633,39 +3870,218 @@
 ;;;; grsp-matrix-ajoin - Antijoin. Produces a matrix of elements of p_a1 that
 ;; cannot be njoined to p_a2 given p_n1 and p_n2
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, relational.
+;;
 ;; Arguments:
 ;; p_a1: matrix.
 ;; p_n1: column number, key of p_a1.
 ;; p_a2: matrix.
-;; p_a2: column number, key of p_a2.
+;; p_n2: column number, key of p_a2.
+;;
+;; Sources:
+;; - [16].
 ;;
 (define (grsp-matrix-ajoin p_a1 p_n1 p_a2 p_n2)
   (let ((res1 0)
-	(res2 0)
-	(res3 0)	
+	(res3 0)
+	(res4 0)
+	(res5 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)	
 	(lm2 0)
 	(hm2 0)
-	;;(ln2 0)
-	;;(hn2 0)
-	(i2 0))
+	(ln2 0)
+	(hn2 0)
+	(lm3 0)
+	(hm3 0)
+	(ln3 0)
+	(hn3 0)
+	(i1 0)
+	(j1 0)
+	(i2 0)
+	(n1 0)
+	(n2 0))
+
+    ;; Extract the boundaries of the p_a1 matrix.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1)) 
+    
+    ;; Extract the boundaries of the p_a2 matrix.
+    (set! lm2 (grsp-matrix-esi 1 p_a2))
+    (set! hm2 (grsp-matrix-esi 2 p_a2))
+    (set! ln2 (grsp-matrix-esi 3 p_a2))
+    (set! hn2 (grsp-matrix-esi 4 p_a2)) 
+
+    ;; Seed res3.
+    (set! res3 (grsp-matrix-create 0 1 (+ (- hn1 ln1) 1)))
+    (set! res5 (grsp-matrix-subcpy p_a2 lm2 hm2 p_n2 p_n2))
+
+    ;; Extract boundaries of the res3 matrix.
+    (set! lm3 (grsp-matrix-esi 1 res3))
+    (set! hm3 (grsp-matrix-esi 2 res3))
+    (set! ln3 (grsp-matrix-esi 3 res3))
+    (set! hn3 (grsp-matrix-esi 4 res3)) 
+    
+    ;; Compare p_a1 and p_a2 to find out which tuples from p_a1 were not joined
+    ;; into p_a2.
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+	   (set! n1 (array-ref p_a1 i1 p_n1))
+	   (set! n2 (grsp-matrix-total-element res5 n1))
+	   
+	   ;; If n2 = 0 then the tuple cannot be joined.
+	   (cond ((equal? n2 0)
+		  
+		  ;; Expand seed matrix by one row.
+		  (set! res3 (grsp-matrix-subexp res3 1 0))
+
+		  ;; Extract boundaries of the res3 matrix.
+		  (set! hm3 (grsp-matrix-esi 2 res3))	  
+
+		  ;; Add the row to the results matrix
+		  (set! res4 (grsp-matrix-subcpy p_a1 i1 i1 ln1 hn1))
+		  (set! res3 (grsp-matrix-subrep res3 res4 hm3 ln3))))
+		  
+	   (set! i1 (+ i1 1)))
+
+    ;; Final.
+    (set! res1 (grsp-matrix-subdel "#Delr" res3 0))
+    
+    res1))
+
+
+;;;; grsp-matrix-supp - Given 1 x n matrix p_a1, it returns a 1 x (n - p)
+;; vector that contains one instance per each element value contained in p_a1.
+;; That is, it elimitates repeated instances of the elements of p_a1 and
+;; returns its domain subset.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
+;; Arguments:
+;; p_a1: matrix ( 1 x n), (-inf.0, +inf.0).
+;;
+;; Sources:
+;; - [17].
+;;
+(define (grsp-matrix-supp p_a1)
+  (let ((res1 0)
+	(ln2 0)
+	(hn2 0)	
+	(j1 0)
+	(j2 0)
+	(n1 0)
+	(n2 0)
+	(n3 0)
+	(n4 0))
+
+    ;; Create matrix. 
+    (set! res1 (grsp-matrix-cpy p_a1))
+    
+    ;; Extract the boundaries of the res2 matrix.
+    (set! ln2 (grsp-matrix-esi 3 res1))
+    (set! hn2 (grsp-matrix-esi 4 res1))
+    (set! n3 -inf.0)
+    (set! n4 +inf.0)
+    
+    (set! j1 ln2)
+    (while (<= j1 hn2)
+
+	   ;; Read each element.
+	   (set! n1 (array-ref res1 0 j1))
+	   (set! n2 0)
+	   (set! j2 ln2)
+
+	   ;; Find new ocurrences of n1 in the matrix.
+	   (while (<= j2 hn2)
+		  (cond ((= n1 (array-ref res1 0 j2))
+			 (set! n2 (+ n2 1))
+			 (cond ((> n2 1)
+				(array-set! res1 n3 0 j2)))))
+		  (set! j2 (+ j2 1)))			       
+	   
+	   (set! j1 (+ j1 1)))
+
+    ;; Final.
+    (set! res1 (grsp-matrix-row-select "#>" (grsp-matrix-transpose res1) 0 n3))
+    (set! res1 (grsp-matrix-row-select "#<" res1 0 n4))
+    (set! res1 (grsp-matrix-transposer res1 3))
+
+    res1))
+
+
+;;;; grsp-matrix-row - Relational division
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, relational.
+;;
+;; Arguments:
+;; p_a1: matrix.
+;; p_a2: matrix.
+;;
+;; Sources:
+;; - [16].
+;;
+(define (grsp-matrix-row-div p_a1 p_n1 p_a2 p_n2)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(res4 0)
+	(res5 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)	
+	(lm2 0)
+	(hm2 0)
+	(ln2 0)
+	(hn2 0)
+	(i1 0)
+	(j1 0)
+	(i2 0)
+	(j2 0)	
+	(n1 0)
+	(n2 0)
+	(t3 0))
 
     ;; Create matrices. 
     (set! res1 (grsp-matrix-cpy p_a1))
-    (set! res2 (grsp-matrix-cpy p_a2)) 
-
+    (set! res2 (grsp-matrix-cpy p_a2))    
+    
+    ;; Extract the boundaries of the res1 matrix.
+    (set! lm1 (grsp-matrix-esi 1 res1))
+    (set! hm1 (grsp-matrix-esi 2 res1))
+    (set! ln1 (grsp-matrix-esi 3 res1))
+    (set! hn1 (grsp-matrix-esi 4 res1)) 
+    
     ;; Extract the boundaries of the res2 matrix.
     (set! lm2 (grsp-matrix-esi 1 res2))
     (set! hm2 (grsp-matrix-esi 2 res2))
-    ;;(set! ln2 (grsp-matrix-esi 3 res2))
-    ;;(set! hn2 (grsp-matrix-esi 4 res2))   
+    (set! ln2 (grsp-matrix-esi 3 res2))
+    (set! hn2 (grsp-matrix-esi 4 res2))
 
-    ;; Cycle over res1.
-    (set! i2 lm2)
-    (while (<= i2 hm2)
-
-	   (set! res1 (grsp-matrix-row-delete "#=" res1 p_n1 (array-ref res2 i2 p_n2)))
-	   
-	   ;; Increment main row cycle counter.
-	   (set! i2 (+ i2 1)))
+    ;; Take the index column of res2.
+    (set! res3 (grsp-matrix-subcpy res2 lm2 hm2 p_n2 p_n2))
+    (set! t3 (grsp-matrix-total-elements res3))    
     
-    res1))
+    ;; Repeat for each row of p_a1, to see if it can be njoined with
+    ;; every row of p_a2.
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+	   
+	   ;; Check if the current row in res1 can be njoined with all rows in
+	   ;; res2.
+	   (set! n1 (array-ref res1 i1 p_n1))
+	   (cond ((= t3 (grsp-matrix-total-element res3 n1))
+		  
+		  ;; This row can be njoined.
+		  (set! res4 (grsp-matrix-subcpy res1 i1 i1 ln1 hn1)
+	   
+	   (set! i1 (+ i1 1)))
+    
+    res4))
