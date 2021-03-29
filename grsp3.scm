@@ -75,7 +75,9 @@
 ;;   [Accessed 12 August 2020].
 ;; - [16] En.wikipedia.org. 2021. Relational algebra. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Relational_algebra [Accessed 16 March 2021].
-;; - [17] https://en.wikipedia.org/wiki/Support_(mathematics)
+;; - [17] En.wikipedia.org. 2021. Support (mathematics). [online] Available at:
+;;   https://en.wikipedia.org/wiki/Support_(mathematics)> [Accessed 27 March
+;;   2021].
 
 
 ;; Compilation and REPL examples:
@@ -171,7 +173,13 @@
 	    grsp-matrix-sjoin
 	    grsp-matrix-ajoin
 	    grsp-matrix-supp
-	    grsp-matrix-row-div))
+	    grsp-matrix-row-div
+	    grsp-matrix-row-update
+	    grsp-matrix-te1
+	    grsp-matrix-te2
+	    grsp-matrix-row-append
+	    grsp-matrix-lojoin
+	    grsp-matrix-subrepv))
 
 
 ;;;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -3488,19 +3496,19 @@
 ;; Arguments:
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
-;; - p_n1: column number that corresponds to the shared primary key.
+;; - p_j1: column number that corresponds to the shared primary key.
 ;;
 ;; Notes:
 ;; - p_a1 and p_a2 should share a common id or primary key contained in a
 ;;   column that will be used to identify each row of p_a1 that would be
-;;   updatd with the data of p_a2.
+;;   updated with the data of p_a2.
 ;; - This function might not work well if during the processing of p_a2
 ;;   the width (number of columns) has been changed.
 ;;
 ;; Sources:
 ;; - [16].
 ;;
-(define (grsp-matrix-commit p_a1 p_a2 p_n1)
+(define (grsp-matrix-commit p_a1 p_a2 p_j1)
   (let ((res1 p_a1)
 	(lm1 0)
 	(hm1 0)
@@ -3530,29 +3538,30 @@
 
     ;; Cycle p_a2.
     (set! i2 lm2)
-    (while (< i2 hm2)
+    (while (<= i2 hm2);;
 
 	   ;; Get the key for each row of p_a2.
-	   (set! n2 (array-ref p_a2 i2 p_n1))
+	   (set! n2 (array-ref p_a2 i2 p_j1))
 	   
 	   ;; Cycle p_a1.
 	   (set! i1 lm1)
-	   (while (< i1 hm1)
+	   (while (<= i1 hm1);;
 
 		  ;; Get the key for each row of p_a1.
-		  (set! n1 (array-ref p_a1 i1 p_n1))
+		  (set! n1 (array-ref p_a1 i1 p_j1))
 
 		  ;; If the keys for the current p_a2 and p_a1 rows are the same
 		  ;; then copy data from p_a2 into p_a1.
 		  (cond ((equal? n1 n2)
 			 (set! j2 ln2)
-			 (while (< j2 hn2)
+			 (while (<= j2 hn2);;
 				(array-set! p_a1 (array-ref p_a2 i2 j2) i1 j2)
 				(set! j2 (+ j2 1)))))			 
 
-		  (set! i1 (+ i1 1)))
-	   
-	   (set! i2 (+ i1 )))    
+		  (set! i1 (+ i1 1)))	   
+	   (set! i2 (+ i2 1)))
+
+    (set! res1 p_a1)
     
     res1))
 
@@ -4015,17 +4024,22 @@
     res1))
 
 
-;;;; grsp-matrix-row - Relational division
+;;;; grsp-matrix-row-div. - Relational division
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors, relational.
 ;;
 ;; Arguments:
 ;; p_a1: matrix.
+;; p_n1: column number, key of p_a1.
 ;; p_a2: matrix.
+;; p_n2: column number, key of p_a2.
 ;;
 ;; Sources:
 ;; - [16].
+;;
+;; Notes:
+;; - Still needs some checking of the results.
 ;;
 (define (grsp-matrix-row-div p_a1 p_n1 p_a2 p_n2)
   (let ((res1 0)
@@ -4041,12 +4055,10 @@
 	(hm2 0)
 	(ln2 0)
 	(hn2 0)
+	(hm5 0)
 	(i1 0)
-	(j1 0)
-	(i2 0)
-	(j2 0)	
+	(i2 0)	
 	(n1 0)
-	(n2 0)
 	(t3 0))
 
     ;; Create matrices. 
@@ -4068,6 +4080,9 @@
     ;; Take the index column of res2.
     (set! res3 (grsp-matrix-subcpy res2 lm2 hm2 p_n2 p_n2))
     (set! t3 (grsp-matrix-total-elements res3))    
+
+    ;; Create seed of results matrix.
+    (set! res5 (grsp-matrix-create 0 1 (+ (- hn1 ln1) 1)))
     
     ;; Repeat for each row of p_a1, to see if it can be njoined with
     ;; every row of p_a2.
@@ -4078,10 +4093,273 @@
 	   ;; res2.
 	   (set! n1 (array-ref res1 i1 p_n1))
 	   (cond ((= t3 (grsp-matrix-total-element res3 n1))
+
+		  ;; Expand seed matrix by one row.
+		  (set! res5 (grsp-matrix-subexp res5 1 0))
+		  (set! hm5 (grsp-matrix-esi 2 res5))
 		  
 		  ;; This row can be njoined.
-		  (set! res4 (grsp-matrix-subcpy res1 i1 i1 ln1 hn1)
+		  (set! res4 (grsp-matrix-subcpy res1 i1 i1 ln1 hn1))
+		  (set! res5 (grsp-matrix-subrep res5 res4 hm5 ln1))))
 	   
 	   (set! i1 (+ i1 1)))
+
+    ;; Final.
+    (set! res5 (grsp-matrix-subdel "#Delr" res5 0))
     
-    res4))
+    res5))
+
+
+;;;; grsp-matrix-row-update - Updates all rows setting value p_n2 in column p_j2
+;; from p_a1 where column p_j1 has a p_s1 relationship with p_n1.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, relational.
+;;
+;; Arguments:
+;; - p_s1: string.
+;;   - "#<".
+;;   - "#>".
+;;   - "#>=".
+;;   - "#<=".
+;;   - "#!=".
+;;   - "#=".
+;; - p_a1: matrix.
+;; - p_j1: column number.
+;; - p_n1: number.
+;; - p_j2: column number.
+;; - p_n2: number.
+;;
+;; Notes:
+;; - You cannot make changes to the primary key column using this update
+;;   function.
+;;
+(define (grsp-matrix-row-update p_s1 p_a1 p_j1 p_n1 p_j2 p_n2)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(lm2 0)
+	(hm2 0)
+	(ln2 0)
+	(hn2 0)	
+	(i2 0))
+
+    ;; Create matrices. 
+    (set! res1 (grsp-matrix-cpy p_a1))
+    
+    ;; First select those rows where conditions are met.
+    (set! res2 (grsp-matrix-row-select p_s1 res1 p_j1 p_n1))
+
+    ;; Extract boundaries of res2.
+    (set! lm2 (grsp-matrix-esi 1 res2))
+    (set! hm2 (grsp-matrix-esi 2 res2))
+    (set! ln2 (grsp-matrix-esi 3 res2))
+    (set! hn2 (grsp-matrix-esi 4 res2))     
+
+    ;; Cycle and update.
+    (set! i2 lm2)
+    (while (<= i2 hm2)
+	   (array-set! res2 p_n2 i2 p_j2)
+	   (set! i2 (+ i2 1)))
+    
+    ;; Finish.
+    (set! res3 (grsp-matrix-cpy res2))
+    (set! res1 (grsp-matrix-commit res1 res3 p_j1))
+    
+    res1))
+
+
+;; grsp-matrix-te1 - Total elements of a row or column based on the lower and
+;; higher coordinate values.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, relational.
+;;
+;; Arguments:
+;; - p_lo: lower (lm or ln).
+;; - p_hi: higher (hm or hn).
+;;  
+(define (grsp-matrix-te1 p_lo p_hi)
+  (let ((res1 0))
+
+    (set! res1 (+ (- p_hi p_lo) 1))
+
+    res1))
+
+
+;; grsp-matrix-te2 - Total elements of a row or column. Returns
+;; a 2 x 1 matix cointaining the number of rows and columnsof p_a1.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, relational.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;;  
+(define (grsp-matrix-te2 p_a1)
+  (let ((res1 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0))	
+
+    ;; Extract boundaries of the matrix.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1))
+
+    (set! res1 (grsp-matrix-create 0 1 2))
+    (array-set! res1 (grsp-matrix-te1 lm1 hm1) 0 0)
+    (array-set! res1 (grsp-matrix-te1 ln1 hn1) 0 1)   
+    
+    res1))
+
+
+;; grsp-matrix-append - append all the rows of p_a2 below the rows of p_a1.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, relational.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_a2: matrix.
+;;  
+(define (grsp-matrix-row-append p_a1 p_a2)
+  (let ((res1 0)
+	(res2 0)
+	(hm1 0)
+	(ln1 0)
+	(lm2 0)
+	(hm2 0)
+	(ln2 0)
+	(hn2 0))
+
+    ;; Create matrices. 
+    (set! res1 (grsp-matrix-cpy p_a1))
+    (set! res2 (grsp-matrix-cpy p_a2))
+
+    ;; Extract boundaries of the matrix.
+    (set! hm1 (grsp-matrix-esi 2 res1))
+    (set! ln1 (grsp-matrix-esi 3 res1))
+
+    ;; Extract boundaries of the matrix.
+    (set! lm2 (grsp-matrix-esi 1 res2))
+    (set! hm2 (grsp-matrix-esi 2 res2))
+    (set! ln2 (grsp-matrix-esi 3 res2))
+    (set! hn2 (grsp-matrix-esi 4 res2))    
+    
+    ;; Expand res1.
+    (set! res1 (grsp-matrix-subexp res1 (grsp-matrix-te1 lm2 hm2) 0))
+
+    ;; Append res2 to res1.
+    (set! res1 (grsp-matrix-subrep res1 res2 (+ hm1 1) ln1))
+    
+    res1))
+
+
+;;;; grsp-matrix-lojoin - Left outer join.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, relational.
+;;
+;; Arguments:
+;; p_a1: matrix.
+;; p_j1: column number, key of p_a1.
+;; p_a2: matrix.
+;; p_j2: column number, key of p_a2.
+;;
+;; Sources:
+;; - [16].
+;;
+(define (grsp-matrix-lojoin p_a1 p_j1 p_a2 p_j2)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(res4 0)
+	(res5 0)
+	(lm3 0)
+	(hm3 0)
+	(ln3 0)
+	(hn3 0)
+	(lm4 0)
+	(hm4 0)
+	(ln4 0)
+	(hn4 0)
+	(n3 0)
+	(n4 0)
+	(n5 0))
+
+    ;; Define nan.
+    (set! n5 +nan.0)
+    
+    ;; Create matrices. 
+    (set! res1 (grsp-matrix-cpy p_a1))
+    (set! res2 (grsp-matrix-cpy p_a2))
+
+    ;; Perforn a natural join and an anti join.
+    (set! res3 (grsp-matrix-njoin res1 p_j1 res2 p_j2))
+    (set! res4 (grsp-matrix-ajoin res1 p_j1 res2 p_j2))
+
+    ;; Extract matrix boundaries.
+    (set! lm3 (grsp-matrix-esi 1 res3))
+    (set! hm3 (grsp-matrix-esi 2 res3))    
+    (set! ln3 (grsp-matrix-esi 3 res3))
+    (set! hn3 (grsp-matrix-esi 4 res3))
+    
+    ;; Extract matrix boundaries.
+    (set! lm4 (grsp-matrix-esi 1 res4))
+    (set! hm4 (grsp-matrix-esi 2 res4))    
+    (set! ln4 (grsp-matrix-esi 3 res4))
+    (set! hn4 (grsp-matrix-esi 4 res4)) 
+
+    ;; We need to find if both tables are of equal width (number of columns).
+    (set! n3 (grsp-matrix-te1 ln3 hn3))
+    (set! n4 (grsp-matrix-te1 ln4 hn4))
+
+    ;; Add columns to one of the matrices, if necessary.
+    (cond ((> n3 n4)
+	   (set! res4 (grsp-matrix-subexp res4 lm4 (- n3 n4)))
+	   (set! res4 (grsp-matrix-subrepv res4 n5 lm4 hm4 (+ hn4 1) (grsp-matrix-esi 4 res4))))
+	  ((< n3 n4)
+	   (set! res3 (grsp-matrix-subexp res3 lm3 (- n4 n3)))
+	   (set! res4 (grsp-matrix-subrepv res4 n5 lm3 hn3 (+ hn3 1) (grsp-matrix-esi 4 res3)))))
+
+    ;; final.
+    (set! res5 (grsp-matrix-row-append res3 res4))
+
+    res5))
+
+
+;;;; grsp-matrix-subrepv - Replaces a submatrix or section of matrix p_a1 with 
+;; value p_v1.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;; 
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_v1: value.
+;; - p_m1: row coordinate of p_a1 where to start replacing.
+;; - p_m2: row coordinate of p_a1 where to stop replacing.
+;; - p_n1: col coordinate of p_a1 where to start replacing.
+;; - p_n1: col coordinate of p_a1 where to stop replacing.
+;;
+(define (grsp-matrix-subrepv p_a1 p_v1 p_m1 p_m2 p_n1 p_n2)
+  (let ((res1 0)	
+	(i1 0)
+	(j1 0))
+
+    ;; Create matrix. 
+    (set! res1 (grsp-matrix-cpy p_a1))
+    
+    ;; Cycle and replace.
+    (set! i1 p_m1)
+    (while (<= i1 p_m2)
+	   (set! j1 p_n1)
+	   (while (<= j1 p_n2)
+		  (array-set! res1 p_v1 i1 j1)
+		  (set! j1 (+ j1 1)))
+	   (set! i1 (+ i1 1)))
+    
+    res1))
