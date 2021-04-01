@@ -179,7 +179,8 @@
 	    grsp-e
 	    grsp-pi
 	    grsp-em
-	    grsp-phi))
+	    grsp-phi
+	    grsp-nan))
 
 
 ;;;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -1791,6 +1792,19 @@
   (let ((res1 0))
 
     (set! res1 (gconst "A001622"))
+
+    res1))
+
+
+;;;; grsp-nan - Returns NaN (Not a Number).
+;;
+;; Keywords:
+;; - function, exp.
+;;
+(define (grsp-nan)
+  (let ((res1 0))
+
+    (set! res1 (gconst "NaN"))
 
     res1))
 

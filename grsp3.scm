@@ -179,7 +179,8 @@
 	    grsp-matrix-te2
 	    grsp-matrix-row-append
 	    grsp-matrix-lojoin
-	    grsp-matrix-subrepv))
+	    grsp-matrix-subrepv
+	    grsp-matrix-subswp))
 
 
 ;;;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -1382,6 +1383,7 @@
 ;;
 (define (grsp-matrix-subrep p_a1 p_a2 p_m1 p_n1)
   (let ((res1 p_a1)
+	;;(res2 0)
 	(lm1 0)
 	(hm1 0)
 	(ln1 0)
@@ -1395,6 +1397,10 @@
 	(i2 0)
 	(j2 0))
 
+    ;; Create matrix. 
+    ;;(set! res1 (grsp-matrix-cpy p_a1))
+    ;;(set! res2 (grsp-matrix-cpy p_a2))
+    
     ;; Extract the boundaries of the first matrix.
     (set! lm1 (grsp-matrix-esi 1 res1))
     (set! hm1 (grsp-matrix-esi 2 res1))
@@ -1409,10 +1415,13 @@
 
     ;; Replacement loop.
     (set! i2 lm2)
-    (while (<= i1 hm1)
-	   (set! j1 ln1)
+    (set! i1 p_m1) ;;**
+    ;;(while (<= i1 hm1)
+    (while (<= i2 hm2)
+	   (set! j1 p_n1)
 	   (set! j2 ln2)
-	   (while (<= j1 hn1)
+	   ;;(while (<= j1 hn1)
+	   (while (<= j2 hn2)
 		  (array-set! res1 (array-ref p_a2 i2 j2) i1 j1)
 		  (set! j2 (+ j2 1))
 		  (set! j1 (+ j1 1)))
@@ -4287,11 +4296,11 @@
 	(ln4 0)
 	(hn4 0)
 	(n3 0)
-	(n4 0)
-	(n5 0))
+	(n4 0))
+	;;(n5 0))
 
     ;; Define nan.
-    (set! n5 +nan.0)
+    ;;(set! n5 +nan.0)
     
     ;; Create matrices. 
     (set! res1 (grsp-matrix-cpy p_a1))
@@ -4320,10 +4329,10 @@
     ;; Add columns to one of the matrices, if necessary.
     (cond ((> n3 n4)
 	   (set! res4 (grsp-matrix-subexp res4 lm4 (- n3 n4)))
-	   (set! res4 (grsp-matrix-subrepv res4 n5 lm4 hm4 (+ hn4 1) (grsp-matrix-esi 4 res4))))
+	   (set! res4 (grsp-matrix-subrepv res4 (grsp-nan) lm4 hm4 (+ hn4 1) (grsp-matrix-esi 4 res4))))
 	  ((< n3 n4)
 	   (set! res3 (grsp-matrix-subexp res3 lm3 (- n4 n3)))
-	   (set! res4 (grsp-matrix-subrepv res4 n5 lm3 hn3 (+ hn3 1) (grsp-matrix-esi 4 res3)))))
+	   (set! res4 (grsp-matrix-subrepv res4 (grsp-nan) lm3 hn3 (+ hn3 1) (grsp-matrix-esi 4 res3)))))
 
     ;; final.
     (set! res5 (grsp-matrix-row-append res3 res4))
@@ -4331,8 +4340,8 @@
     res5))
 
 
-;;;; grsp-matrix-subrepv - Replaces a submatrix or section of matrix p_a1 with 
-;; value p_v1.
+;;;; grsp-matrix-subrepv - Replaces a submatrix or section of matrix p_a1,
+;; defined  by coordinates (p_m1, p_n1) and (p_m2, p_n2) with value p_v1
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
@@ -4340,10 +4349,10 @@
 ;; Arguments:
 ;; - p_a1: matrix.
 ;; - p_v1: value.
-;; - p_m1: row coordinate of p_a1 where to start replacing.
-;; - p_m2: row coordinate of p_a1 where to stop replacing.
-;; - p_n1: col coordinate of p_a1 where to start replacing.
-;; - p_n1: col coordinate of p_a1 where to stop replacing.
+;; - p_m1: row coordinate of p_a1.
+;; - p_m2: row coordinate of p_a1.
+;; - p_n1: col coordinate of p_a1.
+;; - p_n1: col coordinate of p_a1.
 ;;
 (define (grsp-matrix-subrepv p_a1 p_v1 p_m1 p_m2 p_n1 p_n2)
   (let ((res1 0)	
@@ -4361,5 +4370,48 @@
 		  (array-set! res1 p_v1 i1 j1)
 		  (set! j1 (+ j1 1)))
 	   (set! i1 (+ i1 1)))
+    
+    res1))
+
+
+;; grsp-matrix-subswap - Swaps the contents of the submatrix defined by
+;; coordinates (p_m1, p_n1) for its upper right vertex and  (p_m2, p_n2)
+;; as its lowest left vertex with a submatrix with its upper right vertex at
+;; (p_m3, p_n3) and the same size and shape as the first submatix.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_m1: row pos 1.
+;; - p_n1: col pos 1.
+;; - p_m2: row pos 2.
+;; - p_n2: col pos 2.
+;; - p_m3: row pos 3.
+;; - p_n3: col pos 3.
+;;
+(define (grsp-matrix-subswp p_a1 p_m1 p_n1 p_m2 p_n2 p_m3 p_n3)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(dm 0)
+	(dn 0)
+	(m4 0)
+	(n4 0))
+
+    ;; Create matrix. 
+    (set! res1 (grsp-matrix-cpy p_a1))
+
+    ;; Calculate number of elements on both dims.
+    (set! dm (grsp-matrix-te1 p_m1 p_m2))
+    (set! dn (grsp-matrix-te1 p_n1 p_n2))
+    (set! m4 (- (+ p_m3 dm) 1))
+    (set! n4 (- (+ p_n3 dn) 1))    
+    
+    ;; Extract.
+    (set! res2 (grsp-matrix-subcpy res1 p_m1 p_m2 p_n1 p_n2))
+    (set! res3 (grsp-matrix-subcpy res1 p_m3 m4 p_n3 n4))  
+    
+    ;; Swap.
+    (set! res1 (grsp-matrix-subrep res1 res3 p_m1 p_n1))
+    (set! res1 (grsp-matrix-subrep res1 res2 p_m3 p_n3))    
     
     res1))

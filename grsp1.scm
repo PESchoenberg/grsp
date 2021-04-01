@@ -135,6 +135,10 @@
 	  ;; -------------------------------------------------------------------
 	  ;; Math
 
+	  ;; NaN, Not a Number, as per GNU Guile specs.
+	  ((equal? p_n1 "NaN")
+	   (set! res +nan.0))
+	  
 	  ;; Googol [1][4].
 	  ((equal? p_n1 "Googol")
 	   (set! res (expt 10 100)))
