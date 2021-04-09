@@ -180,7 +180,10 @@
 	    grsp-matrix-row-append
 	    grsp-matrix-lojoin
 	    grsp-matrix-subrepv
-	    grsp-matrix-subswp))
+	    grsp-matrix-subswp
+	    grsp-matrix-col-total-element
+	    grsp-matrix-row-deletev
+	    grsp-matrix-clear))
 
 
 ;;;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -1448,6 +1451,9 @@
 ;; - p_a1: matrix.
 ;; - p_j1: col number to query.
 ;; - p_n2: element value to query according to p_s1 and p_j1.
+;;
+;; Notes
+;; - Obsolete. Use grsp-matrix-row-delete p_s1 instead.
 ;;
 (define (grsp-matrix-subdcn p_s2 p_a1 p_j1 p_n2)
   (let ((res1 p_a1)
@@ -3662,7 +3668,7 @@
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
-;; - p_l1: list containing row numbers.
+;; - p_l1: list containing col numbers.
 ;;
 ;; Sources:
 ;; - [16].
@@ -4197,7 +4203,7 @@
 
 
 ;; grsp-matrix-te2 - Total elements of a row or column. Returns
-;; a 2 x 1 matix cointaining the number of rows and columnsof p_a1.
+;; a 2 x 1 matix cointaining the number of rows and columns of p_a1.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors, relational.
@@ -4297,16 +4303,12 @@
 	(hn4 0)
 	(n3 0)
 	(n4 0))
-	;;(n5 0))
 
-    ;; Define nan.
-    ;;(set! n5 +nan.0)
-    
     ;; Create matrices. 
     (set! res1 (grsp-matrix-cpy p_a1))
     (set! res2 (grsp-matrix-cpy p_a2))
 
-    ;; Perforn a natural join and an anti join.
+    ;; Perform a natural join and an anti join.
     (set! res3 (grsp-matrix-njoin res1 p_j1 res2 p_j2))
     (set! res4 (grsp-matrix-ajoin res1 p_j1 res2 p_j2))
 
@@ -4334,7 +4336,7 @@
 	   (set! res3 (grsp-matrix-subexp res3 lm3 (- n4 n3)))
 	   (set! res4 (grsp-matrix-subrepv res4 (grsp-nan) lm3 hn3 (+ hn3 1) (grsp-matrix-esi 4 res3)))))
 
-    ;; final.
+    ;; Final.
     (set! res5 (grsp-matrix-row-append res3 res4))
 
     res5))
@@ -4379,6 +4381,9 @@
 ;; as its lowest left vertex with a submatrix with its upper right vertex at
 ;; (p_m3, p_n3) and the same size and shape as the first submatix.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;; 
 ;; Arguments:
 ;; - p_a1: matrix.
 ;; - p_m1: row pos 1.
@@ -4392,19 +4397,16 @@
   (let ((res1 0)
 	(res2 0)
 	(res3 0)
-	(dm 0)
-	(dn 0)
 	(m4 0)
 	(n4 0))
 
     ;; Create matrix. 
     (set! res1 (grsp-matrix-cpy p_a1))
 
-    ;; Calculate number of elements on both dims.
-    (set! dm (grsp-matrix-te1 p_m1 p_m2))
-    (set! dn (grsp-matrix-te1 p_n1 p_n2))
-    (set! m4 (- (+ p_m3 dm) 1))
-    (set! n4 (- (+ p_n3 dn) 1))    
+    ;; Calculate number of elements on both dims and lower-right vertex
+    ;; coordinates of the second submatrix.
+    (set! m4 (- (+ p_m3 (grsp-matrix-te1 p_m1 p_m2)) 1))
+    (set! n4 (- (+ p_n3 (grsp-matrix-te1 p_n1 p_n2)) 1))     
     
     ;; Extract.
     (set! res2 (grsp-matrix-subcpy res1 p_m1 p_m2 p_n1 p_n2))
@@ -4415,3 +4417,141 @@
     (set! res1 (grsp-matrix-subrep res1 res2 p_m3 p_n3))    
     
     res1))
+
+
+;;;; grsp-matrix-col-total-element - Count the number of ocurrences of elements
+;; in column p_j1 of matrix p_a1 for which relationship p_s1 is fulfilled with
+;; regards to p_n1.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, relational.
+;;
+;; Arguments:
+;; - p_s1: string.
+;;   - "#<".
+;;   - "#>".
+;;   - "#>=".
+;;   - "#<=".
+;;   - "#!=".
+;;   - "#=".
+;; - p_a1: matrix.
+;; - p_j1: column number.
+;; - p_n1: number.
+;;
+(define (grsp-matrix-col-total-element p_s1 p_a1 p_j1 p_n1)
+  (let ((res1 0)
+	(res2 0)
+	(n2 0)
+	(i1 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0))
+
+    ;; Extract boundaries.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1)) 
+    
+    ;; Extract column p_j1.
+    (set! res2 (grsp-matrix-subcpy p_a1 lm1 hm1 p_j1 p_j1))
+
+    ;; Cycle.
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+	   (set! n2 (array-ref res2 i1 p_j1))
+	   (cond ((equal? p_s1 "#<")
+		  (cond ((< n2 p_n1)
+			 (set! res1 (+ res1 1)))))
+		 ((equal? p_s1 "#>")
+		  (cond ((> n2 p_n1)
+			 (set! res1 (+ res1 1)))))
+		 ((equal? p_s1 "#<=")
+		  (cond ((<= n2 p_n1)
+			 (set! res1 (+ res1 1)))))
+		 ((equal? p_s1 "#>=")
+		  (cond ((>= n2 p_n1)
+			 (set! res1 (+ res1 1)))))
+		 ((equal? p_s1 "#=")
+		  (cond ((= n2 p_n1)
+			 (set! res1 (+ res1 1)))))
+		 ((equal? p_s1 "#!=")
+		  (cond ((equal? (= n2 p_n1) #f)
+			 (set! res1 (+ res1 1))))))
+	   (set! i1 (+ i1 1)))
+    
+    res1))
+
+;;;; grsp-matrix-row-deletev - Deletes all rows where value p_n1 is found at any
+;; column.
+;;
+;; Arguments:
+;; - p_a1: matix
+;; - p_n1: number.
+;;
+(define (grsp-matrix-row-deletev p_a1 p_n1)
+  (let ((res1 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(i1 0)
+	(j1 0))
+
+    ;; Create matrix. 
+    (set! res1 (grsp-matrix-cpy p_a1))
+
+    ;; Extract initial boundaries.
+    (set! lm1 (grsp-matrix-esi 1 res1))
+    (set! hm1 (grsp-matrix-esi 2 res1))
+    (set! ln1 (grsp-matrix-esi 3 res1))
+    (set! hn1 (grsp-matrix-esi 4 res1)) 
+
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+	   (set! j1 ln1)
+	   (while (<= j1 hn1)
+
+		  ;; Delete row where p_n1 is found at column j1.
+		  (set! res1 (grsp-matrix-row-delete "#=" res1 j1 p_n1))
+
+		  ;; Extract current boundaries.
+		  (set! lm1 (grsp-matrix-esi 1 res1))
+		  (set! hm1 (grsp-matrix-esi 2 res1))		  
+		  
+		  (set! j1 (+ j1 1)))
+	   (set! i1 (+ i1 1)))
+		  
+    res1))
+
+
+;;;; grsp-matrix-clear - Deletes all rows from matrix p_a1 where any of the
+;; values contained in list p_l1 is found at any column.
+;;
+;; Arguments:
+;; - p_a1: matix
+;; - p_l1: number.
+;;
+(define (grsp-matrix-clear p_a1 p_l1)
+  (let ((res1 0)
+	(res2 0)
+	(ln2 0)
+	(hn2 0)
+	(j2 0))
+
+    ;; Create matrices. 
+    (set! res1 (grsp-matrix-cpy p_a1))
+    (set! res2 (grsp-l2m p_l1))
+    
+    ;; Extract initial boundaries.
+    (set! ln2 (grsp-matrix-esi 3 res2))
+    (set! hn2 (grsp-matrix-esi 4 res2))
+
+    (set! j2 ln2)
+    (while (<= j2 hn2)
+	   (set! res1 (grsp-matrix-row-deletev res1 (array-ref res2 0 j2)))
+	   (set! j2 (+ j2 1)))
+
+    res1))
+	   

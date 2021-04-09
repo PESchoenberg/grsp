@@ -133,7 +133,7 @@
 ;;   February 2021].
 ;; - [40] En.wikipedia.org. 2021. Chi distribution. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Chi_distribution [Accessed 19 February 2021].
-;; - [41]
+;; - [41] https://en.wikipedia.org/wiki/Theil%E2%80%93Sen_estimator
 ;; - [42]
 ;; - [43]
 
@@ -143,7 +143,8 @@
   #:use-module (grsp grsp1)
   #:use-module (grsp grsp2)
   #:use-module (grsp grsp3)
-  #:use-module (grsp grsp4)  
+  #:use-module (grsp grsp4)
+  #:use-module (grsp grsp7)
   #:export (grsp-feature-scaling
 	    grsp-z-score
 	    grsp-binop
@@ -226,7 +227,8 @@
 	    grsp-weibull-variance
 	    grsp-weibull-skewness
 	    grsp-weibull-mgf
-	    grsp-weibull-cf))
+	    grsp-weibull-cf
+	    grsp-theil-sen-estimator))
 
 
 ;;;; grsp-feature-scaling - Scales p_n to the interval [p_nmin, p_nmax].
@@ -2552,3 +2554,72 @@
 		  (set! i1 (+ i1 1)))))
 
     res1))
+
+
+;; grsp-theil-sen-estimator - Slope estimator.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;;   - 0: x1.
+;;   - 1: x2.
+;;   - 2: y1.
+;;   - 3: y2.
+;;
+;; Sources:
+;; - [41].
+;;
+(define (grsp-theil-sen-estimator p_a1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(res4 0)
+	(res5 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(i1 0)
+	(x1 0)
+	(x2 0)
+	(y1 0)
+	(y2 0)
+	(dx 0)
+	(dy 0))
+
+    ;; Copy matrix.
+    (set! res1 (grsp-matrix-cpy p_a1))
+
+    ;; Prepare the matrix.
+    ;;(set! res1 (grsp-matrix-clear res1 (list -nan.0 +nan.0 -inf.0 +inf.0)))    
+    (set! res1 (grsp-matrix-clear res1 (grsp-naninf))) 
+    
+    ;; Extract the boundaries of the matrix.
+    (set! lm1 (grsp-matrix-esi 1 res1))
+    (set! hm1 (grsp-matrix-esi 2 res1))
+    (set! ln1 (grsp-matrix-esi 3 res1))
+    (set! hn1 (grsp-matrix-esi 4 res1))   
+
+    ;; Create an m x 1 matrix to contain partial results (slope of lines
+    ;; defined by arguments).
+    (set! res2 (grsp-matrix-create 0 (grsp-matrix-te1 lm1 hm1) 1))
+
+    ;; Cycle.
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+
+	   ;; Calculate slope.
+	   (set! x1 (array-ref res1 i1 (+ ln1 0)))
+	   (set! y1 (array-ref res1 i1 (+ ln1 1)))
+	   (set! x2 (array-ref res1 i1 (+ ln1 2)))
+	   (set! y2 (array-ref res1 i1 (+ ln1 3)))
+	   (array-set! res2 (grsp-geo-slope x1 y1 x2 y2) i1 0)
+	   
+	   (set! i1 (+ i1 1)))
+
+    ;; Delete repeated slope values.
+    (set! res4 (grsp-matrix-transpose (grsp-matrix-supp (grsp-matrix-sort "#asc" res2))))
+    
+    ;; Median of unique slopes.
+    (set! res5 (grsp-median1 res4))
+    
+    res5))
