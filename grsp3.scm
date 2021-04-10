@@ -183,7 +183,8 @@
 	    grsp-matrix-subswp
 	    grsp-matrix-col-total-element
 	    grsp-matrix-row-deletev
-	    grsp-matrix-clear))
+	    grsp-matrix-clear
+	    grsp-matrix-clearni))
 
 
 ;;;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -4487,7 +4488,7 @@
 ;; column.
 ;;
 ;; Arguments:
-;; - p_a1: matix
+;; - p_a1: matrix
 ;; - p_n1: number.
 ;;
 (define (grsp-matrix-row-deletev p_a1 p_n1)
@@ -4530,7 +4531,7 @@
 ;; values contained in list p_l1 is found at any column.
 ;;
 ;; Arguments:
-;; - p_a1: matix
+;; - p_a1: matrix
 ;; - p_l1: number.
 ;;
 (define (grsp-matrix-clear p_a1 p_l1)
@@ -4548,10 +4549,24 @@
     (set! ln2 (grsp-matrix-esi 3 res2))
     (set! hn2 (grsp-matrix-esi 4 res2))
 
+    ;; Cycle over the list (now matrix) of values to look on every part of p_a1.
     (set! j2 ln2)
     (while (<= j2 hn2)
 	   (set! res1 (grsp-matrix-row-deletev res1 (array-ref res2 0 j2)))
 	   (set! j2 (+ j2 1)))
 
     res1))
-	   
+
+
+;;;; grsp-matrix-cleani - Deletes all rows from matrix p_a1 where any of the
+;; values contained in list defined by (grsp-naninf) is found at any column.
+;;
+;; Arguments:
+;; - p_a1: matrix
+;;
+(define (grsp-matrix-clearni p_a1)
+  (let ((res1 0))
+
+    (set! res1 (grsp-matrix-clear p_a1 (grsp-naninf)))
+
+    res1))

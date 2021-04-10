@@ -118,13 +118,16 @@
     res1))
 
 
-;;;; grsp-geo-slope - Slope. If dx is zero, it returns +/- inf.
+;;;; grsp-geo-slope - Slope. 
 ;;
 ;; Arguments:
 ;; - p_x1.
 ;; - p_y1.
 ;; - p_x2.
 ;; - p_y2.
+;;
+;; Notes:
+;; - If dx is zero, it returns +/- inf.
 ;;
 (define (grsp-geo-slope p_x1 p_y1 p_x2 p_y2)
   (let ((res1 0)

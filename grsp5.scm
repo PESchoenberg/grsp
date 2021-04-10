@@ -2573,7 +2573,6 @@
 	(res2 0)
 	(res3 0)
 	(res4 0)
-	(res5 0)
 	(lm1 0)
 	(hm1 0)
 	(ln1 0)
@@ -2589,9 +2588,9 @@
     ;; Copy matrix.
     (set! res1 (grsp-matrix-cpy p_a1))
 
-    ;; Prepare the matrix.
-    ;;(set! res1 (grsp-matrix-clear res1 (list -nan.0 +nan.0 -inf.0 +inf.0)))    
-    (set! res1 (grsp-matrix-clear res1 (grsp-naninf))) 
+    ;; Prepare the matrix.  
+    ;;(set! res1 (grsp-matrix-clear res1 (grsp-naninf)))
+    (set! res1 (grsp-matrix-clearni res1))
     
     ;; Extract the boundaries of the matrix.
     (set! lm1 (grsp-matrix-esi 1 res1))
@@ -2616,10 +2615,10 @@
 	   
 	   (set! i1 (+ i1 1)))
 
-    ;; Delete repeated slope values.
-    (set! res4 (grsp-matrix-transpose (grsp-matrix-supp (grsp-matrix-sort "#asc" res2))))
+    ;; Delete repeated rows.
+    (set! res3 (grsp-matrix-transpose (grsp-matrix-supp (grsp-matrix-sort "#asc" res2))))
     
     ;; Median of unique slopes.
-    (set! res5 (grsp-median1 res4))
+    (set! res4 (grsp-median1 res3))
     
-    res5))
+    res4))
