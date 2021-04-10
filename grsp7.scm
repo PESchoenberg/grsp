@@ -34,7 +34,11 @@
   #:use-module (grsp grsp1)
   #:use-module (grsp grsp2)
   #:export (grsp-geo-circle
-	    grsp-geo-sphere))
+	    grsp-geo-sphere
+	    grsp-geo-triangle
+	    grsp-geo-rectangle
+	    grsp-geo-line
+	    grsp-geo-slope))
 
 
 ;;;; grsp-geo-circle - Area of a circle.
@@ -66,6 +70,78 @@
 
     (set! res1 (* (/ 4 3)
 		  (grsp-pi) (expt p_r1 3)))
+
+    res1))
+
+
+;;;; grsp-geo-triangle - Area of a triangle.
+;;
+;; Arguments:
+;; - p_x1: base.
+;; - p_y1: height.
+;;
+(define (grsp-geo-triangle p_x1 p_y1)
+  (let ((res1 0))
+
+    (set! res1 (* p_x1 p_y1 (/ 1 2)))
+    
+    res1))
+
+
+;;;; grsp-geo-rectangle - Area of a rectangle.
+;;
+;; Arguments:
+;; - p_x1: base.
+;; - p_y1: height.
+;;
+(define (grsp-geo-rectangle p_x1 p_y1)
+  (let ((res1 0))
+
+    (set! res1 (* p_x1 p_y1))
+    
+    res1))
+
+
+;;;; grsp-geo-line - Length of a line (hypotenuse).
+;;
+;; Arguments:
+;; - p_x1.
+;; - p_y1.
+;; - p_x2.
+;; - p_y2.
+;;
+(define (grsp-geo-line p_x1 p_y1 p_x2 p_y2)
+  (let ((res1 0))
+
+    (set! res1 (sqrt (+ (expt (- p_x2 p_x1) 2) (expt (- p_y2 p_y1) 2))))
+    
+    res1))
+
+
+;;;; grsp-geo-slope - Slope. 
+;;
+;; Arguments:
+;; - p_x1.
+;; - p_y1.
+;; - p_x2.
+;; - p_y2.
+;;
+;; Notes:
+;; - If dx is zero, it returns +/- inf.
+;;
+(define (grsp-geo-slope p_x1 p_y1 p_x2 p_y2)
+  (let ((res1 0)
+	(dx 0)
+	(dy 0))
+
+    (set! dx (- p_x2 p_x1))
+    (set! dy (- p_y2 p_y1))
+    (cond ((= dx 0)
+	   (cond ((>= dy 0)
+		  (set! res1 +inf.0))
+		 ((< dy 0)
+		  (set! res1 -inf.0))))
+	  (else (set! res1 (/ dy dx))))
 
     res1))
 
