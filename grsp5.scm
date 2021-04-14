@@ -6,7 +6,7 @@
 ;;
 ;; =============================================================================
 ;;
-;; Copyright (C) 2018 - 2020  Pablo Edronkin (pablo.edronkin at yahoo.com)
+;; Copyright (C) 2018 - 2021  Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
 ;;   it under the terms of the GNU Lesser General Public License as published by
@@ -133,7 +133,9 @@
 ;;   February 2021].
 ;; - [40] En.wikipedia.org. 2021. Chi distribution. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Chi_distribution [Accessed 19 February 2021].
-;; - [41] https://en.wikipedia.org/wiki/Theil%E2%80%93Sen_estimator
+;; - [41] En.wikipedia.org. 2021. Theil–Sen estimator - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Theil%E2%80%93Sen_estimator 
+;;   [Accessed 10 April 2021].
 ;; - [42]
 ;; - [43]
 
@@ -2556,7 +2558,10 @@
     res1))
 
 
-;; grsp-theil-sen-estimator - Slope estimator.
+;; grsp-theil-sen-estimator - Slope estimator, line fitting.
+;;
+;; Keywords:
+;; - statistics, probability, line, fitting, estimator, linear, regression.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -2589,7 +2594,6 @@
     (set! res1 (grsp-matrix-cpy p_a1))
 
     ;; Prepare the matrix.  
-    ;;(set! res1 (grsp-matrix-clear res1 (grsp-naninf)))
     (set! res1 (grsp-matrix-clearni res1))
     
     ;; Extract the boundaries of the matrix.

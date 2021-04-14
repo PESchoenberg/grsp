@@ -6,7 +6,7 @@
 ;;
 ;; =============================================================================
 ;;
-;; Copyright (C) 2018  Pablo Edronkin (pablo.edronkin at yahoo.com)
+;; Copyright (C) 2018 - 2021  Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
 ;;   it under the terms of the GNU Lesser General Public License as published by
@@ -98,7 +98,10 @@
 ;; - [30] Gnu.org. 2020. Exactness (Guile Reference Manual). [online] Available
 ;;   at: https://www.gnu.org/software/guile/manual/html_node/Exactness.html
 ;;   [Accessed 28 November 2020].
-;; - [31] https://en.wikipedia.org/wiki/Test_functions_for_optimization
+;; - [31] En.wikipedia.org. 2021. Test functions for optimization - Wikipedia.
+;;   [online] Available at:
+;;   https://en.wikipedia.org/wiki/Test_functions_for_optimization [Accessed 13
+;;   April 2021].
 ;; - [32]
 ;; - [33]
 ;; - [34]

@@ -6,7 +6,7 @@
 ;;
 ;; =============================================================================
 ;;
-;; Copyright (C) 2020  Pablo Edronkin (pablo.edronkin at yahoo.com)
+;; Copyright (C) 2020 - 2021  Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
 ;;   it under the terms of the GNU Lesser General Public License as published by
@@ -78,6 +78,8 @@
 ;; - [17] En.wikipedia.org. 2021. Support (mathematics). [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Support_(mathematics)> [Accessed 27 March
 ;;   2021].
+;; - [18] Mathispower4u. (2020). LU Decomposition. [online] Available at:
+;;   https://www.youtube.com/watch?v=UlWcofkUDDU [Accessed 5 Mar. 2020].
 
 
 ;; Compilation and REPL examples:
@@ -184,7 +186,9 @@
 	    grsp-matrix-col-total-element
 	    grsp-matrix-row-deletev
 	    grsp-matrix-clear
-	    grsp-matrix-clearni))
+	    grsp-matrix-clearni
+	    grsp-matrix-row-cartesian
+	    grsp-matrix-col-append))
 
 
 ;;;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -256,8 +260,7 @@
 ;; - p_n: cols, positive integer.
 ;;
 ;; Sources:
-;; - [1][2] Mathispower4u. (2020). LU Decomposition. [online] Available at:
-;;   https://www.youtube.com/watch?v=UlWcofkUDDU [Accessed 5 Mar. 2020].
+;; - [1][2][18].
 ;;
 (define (grsp-matrix-create p_s1 p_m1 p_n1)
   (let ((res1 0)
@@ -1311,7 +1314,7 @@
 ;; p_a1: matrix to be copied.
 ;;
 ;; Output:
-;; - A copy of p_a1
+;; - A copy of p_a1.
 ;;
 (define (grsp-matrix-cpy p_a1)
   (let ((res1 0)
@@ -1400,10 +1403,6 @@
 	(j1 p_n1)
 	(i2 0)
 	(j2 0))
-
-    ;; Create matrix. 
-    ;;(set! res1 (grsp-matrix-cpy p_a1))
-    ;;(set! res2 (grsp-matrix-cpy p_a2))
     
     ;; Extract the boundaries of the first matrix.
     (set! lm1 (grsp-matrix-esi 1 res1))
@@ -1419,12 +1418,10 @@
 
     ;; Replacement loop.
     (set! i2 lm2)
-    (set! i1 p_m1) ;;**
-    ;;(while (<= i1 hm1)
+    (set! i1 p_m1) 
     (while (<= i2 hm2)
 	   (set! j1 p_n1)
 	   (set! j2 ln2)
-	   ;;(while (<= j1 hn1)
 	   (while (<= j2 hn2)
 		  (array-set! res1 (array-ref p_a2 i2 j2) i1 j1)
 		  (set! j2 (+ j2 1))
@@ -1562,6 +1559,7 @@
     (cond ((equal? p_s1 "#Delc")
 	   (set! res2 (grsp-matrix-transpose res1))
 	   (set! res2 (grsp-matrix-subdel "#Delr" res2 p_n1))
+	   
 	   ;; Transpose three times more to return to original state.
 	   (set! res2 (grsp-matrix-transposer res2 3)))	  
 	  ((equal? p_s1 "#Delr")
@@ -2591,7 +2589,6 @@
     (set! hn1 (grsp-matrix-esi 4 p_a1))
 
     ;; Create vector.
-    ;; (set! n1 (grsp-matrix-total-elements p_a1))
     (set! res1 (grsp-matrix-create 0 1 (grsp-matrix-total-elements p_a1)))
 
     (set! i1 lm1)
@@ -4487,6 +4484,9 @@
 ;;;; grsp-matrix-row-deletev - Deletes all rows where value p_n1 is found at any
 ;; column.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, relational.
+;;
 ;; Arguments:
 ;; - p_a1: matrix
 ;; - p_n1: number.
@@ -4530,6 +4530,9 @@
 ;;;; grsp-matrix-clear - Deletes all rows from matrix p_a1 where any of the
 ;; values contained in list p_l1 is found at any column.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, relational.
+;;
 ;; Arguments:
 ;; - p_a1: matrix
 ;; - p_l1: number.
@@ -4569,4 +4572,160 @@
 
     (set! res1 (grsp-matrix-clear p_a1 (grsp-naninf)))
 
+    res1))
+
+
+;;;; grsp-matrix-row-cartesian - Cartesian product of all rows of p_a1 and p_a2.
+;; Note that this function combines every row of one matrix with every row of
+;; another matrix, and not every element with every other element.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, relational.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_a2: matrix.
+;;
+(define (grsp-matrix-row-cartesian p_a1 p_a2)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(res4 0)
+	(res5 0)
+	(res6 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(lm2 0)
+	(hm2 0)
+	(ln2 0)
+	(hn2 0)
+	(lm6 0)
+	(hm6 0)
+	(ln6 0)
+	(hn6 0)
+	(tc1 0)
+	(tc2 0)
+	(i1 0)
+	(i2 0))
+
+    ;; Create matrices. 
+    (set! res1 (grsp-matrix-cpy p_a1))
+    (set! res2 (grsp-matrix-cpy p_a2))
+
+    ;; Extract initial boundaries.
+    (set! lm1 (grsp-matrix-esi 1 res1))
+    (set! hm1 (grsp-matrix-esi 2 res1))
+    (set! ln1 (grsp-matrix-esi 3 res1))
+    (set! hn1 (grsp-matrix-esi 4 res1))
+
+    (set! lm2 (grsp-matrix-esi 1 res2))
+    (set! hm2 (grsp-matrix-esi 2 res2))
+    (set! ln2 (grsp-matrix-esi 3 res2))
+    (set! hn2 (grsp-matrix-esi 4 res2))     
+
+    ;; Columns in each matrix.
+    (set! tc1 (grsp-matrix-te1 ln1 hn1))
+    (set! tc2 (grsp-matrix-te1 ln1 hn1))    
+
+    ;; Seed matrix.
+    (set! res6 (grsp-matrix-create 0 1 (+ tc1 tc2)))
+
+    (set! lm6 (grsp-matrix-esi 1 res6))
+    (set! hm6 (grsp-matrix-esi 2 res6))
+    (set! ln6 (grsp-matrix-esi 3 res6))
+    (set! hn6 (grsp-matrix-esi 4 res6))     
+
+    ;; cycle over res1 and combine each row of it with each rown of res2 in res3
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+
+	   ;; Read a row from res1.
+	   (set! res3 (grsp-matrix-subcpy res1 i1 i1 ln1 hn1))
+	   (set! i2 lm2)
+
+	   ;; Combine the current res1 row with all rows from res2.
+	   (while (<= i2 hm2)
+
+		  ;, Get a row from res2.
+		  (set! res4 (grsp-matrix-subcpy res2 i2 i2 ln2 hn2))
+
+		  ;; Col append rows from res3 and res4.
+		  (set! res5 (grsp-matrix-col-append res3 res4))
+
+		  ;; Add a fresh row to res5 in which to place the col appended
+		  ;; rows.
+		  (set! res6 (grsp-matrix-subexp res6 1 0))
+		  (set! hm6 (grsp-matrix-esi 2 res6))
+
+		  ;; Add the col appended rows.
+		  (set! res6 (grsp-matrix-subrep res6 res5 hm6 ln6))
+
+		  ;; Increment counters.
+		  (set! i2 (+ i2 1)))
+	   (set! i1 (+ i1 1)))
+
+    ;; Final.
+    (set! res6 (grsp-matrix-subdel "#Delr" res6 0))
+    
+    res6))
+	
+
+;; grsp-matrix-col-append - Append all the columns of p_a2 to the right of p_a1,
+;; row by row.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, relational.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_a2: matrix.
+;;  
+(define (grsp-matrix-col-append p_a1 p_a2)
+  (let ((res1 0)
+	(res2 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(lm2 0)
+	(hm2 0)
+	(ln2 0)
+	(hn2 0)
+	(tm1 0)
+	(tn1 0)
+	(tm2 0)
+	(tn2 0)
+	(am1 0))
+
+    ;; Create matrices. 
+    (set! res1 (grsp-matrix-cpy p_a1))
+    (set! res2 (grsp-matrix-cpy p_a2))
+
+    ;; Extract boundaries.
+    (set! lm1 (grsp-matrix-esi 1 res1))
+    (set! hm1 (grsp-matrix-esi 2 res1))
+    (set! ln1 (grsp-matrix-esi 3 res1))
+    (set! hn1 (grsp-matrix-esi 4 res1))  
+
+    (set! lm2 (grsp-matrix-esi 1 res2))
+    (set! hm2 (grsp-matrix-esi 2 res2))
+    (set! ln2 (grsp-matrix-esi 3 res2))
+    (set! hn2 (grsp-matrix-esi 4 res2))    
+
+    (set! tm1 (grsp-matrix-te1 lm1 hm1))
+    (set! tm2 (grsp-matrix-te1 lm2 hm2))
+    (set! tn2 (grsp-matrix-te1 ln2 hn2))
+    
+    ;; Find out how many rows would have to be added to res1.
+    (cond ((< tm1 tm2)
+	   (set! am1 (- tm2 tm1))))
+    
+    ;; Expand res1.
+    (set! res1 (grsp-matrix-subexp res1 am1 tn2))
+    
+    ;; Append res2 to res1.
+    (set! res1 (grsp-matrix-subrep res1 res2 lm1 (+ hn1 1)))
+    
     res1))

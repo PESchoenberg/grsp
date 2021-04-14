@@ -6,7 +6,7 @@
 ;;
 ;; =============================================================================
 ;;
-;; Copyright (C) 2018  Pablo Edronkin (pablo.edronkin at yahoo.com)
+;; Copyright (C) 2018 - 2021  Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
 ;;   it under the terms of the GNU Lesser General Public License as published by
@@ -34,11 +34,15 @@
   #:use-module (grsp grsp1)
   #:use-module (grsp grsp2)
   #:export (grsp-geo-circle
-	    grsp-geo-sphere
+	    grsp-geo-spherev
 	    grsp-geo-triangle
 	    grsp-geo-rectangle
 	    grsp-geo-line
-	    grsp-geo-slope))
+	    grsp-geo-slope
+	    grsp-geo-cylinder
+	    grsp-geo-cylinderv
+	    grsp-geo-pyramid
+	    grsp-geo-pyramidv))
 
 
 ;;;; grsp-geo-circle - Area of a circle.
@@ -57,7 +61,7 @@
     res1))
 
 
-;;;; grsp-geo-sphere - Volume of a sphere.
+;;;; grsp-geo-spherev - Volume of a sphere.
 ;;
 ;; Keywords:
 ;; - geometry, curves, volume.
@@ -65,7 +69,7 @@
 ;; Arguments:
 ;; - p_r1: radius.
 ;;
-(define (grsp-geo-sphere p_r1)
+(define (grsp-geo-spherev p_r1)
   (let ((res1 0))
 
     (set! res1 (* (/ 4 3)
@@ -102,7 +106,7 @@
     res1))
 
 
-;;;; grsp-geo-line - Length of a line (hypotenuse).
+;;;; grsp-geo-line - Length of a segment (hypotenuse).
 ;;
 ;; Arguments:
 ;; - p_x1.
@@ -118,7 +122,7 @@
     res1))
 
 
-;;;; grsp-geo-slope - Slope. 
+;;;; grsp-geo-slope - Slope of a line. 
 ;;
 ;; Arguments:
 ;; - p_x1.
@@ -145,3 +149,58 @@
 
     res1))
 
+
+;;;; grsp-geo-cylinder - Surface area of a cylinder.
+;;
+;; Arguments:
+;; - p_x1: base radius.
+;; - p_y1: height.
+;;
+(define (grsp-geo-cylinder p_x1 p_y1)
+  (let ((res1 0))
+
+	(set! res1 (+ (* 2 (grsp-geo-circle p_x1)) (* 2 (grsp-pi) p_x1 p_y1)))
+    
+	res1))
+
+
+;;;; grsp-geo-cylinderv - Volume of a cylinder.
+;;
+;; Arguments:
+;; - p_x1: base radius.
+;; - p_y1: height.
+;;
+(define (grsp-geo-cylinderv p_x1 p_y1)
+  (let ((res1 0))
+
+    (set! res1 (* (grsp-geo-circle p_x1) p_y1))
+    
+    res1))
+
+
+;;;; grsp-geo-pyramid - Surface area of a pyramid.
+;;
+;; Arguments:
+;; - p_a1: base area.
+;; - p_y1: height.
+;;
+(define (grsp-geo-pyramid p_a1 p_y1)
+  (let ((res1 0))
+
+    (set! res1 (+ (expt p_a1 2) (* 4 (/ (* p_a1 p_y1) 2))))
+    
+    res1))
+
+
+;;;; grsp-geo-pyramidv - Volume of a pyramid.
+;;
+;; Arguments:
+;; - p_a1: base area.
+;; - p_y1: height.
+;;
+(define (grsp-geo-pyramidv p_a1 p_y1)
+  (let ((res1 0))
+
+    (set! res1 (* (/ 1 3) p_a1 p_y1))
+    
+    res1))
