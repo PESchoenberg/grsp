@@ -1,10 +1,10 @@
-;; =============================================================================
+;; ===================================================================
 ;;
 ;; grsp9.scm
 ;;
 ;; Test functitions and artificial landscapes for single-objective optimization.
 ;;
-;; =============================================================================
+;; ===================================================================
 ;;
 ;; Copyright (C) 2018  - 2021 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
@@ -21,7 +21,7 @@
 ;;   You should have received a copy of the GNU Lesser General Public License
 ;;   along with this program. If not, see <https://www.gnu.org/licenses/>.
 ;;
-;; =============================================================================
+;; ===================================================================
 
 
 ;;;; General notes:

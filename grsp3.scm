@@ -1,10 +1,10 @@
-;; =============================================================================
+;; ===================================================================
 ;;
 ;; grsp3.scm
 ;;
 ;; Matrices.
 ;;
-;; =============================================================================
+;; ===================================================================
 ;;
 ;; Copyright (C) 2020 - 2021  Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
@@ -21,7 +21,7 @@
 ;;   You should have received a copy of the GNU Lesser General Public License
 ;;   along with this program. If not, see <https://www.gnu.org/licenses/>.
 ;;
-;; =============================================================================
+;; ===================================================================
 
 
 ;;;; General notes:
@@ -188,7 +188,9 @@
 	    grsp-matrix-clear
 	    grsp-matrix-clearni
 	    grsp-matrix-row-cartesian
-	    grsp-matrix-col-append))
+	    grsp-matrix-col-append
+	    grsp-matrix-col-find-nth
+	    grsp-mn2ll))
 
 
 ;;;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -4729,3 +4731,106 @@
     (set! res1 (grsp-matrix-subrep res1 res2 lm1 (+ hn1 1)))
     
     res1))
+
+
+;;;; grsp-matrix-col-find-nth - Finds the p_n1th element in p_s1 order from
+;; column p_j1 in matrix p_a1.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, relational.
+;;
+;; Arguments:
+;; - p_s1: string.
+;;   - "#asc": ascending order.
+;;   - "#des": descending order.
+;; - p_a1: matrix.
+;; - p_j1: column number.
+;; - p_n1: element ordinal.
+;;
+;; Sources:
+;; - [16].
+;;
+(define (grsp-matrix-col-find-nth p_s1 p_a1 p_j1 p_n1)
+  (let ((res1 0)
+	(res2 0)
+	(s1 "#>")
+	(s2 "#asc")
+	(i1 0)
+	(n1 0))
+
+   ;; Create matrices. 
+    (set! res1 (grsp-matrix-cpy p_a1))
+
+    ;; We need to sort the matrix since we will later read the first row of
+    ;; the selected ones.
+    (cond ((equal? p_s1 "#des")
+	   (set! s1 "#<")
+	   (set! s2 "#des")))
+
+    (set! n1 p_n1)
+    (set! res1 (grsp-matrix-row-sort s2 res1 p_j1))
+
+    ;; Perform the selection and then read the value of col p_j1 row 0.
+    (set! i1 1)
+    (while (<= i1 n1)
+	    (cond ((> i1 1)
+		   (set! res1 (grsp-matrix-row-select s1 res1 p_j1 res2))))
+	    (set! res2 (array-ref res1 0 p_j1))
+	    (set! i1 (+ i1 1)))  
+    
+    res2))
+
+
+;;;; grsp-mn2ll - Cast m x n matrix p_a1 into a list of m elements which are
+;; themselves lists of n elements each.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, relational.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;;
+;; Output:
+;; - A list of lists.
+;;
+(define (grsp-mn2ll p_a1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 '())
+	(res4 '())
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(i1 0)
+	(j1 0))
+
+    ;; Create safety matrix. 
+    (set! res1 (grsp-matrix-cpy p_a1))
+
+    ;; Extract boundaries.
+    (set! lm1 (grsp-matrix-esi 1 res1))
+    (set! hm1 (grsp-matrix-esi 2 res1))
+    (set! ln1 (grsp-matrix-esi 3 res1))
+    (set! hn1 (grsp-matrix-esi 4 res1))  
+
+    ;; Create lists based on the dimensions of the matrix.
+    (set! res3 (make-list (grsp-matrix-te1 ln1 hn1) 0))
+    (set! res4 (make-list (grsp-matrix-te1 lm1 hm1) 0))
+    
+    ;; Cycle over the matrix and copy its elements to the list.
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+
+	   ;; Read row i1 into res2
+	   (set! res2 (grsp-matrix-subcpy res1 i1 i1 ln1 hn1))
+	   
+	   ;; Convert res2 to list res3.
+	   (set! res3 (grsp-m2l res2))
+	   
+	   ;; Place list res3 into ist ers4.	   
+	   (list-set! res4 i1 res3)
+
+	   (set! i1 (+ i1 1)))
+    
+    res4))

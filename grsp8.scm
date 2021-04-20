@@ -1,10 +1,10 @@
-;; =============================================================================
+;; ===================================================================
 ;;
 ;; grsp8.scm
 ;;
 ;; Neural networks.
 ;;
-;; =============================================================================
+;; ===================================================================
 ;;
 ;; Copyright (C) 2018 - 2021 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
@@ -21,7 +21,7 @@
 ;;   You should have received a copy of the GNU Lesser General Public License
 ;;   along with this program. If not, see <https://www.gnu.org/licenses/>.
 ;;
-;; =============================================================================
+;; ===================================================================
 
 
 ;;;; General notes:
@@ -67,7 +67,8 @@
 	    grsp-ann-item-create
 	    grsp-ann-nodes-eval
 	    grsp-ann-conns-eval
-	    grsp-ann-layer-create))
+	    grsp-ann-layer-create
+	    grsp-ann-nodes-create))
 
 
 ;;;; grsp-ann-net-create - Create a base neural network.
@@ -112,6 +113,7 @@
 ;;     - Col 6: evol.
 ;;     - Col 7: weight.
 ;;     - Col 8: iter.
+;;     - Col 9: to layer pos.
 ;;
 ;; and the third element is a 1x4 counter matrix that defines the id of
 ;; nodes and conns elements, as well as the iteration  and layer counters
@@ -131,17 +133,17 @@
 
     ;; Create matrices with just one row.
     (set! nodes (grsp-matrix-create 0 1 11))
-    (set! conns (grsp-matrix-create 0 1 9))
+    (set! conns (grsp-matrix-create 0 1 10))
     (set! count (grsp-matrix-create -1 1 4))
    
     ;; Add data corresponding to the new nodes in the basic ann.
     (set! nodes (grsp-ann-item-create nodes conns count 0 (list 0 2 0 0 1 1 1 1 0 1 0))) ;; Input node.
-    (set! nodes (grsp-ann-item-create nodes conns count 0 (list 0 2 1 1 1 1 0 1 0 1 0))) ;; Neuron.
-    (set! nodes (grsp-ann-item-create nodes conns count 0 (list 0 2 2 2 1 1 0 1 0 1 0))) ;; Output node.
+    (set! nodes (grsp-ann-item-create nodes conns count 0 (list 0 2 1 10 1 1 0 1 0 1 0))) ;; Neuron.
+    (set! nodes (grsp-ann-item-create nodes conns count 0 (list 0 2 2 20 1 1 0 1 0 1 0))) ;; Output node.
 
     ;; Add data corresponding to the new connections in basic ann.
-    (set! conns (grsp-ann-item-create nodes conns count 1 (list 0 2 1 0 1 0 1 1 0))) ;; Input node to neuron.
-    (set! conns (grsp-ann-item-create nodes conns count 1 (list 0 2 1 1 2 0 1 1 0))) ;; Neuron to output node.    
+    (set! conns (grsp-ann-item-create nodes conns count 1 (list 0 2 1 0 1 0 1 1 0 0))) ;; Input node to neuron.
+    (set! conns (grsp-ann-item-create nodes conns count 1 (list 0 2 1 1 2 0 1 1 0 1))) ;; Neuron to output node.    
 
    ;; Set the yaer counter to 2, since we have generated three layers in practice.
     (array-set! count  2 0 3)
@@ -265,9 +267,7 @@
 	(s1 "#="))
 
     ;; Delete rows where the value of col 1 is zero, meaning that connections
-    ;; and nodes are dead.
-    ;;(set! p_a2 (grsp-matrix-subdcn "#=" p_a2 1 0))
-    ;;(set! p_a1 (grsp-matrix-subdcn "#=" p_a1 1 0))	  
+    ;; and nodes are dead.	  
     (set! p_a2 (grsp-matrix-row-delete s1 p_a2 1 0))
     (set! p_a1 (grsp-matrix-row-delete s1 p_a1 1 0))
     
@@ -329,14 +329,16 @@
     res1))
 
 
-;;;; grsp-ann-item-create - Create in p_l1 a node or connection with argument
-;; list p_l2.
+;;;; grsp-ann-item-create - Create in th ann a node or connection with
+;; argument list p_l2.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
 ;;
 ;; Arguments:
-;, - p_l1: ann.
+;; - p_a1: nodes matrix.
+;; - p_a2: conns matrix.
+;; - p_a3: count matrix.
 ;; - p_n1:
 ;;   - 0: for nodes.
 ;;   - 1: for conns
@@ -374,6 +376,9 @@
 
 
 ;;;; grsp-ann-nodes-eval - Evaulates nodes of type p_s1 in network p_l1.
+;;
+;; Keywords:
+;; - function, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_s1: node type:
@@ -508,17 +513,20 @@
     res1))
 
 
-;;;; grsp-ann-layer-create - Creates layer of type p_s1 in ann p_l accordng to
-;; archetypal values contained in arguments p_l1.
+;;;; grsp-ann-layer-create - Creates layer of type p_s1 in ann p_l1 accordng to
+;; archetypal values contained in arguments list p_l2.
+;;
+;; Keywords:
+;; - function, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_s1: node type:
 ;;   - "#input": input nodes.
 ;;   - "#intermediate": intermediate nodes.
 ;;   - "#output": output nodes.
-;; - p_l1: ann.
 ;; - p_n2: number of nodes for the new layer.
-;; - p_l1: archetypal values for nodes in the layer.
+;; - p_l1: ann.
+;; - p_l2: archetypal values for nodes in the layer.
 ;;
 (define (grsp-ann-layer-create p_s1 p_n2 p_l1 p_l2)
   (let ((res1 '())
@@ -526,6 +534,7 @@
 	(res3 0)
 	(res4 0)
 	(res5 0)
+	(res6 0)
 	(nodes 0)
 	(conns 0)
 	(count 0)
@@ -546,7 +555,8 @@
 	(n4 0)
 	(n5 0)
 	(n6 0)
-	(n7 0))
+	(n7 0)
+	(c10 0))
 
     ;; Copy ann list.
     (set! l1 p_l1)
@@ -588,21 +598,24 @@
 
 	   ;; Find the max  layer pos number and increase it by one unit.
 	   (set! res3 (grsp-matrix-row-minmax "#max" res2 4))
-	   ;;(set! n4 (+ n4 (array-ref res2 0 4) 1))
 	   (set! n4 (+ n4 (array-ref res3 0 4) 1))
 
 	   ;; Find the number of the prior layer.
+	   (set! c10 (grsp-matrix-col-find-nth "#des" nodes 3 n3))
+	   (cond ((< c10 0)
+		  (set! c10 0)))
 	   
 	   ;; Update l1 with the new values.
 	   (list-set! l2 4 n4)
 
 	   ;; Authorize the creation of nodes for the layer.
-	   (set! create #t))
-	  (else (set! create #t)))
+	   (set! create #t)))
+	   ;;(else (set! create #t))))
 
     ;; At this point we have updated values for n3 (layer number) and n4 (layer
     ;; pos). So the function will start creating p_n2 nodes for layer n3 
-    ;; starting with an element whose layer pos number will be n4.
+    ;; starting with an element whose layer pos number will be n4. The number
+    ;; od the prior layer is in c10.
     (cond ((equal? create #t)
 	   (while ((<= i1 p_n2)
 
@@ -610,7 +623,7 @@
 		   ;; should be created. If it is intermediate or output type,
 		   ;; connections to the prior layer should be created.
 		   
-		   ;;(set! nodes (grsp-ann-item-create nodes conns count 0 (list 0 2 1 1 1 1 0 1 0 1 0)))
+		   ;; (list 0 2 1 1 1 1 0 1 0 1 0)))
 		   (set! nodes (grsp-ann-item-create nodes conns count 0 l2))
 
 		   ;; Create connections to the new layer from all elements of
@@ -625,7 +638,8 @@
 		   ;;Number of conns from the prior layer.
 		   (set! n6 (grsp-matrix-col-total-element "#=" conns 3 n5))
 			 
-		   (cond ((> (list-ref l2 2 ) 0)			  
+		   (cond ((> (list-ref l2 2 ) 0)
+			  
 			  ;; Find out the details of the prior layer.
 		   
 			  ;; Cycle over.  The cycle should be repeated for the 
@@ -641,6 +655,43 @@
 			 
 		   (set! i1 (+ i1 1))))))
    
+    ;; Rebuild the list representing the ann.
+    (set! res1 (list nodes conns count))
+    
+    res1))
+
+
+;; grsp-ann-nodes-create - Creates node p_l2 connected  according to p_l2 in
+;; ann p_l1
+;;
+;;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; p_l1: list, ann.
+;; p_l2: list, node edfinition
+;; p_l3: list of connections for p_l1
+;;
+;; Output:
+;; - Updated ann in list format.
+;;
+(define (grsp-ann-nodes-create p_l1 p_l2 p_l3)
+  (let ((res1 '())
+	(nodes 0)
+	(conns 0)
+	(count 0))
+
+    ;; Extract matrices.
+    (set! nodes (list-ref p_l1 0))
+    (set! conns (list-ref p_l1 1))
+    (set! count (list-ref p_l1 2))
+
+    ;; Create node.
+    (set! nodes (grsp-ann-item-create nodes conns count 0 p_l1))
+
+    ;; Create connections.
+    ;;(set! conns (grsp-ann-item-create nodes conns count 1 (list 0 2 1 0 1 0 1 1 0 0)))
+    
     ;; Rebuild the list representing the ann.
     (set! res1 (list nodes conns count))
     
