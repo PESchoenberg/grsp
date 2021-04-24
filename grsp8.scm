@@ -68,7 +68,8 @@
 	    grsp-ann-item-create
 	    grsp-ann-nodes-eval
 	    grsp-ann-conns-eval
-	    grsp-ann-nodes-create))
+	    grsp-ann-nodes-create
+	    grsp-ann-nodes-delete))
 
 
 ;;;; grsp-ann-net-create-111 - Create a base neural network with one input node,
@@ -546,9 +547,9 @@
 ;; - function, ann, neural network.
 ;;
 ;; Arguments:
-;; p_l1: list, ann.
-;; p_l2: list, node definition
-;; p_l3: list of connections for p_l1
+;; - p_l1: list, ann.
+;; - p_l2: list, node definition
+;; - p_l3: list of connections for p_l1
 ;;
 ;; Output:
 ;; - Updated ann in list format.
@@ -600,11 +601,59 @@
 		  
 		  ;;(set! conns (grsp-ann-item-create nodes conns count 1 (list-ref p_l3 i1)))
 		  (set! conns (grsp-ann-item-create nodes conns count 1 l3))
-		  (grsp-ann-counter-upd count 1)
 		  (set! i1 (+ i1 1)))))
     
     ;; Rebuild the list representing the ann.
     (set! res1 (list nodes conns count))
     ;;(set! res1 (grsp-ann-net-preb nodes conns count))
+    
+    res1))
+
+
+;;;; grsp-ann-nodes-delete - Deletes instances of entities with id p_n1 in ann
+;; p_l1 according top_s1.
+;;
+;;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_s1: sting.
+;;   - "#all": delete all instances of entities with Id = p_n1 in nodes and
+;;     conns matrices.
+;;   - "#nodes-id": delete 
+;;   - "#conns-to".
+;;   - "#conns-fr".
+;; - p_l1: list, ann.
+;;
+(define (grsp-ann-nodes-delete p_s1 p_l1 p_n1)
+  (let ((res1 '())
+	(nodes 0)
+	(conns 0)
+	(count 0))
+
+    ;; Extract matrices and lists.
+    (set! nodes (list-ref p_l1 0))
+    (set! conns (list-ref p_l1 1))
+    (set! count (list-ref p_l1 2))
+    
+    (cond ((equal? p_s1 "#all")
+	   ;; Delete all connections FROM node p_n1.
+	   (set! conns (grsp-matrix-row-delete "#=" conns 3 p_n1))
+	   ;; Delete all connections TO node p_n1. 
+	   (set! conns (grsp-matrix-row-delete "#=" nodes 4 p_n1))
+	   ;; Delete node with Id p_n1.
+	   (set! nodes (grsp-matrix-row-delete "#=" nodes 0 p_n1)))
+	  ((equal? p_s1 "#conns-id")
+	   ;; Delete connection with Id p_n1.
+	   (set! conns (grsp-matrix-row-delete "#=" conns 0 p_n1)))
+	  ((equal? p_s1 "#conns-to")
+	   ;; Delete all connections TO node p_n1.
+	   (set! nodes (grsp-matrix-row-delete "#=" nodes 4 p_n1)))
+	  ((equal? p_s1 "#conns-fr")
+	   ;; Delete all connections FROM node p_n1.
+	   (set! nodes (grsp-matrix-row-delete "#=" nodes 3 p_n1))))
+	  
+    ;; Rebuild the list representing the ann.
+    (set! res1 (list nodes conns count))
     
     res1))
