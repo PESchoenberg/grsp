@@ -1,10 +1,10 @@
-;; ===================================================================
+;; =============================================================================
 ;;
 ;; grsp9.scm
 ;;
-;; Test functitions and artificial landscapes for single-objective optimization.
+;; Test functions and artificial landscapes for single-objective optimization.
 ;;
-;; ===================================================================
+;; =============================================================================
 ;;
 ;; Copyright (C) 2018 - 2021 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
@@ -21,7 +21,7 @@
 ;;   You should have received a copy of the GNU Lesser General Public License
 ;;   along with this program. If not, see <https://www.gnu.org/licenses/>.
 ;;
-;; ===================================================================
+;; =============================================================================
 
 
 ;;;; General notes:
@@ -223,7 +223,7 @@
     (while (<= j1 n1)
 	   (set! x1 (array-ref p_a1 0 j1))
 	   (set! res3 (+ res3 (- (expt x1 2) (* 10 (cos (* p2 x1))))))
-	   (set! j1 (+ j1 1)))
+	   (set! j1 (in j1)))
 	   
     ;; res1.
     (set! res1 (+ res2 res3))
@@ -502,7 +502,7 @@
     (set! j1 ln1)
     (while (<= j1 hn1)
 	   (set! res1 (+ res1 (expt (array-ref p_a1 0 j1) 2)))
-	   (set! j1 (+ j1 1)))
+	   (set! j1 (in j1)))
     
     res1))
 	
@@ -545,7 +545,7 @@
 	   (set! res3 (expt (- 1 (array-ref p_a1 0 j1)) 2))
 	   
 	   (set! res1 (+ res1 res2 res3))
-	   (set! j1 (+ j1 1)))    
+	   (set! j1 (in j1)))    
 
     res1))
 
@@ -614,7 +614,7 @@
 	   (set! x1 (array-ref p_a1 0 j1))
 	   (set! res2 (+ (expt x1 4) (* -16 (expt x1 2)) (* 5 x1)))
 	   (set! res1 (+ res1 (/ res2 2)))
-	   (set! j1 (+ j1 1)))
+	   (set! j1 (in j1)))
 
     res1))
 

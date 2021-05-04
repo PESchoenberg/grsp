@@ -1,10 +1,10 @@
-;; ===================================================================
+;; =============================================================================
 ;;
 ;; grsp8.scm
 ;;
 ;; Neural networks.
 ;;
-;; ===================================================================
+;; =============================================================================
 ;;
 ;; Copyright (C) 2018 - 2021 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
@@ -21,7 +21,7 @@
 ;;   You should have received a copy of the GNU Lesser General Public License
 ;;   along with this program. If not, see <https://www.gnu.org/licenses/>.
 ;;
-;; ===================================================================
+;; =============================================================================
 
 
 ;;;; General notes:
@@ -268,7 +268,7 @@
     (while (< i1 p_n1)
 	   (set! p_l1 (grsp-ann-net-iter p_l1))
 	   (set! p_l1 (grsp-ann-net-reconf p_s1 p_l1))
-	   (set! i1 (+ i1 1)))
+	   (set! i1 (in i1)))
     
     ;; Results.
     (set! res1 p_l1)
@@ -490,8 +490,9 @@
 				(cond ((and (= (array-ref conns i2 1) 2)
 					    (= (array-ref conns i2 3) c3))
 				       (array-set! conns p_n1 i2 8) ;; iter id.
-				       (array-set! conns c6 i2 5)))				
-				(set! i2 (+ i2 1)))))
+				       (array-set! conns c6 i2 5)))
+				(set! i2 (in i2)))))
+		  
 		  (set! i1 (+ i1 1))))
 	  ((equal? p_s1 "#intermediate")
 
@@ -531,8 +532,8 @@
 				       (array-set! nodes (+ (array-ref nodes i1 6)
 							    (* (array-ref conns i2 5)
 							       (array-ref conns i2 7))) i1 6))) ;; Summation of all incoming vals.
-				(set! i2 (+ i2 1)))))
-		  (set! i1 (+ i1 1)))))			   
+				(set! i2 (in i2)))))
+		  (set! i1 (in i1)))))			   
  
     ;; Rebuild the list representing the ann.
     (set! res1 (list nodes conns count))
@@ -585,8 +586,9 @@
     ;; Create connections only of node is not initial.
     (cond ((equal? (equal? (list-ref l2 2) 0) #f)
 	   
-	   ;; Create connections. There might be several connections per node. in p_l3
-	   ;; each list element is in itself a list representing one connection.
+	   ;; Create connections. There might be several connections per node
+	   ;; in p_l3 each list element is in itself a list representing one
+	   ;; connection.
 	   (set! hn (length p_l3))
 	   (while (< i1 hn)
 
@@ -601,7 +603,7 @@
 		  
 		  ;;(set! conns (grsp-ann-item-create nodes conns count 1 (list-ref p_l3 i1)))
 		  (set! conns (grsp-ann-item-create nodes conns count 1 l3))
-		  (set! i1 (+ i1 1)))))
+		  (set! i1 (in i1)))))
     
     ;; Rebuild the list representing the ann.
     (set! res1 (list nodes conns count))

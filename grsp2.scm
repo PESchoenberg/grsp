@@ -1,12 +1,12 @@
-;; ===================================================================
+;; =============================================================================
 ;;
 ;; grsp2.scm
 ;;
 ;; Real number functions.
 ;;
-;; ===================================================================
+;; =============================================================================
 ;;
-;; Copyright (C) 2018 - 2021  Pablo Edronkin (pablo.edronkin at yahoo.com)
+;; Copyright (C) 2018 - 2021 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
 ;;   it under the terms of the GNU Lesser General Public License as published by
@@ -21,7 +21,7 @@
 ;;   You should have received a copy of the GNU Lesser General Public License
 ;;   along with this program. If not, see <https://www.gnu.org/licenses/>.
 ;;
-;; ===================================================================
+;; =============================================================================
 
 
 ;;;; General notes:
@@ -102,15 +102,6 @@
 ;;   [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Test_functions_for_optimization [Accessed 13
 ;;   April 2021].
-;; - [32]
-;; - [33]
-;; - [34]
-;; - [35]
-;; - [36]
-;; - [37]
-;; - [38]
-;; - [39]
-;; - [40]
 
 
 (define-module (grsp grsp2)
@@ -184,7 +175,8 @@
 	    grsp-em
 	    grsp-phi
 	    grsp-nan
-	    grsp-naninf))
+	    grsp-naninf
+	    grsp-absop))
 
 
 ;;;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -1480,7 +1472,7 @@
     res1))
 
 
-;;;; grsp-fact-alt - alternating factorial.
+;;;; grsp-fact-alt - Alternating factorial.
 ;;
 ;; Keywords:
 ;; - function, factorial.
@@ -1501,7 +1493,7 @@
     res1))
 
 
-;;;; grsp-fact-exp - exponential factorial.
+;;;; grsp-fact-exp - Exponential factorial.
 ;;
 ;; Keywords:
 ;; - function, factorial.
@@ -1824,4 +1816,36 @@
     (set! res1 (list (grsp-nan) -inf.0 +inf.0))
 
     res1))
+
+
+;; grsp-aops - Simple arithmetic ops between absolute values of p_n2 and p_n1
+;;
+;; Arguments:
+;; - p_s1: operation.
+;;   - "#+": sum.
+;;   - "#-": difference.
+;;   - "#*": multiplication.
+;;   - "#/": division.
+;; - p_n1: number.
+;; - p_n2: number.
+;;
+(define (grsp-absop p_s1 p_n1 p_n2)
+  (let ((res1 0)
+	(n1 0)
+	(n2 0))
+
+    (set! n1 (abs p_n1))
+    (set! n2 (abs p_n2))
+    (cond ((equal? p_s1 "#-")
+	   (set! res1 (- n1 n2)))
+	  ((equal? p_s1 "#+")
+	   (set! res1 (+ n1 n2)))
+	  ((equal? p_s1 "#*")
+	   (set! res1 (* n1 n2)))
+	  ((equal? p_s1 "#/")
+	   (set! res1 (/ n1 n2))))
+	  
+    res1))
+
+
 

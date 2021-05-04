@@ -1,12 +1,12 @@
-;; ===================================================================
+;; =============================================================================
 ;;
 ;; grsp3.scm
 ;;
 ;; Matrices.
 ;;
-;; ===================================================================
+;; =============================================================================
 ;;
-;; Copyright (C) 2020 - 2021  Pablo Edronkin (pablo.edronkin at yahoo.com)
+;; Copyright (C) 2020 - 2021 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
 ;;   it under the terms of the GNU Lesser General Public License as published by
@@ -21,7 +21,7 @@
 ;;   You should have received a copy of the GNU Lesser General Public License
 ;;   along with this program. If not, see <https://www.gnu.org/licenses/>.
 ;;
-;; ===================================================================
+;; =============================================================================
 
 
 ;;;; General notes:
@@ -83,16 +83,7 @@
 
 
 ;; Compilation and REPL examples:
-;;(use-modules (grsp grsp0)
-;;	     (grsp grsp1)
-;;	     (grsp grsp2)
-;;	     (grsp grsp3)
-;;	     (grsp grsp4)
-;;	     (grsp grsp5)
-;;	     (grsp grsp6)
-;;	     (grsp grsp7)
-;;	     (grsp grsp8)
-;;           (grsp grsp9))
+;;(use-modules (grsp grsp0)(grsp grsp1)(grsp grsp2)(grsp grsp3)(grsp grsp4)(grsp grsp5)(grsp grsp6)(grsp grsp7)(grsp grsp8)(grsp grsp9))
 ;;
 ;; (define X (grsp-matrix-create 1 4 4))
 ;; (define Y (grsp-matrix-create 2 4 4))
