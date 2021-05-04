@@ -1,13 +1,13 @@
-;; ===================================================================
+;; =============================================================================
 ;;
 ;; grsp0.scm
 ;;
 ;; Some useful, simple functions for GNU Guile Scheme programs created or   
 ;; adapted during the development of several other projects.
 ;;
-;; ===================================================================
+;; =============================================================================
 ;;
-;; Copyright (C) 2018 - 2021  Pablo Edronkin (pablo.edronkin at yahoo.com)
+;; Copyright (C) 2018 - 2021 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
 ;;   it under the terms of the GNU Lesser General Public License as published by
@@ -22,7 +22,7 @@
 ;;   You should have received a copy of the GNU Lesser General Public License
 ;;   along with this program. If not, see <https://www.gnu.org/licenses/>.
 ;;
-;; ===================================================================
+;; =============================================================================
 
 
 ;;;; General notes:
@@ -58,7 +58,9 @@
 	    grsp-ld
 	    grsp-cd
 	    grsp-ask
-	    grsp-placebo))
+	    grsp-placebo
+	    in
+	    de))
 
 
 ;;;; pline - Displays character p_n p_m times in one line at the console.
@@ -415,4 +417,29 @@
     
     res1))
 
+
+;; in - Increment p_n1 by one.
+;;
+;; Arguments:
+;; - p_n1: number.
+;;
+(define (in p_n1)
+  (let ((res1 0))
+
+    (set! res1 (+ p_n1 1))
+
+    res1))
+
+
+;; de - Decrement p_n1 by one.
+;;
+;; Arguments:
+;; - p_n1: number.
+;;
+(define (de p_n1)
+  (let ((res1 0))
+
+    (set! res1 (- p_n1 1))
+
+    res1))
 

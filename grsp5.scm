@@ -1,12 +1,12 @@
-;; ===================================================================
+;; =============================================================================
 ;;
 ;; grsp5.scm
 ;;
 ;; Statistical and probabilistic functions.
 ;;
-;; ===================================================================
+;; =============================================================================
 ;;
-;; Copyright (C) 2018 - 2021  Pablo Edronkin (pablo.edronkin at yahoo.com)
+;; Copyright (C) 2018 - 2021 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
 ;;   it under the terms of the GNU Lesser General Public License as published by
@@ -21,7 +21,7 @@
 ;;   You should have received a copy of the GNU Lesser General Public License
 ;;   along with this program. If not, see <https://www.gnu.org/licenses/>.
 ;;
-;; ===================================================================
+;; =============================================================================
 
 
 ;;;; General notes:
@@ -136,8 +136,6 @@
 ;; - [41] En.wikipedia.org. 2021. Theil–Sen estimator - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Theil%E2%80%93Sen_estimator 
 ;;   [Accessed 10 April 2021].
-;; - [42]
-;; - [43]
 
 
 (define-module (grsp grsp5)
@@ -794,8 +792,8 @@
 	   (set! j1 ln1)
 	   (while (<= j1 hn1)
 		  (set! res2 (+ res2 (expt (- (array-ref p_a1 i1 j1) u1) 2))) 
-		  (set! j1 (+ j1 1)))
-	   (set! i1 (+ i1 1)))   
+		  (set! j1 (in j1)))
+	   (set! i1 (in i1)))   
 
     (set! res1 (sqrt (* res3 res2)))
     
@@ -874,8 +872,8 @@
 				
 				;; summation of elements with values < mean.
 				(set! res2 (+ res2 (expt (- (array-ref p_a1 i1 j1) u1) 2)))))))
-		  (set! j1 (+ j1 1)))
-	   (set! i1 (+ i1 1)))   
+		  (set! j1 (in j1)))
+	   (set! i1 (in i1)))
 
     ;; Mean of the summation of squared differences.
     (set! res1 (/ res2 n1))
@@ -998,8 +996,8 @@
 	   (set! j1 ln1)
 	   (while (<= j1 hn1)
 		  (set! res1 (+ res1 (abs (- (array-ref p_a1 i1 j1) p_x1))))
-		  (set! j1 (+ j1 1)))
-	   (set! i1 (+ i1 1)))   
+		  (set! j1 (in j1)))
+	   (set! i1 (in i1)))   
 
     (set! res1 (* (/ 1 n1) res1))
     
@@ -1440,8 +1438,8 @@
 			 (cond ((< n5 n4)
 				(set! res3 (grsp-matrix-subexp res3 1 0))))))
 		  		  
-		  (set! j2 (+ j2 1)))
-	   (set! i2 (+ i2 1)))
+		  (set! j2 (in j2)))
+	   (set! i2 (in i2)))
 
     (set! res1 res3)
   
@@ -1498,7 +1496,7 @@
 		  (set! n2 (array-ref res2 i2 ln2))
 		  (set! n3 (array-ref res2 i2 hn2))
 		  (array-set! res2 n4 i2 hn2)))		  
-	   (set! i2 (+ i2 1)))
+	   (set! i2 (in i2)))
 
     ;; Results.
     (array-set! res1 n2 i1 0)
@@ -2516,7 +2514,7 @@
 		  (set! n4 (+ 1 (/ i1 p_k1)))
 		  (set! n3 (grsp-complex-gamma p_b2 p_s1 n4 p_n1))
 		  (set! res1 (+ res1 (* n2 n3)))
-		  (set! i1 (+ i1 1)))))
+		  (set! i1 (in i1)))))
 
     res1))
 
@@ -2553,7 +2551,7 @@
 		  (set! n4 (+ 1 (/ i1 p_k1)))
 		  (set! n3 (grsp-complex-gamma p_b2 p_s1 n4 p_n1))
 		  (set! res1 (+ res1 (* n2 n3)))
-		  (set! i1 (+ i1 1)))))
+		  (set! i1 (in i1)))))
 
     res1))
 
@@ -2617,7 +2615,7 @@
 	   (set! y2 (array-ref res1 i1 (+ ln1 3)))
 	   (array-set! res2 (grsp-geo-slope x1 y1 x2 y2) i1 0)
 	   
-	   (set! i1 (+ i1 1)))
+	   (set! i1 (in i1)))
 
     ;; Delete repeated rows.
     (set! res3 (grsp-matrix-transpose (grsp-matrix-supp (grsp-matrix-sort "#asc" res2))))
