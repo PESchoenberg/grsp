@@ -235,7 +235,7 @@
 ;; - p_t1: proper time.
 ;; - p_x1: x rel. coord.
 ;; - p_y2: y rel. coord.
-;; - p_z1: z rel/ coord.
+;; - p_z1: z rel. coord.
 ;;
 ;; Sources:
 ;; - [4].

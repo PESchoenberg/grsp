@@ -58,6 +58,7 @@
 
 
 (define-module (grsp grsp4)
+  #:use-module (grsp grsp0)
   #:use-module (grsp grsp1)  
   #:use-module (grsp grsp2)
   #:export (grsp-complex-inv-imag
@@ -353,7 +354,7 @@
 		  (set! res3 (expt (+ 1 (/ 1 i1)) p_z1))
 		  (set! res4 (+ 1 (/ p_z1 i1)))
 		  (set! res2 (* res2 (/ res3 res4)))
-		  (set! i1 (+ i1 1)))
+		  (set! i1 (in i1)))
 	   (set! res1 (* 1.00 (/ 1 p_z1) res2)))
 	  ((eq? defined #f)
 	   (set! res1 +inf.0)))
@@ -404,7 +405,7 @@
 		  (set! res4 (/ 1 (+ 1 z2)))
 		  (set! res5 (expt e1 z2))
 		  (set! res2 (* res2 res4 res5))
-		  (set! i1 (+ i1 1)))
+		  (set! i1 (in i1)))
 	   (set! res1 (* 1.00 res3 res2)))
 	  ((eq? defined #f)
 	   (set! res1 +inf.0)))
@@ -500,7 +501,7 @@
 	   (set! res6 (/ p_z1 i1))
 	   (set! res4 (- res6 (log (+ 1 res6))))
 	   (set! res5 (+ res5 res4))
-	   (set! i1 (+ i1 1)))    
+	   (set! i1 (in i1)))    
 
     res1))
 
@@ -608,7 +609,7 @@
     (while (<= i1 p_n1)
 	   (set! res3 (+ res3 (/ (expt p_z2 i1)
 				 (grsp-complex-gamma p_b2 p_s1 (+ p_z1 i1 1) p_n1))))		 
-	   (set! i1 (+ i1 1)))   
+	   (set! i1 (in i1)))   
 
     ;; Complete.
     (set! res1 (* res2 res3))
@@ -723,7 +724,7 @@
 	   (set! n2 (* (grsp-fact-upp p_a1 i1) (expt p_z1 i1)))
 	   (set! n3 (* (grsp-fact-upp p_b1 i1) (grsp-fact i1)))
 	   (set! res1 (+ res1 (/ n2 n3)))
-	   (set! i1 (+ i1 1)))
+	   (set! i1 (in i1)))
     
     res1))
 
@@ -741,7 +742,6 @@
 ;; - p_b2: see grsp4.grsp-complex-gamma.
 ;; - p_s2: see grsp4.grsp-complex-gamma.
 ;; - p_n2; see grsp4.grsp-complex-gamma.
-;;
 ;;
 ;; Sources:
 ;; - [10].
@@ -798,7 +798,7 @@
 	   (set! res4 (* (expt -1 i1) (expt p_z1 res6)))
 	   (set! res5 (* (grsp-fact i1) res6))
 	   (set! res3 (+ res2 (/ res4 res5)))
-	   (set! i1 (+ i1 1)))
+	   (set! i1 (in i1)))
 
     ;; Final.
     (set! res1 (* res2 res3))
@@ -810,7 +810,7 @@
 ;;
 ;; Arguments:
 ;; - p_z1: complex.
-;; - p_n1: interations.
+;; - p_n1: iterations.
 ;;
 ;; Sources:
 ;; - [11].
@@ -833,7 +833,7 @@
 	   (set! res4 (expt p_z1 res6))
 	   (set! res5 (* (grsp-fact i1) res6))
 	   (set! res3 (+ res2 (/ res4 res5)))
-	   (set! i1 (+ i1 1)))
+	   (set! i1 (in i1)))
 
     ;; Final.
     (set! res1 (* res2 res3))

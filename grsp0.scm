@@ -420,6 +420,9 @@
 
 ;; in - Increment p_n1 by one.
 ;;
+;; Keywords:
+;; - console, numbers.
+;;
 ;; Arguments:
 ;; - p_n1: number.
 ;;
@@ -432,6 +435,9 @@
 
 
 ;; de - Decrement p_n1 by one.
+;;
+;; Keywords:
+;; - console, numbers.
 ;;
 ;; Arguments:
 ;; - p_n1: number.
