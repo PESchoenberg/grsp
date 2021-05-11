@@ -80,10 +80,14 @@
 ;;   2021].
 ;; - [18] Mathispower4u. (2020). LU Decomposition. [online] Available at:
 ;;   https://www.youtube.com/watch?v=UlWcofkUDDU [Accessed 5 Mar. 2020].
+;; - [19] https://en.wikipedia.org/wiki/Genetic_algorithm
+;; - [20] https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)
+;; - [21] https://en.wikipedia.org/wiki/Mutation_(genetic_algorithm)
+;; - [22] https://en.wikipedia.org/wiki/Selection_(genetic_algorithm)
 
 
 ;; Compilation and REPL examples:
-;;(use-modules (grsp grsp0)(grsp grsp1)(grsp grsp2)(grsp grsp3)(grsp grsp4)(grsp grsp5)(grsp grsp6)(grsp grsp7)(grsp grsp8)(grsp grsp9))
+;;(use-modules (grsp grsp0)(grsp grsp1)(grsp grsp2)(grsp grsp3)(grsp grsp4)(grsp grsp5)(grsp grsp6)(grsp grsp7)(grsp grsp8)(grsp grsp9)(grsp grsp10)(grsp grsp11))
 ;;
 ;; (define X (grsp-matrix-create 1 4 4))
 ;; (define Y (grsp-matrix-create 2 4 4))
@@ -91,9 +95,9 @@
 
 
 (define-module (grsp grsp3)
-  #:use-module (grsp grsp2)
-  #:use-module (grsp grsp1)
   #:use-module (grsp grsp0)
+  #:use-module (grsp grsp1)
+  #:use-module (grsp grsp2)
   #:use-module (grsp grsp4)  
   #:export (grsp-matrix-esi
 	    grsp-matrix-create
@@ -181,7 +185,10 @@
 	    grsp-matrix-row-cartesian
 	    grsp-matrix-col-append
 	    grsp-matrix-col-find-nth
-	    grsp-mn2ll))
+	    grsp-mn2ll
+	    grsp-matrix-mutation
+	    grsp-matrix-crossover
+	    grsp-matrix-selection))
 
 
 ;;;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -945,7 +952,7 @@
 ;;   - "#si": applies (grsp-complex-inv "#si" z1) to each element z1 of p_a1
 ;;     (complex conjugate).
 ;;   - "#is": applies (grsp-complex-inv "#is" z1) to each element z1 of p_a1
-;;     (sign inversion of real element of compelx number).
+;;     (sign inversion of real element of complex number).
 ;;   - "#ii": applies (grsp-complex-inv "#ii" z1) to each element z1 of p_a1
 ;;     (sign inversion of both elements of a complex number).
 ;; - p_a1: matrix.
@@ -1001,7 +1008,8 @@
 			((equal? p_s1 "#rw")
 			 (array-set! res2 p_v1 i1 j1))			  
 			((equal? p_s1 "#rprnd")
-			 (array-set! res2 (+ 0.0 (* p_v1 (random:normal))) i1 j1))
+			 ;;(array-set! res2 (+ 0.0 (* p_v1 (random:normal))) i1 j1))
+			 (array-set! res2 (grsp-rprnd "#normal" 0.0 p_v1) i1 j1))			
 			((equal? p_s1 "#si")
 			 (array-set! res2 (grsp-complex-inv p_s1 (array-ref res1 i1 j1)) i1 j1))
 			((equal? p_s1 "#is")
@@ -4825,3 +4833,163 @@
 	   (set! i1 (+ i1 1)))
     
     res4))
+
+
+;;;; grsp-matrix-mutation - Produces random mutations in the values of elements 
+;; of matrix p_a1.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, genetic.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_n1: mutation rate, [0, 1].
+;; - p_s1: type of distribution.
+;;   - "#normal": normal.
+;;   - "#exp": exponential.
+;;   - "#uniform": uniform.
+;; - p_u1: mean for mutation rate.
+;; - p_v1: standard deviation for mutation rate.
+;; - p_s2: type of distribution.
+;;   - "#normal": normal.
+;;   - "#exp": exponential.
+;;   - "#uniform": uniform.
+;; - p_u2: mean for element random value.
+;; - p_v2: standard deviation for element random value.
+;;
+;; Sources:
+;; - [19][21].
+;;
+(define (grsp-matrix-mutation p_a1 p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2)
+  (let ((res1 0)
+	(i1 0)
+	(j1 0)
+	(n1 0)
+	(n2 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0))	
+
+    ;; Create safety matrix. 
+    (set! res1 (grsp-matrix-cpy p_a1))
+
+    ;; Extract boundaries.
+    (set! lm1 (grsp-matrix-esi 1 res1))
+    (set! hm1 (grsp-matrix-esi 2 res1))
+    (set! ln1 (grsp-matrix-esi 3 res1))
+    (set! hn1 (grsp-matrix-esi 4 res1))
+
+    ;; Cycle over.
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+	  (set! j1 ln1)
+	  (while (<= j1 hn1)
+
+		 ;; If pseudo random number <= p_n1, generate a new random number
+		 ;; and replace the value of the current matrix element with it.
+		 (cond ((<= (abs (grsp-rprnd p_s1 p_u1 p_v1)) (abs p_n1))
+			(array-set! res1 (grsp-rprnd p_s2 p_u2 p_v2) i1 j1)))
+		 
+		 (set! j1 (in j1)))
+	  (set! i1 (in i1)))
+    
+    res1))
+
+
+;;;; grsp-matrix-crossover - Performs a crossover of columns defined by the
+;; intervals [p_ln1, p_hn1] and [p_ln2, p_hn2] between matrices p_a1 and p_a2.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, genetic.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_ln1: lower column number of the interval to swap (p_a1).
+;; - p_hn1: higher column number of the interval to swap (p_a1).
+;; - p_a2: matrix.
+;; - p_ln2: lower column number of the interval to swap (p_a1).
+;; - p_hn2: higher column number of the interval to swap (p_a1).
+;; - p_n1: crossover rate, [0, 1].
+;; - p_s1: type of distribution.
+;;   - "#normal": normal.
+;;   - "#exp": exponential.
+;;   - "#uniform": uniform.
+;; - p_u1: mean for crossover rate.
+;; - p_v1: standard deviation for crossover rate.
+;;
+;; Sources:
+;; - [19][20].
+;;
+;; Notes:
+;; - Matrices should have the same number of rows and columns.
+;; - Intervals [p_ln1, p_hn1] and [p_ln2, p_hn2] may not have the same ordinals
+;;   (indexes or col numbers) but must have the same number of columns.
+;;
+;; Output
+;; - A list containing two matrices representing the two children obtained as a
+;;   result of the swap.
+;;
+(define (grsp-matrix-crossover p_a1 p_ln1 p_hn1 p_a2 p_ln2 p_hn2)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(res4 0)
+	(res5 0)
+	(res6 0)
+	(res7 0)
+	(b1 #f)
+	(b2 #f)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(lm2 0)
+	(hm2 0)
+	(ln2 0)
+	(hn2 0))	
+
+    ;; Create safety matrices. 
+    (set! res1 (grsp-matrix-cpy p_a1))
+    (set! res2 (grsp-matrix-cpy p_a2))    
+
+    ;; Only perform this operation if matrices are equal.
+    (cond ((equal? (grsp-matrix-is-equal p_a1 p_a2) #t)
+	   (set! b1 #t)))
+
+    ;; Only perform thsi operation if the column intervals are equal.
+    (cond((= (grsp-matrix-te1 ln1 hn1) (grsp-matrix-te1 ln2 hn2))
+	  (set! b2 #t)))
+    
+    ;; If conditions b1 and b2 are met.
+    (cond ((equal? (and (equal? b1 #t) (equal? b2 #t)))
+	   ;; Extract boundaries.
+	   (set! lm1 (grsp-matrix-esi 1 res1))
+	   (set! hm1 (grsp-matrix-esi 2 res1))
+	   (set! ln1 (grsp-matrix-esi 3 res1))
+	   (set! hn1 (grsp-matrix-esi 4 res1))
+
+	   (set! lm2 (grsp-matrix-esi 1 res2))
+	   (set! hm2 (grsp-matrix-esi 2 res2))
+	   (set! ln2 (grsp-matrix-esi 3 res2))
+	   (set! hn2 (grsp-matrix-esi 4 res2))    
+
+	   ;; Create empty offspring matrices.
+	   (set! res3 res1)
+	   (set! res4 res2)
+
+	   ;; Extract sub matriesto swap.
+	   (set! res5 (grsp-matrix-subcpy res3 lm1 hm1 p_ln1 p_hn1))
+	   (set! res6 (grsp-matrix-subcpy res4 lm2 hm2 p_ln2 p_hn2))
+
+	   ;; Swap.
+	   (set! res3 (grsp-matrix-subrep res3 res5 lm1 p_ln1))
+	   (set! res4 (grsp-matrix-subrep res4 res6 lm1 p_ln2))))
+   
+    ;; Build the list representing the results.
+    (set! res7 (list res3 res4))    
+    
+    res7))
+
+
+;;;; grsp-matrix-selection

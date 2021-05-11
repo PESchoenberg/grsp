@@ -102,6 +102,7 @@
 ;;   [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Test_functions_for_optimization [Accessed 13
 ;;   April 2021].
+;; - [32] https://www.gnu.org/software/guile/manual/html_node/Random.html
 
 
 (define-module (grsp grsp2)
@@ -176,7 +177,8 @@
 	    grsp-phi
 	    grsp-nan
 	    grsp-naninf
-	    grsp-absop))
+	    grsp-absop
+	    grsp-rprnd))
 
 
 ;;;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -1517,7 +1519,7 @@
     res1))
 
 
-;;;; grsp-fact-sub - sub factorial (derangement). Calculates the number of
+;;;; grsp-fact-sub - Sub factorial (derangement). Calculates the number of
 ;; permutations with no fixed points or repetitions in a set.
 ;;
 ;; Keywords:
@@ -1847,5 +1849,31 @@
 	  
     res1))
 
+
+;;;; grsp-rprnd - Pseudo random number generator, distribution p_s1.
+;;
+;; Arguments:
+;; - p_s1: type of distribution.
+;;   - "#normal": normal.
+;;   - "#exp": exponential.
+;;   - "#uniform": uniform.
+;; - p_u1: mean.
+;; - p_v1: standard deviation.
+;;
+;; Notes:
+;; - See [32] for further details on how GNU Guile deals with random number
+;;   generation.
+;;
+(define (grsp-rprnd p_s1 p_u1 p_v1)
+  (let ((res1 0))
+
+    (cond ((equal? p_s1 "#normal")
+	   (set! res1 (+ p_u1 (* p_v1 (random:normal)))))
+	  ((equal? p_s1 "#exp")
+	   (set! res1 (* p_u1 (random:exp))))
+	  ((equal? p_s1 "#uniform")
+	   (set! res1 (random:uniform))))		 
+	   
+    res1))
 
 

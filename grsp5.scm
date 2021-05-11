@@ -701,7 +701,7 @@
 	(res2 0)
 	(n2 0))
 
-    ;; Security copy.
+    ;; Make a security copy of the matrix passed as argument.
     (set! res2 (grsp-matrix-cpy p_a1))
 
     ;; Inverse of total number of elements in p_a1.
@@ -737,7 +737,7 @@
     res1))
 
 
-;;;; grsp-sd1 - standard deviation based on variance.
+;;;; grsp-sd1 - Standard deviation based on variance.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -753,7 +753,7 @@
     res1))
 
 
-;; grsp-sd2 - sample standard deviation.
+;; grsp-sd2 - Sample standard deviation.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -961,7 +961,7 @@
     res1))
 
 
-;;;; grsp-mean - sample mean absolute deviation.
+;;;; grsp-mean - Sample mean absolute deviation.
 ;;
 ;; Keywords:
 ;; - statistics, probability.

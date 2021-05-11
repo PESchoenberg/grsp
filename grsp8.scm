@@ -46,6 +46,7 @@
 ;;   GELU, SELU, ELU, ReLU and more. [online] Available at:
 ;;   https://mlfromscratch.com/activation-functions-explained [Accessed 28
 ;;   January 2021].
+;; - [7] https://en.wikipedia.org/wiki/Evolutionary_algorithm#
 
 
 (define-module (grsp grsp8)
@@ -115,7 +116,7 @@
     res1))
 
 
-;;;; grsp-ann-net-create-000 - Create an  empty neural network.
+;;;; grsp-ann-net-create-000 - Creates an empty neural network.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
