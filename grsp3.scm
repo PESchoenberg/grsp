@@ -5097,9 +5097,8 @@
 ;; - p_v1: standard deviation for fitness rate.
 ;;
 ;; Notes:
-;; - You may want to create a fitness function specifically designed for a given
-;;   problem. This one is just for convenience but might not be well-suited for
-;;   a variety of problems.
+;; - This is justa convenience fitness function. You may want to create your
+;;   own for your specific task.
 ;;
 (define (grsp-matrix-fitness-rprnd p_a1 p_m1 p_n1 p_n2 p_s1 p_u1 p_v1)
   (let ((res1 0))
@@ -5117,13 +5116,6 @@
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
-;; - p_n2: fitness rate, [0, 1].
-;; - p_s1: type of distribution for fitness function.
-;;   - "#normal": normal.
-;;   - "#exp": exponential.
-;;   - "#uniform": uniform.
-;; - p_u1: mean for fitness rate.
-;; - p_v1: standard deviation for fitness rate.
 ;; - p_s2: type of distribution for individual selection.
 ;;   - "#normal": normal.
 ;;   - "#exp": exponential.
@@ -5133,38 +5125,32 @@
 ;; - p_j1: column representing the fitness value.
 ;; - p_j2: column representing the normalized fitness value.
 ;; - p_j3: column representing the accumulated normalized fitness value.
-;; - p_b1: boolean.
-;;   - #t: to select only one fit individual.
-;;   - #f: to select all fit individuals 
 ;;
 ;; Notes:
-;; - You may want to create a fitness function specifically designed for a given
-;;   problem. This one used here  just for convenience but might not be
-;;   well-suited for a variety of problems.
+;; - You should perform operations such as mutation and fitness calculation on
+;;   your dataset before using this function.
+;; - After using this function, you should update the dataset to leave only the
+;;   selected individuals or make them reproduce by means of crossover or other
+;;   methods.
 ;;
 ;; Output:
 ;; - A list containing:
 ;;   - A matrix of selected individuals (rows).
-;;   - The last r1 value.
-;;   - The number of selection iterations performed.
+;;   - The argument matrix p_a1 purged from selected individuals.
 ;;
 ;; Sources:
 ;; - [22].
 ;;
-(define (grsp-matrix-selectg p_a1 p_n2 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 p_j1 p_j2 p_j3 p_b1)
+(define (grsp-matrix-selectg p_a1 p_s2 p_u2 p_v2 p_j1 p_j2 p_j3)
   (let ((res1 0)
 	(res2 0)
-	(res3 0)
 	(res4 '())
 	(lm1 0)
 	(hm1 0)
 	(ln1 0)
 	(hn1 0)
 	(i1 0)
-	(i2 0)
-	(i3 0)
 	(j2 0)
-	(j3 0)
 	(r1 0))
 
     ;; Create safety matrix. 
@@ -5176,49 +5162,28 @@
     (set! ln1 (grsp-matrix-esi 3 res1))
     (set! hn1 (grsp-matrix-esi 4 res1))
 
-    ;; Repeat until a fit individual (row) is found.
-    (while (= i2 0)
+    ;; Normalize fitness values (p_j2) and accumulated normalized fitness
+    ;; values (p_j3).
+    (set! j2 (grsp-matrix-opio "#+c" res1 p_j1))
+    (set! i1 lm1)
+    (while (<= i1 hm1)
 
-	   ;; Update iteration number.
-	   (set! i3 (in i3))
+	   (array-set! res1 (/ (array-ref res1 i1 p_j1) j2) i1 p_j2)
+	   (array-set! res1 (+ (array-ref res1 i1 p_j2) (array-ref res1 i1 p_j3)) i1 p_j3)
 	   
-	   ;; Apply fitness function to all rows on col p_j1.
-	   (set! i1 lm1)
-	   (while (<= i1 hm1)
+	   (set! i1 (in i1)))    
 
-		  ;; Fitness function.
-		  ;;(array-set! res1 (grsp-matrix-fitness-rprnd res1 i1 p_j1 p_n2 p_s1 p_u1 p_v1) i1 p_j1)
-		  (set! res1 (grsp-matrix-fitness-rprnd res1 i1 p_j1 p_n2 p_s1 p_u1 p_v1))
-		  
-		  (set! i1 (in i1)))
-
-	   ;; Normalize fitness values (j2) and accumulated normalized fitness
-	   ;; values (j3).
-	   (set! j2 (grsp-matrix-opio "#+c" res1 p_j1))
-	   (set! i1 lm1)
-	   (while (<= i1 hm1)
-
-		  ;; Fitness function.
-		  (array-set! res1 (/ (array-ref res1 i1 p_j1) j2) i1 p_j2)
-		  (array-set! res1 (+ (array-ref res1 i1 p_j2) (array-ref res1 i1 p_j3)) i1 p_j3)
-		  
-		  (set! i1 (in i1)))    
-
-	   ;; Generate random number R.
-	   (set! r1 (grsp-rprnd p_s2 p_u2 p_v2))
-	   
-	   ;; Find out if there are selectable individuals whise j3 value
-	   ;; is >= r1.
-	   (set! i2 (grsp-matrix-col-total-element "#>=" res1 j3 r1)))
+    ;; Generate random number R.
+    (set! r1 (grsp-rprnd p_s2 p_u2 p_v2))
 
     ;; Select the first individal that meets the condition.
-    (set! res2 (grsp-matrix-row-select "#>=" res1 j3 r1))
-    (cond ((equal? p_b1 #t)
-	   (set! res3 (grsp-matrix-row-selectn res2 '(0))))
-	  (else (set! res3 res2)))
+    (set! res2 (grsp-matrix-row-select "#>=" res1 p_j3 r1))
 
+    ;; Purge the original matrix.
+    (set! res1 (grsp-matrix-row-delete "#>=" res1 p_j3 r1))
+    
     ;; Build the list representing the final results.
-    (set! res4 (list res3 r1 i3))
+    (set! res4 (list res2 res1))
     
     res4))
 
