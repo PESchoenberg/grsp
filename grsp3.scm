@@ -80,10 +80,22 @@
 ;;   2021].
 ;; - [18] Mathispower4u. (2020). LU Decomposition. [online] Available at:
 ;;   https://www.youtube.com/watch?v=UlWcofkUDDU [Accessed 5 Mar. 2020].
-;; - [19] https://en.wikipedia.org/wiki/Genetic_algorithm
-;; - [20] https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)
-;; - [21] https://en.wikipedia.org/wiki/Mutation_(genetic_algorithm)
-;; - [22] https://en.wikipedia.org/wiki/Selection_(genetic_algorithm)
+;; - [19] En.wikipedia.org. 2021. Genetic algorithm - Wikipedia. [online]
+;;   Available at: <https://en.wikipedia.org/wiki/Genetic_algorithm>
+;;   [Accessed 13 May 2021].
+;; - [20] En.wikipedia.org. 2021. Crossover (genetic algorithm) - Wikipedia.
+;;   [online] Available at: <https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)>
+;;   [Accessed 13 May 2021].
+;; - [21] En.wikipedia.org. 2021. Mutation (genetic algorithm) - Wikipedia.
+;;   [online] Available at: <https://en.wikipedia.org/wiki/Mutation_(genetic_algorithm)>
+;;   [Accessed 13 May 2021].
+;; - [22] En.wikipedia.org. 2021. Selection (genetic algorithm) - Wikipedia.
+;;   [online] Available at: <https://en.wikipedia.org/wiki/Selection_(genetic_algorithm)>
+;;   [Accessed 13 May 2021].
+;; - [23] fitness, A., 2015. Accumulated normalized fitness. [online] Stack
+;;   Overflow. Available at:
+;;   <https://stackoverflow.com/questions/27524241/accumulated-normalized-fitness>
+;;   [Accessed 13 May 2021].
 
 
 ;; Compilation and REPL examples:
@@ -188,7 +200,10 @@
 	    grsp-mn2ll
 	    grsp-matrix-mutation
 	    grsp-matrix-crossover
-	    grsp-matrix-selection))
+	    grsp-matrix-crossover-rprnd
+	    grsp-matrix-same-dims
+	    grsp-matrix-fitness-rprnd
+	    grsp-matrix-selectg))
 
 
 ;;;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -793,14 +808,14 @@
 ;;   - "#-": substraction of all elements.
 ;;   - "#*": product of all elements.
 ;;   - "#/": division of all elements.
-;;   - "#+r": sum of all elements of row p_l.
-;;   - "#-r": substraction of all elements of row p_l.
-;;   - "#*r": product of all elements of row p_l.
-;;   - "#/r": division of all elements of row p_l.
-;;   - "#+c": sum of all elements of col p_l.
-;;   - "#-c": substraction of all elements of col p_l.
-;;   - "#*c": product of all elements of col p_l.
-;;   - "#/c": division of all elements of col p_l.
+;;   - "#+r": sum of all elements of row p_l1.
+;;   - "#-r": substraction of all elements of row p_l1.
+;;   - "#*r": product of all elements of row p_l1.
+;;   - "#/r": division of all elements of row p_l1.
+;;   - "#+c": sum of all elements of col p_l1.
+;;   - "#-c": substraction of all elements of col p_l1.
+;;   - "#*c": product of all elements of col p_l1.
+;;   - "#/c": division of all elements of col p_l1.
 ;;   - "#+md": sum of the main diagonal elements (trace).
 ;;   - "#-md": substraction of the main diagonal elements.
 ;;   - "#*md": product of the main diagonal elements.
@@ -1637,7 +1652,8 @@
     res2))
 
 
-;;;; grsp-matrix-is-equal - Returns #t if matrix p_a1 is equal to matrix p_a2.
+;;;; grsp-matrix-is-equal - Returns #t if matrix p_a1 is equal to matrix p_a2
+;; (same dimensionality and same elements).
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
@@ -4886,9 +4902,9 @@
 	  (set! j1 ln1)
 	  (while (<= j1 hn1)
 
-		 ;; If pseudo random number <= p_n1, generate a new random number
+		 ;; If pseudo random number < p_n1, generate a new random number
 		 ;; and replace the value of the current matrix element with it.
-		 (cond ((<= (abs (grsp-rprnd p_s1 p_u1 p_v1)) (abs p_n1))
+		 (cond ((equal? (grsp-ifrprnd p_s1 p_u1 p_v1 p_n1) #t)
 			(array-set! res1 (grsp-rprnd p_s2 p_u2 p_v2) i1 j1)))
 		 
 		 (set! j1 (in j1)))
@@ -4910,13 +4926,6 @@
 ;; - p_a2: matrix.
 ;; - p_ln2: lower column number of the interval to swap (p_a1).
 ;; - p_hn2: higher column number of the interval to swap (p_a1).
-;; - p_n1: crossover rate, [0, 1].
-;; - p_s1: type of distribution.
-;;   - "#normal": normal.
-;;   - "#exp": exponential.
-;;   - "#uniform": uniform.
-;; - p_u1: mean for crossover rate.
-;; - p_v1: standard deviation for crossover rate.
 ;;
 ;; Sources:
 ;; - [19][20].
@@ -4953,11 +4962,11 @@
     (set! res1 (grsp-matrix-cpy p_a1))
     (set! res2 (grsp-matrix-cpy p_a2))    
 
-    ;; Only perform this operation if matrices are equal.
-    (cond ((equal? (grsp-matrix-is-equal p_a1 p_a2) #t)
+    ;; Only perform this operation if matrices have the same dimensionality.
+    (cond ((equal? (grsp-matrix-same-dims p_a1 p_a2) #t)
 	   (set! b1 #t)))
 
-    ;; Only perform thsi operation if the column intervals are equal.
+    ;; Only perform this operation if the column intervals are equal.
     (cond((= (grsp-matrix-te1 ln1 hn1) (grsp-matrix-te1 ln2 hn2))
 	  (set! b2 #t)))
     
@@ -4983,8 +4992,8 @@
 	   (set! res6 (grsp-matrix-subcpy res4 lm2 hm2 p_ln2 p_hn2))
 
 	   ;; Swap.
-	   (set! res3 (grsp-matrix-subrep res3 res5 lm1 p_ln1))
-	   (set! res4 (grsp-matrix-subrep res4 res6 lm1 p_ln2))))
+	   (set! res3 (grsp-matrix-subrep res3 res6 lm1 p_ln1))
+	   (set! res4 (grsp-matrix-subrep res4 res5 lm1 p_ln2))))
    
     ;; Build the list representing the results.
     (set! res7 (list res3 res4))    
@@ -4992,4 +5001,189 @@
     res7))
 
 
-;;;; grsp-matrix-selection
+;;;; grsp-matrix-crossover-rprnd - Randomizes the application of
+;; grsp-matrix-crossover. In some cases it might be useful to use the 
+;; crossover function  in an aleatory fashion, while in others it might not.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, genetic.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_ln1: lower column number of the interval to swap (p_a1).
+;; - p_hn1: higher column number of the interval to swap (p_a1).
+;; - p_a2: matrix.
+;; - p_ln2: lower column number of the interval to swap (p_a1).
+;; - p_hn2: higher column number of the interval to swap (p_a1).
+;; - p_n1: crossover rate, [0, 1].
+;; - p_s1: type of distribution.
+;;   - "#normal": normal.
+;;   - "#exp": exponential.
+;;   - "#uniform": uniform.
+;; - p_u1: mean for crossover rate.
+;; - p_v1: standard deviation for crossover rate.
+;;
+;; Sources:
+;; - [19][20].
+;;
+;; Notes:
+;; - See grsp-matrix-crossover for further details.
+;;
+(define (grsp-matrix-crossover-rprnd p_a1 p_ln1 p_hn1 p_a2 p_ln2 p_hn2 p_n1 p_s1 p_u1 p_v1)
+  (let ((res1 0))
+
+    (cond ((equal? (grsp-ifrprnd p_s1 p_u1 p_v1 p_n1) #t)
+	   (set! res1 (grsp-matrix-crossover p_a1 p_ln1 p_hn1 p_a2 p_ln2 p_hn2))))
+    res1))
+
+
+;;;; grsp-matrix-same_dims - Checks if p_a1 and p_a2 have the same number of rows
+;; and columns.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_a2: matrix.
+;;
+(define (grsp-matrix-same-dims p_a1 p_a2)
+  (let ((res1 #f)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(lm2 0)
+	(hm2 0)
+	(ln2 0)
+	(hn2 0))
+
+    ;; Extract boundaries.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1))
+
+    (set! lm2 (grsp-matrix-esi 1 p_a2))
+    (set! hm2 (grsp-matrix-esi 2 p_a2))
+    (set! ln2 (grsp-matrix-esi 3 p_a2))
+    (set! hn2 (grsp-matrix-esi 4 p_a2)) 
+
+    ;; Compare the size of both matrices.
+    (cond ((= lm1 lm2)
+	   (cond ((= hm1 hm2)
+		  (cond ((= ln1 ln2)
+			 (cond ((= hn1 hn2)
+				(set! res1 #t)))))))))
+    res1))
+
+
+;;;; grsp-matrix-fitness-rprnd - Basic fitness function based on pseudo -  random
+;; numbers.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, genetic.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_m1: row.
+;; - p_n1: col.
+;; - p_n2: fitness rate, [0, 1].
+;; - p_s1: type of distribution.
+;;   - "#normal": normal.
+;;   - "#exp": exponential.
+;;   - "#uniform": uniform.
+;; - p_u1: mean for fitness rate.
+;; - p_v1: standard deviation for fitness rate.
+;;
+;; Notes:
+;; - This is justa convenience fitness function. You may want to create your
+;;   own for your specific task.
+;;
+(define (grsp-matrix-fitness-rprnd p_a1 p_m1 p_n1 p_n2 p_s1 p_u1 p_v1)
+  (let ((res1 0))
+
+    (array-set! p_a1 (* p_n2 (grsp-rprnd p_s1 p_u1 p_v1)) p_m1 p_n1)
+    (set! res1 p_a1)
+
+    res1))
+
+
+;;;; grsp-matrix-selectg - Genetic selection.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, genetic.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_s2: type of distribution for individual selection.
+;;   - "#normal": normal.
+;;   - "#exp": exponential.
+;;   - "#uniform": uniform.
+;; - p_u2: mean for individual selection.
+;; - p_v2: standard deviation for individual selection.
+;; - p_j1: column representing the fitness value.
+;; - p_j2: column representing the normalized fitness value.
+;; - p_j3: column representing the accumulated normalized fitness value.
+;;
+;; Notes:
+;; - You should perform operations such as mutation and fitness calculation on
+;;   your dataset before using this function.
+;; - After using this function, you should update the dataset to leave only the
+;;   selected individuals or make them reproduce by means of crossover or other
+;;   methods.
+;;
+;; Output:
+;; - A list containing:
+;;   - A matrix of selected individuals (rows).
+;;   - The argument matrix p_a1 purged from selected individuals.
+;;
+;; Sources:
+;; - [22].
+;;
+(define (grsp-matrix-selectg p_a1 p_s2 p_u2 p_v2 p_j1 p_j2 p_j3)
+  (let ((res1 0)
+	(res2 0)
+	(res4 '())
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(i1 0)
+	(j2 0)
+	(r1 0))
+
+    ;; Create safety matrix. 
+    (set! res1 (grsp-matrix-cpy p_a1))
+    
+    ;; Extract boundaries.
+    (set! lm1 (grsp-matrix-esi 1 res1))
+    (set! hm1 (grsp-matrix-esi 2 res1))
+    (set! ln1 (grsp-matrix-esi 3 res1))
+    (set! hn1 (grsp-matrix-esi 4 res1))
+
+    ;; Normalize fitness values (p_j2) and accumulated normalized fitness
+    ;; values (p_j3).
+    (set! j2 (grsp-matrix-opio "#+c" res1 p_j1))
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+
+	   (array-set! res1 (/ (array-ref res1 i1 p_j1) j2) i1 p_j2)
+	   (array-set! res1 (+ (array-ref res1 i1 p_j2) (array-ref res1 i1 p_j3)) i1 p_j3)
+	   
+	   (set! i1 (in i1)))    
+
+    ;; Generate random number R.
+    (set! r1 (grsp-rprnd p_s2 p_u2 p_v2))
+
+    ;; Select the first individal that meets the condition.
+    (set! res2 (grsp-matrix-row-select "#>=" res1 p_j3 r1))
+
+    ;; Purge the original matrix.
+    (set! res1 (grsp-matrix-row-delete "#>=" res1 p_j3 r1))
+    
+    ;; Build the list representing the final results.
+    (set! res4 (list res2 res1))
+    
+    res4))
+

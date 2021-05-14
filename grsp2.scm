@@ -178,7 +178,8 @@
 	    grsp-nan
 	    grsp-naninf
 	    grsp-absop
-	    grsp-rprnd))
+	    grsp-rprnd
+	    grsp-ifrprnd))
 
 
 ;;;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -1876,4 +1877,23 @@
 	   
     res1))
 
+
+;;;; grsp-ifrprnd - If a pseudo random number generated with the arguments of
+;; the function is less than p_n1, the function returns #t, or #f otherwise.
+;;
+;; Arguments:
+;; - p_s1: type of distribution.
+;;   - "#normal": normal.
+;;   - "#exp": exponential.
+;;   - "#uniform": uniform.
+;; - p_u1: mean.
+;; - p_v1: standard deviation.
+;;
+(define (grsp-ifrprnd p_s1 p_u1 p_v1 p_n1)
+  (let ((res1 #f))
+
+    (cond ((< (abs (grsp-rprnd p_s1 p_u1 p_v1)) (abs p_n1))
+	   (set! res1 #t))) 
+    
+    res1))
 
