@@ -145,6 +145,7 @@
   #:use-module (grsp grsp3)
   #:use-module (grsp grsp4)
   #:use-module (grsp grsp7)
+  #:use-module (ice-9 threads)
   #:export (grsp-feature-scaling
 	    grsp-z-score
 	    grsp-binop
@@ -159,8 +160,10 @@
 	    grsp-obsv
 	    grsp-entropy-dvar
 	    grsp-mean1
+	    grsp-mean1-mth
 	    grsp-mean2
 	    grsp-mean-geometric
+	    grsp-mean-geometric-mth
 	    grsp-mean-interquartile
 	    grsp-mean-quadratic
 	    grsp-midrange
@@ -188,6 +191,7 @@
 	    grsp-frequency-absolute
 	    grsp-mode
 	    grsp-poisson-pmf
+	    grsp-poisson-pmf-mth
 	    grsp-poisson-kurtosis
 	    grsp-poisson-skewness
 	    grsp-poisson-fisher
@@ -200,9 +204,13 @@
 	    grsp-gamma-mode1
 	    grsp-gamma-mode2
 	    grsp-gamma-pdf1
+	    grsp-gamma-pdf1-mth
 	    grsp-gamma-pdf2
+	    grsp-gamma-pdf2-mth
 	    grsp-gamma-cdf1
+	    grsp-gamma-cdf1-mth
 	    grsp-gamma-cdf2
+	    grsp-gamma-cdf2-mth
 	    grsp-gamma-mgf1
 	    grsp-gamma-mgf2
 	    grsp-erlang-mean
@@ -215,20 +223,26 @@
 	    grsp-erlang-mgf
 	    grsp-erlang-scale
 	    grsp-normal-pdf
+	    grsp-normal-pdf-mth
 	    grsp-normal-entropy
 	    grsp-normal-entropy-relative
+	    grsp-normal-entropy-relative-mth
 	    grsp-normal-fisher
+	    grsp-normal-fisher-mth
 	    grsp-weibull-median
 	    grsp-weibull-mean
 	    grsp-weibull-mode
 	    grsp-weibull-cdf
 	    grsp-weibull-pdf
 	    grsp-weibull-entropy
+	    grsp-weibull-entropy-mth
 	    grsp-weibull-variance
 	    grsp-weibull-skewness
+	    grsp-weibull-skewness-mth
 	    grsp-weibull-mgf
 	    grsp-weibull-cf
-	    grsp-theil-sen-estimator))
+	    grsp-theil-sen-estimator
+	    grsp-theil-sen-estimator-mth))
 
 
 ;;;; grsp-feature-scaling - Scales p_n to the interval [p_nmin, p_nmax].
@@ -601,6 +615,27 @@
     res1))
 
 
+;;;; grsp-mean1-mth - Mutithreaded version of grsp-mean1.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_a1: sample (matrix).
+;;
+;; Sources:
+;; - [35].
+;;
+(define (grsp-mean1-mth p_a1)
+  (letpar ((res1 0.0)
+	   (n1 (grsp-matrix-opio "#+" p_a1 0))
+	   (d1 (grsp-matrix-total-elements p_a1)))
+
+	  (set! res1 (/ n1 d1))
+
+	  res1))
+
+
 ;;;; grsp-mean2 - Expected value of a non-negative, random variable X
 ;; and the probability P for each outcome of X.
 ;;
@@ -650,6 +685,27 @@
 		     (/ 1 (grsp-matrix-total-elements p_a1))))
 
     res1))
+
+
+;;;; grsp-mean-geometric-mth - Multithreaded verson of grsp-mean-geometric.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_a1: sample (matrix).
+;;
+;; Sources:
+;; - [35].
+;;
+(define (grsp-mean-geometric-mth p_a1)
+  (letpar ((res1 0.0)
+	   (n1 (grsp-matrix-opio "#*" p_a1 0))
+	   (d1 (/ 1 (grsp-matrix-total-elements p_a1))))
+
+	  (set! res1 (expt n1 d1))
+
+	  res1))
 
 
 ;;;; grsp-mean-interquartile - Interquartile ean of elements of p_a1.
@@ -1527,6 +1583,28 @@
     res1))
 
 
+;;;; grsp-poisson-pmf-mth - Multithreaded variant of grsp-poisson-pmf.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_l1: mean, expected value. Lambda, [0, +inf).
+;; - p_k1: number oc. Int, [0, +inf).
+;;
+;; Sources:
+;; - [4][5].
+;;
+(define (grsp-poisson-pmf-mth p_l1 p_k1)
+  (letpar ((res1 0)
+	   (n1 (* (expt p_l1 p_k1) (expt (grsp-e) (* -1 p_l1))))
+	   (d1 (grsp-fact p_k1)))
+
+	  (set! res1 (/ n1 d1))
+
+	  res1))
+
+
 ;;;; grsp-poisson-kurtosis - Kurtosis, Poisson distribution.
 ;;
 ;; Keywords:
@@ -1791,6 +1869,38 @@
     res1))
 
 
+;;;; grsp-gamma-pdf1-mth - Multithreaded version of grsp-gamma-pdf1. 
+;; parametrization k-t.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_b2: for integers.
+;;   - #t: if rounding is desired.
+;;   - #f: if rounding is not desired.
+;; - p_s1: desired gamma repesentation:
+;;   - "#e": Euler.
+;;   - "#w": Weierstrass.
+;; - p_k1: k. Shape.
+;; - p_t1: theta.
+;; - p_x1: sample, (0, +inf)
+;; - p_n1: desired product iterations.
+;;
+;; Sources:
+;; - [6].
+;;
+(define (grsp-gamma-pdf1-mth p_b2 p_s1 p_k1 p_t1 p_x1 p_n1)
+  (letpar ((res1 0)
+	   (res2 (/ 1 (* (grsp-complex-gamma p_b2 p_s1 p_k1 p_n1) (expt p_t1 p_k1))))
+	   (res3 (expt p_x1 (- p_k1 1)))
+	   (res4 (expt (grsp-e) (* -1 (/ p_x1 p_t1)))))
+
+    (set! res1 (* res2 res3 res4))	  
+
+	  res1))
+
+
 ;;;; grsp-gamma-pdf2 - Probability density function, gamma distribution,
 ;; parametrization a-b.
 ;;
@@ -1834,6 +1944,37 @@
     res1))
 
 
+;;;; grsp-gamma-pdf2-mth - Multithreaded version of grsp-gamma-pdf2.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_b2: for integers.
+;;   - #t: if rounding is desired.
+;;   - #f: if rounding is not desired.
+;; - p_s1: desired gamma repesentation:
+;;   - "#e": Euler.
+;;   - "#w": Weierstrass.
+;; - p_a1: alpha. 
+;; - p_b1: beta.
+;; - p_x1: sample, (0, +inf).
+;; - p_n1: desired product iterations.
+;;
+;; Sources:
+;; - [6].
+;;
+(define (grsp-gamma-pdf2-mth p_b2 p_s1 p_a1 p_b1 p_x1 p_n1)
+  (letpar ((res1 0)
+	   (res2 (/ (expt p_b1 p_a1) (grsp-complex-gamma p_b2 p_s1 p_a1 p_n1)))
+	   (res3 (expt p_x1 (- p_a1 1)))
+	   (res4 (expt (grsp-e) (* -1 p_b1 p_x1))))
+
+	   (set! res1 (* res2 res3 res4))	  
+
+	   res1))
+
+
 ;;;; grsp-gamma-cdf1 - Cumulative distribution function, gamma distribution,
 ;; parametrization k-t.
 ;;
@@ -1869,6 +2010,36 @@
     ;; Complete.
     (set! res1 (* res2 res3)) 
     
+    res1))
+
+
+;;;; grsp-gamma-cdf1-mth - Multithreaded variant of grsp-gamma-cdf1.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_b2: for integers.
+;;   - #t: if rounding is desired.
+;;   - #f: if rounding is not desired.
+;; - p_s1: desired gamma repesentation:
+;;   - "#e": Euler.
+;;   - "#w": Weierstrass.
+;; - p_a1: alpha. 
+;; - p_b1: beta.
+;; - p_x1: sample, (0, +inf).
+;; - p_n1: desired product iterations.
+;;
+;; Sources:
+;; - [6].
+;;
+(define (grsp-gamma-cdf1-mth p_b2 p_s1 p_k1 p_t1 p_x1 p_n1)
+  (letpar ((res1 0)
+	   (res2 (/ 1 (grsp-complex-gamma p_b2 p_s1 p_k1 p_n1)))
+	   (res3 (grsp-complex-ligamma p_b2 p_s1 p_k1 (/ p_x1 p_t1) p_n1)))
+
+    (set! res1 (* res2 res3)) 
+   
     res1))
 
 
@@ -1910,7 +2081,37 @@
     res1))
 
 
-;;;; grsp-gamma-mgf2 - Moment generating function, gamma distribution,
+;;;; grsp-gamma-cdf2-mth - Multithreaded variant of grsp-gamma-cdf2.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_b2: for integers.
+;;   - #t: if rounding is desired.
+;;   - #f: if rounding is not desired.
+;; - p_s1: desired gamma repesentation:
+;;   - "#e": Euler.
+;;   - "#w": Weierstrass.
+;; - p_a1: alpha. 
+;; - p_b1: beta.
+;; - p_x1: sample, (0, +inf).
+;; - p_n1: desired product iterations.
+;;
+;; Sources:
+;; - [6].
+;;
+(define (grsp-gamma-cdf2-mth p_b2 p_s1 p_a1 p_b1 p_x1 p_n1)
+  (letpar ((res1 0)
+	   (res2 (/ 1 (grsp-complex-gamma p_b2 p_s1 p_a1 p_n1)))
+	   (res3 (grsp-complex-ligamma p_b2 p_s1 p_a1 (* p_b1 p_x1) p_n1)))
+
+    (set! res1 (* res2 res3)) 
+    
+    res1))
+
+
+;;;; grsp-gamma-mgf1 - Moment generating function, gamma distribution,
 ;; parametrization k-t.
 ;;
 ;; Keywords:
@@ -2189,6 +2390,29 @@
     res1))
 
 
+;;;; grsp-normal-pdf-mth - Multithreaded variant of grsp-normal-pdf.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments: 
+;; - p_x1: x.
+;; - p_x2: mean.
+;; - p_x3: standard deviation.
+;;
+;; Sources:
+;; - [11].
+;;
+(define (grsp-normal-pdf-mth p_x1 p_x2 p_x3)
+  (letpar ((res1 0)
+	   (res2 (/ 1 (* p_x3 (sqrt (* 2 (grsp-pi))))))
+	   (res3 (* -0.5 (expt (/ (- p_x1 p_x2) p_x3) 2))))
+
+	  (set! res1 (* res2 (expt (grsp-e) res3)))
+
+	  res1))
+
+
 ;;;; grsp-normal-entropy - Entropy, normal distribution.
 ;;
 ;; Keywords:
@@ -2246,7 +2470,33 @@
     (set! res1 (* 0.5 (+ res2 res3 -1 res4)))
 
     res1))
-  
+
+
+;;;; grsp-normal-entropy-relative-mth - Multithreaded variant of function
+;; grsp-normal-entropy-relative.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_x1: mean 1.
+;; - p_x2; mean 2.
+;; - p_x3: standard deviation 1.
+;; - p_x4: standard deviation 2.
+;;
+;; Sources:
+;; - [11][17].
+;;
+(define (grsp-normal-entropy-relative-mth p_x1 p_x2 p_x3 p_x4)
+  (letpar ((res1 0)
+	   (res2 (expt (/ p_x3 p_x4) 2))
+	   (res3 (/ (expt (- p_x2 p_x1) 2) (grsp-variance1 p_x4)))
+	   (res4 (* 2 (log (/ p_x4 p_x3)))))
+
+	  (set! res1 (* 0.5 (+ res2 res3 -1 res4)))
+
+	  res1))
+
 
 ;;;; grsp-normal-fisher - Fisher infromation matrix, normal distribution.
 ;;
@@ -2261,11 +2511,33 @@
 ;; - [11][19].
 ;;
 (define (grsp-normal-fisher p_x1 p_x2)
-  (let ((res1 0))
+  (let ((res1 0.0))
 
     (set! res1 (grsp-matrix-create "#I" 2 2))
-    (array-set! res1 (/ 1 (grsp-variance1 p_x2) 0 0))
+    (array-set! res1 (/ 1 (grsp-variance1 p_x2)) 0 0)
     (array-set! res1 (/ 2 (grsp-variance1 p_x2)) 1 1)
+    
+    res1))
+
+
+;;;; grsp-normal-fisher-mth - Multithreaded varant of grsp-normal-fisher.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_x1: mean 1.
+;; - p_x2: standard deviation.
+;;
+;; Sources:
+;; - [11][19].
+;;
+(define (grsp-normal-fisher-mth p_x1 p_x2)
+  (let ((res1 0.0))
+
+    (set! res1 (grsp-matrix-create "#I" 2 2))
+    (parallel (array-set! res1 (/ 1 (grsp-variance1 p_x2)) 0 0)
+	      (array-set! res1 (/ 2 (grsp-variance1 p_x2)) 1 1))
     
     res1))
 
@@ -2283,7 +2555,7 @@
 ;; - [38][39].
 ;;
 (define (grsp-weibull-median p_k1 p_l1)
-  (let ((res1 0))
+  (let ((res1 0.0))
 
     (set! res1 (* p_l1 (expt (grsp-log 2 2) (/ 1 p_k1))))
     
@@ -2306,7 +2578,7 @@
 ;; - [38][39].
 ;;
 (define (grsp-weibull-mean p_k1 p_l1 p_b2 p_s1 p_n1)
-  (let ((res1 0))
+  (let ((res1 0.0))
 
     (set! res1 (* p_l1 (grsp-complex-gamma p_b2 p_s1 (+ 1 (/ 1 p_k1)) p_n1)))
     
@@ -2326,7 +2598,7 @@
 ;; - [38][39].
 ;;
 (define (grsp-weibull-mode p_k1 p_l1)
-  (let ((res1 0))
+  (let ((res1 0.0))
 
     (cond ((> p_k1 1)
 	   (set! res1 (* p_l1 (expt (/ (- p_k1 1) p_k1) (/ 1 p_k1))))))
@@ -2348,8 +2620,8 @@
 ;; - [38][39].
 ;;
 (define (grsp-weibull-cdf p_k1 p_l1 p_n1)
-  (let ((res1 0)
-	(res2 0))
+  (let ((res1 0.0)
+	(res2 0.0))
 
     (cond ((>= p_n1 0)
 	   (set! res2 (expt (* -1 (/ p_n1 p_l1)) p_k1))
@@ -2404,6 +2676,28 @@
     (set! res1 (+ (* (grsp-em) (- 1 (/ 1 p_k1)))
 		  (grsp-log (/ p_l1 p_k1) 2)
 		  1))
+
+    res1))
+
+
+;;;; grsp-weibull-entropy-mth - Multithreaded variant of grsp-weibull-entropy.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_k1: shape, [0.0, +inf.0). 
+;; - p_l1: scale, [0.0, +inf.0).
+;;
+;; Sources:
+;; - [38][39].
+;;
+(define (grsp-weibull-entropy-mth p_k1 p_l1)
+  (letpar ((res1 0)
+	   (res2 (* (grsp-em) (- 1 (/ 1 p_k1))))
+	   (res3 (grsp-log (/ p_l1 p_k1) 2)))
+
+    (set! res1 (+ res2 res3 1))
 
     res1))
 
@@ -2478,6 +2772,38 @@
     (set! n3 (* (grsp-complex-gamma p_b2 p_s1 n2 p_n1) p_l1))
     
     ;; Main.
+    (set! res1 (/ (- n3 (* 3 u1 va) (expt u1 3)) (expt sd 3)))
+    
+    res1))
+
+
+;;;; grsp-weibull-skewness-mth - Multithreaded variant of grsp-weibull-skewness.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_k1: shape, [0.0, +inf.0).
+;; - p_l1: scale, [0.0, +inf.0).
+;; - p_b2: see grsp4.grsp-complex-gamma.
+;; - p_s1: see grsp4.grsp-complex-gamma.
+;; - p_n1: see grsp4.grsp-complex-gamma.
+;;
+;; Sources:
+;; - [38][39].
+;;
+(define (grsp-weibull-skewness-mth p_k1 p_l1 p_b2 p_s1 p_n1)
+  (letpar ((res1 0)
+	   (sd 0)
+	   (n2 0)
+	   (n3 0)
+	   (u1 (grsp-weibull-mean p_k1 p_l1 p_b2 p_s1 p_n1))
+	   (va (grsp-weibull-variance p_k1 p_l1 p_b2 p_s1 p_n1)))
+    
+    (parallel (set! sd (sqrt va))
+	      (set! n2 (+ 1 (/ 3 p_k1))))
+    
+    (set! n3 (* (grsp-complex-gamma p_b2 p_s1 n2 p_n1) p_l1))
     (set! res1 (/ (- n3 (* 3 u1 va) (expt u1 3)) (expt sd 3)))
     
     res1))
@@ -2615,6 +2941,77 @@
 	   (set! y2 (array-ref res1 i1 (+ ln1 3)))
 	   (array-set! res2 (grsp-geo-slope x1 y1 x2 y2) i1 0)
 	   
+	   (set! i1 (in i1)))
+
+    ;; Delete repeated rows.
+    (set! res3 (grsp-matrix-transpose (grsp-matrix-supp (grsp-matrix-sort "#asc" res2))))
+    
+    ;; Median of unique slopes.
+    (set! res4 (grsp-median1 res3))
+    
+    res4))
+
+
+;; grsp-theil-sen-estimator-mth - Multithreaded variant of
+;; grsp-theil-sen-estimator.
+;;
+;; Keywords:
+;; - statistics, probability, line, fitting, estimator, linear, regression.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;;   - 0: x1.
+;;   - 1: x2.
+;;   - 2: y1.
+;;   - 3: y2.
+;;
+;; Sources:
+;; - [41].
+;;
+(define (grsp-theil-sen-estimator-mth p_a1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(res4 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(i1 0)
+	(x1 0)
+	(x2 0)
+	(y1 0)
+	(y2 0)
+	(dx 0)
+	(dy 0))
+
+    ;; Copy matrix.
+    (set! res1 (grsp-matrix-cpy p_a1))
+
+    ;; Prepare the matrix.  
+    (set! res1 (grsp-matrix-clearni res1))
+    
+    ;; Extract the boundaries of the matrix.
+    (parallel (set! lm1 (grsp-matrix-esi 1 res1))
+	      (set! hm1 (grsp-matrix-esi 2 res1))
+	      (set! ln1 (grsp-matrix-esi 3 res1))
+	      (set! hn1 (grsp-matrix-esi 4 res1)))   
+
+    ;; Create an m x 1 matrix to contain partial results (slope of lines
+    ;; defined by arguments).
+    (set! res2 (grsp-matrix-create 0 (grsp-matrix-te1 lm1 hm1) 1))
+
+    ;; Cycle.
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+
+	   ;; Calculate slope.
+	   (parallel (set! x1 (array-ref res1 i1 (+ ln1 0)))
+		     (set! y1 (array-ref res1 i1 (+ ln1 1)))
+		     (set! x2 (array-ref res1 i1 (+ ln1 2)))
+		     (set! y2 (array-ref res1 i1 (+ ln1 3))))
+		     
+	   (array-set! res2 (grsp-geo-slope x1 y1 x2 y2) i1 0)
 	   (set! i1 (in i1)))
 
     ;; Delete repeated rows.
