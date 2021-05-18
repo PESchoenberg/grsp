@@ -203,7 +203,8 @@
 	    grsp-matrix-crossover-rprnd
 	    grsp-matrix-same-dims
 	    grsp-matrix-fitness-rprnd
-	    grsp-matrix-selectg))
+	    grsp-matrix-selectg
+	    grsp-matrix-keyon))
 
 
 ;;;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -5129,31 +5130,79 @@
 ;; Notes:
 ;; - You should perform operations such as mutation and fitness calculation on
 ;;   your dataset before using this function.
-;; - After using this function, you should update the dataset to leave only the
-;;   selected individuals or make them reproduce by means of crossover or other
-;;   methods.
 ;;
 ;; Output:
-;; - A list containing:
-;;   - A matrix of selected individuals (rows).
-;;   - The argument matrix p_a1 purged from selected individuals.
+;; - A subset of selected individuals (rows) from p_a1.
 ;;
 ;; Sources:
 ;; - [22].
 ;;
 (define (grsp-matrix-selectg p_a1 p_s2 p_u2 p_v2 p_j1 p_j2 p_j3)
   (let ((res1 0)
-	(res2 0)
-	(res4 '())
+	(lm1 0)
+	(hm1 0)
+	(i1 0)
+	(j2 0)
+	(r1 0))
+
+    ;; Extract boundaries.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+
+    ;; Normalize fitness values (p_j2) and accumulated normalized fitness
+    ;; values (p_j3).
+    (set! j2 (grsp-matrix-opio "#+c" p_a1 p_j1))
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+
+	   (array-set! p_a1 (/ (array-ref p_a1 i1 p_j1) j2) i1 p_j2)
+	   (array-set! p_a1 (+ (array-ref p_a1 i1 p_j2) (array-ref p_a1 i1 p_j3)) i1 p_j3)
+	   
+	   (set! i1 (in i1)))    
+
+    ;; Generate random number R.
+    (set! r1 (grsp-rprnd p_s2 p_u2 p_v2))
+
+    ;; Select the first individal that meets the condition.
+    (set! res1 (grsp-matrix-row-select "#>=" p_a1 p_j3 r1))
+
+    ;; Purge the original matrix.
+    (set! p_a1 (grsp-matrix-row-delete "#>=" p_a1 p_j3 r1))
+
+    res1))
+
+
+;;;; grsp-matrix-keyon - On row or column p_n1 of matrix p_a1, as defined by
+;; p_s1, the function creates a uique key starting on value p_n2 and with
+;; incremental step p_n3.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
+;; Arguments:
+;; - p_s1: string
+;;   - "#row" will use row p_n1 as index.
+;;   - "#col" will use column _n1 as index.
+;; - p_a1: matrix.
+;; - p_n1: number, wll rpresent a row or column depending on p_s1.
+;; - p_n2: initial value for key.
+;; - p_n3: incremental step.
+;;
+;; Notes:
+;; - This function will overwrite anything on row or column p_n1.
+;;
+(define (grsp-matrix-keyon p_s1 p_a1 p_n1 p_n2 p_n3)
+  (let ((res1 0)
 	(lm1 0)
 	(hm1 0)
 	(ln1 0)
 	(hn1 0)
 	(i1 0)
-	(j2 0)
-	(r1 0))
+	(i2 0)
+	(h1 0)
+	(b1 #f))
 
-    ;; Create safety matrix. 
+    ;; Create safety matrices. 
     (set! res1 (grsp-matrix-cpy p_a1))
     
     ;; Extract boundaries.
@@ -5162,28 +5211,27 @@
     (set! ln1 (grsp-matrix-esi 3 res1))
     (set! hn1 (grsp-matrix-esi 4 res1))
 
-    ;; Normalize fitness values (p_j2) and accumulated normalized fitness
-    ;; values (p_j3).
-    (set! j2 (grsp-matrix-opio "#+c" res1 p_j1))
-    (set! i1 lm1)
-    (while (<= i1 hm1)
+    (set! i2 p_n2)
+    (cond ((equal? p_s1 "#col")
+	   (set! b1 #t)
+	   (set! i1 lm1)
+	   (set! h1 hm1))
+	  ((equal? p_s1 "#row")
+	   (set! b1 #t)
+	   (set! i1 ln1)
+	   (set! h1 hn1)))
 
-	   (array-set! res1 (/ (array-ref res1 i1 p_j1) j2) i1 p_j2)
-	   (array-set! res1 (+ (array-ref res1 i1 p_j2) (array-ref res1 i1 p_j3)) i1 p_j3)
-	   
-	   (set! i1 (in i1)))    
+    (cond ((equal? b1 #t)
+	   (while (<= i1 h1)
+		  
+		  (cond ((equal? p_s1 "#row")
+			 (set! res1 (array-set! p_a1 i2 p_n1 i1)))
+			((equal? p_s1 "#col")
+			 (set! res1 (array-set! p_a1 i2 i1 p_n1))))
 
-    ;; Generate random number R.
-    (set! r1 (grsp-rprnd p_s2 p_u2 p_v2))
-
-    ;; Select the first individal that meets the condition.
-    (set! res2 (grsp-matrix-row-select "#>=" res1 p_j3 r1))
-
-    ;; Purge the original matrix.
-    (set! res1 (grsp-matrix-row-delete "#>=" res1 p_j3 r1))
+		  (set! i2 (+ i2 p_n3))
+		  (set! i1 (in i1)))))
     
-    ;; Build the list representing the final results.
-    (set! res4 (list res2 res1))
-    
-    res4))
+    res1))
+
 

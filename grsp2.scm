@@ -103,11 +103,13 @@
 ;;   https://en.wikipedia.org/wiki/Test_functions_for_optimization [Accessed 13
 ;;   April 2021].
 ;; - [32] https://www.gnu.org/software/guile/manual/html_node/Random.html
+;; - [33] https://www.gnu.org/software/guile/manual/html_node/Parallel-Forms.html
 
 
 (define-module (grsp grsp2)
   #:use-module (grsp grsp0)
   #:use-module (grsp grsp1)
+  #:use-module (ice-9 threads)
   #:export (grsp-gtels
 	    grsp-sign
 	    grsp-eiget
@@ -166,8 +168,10 @@
 	    grsp-fact-low
 	    grsp-fact-upp
 	    grsp-ratio-derper
+	    grsp-ratio-derper-mth
 	    grsp-intifint
 	    grsp-log
+	    grsp-log-mth
 	    grsp-dtr
 	    grsp-opz
 	    grsp-eex
@@ -1617,6 +1621,27 @@
     res1))
 
 
+;;;; grsp-ratio-derper-mth - Multithreaded version of grsp-ratio-derper.
+;;
+;; Keywords:
+;; - function, ratio.
+;;
+;; Arguments:
+;; - p_n1: positive integer.
+;;
+;; Sources:
+;; - [29][33].
+;;
+(define (grsp-ratio-derper-mth p_n1)
+  (letpar ((res1 0.0)
+	   (n1 (grsp-fact-sub p_n1))
+	   (d1 (grsp-fact p_n1)))
+
+	  (set! res1 (/ n1 d1))
+
+	  res1))
+
+
 ;;;; grsp-intifint - If p_z1 is an integer, rounds p_z2 to zero decimals. This
 ;; might be necessary to satisfy exactness rquirements as per R5RS criteria as
 ;; describe in the sources.
@@ -1661,6 +1686,31 @@
 		  (log10 p_g1)))
     
     res1))
+
+
+;;;; grsp-log-mth - Multithreaded version of grsp-log.
+;;
+;; Keywords:
+;; - function.
+;;
+;; Arguments:
+;; - p_g1: base.
+;; - p_x1: exponent.
+;;
+;; Notes:
+;; - See grsp-log.
+;;
+;; Sources:
+;; - [33].
+;;
+(define (grsp-log-mth p_g1 p_x1)
+  (letpar ((res1 0)
+	   (n1 (log10 p_x1))
+	   (d1 (log10 p_g1)))
+
+	  (set! res1 (/ n1 d1))
+
+	  res1))
 
 
 ;;;; grsp-dtr - Divides p_n1 into two natural numbers and returns a list.
