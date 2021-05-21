@@ -10,7 +10,9 @@ Some useful functions for GNU Guile Scheme programs.
 
 ## Dependencies:
 
-* GNU Guile - v2.2.3 or later ( https://www.gnu.org/software/guile/ )
+* GNU Guile - v2.2.3 or later ( https://www.gnu.org/software/guile/ ). N.B. I am
+currently using v3.0 and plan to put it as a minimum req in the next published
+version.
 
 * Sqlp - Latest version available ( https://peschoenberg.github.io/sqlp/ )
 
