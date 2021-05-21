@@ -78,12 +78,15 @@
   #:use-module (grsp grsp2)
   #:use-module (grsp grsp3)
   #:use-module (grsp grsp4)
-  #:use-module (grsp grsp5)  
+  #:use-module (grsp grsp5)
+  #:use-module (ice-9 threads)  
   #:export (grsp-ds
+	    grsp-ds-mth
 	    grsp-lorentz-factor
 	    grsp-time-dilation
 	    grsp-length-contraction
 	    grsp-lorentz-transf-x
+	    grsp-lorentz-transf-x-mth
 	    grsp-beta
 	    grsp-velocity
 	    grsp-acceleration
@@ -104,7 +107,8 @@
 	    grsp-grav-radius
 	    grsp-grav-ifor
 	    grsp-grav-iforh
-	    grsp-grav-somigliana))
+	    grsp-grav-somigliana
+	    grsp-grav-somigliana-mth))
 
 
 ;;;; grsp-ds - Calculate intervals in Euclidean space or Minkowski spacetime
@@ -160,6 +164,49 @@
     ;; spacetime is used, nf = -1 so that spacelike vectors become negative and
     ;; the timelike vector is trated as positive (+ - - -).
     (set! res1 (sqrt (+ (+ (+ nx ny) nz) nt)))
+	   
+    res1))
+
+
+;;;; grsp-ds-mth - Multithreaded variant of grsp-ds.
+;;
+;; Keywords:
+;; - relativity.
+;;
+;; Arguments:
+;; - p_t1: t1.
+;; - p_t2: t2.
+;; - p_x1: x1.
+;; - p_x2: x2.
+;; - p_y1: y1.
+;; - p_y2: y2.
+;; - p_z1: z1.
+;; - p_z2: z2.
+;;
+;; Sources:
+;; - [2].
+;;
+(define (grsp-ds-mth p_t1 p_t2 p_x1 p_x2 p_y1 p_y2 p_z1 p_z2)
+  (let ((res1 0)
+	(nx 0)
+	(ny 0)
+	(nz 0)
+	(nt 0)
+	(nf -1)
+	(l #t))
+
+    (cond ((equal? p_t1 0)
+	   (cond ((equal? p_t2 0)
+		  (set! l #f)
+		  (set! nf 1)))))
+
+    (parallel (set! nx (* (grsp-osbv "#-" 2 p_x1 p_x2) nf))
+	      (set! ny (* (grsp-osbv "#-" 2 p_y1 p_y2) nf))
+	      (set! nz (* (grsp-osbv "#-" 2 p_z1 p_z2) nf))
+	      (cond ((equal? l #t)
+		     (set! nt (expt (* (gconst "c") (- p_t1 p_t2)) 2 )))))
+
+    (set! res1 (sqrt (+ nx ny nz nt)))
 	   
     res1))
 
@@ -242,17 +289,51 @@
 ;;
 (define (grsp-lorentz-transf-x p_v1 p_t1 p_x1 p_y1 p_z1)
   (let ((res1 '())
-	(t2 0)
-	(x2 0)
-	(y2 0)
-	(z2 0)
-	(l1 0))
+	(t2 0.0)
+	(x2 0.0)
+	(y2 0.0)
+	(z2 0.0)
+	(l1 0.0))
 
     (set! l1 (grsp-lorentz-factor p_v1))
     (set! t2 (* l1 (- p_t1 (/ (* p_v1 p_x1) (expt (gconst "c") 2)))))
     (set! x2 (* l1 (- p_x1 (* p_v1 p_t1))))
     (set! y2 p_y1)
     (set! z2 p_z1)
+    
+    (set! res1 (list t2 x2 y2 z2))
+
+    res1))
+
+
+;;;; grsp-lorentz-transf-x-mth - Multithreaded variant of grsp-lorentz-transf.
+;;
+;; Keywords:
+;; - relativity.
+;;
+;; Arguments: 
+;; - p_v1: relative velocity.
+;; - p_t1: proper time.
+;; - p_x1: x rel. coord.
+;; - p_y2: y rel. coord.
+;; - p_z1: z rel. coord.
+;;
+;; Sources:
+;; - [4].
+;;
+(define (grsp-lorentz-transf-x-mth p_v1 p_t1 p_x1 p_y1 p_z1)
+  (let ((res1 '())
+	(t2 0.0)
+	(x2 0.0)
+	(y2 0.0)
+	(z2 0.0)
+	(l1 0.0))
+
+    (set! l1 (grsp-lorentz-factor p_v1))
+    (parallel (set! t2 (* l1 (- p_t1 (/ (* p_v1 p_x1) (expt (gconst "c") 2)))))
+	      (set! x2 (* l1 (- p_x1 (* p_v1 p_t1))))
+	      (set! y2 p_y1)
+	      (set! z2 p_z1))
     
     (set! res1 (list t2 x2 y2 z2))
 
@@ -711,6 +792,40 @@
     (set! e (grsp-eccentricity-spheroid x2 y2))
     (set! k (/ (- (* y2 (gconst "gpoles"))
 		  n) n)) 
+    (set! res1 (* (gconst "gequator")
+		  (/ (+ 1 (* k s)) (sqrt (- 1 (* e s))))))
+    
+    res1))
+
+
+;;;; grsp-grav-somigliana-mth - Multithreaded variant of grsp-grav-somigliana.
+;;
+;; Keywords:
+;; - astro.
+;;
+;; Arguments:
+;; - p_x1: latitude.
+;;
+;; Sources:
+;; - [14].
+;;
+(define (grsp-grav-somigliana-mth p_x1)
+  (let ((res1 0)
+	(x2 0)
+	(y2 0)
+	(n 0)
+	(s 0)
+	(e 0)
+	(k 0))
+	
+    (set! x2 (gconst "requator"))
+    (set! y2 (gconst "rpoles"))
+    (set! n (* x2 (gconst "gequator")))
+    
+    (parallel (set! s (expt (sin p_x1) 2))
+	      (set! e (grsp-eccentricity-spheroid x2 y2))
+	      (set! k (/ (- (* y2 (gconst "gpoles"))
+			    n) n))) 
     (set! res1 (* (gconst "gequator")
 		  (/ (+ 1 (* k s)) (sqrt (- 1 (* e s))))))
     
