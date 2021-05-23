@@ -199,6 +199,8 @@
 	    grsp-matrix-col-find-nth
 	    grsp-mn2ll
 	    grsp-matrix-mutation
+	    grsp-matrix-col-mutation
+	    grsp-matrix-col-lmutation
 	    grsp-matrix-crossover
 	    grsp-matrix-crossover-rprnd
 	    grsp-matrix-same-dims
@@ -272,8 +274,8 @@
 ;;   - "#rprnd": pseduo random values, normal distribution, sd = 0.15.
 ;;   - "#zrow": zebra row.
 ;;   - "#zcol": zebra col.
-;; - p_m: rows, positive integer.
-;; - p_n: cols, positive integer.
+;; - p_m1: rows, positive integer.
+;; - p_n1: cols, positive integer.
 ;;
 ;; Sources:
 ;; - [1][2][18].
@@ -1407,7 +1409,6 @@
 ;;
 (define (grsp-matrix-subrep p_a1 p_a2 p_m1 p_n1)
   (let ((res1 p_a1)
-	;;(res2 0)
 	(lm1 0)
 	(hm1 0)
 	(ln1 0)
@@ -4881,6 +4882,7 @@
   (let ((res1 0)
 	(i1 0)
 	(j1 0)
+	(j2 0)
 	(n1 0)
 	(n2 0)
 	(lm1 0)
@@ -4911,6 +4913,111 @@
 		 (set! j1 (in j1)))
 	  (set! i1 (in i1)))
     
+    res1))
+
+
+;;;; grsp-matrix-col-mutation - Produces random mutations in the values of
+;; elements of col p_n2 of matrix p_a1. Applies grsp-matrix-mutation to the
+;; selected column instead of the whole matrix.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, genetic.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_n1: mutation rate, [0, 1].
+;; - p_s1: type of distribution.
+;;   - "#normal": normal.
+;;   - "#exp": exponential.
+;;   - "#uniform": uniform.
+;; - p_u1: mean for mutation rate.
+;; - p_v1: standard deviation for mutation rate.
+;; - p_s2: type of distribution.
+;;   - "#normal": normal.
+;;   - "#exp": exponential.
+;;   - "#uniform": uniform.
+;; - p_u2: mean for element random value.
+;; - p_v2: standard deviation for element random value.
+;; - p_n2: column to mutate.
+;;
+;; Sources:
+;; - [19][21].
+;;
+(define (grsp-matrix-col-mutation p_a1 p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 p_n2)
+  (let ((res1 0)
+	(res2 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0))	
+
+    ;; Create safety matrix. 
+    (set! res1 (grsp-matrix-cpy p_a1))
+
+    ;; Extract boundaries.
+    (set! lm1 (grsp-matrix-esi 1 res1))
+    (set! hm1 (grsp-matrix-esi 2 res1))
+    (set! ln1 (grsp-matrix-esi 3 res1))
+    (set! hn1 (grsp-matrix-esi 4 res1))
+
+    ;; Extract column to mutate.
+    (set! res2 (grsp-matrix-subcpy res1 lm1 hm1 p_n2 p_n2))    
+
+    ;; Mutate res2.
+    (set! res2 (grsp-matrix-mutation res2 p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2))
+
+    ;; Copy res2 back to res1.
+    (set! res1 (grsp-matrix-subrep res1 res2 lm1 p_n2))
+    
+    res1))
+
+
+;;;; grsp-matrix-col-lmutation - Produces random mutations in the values of
+;; elements of list p_1 of columns of matrix p_a1. Applies grsp-matrix-mutation
+;; to the selected columns instead of the whole matrix.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, genetic.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_n1: mutation rate, [0, 1].
+;; - p_s1: type of distribution.
+;;   - "#normal": normal.
+;;   - "#exp": exponential.
+;;   - "#uniform": uniform.
+;; - p_u1: mean for mutation rate.
+;; - p_v1: standard deviation for mutation rate.
+;; - p_s2: type of distribution.
+;;   - "#normal": normal.
+;;   - "#exp": exponential.
+;;   - "#uniform": uniform.
+;; - p_u2: mean for element random value.
+;; - p_v2: standard deviation for element random value.
+;; - p_l1: list of columns to mutate.
+;;
+;; Sources:
+;; - [19][21].
+;;
+(define (grsp-matrix-col-lmutation p_a1 p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 p_l1)
+  (let ((res1 0)
+	(j1 1)
+	(j2 0)
+	(hn1 0)
+	(l1 '()))
+
+    ;; Create safety matrix. 
+    (set! res1 (grsp-matrix-cpy p_a1))
+
+    (set! l1 p_l1)
+    (set! hn1 (length l1))
+    (while (< j1 hn1)
+	   
+	   (set! j2 (list-ref l1 j1))
+	   (set! res1 (grsp-matrix-col-mutation res1 p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 j2))
+
+	   (set! j1 (in j1)))
+
     res1))
 
 
@@ -5173,7 +5280,7 @@
 
 
 ;;;; grsp-matrix-keyon - On row or column p_n1 of matrix p_a1, as defined by
-;; p_s1, the function creates a uique key starting on value p_n2 and with
+;; p_s1, the function creates a unique key starting on value p_n2 and with
 ;; incremental step p_n3.
 ;;
 ;; Keywords:
@@ -5184,7 +5291,7 @@
 ;;   - "#row" will use row p_n1 as index.
 ;;   - "#col" will use column _n1 as index.
 ;; - p_a1: matrix.
-;; - p_n1: number, wll rpresent a row or column depending on p_s1.
+;; - p_n1: number, will represent a row or column depending on p_s1.
 ;; - p_n2: initial value for key.
 ;; - p_n3: incremental step.
 ;;
