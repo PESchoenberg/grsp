@@ -33,11 +33,13 @@
   #:use-module (grsp grsp1)
   #:use-module (grsp grsp2)
   #:use-module (grsp grsp3)
-  #:use-module (grsp grsp4)  
+  #:use-module (grsp grsp4)
+  #:use-module (ice-9 threads)
   #:export (grsp-identity
 	    grsp-binary-step
 	    grsp-sigmoid
 	    grsp-tanh
+	    grsp-tanh-mth
 	    grsp-relu
 	    grsp-softplus
 	    grsp-elu
@@ -140,6 +142,34 @@
     (set! n1 (grsp-opz (list-ref p_l1 0)))
     (set! e1 (grsp-eex n1))
     (set! e2 (grsp-eex (* -1.0 n1)))
+    (set! res1 (/ (- e1 e2) (+ e1 e2)))
+
+    res1))
+
+
+;;;; grsp-tanh-mth - Multithreaded variant of grsp-tanh.
+;;
+;; Keywords:
+;; - function, activation, ann.
+;;
+;; Arguments:
+;; - p_1: list containing the following parameters.
+;;   - 1: number.
+;;
+;; Sources:
+;; - grsp8.[5].
+;;
+(define (grsp-tanh-mth p_l1)
+  (let ((res1 0.0)
+	(e1 0.0)
+	(e2 0.0)
+	(n1 0.0))
+
+    (set! n1 (grsp-opz (list-ref p_l1 0)))
+
+    (parallel (set! e1 (grsp-eex n1))
+	      (set! e2 (grsp-eex (* -1.0 n1))))
+    
     (set! res1 (/ (- e1 e2) (+ e1 e2)))
 
     res1))

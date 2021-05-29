@@ -82,6 +82,7 @@
 	    grsp-cop-rosenbrock1
 	    grsp-cop-rosenbrock2
 	    grsp-cop-mbird
+	    grsp-cop-mbird-mth
 	    grsp-cop-simionescu
 	    grsp-bffe))
 
@@ -1246,8 +1247,8 @@
 ;; - function, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
-;; - p_x1: number [-10.0, 0.0].
-;; - p_y1: number [-6.5, 0.0].
+;; - p_x1: number.
+;; - p_y1: number.
 ;;
 ;; Sources:
 ;; - [1].
@@ -1286,7 +1287,44 @@
     res1))
 
 
-;;;; grsp-cop-townsend - Simionescu test, constrained objective function
+;;;; grsp-cop-mbird-mth -Multithreaded variant of grsp-cop-mbird.
+;;
+;; Keywords:
+;; - function, test, optimization, artificial, landscape.
+;;
+;; Arguments:
+;; - p_x1: number.
+;; - p_y1: number.
+;;
+;; Sources:
+;; - [1].
+;;
+(define (grsp-cop-mbird-mth p_x1 p_y1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(res4 0)
+	(res5 0)
+	(x2 0)
+	(y2 0))
+
+    (parallel (set! x2 (cos p_x1))
+	      (set! y2 (sin p_y1))
+	      (set! res2 (+ (expt (+ p_x1 5) 2) (expt (+ p_y1 5) 2))))
+    
+    (cond ((equal? (< res2 25) #t)
+
+	   (parallel (set! res3 (* y2 (grsp-eex (expt (- 1 x2) 2))))
+		     (set! res4 (* x2 (grsp-eex (expt (- 1 y2) 2))))
+		     (set! res5 (expt (- p_x1 p_y1) 2)))
+	   
+	   (set! res1 (+ res3 res4 res5))) 
+	  (else (set! res1 +nan.0)))
+    
+    res1))
+
+
+;;;; grsp-cop-simionescu - Simionescu test, constrained objective function
 ;; (disk). Returns +nan.0 for unconstraied arguments.
 ;;
 ;; Keywords:
