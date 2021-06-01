@@ -158,9 +158,11 @@
 	    grsp-m2l
 	    grsp-m2v
 	    grsp-dbc2mc
+	    grsp-dbc2mc-csv
 	    grsp-mc2dbc
 	    grsp-mc2dbc-sqlite3
 	    grsp-mc2dbc-hdf5
+	    grsp-mc2dbc-csv
 	    grsp-matrix-interval-mean
 	    grsp-matrix-determinant-lu
 	    grsp-matrix-is-invertible
@@ -206,7 +208,8 @@
 	    grsp-matrix-same-dims
 	    grsp-matrix-fitness-rprnd
 	    grsp-matrix-selectg
-	    grsp-matrix-keyon))
+	    grsp-matrix-keyon
+	    grsp-matrix-col-aupdate))
 
 
 ;;;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -2636,6 +2639,102 @@
     res1))
 
 
+;;;; grsp-dbc2mc-csv - Fills a matrix of complex or complex-subset numbers with
+;; the contents of a csv format database file containing serialized complex or
+;; complex-subset numbers.
+;;
+;; Arguments;
+;; - p_d1: database name.
+;; - p_t1: table name.
+;;
+(define (grsp-dbc2mc-csv p_d1 p_t1)
+  (let ((res1 0)
+	(res3 0)
+	(s1 "")
+	(s2 "")
+	(rp "")
+	(l2 '())
+	(l3 '())
+	(j2 0)
+	(i3 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(hn2 0)
+	(lm3 0)
+	(hm3 0)
+	(ln3 0)
+	(hn3 0)	
+	(d1 p_d1)
+	(t1 p_t1)
+	(m1 0)
+	(n1 0))
+
+    ;; We have to create the relative path.
+    (set! rp (strings-append (list p_d1 "/" p_t1) 0))
+
+    ;; Read the whole .csv file as one string.
+    (set! s1 (read-file-as-string rp))
+
+    ;; Create the string record.
+    ;; - field 1: row number.
+    ;; - field 2: col number.
+    ;; - field 3: value.
+
+    ;; Create a list in which each line of the file becomes a list element.
+    (set! l2 (string-split s1 #\nl))
+    
+    ;; Process list l2.
+    (set! j2 0)
+    (set! hn2 (- (length l2) 2))
+    (while (<= j2 hn2)
+
+	   ;; Take an element from l2 and create list l3 of three elements
+	   ;; being these the two matrix coordinates and the matrix element.
+	   ;; value.
+	   (set! s2 (list-ref l2 j2))
+	   (set! l3 (string-split s2 #\,))
+	   
+	   ;; Create res3 on the first instance; othewise add a row. This matrix
+	   ;; will contain the numeric values of each file line.
+	   (cond ((= j2 0)
+		  (set! res3 (grsp-matrix-create 0 1 3)))
+		 (else (set! res3 (grsp-matrix-subexp res3 1 0))))
+	   
+	   ;; Add the data of each file line read and converted to numeric
+	   ;; values.
+	   (set! lm3 (grsp-matrix-esi 1 res3))
+	   (set! hm3 (grsp-matrix-esi 2 res3))
+	   (set! ln3 (grsp-matrix-esi 3 res3))
+	   (set! hn3 (grsp-matrix-esi 4 res3))
+
+	   (array-set! res3 (grsp-s2n (list-ref l3 0)) hm3 0)
+	   (array-set! res3 (grsp-s2n (list-ref l3 1)) hm3 1)
+	   (array-set! res3 (grsp-s2n (list-ref l3 2)) hm3 2)
+	   
+	   (set! j2 (in j2)))
+
+    ;; Find the max values of cols 0 and 1 of res3 and use them as dimensions to
+    ;; create the final matrix.
+    (set! lm1 (array-ref (grsp-matrix-row-sort "#asc" res3 0) 0 0))
+    (set! hm1 (array-ref (grsp-matrix-row-sort "#des" res3 0) 0 0))
+    (set! ln1 (array-ref (grsp-matrix-row-sort "#asc" res3 1) 0 1))
+    (set! hn1 (array-ref (grsp-matrix-row-sort "#des" res3 1) 0 1))
+    (set! res1 (grsp-matrix-create 0 (+ (- hm1 lm1) 1) (+ (- hn1 ln1) 1)))
+
+    ;; Once the matrix has been created, go over it and read each row, pasting its
+    ;; third element on the position described by the coordinates of res3.
+    (set! i3 lm3)
+    (while (<= i3 hm3)
+	   (set! m1 (array-ref res3 i3 0))
+	   (set! n1 (array-ref res3 i3 1))
+	   (array-set! res1 (array-ref res3 i3 2) m1 n1)
+	   (set! i3 (in i3)))
+    
+    res1))
+
+
 ;;;; grsp-mc2dbc - Creates a database table or dataset for complex or complex
 ;; subset numbers from matrix p_a1, which contains complex or complex-subset
 ;; numbers. 
@@ -2644,13 +2743,22 @@
 ;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments:
-;; - p_d1: database name.
+;; - p_d1: database name. If the name contains:
+;;   - ".db": creates an Sqlite database.
+;;   - ".csv": creates a csv database (folder).
+;    - ".h5": creates an HDF5 database. 
 ;; - p_a1: matrix.
 ;; - p_t1: table name.
 ;;
+;; Notes:
+;; - The database name must contain the strings ".db", ".h5" or ".csv" in its
+;;   name for this function to work.
+;;
 (define (grsp-mc2dbc p_d1 p_a1 p_t1)
   (cond ((>= (string-contains p_d1 ".db") 0)
-	 (grsp-mc2dbc-sqlite3 p_d1 p_a1 p_t1))
+	 (grsp-mc2dbc-sqlite3 p_d1 p_a1 p_t1))	
+	((>= (string-contains p_d1 ".csv") 0)
+	 (grsp-mc2dbc-csv p_d1 p_a1 p_t1))		
 	((>= (string-contains p_d1 ".h5") 0)
 	 (grsp-mc2dbc-hdf5 p_d1 p_a1 p_t1))))
 	
@@ -2778,6 +2886,79 @@
 		  (set! j1 (+ j1 1)))
 	   
 	   (set! i1 (+ i1 1)))))
+
+
+;;;; grsp-mc2dbc-csv - Creates a csv table or dataset for complex or complex
+;; subset numbers from matrix p_a1, which contains complex or complex subset
+;; numbers. 
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, databases.
+;;
+;; Arguments:
+;; - p_d1: database name.
+;; - p_a1: matrix.
+;; - p_t1: table name.
+;;
+(define (grsp-mc2dbc-csv p_d1 p_a1 p_t1)
+  (let ((lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(ve 0)
+	(rp "")
+	(s1 "")
+	(s2 ",")
+	(s3 "")
+	(d1 p_d1)
+	(t1 p_t1)
+	(i1 0)
+	(j1 0))
+
+    ;; Extract the boundaries of the matrix.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1))
+	
+    ;; We have to create the relative path.
+    (set! rp (strings-append (list d1 "/" t1) 0))
+    
+    ;; Loop over p_a1 and extract each value and insert it into the new table.
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+	   (set! j1 ln1)
+	   (while (<= j1 hn1)
+		  
+		  ;; Extract and analize each element of the matrix.
+		  (set! ve (array-ref p_a1 i1 j1))
+
+		  ;; Create the string record.
+		  ;; - field 1: row number.
+		  ;; - field 2: col number.
+		  ;; - field 3: value.
+		  ;; If this is the last element of the matrix, do not add the
+		  ;; new line character at the endo of the string.
+		  (cond ((equal? (and (>= j1 hn1) (>= i1 hm1)) #t)
+			 (set! s1 (strings-append (list (grsp-n2s i1)
+							s2
+							(grsp-n2s j1)
+							s2
+							(grsp-n2s ve)) 0)))
+			(else (set! s1 (strings-append (list (grsp-n2s i1)
+							     s2
+							     (grsp-n2s j1)
+							     s2 (grsp-n2s ve)
+							     "\n") 0))))
+		  
+		  ;; Add the line string to the ile string.
+		  (set! s3 (strings-append (list s3 s1) 0))
+		  
+		  (set! j1 (+ j1 1)))
+	   
+	   (set! i1 (+ i1 1)))
+
+    (grsp-save-to-file s3 rp "w")))
 
 
 ;;;; grsp-matrix-interval-mean - Creates a 3 x 1 matrix containing the following
@@ -5044,8 +5225,7 @@
 ;;   (indexes or col numbers) but must have the same number of columns.
 ;;
 ;; Output
-;; - A list containing two matrices representing the two children obtained as a
-;;   result of the swap.
+;; - A matrix containing the children obtained as a result of the swap.
 ;;
 (define (grsp-matrix-crossover p_a1 p_ln1 p_hn1 p_a2 p_ln2 p_hn2)
   (let ((res1 0)
@@ -5103,15 +5283,16 @@
 	   (set! res3 (grsp-matrix-subrep res3 res6 lm1 p_ln1))
 	   (set! res4 (grsp-matrix-subrep res4 res5 lm1 p_ln2))))
    
-    ;; Build the list representing the results.
-    (set! res7 (list res3 res4))    
+    ;; Build results.
+    ;; (set! res7 (list res3 res4))
+    (set! res7 (grsp-matrix-row-append res3 res4))
     
     res7))
 
 
 ;;;; grsp-matrix-crossover-rprnd - Randomizes the application of
 ;; grsp-matrix-crossover. In some cases it might be useful to use the 
-;; crossover function  in an aleatory fashion, while in others it might not.
+;; crossover function in an aleatory fashion, while in others it might not.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors, genetic.
@@ -5297,6 +5478,7 @@
 ;;
 ;; Notes:
 ;; - This function will overwrite anything on row or column p_n1.
+;; - Do not use with set!.
 ;;
 (define (grsp-matrix-keyon p_s1 p_a1 p_n1 p_n2 p_n3)
   (let ((res1 0)
@@ -5342,3 +5524,34 @@
     res1))
 
 
+;; grsp-matrix-col-aupdate - Update all elements of column p_n1 of matrix p_a1,
+;; setting value p_n2 in them.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_n1: colun number.
+;; - p_n2: value to set on p_n1.
+;;
+(define (grsp-matrix-col-aupdate p_a1 p_n1 p_n2)
+  (let ((res1 0)
+	(lm1 0)
+	(hm1 0)
+	(i1 0))
+
+    ;; Create safety matrices. 
+    (set! res1 (grsp-matrix-cpy p_a1))
+    
+    ;; Extract boundaries.
+    (set! lm1 (grsp-matrix-esi 1 res1))
+    (set! hm1 (grsp-matrix-esi 2 res1))
+
+    (while (<= i1 hm1)
+	   
+	   (array-set! res1 p_n2 i1 p_n1)
+
+	   (set! i1 (in i1)))
+    
+    res1))

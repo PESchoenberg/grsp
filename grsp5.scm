@@ -708,7 +708,7 @@
 	  res1))
 
 
-;;;; grsp-mean-interquartile - Interquartile ean of elements of p_a1.
+;;;; grsp-mean-interquartile - Interquartile mean of elements of p_a1.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
