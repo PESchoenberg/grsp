@@ -99,7 +99,7 @@
 
 
 ;; Compilation and REPL examples:
-;;(use-modules (grsp grsp0)(grsp grsp1)(grsp grsp2)(grsp grsp3)(grsp grsp4)(grsp grsp5)(grsp grsp6)(grsp grsp7)(grsp grsp8)(grsp grsp9)(grsp grsp10)(grsp grsp11))
+;;(use-modules (grsp grsp0)(grsp grsp1)(grsp grsp2)(grsp grsp3)(grsp grsp4)(grsp grsp5)(grsp grsp6)(grsp grsp7)(grsp grsp8)(grsp grsp9)(grsp grsp10)(grsp grsp11)(grsp grsp12)
 ;;
 ;; (define X (grsp-matrix-create 1 4 4))
 ;; (define Y (grsp-matrix-create 2 4 4))
@@ -2666,8 +2666,6 @@
 	(hm3 0)
 	(ln3 0)
 	(hn3 0)	
-	(d1 p_d1)
-	(t1 p_t1)
 	(m1 0)
 	(n1 0))
 
@@ -2934,9 +2932,9 @@
 		  (set! ve (array-ref p_a1 i1 j1))
 
 		  ;; Create the string record.
-		  ;; - field 1: row number.
-		  ;; - field 2: col number.
-		  ;; - field 3: value.
+		  ;; - 0: row number.
+		  ;; - 1: col number.
+		  ;; - 2: value.
 		  ;; If this is the last element of the matrix, do not add the
 		  ;; new line character at the endo of the string.
 		  (cond ((equal? (and (>= j1 hn1) (>= i1 hm1)) #t)
@@ -2951,7 +2949,7 @@
 							     s2 (grsp-n2s ve)
 							     "\n") 0))))
 		  
-		  ;; Add the line string to the ile string.
+		  ;; Add the line string to the file string.
 		  (set! s3 (strings-append (list s3 s1) 0))
 		  
 		  (set! j1 (+ j1 1)))
@@ -4761,7 +4759,7 @@
     res1))
 
 
-;;;; grsp-matrix-cleani - Deletes all rows from matrix p_a1 where any of the
+;;;; grsp-matrix-clearni - Deletes all rows from matrix p_a1 where any of the
 ;; values contained in list defined by (grsp-naninf) is found at any column.
 ;;
 ;; Arguments:
@@ -5479,6 +5477,11 @@
 ;; Notes:
 ;; - This function will overwrite anything on row or column p_n1.
 ;; - Do not use with set!.
+;; - Interstingly, you can use these keys to unequivocally identify anything; you
+;;   can, for example, set a column wit unique identifiers within a matrix to
+;;   point to specific kinds of files. That is, if you set column n as containing
+;;   keys, each key can identify a txt or pdf file, for example, which is pointed
+;;   from the matrix.
 ;;
 (define (grsp-matrix-keyon p_s1 p_a1 p_n1 p_n2 p_n3)
   (let ((res1 0)

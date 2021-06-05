@@ -52,6 +52,7 @@
 	    grsp-lang-effective-version
 	    grsp-test
 	    grsp-save-to-file
+	    grsp-delete-file
 	    grsp-n2s
 	    grsp-s2n
 	    grsp-sqlp
@@ -296,6 +297,28 @@
     (display p_s1 output-port)
     (newline output-port)
     (close output-port)))
+
+
+;;;; grsp-delete-file - Deletes file p_f1.   
+;;
+;; Keywords:
+;; - console, strings.
+;;
+;; Arguments:
+;; - p_s1: mode:
+;;   - "#f": equivalent to rm -f, without confirmation.
+;;   - "#c": eqivalent to rm, with confirmation.
+;; - p_f1: file name.
+;;
+(define (grsp-delete-file p_s1 p_f1)
+  (let ((s1 p_s1)
+	(s2 "rm")
+	(s3 ""))
+
+    (cond ((equal? p_s1 "#f")
+	   (set! s3 "-f")))
+	
+    (system (strings-append (list s2 s3 p_f1) 1))))
 
 
 ;; grsp-n2s - A convenience function, shorter to write than number->string that
