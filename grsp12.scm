@@ -138,7 +138,7 @@
     (set! res1 (grsp-matrix-col-aupdate res1 6 n1)) ;; p_n2
 
     res1))
-  
+
 
 ;; grsp-evo-mod1-evolve - Evolve results.
 ;;
@@ -149,10 +149,13 @@
 ;; - p_n2: column containing the goal value.
 ;; - p_g1: goal value for fitness function.
 ;; - p_ft1: minimum desired fitness.
+;; - p_s2: fitness function.
+;;   - "#mod1-ff1": use grsp-evo-mod1-ff1.
+;; - p_l2: list of arguments for p_s1.
 ;; - p_s1: base op (see grsp-evo-mod1-ff1).
 ;; - p_l1: list of columns of p_a1 on which p_s1 is performed.
 ;;
-(define (grsp-evo-mod1-evolve p_a1 p_m1 p_n1 p_n2 p_g1 p_ft1 p_s1 p_l1)
+(define (grsp-evo-mod1-evolve p_a1 p_m1 p_n1 p_n2 p_g1 p_s2 p_l2 p_ft1 p_s1 p_l1)
   (let ((res1 0)
 	(res2 0)
 	(res3 0)
@@ -163,39 +166,44 @@
 	(ft2 0)
 	(i1 0))
 
+    ;; Create safety matrices. 
+    (set! res1 (grsp-matrix-cpy p_a1))
     
-  (while (< i1 p_n1)
-	 
-	 ;; Calculate fitness.
-	 (set! res1 (grsp-evo-mod1-ff1 p_s1 res1 p_n2 p_g1 p_l1))
+    (while (< i1 p_n1)
+	   
+	   ;; Calculate fitness.
+	   (cond ((equal? p_s2 "#mod1-ff1")
+		  (cond ((= i1 0)
+			 (set! res1 (list-ref p_l2 1))))
+		  
+		  (set! res1 (grsp-evo-mod1-ff1 (list-ref p_l2 0) res1 (list-ref p_l2 2) (list-ref p_l2 3) (list-ref p_l2 4)))))
+	   
+	   ;; Select the two most fit individuals.
+	   (set! res1 (grsp-matrix-row-sort "#des" res1 3))
+	   (set! res1 (grsp-matrix-row-selectn res1 '(0 1)))
+	   
+	   ;; Perform crossover.
+	   (set! res2 res1)
+	   (set! res3 (grsp-matrix-row-invert res1))
+	   (set! res4 (grsp-matrix-crossover res2 4 5 res3 4 5))
+	   
+	   ;; Calculate mean fitness.
+	   (cond ((> (grsp-mean1-mth (grsp-matrix-col-selectn res4 '(3))) p_ft1)
+		  (set! i1 p_n1)))
+	   (set! res1 res4)
+	   
+	   ;; Mutate if not on the last cycle.
+	   (cond ((< i1 (- p_n1 1))
+		  (set! res1 (grsp-matrix-col-lmutation res4 0.5 "#normal" 0.0 0.15 "#normal" 0.0 0.15 '(4 5)))))
+	   
+	   (set! i1 (in i1)))
 
-	 ;; Select the two most fit individuals.
-	 (set! res1 (grsp-matrix-row-sort "#des" res1 3))
-	 (set! res1 (grsp-matrix-row-selectn res1 '(0 1)))
-
-	 ;; Perform crossover.
-	 (set! res2 res1)
-	 (set! res3 (grsp-matrix-row-invert res1))
-	 (set! res4 (grsp-matrix-crossover res2 4 5 res3 4 5))
-
-	 ;; Calculate mean fitness.
-	 (cond ((> (grsp-mean1-mth (grsp-matrix-col-selectn res4 '(3))) p_ft1)
-		(set! i1 p_n1)))
-
-	 (set! res1 res4)
-	       
-	 ;; Mutate if not on the last cycle.
-	 (cond ((< i1 (- p_n1 1))
-		(set! res1 (grsp-matrix-col-lmutation res4 0.5 "#normal" 0.0 0.15 "#normal" 0.0 0.15 '(4 5)))))	 
-	 
-	 (set! i1 (in i1)))
-
-  ;; At this point only the best solution attained should be returned (i.e.
-  ;; individual or row with highest fitness value).
-  (set! res1 (grsp-matrix-row-sort "#des" res1 3))
-  (set! res1 (grsp-matrix-row-selectn res1 '(0)))  
-  
-  res1))
+    ;; At this point only the best solution attained should be returned (i.e.
+    ;; individual or row with highest fitness value).
+    (set! res1 (grsp-matrix-row-sort "#des" res1 3))
+    (set! res1 (grsp-matrix-row-selectn res1 '(0)))  
+    
+    res1))
 
 
 ;; grsp-evo-solve - Solve an evolution problem.
@@ -215,7 +223,7 @@
 ;;   - 0: p_m1 of grsp-evo-mod1-pop-create.
 ;;   - 1: p_n1 of grsp-evo-mod1-pop-create.
 ;; - p_s3: evolution function.
-;;   - "#mod1-evolve ": use grsp-evo-mod1-evolve.
+;;   - "#mod1-evolve": use grsp-evo-mod1-evolve.
 ;; - p_l3: list of arguments for p_s3.
 ;;
 (define (grsp-evo-solve p_b4 p_l4 p_s1 p_l1 p_s2 p_l2 p_s3 p_l3)
@@ -232,9 +240,10 @@
 		  (set! n1 (list-ref p_l2 1))
 		  (set! res1 (grsp-evo-mod1-pop-create m1 n1))))))
 
-    ;; Fitness function.
-
     ;; Evolution function.
-    
+    (cond ((equal? p_s3 "#mod1-evolve")
+	   (set! res1 (grsp-evo-mod1-evolve res1 m1 n1 (list-ref p_l3 3) (list-ref p_l3 4) (list-ref p_l3 5) (list-ref p_l3 6) (list-ref p_l3 7) (list-ref p_l3 8) (list-ref p_l3 9)))))
+
     res1))
+
 
