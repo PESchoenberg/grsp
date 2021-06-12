@@ -45,6 +45,9 @@
 ;; base operation p_s1 on all elements corresponding to columns contaiend in
 ;; p_l1 of matrix p_a1.
 ;;
+;; Keywords:
+;; - function, evolution, genetic.
+;;
 ;; Arguments:
 ;; - p_s1: base op.
 ;;   - "#+r": row sumation.
@@ -104,6 +107,9 @@
 ;; - Col 3: fitness.
 ;; - Col 4: result.
 ;;
+;; Keywords:
+;; - function, evolution, genetic.
+;;
 ;; Aeguments:
 ;; - p_m1: total number of rows (individuals).
 ;; - p_n1: number of columns (+ 5 existing).
@@ -141,6 +147,9 @@
 
 
 ;; grsp-evo-mod1-evolve - Evolve results.
+;;
+;; Keywords:
+;; - function, evolution, genetic.
 ;;
 ;; Arguments.
 ;; - p_a1: population matrix.
@@ -207,6 +216,9 @@
 
 
 ;; grsp-evo-solve - Solve an evolution problem.
+;;
+;; Keywords:
+;; - function, evolution, genetic.
 ;;
 ;; Aruments:
 ;; - p_b4:
