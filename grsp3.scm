@@ -5476,7 +5476,7 @@
 ;;
 ;; Notes:
 ;; - This function will overwrite anything on row or column p_n1.
-;; - Do not use with set!.
+;; - Do not use with set!
 ;; - Interstingly, you can use these keys to unequivocally identify anything; you
 ;;   can, for example, set a column wit unique identifiers within a matrix to
 ;;   point to specific kinds of files. That is, if you set column n as containing
