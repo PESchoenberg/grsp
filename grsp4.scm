@@ -415,7 +415,7 @@
     res1))
 
 
-;;;; grsp-complex-gamma - Calculating gamma using different representations. 
+;;;; grsp-complex-gamma - Calculates gamma using different representations. 
 ;;
 ;; Keywords:
 ;; - complex.

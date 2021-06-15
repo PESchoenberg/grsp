@@ -5442,7 +5442,8 @@
     (while (<= i1 hm1)
 
 	   (array-set! p_a1 (/ (array-ref p_a1 i1 p_j1) j2) i1 p_j2)
-	   (array-set! p_a1 (+ (array-ref p_a1 i1 p_j2) (array-ref p_a1 i1 p_j3)) i1 p_j3)
+	   (array-set! p_a1 (+ (array-ref p_a1 i1 p_j2)
+			       (array-ref p_a1 i1 p_j3)) i1 p_j3)
 	   
 	   (set! i1 (in i1)))    
 

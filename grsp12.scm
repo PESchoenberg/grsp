@@ -36,8 +36,7 @@
   #:use-module (grsp grsp5)
   #:export (grsp-evo-mod1-ff1
 	    grsp-evo-mod1-pop-create
-	    grsp-evo-mod1-evolve
-	    grsp-evo-solve))
+	    grsp-evo-mod1-evolve))
 
 
 ;; grsp-evo-mod1-ff1 - Calculates the fitness of each individual as a measure of
@@ -88,7 +87,8 @@
 	 (set! r1 (grsp-matrix-opio p_s1 p_a1 i1))
 	 (array-set! res1 r1 i1 p_n1)
 
-	 ;; Evaluate fitness as the inverse of absolute "distance" to the goal (col 3 has fitness).
+	 ;; Evaluate fitness as the inverse of absolute "distance" to the goal
+	 ;; (col 3 has fitness).
 	 (array-set! res1 (abs (/ 1 (- p_g1 (array-ref res1 i1 p_n1)))) i1 3)
 	 
 	 (set! i1 (in i1)))  
@@ -96,7 +96,7 @@
   res1))
 
 
-;; grsp-evo-mod1-pop-create - Create the population matrix according to the
+;; grsp-evo-mod1-pop-create - Creates a population matrix according to the
 ;; following structure:
 ;; - Col 0: id.
 ;; - Col 1: status.
@@ -110,13 +110,13 @@
 ;; Keywords:
 ;; - function, evolution, genetic.
 ;;
-;; Aeguments:
+;; Arguments:
 ;; - p_m1: total number of rows (individuals).
 ;; - p_n1: number of columns (+ 5 existing).
 ;;
 ;; Notes:
 ;; - The structure of the matrix is set to make it compatible with the
-;;   requirements of other datas srtuctures such as those of grsp8.
+;;   requirements of other datas structures such as those of grsp8.
 ;;
 (define (grsp-evo-mod1-pop-create p_m1 p_n1)
   (let ((res1 0)
@@ -185,7 +185,11 @@
 		  (cond ((= i1 0)
 			 (set! res1 (list-ref p_l2 1))))
 		  
-		  (set! res1 (grsp-evo-mod1-ff1 (list-ref p_l2 0) res1 (list-ref p_l2 2) (list-ref p_l2 3) (list-ref p_l2 4)))))
+		  (set! res1 (grsp-evo-mod1-ff1 (list-ref p_l2 0)
+						res1
+						(list-ref p_l2 2)
+						(list-ref p_l2 3)
+						(list-ref p_l2 4)))))
 	   
 	   ;; Select the two most fit individuals.
 	   (set! res1 (grsp-matrix-row-sort "#des" res1 3))
@@ -203,7 +207,15 @@
 	   
 	   ;; Mutate if not on the last cycle.
 	   (cond ((< i1 (- p_n1 1))
-		  (set! res1 (grsp-matrix-col-lmutation res4 0.5 "#normal" 0.0 0.15 "#normal" 0.0 0.15 '(4 5)))))
+		  (set! res1 (grsp-matrix-col-lmutation res4
+							0.5
+							"#normal"
+							0.0
+							0.15
+							"#normal"
+							0.0
+							0.15
+							'(4 5)))))
 	   
 	   (set! i1 (in i1)))
 
@@ -214,48 +226,5 @@
     
     res1))
 
-
-;; grsp-evo-solve - Solve an evolution problem.
-;;
-;; Keywords:
-;; - function, evolution, genetic.
-;;
-;; Aruments:
-;; - p_b4:
-;;   - #t if a population matrix is passed as an argument.
-;;   - #f if a population matrix is to be createdby the function.
-;; - p_l4: list containing no elements if p_f1 is #t, or a
-;;     population matrix otherwise. 
-;; - p_s1: fitness function.
-;;   - "#mod1-ff1": use grsp-evo-mod1-ff1.
-;; - p_l1: list of arguments for p_s1.
-;; - p_s2: pop matrix creation function.
-;;   - "#mod1-pop-create" : use grsp-evo-mod1-pop-create.
-;; - p_l2: list of arguments for p_s2.
-;;   - 0: p_m1 of grsp-evo-mod1-pop-create.
-;;   - 1: p_n1 of grsp-evo-mod1-pop-create.
-;; - p_s3: evolution function.
-;;   - "#mod1-evolve": use grsp-evo-mod1-evolve.
-;; - p_l3: list of arguments for p_s3.
-;;
-(define (grsp-evo-solve p_b4 p_l4 p_s1 p_l1 p_s2 p_l2 p_s3 p_l3)
-  (let ((res1 0)
-	(m1 0)
-	(n1 0))
-
-    ;; Population matrix.
-    (cond ((equal? p_b4 #t)
-	   (set! res1 (list-ref p_l4 0)))
-	  ((equal? p_b4 #f)
-	   (cond ((equal? p_s2 "#mod1-pop-create")
-		  (set! m1 (list-ref p_l2 0))
-		  (set! n1 (list-ref p_l2 1))
-		  (set! res1 (grsp-evo-mod1-pop-create m1 n1))))))
-
-    ;; Evolution function.
-    (cond ((equal? p_s3 "#mod1-evolve")
-	   (set! res1 (grsp-evo-mod1-evolve res1 m1 n1 (list-ref p_l3 3) (list-ref p_l3 4) (list-ref p_l3 5) (list-ref p_l3 6) (list-ref p_l3 7) (list-ref p_l3 8) (list-ref p_l3 9)))))
-
-    res1))
 
 
