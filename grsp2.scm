@@ -183,7 +183,9 @@
 	    grsp-naninf
 	    grsp-absop
 	    grsp-rprnd
-	    grsp-ifrprnd))
+	    grsp-ifrprnd
+	    grsp-nabs
+	    grsp-onhn))
 
 
 ;;;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -1871,7 +1873,10 @@
     res1))
 
 
-;; grsp-aops - Simple arithmetic ops between absolute values of p_n2 and p_n1
+;; grsp-absop - Simple arithmetic ops between absolute values of p_n2 and p_n1
+;;
+;; Keywords:
+;; - function, absolute.
 ;;
 ;; Arguments:
 ;; - p_s1: operation.
@@ -1903,6 +1908,9 @@
 
 ;;;; grsp-rprnd - Pseudo random number generator, distribution p_s1.
 ;;
+;; Keywords:
+;; - function, random, pseudo, aleatory.
+;;
 ;; Arguments:
 ;; - p_s1: type of distribution.
 ;;   - "#normal": normal.
@@ -1931,6 +1939,9 @@
 ;;;; grsp-ifrprnd - If a pseudo random number generated with the arguments of
 ;; the function is less than p_n1, the function returns #t, or #f otherwise.
 ;;
+;; Keywords:
+;; - function, random, pseudo, aleatory.
+;;
 ;; Arguments:
 ;; - p_s1: type of distribution.
 ;;   - "#normal": normal.
@@ -1945,5 +1956,56 @@
     (cond ((< (abs (grsp-rprnd p_s1 p_u1 p_v1)) (abs p_n1))
 	   (set! res1 #t))) 
     
+    res1))
+
+
+;; grsp-nabs - Returns the negative of the absolute value of p_n1.
+;;
+;; Keywords:
+;; - function, absolute, negative.
+;;
+;; Arguments:
+;; - p_n1: real number, [-inf.0,+inf.0].
+;;
+;; Output:
+;; - If p_n1 > 0, returns -p_n1
+;; - if p_n1 < 0, returns p_n1.
+;;
+(define (grsp-nabs p_n1)
+  (let ((res1 0))
+
+    (set! res1 (* -1 (abs p_n1)))
+    
+    res1))
+
+
+
+;; grsp-onhn - Given the operation defined by p_s1, performs it between p_n1 and
+;; 1/p_n1.
+;;
+;; Keywords:
+;; - function, absolute.
+;;
+;; Arguments:
+;; - p_s1: operation.
+;;   - "#+": sum.
+;;   - "#-": difference.
+;;   - "#*": multiplication.
+;;   - "#/": division.
+;;
+(define (grsp-onhn p_s1 p_n1)
+  (let ((res1 0)
+	(n2 0))
+    
+    (set! n2 (/ 1 p_n1))
+    (cond ((equal? p_s1 "#+")
+	   (set! res1 (+ p_n1 n2)))
+	  ((equal? p_s1 "#-")
+	   (set! res1 (- p_n1 n2)))	  
+	  ((equal? p_s1 "#*")
+	   (set! res1 (* p_n1 n2)))
+	  ((equal? p_s1 "#/")
+	   (set! res1 (/ p_n1 n2))))
+	  
     res1))
 
