@@ -268,6 +268,7 @@
 ;;   - "#Lehmer": Lehmer matrix.
 ;;   - "#Pascal": Pascal matrix.
 ;;   - "#CH": 0-1 checkerboard pattern matrix.
+;;   - "#CHR": 0-1 checerboard pattern matrix, randomized.
 ;;   - "#+IJ": matrix containing the sum of i and j values.
 ;;   - "#-IJ": matrix containing the substraction of i and j values.
 ;;   - "#+IJ": matrix containing the product of i and j values.
@@ -334,6 +335,8 @@
 			 (set! s1 0)
 			 (set! n1 m1))			
 			((equal? p_s1 "#CH")
+			 (set! s1 0))
+			((equal? p_s1 "#CHR")
 			 (set! s1 0))
 			((equal? p_s1 "#+IJ")
 			 (set! s1 0)
@@ -484,6 +487,16 @@
 					      (set! s1 1))
 					     ((equal? s1 1)
 					      (set! s1 0)))
+				       (set! j1 (+ j1 1)))
+				(set! i1 (+ i1 1))))
+			((equal? p_s1 "#CHR")
+			 (set! res1 (grsp-matrix-create "#rprnd" m1 n1))			 
+			 (while (< i1 m1)
+				(set! j1 0)
+				(while (< j1 n1)			        
+				       (cond ((>= (array-ref res1 i1 j1) 0) ;; Mean 0.0 sd 0.15
+					      (array-set! res1 1 i1 j1))
+					     (else (array-set! res1 0 i1 j1)))
 				       (set! j1 (+ j1 1)))
 				(set! i1 (+ i1 1))))
 			((equal? p_s1 "#+IJ")
@@ -2918,7 +2931,11 @@
     (set! hm1 (grsp-matrix-esi 2 p_a1))
     (set! ln1 (grsp-matrix-esi 3 p_a1))
     (set! hn1 (grsp-matrix-esi 4 p_a1))
-	
+
+    ;; Test if p_d1 exists. If not, create it.
+    (cond ((equal? (file-exists? d1) #f)
+	   (mkdir d1)))
+    
     ;; We have to create the relative path.
     (set! rp (strings-append (list d1 "/" t1) 0))
     
