@@ -1979,7 +1979,6 @@
     res1))
 
 
-
 ;; grsp-onhn - Given the operation defined by p_s1, performs it between p_n1 and
 ;; 1/p_n1.
 ;;
