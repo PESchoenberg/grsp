@@ -731,7 +731,7 @@
     res1))
 
 
-;;;; grsp-ann-net-create-bym -  Create ann by matrix data. Each row of the matrix
+;;;; grsp-ann-net-create-bym - Create ann by matrix data. Each row of the matrix
 ;; should contain data for the creation of one layer of the ann.
 ;;
 ;; Keywords:
@@ -749,66 +749,129 @@
 ;;
 (define (grsp-ann-net-create-bym p_a1)
   (let ((res1 '())
+	(res2 0)
+	(res3 0)
+	(res4 0)
 	(l1 '())
 	(lm1 0)
 	(hm1 0)
 	(ln1 0)
 	(hn1 0)
 	(i1 0)
-	(j1 0)
+	(i2 1)
+	(c0 0)
+	(c1 0)
+	(c2 0)
+	(a0 0)
+	(a1 0)
+	(a2 0)
+	(a3 0)
+	(w1 0)
+	(n1 2)
+	(b1 #t)
 	(nodes 0)
 	(conns 0)
 	(count 0))
 
-    ;; Extract the boundaries of the argument matrix.
-    (set! lm1 (grsp-matrix-esi 1 p_a1))
-    (set! hm1 (grsp-matrix-esi 2 p_a1))
-    (set! ln1 (grsp-matrix-esi 3 p_a1))
-    (set! hn1 (grsp-matrix-esi 4 p_a1))
-    
+    ;; Copy argument matrix.
+    (set! res2 (grsp-matrix-cpy p_a1))
+
     ;; Create matrices with just one row.
     (set! nodes (grsp-matrix-create 0 1 11))
     (set! conns (grsp-matrix-create 0 1 10))
     (set! count (grsp-matrix-create -1 1 4))
+    
+    ;; Extract the boundaries of the argument matrix.
+    (set! lm1 (grsp-matrix-esi 1 res2))
+    (set! hm1 (grsp-matrix-esi 2 res2))
+    (set! ln1 (grsp-matrix-esi 3 res2))
+    (set! hn1 (grsp-matrix-esi 4 res2))
+
+    ;; Extract counter values and update.
+    (set! c1 (array-ref count 0 1))
+    (set! c2 (array-ref count 0 2))    
+    (set! c0 (in c0))
+    (grsp-ann-counter-upd count 0)
+    (set! c0 (array-ref count 0 0))
+    (grsp-ann-counter-upd count 3)
+    (set! c2 (array-ref count 0 3))
 
     ;; Create nodes.
     (set! i1 lm1)
     (while (<= i1 hm1)
 
-	   (cond ((= (array-ref p_a1 i1 2) 0) ; Input node.
-		  (set! l1 (list 0 2 0 0 1 1 1 1 0 1 0))
-		  (set! nodes (grsp-ann-item-create nodes conns count 0 l1)))
-		 ((= (array-ref p_a1 i1 2) 1) ; Neuron.
-		  (set! l1 (list 0 2 0 0 1 1 1 1 0 1 0))
-		  (set! nodes (grsp-ann-item-create nodes conns count 0 l1)))
-		 ((= (array-ref p_a1 i1 2) 0) ; Output node.
-		  (set! l1 (list 0 2 0 0 1 1 1 1 0 1 0))
-		  (set! nodes (grsp-ann-item-create nodes conns count 0 l1))))		 
+	   ;; Extract data from row i1 of res2.
+	   (set! a0 (array-ref res2 i1 0))
+	   (set! a1 (array-ref res2 i1 1))
+	   (set! a2 (array-ref res2 i1 2))
+	   (set! a3 (array-ref res2 i1 3))	   
+	   
+	   ;; Per each row of res2, repeat this cycle as many times as nodes per
+	   ;; layer are required.
+	   (set! i2 0)
+	   (while (< i2 a1)		   		   
+		   (cond ((= a2 0) ; Input node.
+			  (set! l1 (list c0 n1 0 a0 i2 0 0 a3 0 w1 0))
+			  (set! nodes (grsp-ann-item-create nodes conns count 0 l1)))
+			 ((= a2 1) ; Neuron.
+			  (set! l1 (list c0 n1 1 a0 i2 0 0 a3 0 w1 0))
+			  (set! nodes (grsp-ann-item-create nodes conns count 0 l1)))
+			 ((= a2 2) ; Output node.
+			  (set! l1 (list c0 n1 2 a0 i2 0 0 a3 0 w1 0))
+			  (set! nodes (grsp-ann-item-create nodes conns count 0 l1))))		 
 
+		   ;;(grsp-ann-counter-upd count 0)
+		   (set! c0 (array-ref count 0 0))
+		   
+		   (set! i2 (in i2)))
 	   (set! i1 (in i1)))
 
     ;; Create connections (connect every node of a layer to all nodes of the
     ;; prior layer)
 
+    ;;   - nodes:
+    ;;     - Col 0: id.
+    ;;     - Col 1: status.
+    ;;       - 0: dead.
+    ;;       - 1: inactive.
+    ;;       - 2: active.
+    ;;     - Col 2: type.
+    ;;       - 0: input.
+    ;;       - 1: neuron.
+    ;;       - 2: output.
+    ;;     - Col 3: layer.
+    ;;     - Col 4: layer pos.
+    ;;     - Col 5: bias.
+    ;;     - Col 6: output value.
+    ;;     - Col 7: associated function.
+    ;;     - Col 8: evol.
+    ;;     - Col 9: weight.
+    ;;     - Col 10: iter.
+    ;;   - conns:
+    ;;     - Col 0: id.
+    ;;     - Col 1: status.
+    ;;       - 0: dead.
+    ;;       - 1: inactive.
+    ;;       - 2: active.
+    ;;     - Col 2: type.
+    ;;       - 1: normal.
+    ;;     - Col 3: from.
+    ;;     - Col 4: to.
+    ;;     - Col 5: value.
+    ;;     - Col 6: evol.
+    ;;     - Col 7: weight.
+    ;;     - Col 8: iter.
+    ;;     - Col 9: to layer pos.
     
+    ;; Repeat for every layer.
+    ;;(while (equal? b1 #t)
+	  ;;(set! res4 (grsp-matrix-col-find-nth "#des" p_a1 p_j1 p_n1))
+	  
 
-    
-    ;; Add data corresponding to the new connections in basic ann.
-    (set! conns (grsp-ann-item-create nodes conns count 1 (list 0 2 1 0 1 0 1 1 0 0))) ;; Input node to neuron.
-    (set! conns (grsp-ann-item-create nodes conns count 1 (list 0 2 1 1 2 0 1 1 0 1))) ;; Neuron to output node.    
-
-   ;; Set layer counter to 2, since we have generated three layers in practice.
-    (array-set! count  2 0 3)
-
-
-
-    
-    ;; Set the session counter to zero.
-    (set! n1 (grsp-ann-counter-upd count 2))
     
     ;; Results.
     (set! res1 (grsp-ann-net-preb nodes conns count))
-    
+
     res1))
 
 
