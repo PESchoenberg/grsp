@@ -209,7 +209,8 @@
 	    grsp-matrix-fitness-rprnd
 	    grsp-matrix-selectg
 	    grsp-matrix-keyon
-	    grsp-matrix-col-aupdate))
+	    grsp-matrix-col-aupdate
+	    grsp-matrix-row-selectc))
 
 
 ;;;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -5576,3 +5577,57 @@
 	   (set! i1 (in i1)))
     
     res1))
+
+
+;; grsp-matrix-row-selectc - Returns a list containing the result of a
+;; grsp-matrix-row-select oeratio as wll as the complement of it in tow separate
+;; matrices.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, relational.
+;;
+;; Arguments:
+;; - p_s1: string.
+;;   - "#<".
+;;   - "#>".
+;;   - "#>=".
+;;   - "#<=".
+;;   - "#!=".
+;;   - "#=".
+;; - p_a1: matrix.
+;; - p_j1: column number.
+;; - p_n1: number.
+;;
+;; Sources:
+;; - [16].
+;;
+(define (grsp-matrix-row-selectc p_s1 p_a1 p_j1 p_n1)
+  (let ((res1 '())
+	(s2 "")
+	(res2 0)
+	(res3 0))
+
+    ;; Find set
+    (set! res2 (grsp-matrix-row-select p_s1 p_a1 p_j1 p_n1))
+
+    ;; Establish complementary operation.
+    (cond ((equal? p_s1 "#<")
+	   (set! s2 "#>="))
+	  ((equal? p_s1 "#>")
+	   (set! s2 "#>="))	  
+	  ((equal? p_s1 "#>=")
+	   (set! s2 "#<"))	   
+	  ((equal? p_s1 "#<=")
+	   (set! s2 "#>"))
+	  ((equal? p_s1 "#!=")
+	   (set! s2 "#="))
+	  ((equal? p_s1 "#=")
+	   (set! s2 "#!=")))	  
+
+    ;; Find the complementary set.
+    (set! res3 (grsp-matrix-row-select s2 p_a1 p_j1 p_n1))
+
+    ;; Build results.
+    (set! res1 (list res2 res3))
+    
+  res1))
