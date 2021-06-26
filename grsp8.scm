@@ -752,13 +752,30 @@
 	(res2 0)
 	(res3 0)
 	(res4 0)
+	(res5 0)
+	(res6 0)
 	(l1 '())
+	(l2 '())
 	(lm1 0)
 	(hm1 0)
 	(ln1 0)
 	(hn1 0)
+	(lm3 0)
+	(hm3 0)
+	(ln3 0)
+	(hn3 0)
+	(lm5 0)
+	(hm5 0)
+	(ln5 0)
+	(hn5 0)	
 	(i1 0)
 	(i2 1)
+	(i3 0)
+	(i4 0)
+	(i5 0)
+	(j3 0)
+	(j4 0)
+	(j5 0)
 	(c0 0)
 	(c1 0)
 	(c2 0)
@@ -769,6 +786,17 @@
 	(w1 0)
 	(n1 2)
 	(b1 #t)
+	(y1 0)
+	(y2 0)
+	(y3 0)
+	(y4 0)
+	(y5 0)
+	(o0 0)
+	(o3 0)
+	(o4 0)
+	(t0 0)
+	(t3 0)
+	(t4 0)	
 	(nodes 0)
 	(conns 0)
 	(count 0))
@@ -797,6 +825,7 @@
     (set! c2 (array-ref count 0 3))
 
     ;; Create nodes.
+    (display "----------------------------")
     (set! i1 lm1)
     (while (<= i1 hm1)
 
@@ -818,58 +847,128 @@
 			  (set! nodes (grsp-ann-item-create nodes conns count 0 l1)))
 			 ((= a2 2) ; Output node.
 			  (set! l1 (list c0 n1 2 a0 i2 0 0 a3 0 w1 0))
-			  (set! nodes (grsp-ann-item-create nodes conns count 0 l1))))		 
-
-		   ;;(grsp-ann-counter-upd count 0)
-		   (set! c0 (array-ref count 0 0))
+			  (set! nodes (grsp-ann-item-create nodes conns count 0 l1))))
 		   
+		   ;;(grsp-ann-counter-upd count 0)
+		   (set! c0 (array-ref count 0 0))		   
 		   (set! i2 (in i2)))
 	   (set! i1 (in i1)))
 
     ;; Create connections (connect every node of a layer to all nodes of the
     ;; prior layer)
 
-    ;;   - nodes:
-    ;;     - Col 0: id.
-    ;;     - Col 1: status.
-    ;;       - 0: dead.
-    ;;       - 1: inactive.
-    ;;       - 2: active.
-    ;;     - Col 2: type.
-    ;;       - 0: input.
-    ;;       - 1: neuron.
-    ;;       - 2: output.
-    ;;     - Col 3: layer.
-    ;;     - Col 4: layer pos.
-    ;;     - Col 5: bias.
-    ;;     - Col 6: output value.
-    ;;     - Col 7: associated function.
-    ;;     - Col 8: evol.
-    ;;     - Col 9: weight.
-    ;;     - Col 10: iter.
-    ;;   - conns:
-    ;;     - Col 0: id.
-    ;;     - Col 1: status.
-    ;;       - 0: dead.
-    ;;       - 1: inactive.
-    ;;       - 2: active.
-    ;;     - Col 2: type.
-    ;;       - 1: normal.
-    ;;     - Col 3: from.
-    ;;     - Col 4: to.
-    ;;     - Col 5: value.
-    ;;     - Col 6: evol.
-    ;;     - Col 7: weight.
-    ;;     - Col 8: iter.
-    ;;     - Col 9: to layer pos.
-    
     ;; Repeat for every layer.
-    ;;(while (equal? b1 #t)
-	  ;;(set! res4 (grsp-matrix-col-find-nth "#des" p_a1 p_j1 p_n1))
-	  
+    (display "(0)--")
+    ;;(set! res4 res2)
+    (set! res4 nodes)
+    (while (equal? b1 #t)
+	   (display "(1)--")
+	   (set! res4 (grsp-matrix-row-sort "#des" res4 3))
+	   (set! y1 (array-ref res4 0 3))
 
-    
+	   ;; If the layer number is zero, it means that we are dealing with the
+	   ;; initial one and hence, no connections will be created. Othewise,
+	   ;; every node of the layer will be connected to eavery node of the
+	   ;; prior layer.
+	   (cond ((> y1 0)
+		  (set! l2 (grsp-matrix-row-selectc "#=" res4 3 y1))
+		  (set! res3 (list-ref l2 0))
+		  (set! res4 (list-ref l2 1))
+		  (display "(2)--")
+
+		  ;; Get the layer numbers from the first rows of the target
+		  ;; layer matrix (res3) as well as from the remainder matrix
+		  ;; which represents the layer number of the origin layer ( the
+		  ;; layer with the layer number immediately lower than the
+		  ;; number of the target layer.
+		  (set! y3 (array-ref res3 0 3))
+		  (set! y4 (array-ref res4 0 3))
+
+		  ;; Select all rows from the origin layer.
+		  (set! res5 (grsp-matrix-row-select "#=" res4 3 y4))
+		  (set! y5 y4) ;;
+		  
+		  ;; Extract the boundaries of res3 (target layer); it contains
+		  ;; only rows corresponding to nodes of the target layer.
+		  (set! lm3 (grsp-matrix-esi 1 res3))
+		  (set! hm3 (grsp-matrix-esi 2 res3))
+		  (set! ln3 (grsp-matrix-esi 3 res3))
+		  (set! hn3 (grsp-matrix-esi 4 res3))
+
+		  ;; Extract the boundaries of res4.
+		  (set! lm5 (grsp-matrix-esi 1 res5))
+		  (set! hm5 (grsp-matrix-esi 2 res5))
+		  (set! ln5 (grsp-matrix-esi 3 res5))
+		  (set! hn5 (grsp-matrix-esi 4 res5))
+
+		  ;; So, right now:
+		  ;; - res3 has the nodes of the target layer.
+		  ;; - res4 has all the nodes of the ann except those of the
+		  ;;   target layer.
+		  ;; - res5 has the nodes of the origin layer.
+		  ;; Now we cycle over the target layer, and for each node we
+		  ;; will crete connections coming from each node of the
+		  ;; origin layer.
+
+		  ;;   - nodes:
+		  ;;     - Col 0: id.
+		  ;;     - Col 1: status.
+		  ;;       - 0: dead.
+		  ;;       - 1: inactive.
+		  ;;       - 2: active.
+		  ;;     - Col 2: type.
+		  ;;       - 0: input.
+		  ;;       - 1: neuron.
+		  ;;       - 2: output.
+		  ;;     - Col 3: layer.
+		  ;;     - Col 4: layer pos.
+		  ;;     - Col 5: bias.
+		  ;;     - Col 6: output value.
+		  ;;     - Col 7: associated function.
+		  ;;     - Col 8: evol.
+		  ;;     - Col 9: weight.
+		  ;;     - Col 10: iter.
+		  ;;   - conns:
+		  ;;     - Col 0: id.
+		  ;;     - Col 1: status.
+		  ;;       - 0: dead.
+		  ;;       - 1: inactive.
+		  ;;       - 2: active.
+		  ;;     - Col 2: type.
+		  ;;       - 1: normal.
+		  ;;     - Col 3: from.
+		  ;;     - Col 4: to.
+		  ;;     - Col 5: value.
+		  ;;     - Col 6: evol.
+		  ;;     - Col 7: weight.
+		  ;;     - Col 8: iter.
+		  ;;     - Col 9: to layer pos.
+		  
+		  (set! i3 lm3)
+		  (while (<= i3 hm3)
+
+			 (set! t0 (array-ref res3 i3 0)) ;; Node id.
+			 (set! t3 (array-ref res3 i3 3)) ;; Layer.
+			 (set! t4 (array-ref res3 i3 4)) ;; Layer pos.
+			 (display "(3)--")
+			 
+			 ;; Cycle over the prior layer.
+			 (set! i5 lm5)
+			 (while (<= i5 hm5)
+
+				(set! o0 (array-ref res5 i3 0)) ;; Node id.
+				(set! o3 (array-ref res5 i3 3)) ;; Layer.
+				(set! o4 (array-ref res5 i3 4)) ;; Layer pos.
+				(display "(4)--")
+				(set! conns (grsp-ann-item-create nodes conns count 1 (list 0 2 1 o0 t0 0 0 0 0 t4)))
+				
+				(set! i5 (in i5)))
+			 
+			 (set! i3 (in i3))))			
+		 (else (set! b1 #f))))
+	    
     ;; Results.
+    (display "(5)--")
     (set! res1 (grsp-ann-net-preb nodes conns count))
 
     res1))
