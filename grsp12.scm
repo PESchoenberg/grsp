@@ -26,7 +26,9 @@
 
 ;;;; General notes:
 ;; - Read sources for limitations on function parameters.
-
+;;
+;; Sources:
+;; - [1] https://en.wikipedia.org/wiki/Differential_evolution
 
 (define-module (grsp grsp12)
   #:use-module (grsp grsp0)
@@ -42,10 +44,10 @@
 ;; grsp-evo-mod1-ff1 - Calculates the fitness of each individual as a measure of
 ;; it attaining proximity to the problem's goal, expressed as asuccesive
 ;; base operation p_s1 on all elements corresponding to columns contaiend in
-;; p_l1 of matrix p_a1.
+;; p_l1 of matrix p_a1. Differential evolution.
 ;;
 ;; Keywords:
-;; - function, evolution, genetic.
+;; - function, evolution, genetic, differential.
 ;;
 ;; Arguments:
 ;; - p_s1: base op.

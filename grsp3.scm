@@ -179,7 +179,7 @@
 	    grsp-matrix-commit
 	    grsp-matrix-row-selectn
 	    grsp-matrix-col-selectn
-	    grsp-martix-col-select
+	    grsp-matrix-col-select
 	    grsp-matrix-njoin
 	    grsp-matrix-sjoin
 	    grsp-matrix-ajoin
@@ -3132,7 +3132,7 @@
 	(v3 0)
 	(n1 +nan.0))
 
-    ;; Create res1 with the same size as rs2 and fill it with zeros.
+    ;; Create res1 with the same size as res2 and fill it with zeros.
     ;; (set! res2 p_a1)
     (set! res2 (grsp-matrix-cpy p_a1))
     (set! res1 res2)
@@ -3636,14 +3636,15 @@
 		  (set! ln3 (grsp-matrix-esi 3 res3))
 		  (set! hn3 (grsp-matrix-esi 4 res3)) 
 		  
-		  ;; Add a similar number of rows to res3 that exist in row2.
+		  ;; Add a similar number of rows to res3 that exist in res2.
 		  (set! res3 (grsp-matrix-subexp res3 (+ (- hm2 lm2) 1) 0))
 
 		  ;; Copy the info from res2 to res3.
 		  (set! res3 (grsp-matrix-subrep res3 res2 (+ hm3 1) ln3))
 
 		  ;; Delete.
-		  (set! res4 (grsp-matrix-row-delete "#=" res4 p_j1 n2))
+		  ;;(set! res4 (grsp-matrix-row-delete "#=" res4 p_j1 n2))
+		  (set! res4 (grsp-matrix-subdel "#Delr" res4 0))
 
 		  ;; Find out if res4 still has elements.
 		  (set! hm4 (grsp-matrix-esi 2 res4))
@@ -5580,7 +5581,7 @@
 
 
 ;; grsp-matrix-row-selectc - Returns a list containing the result of a
-;; grsp-matrix-row-select oeratio as wll as the complement of it in tow separate
+;; grsp-matrix-row-select operation as well as the complement of it in two
 ;; matrices.
 ;;
 ;; Keywords:
