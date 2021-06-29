@@ -747,6 +747,56 @@
 ;;     - 2: output.
 ;;   - Col 3: activation function.
 ;;
+;; Notes:
+;; - See also grsp-ann-matrix-bym.
+;;
+;; Output:
+;; - A list with three elements. The first is a matrix for the definition
+;;   of nodes. The second, a matrix for the definition of connections
+;;   between those nodes, according to:
+;;
+;;   - nodes:
+;;     - Col 0: id.
+;;     - Col 1: status.
+;;       - 0: dead.
+;;       - 1: inactive.
+;;       - 2: active.
+;;     - Col 2: type.
+;;       - 0: input.
+;;       - 1: neuron.
+;;       - 2: output.
+;;     - Col 3: layer.
+;;     - Col 4: layer pos.
+;;     - Col 5: bias.
+;;     - Col 6: output value.
+;;     - Col 7: associated function.
+;;     - Col 8: evol.
+;;     - Col 9: weight.
+;;     - Col 10: iter.
+;;   - conns:
+;;     - Col 0: id.
+;;     - Col 1: status.
+;;       - 0: dead.
+;;       - 1: inactive.
+;;       - 2: active.
+;;     - Col 2: type.
+;;       - 1: normal.
+;;     - Col 3: from.
+;;     - Col 4: to.
+;;     - Col 5: value.
+;;     - Col 6: evol.
+;;     - Col 7: weight.
+;;     - Col 8: iter.
+;;     - Col 9: to layer pos.
+;;
+;; and the third element is a 1x4 counter matrix that defines the id of
+;; nodes and conns elements, as well as the iteration  and layer counters
+;; according to:
+;; - Col 0: nodes id counter.
+;; - Col 1: conns id counter.
+;; - Col 2: iteration counter.
+;; - Col 3: layer counter.
+;;
 (define (grsp-ann-net-create-bym p_a1)
   (let ((res1 '())
 	(res2 0)
@@ -819,13 +869,12 @@
     (set! c1 (array-ref count 0 1))
     (set! c2 (array-ref count 0 2))    
     (set! c0 (in c0))
-    (grsp-ann-counter-upd count 0)
+    ;;(grsp-ann-counter-upd count 0)
     (set! c0 (array-ref count 0 0))
-    (grsp-ann-counter-upd count 3)
+    ;;(grsp-ann-counter-upd count 3)
     (set! c2 (array-ref count 0 3))
 
     ;; Create nodes.
-    (display "----------------------------")
     (set! i1 lm1)
     (while (<= i1 hm1)
 
@@ -840,45 +889,55 @@
 	   (set! i2 0)
 	   (while (< i2 a1)		   		   
 		   (cond ((= a2 0) ; Input node.
-			  (set! l1 (list c0 n1 0 a0 i2 0 0 a3 0 w1 0))
+			  (set! l1 (list c0 n1 0 a0 i2 0 0 a3 0 w1 i2))
 			  (set! nodes (grsp-ann-item-create nodes conns count 0 l1)))
 			 ((= a2 1) ; Neuron.
-			  (set! l1 (list c0 n1 1 a0 i2 0 0 a3 0 w1 0))
+			  (set! l1 (list c0 n1 1 a0 i2 0 0 a3 0 w1 i2))
 			  (set! nodes (grsp-ann-item-create nodes conns count 0 l1)))
 			 ((= a2 2) ; Output node.
-			  (set! l1 (list c0 n1 2 a0 i2 0 0 a3 0 w1 0))
+			  (set! l1 (list c0 n1 2 a0 i2 0 0 a3 0 w1 i2))
 			  (set! nodes (grsp-ann-item-create nodes conns count 0 l1))))
 		   
 		   ;;(grsp-ann-counter-upd count 0)
-		   (set! c0 (array-ref count 0 0))		   
+		   (set! c0 (array-ref count 0 0))
+		   
 		   (set! i2 (in i2)))
 	   (set! i1 (in i1)))
 
+    ;; Purge nodes table; this is necessary since on creation a single row is
+    ;; added with all elements set on zero. Normally this would not mean trouble
+    ;; and such tables can be purged later, but in this case we need to do so
+    ;; because otherwise creation of connections from nodes of the first layer
+    ;, could cause trouble.
+    (set! nodes (grsp-matrix-row-delete "#=" nodes 1 0))
+    
     ;; Create connections (connect every node of a layer to all nodes of the
-    ;; prior layer)
-
-    ;; Repeat for every layer.
-    (display "(0)--")
-    ;;(set! res4 res2)
-    (set! res4 nodes)
+    ;; prior layer). Repeat for every layer.
+    (set! res4 (grsp-matrix-cpy nodes))
+    (set! res4 (grsp-matrix-row-sort "#des" res4 3))
     (while (equal? b1 #t)
-	   (display "(1)--")
-	   (set! res4 (grsp-matrix-row-sort "#des" res4 3))
+	   ;;(set! res4 (grsp-matrix-row-sort "#des" res4 3))
 	   (set! y1 (array-ref res4 0 3))
-
+	   
 	   ;; If the layer number is zero, it means that we are dealing with the
-	   ;; initial one and hence, no connections will be created. Othewise,
-	   ;; every node of the layer will be connected to eavery node of the
-	   ;; prior layer.
+	   ;; initial one and hence, no connections gong to this layer will be
+	   ;; created. Othewise, every node of the layer will be connected to
+	   ;; every node of the prior layer.
 	   (cond ((> y1 0)
+		  ;; Separate the corrent res4 into two parts:
+		  ;; - One will contain the rows (nodes) whose column 3 (layer)
+		  ;;   equals y1. This will be table res3.
+		  ;; - The second part contains everything else. That is, given
+		  ;;   the row sort and selectc ops performed, res4 from now on
+		  ;;   will contain what would be processed in the next
+		  ;;   iteration, excludign what will be processed on this one.
 		  (set! l2 (grsp-matrix-row-selectc "#=" res4 3 y1))
 		  (set! res3 (list-ref l2 0))
 		  (set! res4 (list-ref l2 1))
-		  (display "(2)--")
-
+		  
 		  ;; Get the layer numbers from the first rows of the target
 		  ;; layer matrix (res3) as well as from the remainder matrix
-		  ;; which represents the layer number of the origin layer ( the
+		  ;; which represents the layer number of the origin layer (the
 		  ;; layer with the layer number immediately lower than the
 		  ;; number of the target layer.
 		  (set! y3 (array-ref res3 0 3))
@@ -886,7 +945,7 @@
 
 		  ;; Select all rows from the origin layer.
 		  (set! res5 (grsp-matrix-row-select "#=" res4 3 y4))
-		  (set! y5 y4) ;;
+		  (set! y5 (array-ref res5 0 3))
 		  
 		  ;; Extract the boundaries of res3 (target layer); it contains
 		  ;; only rows corresponding to nodes of the target layer.
@@ -895,7 +954,7 @@
 		  (set! ln3 (grsp-matrix-esi 3 res3))
 		  (set! hn3 (grsp-matrix-esi 4 res3))
 
-		  ;; Extract the boundaries of res4.
+		  ;; Extract the boundaries of res5.
 		  (set! lm5 (grsp-matrix-esi 1 res5))
 		  (set! hm5 (grsp-matrix-esi 2 res5))
 		  (set! ln5 (grsp-matrix-esi 3 res5))
@@ -907,59 +966,22 @@
 		  ;;   target layer.
 		  ;; - res5 has the nodes of the origin layer.
 		  ;; Now we cycle over the target layer, and for each node we
-		  ;; will crete connections coming from each node of the
-		  ;; origin layer.
-
-		  ;;   - nodes:
-		  ;;     - Col 0: id.
-		  ;;     - Col 1: status.
-		  ;;       - 0: dead.
-		  ;;       - 1: inactive.
-		  ;;       - 2: active.
-		  ;;     - Col 2: type.
-		  ;;       - 0: input.
-		  ;;       - 1: neuron.
-		  ;;       - 2: output.
-		  ;;     - Col 3: layer.
-		  ;;     - Col 4: layer pos.
-		  ;;     - Col 5: bias.
-		  ;;     - Col 6: output value.
-		  ;;     - Col 7: associated function.
-		  ;;     - Col 8: evol.
-		  ;;     - Col 9: weight.
-		  ;;     - Col 10: iter.
-		  ;;   - conns:
-		  ;;     - Col 0: id.
-		  ;;     - Col 1: status.
-		  ;;       - 0: dead.
-		  ;;       - 1: inactive.
-		  ;;       - 2: active.
-		  ;;     - Col 2: type.
-		  ;;       - 1: normal.
-		  ;;     - Col 3: from.
-		  ;;     - Col 4: to.
-		  ;;     - Col 5: value.
-		  ;;     - Col 6: evol.
-		  ;;     - Col 7: weight.
-		  ;;     - Col 8: iter.
-		  ;;     - Col 9: to layer pos.
-		  
+		  ;; will create connections coming from each node of the
+		  ;; origin layer.	  
 		  (set! i3 lm3)
 		  (while (<= i3 hm3)
 
 			 (set! t0 (array-ref res3 i3 0)) ;; Node id.
 			 (set! t3 (array-ref res3 i3 3)) ;; Layer.
 			 (set! t4 (array-ref res3 i3 4)) ;; Layer pos.
-			 (display "(3)--")
 			 
 			 ;; Cycle over the prior layer.
 			 (set! i5 lm5)
 			 (while (<= i5 hm5)
 
-				(set! o0 (array-ref res5 i3 0)) ;; Node id.
-				(set! o3 (array-ref res5 i3 3)) ;; Layer.
-				(set! o4 (array-ref res5 i3 4)) ;; Layer pos.
-				(display "(4)--")
+				(set! o0 (array-ref res5 i5 0)) ;; Node id.
+				(set! o3 (array-ref res5 i5 3)) ;; Layer.
+				(set! o4 (array-ref res5 i5 4)) ;; Layer pos.
 				(set! conns (grsp-ann-item-create nodes conns count 1 (list 0 2 1 o0 t0 0 0 0 0 t4)))
 				
 				(set! i5 (in i5)))
@@ -968,9 +990,8 @@
 		 (else (set! b1 #f))))
 	    
     ;; Results.
-    (display "(5)--")
     (set! res1 (grsp-ann-net-preb nodes conns count))
-
+    
     res1))
 
 
@@ -986,6 +1007,19 @@
 ;; - p_nn: number of nodes in intermediate layers.
 ;; - p_af: activation function for intermediate nodes.
 ;; - p_nh: number of nodes in final layer.
+;;
+;; Notes:
+;; - See also grsp-ann-net-create-bym.
+;;
+;; Output:
+;; - A matrix with the following structure:
+;;   - Col 0: layer number.
+;;   - Col 1: number of nodes for present layer.
+;;   - Col 2: type of node.
+;;     - 0: input.
+;;     - 1: neuron.
+;;     - 2: output.
+;;   - Col 3: activation function.
 ;;
 (define (grsp-ann-matrix-bym p_nl p_nm p_nn p_af p_nh)
   (let ((res1 0)
