@@ -5199,7 +5199,8 @@
 ;;
 (define (grsp-matrix-col-lmutation p_a1 p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 p_l1)
   (let ((res1 0)
-	(j1 1)
+	;;(j1 1)
+	(j1 0)
 	(j2 0)
 	(hn1 0)
 	(l1 '()))

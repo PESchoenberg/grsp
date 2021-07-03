@@ -57,9 +57,9 @@
   #:use-module (grsp grsp4)
   #:use-module (grsp grsp5)
   #:use-module (grsp grsp9)
-  #:use-module (grsp grsp10)    
-  #:export (grsp-ann-net-create-111
-	    grsp-ann-net-create-000
+  #:use-module (grsp grsp10)
+  #:use-module (ice-9 threads)  
+  #:export (grsp-ann-net-create-000
 	    grsp-ann-net-iter
 	    grsp-ann-net-miter
 	    grsp-ann-net-reconf
@@ -70,54 +70,14 @@
 	    grsp-ann-nodes-eval
 	    grsp-ann-conns-eval
 	    grsp-ann-nodes-create
-	    grsp-ann-nodes-delete
 	    grsp-ann2dbc
 	    grsp-dbc2ann
-	    grsp-ann-net-create-bym
-	    grsp-ann-matrix-bym))
-
-
-;;;; grsp-ann-net-create-111 - Create a base neural network with one input node,
-;; one intermediate, and one output node.
-;;
-;; Keywords:
-;; - function, ann, neural network.
-;;
-;; Output:
-;; - See grsp-ann-net-create-000.
-;;
-(define (grsp-ann-net-create-111)
-  (let ((res1 '())
-	(res2 '())
-	(n1 0)
-	(nodes 0)
-	(conns 0)
-	(count 0))
-
-    ;; Create matrices with just one row.
-    (set! nodes (grsp-matrix-create 0 1 11))
-    (set! conns (grsp-matrix-create 0 1 10))
-    (set! count (grsp-matrix-create -1 1 4))
-   
-    ;; Add data corresponding to the new nodes in the basic ann.
-    (set! nodes (grsp-ann-item-create nodes conns count 0 (list 0 2 0 0 1 1 1 1 0 1 0))) ;; Input node.
-    (set! nodes (grsp-ann-item-create nodes conns count 0 (list 0 2 1 10 1 1 0 1 0 1 0))) ;; Neuron.
-    (set! nodes (grsp-ann-item-create nodes conns count 0 (list 0 2 2 20 1 1 0 1 0 1 0))) ;; Output node.
-
-    ;; Add data corresponding to the new connections in basic ann.
-    (set! conns (grsp-ann-item-create nodes conns count 1 (list 0 2 1 0 1 0 1 1 0 0))) ;; Input node to neuron.
-    (set! conns (grsp-ann-item-create nodes conns count 1 (list 0 2 1 1 2 0 1 1 0 1))) ;; Neuron to output node.    
-
-   ;; Set layer counter to 2, since we have generated three layers in practice.
-    (array-set! count  2 0 3)
-    
-    ;; Set the session counter to zero.
-    (set! n1 (grsp-ann-counter-upd count 2))
-    
-    ;; Results.
-    (set! res1 (grsp-ann-net-preb nodes conns count))
-    
-    res1))
+	    grsp-ann-net-create-ffn
+	    grsp-ann-net-spec-ffn
+	    grsp-ann-net-mutate
+	    grsp-ann-net-mutate-mth
+	    grsp-ann-deletes
+	    grsp-ann-row-updatei))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network.
@@ -251,10 +211,21 @@
 ;; - p_l1 updated.
 ;;
 (define (grsp-ann-net-reconf p_s1 p_l1)
-  (let ((res1 '()))
+  (let ((res1 '())
+	(l1 '()))
 
+    (set! l1 p_l1)
+
+    ;; Delete dead elements.
+    (set! l1 (grsp-ann-deletes l1))
+
+    ;; Callibrate.
+    ;;(cond ((equal? p_s1 "#bp")
+	   ;; Backpropagation
+	   ;;))
+    
     ;; Results.
-    (set! res1 p_l1)
+    (set! res1 l1)
     
     res1))
 
@@ -622,55 +593,6 @@
     res1))
 
 
-;;;; grsp-ann-nodes-delete - Deletes instances of entities with id p_n1 in ann
-;; p_l1 according to p_s1.
-;;
-;; Keywords:
-;; - function, ann, neural network.
-;;
-;; Arguments:
-;; - p_s1: string.
-;;   - "#all": delete all instances of entities with Id = p_n1 in nodes and
-;;     conns matrices.
-;;   - "#nodes-id".
-;;   - "#conns-to".
-;;   - "#conns-fr".
-;; - p_l1: list, ann.
-;;
-(define (grsp-ann-nodes-delete p_s1 p_l1 p_n1)
-  (let ((res1 '())
-	(nodes 0)
-	(conns 0)
-	(count 0))
-
-    ;; Extract matrices and lists.
-    (set! nodes (list-ref p_l1 0))
-    (set! conns (list-ref p_l1 1))
-    (set! count (list-ref p_l1 2))
-    
-    (cond ((equal? p_s1 "#all")
-	   ;; Delete all connections FROM node p_n1.
-	   (set! conns (grsp-matrix-row-delete "#=" conns 3 p_n1))
-	   ;; Delete all connections TO node p_n1. 
-	   (set! conns (grsp-matrix-row-delete "#=" nodes 4 p_n1))
-	   ;; Delete node with Id p_n1.
-	   (set! nodes (grsp-matrix-row-delete "#=" nodes 0 p_n1)))
-	  ((equal? p_s1 "#conns-id")
-	   ;; Delete connection with Id p_n1.
-	   (set! conns (grsp-matrix-row-delete "#=" conns 0 p_n1)))
-	  ((equal? p_s1 "#conns-to")
-	   ;; Delete all connections TO node p_n1.
-	   (set! nodes (grsp-matrix-row-delete "#=" nodes 4 p_n1)))
-	  ((equal? p_s1 "#conns-fr")
-	   ;; Delete all connections FROM node p_n1.
-	   (set! nodes (grsp-matrix-row-delete "#=" nodes 3 p_n1))))
-	  
-    ;; Rebuild the list representing the ann.
-    (set! res1 (list nodes conns count))
-    
-    res1))
-
-
 ;; grsp-ann2dbc - Save neural network to csv database.
 ;;
 ;; Keywords:
@@ -731,7 +653,7 @@
     res1))
 
 
-;;;; grsp-ann-net-create-bym - Create ann by matrix data. Each row of the matrix
+;;;; grsp-ann-net-create-ffn - Create ann by matrix data. Each row of the matrix
 ;; should contain data for the creation of one layer of the ann.
 ;;
 ;; Keywords:
@@ -748,7 +670,7 @@
 ;;   - Col 3: activation function.
 ;;
 ;; Notes:
-;; - See also grsp-ann-matrix-bym.
+;; - See also grsp-ann-net-spec-ffn.
 ;;
 ;; Output:
 ;; - A list with three elements. The first is a matrix for the definition
@@ -797,7 +719,7 @@
 ;; - Col 2: iteration counter.
 ;; - Col 3: layer counter.
 ;;
-(define (grsp-ann-net-create-bym p_a1)
+(define (grsp-ann-net-create-ffn p_a1)
   (let ((res1 '())
 	(res2 0)
 	(res3 0)
@@ -995,8 +917,8 @@
     res1))
 
 
-;;;; grsp-ann-matrix-bym - Creates the matrix for grsp-ann-net-create-bym in
-;; order to create a neural network.
+;;;; grsp-ann-net-spec-ffn - Creates the specification matrix for
+;; grsp-ann-net-spec-ffn in order to create a forward feed neural network.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -1009,7 +931,7 @@
 ;; - p_nh: number of nodes in final layer.
 ;;
 ;; Notes:
-;; - See also grsp-ann-net-create-bym.
+;; - See also grsp-ann-net-create-ffn.
 ;;
 ;; Output:
 ;; - A matrix with the following structure:
@@ -1021,7 +943,7 @@
 ;;     - 2: output.
 ;;   - Col 3: activation function.
 ;;
-(define (grsp-ann-matrix-bym p_nl p_nm p_nn p_af p_nh)
+(define (grsp-ann-net-spec-ffn p_nl p_nm p_nn p_af p_nh)
   (let ((res1 0)
 	(i1 0)
 	(lm1 0)
@@ -1061,4 +983,190 @@
 
 	   (set! i1 (in i1)))
 	   
+    res1))
+
+
+;;;; grsp-ann-net-mutate - Mutate and randomize ann p_l1.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_l2: ann.
+;; - p_n1: mutation rate, [0, 1].
+;; - p_s1: type of distribution.
+;;   - "#normal": normal.
+;;   - "#exp": exponential.
+;;   - "#uniform": uniform.
+;; - p_u1: mean for mutation rate.
+;; - p_v1: standard deviation for mutation rate.
+;; - p_s2: type of distribution.
+;;   - "#normal": normal.
+;;   - "#exp": exponential.
+;;   - "#uniform": uniform.
+;; - p_u2: mean for element random value.
+;; - p_v2: standard deviation for element random value.
+;; - p_l1: list of elements (cols) of nodes to mutate. Usually values sould be:
+;;   - 5: bias.
+;;   - 9: weight.
+;; - p_l3: list of elements (cols) of conns to mutate. Usually values sould be:
+;;   - 5: value.
+;;   - 7: weight.
+;;
+;; Notes:
+;; - See grsp-matrix-col-lmutation.
+;; - You can mutate any element that corresponds to the ann, passed via arguments
+;;   p_l1 and p_l3 but be careful, since modifyin randomly elements other than
+;;   those mentioned above couldyield unexpected results.
+;;
+(define (grsp-ann-net-mutate p_l2 p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 p_l1 p_l3)
+  (let ((res1 '())
+	(l1 '())
+	(l2 '())
+	(l3 '())
+	(nodes 0)
+	(conns 0)
+	(count 0))
+
+    (set! l2 p_l2)
+    
+    ;; Extract matrices and lists.
+    (set! nodes (list-ref l2 0))
+    (set! conns (list-ref l2 1))
+    (set! count (list-ref l2 2))	
+    
+    ;; Mutate nodes.
+    (set! l1 p_l1)
+    (set! nodes (grsp-matrix-col-lmutation nodes p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 l1))
+
+    ;; Mutate conns.
+    (set! l3 p_l3)
+    (set! conns (grsp-matrix-col-lmutation conns p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 l3))
+
+    ;; Rebuild the list representing the ann.
+    (set! res1 (list nodes conns count))    
+    
+    res1))
+
+
+;;;; grsp-ann-net-mutate-mth - Multithreaded variant of grsp-ann-net-mutate.
+;; Mutate and randomize ann p_l1.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_l2: ann.
+;; - p_n1: mutation rate, [0, 1].
+;; - p_s1: type of distribution.
+;;   - "#normal": normal.
+;;   - "#exp": exponential.
+;;   - "#uniform": uniform.
+;; - p_u1: mean for mutation rate.
+;; - p_v1: standard deviation for mutation rate.
+;; - p_s2: type of distribution.
+;;   - "#normal": normal.
+;;   - "#exp": exponential.
+;;   - "#uniform": uniform.
+;; - p_u2: mean for element random value.
+;; - p_v2: standard deviation for element random value.
+;; - p_l1: list of elements (cols) of nodes to mutate. Usually values sould be:
+;;   - 5: bias.
+;;   - 9: weight.
+;; - p_l3: list of elements (cols) of conns to mutate. Usually values sould be:
+;;   - 5: value.
+;;   - 7: weight.
+;;
+;; Notes:
+;; - See grsp-matrix-col-lmutation.
+;; - You can mutate any element of a neural network passed via arguments p_l1
+;;   and p_l3 but be careful, since modifying randomly elements other than
+;;   those mentioned above could yield unexpected results, even altering the
+;;   structure of the network iteslf or render it unusable. Always backup your
+;;   ANN before toying with this function.
+;;
+(define (grsp-ann-net-mutate-mth p_l2 p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 p_l1 p_l3)
+  (let ((res1 '())
+	(l1 '())
+	(l2 '())
+	(l3 '())
+	(nodes 0)
+	(conns 0)
+	(count 0))
+
+    (set! l2 p_l2)
+    
+    ;; Extract matrices and lists.
+    (parallel (set! nodes (list-ref l2 0))
+	      (set! conns (list-ref l2 1))
+	      (set! count (list-ref l2 2)))
+
+    (parallel ((set! l1 p_l1)
+	       (set! nodes (grsp-matrix-col-lmutation nodes p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 l1)))
+	      ((set! l3 p_l3)
+	       (set! conns (grsp-matrix-col-lmutation conns p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 l3))))
+
+    ;; Rebuild the list representing the ann.
+    (set! res1 (list nodes conns count))    
+    
+    res1))
+
+
+;;;; grsp-ann-deletes - Deletes from ann p_l1 all elements with status (col 1)
+;; equal to zero.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_l1: list, ann.
+;;
+;; Notes:
+;; - This function is agnostic regarding connections and how they depend from
+;;   nodes, meaning that in ordenr not to leave orphaned connectins once
+;;   dead nodes have been deleted, the status of the dependent nodes should
+;;   be set to zero before using this function.
+;; - By setting row 1 to 0 at will and applying this function you can
+;;   essentially delete any component of a neural network, following any
+;;   schedule.
+;;
+(define (grsp-ann-deletes p_l1)
+  (let ((res1 '())
+	(nodes 0)
+	(conns 0)
+	(count 0))
+
+    ;; Extract matrices and lists.
+    (set! nodes (list-ref p_l1 0))
+    (set! conns (list-ref p_l1 1))
+    (set! count (list-ref p_l1 2))
+    
+    (set! nodes (grsp-matrix-row-delete "#=" nodes 1 0))
+    (set! conns (grsp-matrix-row-delete "#=" conns 1 0))
+
+    ;; Rebuild the list representing the ann.
+    (set! res1 (list nodes conns count))
+
+    res1))
+
+
+;;;; grsp-ann-row-updatei - Update col p_j2 with value p_n2 of element with id
+;; p_id of table p_a1 (nodes or conns).
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_a1: matrix (nodes or conns).
+;; - p_id: id (col 0).
+;; - p_j2: column.
+;; - p_n2: value.
+;;
+(define (grsp-ann-row-updatei p_a1 p_id p_j2 p_n2)
+  (let ((res1 0))
+
+    (set! p_a1 (grsp-matrix-row-update "#=" p_a1 0 p_id p_j2 p_n2))
+
+    (set! res1 p_a1)
+    
     res1))
