@@ -77,7 +77,9 @@
 	    grsp-ann-net-mutate
 	    grsp-ann-net-mutate-mth
 	    grsp-ann-deletes
-	    grsp-ann-row-updatei))
+	    grsp-ann-row-updatei
+	    grsp-ann-conns-of-node
+	    grsp-ann-node-eval))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network.
@@ -1170,3 +1172,122 @@
     (set! res1 p_a1)
     
     res1))
+
+
+;;;; grsp-ann-conns-of-node - Find the connections that reach node with id p_id
+;; aacording to p_s1 in p_a1.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_s1: tyoe of connection:
+;;   - "#fr": those going out of node p_id.
+;;   - "#to": those reaching node p_id.
+;; - P_a1: matrix (conns).
+;; - p_id: node id.
+;;
+(define (grsp-ann-conns-of-node p_s1 p_a1 p_id)
+  (let ((res1 0)
+	(j1 3))
+
+    (cond ((equal? p_s1 "#to")
+	   (set! j1 4)))
+	  
+    (set! res1 (grsp-matrix-row-select "#=" p_a1 j1 p_id))
+    
+    res1))
+
+
+;;;; grsp-ann-node-eval - Evaluates node p_id and its related connections.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_id: node id.
+;; - p_a1: matrix (nodes).
+;; - p_a2: matrix (conns).
+;; - p_a3: matrix (count).
+;;
+(define (grsp-ann-node-eval p_id p_a1 p_a2 p_a3)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(res4 0)
+	(b1 #f)
+	(n1 0)
+	(n2 0)
+	(n5 0)
+	(n6 0)
+	(n7 0)
+	(n9 0))
+
+    ;; First check if the node exists.
+    ;; - If it does exist, then process.
+    ;; - If it does not exist then kill any leftover connection (set status
+    ;;   to zero).
+    (set! res1 (grsp-matrix-row-select "#=" p_a1 0 p_id))
+    (set! b1 (grsp-matrix-is-empty res1))
+    (cond ((equal? b1 #t) ;; Node exists.
+	   
+	   ;; If the node has incoming connections then we need to process them.
+	   (set! res2 (grsp-ann-conns-of-node "#to" p_a2 p_id))
+	   (cond ((equal? (grsp-matrix-is-empty res2) #f)
+		  (set! n1 (grsp-matrix-opio "#+c" res2 5))
+		  (set! n2 (grsp-matrix-opio "#+c" res2 7))
+		  (set! n6 (+ n1 n2))
+		  (array-set! res1 n6 0 6))) ;; Value.
+
+	   ;;   - nodes:
+	   ;;     - Col 0: id.
+	   ;;     - Col 1: status.
+	   ;;       - 0: dead.
+	   ;;       - 1: inactive.
+	   ;;       - 2: active.
+	   ;;     - Col 2: type.
+	   ;;       - 0: input.
+	   ;;       - 1: neuron.
+	   ;;       - 2: output.
+	   ;;     - Col 3: layer.
+	   ;;     - Col 4: layer pos.
+	   ;;     - Col 5: bias.
+	   ;;     - Col 6: output value.
+	   ;;     - Col 7: associated function.
+	   ;;     - Col 8: evol.
+	   ;;     - Col 9: weight.
+	   ;;     - Col 10: iter.
+	   ;;   - conns:
+	   ;;     - Col 0: id.
+	   ;;     - Col 1: status.
+	   ;;       - 0: dead.
+	   ;;       - 1: inactive.
+	   ;;       - 2: active.
+	   ;;     - Col 2: type.
+	   ;;       - 1: normal.
+	   ;;     - Col 3: from.
+	   ;;     - Col 4: to.
+	   ;;     - Col 5: value.
+	   ;;     - Col 6: evol.
+	   ;;     - Col 7: weight.
+	   ;;     - Col 8: iter.
+	   ;;     - Col 9: to layer pos.
+	   ;;
+	   
+	   ;; Apply activation function.
+	   (set! n5 (array-ref res1 0 5)) ;; Bias.
+	   (set! n7 (array-ref res1 0 7)) ;; Associated function.
+	   (set! n9 (array-ref res1 0 7)) ;; Weight.
+	   ;;(cond ((= n7 0)
+		  
+	   
+	   ;; Process output nodes. These receive the output value of the node
+	   ;; as it is.
+	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 0 p_id 5 n4)))
+	  
+	   ;; Commit.
+	  ((equal? b1 #f) ;; Node does not exist.
+	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 3 p_id 1 0))
+	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 4 p_id 1 0))))
+	   
+    res4))

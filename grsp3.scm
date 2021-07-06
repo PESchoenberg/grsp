@@ -210,7 +210,8 @@
 	    grsp-matrix-selectg
 	    grsp-matrix-keyon
 	    grsp-matrix-col-aupdate
-	    grsp-matrix-row-selectc))
+	    grsp-matrix-row-selectc
+	    grsp-matrix-is-empty))
 
 
 ;;;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -5633,3 +5634,21 @@
     (set! res1 (list res2 res3))
     
   res1))
+
+
+;;;; grsp-matrix-is-empty - Returns #t if the matrix has no elements, #f otherwise.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;;
+(define (grsp-matrix-is-empty p_a1)
+  (let ((res1 #t))
+
+    (cond ((> (grsp-matrix-total-elements p_a1) 0)
+	   (set! res1 #t)))
+
+    res1))
+
