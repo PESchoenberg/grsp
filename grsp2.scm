@@ -1949,6 +1949,7 @@
 ;;   - "#uniform": uniform.
 ;; - p_u1: mean.
 ;; - p_v1: standard deviation.
+;; - p_n1: number.
 ;;
 (define (grsp-ifrprnd p_s1 p_u1 p_v1 p_n1)
   (let ((res1 #f))

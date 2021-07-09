@@ -79,7 +79,8 @@
 	    grsp-ann-deletes
 	    grsp-ann-row-updatei
 	    grsp-ann-conns-of-node
-	    grsp-ann-node-eval))
+	    grsp-ann-node-eval
+	    grsp-ann-actifun))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network.
@@ -1221,7 +1222,8 @@
 	(n5 0)
 	(n6 0)
 	(n7 0)
-	(n9 0))
+	(n9 0)
+	(m5 0))
 
     ;; First check if the node exists.
     ;; - If it does exist, then process.
@@ -1278,12 +1280,16 @@
 	   (set! n5 (array-ref res1 0 5)) ;; Bias.
 	   (set! n7 (array-ref res1 0 7)) ;; Associated function.
 	   (set! n9 (array-ref res1 0 7)) ;; Weight.
-	   ;;(cond ((= n7 0)
-		  
+	   
+	   ;; Set value.
+	   (set! n6 (* (+ n6 n9) n5))
+	   
+	   ;; Select activation function and calculate.
+	   (set! m5 (grsp-ann-actifun n7 n6))
 	   
 	   ;; Process output nodes. These receive the output value of the node
 	   ;; as it is.
-	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 0 p_id 5 n4)))
+	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 0 p_id 5 m5)))
 	  
 	   ;; Commit.
 	  ((equal? b1 #f) ;; Node does not exist.
@@ -1291,3 +1297,77 @@
 	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 4 p_id 1 0))))
 	   
     res4))
+
+
+;;;; grsp-ann-actifun - Select function p_n1 passing argument p_n2.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_n1: activation function [0,17].
+;;   - 0: identity.
+;;   - 1: binary step.
+;;   - 2: sigmoid.
+;;   - 3: tanh.
+;;   - 4: relu.
+;;   - 5: softplus.
+;;   - 6: elu.
+;;   - 7: lrelu.
+;;   - 8: selu.
+;;   - 9: gelu.
+;;   - 10: prelu.
+;;   - 11: softsign.
+;;   - 12: sqnl.
+;;   - 13: bent identity.
+;;   - 14: silu.
+;;   - 15: srelu.
+;;   - 16: gaussian.
+;;   - 17: sqrbf.
+;; - p_l1: list of applicable input values. See grsp10.scm.
+;;
+(define (grsp-ann-actifun p_n1 p_l1)
+  (let ((res1 0)
+	(l1 '()))
+
+    (set! l1 p_l1)
+    (cond ((= p_n1 0)
+	   (set! res1 (grsp-identity l1)))
+	  ((= p_n1 1)
+	   (set! res1 (grsp-binary-step l1)))
+	  ((= p_n1 2)
+	   (set! res1 (grsp-sigmoid l1)))
+	  ((= p_n1 3)
+	   (set! res1 (grsp-tanh l1)))
+	  ((= p_n1 4)
+	   (set! res1 (grsp-relu l1)))
+	  ((= p_n1 5)
+	   (set! res1 (grsp-softplus l1)))		 
+	  ((= p_n1 6)
+	   (set! res1 (grsp-elu l1)))
+	  ((= p_n1 7)
+	   (set! res1 (grsp-lrelu l1)))
+	  ((= p_n1 8)
+	   (set! res1 (grsp-selu l1)))
+	  ((= p_n1 9)
+	   (set! res1 (grsp-gelu l1)))		 
+	  ((= p_n1 10)
+	   (set! res1 (grsp-prelu l1)))
+	  ((= p_n1 11)
+	   (set! res1 (grsp-softsign l1)))
+	  ((= p_n1 12)
+	   (set! res1 (grsp-sqnl l1)))
+	  ((= p_n1 13)
+	   (set! res1 (grsp-bent-identity l1)))
+	  ((= p_n1 14)
+	   (set! res1 (grsp-silu l1)))
+	  ((= p_n1 15)
+	   (set! res1 (grsp-srelu l1)))
+	  ((= p_n1 16)
+	   (set! res1 (grsp-gaussian l1)))		 
+	  ((= p_n1 17)
+	   (set! res1 (grsp-sqrbf l1)))
+	  ((= p_n1 18)
+	   (set! res1 (grsp-ifrprnd-num l1))))
+    
+    res1))
