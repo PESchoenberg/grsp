@@ -53,7 +53,8 @@
 	    grsp-silu
 	    grsp-srelu
 	    grsp-gaussian
-	    grsp-sqrbf))
+	    grsp-sqrbf
+	    grsp-ifrprnd-num))
 
 
 ;;;; grsp-identity - Identity function (type 0).
@@ -548,3 +549,39 @@
     res1))
 
 
+;;;; grsp-ifrprnd-num - If a pseudo random number generated with the arguments of
+;; the function is less than p_n1, the function returns 1, or 0 otherwise. (type
+;; 18),
+;;
+;; Keywords:
+;; - function, activation, ann.
+;;
+;; Arguments:
+;; - p_11: list containing the following parameters.
+;;   - 1: type of distribution.
+;;     - "#normal": normal.
+;;     - "#exp": exponential.
+;;     - "#uniform": uniform.
+;;   - 2: mean.
+;;   - 3: standard deviation.
+;;   - 4: number.
+;;
+(define (grsp-ifrprnd-num p_l1)
+  (let ((res1 0)
+	(l1 '())
+	(s1 "")
+	(u1 0)
+	(v1 0)
+	(n1 0))
+
+    ;; Extract list elements.
+    (set! l1 p_l1)
+    (set! s1 (list-ref l1 0))
+    (set! u1 (list-ref l1 1))
+    (set! v1 (list-ref l1 2))
+    (set! n1 (list-ref l1 3))    
+    
+    (cond ((equal? (grsp-ifrprnd s1 u1 v1 n1) #t)
+	   (set! res1 1)))
+
+    res1))
