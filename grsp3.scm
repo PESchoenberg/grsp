@@ -5557,7 +5557,7 @@
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
-;; - p_n1: colun number.
+;; - p_n1: column number.
 ;; - p_n2: value to set on p_n1.
 ;;
 (define (grsp-matrix-col-aupdate p_a1 p_n1 p_n2)
@@ -5610,7 +5610,7 @@
 	(res2 0)
 	(res3 0))
 
-    ;; Find set
+    ;; Find set.
     (set! res2 (grsp-matrix-row-select p_s1 p_a1 p_j1 p_n1))
 
     ;; Establish complementary operation.
@@ -5636,7 +5636,8 @@
   res1))
 
 
-;;;; grsp-matrix-is-empty - Returns #t if the matrix has no elements, #f otherwise.
+;;;; grsp-matrix-is-empty - Returns #t if the matrix has no elements, #f
+;; otherwise.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
