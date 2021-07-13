@@ -60,14 +60,12 @@
   #:use-module (grsp grsp10)
   #:use-module (ice-9 threads)  
   #:export (grsp-ann-net-create-000
-	    grsp-ann-net-iter
 	    grsp-ann-net-miter
 	    grsp-ann-net-reconf
 	    grsp-ann-net-preb
 	    grsp-ann-counter-upd
 	    grsp-ann-id-create
 	    grsp-ann-item-create
-	    grsp-ann-nodes-eval
 	    grsp-ann-conns-eval
 	    grsp-ann-nodes-create
 	    grsp-ann2dbc
@@ -80,7 +78,9 @@
 	    grsp-ann-row-updatei
 	    grsp-ann-conns-of-node
 	    grsp-ann-node-eval
-	    grsp-ann-actifun))
+	    grsp-ann-actifun
+	    grsp-ann-nodes-eval
+	    grsp-ann-idata-create))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network.
@@ -159,47 +159,6 @@
     res1))
 
 
-;;;; grsp-ann-net-iter - Run a single iteration of the network.
-;;
-;; Keywords:
-;; - function, ann, neural network.
-;;
-;; Arguments:
-;; - p_l1: ann (list).
-;;
-;; Output:
-;; - p_l1 updated.
-;;
-(define (grsp-ann-net-iter p_l1)
-  (let ((res1 p_l1)
-	(n1 0)
-	(nodes 0)
-	(conns 0)
-	(count 0))
-
-    ;; Extract matrices from list.
-    (set! nodes (list-ref res1 0))
-    (set! conns (list-ref res1 1))
-    (set! count (list-ref res1 2))	
-
-    ;; Update iteration counter.
-    (set! n1 (grsp-ann-counter-upd count 2))
-
-    ;; Rebuild the list representing the ann.
-    (set! res1 (list nodes conns count))
-        
-    ;; Eval input nodes and conns.
-    (set! res1 (grsp-ann-nodes-eval "#input" res1 n1))
-    
-    ;; Eval intermediate nodes and conns.
-    (set! res1 (grsp-ann-nodes-eval "#intermediate" res1 n1))
-    
-    ;; Eval output nodes.
-    (set! res1 (grsp-ann-nodes-eval "#output" res1 n1))
-
-    res1))
-
-
 ;;;; grsp-ann-net-reconf - Reconfigure the network.
 ;;
 ;; Keywords:
@@ -233,7 +192,7 @@
     res1))
 
 
-;;;; grsp-ann-net-iter - Iterate evaluations of the network p_n1 times.
+;;;; grsp-ann-net-miter - Iterate evaluations of the network p_n1 times.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -252,8 +211,8 @@
 
     ;; Eval.
     (while (< i1 p_n1)
-	   (set! p_l1 (grsp-ann-net-iter p_l1))
-	   (set! p_l1 (grsp-ann-net-reconf p_s1 p_l1))
+	   ;;(set! p_l1 (grsp-ann-net-iter p_l1))
+	   ;;(set! p_l1 (grsp-ann-net-reconf p_s1 p_l1))
 	   (set! i1 (in i1)))
     
     ;; Results.
@@ -384,144 +343,6 @@
 
     ;; Update matrix id counter and set new id on the new row in matrix.
     (set! res1 (grsp-ann-id-create res1 count p_n1))
-    
-    res1))
-
-
-;;;; grsp-ann-nodes-eval - Evaluates nodes of type p_s1 in network p_l1.
-;;
-;; Keywords:
-;; - function, ann, neural network.
-;;
-;; Arguments:
-;; - p_s1: node type:
-;;   - "#input": input nodes.
-;;   - "#intermediate": intermediate nodes.
-;;   - "#output": output nodes.
-;; - p_l1: ann.
-;; - p_n1: number (iteration id).
-;;
-(define (grsp-ann-nodes-eval p_s1 p_l1 p_n1)
-  (let ((res1 '())
-	(res2 0)
-	(res3 0)
-	(lm1 0)
-	(hm1 0)
-	(ln1 0)
-	(hn1 0)
-	(lm2 0)
-	(hm2 0)
-	(ln2 0) ;; Lowest layer pos number per layer in nodes.
-	(hn2 0) ;; Highest layer pos number per layer in nodes.
-	(ln3 0) ;; Lowest layer number in nodes.
-	(hn3 0) ;; Highest layer nunber in nodes.
-	(nodes 0)
-	(conns 0)
-	(count 0)
-	(c0 0)
-	(c1 2) ;; Nodes must be active.
-	(c2 0)
-	(c3 0)
-	(c4 0)
-	(c5 0)
-	(c6 0)
-	(c7 0)
-	(c8 0)
-	(c9 0)
-	(c10 0)
-	(i1 0)
-	(i2 0)
-	(i3 0))
-	
-    ;; Extract matrices from list.
-    (set! nodes (list-ref p_l1 0))
-    (set! conns (list-ref p_l1 1))
-    (set! count (list-ref p_l1 2))	
-
-    ;; Extract the boundaries of the nodes matrix.
-    (set! lm1 (grsp-matrix-esi 1 nodes))
-    (set! hm1 (grsp-matrix-esi 2 nodes))
-    (set! ln1 (grsp-matrix-esi 3 nodes))
-    (set! hn1 (grsp-matrix-esi 4 nodes))
-
-    ;; Extract the boundaries of the conns matrix.
-    (set! lm2 (grsp-matrix-esi 1 conns))
-    (set! hm2 (grsp-matrix-esi 2 conns))
-    (set! ln2 (grsp-matrix-esi 3 conns))
-    (set! hn2 (grsp-matrix-esi 4 conns))    
-
-    (set! i1 lm1)
-    (cond ((equal? p_s1 "#input")
-	   (while (<= i1 hm1)
-
-		  ;; Perform if row corresponds to:
-		  ;; - An active node (col 1 = 2).
-		  ;; - An input node (col 2 = 0).		  
-		  (cond ((and (= (array-ref nodes i1 1) 2)
-			      (= (array-ref nodes i1 2) 0))
-			      
-			 ;; In the case of input nodes, there is no
-			 ;; processing by means of an activation function,
-			 ;; thus the input value is passed directly to
-			 ;; the connections.
-			 (set! c0 (array-ref nodes i1 0)) ;; Id.
-			 (set! c6 (array-ref nodes i1 6)) ;; Value.
-			 (array-set! nodes p_n1 i1 10)    ;; Iter id.
-			 (set! i2 lm2)
-			 (while (<= i2 hm2)
-
-				;; Perform if row corresponds to:
-				;; - An active conn (col 1 = 2).
-				;; - An conn coming from node c3 (col 3 = 3).		  
-				(cond ((and (= (array-ref conns i2 1) 2)
-					    (= (array-ref conns i2 3) c3))
-				       (array-set! conns p_n1 i2 8) ;; iter id.
-				       (array-set! conns c6 i2 5)))
-				(set! i2 (in i2)))))
-		  
-		  (set! i1 (+ i1 1))))
-	  ((equal? p_s1 "#intermediate")
-
-	   ;; Find out how many layers does the network has at the beginning of
-	   ;; the iteration by finding the highest and lower layer numbers.
-	   (set! res2 (grsp-matrix-subcpy nodes lm1 hm1 3 3)) ;; Extracts layer info in a col.
-	   (set! res3 (grsp-matrix-minmax res2))
-
-	   ;; Extract min and max layer values.
-	   (set! ln3 (grsp-matrix-esi 1 res3))
-	   (set! hn3 (grsp-matrix-esi 2 res3))
-	   
-	   ;; Go  over nodes table 
-	   (while (<= i1 hm1)
-		  ;;
-		  (set! i1 (+ i1 0))))
-  
-	  ((equal? p_s1 "#output")
-	   (while (<= i1 hm1)
-
-		  ;; Perform if row corresponds to:
-		  ;; - An active node (col 1 = 2).
-		  ;; - An output node (col 2 = 2).		  
-		  (cond ((and (= (array-ref nodes i1 1) 2)
-			      (= (array-ref nodes i1 2) 2))
-			 (set! c0 (array-ref nodes i1 0)) ;; Id.
-			 (array-set! nodes p_n1 i1 10)    ;; Iter id.
-			 (while (<= i2 hm2)
-
-				;; Perform if row corresponds to:
-				;; - An active conn (col 1 = 2).
-				;; - An conn coming to node c0 (col 5 = c0).		  
-				(cond ((and (= (array-ref conns i2 1) 2)
-					    (= (array-ref conns i2 5) c0))
-				       (array-set! conns p_n1 i2 8) ;; iter id.
-				       (array-set! nodes (+ (array-ref nodes i1 6)
-							    (* (array-ref conns i2 5)
-							       (array-ref conns i2 7))) i1 6))) ;; Summation of all incoming vals.
-				(set! i2 (in i2)))))
-		  (set! i1 (in i1)))))			   
- 
-    ;; Rebuild the list representing the ann.
-    (set! res1 (list nodes conns count))
     
     res1))
 
@@ -1216,6 +1037,7 @@
 	(res2 0)
 	(res3 0)
 	(res4 0)
+	(l1 '())
 	(b1 #f)
 	(n1 0)
 	(n2 0)
@@ -1240,41 +1062,6 @@
 		  (set! n2 (grsp-matrix-opio "#+c" res2 7))
 		  (set! n6 (+ n1 n2))
 		  (array-set! res1 n6 0 6))) ;; Value.
-
-	   ;;   - nodes:
-	   ;;     - Col 0: id.
-	   ;;     - Col 1: status.
-	   ;;       - 0: dead.
-	   ;;       - 1: inactive.
-	   ;;       - 2: active.
-	   ;;     - Col 2: type.
-	   ;;       - 0: input.
-	   ;;       - 1: neuron.
-	   ;;       - 2: output.
-	   ;;     - Col 3: layer.
-	   ;;     - Col 4: layer pos.
-	   ;;     - Col 5: bias.
-	   ;;     - Col 6: output value.
-	   ;;     - Col 7: associated function.
-	   ;;     - Col 8: evol.
-	   ;;     - Col 9: weight.
-	   ;;     - Col 10: iter.
-	   ;;   - conns:
-	   ;;     - Col 0: id.
-	   ;;     - Col 1: status.
-	   ;;       - 0: dead.
-	   ;;       - 1: inactive.
-	   ;;       - 2: active.
-	   ;;     - Col 2: type.
-	   ;;       - 1: normal.
-	   ;;     - Col 3: from.
-	   ;;     - Col 4: to.
-	   ;;     - Col 5: value.
-	   ;;     - Col 6: evol.
-	   ;;     - Col 7: weight.
-	   ;;     - Col 8: iter.
-	   ;;     - Col 9: to layer pos.
-	   ;;
 	   
 	   ;; Apply activation function.
 	   (set! n5 (array-ref res1 0 5)) ;; Bias.
@@ -1285,7 +1072,8 @@
 	   (set! n6 (* (+ n6 n9) n5))
 	   
 	   ;; Select activation function and calculate.
-	   (set! m5 (grsp-ann-actifun n7 n6))
+	   (set! l1 (list n6))
+	   (set! m5 (grsp-ann-actifun n7 l1))
 	   
 	   ;; Process output nodes. These receive the output value of the node
 	   ;; as it is.
@@ -1369,5 +1157,145 @@
 	   (set! res1 (grsp-sqrbf l1)))
 	  ((= p_n1 18)
 	   (set! res1 (grsp-ifrprnd-num l1))))
+    
+    res1))
+
+
+;;;; grsp-ann-nodes-eval - Perform one iteration of evaluation of all nodes
+;; in the ann.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_l1: ann.
+;; - p_a4: matrix, idata. An m x 3 matrix containing the data for the input
+;;   nodes of the neural network according to the following format:
+;;   - Col 0: id of the receptive node.
+;;   - Col 1: number that coresponds to the column in the nodes matrix in which
+;;   - for the row whose col 0 is equal to the id value passed in col 0 of the
+;;     idata matrix the input value will be stored.
+;;   - Col 2: number.
+;;
+;; Notes:
+;; - While normally p_a4 would be used to pass data to input nodes, the matrix
+;;   could be used to pass other values to the nodes matrix.
+;;
+;; Output:
+;; - Matrix, odata (same format as idata).
+;;
+(define (grsp-ann-nodes-eval p_l1 p_a4)
+  (let ((res1 '())
+	(res2 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)	
+	(lm4 0)
+	(hm4 0)
+	(ln4 0)
+	(hn4 0)
+	(id 0)
+	(i1 0)
+	(i4 0)
+	(j2 0)
+	;;(j3 0)
+	(n2 0)
+	;;(n3 0)
+	(nodes 0)
+	(conns 0)
+	(count 0)
+	(idata 0))
+
+    ;; Extract matrices and lists.
+    (set! nodes (list-ref p_l1 0))
+    (set! conns (list-ref p_l1 1))
+    (set! count (list-ref p_l1 2))    
+    (set! idata p_a4)
+        
+    ;; Extract boundaries of idata.
+    (set! lm4 (grsp-matrix-esi 1 idata))
+    (set! hm4 (grsp-matrix-esi 2 idata))
+    (set! ln4 (grsp-matrix-esi 3 idata))
+    (set! hn4 (grsp-matrix-esi 4 idata)) 	  
+
+    ;; Pass idata data to the ann.
+    (set! i4 lm4)
+    (while (<= i4 hm4)
+
+	   (set! id (array-ref idata i4 0))
+	   (set! j2 (array-ref idata i4 1))
+	   (set! n2 (array-ref idata i4 2))
+	   (grsp-matrix-row-update "#=" nodes 0 id j2 n2)
+	   
+	   (set! i4 (in i4)))
+
+    ;; Sort nodes by layer number.
+    (set! nodes (grsp-matrix-row-sort "#asc" nodes 3))
+
+    ;; Extract boundaries of nodes.
+    (set! lm1 (grsp-matrix-esi 1 nodes))
+    (set! hm1 (grsp-matrix-esi 2 nodes))
+    (set! ln1 (grsp-matrix-esi 3 nodes))
+    (set! hn1 (grsp-matrix-esi 4 nodes)) 
+
+    ;; Evaluate nodes.
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+	   
+	   (set! id (array-ref nodes i1 0))
+	   (grsp-ann-node-eval id nodes conns count)
+	   
+	   (set! i1 (in i1)))
+	   
+    ;; Update iteration count.
+    (grsp-ann-counter-upd count 2)
+    
+    ;; Rebuild the list representing the ann.
+    (set! res1 (list nodes conns count))
+
+    res1))    
+
+    
+;;;; grsp-ann-idata-create - Creates an empty idata matrix of p_m1 rows.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_s1: matrix type or element that will fill it initially.
+;;   - "#I": Identity matrix.
+;;   - "#AI": Anti Identity matrix (anti diagonal).
+;;   - "#Q": Quincunx matrix.
+;;   - "#Test1": Test matrix 1 (LU decomposable)[1].
+;;   - "#Test2": Test matrix 2 (LU decomposable)[2].
+;;   - "#Ladder": Ladder matrix.
+;;   - "#Arrow": Arrowhead matrix.
+;;   - "#Hilbert": Hilbert matrix.
+;;   - "#Lehmer": Lehmer matrix.
+;;   - "#Pascal": Pascal matrix.
+;;   - "#CH": 0-1 checkerboard pattern matrix.
+;;   - "#CHR": 0-1 checerboard pattern matrix, randomized.
+;;   - "#+IJ": matrix containing the sum of i and j values.
+;;   - "#-IJ": matrix containing the substraction of i and j values.
+;;   - "#+IJ": matrix containing the product of i and j values.
+;;   - "#-IJ": matrix containing the quotient of i and j values.
+;;   - "#US": upper shift matrix.
+;;   - "#LS": lower shift matrix.
+;;   - "#rprnd": pseduo random values, normal distribution, sd = 0.15.
+;; - p_m1: number of rows.
+;;
+;; Notes:
+;; - See grsp-matrix-create fo detals on argument p_s1. Some configurations might
+;;   require a symmetric matrix (3 x 3) to work.
+;; - Column 0 will be set to zero. You should set the values  of this col
+;;   acording to the id of each node to be evaluated with the gived data.
+;;
+(define (grsp-ann-idata-create p_s1 p_m1)
+  (let ((res1 0))
+
+    (set! res1 (grsp-matrix-create p_s1 p_m1 3))
+    (set! res1 (grsp-matrix-col-aupdate res1 0 0))
+    (set! res1 (grsp-matrix-col-aupdate res1 1 1))
     
     res1))
