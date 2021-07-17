@@ -80,7 +80,8 @@
 	    grsp-ann-node-eval
 	    grsp-ann-actifun
 	    grsp-ann-nodes-eval
-	    grsp-ann-idata-create))
+	    grsp-ann-idata-create
+	    grsp-ann-net-nmutate-omth))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network.
@@ -840,8 +841,8 @@
 ;; Notes:
 ;; - See grsp-matrix-col-lmutation.
 ;; - You can mutate any element that corresponds to the ann, passed via arguments
-;;   p_l1 and p_l3 but be careful, since modifyin randomly elements other than
-;;   those mentioned above couldyield unexpected results.
+;;   p_l1 and p_l3 but be careful, since modifying random elements other than
+;;   those mentioned above could yield unexpected results.
 ;;
 (define (grsp-ann-net-mutate p_l2 p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 p_l1 p_l3)
   (let ((res1 '())
@@ -1021,7 +1022,9 @@
     res1))
 
 
-;;;; grsp-ann-node-eval - Evaluates node p_id and its related connections.
+;;;; grsp-ann-node-eval - Evaluates node p_id and its related connections. It
+;; reads the input connectins, applies the specified functon and exports the
+;; result to the output connections.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -1053,7 +1056,7 @@
     ;;   to zero).
     (set! res1 (grsp-matrix-row-select "#=" p_a1 0 p_id))
     (set! b1 (grsp-matrix-is-empty res1))
-    (cond ((equal? b1 #t) ;; Node exists.
+    (cond ((equal? b1 #t) ;; If Nnode exists.
 	   
 	   ;; If the node has incoming connections then we need to process them.
 	   (set! res2 (grsp-ann-conns-of-node "#to" p_a2 p_id))
@@ -1080,7 +1083,7 @@
 	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 0 p_id 5 m5)))
 	  
 	   ;; Commit.
-	  ((equal? b1 #f) ;; Node does not exist.
+	  ((equal? b1 #f) ;; If node does not exist.
 	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 3 p_id 1 0))
 	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 4 p_id 1 0))))
 	   
@@ -1162,7 +1165,7 @@
 
 
 ;;;; grsp-ann-nodes-eval - Perform one iteration of evaluation of all nodes
-;; in the ann.
+;; in ann p_l1 using the input data of p_a4.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -1176,6 +1179,9 @@
 ;;   - for the row whose col 0 is equal to the id value passed in col 0 of the
 ;;     idata matrix the input value will be stored.
 ;;   - Col 2: number.
+;;   - Col 3:
+;;     - 0: for node.
+;;     - 1: for connection.
 ;;
 ;; Notes:
 ;; - While normally p_a4 would be used to pass data to input nodes, the matrix
@@ -1199,9 +1205,8 @@
 	(i1 0)
 	(i4 0)
 	(j2 0)
-	;;(j3 0)
 	(n2 0)
-	;;(n3 0)
+	(n3 0)
 	(nodes 0)
 	(conns 0)
 	(count 0)
@@ -1226,7 +1231,13 @@
 	   (set! id (array-ref idata i4 0))
 	   (set! j2 (array-ref idata i4 1))
 	   (set! n2 (array-ref idata i4 2))
-	   (grsp-matrix-row-update "#=" nodes 0 id j2 n2)
+	   (set! n3 (array-ref idata i4 3))
+
+	   ;; Update either the nodes or conns matrix.
+	   (cond ((= n3 0)
+		  (set! nodes (grsp-matrix-row-update "#=" nodes 0 id j2 n2)))
+		 ((= n3 1)
+		  (set! conns (grsp-matrix-row-update "#=" conns 0 id j2 n2))))
 	   
 	   (set! i4 (in i4)))
 
@@ -1238,8 +1249,8 @@
     (set! hm1 (grsp-matrix-esi 2 nodes))
     (set! ln1 (grsp-matrix-esi 3 nodes))
     (set! hn1 (grsp-matrix-esi 4 nodes)) 
-
-    ;; Evaluate nodes.
+    
+    ;; Evaluate nodes and its input and output connections.
     (set! i1 lm1)
     (while (<= i1 hm1)
 	   
@@ -1248,7 +1259,7 @@
 	   
 	   (set! i1 (in i1)))
 	   
-    ;; Update iteration count.
+    ;; Update iteration counter.
     (grsp-ann-counter-upd count 2)
     
     ;; Rebuild the list representing the ann.
@@ -1257,7 +1268,8 @@
     res1))    
 
     
-;;;; grsp-ann-idata-create - Creates an empty idata matrix of p_m1 rows.
+;;;; grsp-ann-idata-create - Creates an empty idata matrix of p_m1 rows to
+;; provide input for nodes and conns.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -1290,12 +1302,48 @@
 ;;   require a symmetric matrix (3 x 3) to work.
 ;; - Column 0 will be set to zero. You should set the values  of this col
 ;;   acording to the id of each node to be evaluated with the gived data.
+;; - You might have to modify the elements of columns 0 and 1 in order to provide
+;;   useful values for different nodes.
 ;;
 (define (grsp-ann-idata-create p_s1 p_m1)
   (let ((res1 0))
 
-    (set! res1 (grsp-matrix-create p_s1 p_m1 3))
+    (set! res1 (grsp-matrix-create p_s1 p_m1 4))
     (set! res1 (grsp-matrix-col-aupdate res1 0 0))
     (set! res1 (grsp-matrix-col-aupdate res1 1 1))
+    (set! res1 (grsp-matrix-col-aupdate res1 1 4))
     
+    res1))
+
+
+;; grsp-ann-net-nmutate-omth - Safely mutates and randomizes ann p_l2 using a
+;; standard normal distribution.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_b1: select threading mode.
+;;   - #t: multi-threaded.
+;;   - #f: single-threaded.
+;; - p_l2: ann.
+;;
+(define (grsp-ann-net-nmutate-omth p_b1 p_l2)
+  (let ((res1 '())
+	(l1 '())
+	(l3 '())
+	(b1 #f))
+
+    (set! res1 p_l2)
+
+    ;; Set mutation lists.
+    (set! l1 (list 5 9))
+    (set! l3 (list 5 7))
+    
+    ;; Apply mutation.
+    (cond ((equal? b1 #f)
+	   (set! res1 (grsp-ann-net-mutate res1 0.5 "#normal" 0.0 0.15 "#normal" 0.0 0.15 l1 l3)))
+	  ((equal? b1 #t)
+	   (set! res1 (grsp-ann-net-mutate-mth res1 0.5 "#normal" 0.0 0.15 "#normal" 0.0 0.15 l1 l3))))
+
     res1))
