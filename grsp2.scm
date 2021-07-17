@@ -185,7 +185,8 @@
 	    grsp-rprnd
 	    grsp-ifrprnd
 	    grsp-nabs
-	    grsp-onhn))
+	    grsp-onhn
+	    grsp-salbm-omth))
 
 
 ;;;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -2009,3 +2010,25 @@
 	  
     res1))
 
+
+;;;; grsp-salbm-omth - Calculates the summation of the logarithm of base p_g1 of
+;; natural times from 1 to p_n1.
+;;
+;; Arguments:
+;; - p_b1: threading mode.
+;;   - #t: for multithreaded.
+;;   - #f: for single threaded calculation.
+;; - p_g1: base.
+;; - p_n1: iterations.
+;;
+(define (grsp-salbm-omth p_b1 p_g1 p_n1)
+  (let ((res1 0)
+	(i1 1))
+
+    (while (<= i1 p_n1)
+	   (cond ((equal? p_b1 #t)
+		  (set! res1 (+ res1 (grsp-log-mth p_g1 i1))))
+		 (else (set! res1 (+ res1 (grsp-log p_g1 i1)))))
+	   (set! i1 (in i1)))
+
+    res1))
