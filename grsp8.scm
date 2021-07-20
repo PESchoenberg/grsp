@@ -428,7 +428,7 @@
 ;; - p_l1: ann.
 ;;
 ;; Output:
-;; - The ann will be saved to csv files stored in a folder caled p_d1.
+;; - The ann will be saved to csv files stored in a folder called p_d1.
 ;;
 (define (grsp-ann2dbc p_d1 p_l1)
   (let ((res1 0)
@@ -616,9 +616,7 @@
     (set! c1 (array-ref count 0 1))
     (set! c2 (array-ref count 0 2))    
     (set! c0 (in c0))
-    ;;(grsp-ann-counter-upd count 0)
     (set! c0 (array-ref count 0 0))
-    ;;(grsp-ann-counter-upd count 3)
     (set! c2 (array-ref count 0 3))
 
     ;; Create nodes.
@@ -1004,7 +1002,7 @@
 ;; - function, ann, neural network.
 ;;
 ;; Arguments:
-;; - p_s1: tyoe of connection:
+;; - p_s1: type of connection:
 ;;   - "#fr": those going out of node p_id.
 ;;   - "#to": those reaching node p_id.
 ;; - P_a1: matrix (conns).
@@ -1078,11 +1076,15 @@
 	   (set! l1 (list n6))
 	   (set! m5 (grsp-ann-actifun n7 l1))
 	   
-	   ;; Process output nodes. These receive the output value of the node
-	   ;; as it is.
-	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 0 p_id 5 m5)))
+	   ;; Process output connections. These receive the output value of the
+	   ;; node as it is.
+	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 0 p_id 5 m5))
+
+	   ;; Reset element 6 to zero once the information has been passed to the
+	   ;; output connecions.
+	   (set! p_a1 (grsp-matrix-row-update "#=" p_a1 0 p_id 6 0)))
 	  
-	   ;; Commit.
+	  ;; Commit.
 	  ((equal? b1 #f) ;; If node does not exist.
 	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 3 p_id 1 0))
 	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 4 p_id 1 0))))
@@ -1159,7 +1161,9 @@
 	  ((= p_n1 17)
 	   (set! res1 (grsp-sqrbf l1)))
 	  ((= p_n1 18)
-	   (set! res1 (grsp-ifrprnd-num l1))))
+	   (set! res1 (grsp-ifrprnd-num l1)))
+	  ((= p_n1 19)
+	   (set! res1 (grsp-trcrnd l1))))
     
     res1))
 
@@ -1172,7 +1176,7 @@
 ;;
 ;; Arguments:
 ;; - p_l1: ann.
-;; - p_a4: matrix, idata. An m x 3 matrix containing the data for the input
+;; - p_a4: matrix, idata. An m x 4 matrix containing the data for the input
 ;;   nodes of the neural network according to the following format:
 ;;   - Col 0: id of the receptive node.
 ;;   - Col 1: number that coresponds to the column in the nodes matrix in which
@@ -1310,8 +1314,10 @@
 
     (set! res1 (grsp-matrix-create p_s1 p_m1 4))
     (set! res1 (grsp-matrix-col-aupdate res1 0 0))
-    (set! res1 (grsp-matrix-col-aupdate res1 1 1))
-    (set! res1 (grsp-matrix-col-aupdate res1 1 4))
+    ;;(set! res1 (grsp-matrix-col-aupdate res1 1 1))
+    (set! res1 (grsp-matrix-col-aupdate res1 1 5))
+    (set! res1 (grsp-matrix-col-aupdate res1 1 6))
+    (set! res1 (grsp-matrix-col-aupdate res1 3 0))
     
     res1))
 
@@ -1339,7 +1345,7 @@
     ;; Set mutation lists.
     (set! l1 (list 5 9))
     (set! l3 (list 5 7))
-    
+
     ;; Apply mutation.
     (cond ((equal? b1 #f)
 	   (set! res1 (grsp-ann-net-mutate res1 0.5 "#normal" 0.0 0.15 "#normal" 0.0 0.15 l1 l3)))
