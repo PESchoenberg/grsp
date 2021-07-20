@@ -54,7 +54,8 @@
 	    grsp-srelu
 	    grsp-gaussian
 	    grsp-sqrbf
-	    grsp-ifrprnd-num))
+	    grsp-ifrprnd-num
+	    grsp-trcrnd))
 
 
 ;;;; grsp-identity - Identity function (type 0).
@@ -93,7 +94,10 @@
   (let ((res1 0.0)
 	(n1 0.0))
 
+    ;; Extract.
     (set! n1 (grsp-opz (list-ref p_l1 0)))
+
+    ;; Solve.
     (cond ((>= n1 0)
 	   (set! res1 1.0)))
 
@@ -116,7 +120,10 @@
   (let ((res1 0.0)
 	(n1 0.0))
 
+    ;; Extract.
     (set! n1 (grsp-opz (list-ref p_l1 0)))
+
+    ;; Solve.
     (set! res1 (/ 1.0 (+ 1.0 (grsp-eex (* -1.0 n1)))))
 
     res1))
@@ -140,7 +147,10 @@
 	(e2 0.0)
 	(n1 0.0))
 
+    ;; Extract.
     (set! n1 (grsp-opz (list-ref p_l1 0)))
+
+    ;; Solve.
     (set! e1 (grsp-eex n1))
     (set! e2 (grsp-eex (* -1.0 n1)))
     (set! res1 (/ (- e1 e2) (+ e1 e2)))
@@ -166,8 +176,10 @@
 	(e2 0.0)
 	(n1 0.0))
 
+    ;; Extract.
     (set! n1 (grsp-opz (list-ref p_l1 0)))
 
+    ;; Solve.
     (parallel (set! e1 (grsp-eex n1))
 	      (set! e2 (grsp-eex (* -1.0 n1))))
     
@@ -192,7 +204,10 @@
   (let ((res1 0.0)
 	(n1 0.0))
 
+    ;; Extract.
     (set! n1 (grsp-opz (list-ref p_l1 0)))
+
+    ;; Solve.
     (cond ((> n1 0.0)
 	   (set! res1 n1)))
 
@@ -215,7 +230,10 @@
   (let ((res1 0.0)
 	(n1 0.0))
 
+    ;; Extract.
     (set! n1 (grsp-opz (list-ref p_l1 0)))
+
+    ;; Solve.
     (set! res1 (grsp-log 2 (+ 1.0 (grsp-eex n1))))
 
     res1))
@@ -239,8 +257,11 @@
 	(n1 0.0)
 	(n2 0.0))
 
+    ;; Extract.
     (set! n1 (grsp-opz (list-ref p_l1 0)))
-    (set! n2 (grsp-opz (list-ref p_l1 1)))    
+    (set! n2 (grsp-opz (list-ref p_l1 1)))
+
+    ;; Solve.
     (cond ((> n1 0.0)
 	   (set! res1 n1))
 	  ((<= n1 0.0)
@@ -265,7 +286,10 @@
   (let ((res1 0.0)
 	(n1 0.0))
 
+    ;; Extract.
     (set! n1 (grsp-opz (list-ref p_l1 0)))
+
+    ;; Solve.
     (cond ((< n1 0.0)
 	   (set! res1 0.01))
 	  ((>= n1 0.0)
@@ -294,9 +318,12 @@
 	(n2 0.0)
 	(n3 0.0))
 
+    ;; Extract.
     (set! n1 (grsp-opz (list-ref p_l1 0)))
     (set! n2 (grsp-opz (list-ref p_l1 1)))
-    (set! n3 (grsp-opz (list-ref p_l1 2)))    
+    (set! n3 (grsp-opz (list-ref p_l1 2)))
+
+    ;; Solve.
     (cond ((< n1 0.0)
 	   (set! res1 (* n2 n3 (- (grsp-eex n1) 1.0))))
 	  ((>= n1 0.0)
@@ -323,9 +350,12 @@
 	(n1 0.0)
 	(n2 0.0)
 	(n3 0.0))
-    
+
+    ;; Extract.
     (set! n1 (grsp-opz (list-ref p_l1 0)))
     (set! n2 (grsp-opz (list-ref p_l1 1)))
+
+    ;; Solve.
     (set! n3 (* (sqrt (/ 2.0 (grsp-pi))) (+ n1 (* n2 (expt n1 3)))))
     (set! res1 (* (/ n1 2.0) (+ 1.0 (tanh n3))))
 
@@ -349,9 +379,12 @@
   (let ((res1 0.0)
 	(n1 0.0)
 	(n2 0.0))
-    
+
+    ;; Extract.
     (set! n1 (grsp-opz (list-ref p_l1 0)))
     (set! n2 (grsp-opz (list-ref p_l1 1)))
+
+    ;; Solve.
     (cond ((< n1 0.0)
 	   (set! res1 (* n1 n2)))
 	  ((>= n1 0.0)
@@ -376,7 +409,10 @@
   (let ((res1 0.0)
 	(n1 0.0))
 
+    ;; Extract.
     (set! n1 (grsp-opz (list-ref p_l1 0)))
+
+    ;; Solve.
     (set! res1 (/ n1 (+ (abs n1))))
 
     res1))
@@ -399,7 +435,10 @@
 	(n1 0.0)
 	(n2 0.0))
 
+    ;; Extract.
     (set! n1 (grsp-opz (list-ref p_l1 0)))
+
+    ;; Solve.
     (set! n2 (expt n1 2))
     (cond ((< n1 0.0)
 	   (cond ((< n1 -2.0)
@@ -431,7 +470,10 @@
   (let ((res1 0.0)
 	(n1 0.0))
 
+    ;; Extract.
     (set! n1 (grsp-opz (list-ref p_l1 0)))
+
+    ;; Solve.
     (set! res1 (* (/ (- (sqrt (+ (expt n1 2))) 1.0) 2.0) n1))
 
     res1))
@@ -453,7 +495,10 @@
   (let ((res1 0.0)
 	(n1 0.0))
 
+    ;; Extract.
     (set! n1 (grsp-opz (list-ref p_l1 0)))
+
+    ;; Solve.
     (set! res1 (/ n1 (+ 1.0 (grsp-eex (* -1 n1)))))
 
     res1))
@@ -483,12 +528,14 @@
 	(tr 0.0)
 	(ar 0.0))
     
+    ;; Extract.    
     (set! n1 (grsp-opz (list-ref p_l1 0)))
     (set! tl (grsp-opz (list-ref p_l1 1)))
     (set! al (grsp-opz (list-ref p_l1 2)))
     (set! tr (grsp-opz (list-ref p_l1 3)))
     (set! ar (grsp-opz (list-ref p_l1 3)))
 
+    ;; Solve.
     (cond ((<= n1 tl)
 	   (set! res1 (+ tl (* al (- n1 tl)))))
 	  ((>= n1 tr)
@@ -513,7 +560,10 @@
   (let ((res1 0.0)
 	(n1 0.0))
 
+    ;; Extract.
     (set! n1 (grsp-opz (list-ref p_l1 0)))
+
+    ;; Solve.
     (set! res1 (expt (grsp-eex (* -1 n1)) 2))
 
     res1))
@@ -536,7 +586,10 @@
 	(n1 0.0)
 	(n2 0.0))
 
+    ;; Extract.
     (set! n1 (grsp-opz (list-ref p_l1 0)))
+
+    ;; Solve.
     (set! n2 (abs n1))
     (cond ((<= n2 1.0)
 	   (set! res1 (- 1 (/ (expt n1 2) 2))))
@@ -580,8 +633,44 @@
     (set! u1 (list-ref l1 1))
     (set! v1 (list-ref l1 2))
     (set! n1 (list-ref l1 3))    
-    
+
+    ;; Solve.
     (cond ((equal? (grsp-ifrprnd s1 u1 v1 n1) #t)
 	   (set! res1 1)))
 
+    res1))
+
+
+;; grsp-trcrnd - Simple truncation and rounding function (type 19).
+;;
+;; Keywords:
+;; - function, activation, ann.
+;;
+;; Arguments:
+;; - p_11: list containing the following parameters.
+;;   - Element 0: threshold.
+;;   - Element 1: number.
+;;   - Element 2: result if element1 < element 0.
+;;   - Element 3: result if element >= element 0.
+;;
+(define (grsp-trcrnd p_l1)
+  (let ((res1 0)
+	(l1 '())
+	(n0 0)
+	(n1 0)
+	(n2 0)
+	(n3 0))
+
+    ;; Extract list elements.
+    (set! l1 p_l1)
+    (set! n0 (list-ref l1 0))
+    (set! n1 (list-ref l1 1))
+    (set! n2 (list-ref l1 2))
+    (set! n3 (list-ref l1 3))
+
+    ;; Solve.
+    (cond ((< n1 n0)
+	   (set! res1 n2))
+	  (else (set! res1 n3)))
+    
     res1))
