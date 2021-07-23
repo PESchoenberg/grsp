@@ -81,7 +81,8 @@
 	    grsp-ann-actifun
 	    grsp-ann-nodes-eval
 	    grsp-ann-idata-create
-	    grsp-ann-net-nmutate-omth))
+	    grsp-ann-net-nmutate-omth
+	    grsp-ann-idata-update))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network.
@@ -1021,7 +1022,7 @@
 
 
 ;;;; grsp-ann-node-eval - Evaluates node p_id and its related connections. It
-;; reads the input connectins, applies the specified functon and exports the
+;; reads the input connections, applies the specified functon and exports the
 ;; result to the output connections.
 ;;
 ;; Keywords:
@@ -1033,6 +1034,9 @@
 ;; - p_a2: matrix (conns).
 ;; - p_a3: matrix (count).
 ;;
+;; Notes:
+;; -  Keep in mind TL0 and TL1 while using this function.
+;;
 (define (grsp-ann-node-eval p_id p_a1 p_a2 p_a3)
   (let ((res1 0)
 	(res2 0)
@@ -1040,6 +1044,7 @@
 	(res4 0)
 	(l1 '())
 	(b1 #f)
+	(b2 #f)
 	(n1 0)
 	(n2 0)
 	(n5 0)
@@ -1054,11 +1059,21 @@
     ;;   to zero).
     (set! res1 (grsp-matrix-row-select "#=" p_a1 0 p_id))
     (set! b1 (grsp-matrix-is-empty res1))
-    (cond ((equal? b1 #t) ;; If Nnode exists.
-	   
+    (cond ((equal? b1 #t) ;; If node exists.
+	   ;; ***
+	   (display " nf ")
+	   ;; ***
 	   ;; If the node has incoming connections then we need to process them.
 	   (set! res2 (grsp-ann-conns-of-node "#to" p_a2 p_id))
-	   (cond ((equal? (grsp-matrix-is-empty res2) #f)
+	   (set! b2 (grsp-matrix-is-empty res2))
+	   ;; ***
+	   (display " res2: ")
+	   (display res2)
+	   ;; ***
+	   (cond ((equal? b2 #f)
+		  ;; ***
+		  (display " res2 ok ")
+		  ;; ***
 		  (set! n1 (grsp-matrix-opio "#+c" res2 5))
 		  (set! n2 (grsp-matrix-opio "#+c" res2 7))
 		  (set! n6 (+ n1 n2))
@@ -1071,6 +1086,14 @@
 	   
 	   ;; Set value.
 	   (set! n6 (* (+ n6 n9) n5))
+	   ;; ***
+	   (display n5 )
+	   (display " ")
+	   (display n9 )
+	   (display " n6: ")
+	   (display n6 )
+	   (display " ")
+	   ;; ***
 	   
 	   ;; Select activation function and calculate.
 	   (set! l1 (list n6))
@@ -1080,12 +1103,19 @@
 	   ;; node as it is.
 	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 0 p_id 5 m5))
 
-	   ;; Reset element 6 to zero once the information has been passed to the
-	   ;; output connecions.
+	   ;; Reset element 5 of the input nodes going to node p_id to zero once
+	   ;; the data has been passed to the output connections.
+	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 4 p_id 5 0))
+	   
+	   ;; Reset element 6 of the corresponding node to zero once the data
+	   ;; has been passed to the output connections.
 	   (set! p_a1 (grsp-matrix-row-update "#=" p_a1 0 p_id 6 0)))
 	  
 	  ;; Commit.
 	  ((equal? b1 #f) ;; If node does not exist.
+	   ;; ***
+	   (display " nnf ")
+	   ;; ***	   
 	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 3 p_id 1 0))
 	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 4 p_id 1 0))))
 	   
@@ -1259,6 +1289,12 @@
     (while (<= i1 hm1)
 	   
 	   (set! id (array-ref nodes i1 0))
+	   ;; ***
+	   (display i1)
+	   (display " ")
+	   (display id)
+	   (display " - ")
+	   ;; ***
 	   (grsp-ann-node-eval id nodes conns count)
 	   
 	   (set! i1 (in i1)))
@@ -1352,4 +1388,87 @@
 	  ((equal? b1 #t)
 	   (set! res1 (grsp-ann-net-mutate-mth res1 0.5 "#normal" 0.0 0.15 "#normal" 0.0 0.15 l1 l3))))
 
+    res1))
+
+
+;;;; grsp-ann-idata-update - Input the data of p_a4 into ann p_l1.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_l1: ann.
+;; - p_a4: matrix, idata. An m x 4 matrix containing the data for the input
+;;   nodes of the neural network according to the following format:
+;;   - Col 0: id of the receptive node.
+;;   - Col 1: number that coresponds to the column in the nodes matrix in which
+;;   - for the row whose col 0 is equal to the id value passed in col 0 of the
+;;     idata matrix the input value will be stored.
+;;   - Col 2: number.
+;;   - Col 3:
+;;     - 0: for node.
+;;     - 1: for connection.
+;;
+;; Notes:
+;; - While normally p_a4 would be used to pass data to input nodes, the matrix
+;;   could be used to pass other values to the nodes matrix.
+;;
+;; Output:
+;; - Updated ann p_l1.
+;;
+(define (grsp-ann-idata-update p_l1 p_a4)
+  (let ((res1 '())
+	(res2 0))
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)	
+	(lm4 0)
+	(hm4 0)
+	(ln4 0)
+	(hn4 0)
+	(id 0)
+	(i1 0)
+	(i4 0)
+	(j2 0)
+	(n2 0)
+	(n3 0)
+	(nodes 0)
+	(conns 0)
+	(count 0)
+	(idata 0))
+
+    ;; Extract matrices and lists.
+    (set! nodes (list-ref p_l1 0))
+    (set! conns (list-ref p_l1 1))
+    (set! count (list-ref p_l1 2))    
+    (set! idata p_a4)
+        
+    ;; Extract boundaries of idata.
+    (set! lm4 (grsp-matrix-esi 1 idata))
+    (set! hm4 (grsp-matrix-esi 2 idata))
+    (set! ln4 (grsp-matrix-esi 3 idata))
+    (set! hn4 (grsp-matrix-esi 4 idata)) 	  
+
+    ;; Pass idata data to the ann.
+    (set! i4 lm4)
+    (while (<= i4 hm4)
+
+	   (set! id (array-ref idata i4 0))
+	   (set! j2 (array-ref idata i4 1))
+	   (set! n2 (array-ref idata i4 2))
+	   (set! n3 (array-ref idata i4 3))
+
+	   ;; Update either the nodes or conns matrix.
+	   (cond ((= n3 0)
+		  (set! nodes (grsp-matrix-row-update "#=" nodes 0 id j2 n2)))
+		 ((= n3 1)
+		  (set! conns (grsp-matrix-row-update "#=" conns 0 id j2 n2))))
+	   
+	   (set! i4 (in i4)))
+
+    ;; Rebuild the list representing the ann.
+    (set! res1 (list nodes conns count))
+    
+    
     res1))
