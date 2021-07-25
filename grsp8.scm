@@ -82,7 +82,8 @@
 	    grsp-ann-nodes-eval
 	    grsp-ann-idata-create
 	    grsp-ann-net-nmutate-omth
-	    grsp-ann-idata-update))
+	    grsp-ann-idata-update
+	    grsp-ann-odata-create))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network.
@@ -1206,75 +1207,32 @@
 ;;
 ;; Arguments:
 ;; - p_l1: ann.
-;; - p_a4: matrix, idata. An m x 4 matrix containing the data for the input
-;;   nodes of the neural network according to the following format:
-;;   - Col 0: id of the receptive node.
-;;   - Col 1: number that coresponds to the column in the nodes matrix in which
-;;   - for the row whose col 0 is equal to the id value passed in col 0 of the
-;;     idata matrix the input value will be stored.
-;;   - Col 2: number.
-;;   - Col 3:
-;;     - 0: for node.
-;;     - 1: for connection.
 ;;
 ;; Notes:
-;; - While normally p_a4 would be used to pass data to input nodes, the matrix
-;;   could be used to pass other values to the nodes matrix.
+;; - Use grsp-ann-idata-update before this function to pass actual data to the ann.
 ;;
 ;; Output:
-;; - Matrix, odata (same format as idata).
+;; - Updated ann.
 ;;
-(define (grsp-ann-nodes-eval p_l1 p_a4)
+(define (grsp-ann-nodes-eval p_l1)
   (let ((res1 '())
-	(res2 0)
 	(lm1 0)
 	(hm1 0)
 	(ln1 0)
 	(hn1 0)	
-	(lm4 0)
-	(hm4 0)
-	(ln4 0)
-	(hn4 0)
 	(id 0)
 	(i1 0)
-	(i4 0)
-	(j2 0)
-	(n2 0)
-	(n3 0)
 	(nodes 0)
 	(conns 0)
-	(count 0)
-	(idata 0))
+	(count 0))
 
+    (set! res1 p_l1)
+    
     ;; Extract matrices and lists.
-    (set! nodes (list-ref p_l1 0))
-    (set! conns (list-ref p_l1 1))
-    (set! count (list-ref p_l1 2))    
-    (set! idata p_a4)
-        
-    ;; Extract boundaries of idata.
-    (set! lm4 (grsp-matrix-esi 1 idata))
-    (set! hm4 (grsp-matrix-esi 2 idata))
-    (set! ln4 (grsp-matrix-esi 3 idata))
-    (set! hn4 (grsp-matrix-esi 4 idata)) 	  
-
-    ;; Pass idata data to the ann.
-    (set! i4 lm4)
-    (while (<= i4 hm4)
-
-	   (set! id (array-ref idata i4 0))
-	   (set! j2 (array-ref idata i4 1))
-	   (set! n2 (array-ref idata i4 2))
-	   (set! n3 (array-ref idata i4 3))
-
-	   ;; Update either the nodes or conns matrix.
-	   (cond ((= n3 0)
-		  (set! nodes (grsp-matrix-row-update "#=" nodes 0 id j2 n2)))
-		 ((= n3 1)
-		  (set! conns (grsp-matrix-row-update "#=" conns 0 id j2 n2))))
-	   
-	   (set! i4 (in i4)))
-
+    (set! nodes (list-ref res1 0))
+    (set! conns (list-ref res1 1))
+    (set! count (list-ref res1 2))
+    
     ;; Sort nodes by layer number.
     (set! nodes (grsp-matrix-row-sort "#asc" nodes 3))
 
@@ -1412,13 +1370,15 @@
 ;; Notes:
 ;; - While normally p_a4 would be used to pass data to input nodes, the matrix
 ;;   could be used to pass other values to the nodes matrix.
+;; - Use this function before calling grsp-ann-nodes-eval in order to provide
+;;   input data to the nn.
 ;;
 ;; Output:
 ;; - Updated ann p_l1.
 ;;
 (define (grsp-ann-idata-update p_l1 p_a4)
   (let ((res1 '())
-	(res2 0))
+	(res2 0)
 	(lm1 0)
 	(hm1 0)
 	(ln1 0)
@@ -1470,5 +1430,35 @@
     ;; Rebuild the list representing the ann.
     (set! res1 (list nodes conns count))
     
-    
     res1))
+
+
+;;;; grsp-ann-odata-create - Creates a current output data matrix for ann p_l1.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_l1: ann.
+;;
+;; Output: matrix, odata. An m x 5 matrix containing the data from the output
+;;   nodes of the neural network according to the following format:
+;;   - Col 0: id of each output node.
+;;   - Col 1: layer.
+;;   - Col 2: layer pos.
+;;   - Col 3: number (result).
+;;
+(define (grsp-ann-odata-create p_l1)
+  (let ((res1 0)
+	(res2 0)
+	(nodes 0))
+
+    ;; Extract matrices.
+    (set! nodes (list-ref p_l1 0))
+
+    ;; Select output nodes.
+    (set! res2 (grsp-matrix-row-select "#=" nodes 2 2))
+    (set! res1 (grsp-matrix-col-selectn res2 (list 0 3 4 6)))
+					
+    res1))
+
