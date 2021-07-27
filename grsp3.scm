@@ -4419,7 +4419,7 @@
 
 
 ;; grsp-matrix-te2 - Total elements of a row or column. Returns
-;; a 2 x 1 matix cointaining the number of rows and columns of p_a1.
+;; a 2 x 1 matrix containing the number of rows and columns of p_a1.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors, relational.
