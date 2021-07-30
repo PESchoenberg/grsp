@@ -83,7 +83,8 @@
 	    grsp-ann-idata-create
 	    grsp-ann-net-nmutate-omth
 	    grsp-ann-idata-update
-	    grsp-ann-odata-create))
+	    grsp-ann-odata-update
+	    grsp-odata2idata))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network.
@@ -1308,7 +1309,6 @@
 
     (set! res1 (grsp-matrix-create p_s1 p_m1 4))
     (set! res1 (grsp-matrix-col-aupdate res1 0 0))
-    ;;(set! res1 (grsp-matrix-col-aupdate res1 1 1))
     (set! res1 (grsp-matrix-col-aupdate res1 1 5))
     (set! res1 (grsp-matrix-col-aupdate res1 1 6))
     (set! res1 (grsp-matrix-col-aupdate res1 3 0))
@@ -1363,7 +1363,7 @@
 ;;   - for the row whose col 0 is equal to the id value passed in col 0 of the
 ;;     idata matrix the input value will be stored.
 ;;   - Col 2: number.
-;;   - Col 3:
+;;   - Col 3: type, the kind of element that will receive this data.
 ;;     - 0: for node.
 ;;     - 1: for connection.
 ;;
@@ -1433,7 +1433,7 @@
     res1))
 
 
-;;;; grsp-ann-odata-create - Creates a current output data matrix for ann p_l1.
+;;;; grsp-ann-odata-update - Provides a current output data matrix for ann p_l1.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -1441,14 +1441,15 @@
 ;; Arguments:
 ;; - p_l1: ann.
 ;;
-;; Output: matrix, odata. An m x 5 matrix containing the data from the output
+;; Output:
+;; - Matrix, odata. An m x 4 matrix containing the data from the output
 ;;   nodes of the neural network according to the following format:
 ;;   - Col 0: id of each output node.
 ;;   - Col 1: layer.
 ;;   - Col 2: layer pos.
 ;;   - Col 3: number (result).
 ;;
-(define (grsp-ann-odata-create p_l1)
+(define (grsp-ann-odata-update p_l1)
   (let ((res1 0)
 	(res2 0)
 	(nodes 0))
@@ -1462,3 +1463,118 @@
 					
     res1))
 
+
+;;;; grsp-odata2idata - Provides feedback from odata to idata. Transforms
+;; data from the output layer of an ann into data for the input layer of the
+;; same or a different network.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_a5: odata.
+;; - p_a6: odata to idata conversion table. An m x 2 matrix with the following
+;;   format:
+;;   - Col 0: input idata layer pos (pos input).
+;;   - Col 1: output odata layer pos (pos output).
+;;
+;; Output:
+;; - The function delivers an idata table based on the odata pand conversion
+;;   table provided.
+;; - See grsp-ann-idata-update for a description of the idata format.
+;; - See grsp-ann-odata-update for a description of the odata format.
+;;
+(define (grsp-odata2idata p_a5 p_a6)
+  (let ((res1 0)
+	(res2 0)
+	(idata 0)
+	(odata 0)
+	(conv 0)
+	(lm4 0)
+	(hm4 0)
+	(ln4 0)
+	(hn4 0)
+	(lm5 0)
+	(hm5 0)
+	(ln5 0)
+	(hn5 0)
+	(lm6 0)
+	(hm6 0)
+	(ln6 0)
+	(hn6 0)
+	(m5 0)
+	(m6 0)
+	(i5 0)
+	(j5 0)
+	(i6 0)
+	(j6 0)
+	(id0 0)
+	(id1 0)
+	(id2 0)
+	(id3 0)
+	(od0 0)
+	(od1 0)
+	(od2 0)
+	(od3 0)
+	(cd0 0)
+	(cd1 0))
+
+    (set! odata p_a5)
+    (set! conv p_a6)
+    
+    ;; Extract boundaries of conversion table.
+    (set! lm6 (grsp-matrix-esi 1 conv))
+    (set! hm6 (grsp-matrix-esi 2 conv))
+    (set! ln6 (grsp-matrix-esi 3 conv))
+    (set! hn6 (grsp-matrix-esi 4 conv))
+
+    ;; Find how many things should be converted.
+    (set! m6 (grsp-matrix-te1 lm6 hm6))
+    
+    ;; Create idata.
+    ;;(set! idata (grsp-matrix-create 0 m6 4))
+    (set! idata (grsp-ann-idata-create 0 m6))
+    
+    (while (<= i6 hm6)
+
+	   ;; Get row from conversion table.
+	   (set! cd0 (array-ref conv i6 0))
+	   (set! cd1 (array-ref conv i6 1))
+
+	   (set! res2 (grsp-matrix-row-select "#=" odata 1 cd1))
+	   (cond ((equal? (grsp-matrix-is-empty res2) #f)
+		  (array-set! idata (array-ref odata cd1 3) i6 2)
+		  (array-set! idata 0 i6 3)))
+	   
+	   ;; Find if there is a row in odata that shares attributes i5 and j5
+	   ;; as layer and layer pos numbers. If there is such record, add the
+	   ;; corresponding attributes to res2 (idata).
+
+	   ;; Odata:
+	   ;;   - Col 0: id of each output node.
+	   ;;   - Col 1: layer.
+	   ;;   - Col 2: layer pos.
+	   ;;   - Col 3: number (result).
+
+	   ;; Idata:
+	   ;;   - Col 0: id of the receptive node.
+	   ;;   - Col 1: number that corresponds to the column in the nodes matrix in which
+	   ;;   - for the row whose col 0 is equal to the id value passed in col 0 of the
+	   ;;     idata matrix the input value will be stored.
+	   ;;   - Col 2: number.
+	   ;;   - Col 3: type, the kind of element that will receive this data.
+	   ;;     - 0: for node.
+	   ;;     - 1: for connection.	   
+
+	   ;; Conv:
+	   ;;   - Col 0: input idata layer pos.
+	   ;;   - Col 1: output odata layer pos.
+	   
+	   ;; Set col 0 (id) of idata .
+
+	   (set! i6 (in i6)))
+
+    ;; Results.
+    (set! res1 idata)
+	  
+    res1))
