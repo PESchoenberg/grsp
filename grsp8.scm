@@ -190,7 +190,7 @@
 	   ;; Backpropagation
 	   ;;))
     
-    ;; Results.
+    ;; Compose results.
     (set! res1 l1)
     
     res1))
@@ -219,7 +219,7 @@
 	   ;;(set! p_l1 (grsp-ann-net-reconf p_s1 p_l1))
 	   (set! i1 (in i1)))
     
-    ;; Results.
+    ;; Compose results.
     (set! res1 p_l1)
     
     res1))
@@ -737,7 +737,7 @@
 			 (set! i3 (in i3))))			
 		 (else (set! b1 #f))))
 	    
-    ;; Results.
+    ;; Compose results.
     (set! res1 (grsp-ann-net-preb nodes conns count))
     
     res1))
@@ -1478,11 +1478,27 @@
 ;;   - Col 0: input idata layer pos (pos input).
 ;;   - Col 1: output odata layer pos (pos output).
 ;;
-;; Output:
+;; Notes:
 ;; - The function delivers an idata table based on the odata pand conversion
 ;;   table provided.
 ;; - See grsp-ann-idata-update for a description of the idata format.
+;;   - Col 0: id of the receptive node.
+;;   - Col 1: number that corresponds to the column in the nodes matrix in which
+;;   - for the row whose col 0 is equal to the id value passed in col 0 of the
+;;     idata matrix the input value will be stored.
+;;   - Col 2: number.
+;;   - Col 3: type, the kind of element that will receive this data.
+;;     - 0: for node.
+;;     - 1: for connection.	
 ;; - See grsp-ann-odata-update for a description of the odata format.
+;;   - Col 0: id of each output node.
+;;   - Col 1: layer.
+;;   - Col 2: layer pos.
+;;   - Col 3: number (result).
+;;
+;; Output:
+;; - a matrix in idata table that can take the place of that table or be
+;;   appended to it.
 ;;
 (define (grsp-odata2idata p_a5 p_a6)
   (let ((res1 0)
@@ -1490,22 +1506,12 @@
 	(idata 0)
 	(odata 0)
 	(conv 0)
-	(lm4 0)
-	(hm4 0)
-	(ln4 0)
-	(hn4 0)
-	(lm5 0)
-	(hm5 0)
-	(ln5 0)
-	(hn5 0)
 	(lm6 0)
 	(hm6 0)
 	(ln6 0)
 	(hn6 0)
 	(m5 0)
 	(m6 0)
-	(i5 0)
-	(j5 0)
 	(i6 0)
 	(j6 0)
 	(id0 0)
@@ -1532,7 +1538,6 @@
     (set! m6 (grsp-matrix-te1 lm6 hm6))
     
     ;; Create idata.
-    ;;(set! idata (grsp-matrix-create 0 m6 4))
     (set! idata (grsp-ann-idata-create 0 m6))
     
     (while (<= i6 hm6)
@@ -1546,35 +1551,11 @@
 		  (array-set! idata (array-ref odata cd1 3) i6 2)
 		  (array-set! idata 0 i6 3)))
 	   
-	   ;; Find if there is a row in odata that shares attributes i5 and j5
-	   ;; as layer and layer pos numbers. If there is such record, add the
-	   ;; corresponding attributes to res2 (idata).
-
-	   ;; Odata:
-	   ;;   - Col 0: id of each output node.
-	   ;;   - Col 1: layer.
-	   ;;   - Col 2: layer pos.
-	   ;;   - Col 3: number (result).
-
-	   ;; Idata:
-	   ;;   - Col 0: id of the receptive node.
-	   ;;   - Col 1: number that corresponds to the column in the nodes matrix in which
-	   ;;   - for the row whose col 0 is equal to the id value passed in col 0 of the
-	   ;;     idata matrix the input value will be stored.
-	   ;;   - Col 2: number.
-	   ;;   - Col 3: type, the kind of element that will receive this data.
-	   ;;     - 0: for node.
-	   ;;     - 1: for connection.	   
-
-	   ;; Conv:
-	   ;;   - Col 0: input idata layer pos.
-	   ;;   - Col 1: output odata layer pos.
-	   
-	   ;; Set col 0 (id) of idata .
+	   ;; Set col 0 (id) of idata.
 
 	   (set! i6 (in i6)))
 
-    ;; Results.
+    ;; Compose results.
     (set! res1 idata)
 	  
     res1))
