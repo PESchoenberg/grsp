@@ -102,8 +102,16 @@
 ;;   [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Test_functions_for_optimization [Accessed 13
 ;;   April 2021].
-;; - [32] https://www.gnu.org/software/guile/manual/html_node/Random.html
-;; - [33] https://www.gnu.org/software/guile/manual/html_node/Parallel-Forms.html
+;; - [32] Gnu.org. 2021. Random (Guile Reference Manual). [online] Available at:
+;;   https://www.gnu.org/software/guile/manual/html_node/Random.html
+;;   [Accessed 30 July 2021].
+;; - [33] Gnu.org. 2021. Parallel Forms (Guile Reference Manual). [online]
+;;   Available at:
+;;   https://www.gnu.org/software/guile/manual/html_node/Parallel-Forms.html
+;;   [Accessed 30 July 2021].
+;; - [34] Mathworld.wolfram.com. 2021. Hailstone Number -- from Wolfram MathWorld.
+;;   [online] Available at: https://mathworld.wolfram.com/HailstoneNumber.html
+;;   [Accessed 30 July 2021].
 
 
 (define-module (grsp grsp2)
@@ -186,7 +194,8 @@
 	    grsp-ifrprnd
 	    grsp-nabs
 	    grsp-onhn
-	    grsp-salbm-omth))
+	    grsp-salbm-omth
+	    grsp-hailstone-number))
 
 
 ;;;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -1981,8 +1990,8 @@
     res1))
 
 
-;; grsp-onhn - Given the operation defined by p_s1, performs it between p_n1 and
-;; 1/p_n1.
+;;;; grsp-onhn - Given the operation defined by p_s1, performs it between p_n1
+;; and 1/p_n1.
 ;;
 ;; Keywords:
 ;; - function, absolute.
@@ -2014,6 +2023,9 @@
 ;;;; grsp-salbm-omth - Calculates the summation of the logarithm of base p_g1 of
 ;; natural times from 1 to p_n1.
 ;;
+;; Keywords:
+;; - function, absolute.
+;;
 ;; Arguments:
 ;; - p_b1: threading mode.
 ;;   - #t: for multithreaded.
@@ -2032,3 +2044,26 @@
 	   (set! i1 (in i1)))
 
     res1))
+
+
+;;;; grsp-hailstone-number - Calculates the first  Hailstone number based on
+;; integer p_n1.
+;;
+;; Keywords:
+;; - function, absolute.
+;;
+;; Arguments:
+;; - p_n1: integer > 0.
+;;
+;; Sources:
+;; - [34].
+;;
+(define (grsp-hailstone-number p_n1)
+  (let ((res1 0))
+
+    (cond ((equal? (odd? p_n1) #t)
+	   (set! res1 (+ (* 3 p_n1) 1)))
+	  (else (set! res1 (/ p_n1 2))))
+    
+    res1))
+
