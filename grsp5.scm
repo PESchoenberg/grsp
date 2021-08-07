@@ -659,7 +659,7 @@
     ;; Multiply each instance of x by its probability.
     (set! res2 (grsp-matrix-opew "#*" p_a1 p_a2))
 
-    ;; Summation of res2 elements.
+    ;; Compose results.
     (set! res1 (grsp-matrix-opio "#+" res2 0))
 	  
     res1))
@@ -734,7 +734,7 @@
     (set! res3 (grsp-matrix-trim "#<" res3 (array-ref res2 0 1)))
     (set! res3 (grsp-matrix-trim "#>" res3 (array-ref res2 0 3)))
 
-    ;; Results.
+    ;; Compose results.
     (set! res1 (grsp-mean1 res3))
 
     res1))
@@ -766,7 +766,7 @@
     ;; Square every element in matrix.
     (set! res2 (grsp-matrix-opsc "#expt" res2 2))
 
-    ;; Results.
+    ;; Compose results.
     (set! res1 (sqrt (* n2 (grsp-matrix-opio "#+" res2 0))))
 
     res1))
@@ -1164,7 +1164,7 @@
     ;; Calculate (res2)**3.
     (set! res2 (grsp-matrix-opsc "#expt" res2 3))
 
-    ;; Final result.
+    ;; Compose results.
     (set! res1 (* (/ 1 (grsp-matrix-total-elements res2))
 		  (grsp-matrix-opio "#+" res2 0)))
 
@@ -1194,7 +1194,7 @@
     ;; Calculate (res2)**4.
     (set! res2 (grsp-matrix-opsc "#expt" res2 4))
 
-    ;; Final result.  
+    ;; Compose results.
     (set! res1 (/ (grsp-mean1 res2) (expt p_x3 4)))
 
     res1))
@@ -1497,6 +1497,7 @@
 		  (set! j2 (in j2)))
 	   (set! i2 (in i2)))
 
+    ;; Compose results.    
     (set! res1 res3)
   
     res1))
@@ -1554,7 +1555,7 @@
 		  (array-set! res2 n4 i2 hn2)))		  
 	   (set! i2 (in i2)))
 
-    ;; Results.
+    ;; Compose results.
     (array-set! res1 n2 i1 0)
     (array-set! res1 n3 i1 1)   
     
@@ -1863,7 +1864,7 @@
     ;; res4
     (set! res4 (expt (grsp-e) (* -1 (/ p_x1 p_t1))))
 
-    ;; Complete formula.
+    ;; Compose results.
     (set! res1 (* res2 res3 res4))
     
     res1))
@@ -1898,7 +1899,7 @@
 
     (set! res1 (* res2 res3 res4))	  
 
-	  res1))
+    res1))
 
 
 ;;;; grsp-gamma-pdf2 - Probability density function, gamma distribution,
@@ -1938,7 +1939,7 @@
     ;; res4
     (set! res4 (expt (grsp-e) (* -1 p_b1 p_x1)))
 
-    ;; Complete.
+    ;; Compose results.
     (set! res1 (* res2 res3 res4))
     
     res1))
@@ -2007,7 +2008,7 @@
     ;; res3
     (set! res3 (grsp-complex-ligamma p_b2 p_s1 p_k1 (/ p_x1 p_t1) p_n1))
 
-    ;; Complete.
+    ;; Compose results.
     (set! res1 (* res2 res3)) 
     
     res1))
@@ -2075,7 +2076,7 @@
     ;; res3
     (set! res3 (grsp-complex-ligamma p_b2 p_s1 p_a1 (* p_b1 p_x1) p_n1))
 
-    ;; Complete.
+    ;; Compose results.
     (set! res1 (* res2 res3)) 
     
     res1))
@@ -2384,7 +2385,7 @@
     ;; res4
     (set! res4 (expt (grsp-e) res3))
 
-    ;; res1
+    ;; Compose results.
     (set! res1 (* res2 res4))
     
     res1))
@@ -2466,7 +2467,7 @@
     ;; res4
     (set! res4 (* 2 (log (/ p_x4 p_x3))))
 
-    ;; res1
+    ;; Compose results.
     (set! res1 (* 0.5 (+ res2 res3 -1 res4)))
 
     res1))
@@ -2771,7 +2772,7 @@
     (set! n2 (+ 1 (/ 3 p_k1)))
     (set! n3 (* (grsp-complex-gamma p_b2 p_s1 n2 p_n1) p_l1))
     
-    ;; Main.
+    ;; Compose results.
     (set! res1 (/ (- n3 (* 3 u1 va) (expt u1 3)) (expt sd 3)))
     
     res1))

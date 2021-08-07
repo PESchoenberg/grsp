@@ -359,6 +359,7 @@
 	  ((eq? defined #f)
 	   (set! res1 +inf.0)))
 
+    ;; Compose results.    
     (set! res1 (grsp-intifint p_b2 p_z1 res1))
     
     res1))
@@ -410,6 +411,7 @@
 	  ((eq? defined #f)
 	   (set! res1 +inf.0)))
 
+    ;; Compose results.    
     (set! res1 (grsp-intifint p_b2 p_z1 res1))
     
     res1))
@@ -539,6 +541,7 @@
 	  ((eq? defined #f)
 	   (set! res1 +inf.0)))
 
+    ;; Compose results.    
     (set! res1 (grsp-intifint p_b2 z2 res1))
     
     res1))
@@ -611,7 +614,7 @@
 				 (grsp-complex-gamma p_b2 p_s1 (+ p_z1 i1 1) p_n1))))		 
 	   (set! i1 (in i1)))   
 
-    ;; Complete.
+    ;; Compose results.
     (set! res1 (* res2 res3))
 
     res1))
@@ -765,7 +768,7 @@
 		 (expt p_z1 (- 1 p_b1))))
     (set! n32 (grsp-complex-chm (+ p_a1 (- 1 p_b1)) (- 2 p_b1) p_z1 p_n1))
     
-    ;; Final result.
+    ;; Compose results.
     (set! res1 (+ (* n21 n22) (* n31 n32)))
     
     res1))
@@ -800,7 +803,7 @@
 	   (set! res3 (+ res2 (/ res4 res5)))
 	   (set! i1 (in i1)))
 
-    ;; Final.
+    ;; Compose results.
     (set! res1 (* res2 res3))
 	   
     res1))
@@ -835,7 +838,7 @@
 	   (set! res3 (+ res2 (/ res4 res5)))
 	   (set! i1 (in i1)))
 
-    ;; Final.
+    ;; Compose results.
     (set! res1 (* res2 res3))
 	   
     res1))

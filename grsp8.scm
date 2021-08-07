@@ -247,7 +247,7 @@
     (set! p_a2 (grsp-matrix-row-delete s1 p_a2 1 0))
     (set! p_a1 (grsp-matrix-row-delete s1 p_a1 1 0))
     
-    ;; Rebuild the list.
+    ;; Compose results.
     (set! res1 (list p_a1 p_a2 p_a3))
 
     res1))
@@ -415,7 +415,7 @@
 		  (set! conns (grsp-ann-item-create nodes conns count 1 l3))
 		  (set! i1 (in i1)))))
     
-    ;; Rebuild the list representing the ann.
+    ;; Compose results.
     (set! res1 (list nodes conns count))
     
     res1))
@@ -475,7 +475,7 @@
     (set! conns (grsp-dbc2mc-csv p_d1 "conns.csv"))
     (set! count (grsp-dbc2mc-csv p_d1 "count.csv"))    
 
-    ;; Rebuild the list representing the ann.
+    ;; Compose results.
     (set! res1 (list nodes conns count))
     
     res1))
@@ -869,7 +869,7 @@
     (set! l3 p_l3)
     (set! conns (grsp-matrix-col-lmutation conns p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 l3))
 
-    ;; Rebuild the list representing the ann.
+    ;; Compose results.
     (set! res1 (list nodes conns count))    
     
     res1))
@@ -932,7 +932,7 @@
 	      ((set! l3 p_l3)
 	       (set! conns (grsp-matrix-col-lmutation conns p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 l3))))
 
-    ;; Rebuild the list representing the ann.
+    ;; Compose results.
     (set! res1 (list nodes conns count))    
     
     res1))
@@ -970,7 +970,7 @@
     (set! nodes (grsp-matrix-row-delete "#=" nodes 1 0))
     (set! conns (grsp-matrix-row-delete "#=" conns 1 0))
 
-    ;; Rebuild the list representing the ann.
+    ;; Compose results.
     (set! res1 (list nodes conns count))
 
     res1))
@@ -1261,7 +1261,7 @@
     ;; Update iteration counter.
     (grsp-ann-counter-upd count 2)
     
-    ;; Rebuild the list representing the ann.
+    ;; Compose results.
     (set! res1 (list nodes conns count))
 
     res1))    
@@ -1427,7 +1427,7 @@
 	   
 	   (set! i4 (in i4)))
 
-    ;; Rebuild the list representing the ann.
+    ;; Compose results.
     (set! res1 (list nodes conns count))
     
     res1))
@@ -1484,7 +1484,7 @@
 ;; - See grsp-ann-idata-update for a description of the idata format.
 ;;   - Col 0: id of the receptive node.
 ;;   - Col 1: number that corresponds to the column in the nodes matrix in which
-;;   - for the row whose col 0 is equal to the id value passed in col 0 of the
+;;   - For the row whose col 0 is equal to the id value passed in col 0 of the
 ;;     idata matrix the input value will be stored.
 ;;   - Col 2: number.
 ;;   - Col 3: type, the kind of element that will receive this data.
@@ -1497,7 +1497,7 @@
 ;;   - Col 3: number (result).
 ;;
 ;; Output:
-;; - a matrix in idata table that can take the place of that table or be
+;; - A matrix in idata table that can take the place of that table or be
 ;;   appended to it.
 ;;
 (define (grsp-odata2idata p_a5 p_a6)
@@ -1525,6 +1525,7 @@
 	(cd0 0)
 	(cd1 0))
 
+    ;; Make safe copies of arguments.
     (set! odata p_a5)
     (set! conv p_a6)
     
