@@ -29,6 +29,10 @@
 ;; - [1] En.wikipedia.org. 2021. Collatz conjecture - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Collatz_conjecture
 ;;   [Accessed 1 August 2021].
+;; - [2] Es.wikipedia.org. 2021. Serie (matemática) - Wikipedia, la enciclopedia
+;;   libre. [online] Available at:
+;;   https://es.wikipedia.org/wiki/Serie_(matem%C3%A1tica)
+;;   [Accessed 6 August 2021].
 ;;
 
 
@@ -36,7 +40,8 @@
   #:use-module (grsp grsp0)
   #:use-module (grsp grsp1)
   #:use-module (grsp grsp2)
-  #:export (grsp-seq-hailstorm))
+  #:export (grsp-seq-hailstorm
+	    grsp-seq-geometric-convergent))
 
 
 ;;;; grsp-seq-hailstorm - Calculates p_m1 elements of a hailstorm number
@@ -60,7 +65,7 @@
 ;;   - Elem 1: p_m1.
 ;;   - Elem 2: stopping time. Will return NaN if the function does not reach
 ;;     value 1 (one) in p_m1 iterations.
-;;   - Elem 3: a list contaning the actual elements of the sequence.
+;;   - Elem 3: a list containing the actual elements of the sequence.
 ;;
 ;; Sources:
 ;; - [1][grsp2.34].
@@ -96,8 +101,78 @@
 	   
 	   (set! i1 (in i1)))
 
-    ;; compose results.
+    ;; Compose results.
     (set! res1 (list p_n1 p_m1 st res2))
     
     res1))
 
+
+;;;; grsp-seq-geometric-convergent - Calculates a geometric convergent series.
+;;
+;; Keywords:
+;; - number, sequence, geometric, convergent.
+;;
+;; Arguments:
+;; - p_b1:
+;;   - #t: calculated terms of the series will be returned.
+;;   - #f: calculated terms of the series will not be returned.
+;; - p_n1: number > 0.
+;; - p_m1: iterations, integer > 0.
+;; - p_r1: number with (abs p_r1) < 1.
+;;
+;; Notes:
+;; - Will generally converge to (= s (/ p_n1 (- 1 p_r1)))
+;;
+;; Output:
+;; - A list with the following format:
+;;   - Elem 0: p_n1.
+;;   - Elem 1: p_m1.
+;;   - Elem 2: Convergence goal.
+;;   - Elem 3: Convergence delta.
+;;   - Elem 4: actual result of the summation.
+;;   - Elem 4: list of series elements calculated to p_m1 iterations of the
+;;     series summation (shown only if p_b1 is passed #t).
+;;
+;; Sources:
+;; - [2].
+;;
+(define (grsp-seq-geometric-convergent p_b1 p_n1 p_m1 p_r1)
+  (let ((res1 0)
+	(res2 '())
+	(res3 '())
+	(i1 0)
+	(n2 0)
+	(cg 0)
+	(cd 0)
+	(n1 0)
+	(m1 0)
+	(r1 0)
+	(b1 #f))
+
+    (set! n1 p_n1)
+    (set! m1 p_m1)
+    (set! r1 p_r1)
+    (set! b1 p_b1)
+    (cond ((equal? b1 #t)
+	   (set! res3 (make-list m1 0))))
+
+    ;; Estimated convergence goal.
+    (set! cg (/ n1 (- 1 r1)))
+    
+    (while (< i1 m1)
+	   (set! n2 (* n1 (expt r1 i1)))
+	   (cond ((equal? b1 #t)
+		  (list-set! res3 i1 n2)))
+	   (set! res1 (+ res1 n2))
+	   (set! i1 (in i1)))
+
+    ;; Convergence delta.
+    (set! cd (- cg res1)) 
+
+    ;; Compose results.
+    (set! res2 (list n1 m1 cg cd res1 res3))
+
+    res2))
+
+
+    

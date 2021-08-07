@@ -2046,11 +2046,11 @@
     res1))
 
 
-;;;; grsp-hailstone-number - Calculates the first  Hailstone number based on
+;;;; grsp-hailstone-number - Calculates the next Hailstone number based on
 ;; integer p_n1.
 ;;
 ;; Keywords:
-;; - function, absolute.
+;; - function, absolute, collatz.
 ;;
 ;; Arguments:
 ;; - p_n1: integer > 0.

@@ -1366,7 +1366,7 @@
     (set! ln1 (grsp-matrix-esi 3 p_a1))
     (set! hn1 (grsp-matrix-esi 4 p_a1)) 
     
-    ;; Copy elements.
+    ;; Compose results.
     (set! res1 (grsp-matrix-subcpy p_a1 lm1 hm1 ln1 hn1))
 
     res1))
@@ -1729,6 +1729,7 @@
 				(set! res5 (+ res5 1))))
 			 (set! j1 (+ j1 1)))
 		  (set! i1 (+ i1 1)))))
+
     (cond ((> res5 0)
 	   (set! res3 #f)))
 
@@ -3427,7 +3428,7 @@
 	   
 	   (set! i1 (+ i1 1)))
 
-    ;; res1.
+    ;; Compose results.
     (set! res1 res2)
     
     res1))
@@ -3520,7 +3521,7 @@
 	   
 	   (set! i1 (+ i1 1)))
 
-    ;; res1.
+    ;; Compose results.
     (set! res1 (grsp-matrix-subdel "#Delr" res2 0))
     
     res1))
@@ -3565,6 +3566,7 @@
 	  ((equal? p_s1 "#!=")
 	   (set! s2 "#=")))
 
+    ;; Compose results.    
     (set! res1 (grsp-matrix-row-select s2 p_a1 p_j1 p_n1))
     
     res1))
@@ -3712,7 +3714,7 @@
 	   (set! i2 (- i2 1))
 	   (set! i3 (+ i3 1)))
 
-    ;; Final.
+    ;; Compose results.
     (set! res1 (grsp-matrix-subdel "#Delr" res1 0))
 
     res1))
@@ -3792,6 +3794,7 @@
 		  (set! i1 (+ i1 1)))	   
 	   (set! i2 (+ i2 1)))
 
+    ;; Compose results.    
     (set! res1 p_a1)
     
     res1))
@@ -3870,7 +3873,7 @@
 	   
 	   (set! j2 (+ j2 1)))
 
-    ;; Final.
+    ;; Compose results.
     (set! res1 (grsp-matrix-subdel "#Delr" res1 0))
     
     res1))
@@ -4058,7 +4061,7 @@
     ;; Delete the column in res3 that corresponds to p_n2 in p_a1.
     (set! res3 (grsp-matrix-subdel "#Delc" res3 (+ j1 p_n2)))
     
-    ;; Final.
+    ;; Compose results.
     (set! res3 (grsp-matrix-subdel "#Delr" res3 0))
     
     res3))
@@ -4189,7 +4192,7 @@
 		  
 	   (set! i1 (+ i1 1)))
 
-    ;; Final.
+    ;; Compose results.
     (set! res1 (grsp-matrix-subdel "#Delr" res3 0))
     
     res1))
@@ -4247,7 +4250,7 @@
 	   
 	   (set! j1 (+ j1 1)))
 
-    ;; Final.
+    ;; Compose results.
     (set! res1 (grsp-matrix-row-select "#>" (grsp-matrix-transpose res1) 0 n3))
     (set! res1 (grsp-matrix-row-select "#<" res1 0 n4))
     (set! res1 (grsp-matrix-transposer res1 3))
@@ -4335,7 +4338,7 @@
 	   
 	   (set! i1 (+ i1 1)))
 
-    ;; Final.
+    ;; Compose results.
     (set! res5 (grsp-matrix-subdel "#Delr" res5 0))
     
     res5))
@@ -4393,7 +4396,7 @@
 	   (array-set! res2 p_n2 i2 p_j2)
 	   (set! i2 (+ i2 1)))
     
-    ;; Finish.
+    ;; Compose results.
     (set! res3 (grsp-matrix-cpy res2))
     (set! res1 (grsp-matrix-commit res1 res3 p_j1))
     
@@ -4552,7 +4555,7 @@
 	   (set! res3 (grsp-matrix-subexp res3 lm3 (- n4 n3)))
 	   (set! res4 (grsp-matrix-subrepv res4 (grsp-nan) lm3 hn3 (+ hn3 1) (grsp-matrix-esi 4 res3)))))
 
-    ;; Final.
+    ;; Compose results.
     (set! res5 (grsp-matrix-row-append res3 res4))
 
     res5))
@@ -4884,7 +4887,7 @@
 		  (set! i2 (+ i2 1)))
 	   (set! i1 (+ i1 1)))
 
-    ;; Final.
+    ;; Compose results.
     (set! res6 (grsp-matrix-subdel "#Delr" res6 0))
     
     res6))
@@ -4974,7 +4977,7 @@
 	(i1 0)
 	(n1 0))
 
-   ;; Create matrices. 
+    ;; Create matrices. 
     (set! res1 (grsp-matrix-cpy p_a1))
 
     ;; We need to sort the matrix since we will later read the first row of
@@ -5302,8 +5305,7 @@
 	   (set! res3 (grsp-matrix-subrep res3 res6 lm1 p_ln1))
 	   (set! res4 (grsp-matrix-subrep res4 res5 lm1 p_ln2))))
    
-    ;; Build results.
-    ;; (set! res7 (list res3 res4))
+    ;; Compose results.
     (set! res7 (grsp-matrix-row-append res3 res4))
     
     res7))
@@ -5342,6 +5344,7 @@
 
     (cond ((equal? (grsp-ifrprnd p_s1 p_u1 p_v1 p_n1) #t)
 	   (set! res1 (grsp-matrix-crossover p_a1 p_ln1 p_hn1 p_a2 p_ln2 p_hn2))))
+    
     res1))
 
 

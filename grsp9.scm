@@ -162,7 +162,7 @@
     ;; res4.
     (set! res4 (expt (+ 2.625 x1 (* p_x1 (expt p_y1 3))) 2))
     
-    ;; res1.
+    ;; Compose results.
     (set! res1 (+ res2 res3 res4))
     
     res1))
@@ -222,7 +222,8 @@
 	
 	;; res3.
 	(set! res3 (* 0.48 p_x1 p_y1))
-	
+
+    ;; Compose results.
     (set! res1 (- res2 res3))
 
     res1))
@@ -294,7 +295,7 @@
 	   (set! res3 (+ res3 (- (expt x1 2) (* 10 (cos (* p2 x1))))))
 	   (set! j1 (in j1)))
     
-    ;; res1.
+    ;; Compose results.
     (set! res1 (+ res2 res3))
 
     res1))
@@ -385,7 +386,7 @@
     (set! res32 (+ 18 (* -32 x) (* 12 x2) (* 48 y) (* -36 xy) (* 27 y2)))
     (set! res3 (+ 30 (* res31 res32)))
     
-    ;; Res1.
+    ;; Compose results.
     (set! res1 (* res2 res3))
     
     res1))
@@ -435,7 +436,7 @@
     
     (set! res3 (+ 30 (* res31 res32)))
     
-    ;; Res1.
+    ;; Compose results.
     (set! res1 (* res2 res3))
     
     res1))
@@ -478,7 +479,7 @@
     ;; res4.
     (set! res4 (* (expt (- y 1) 2) (+ 1 (expt (sin (* 2 py)) 2))))
     
-    ;; res1.
+    ;; Compose results.
     (set! res1 (+ res2 res3 res4))
     
     res1))
@@ -513,7 +514,8 @@
     (parallel (set! res2 (expt (sin (* 3 px)) 2))
 	      (set! res3 (* (expt (- x 1 ) 2) (+ 1 (expt (sin (* 3 py)) 2))))
 	      (set! res4 (* (expt (- y 1) 2) (+ 1 (expt (sin (* 2 py)) 2)))))
-    
+
+    ;; Compose results.    
     (set! res1 (+ res2 res3 res4))
     
     res1))
@@ -549,7 +551,7 @@
     ;; res3.
     (set! res3 (expt (+ x (expt y 2) -7) 2))
     
-    ;; res1.
+    ;; Compose results.
     (set! res1 (+ res2 res3))
 
     res1))
@@ -660,7 +662,7 @@
     ;; res3.
     (set! res3 (expt (+ 1 (* 0.001 (+ x2 y2))) 2))		      
     
-    ;; res1.
+    ;; Compose results.
     (set! res1 (+ 0.5 (/ res2 res3)))
     
     res1))
@@ -725,7 +727,7 @@
     ;; res3.
     (set! res3 (expt (+ 1 (* 0.001 (+ x2 y2))) 2))
     
-    ;; res1.
+    ;; Compose results.
     (set! res1 (+ 0.5 (/ res2 res3)))
     
     res1))
@@ -864,7 +866,7 @@
     ;; res4.
     (set! res4 (* p_x1 (sin (sqrt (abs (- p_x1 y1))))))
     
-    ;; res1
+    ;; Compose results.
     (set! res1 (- (* (* -1 y1) res3) res4))
 
     res1))
@@ -969,7 +971,7 @@
     ;; res3.
     (set! res3 (* -1 (grsp-eex res5)))
     
-    ;; res1.
+    ;; Compose results.
     (set! res1 (+ res2 res3 (grsp-e) 20))
     
     res1))
@@ -1032,7 +1034,7 @@
     (set! res3 (grsp-eex (* -1 (+ (expt (- p_x1 (grsp-pi)) 2) 
 				  (expt (- p_y1 (grsp-pi)) 2)))))
     
-    ;; res1.
+    ;; Compose results.
     (set! res1 (* res2 res3))
     
     res1))
@@ -1087,7 +1089,7 @@
     ;; res3.
     (set! res3 (grsp-eex (abs (- 100 (/ (sqrt (+ (expt p_x1 2) (expt p_y1 2))) (grsp-pi))))))
 
-    ;; res1.
+    ;; Compose results.
     (set! res1 (* -1 0.0001 (expt (+ (abs (* res2 res3)) 1) 0.1)))
     
     res1))
@@ -1141,7 +1143,7 @@
     ;; res3.
     (set! res3 (grsp-eex (abs (- 1 (/ (sqrt (+ (expt p_x1 2) (expt p_y1 2))) (grsp-pi))))))
 
-    ;; res1.
+    ;; Compose results.
     (set! res1 (* -1 (abs (* res2 res3))))
     
     res1))
@@ -1200,7 +1202,7 @@
     ;; res3.
     (set! res3 (+ p_x1 p_y1 -2))
     
-    ;; res1.
+    ;; Compose results.
     (cond ((equal? (and (<= res2 0) (<= res3 0)) #t)
 	   (set! res1 (+ (expt (- 1 p_x1) 2)
 			 (* 100 (expt (- p_y1 (expt p_x1 2)) 2)))))
@@ -1232,7 +1234,7 @@
     (set! x2 (expt p_x1 2))
     (set! y2 (expt p_y1 2))
     
-    ;; res1.
+    ;; Compose results.
     (cond ((equal? (<= (+ x2 y2) 2) #t)
 	   (set! res1 (+ (expt (- 1 p_x1) 2) (* 100 (expt (- p_x1 x2) 2))))) 
 	  (else (set! res1 +nan.0)))
@@ -1350,7 +1352,7 @@
 	   (set! res3 (expt (+ 1 (* 0.2 (cos (* 8 (atan (/ p_x1 p_y1)))))) 2)))
 	  (else (set! res3 (- res2 1))))
     
-    ;; res1.
+    ;; Compose results.
     (cond ((equal? (<= res2 res3) #t)
 	   (set! res1 (* 0.1 p_x1 p_y1)))
 	  (else (set! res1 +nan.0)))

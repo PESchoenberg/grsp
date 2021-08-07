@@ -142,7 +142,7 @@
     ;; Fitness - Set col 3 to 0 in all rows.
     (set! res1 (grsp-matrix-col-aupdate res1 3 0))
 
-    ;; Results - Set col 4 to 0 in all rows.
+    ;; Compose results - Set col 4 to 0 in all rows.
     (set! res1 (grsp-matrix-col-aupdate res1 6 n1)) ;; p_n2
 
     res1))
