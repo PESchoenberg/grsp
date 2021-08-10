@@ -24,6 +24,7 @@
 
 ;;;; General notes:
 ;; - Read sources for limitations on function parameters.
+;; - Always take into account the odd behavior of numeric sequences before use.
 ;;
 ;; Sources:
 ;; - [1] En.wikipedia.org. 2021. Collatz conjecture - Wikipedia. [online]
@@ -33,6 +34,18 @@
 ;;   libre. [online] Available at:
 ;;   https://es.wikipedia.org/wiki/Serie_(matem%C3%A1tica)
 ;;   [Accessed 6 August 2021].
+;; - [3] Es.wikipedia.org. 2021. Fracción continua - Wikipedia, la enciclopedia
+;;   libre. [online] Available at:
+;;   https://es.wikipedia.org/wiki/Fracci%C3%B3n_continua
+;;   [Accessed 8 August 2021].
+;; - [4] Es.wikipedia.org. 2021. Criterio del cociente - Wikipedia, la
+;;   enciclopedia libre. [online] Available at:
+;;   https://es.wikipedia.org/wiki/Criterio_del_cociente
+;;   [Accessed 8 August 2021].
+;; - [5] En.wikipedia.org. 2021. Harmonic series (mathematics) - Wikipedia.
+;;   [online] Available at:
+;;   https://en.wikipedia.org/wiki/Harmonic_series_(mathematics)
+;;   [Accessed 9 August 2021].
 ;;
 
 
@@ -40,8 +53,10 @@
   #:use-module (grsp grsp0)
   #:use-module (grsp grsp1)
   #:use-module (grsp grsp2)
+  #:use-module (grsp grsp4)  
   #:export (grsp-seq-hailstorm
-	    grsp-seq-geometric-convergent))
+	    grsp-seq-geometric
+	    grsp-seq-hyperarmonic))
 
 
 ;;;; grsp-seq-hailstorm - Calculates p_m1 elements of a hailstorm number
@@ -107,7 +122,7 @@
     res1))
 
 
-;;;; grsp-seq-geometric-convergent - Calculates a geometric convergent series.
+;;;; grsp-seq-geometric - Calculates a geometric convergent series.
 ;;
 ;; Keywords:
 ;; - number, sequence, geometric, convergent.
@@ -118,7 +133,7 @@
 ;;   - #f: calculated terms of the series will not be returned.
 ;; - p_n1: number > 0.
 ;; - p_m1: iterations, integer > 0.
-;; - p_r1: number with (abs p_r1) < 1.
+;; - p_r1: common ratio. Number with (abs p_r1) < 1.
 ;;
 ;; Notes:
 ;; - Will generally converge to (= s (/ p_n1 (- 1 p_r1)))
@@ -136,7 +151,7 @@
 ;; Sources:
 ;; - [2].
 ;;
-(define (grsp-seq-geometric-convergent p_b1 p_n1 p_m1 p_r1)
+(define (grsp-seq-geometric p_b1 p_n1 p_m1 p_r1)
   (let ((res1 0)
 	(res2 '())
 	(res3 '())
@@ -175,4 +190,70 @@
     res2))
 
 
-    
+;;;; grsp-seq-hyperarmonic - Calculates a hyperarmonic series.
+;;
+;; Keywords:
+;; - number, sequence, harmonic, hyper, convergent.
+;;
+;; Arguments:
+;; - p_b1:
+;;   - #t: calculated terms of the series will be returned.
+;;   - #f: calculated terms of the series will not be returned.
+;; - p_n1: number > 0 (generally 1).
+;; - p_m1: iterations, integer > 0.
+;; - p_p1: p factor. If p_p1 > 0, the series converges to Z(p_p1).
+;;
+;; Output:
+;; - A list with the following format:
+;;   - Elem 0: p_n1.
+;;   - Elem 1: p_m1.
+;;   - Elem 2: Convergence goal.
+;;   - Elem 3: Convergence delta.
+;;   - Elem 4: actual result of the summation.
+;;   - Elem 4: list of series elements calculated to p_m1 iterations of the
+;;     series summation (shown only if p_b1 is passed #t).
+;;
+;; Sources:
+;; - [2][5][grsp4.12].
+;;    
+(define (grsp-seq-hyperarmonic p_b1 p_n1 p_m1 p_p1)
+  (let ((res1 0.0)
+	(res2 '())
+	(res3 '())
+	(i1 1)
+	(i2 0.0)
+	(n2 0.0)
+	(cg 0.0)
+	(cd 0.0)
+	(n1 0.0)
+	(m1 0)
+	(p1 0.0)
+	(b1 #f))
+
+    (set! n1 p_n1)
+    (set! m1 p_m1)
+    (set! p1 p_p1)
+    (set! b1 p_b1)
+    (cond ((equal? b1 #t)
+	   (set! res3 (make-list m1 0))))
+
+    ;; Estimated convergence goal.
+    (set! cg (grsp-opz (grsp-complex-riemann p1 m1)))
+
+    ;; Cycle.
+    (while (<= i1 m1)
+	   (set! i2 (- i1 1))
+	   (set! n2 (/ 1 (expt i1 p1)))
+	   (set! res1 (+ res1 n2))
+	   (cond ((equal? b1 #t)
+		  (list-set! res3 i2 n2)))	   
+	   (set! i1 (in i1)))
+
+    ;; Convergence delta.
+    (set! cd (- cg res1)) 
+
+    ;; Compose results.
+    (set! res2 (list n1 m1 cg cd res1 res3))
+
+    res2))
+
