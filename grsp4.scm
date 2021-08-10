@@ -55,6 +55,7 @@
 ;;   https://en.wikipedia.org/wiki/Confluent_hypergeometric_function
 ;;   [Accessed 19 February 2021].
 ;; - [11] https://en.wikipedia.org/wiki/Error_function
+;; - [12] https://en.wikipedia.org/wiki/Riemann_zeta_function
 
 
 (define-module (grsp grsp4)
@@ -86,7 +87,8 @@
 	    grsp-complex-erf
 	    grsp-complex-erfi
 	    grsp-complex-erfc
-	    grsp-complex-erfci))
+	    grsp-complex-erfci
+	    grsp-complex-riemann))
   
 
 ;;;; grsp-complex-inv-imag - Calculates the inverse of the imaginary
@@ -875,4 +877,28 @@
 
     (set! res1 (- 1 (grsp-complex-erfi p_z1 p_n1)))
     
+    res1))
+
+
+;; grsp-complex-riemann - Riemann Zeta function.
+;;
+;; Arguments
+;; - p_z1: complex.
+;; - p_m1: iterations.
+;;
+;; Notes:
+;; - Incomplete.
+;;
+(define (grsp-complex-riemann p_z1 p_m1)
+  (let ((res1 0)
+	(z1 0)
+	(m1 0)
+	(i1 1))
+
+    (set! z1 p_z1)
+    (set! m1 p_m1)
+    (while (<= i1 m1)
+	   (set! res1 (+ res1 (/ 1 (expt i1 z1))))
+	   (set! i1 (in i1)))
+
     res1))
