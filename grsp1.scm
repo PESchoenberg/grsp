@@ -483,6 +483,10 @@
 	  ((equal? p_n1 "A070769")
 	   (set! res 1.45136923488338105028))
 
+	  ;; Riemann Z(-2) [1][2][3].
+	  ((equal? p_n1 "Z-2")
+	   (set! res 0))
+	  
 	  ;; Riemann Z(3), Apery's constant [1][2][3].
 	  ((equal? p_n1 "A002117")
 	   (set! res 1.20205690315959428539))
@@ -490,6 +494,10 @@
 	  ;; Riemann. Z(2) [1][2][3].
 	  ((equal? p_n1 "A013661")
 	   (set! res 1.64493406684822643647))
+
+	  ;; Riemann Z(0.5) [1][2][3].
+	  ((equal? p_n1 "A059750")
+	   (set! res -1.4603545088095868128)) 
 	  
 	  ;; Riemann Z(0) [1][2][3].
 	  ((equal? p_n1 "Z0")
@@ -503,6 +511,10 @@
 	  ((equal? p_n1 "Z-2")
 	   (set! res 0))
 
+	  ;; Riemann Z(+inf.0) [1][2][3].
+	  ((equal? p_n1 "+inf.0")
+	   (set! res 0))
+	  
 	  ;; Liouville's constant. Li [1][2].
 	  ((equal? p_n1 "A012245")
 	   (set! res 0.110001000000000000000001))

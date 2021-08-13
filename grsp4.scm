@@ -88,7 +88,7 @@
 	    grsp-complex-erfi
 	    grsp-complex-erfc
 	    grsp-complex-erfci
-	    grsp-complex-riemann))
+	    grsp-complex-riemann-zeta))
   
 
 ;;;; grsp-complex-inv-imag - Calculates the inverse of the imaginary
@@ -880,7 +880,7 @@
     res1))
 
 
-;; grsp-complex-riemann - Riemann Zeta function.
+;; grsp-complex-riemann-zeta - Riemann Zeta function.
 ;;
 ;; Arguments
 ;; - p_z1: complex.
@@ -889,7 +889,7 @@
 ;; Notes:
 ;; - Incomplete.
 ;;
-(define (grsp-complex-riemann p_z1 p_m1)
+(define (grsp-complex-riemann-zeta p_z1 p_m1)
   (let ((res1 0)
 	(z1 0)
 	(m1 0)
@@ -897,8 +897,25 @@
 
     (set! z1 p_z1)
     (set! m1 p_m1)
-    (while (<= i1 m1)
-	   (set! res1 (+ res1 (/ 1 (expt i1 z1))))
-	   (set! i1 (in i1)))
+
+    ;; Default case and analytical continuation.
+    (cond ((> z1 0)
+	   (cond ((= z1 +inf.0)
+		  (set! res1 (gconst "+inf.0")))
+		 ((> z1 1)
+		  (while (<= i1 m1)
+			 (set! res1 (+ res1 (/ 1 (expt i1 z1))))
+			 (set! i1 (in i1))))
+		 ((= z1 1)
+		  (set! res1 +inf.0))
+		 ((= z1 0.5)
+		  (set! res1 (gconst "A059750")))))
+	  ((= z1 0)
+	   (set! res1 (gconst "Z0")))
+	  ((< z1 0)
+	   (cond ((equal? (even? z1) #t)
+		  (set! res1 0.0))
+		 ((= z1 -1)
+		  (set! res1 (gconst "Z-1"))))))	  
 
     res1))
