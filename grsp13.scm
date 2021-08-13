@@ -238,7 +238,7 @@
 	   (set! res3 (make-list m1 0))))
 
     ;; Estimated convergence goal.
-    (set! cg (grsp-opz (grsp-complex-riemann p1 m1)))
+    (set! cg (grsp-opz (grsp-complex-riemann-zeta p1 m1)))
 
     ;; Cycle.
     (while (<= i1 m1)
