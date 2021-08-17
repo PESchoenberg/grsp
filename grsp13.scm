@@ -216,7 +216,7 @@
 ;; Sources:
 ;; - [2][5][grsp4.12].
 ;;    
-(define (grsp-seq-hyperarmonic p_b1 p_n1 p_m1 p_p1)
+(define (grsp-seq-hyperarmonic p_b1 p_s1 p_n1 p_m1 p_m2 p_p1)
   (let ((res1 0.0)
 	(res2 '())
 	(res3 '())
@@ -238,7 +238,7 @@
 	   (set! res3 (make-list m1 0))))
 
     ;; Estimated convergence goal.
-    (set! cg (grsp-opz (grsp-complex-riemann-zeta p1 m1)))
+    (set! cg (grsp-opz (grsp-complex-riemann-zeta #t p_s1 p_n1 m1 p_m2)))
 
     ;; Cycle.
     (while (<= i1 m1)
