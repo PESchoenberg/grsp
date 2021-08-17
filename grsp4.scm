@@ -56,6 +56,8 @@
 ;;   [Accessed 19 February 2021].
 ;; - [11] https://en.wikipedia.org/wiki/Error_function
 ;; - [12] https://en.wikipedia.org/wiki/Riemann_zeta_function
+;; - [13] https://en.wikipedia.org/wiki/Analytic_continuation
+;;
 
 
 (define-module (grsp grsp4)
@@ -88,7 +90,8 @@
 	    grsp-complex-erfi
 	    grsp-complex-erfc
 	    grsp-complex-erfci
-	    grsp-complex-riemann-zeta))
+	    grsp-complex-riemann-zeta
+	    grsp-complex-riemann-fezeta))
   
 
 ;;;; grsp-complex-inv-imag - Calculates the inverse of the imaginary
@@ -478,7 +481,7 @@
     res1))
 
 
-;;;; grsp-complex-lngamma - Calculates the natural logarythm of gamma.
+;;;; grsp-complex-lngamma - Calculates the natural logarithm of gamma.
 ;;
 ;; Keywords:
 ;; - complex.
@@ -883,13 +886,23 @@
 ;; grsp-complex-riemann-zeta - Riemann Zeta function.
 ;;
 ;; Arguments
+;; - p_b2: for integers.
+;;   - #t: if rounding is desired.
+;;   - #f: if rounding is not desired.
+;; - p_s1: desired gamma repesentation:
+;;   - "#e": Euler.
+;;   - "#w": Weierstrass.
 ;; - p_z1: complex.
-;; - p_m1: iterations.
+;; - p_m1: iterations, converging.
+;; - p_m2: iterations, analytic.
 ;;
 ;; Notes:
-;; - Incomplete.
+;; - Incomplete. Still needs development.
 ;;
-(define (grsp-complex-riemann-zeta p_z1 p_m1)
+;; Sources:
+;; - [12][13].
+;;
+(define (grsp-complex-riemann-zeta p_b2 p_s1 p_z1 p_m1 p_m2)
   (let ((res1 0)
 	(z1 0)
 	(m1 0)
@@ -898,7 +911,7 @@
     (set! z1 p_z1)
     (set! m1 p_m1)
 
-    ;; Default case and analytical continuation.
+    ;; Default case and (some) analytical continuation.
     (cond ((> z1 0)
 	   (cond ((= z1 +inf.0)
 		  (set! res1 (gconst "+inf.0")))
@@ -915,7 +928,49 @@
 	  ((< z1 0)
 	   (cond ((equal? (even? z1) #t)
 		  (set! res1 0.0))
-		 ((= z1 -1)
-		  (set! res1 (gconst "Z-1"))))))	  
+		 (else (grsp-complex-riemann-fezeta p_b2 p_s1 p_z1 p_m1 p_m2)))))
 
+    res1))
+
+
+;; grsp-complex-riemann-fezeta - Riemann Zeta, functional equation.
+;;
+;; Arguments
+;; - p_b2: for integers.
+;;   - #t: if rounding is desired.
+;;   - #f: if rounding is not desired.
+;; - p_s1: desired gamma repesentation:
+;;   - "#e": Euler.
+;;   - "#w": Weierstrass.
+;; - p_z1: complex.
+;; - p_m1: iterations, converging.
+;; - p_m2: iterations, analytic.
+;;
+;; Notes:
+;; - Incomplete. Still needs development.
+;;
+;; Sources:
+;; - [12][13].
+;;
+(define (grsp-complex-riemann-fezeta p_b2 p_s1 p_z1 p_m1 p_m2)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(res4 0)
+	(res5 0)
+	(res6 6)
+	(z1 p_z1)
+	(z2 0)
+	(pi (gconst "A000796")))
+
+    (set! z2 (- 1 z1))
+    (set! res2 (expt 2 z1))
+    (set! res3 (expt pi (- z1 1)))
+    (set! res4 (sin (/ (* pi z1) 2)))
+    (set! res5 (grsp-complex-gamma p_b2 p_s1 z2 p_m1))
+    (set! res6 (grsp-complex-riemann-zeta p_b2 p_s1 z2 p_m1 p_m2))
+
+    ;; Compose results.
+    (set! res1 (* res2 res3 res4 res5 res6))
+    
     res1))
