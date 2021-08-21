@@ -898,38 +898,38 @@
 ;;
 ;; Notes:
 ;; - Incomplete. Still needs development.
+;; - Output might require rounding.
 ;;
 ;; Sources:
 ;; - [12][13].
 ;;
 (define (grsp-complex-riemann-zeta p_b2 p_s1 p_z1 p_m1 p_m2)
-  (let ((res1 0)
-	(z1 0)
+  (let ((res1 0.0)
+	(z1 0.0)
+	(z2 0.0)
+	(r1 0.0)
+	(r2 0.0)
 	(m1 0)
 	(i1 1))
 
     (set! z1 p_z1)
     (set! m1 p_m1)
-
-    ;; Default case and (some) analytical continuation.
-    (cond ((> z1 0)
-	   (cond ((= z1 +inf.0)
+    (set! r1 (real-part z1))
+    (set! r2 (imag-part z1))
+    
+    ;; Default case and continuation.
+    (cond ((>= r1 1)
+	   (cond ((= r1 +inf.0)
 		  (set! res1 (gconst "+inf.0")))
-		 ((> z1 1)
+		 ((> r1 1)
 		  (while (<= i1 m1)
 			 (set! res1 (+ res1 (/ 1 (expt i1 z1))))
 			 (set! i1 (in i1))))
-		 ((= z1 1)
-		  (set! res1 +inf.0))
-		 ((= z1 0.5)
-		  (set! res1 (gconst "A059750")))))
-	  ((= z1 0)
-	   (set! res1 (gconst "Z0")))
-	  ((< z1 0)
-	   (cond ((equal? (even? z1) #t)
-		  (set! res1 0.0))
-		 (else (grsp-complex-riemann-fezeta p_b2 p_s1 p_z1 p_m1 p_m2)))))
-
+		 ((= r1 1)
+		  (set! res1 +inf.0))))
+	  ((< r1 1)
+	   (set! res1 (grsp-complex-riemann-fezeta p_b2 p_s1 z1 p_m1 p_m2))))
+    
     res1))
 
 
@@ -942,7 +942,7 @@
 ;; - p_s1: desired gamma repesentation:
 ;;   - "#e": Euler.
 ;;   - "#w": Weierstrass.
-;; - p_z1: complex.
+;; - p_z1: complex, real component must be < 0.
 ;; - p_m1: iterations, converging.
 ;; - p_m2: iterations, analytic.
 ;;
@@ -953,16 +953,17 @@
 ;; - [12][13].
 ;;
 (define (grsp-complex-riemann-fezeta p_b2 p_s1 p_z1 p_m1 p_m2)
-  (let ((res1 0)
-	(res2 0)
-	(res3 0)
-	(res4 0)
-	(res5 0)
-	(res6 6)
-	(z1 p_z1)
-	(z2 0)
+  (let ((res1 0.0)
+	(res2 0.0)
+	(res3 0.0)
+	(res4 0.0)
+	(res5 0.0)
+	(res6 0.0)
+	(z1 0.0)
+	(z2 0.0)
 	(pi (gconst "A000796")))
 
+    (set! z1 p_z1)
     (set! z2 (- 1 z1))
     (set! res2 (expt 2 z1))
     (set! res3 (expt pi (- z1 1)))
