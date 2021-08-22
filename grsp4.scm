@@ -57,8 +57,8 @@
 ;; - [11] https://en.wikipedia.org/wiki/Error_function
 ;; - [12] https://en.wikipedia.org/wiki/Riemann_zeta_function
 ;; - [13] https://en.wikipedia.org/wiki/Analytic_continuation
-;;
-
+;; - [14] https://mathworld.wolfram.com/RiemannZetaFunction.html
+;; - [15] https://math.stackexchange.com/questions/2597478/riemann-zeta-for-real-argument-between-0-and-1-using-mellin-with-short-asymptot
 
 (define-module (grsp grsp4)
   #:use-module (grsp grsp0)
@@ -901,7 +901,7 @@
 ;; - Output might require rounding.
 ;;
 ;; Sources:
-;; - [12][13].
+;; - [12][13][14].
 ;;
 (define (grsp-complex-riemann-zeta p_b2 p_s1 p_z1 p_m1 p_m2)
   (let ((res1 0.0)
@@ -913,27 +913,33 @@
 	(i1 1))
 
     (set! z1 p_z1)
+    (set! z2 (- 1 z1))
     (set! m1 p_m1)
     (set! r1 (real-part z1))
     (set! r2 (imag-part z1))
     
-    ;; Default case and continuation.
-    (cond ((>= r1 1)
-	   (cond ((= r1 +inf.0)
-		  (set! res1 (gconst "+inf.0")))
-		 ((> r1 1)
+    ;; calculate according to domain intervals.
+    (cond ((>= r1 0)
+	   (cond ((> r1 1) ; (1, +inf.0)
 		  (while (<= i1 m1)
 			 (set! res1 (+ res1 (/ 1 (expt i1 z1))))
-			 (set! i1 (in i1))))
-		 ((= r1 1)
-		  (set! res1 +inf.0))))
-	  ((< r1 1)
+			 (set! i1 (in i1))))		 
+		 ((= r1 1) ; [1, 1]
+		  (set! res1 +inf.0))		 
+		 ((> r1 0) ; (0, 1)
+		  (while (<= i1 m1)
+			 (set! res1 (+ res1 (/ 1 (expt i1 z1))))
+			 (set! i1 (in i1)))
+		  (set! res1 (- res1 (/ (expt m1 z2) z2 ))))
+		 ((= r1 0) ; [0, 0] 
+		  (set! res1 -0.5))))
+	  ((< r1 0) ;(-inf.0, 0)
 	   (set! res1 (grsp-complex-riemann-fezeta p_b2 p_s1 z1 p_m1 p_m2))))
     
     res1))
 
 
-;; grsp-complex-riemann-fezeta - Riemann Zeta, functional equation.
+;; grsp-complex-riemann-fezeta - Riemann Zeta, functional equation (for z1 in (-inf.0, 0).
 ;;
 ;; Arguments
 ;; - p_b2: for integers.
