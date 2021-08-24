@@ -54,11 +54,24 @@
 ;;   Available at:
 ;;   https://en.wikipedia.org/wiki/Confluent_hypergeometric_function
 ;;   [Accessed 19 February 2021].
-;; - [11] https://en.wikipedia.org/wiki/Error_function
-;; - [12] https://en.wikipedia.org/wiki/Riemann_zeta_function
-;; - [13] https://en.wikipedia.org/wiki/Analytic_continuation
-;;
-
+;; - [11] En.wikipedia.org. 2021. Error function - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Error_function
+;;   [Accessed 23 August 2021].
+;; - [12] En.wikipedia.org. 2021. Riemann zeta function - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Riemann_zeta_function
+;;   [Accessed 23 August 2021].
+;; - [13] En.wikipedia.org. 2021. Analytic continuation - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Analytic_continuation
+;;   [Accessed 23 August 2021].
+;; - [14] Mathworld.wolfram.com. 2021. Riemann Zeta Function -- from Wolfram
+;;   MathWorld. [online] Available at:
+;;   https://mathworld.wolfram.com/RiemannZetaFunction.html
+;;   [Accessed 23 August 2021].
+;; - [15] Jagy, W., Riedel, M. and Fischer, D., 2021. Riemann zeta for real
+;;   argument between 0 and 1 using Mellin, with short asymptotic expansion.
+;;   [online] Mathematics Stack Exchange. Available at:
+;;   https://math.stackexchange.com/questions/2597478/riemann-zeta-for-real-argument-between-0-and-1-using-mellin-with-short-asymptot
+;;   [Accessed 23 August 2021].
 
 (define-module (grsp grsp4)
   #:use-module (grsp grsp0)
@@ -91,7 +104,9 @@
 	    grsp-complex-erfc
 	    grsp-complex-erfci
 	    grsp-complex-riemann-zeta
-	    grsp-complex-riemann-fezeta))
+	    grsp-complex-riemann-fezeta
+	    grsp-complex-riemann-euzeta
+	    grsp-complex-riemann-cszeta))
   
 
 ;;;; grsp-complex-inv-imag - Calculates the inverse of the imaginary
@@ -901,39 +916,33 @@
 ;; - Output might require rounding.
 ;;
 ;; Sources:
-;; - [12][13].
+;; - [12][13][14][15].
 ;;
 (define (grsp-complex-riemann-zeta p_b2 p_s1 p_z1 p_m1 p_m2)
   (let ((res1 0.0)
 	(z1 0.0)
-	(z2 0.0)
-	(r1 0.0)
-	(r2 0.0)
-	(m1 0)
-	(i1 1))
+	(r1 0.0))
 
     (set! z1 p_z1)
-    (set! m1 p_m1)
     (set! r1 (real-part z1))
-    (set! r2 (imag-part z1))
     
-    ;; Default case and continuation.
-    (cond ((>= r1 1)
-	   (cond ((= r1 +inf.0)
-		  (set! res1 (gconst "+inf.0")))
-		 ((> r1 1)
-		  (while (<= i1 m1)
-			 (set! res1 (+ res1 (/ 1 (expt i1 z1))))
-			 (set! i1 (in i1))))
-		 ((= r1 1)
-		  (set! res1 +inf.0))))
-	  ((< r1 1)
+    ;; Calculate according to domain intervals.
+    (cond ((>= r1 0)
+	   (cond ((> r1 1) ; (1, +inf.0)
+		  (set! res1 (grsp-complex-riemann-euzeta z1 p_m1)))
+		 ((= r1 1) ; [1, 1]
+		  (set! res1 +inf.0))		 
+		 ((> r1 0) ; (0, 1)
+		  (set! res1 (grsp-complex-riemann-cszeta z1 p_m1)))
+		 ((= r1 0) ; [0, 0] 
+		  (set! res1 -0.5))))
+	  ((< r1 0) ;(-inf.0, 0)
 	   (set! res1 (grsp-complex-riemann-fezeta p_b2 p_s1 z1 p_m1 p_m2))))
     
     res1))
 
 
-;; grsp-complex-riemann-fezeta - Riemann Zeta, functional equation.
+;; grsp-complex-riemann-fezeta - Riemann Zeta, functional equation (for z1 in (-inf.0, 0).
 ;;
 ;; Arguments
 ;; - p_b2: for integers.
@@ -947,10 +956,10 @@
 ;; - p_m2: iterations, analytic.
 ;;
 ;; Notes:
-;; - Incomplete. Still needs development.
+;; - Use grsp-complex-riemann-zeta to operate on the whole Z domain.
 ;;
 ;; Sources:
-;; - [12][13].
+;; - [12][13][14][15].
 ;;
 (define (grsp-complex-riemann-fezeta p_b2 p_s1 p_z1 p_m1 p_m2)
   (let ((res1 0.0)
@@ -974,4 +983,60 @@
     ;; Compose results.
     (set! res1 (* res2 res3 res4 res5 res6))
     
+    res1))
+
+
+;; grsp-complex-riemann-euzeta - Riemann Zeta, for z1 in (1, +inf.0).
+;;
+;; Arguments
+;; - p_z1: complex, real component must be > 1.
+;; - p_m1: iterations.
+;;
+;; Notes:
+;; - Use grsp-complex-riemann-zeta to operate on the whole Z domain.
+;;
+;; Sources:
+;; - [12][13][14][15].
+;;
+(define (grsp-complex-riemann-euzeta p_z1 p_m1)
+  (let ((res1 0.0)
+	(z1 0.0)
+	(i1 1)
+	(m1 0))
+
+    (set! m1 p_m1)
+    (set! z1 p_z1)
+    
+    (while (<= i1 m1)
+	   (set! res1 (+ res1 (/ 1 (expt i1 z1))))
+	   (set! i1 (in i1)))
+
+    res1))
+
+
+;; grsp-complex-riemann-cszeta - Riemann Zeta, for z1 in (0, 1).
+;;
+;; Arguments
+;; - p_z1: complex, real component must be > 1.
+;; - p_m1: iterations.
+;;
+;; Notes:
+;; - Use grsp-complex-riemann-zeta to operate on the whole Z domain.
+;;
+;; Sources:
+;; - [12][13][14][15].
+;;
+(define (grsp-complex-riemann-cszeta p_z1 p_m1)
+  (let ((res1 0.0)
+	(z1 0.0)
+	(z2 0.0)
+	(m1 0))
+
+    (set! m1 p_m1)
+    (set! z1 p_z1)
+    (set! z2 (- 1 z1))
+    
+    (set! res1 (grsp-complex-riemann-euzeta z1 m1))
+    (set! res1 (- res1 (/ (expt m1 z2) z2)))
+
     res1))
