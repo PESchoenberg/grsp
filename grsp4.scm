@@ -72,6 +72,11 @@
 ;;   [online] Mathematics Stack Exchange. Available at:
 ;;   https://math.stackexchange.com/questions/2597478/riemann-zeta-for-real-argument-between-0-and-1-using-mellin-with-short-asymptot
 ;;   [Accessed 23 August 2021].
+;; - [16] Es.wikipedia.org. 2021. Número de Bernoulli - Wikipedia, la
+;;   enciclopedia libre. [online] Available at:
+;;   https://es.wikipedia.org/wiki/N%C3%BAmero_de_Bernoulli
+;;   [Accessed 25 August 2021].
+
 
 (define-module (grsp grsp4)
   #:use-module (grsp grsp0)
@@ -106,7 +111,8 @@
 	    grsp-complex-riemann-zeta
 	    grsp-complex-riemann-fezeta
 	    grsp-complex-riemann-euzeta
-	    grsp-complex-riemann-cszeta))
+	    grsp-complex-riemann-cszeta
+	    grsp-complex-bernoulli-number))
   
 
 ;;;; grsp-complex-inv-imag - Calculates the inverse of the imaginary
@@ -796,6 +802,9 @@
 
 ;;;; grsp-complex-erf - Gauss error function.
 ;;
+;; Keywords:
+;; - complex.
+;;
 ;; Arguments:
 ;; - p_z1: complex.
 ;; - p_n1: iterations.
@@ -830,6 +839,9 @@
 
 
 ;;;; grsp-complex-erf - Gauss imaginary error function.
+;;
+;; Keywords:
+;; - complex.
 ;;
 ;; Arguments:
 ;; - p_z1: complex.
@@ -866,6 +878,9 @@
 
 ;;;; grsp-complex-erfc - Gauss complementary error function.
 ;;
+;; Keywords:
+;; - complex.
+;;
 ;; Arguments:
 ;; - p_z1: complex.
 ;; - p_n1: iterations.
@@ -882,6 +897,9 @@
 
 
 ;;;; grsp-complex-erfci - Gauss complementary imaginary error function.
+;;
+;; Keywords:
+;; - complex.
 ;;
 ;; Arguments:
 ;; - p_z1: complex.
@@ -900,6 +918,9 @@
 
 ;; grsp-complex-riemann-zeta - Riemann Zeta function.
 ;;
+;; Keywords:
+;; - complex.
+;;
 ;; Arguments
 ;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
@@ -912,7 +933,6 @@
 ;; - p_m2: iterations, analytic.
 ;;
 ;; Notes:
-;; - Incomplete. Still needs development.
 ;; - Output might require rounding.
 ;;
 ;; Sources:
@@ -943,6 +963,9 @@
 
 
 ;; grsp-complex-riemann-fezeta - Riemann Zeta, functional equation (for z1 in (-inf.0, 0).
+;;
+;; Keywords:
+;; - complex.
 ;;
 ;; Arguments
 ;; - p_b2: for integers.
@@ -988,6 +1011,9 @@
 
 ;; grsp-complex-riemann-euzeta - Riemann Zeta, for z1 in (1, +inf.0).
 ;;
+;; Keywords:
+;; - complex.
+;;
 ;; Arguments
 ;; - p_z1: complex, real component must be > 1.
 ;; - p_m1: iterations.
@@ -1016,6 +1042,9 @@
 
 ;; grsp-complex-riemann-cszeta - Riemann Zeta, for z1 in (0, 1).
 ;;
+;; Keywords:
+;; - complex.
+;;
 ;; Arguments
 ;; - p_z1: complex, real component must be > 1.
 ;; - p_m1: iterations.
@@ -1039,4 +1068,57 @@
     (set! res1 (grsp-complex-riemann-euzeta z1 m1))
     (set! res1 (- res1 (/ (expt m1 z2) z2)))
 
+    res1))
+
+
+;; grsp-complex-bernoulli-number - Bernoulli numbers calculated by means of
+;; Riemann's Zeta function.
+;;
+;; Keywords:
+;; - complex.
+;;
+;; Arguments
+;; - p_b2: for integers.
+;;   - #t: if rounding is desired.
+;;   - #f: if rounding is not desired.
+;; - p_s1: desired gamma repesentation:
+;;   - "#e": Euler.
+;;   - "#w": Weierstrass.
+;; - p_n2: number, integer [0, +inf.0).
+;; - p_m1: iterations, converging.
+;; - p_m2: iterations, analytic.
+;;
+;; Notes:
+;; - See info on grsp-complex-riemann-zeta before using this function.
+;;
+;; Sources:
+;; - [16].
+;;
+(define (grsp-complex-bernoulli-number p_b2 p_s1 p_n2 p_m1 p_m2)
+  (let ((res1 0.0)
+	(res2 0.0)
+	(res3 0.0)
+	(res4 0.0)
+	(z1 0.0)
+	(z2 0.0))
+
+    ;; Bernoulli's number index argument (p_n2) should be an integer, but our
+    ;; Riemann zeta will reat it as a complex with an imaginary part equal to
+    ;; zero.
+    (set! z2 p_n2)
+    (set! z1 (/ z2 2))
+
+    (set! res2 (* 2 (expt -1 (+ 1 z1))))
+    (set! res3 (* (grsp-complex-riemann-zeta p_b2 p_s1 z2 p_m1 p_m2)
+		  (grsp-fact z2)))
+    (set! res4 (expt (* 2 (grsp-pi)) z2))
+    
+    ;; Compose results.
+    (set! res1 (* res2 (/ res3 res4)))
+
+    ;; Patch for Z(1) = +inf.0, B(1) = -0.5, which would otherwise give +inf.0 
+    ;; as a result.
+    (cond ((= z2 1)
+	   (set! res1 -0.5))) ;; Z(0).
+    
     res1))
