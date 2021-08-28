@@ -109,9 +109,17 @@
 ;;   Available at:
 ;;   https://www.gnu.org/software/guile/manual/html_node/Parallel-Forms.html
 ;;   [Accessed 30 July 2021].
-;; - [34] Mathworld.wolfram.com. 2021. Hailstone Number -- from Wolfram MathWorld.
-;;   [online] Available at: https://mathworld.wolfram.com/HailstoneNumber.html
+;; - [34] Mathworld.wolfram.com. 2021. Hailstone Number -- from Wolfram
+;;   MathWorld. [online] Available at:
+;;   https://mathworld.wolfram.com/HailstoneNumber.html
 ;;   [Accessed 30 July 2021].
+;; - [35] Es.wikipedia.org. 2021. Fórmula de Euler-Maclaurin - Wikipedia, la
+;;   enciclopedia libre. [online] Available at:
+;;   https://es.wikipedia.org/wiki/F%C3%B3rmula_de_Euler-Maclaurin
+;;   [Accessed 27 August 2021].
+;; - [36] Es.wikipedia.org. 2021. Regla del trapecio - Wikipedia, la enciclopedia
+;;   libre. [online] Available at:
+;;   https://es.wikipedia.org/wiki/Regla_del_trapecio [Accessed 27 August 2021].
 
 
 (define-module (grsp grsp2)
@@ -195,7 +203,8 @@
 	    grsp-nabs
 	    grsp-onhn
 	    grsp-salbm-omth
-	    grsp-hailstone-number))
+	    grsp-hailstone-number
+	    grsp-rectangle-method))
 
 
 ;;;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -2067,3 +2076,38 @@
     
     res1))
 
+
+;; grsp-rectangle-method - Approximates the value of an integral..
+;;
+;; Keywords:
+;; - function, integral, calculus, summation, series, integration
+;;
+;; Arguments:
+;; - p_l1: list containing the values for f(x) from f(0) to f(n) in order.
+;;
+;; Sources:
+;; - [35].
+;;
+(define (grsp-rectangle-method p_l1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(l1 '())
+	(i1 0)
+	(m1 0)
+	(m2 0))
+
+    (set! l1 p_l1)
+    (set! m1 (length l1))
+    (set! m2 (- m1 1))
+    (set! res1 (/ (+ (list-ref l1 0) (list-ref l1 m2)) 2))
+
+    (set! i1 1)
+    (while (<= i1 m2)
+	   (set! res2 (+ res2 (list-ref l1 i1)))
+	   (set! i1 (in i1)))
+
+    ;; Compose resuls.
+    (set! res1 (+ res2 res3))
+    
+    res1))
