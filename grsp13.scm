@@ -46,13 +46,15 @@
 ;;   [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Harmonic_series_(mathematics)
 ;;   [Accessed 9 August 2021].
-;;
+;; - [6] En.wikipedia.org. 2021. Dirichlet L-function - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Dirichlet_L-function
+;;   [Accessed 29 August 2021].
 
 
 (define-module (grsp grsp13)
   #:use-module (grsp grsp0)
   #:use-module (grsp grsp1)
-  #:use-module (grsp grsp2)
+  #:use-module (grsp grsp2)  
   #:use-module (grsp grsp4)  
   #:export (grsp-seq-hailstorm
 	    grsp-seq-geometric
