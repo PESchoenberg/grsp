@@ -120,6 +120,11 @@
 ;; - [36] Es.wikipedia.org. 2021. Regla del trapecio - Wikipedia, la enciclopedia
 ;;   libre. [online] Available at:
 ;;   https://es.wikipedia.org/wiki/Regla_del_trapecio [Accessed 27 August 2021].
+;; - [37] En.wikipedia.org. 2021. Kronecker delta - Wikipedia. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Kronecker_delta [Accessed 30 August 2021].
+;; - [38] En.wikipedia.org. 2021. Dirac delta function - Wikipedia. [online]
+;;   Available at: <https://en.wikipedia.org/wiki/Dirac_delta_function [Accessed
+;;   30 August 2021].
 
 
 (define-module (grsp grsp2)
@@ -204,7 +209,9 @@
 	    grsp-onhn
 	    grsp-salbm-omth
 	    grsp-hailstone-number
-	    grsp-rectangle-method))
+	    grsp-rectangle-method
+	    grsp-kronecker-delta
+	    grsp-dirac-delta))
 
 
 ;;;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -2083,7 +2090,7 @@
 ;; - function, integral, calculus, summation, series, integration
 ;;
 ;; Arguments:
-;; - p_l1: list containing the values for f(x) from f(0) to f(n) in order.
+;; - p_l1: list containing the values for f(x) from f(0) to f(n).
 ;;
 ;; Sources:
 ;; - [35].
@@ -2110,4 +2117,45 @@
     ;; Compose resuls.
     (set! res1 (+ res2 res3))
     
+    res1))
+
+
+;; grsp-kronecker-delta - Returns 1 if p_n1 equals p_n2, zero otherwise.
+;;
+;; Keywords:
+;; - function, binary.
+;;
+;; Arguments:
+;; - p_n1: number.
+;; - p_n2: number.
+;;
+;; Sources:
+;; - [37].
+;;
+(define (grsp-kronecker-delta p_n1 p_n2)
+  (let ((res1 0))
+
+    (cond ((= p_n1 p_n2)
+	   (set! res1 1)))
+
+    res1))
+
+
+;; grsp-dirac-delta - Returns +inf.0 if p_n1 equals zero, zero otherwise.
+;;
+;; Keywords:
+;; - function, binary.
+;;
+;; Arguments:
+;; - p_n1: number.
+;;
+;; Sources:
+;; - [37][38].
+;;
+(define (grsp-dirac-delta p_n1)
+  (let ((res1 0))
+
+    (cond ((= p_n1 0)
+	   (set! res1 +inf.0)))
+
     res1))
