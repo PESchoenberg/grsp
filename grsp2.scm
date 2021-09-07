@@ -117,14 +117,22 @@
 ;;   enciclopedia libre. [online] Available at:
 ;;   https://es.wikipedia.org/wiki/F%C3%B3rmula_de_Euler-Maclaurin
 ;;   [Accessed 27 August 2021].
-;; - [36] Es.wikipedia.org. 2021. Regla del trapecio - Wikipedia, la enciclopedia
-;;   libre. [online] Available at:
+;; - [36] Es.wikipedia.org. 2021. Regla del trapecio - Wikipedia, la
+;;   enciclopedia libre. [online] Available at:
 ;;   https://es.wikipedia.org/wiki/Regla_del_trapecio [Accessed 27 August 2021].
-;; - [37] En.wikipedia.org. 2021. Kronecker delta - Wikipedia. [online] Available
-;;   at: https://en.wikipedia.org/wiki/Kronecker_delta [Accessed 30 August 2021].
+;; - [37] En.wikipedia.org. 2021. Kronecker delta - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Kronecker_delta
+;;   [Accessed 30 August 2021].
 ;; - [38] En.wikipedia.org. 2021. Dirac delta function - Wikipedia. [online]
 ;;   Available at: <https://en.wikipedia.org/wiki/Dirac_delta_function [Accessed
 ;;   30 August 2021].
+;; - [39] Es.wikipedia.org. 2021. Teoría de distribuciones - Wikipedia, la
+;;   enciclopedia libre. [online] Available at:
+;;   https://es.wikipedia.org/wiki/Teor%C3%ADa_de_distribuciones
+;;   [Accessed 2 September 2021].
+;; - [40] En.wikipedia.org. 2021. Heaviside step function - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Heaviside_step_function
+;;   [Accessed 2 September 2021].
 
 
 (define-module (grsp grsp2)
@@ -211,7 +219,10 @@
 	    grsp-hailstone-number
 	    grsp-rectangle-method
 	    grsp-kronecker-delta
-	    grsp-dirac-delta))
+	    grsp-dirac-delta
+	    grsp-multi-delta
+	    grsp-multi-heavyside-step
+	    grsp-euler-number))
 
 
 ;;;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -1821,7 +1832,7 @@
     res1))
 
 
-;;;; grsp-e - Returns Euler's number.
+;;;; grsp-e - Returns Euler's number as an OEIS constant.
 ;;
 ;; Keywords:
 ;; - function, exp.
@@ -2159,3 +2170,106 @@
 	   (set! res1 +inf.0)))
 
     res1))
+
+
+;; grsp-multi-delta - If p_b1 is #t then:
+;; - if p_n1 is equal to p_n2, the function returns p_n3.
+;; - If p_n1 is not equal to p_n2, returns p_n4.
+;; If p_b1 if #f, then:
+;; - if p_n1 is equal to p_n2, the function returns p_n4.
+;; - If p_n1 is not equal to p_n2, returns p_n3.
+;;
+;; Arguments:
+;; - p_b1: boolean.
+;; - p_n1; numeric.
+;; - p_n2; numeric.
+;; - p_n3; numeric.
+;; - p_n4: numeric.
+;;
+;; Sources:
+;; - [39].
+;;
+(define (grsp-multi-delta p_b1 p_n1 p_n2 p_n3 p_n4)
+  (let ((res1 0.0)
+	(n1 0)
+	(n2 0)
+	(n3 0)
+	(n4 0))
+
+    (set! n1 p_n1)
+    (set! n2 p_n2)
+    (set! n3 p_n3)
+    (set! n4 p_n4)
+
+    (cond ((equal? p_b1 #t)
+	   (cond ((= n1 n2)
+		  (set! res1 n3))
+		 (else
+		  (set! res1 n4))))
+	  ((equal? p_b1 #f)
+	   (cond ((= n1 n2)
+		  (set! res1 n4))
+		 (else
+		  (set! res1 n3)))))
+
+    res1))
+
+
+;; grsp-multi-heavyside-step - If p_b1 is #t then:
+;; - If p_n2 is greater or equal to p_n1, return p_n4.
+;; - Otherwise return p_n3.
+;; If p_b1 is #f, then:
+;; - if p_n2 is less or equal to p_n1, return p_n4.
+;; - Otherwise return p_n3.
+;;
+;; Arguments:
+;; - p_b1: boolean.
+;; - p_n1; numeric.
+;; - p_n2; numeric.
+;; - p_n3; numeric.
+;;
+;; Sources:
+;; - [40].
+;;
+(define (grsp-multi-heavyside-step p_b1 p_n1 p_n2 p_n3 p_n4)
+  (let ((res1 0)
+	(n1 0)
+	(n2 0)
+	(n3 0)
+	(n4 0))
+
+    (set! n1 p_n1)
+    (set! n2 p_n2)
+    (set! n3 p_n3)
+    (set! n4 p_n4)
+
+    (cond ((equal? p_b1 #t)
+	   (cond ((>= n2 n1)
+		  (set! res1 n3))
+		 (else
+		  (set! res1 n4))))
+	  ((equal? p_b1 #f)
+	   (cond ((<= n2 n1)
+		  (set! res1 n3))
+		 (else
+		  (set! res1 n4)))))
+
+    res1))
+
+
+;; grsp-euler-number - Calculates e as a summation of p_n1 iterations.
+;;
+;; Arguments:
+;; - p_n1: iterations.
+;;
+(define (grsp-euler-number p_n1)
+  (let ((res1 0.0)
+	(i1 0))
+
+    (while (< i1 p_n1)
+	   (set! res1 (+ res1 (/ 1 (grsp-fact i1))))
+	   (set! i1 (in i1)))
+    
+    res1))
+
+

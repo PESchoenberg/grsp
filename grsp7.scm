@@ -27,6 +27,10 @@
 ;;;; General notes:
 ;; - Read sources for limitations on function parameters.
 ;;
+;; Sources:
+;; - [1] En.wikipedia.org. 2021. Approximations of π - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Approximations_of_%CF%80
+;;   [Accessed 6 September 2021].
 
 
 (define-module (grsp grsp7)
@@ -42,7 +46,10 @@
 	    grsp-geo-cylinder
 	    grsp-geo-cylinderv
 	    grsp-geo-pyramid
-	    grsp-geo-pyramidv))
+	    grsp-geo-pyramidv
+	    grsp-geo-pi-machin
+	    grsp-geo-pi-shanks1
+	    grsp-geo-pi-shanks2))
 
 
 ;;;; grsp-geo-circle - Area of a circle.
@@ -80,6 +87,9 @@
 
 ;;;; grsp-geo-triangle - Area of a triangle.
 ;;
+;; Keywords:
+;; - geometry.
+;;
 ;; Arguments:
 ;; - p_x1: base.
 ;; - p_y1: height.
@@ -108,6 +118,9 @@
 
 ;;;; grsp-geo-line - Length of a segment (hypotenuse).
 ;;
+;; Keywords:
+;; - geometry.
+;;
 ;; Arguments:
 ;; - p_x1.
 ;; - p_y1.
@@ -123,6 +136,9 @@
 
 
 ;;;; grsp-geo-slope - Slope of a line. 
+;;
+;; Keywords:
+;; - geometry.
 ;;
 ;; Arguments:
 ;; - p_x1.
@@ -152,6 +168,9 @@
 
 ;;;; grsp-geo-cylinder - Surface area of a cylinder.
 ;;
+;; Keywords:
+;; - geometry.
+;;
 ;; Arguments:
 ;; - p_x1: base radius.
 ;; - p_y1: height.
@@ -165,6 +184,9 @@
 
 
 ;;;; grsp-geo-cylinderv - Volume of a cylinder.
+;;
+;; Keywords:
+;; - geometry.
 ;;
 ;; Arguments:
 ;; - p_x1: base radius.
@@ -180,6 +202,9 @@
 
 ;;;; grsp-geo-pyramid - Surface area of a pyramid.
 ;;
+;; Keywords:
+;; - geometry.
+;;
 ;; Arguments:
 ;; - p_a1: base area.
 ;; - p_y1: height.
@@ -194,6 +219,9 @@
 
 ;;;; grsp-geo-pyramidv - Volume of a pyramid.
 ;;
+;; Keywords:
+;; - geometry.
+;;
 ;; Arguments:
 ;; - p_a1: base area.
 ;; - p_y1: height.
@@ -203,4 +231,74 @@
 
     (set! res1 (* (/ 1 3) p_a1 p_y1))
     
+    res1))
+
+;;;; grsp-geo-pi-machin - Approximates pi using the original John Machin's
+;; formula.
+;;
+;; Keywords:
+;; - geometry, pi.
+;;
+;; Sources:
+;; - [1].
+;;
+(define (grsp-geo-pi-machin)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0))
+
+    (set! res2 (* 4 (atan (/ 1 5))))
+    (set! res3 (atan (/ 1 239)))
+
+    ;; Compose result.
+    (set! res1 (* 4 (- res2 res3)))
+
+    res1))
+
+
+;;;; grsp-geo-pi-shanks1 - Approximates pi using the original Shanks' formula.
+;;
+;; Keywords:
+;; - geometry, pi.
+;;
+;; Sources:
+;; - [1].
+;;
+(define (grsp-geo-pi-shanks1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(res4 0))
+
+    (set! res2 (* 6 (atan (/ 1 8))))
+    (set! res3 (* 2 (atan (/ 1 57))))
+    (set! res4 (atan (/ 1 239)))
+
+    ;; Compose result.
+    (set! res1 (* 4 (+ res2 res3 res4)))
+
+    res1))
+
+
+;;;; grsp-geo-pi-shanks2 - Approximates pi using Shanks' control formula.
+;;
+;; Keywords:
+;; - geometry, pi.
+;;
+;; Sources:
+;; - [1].
+;;
+(define (grsp-geo-pi-shanks2)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(res4 0))
+
+    (set! res2 (* 12 (atan (/ 1 18))))
+    (set! res3 (* 8 (atan (/ 1 57))))
+    (set! res4 (* 5 (atan (/ -1 239))))
+
+    ;; Compose result.
+    (set! res1 (* 4 (+ res2 res3 res4)))
+
     res1))
