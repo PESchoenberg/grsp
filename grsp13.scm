@@ -58,7 +58,9 @@
   #:use-module (grsp grsp4)  
   #:export (grsp-seq-hailstorm
 	    grsp-seq-geometric
-	    grsp-seq-hyperarmonic))
+	    grsp-seq-hyperarmonic
+	    grsp-seq-euler
+	    grsp-seq-pi))
 
 
 ;;;; grsp-seq-hailstorm - Calculates p_m1 elements of a hailstorm number
@@ -259,3 +261,93 @@
 
     res2))
 
+
+;; grsp-seq-euler - Returns a list of p_n1 elements which added together
+;; amount to the value of the Euler number.
+;;
+;; Keywords:
+;; - number, sequence, euler.
+;;
+;; Arguments:
+;; - p_b1:
+;;   - #t: calculated terms of the series will be returned.
+;;   - #f: calculated terms of the series will not be returned.
+;; - p_m1: iterations > 0.
+;;
+;; Output:
+;; - A list with the following format:
+;;   - Elem 0: p_m1.
+;;   - Elem 1: actual result of the summation (e).
+;;   - Elem 2: list of series elements calculated to p_m1 iterations of the
+;;     series summation (shown only if p_b1 is passed #t).
+;;
+(define (grsp-seq-euler p_b1 p_m1)
+  (let ((res1 '())
+	(res2 0)
+	(res3 0.0)
+	(res4 '())
+	(i1 0))
+
+    (set! res1 (make-list p_m1))
+    (while (< i1 p_m1)
+	   (set! res2 (/ 1 (grsp-fact i1)))
+	   (list-set! res1 i1 res2)
+	   (set! i1 (in i1)))
+
+    (set! res3 (grsp-opz (apply + res1)))
+    
+    ;; Compose results.
+    (cond ((equal? p_b1 #t)
+	   (set! res4 (list p_m1 res3 res1)))
+	  (else (set! res4 (list p_m1 res3))))
+    
+    res4))
+
+
+;; grsp-seq-pi - Pi expressed as an infinite series using the BBP method
+;; developed by Bayley, Bourwen and Plouffe in 1997.
+;;
+;; Keywords:
+;; - number, sequence, pi.
+;;
+;; Arguments:
+;; - p_b1:
+;;   - #t: calculated terms of the series will be returned.
+;;   - #f: calculated terms of the series will not be returned.
+;; - p_m1: iterations > 0.
+;;
+;; Output:
+;; - A list with the following format:
+;;   - Elem 0: p_m1.
+;;   - Elem 1: actual result of the summation (Pi).
+;;   - Elem 2: list of series elements calculated to p_m1 iterations of the
+;;     series summation (shown only if p_b1 is passed #t).
+;;
+;; Sources:
+;; - grsp7.1[]
+;;
+(define (grsp-seq-pi p_b1 p_m1)
+  (let ((res1 '())
+	(res2 0)
+	(res3 0.0)
+	(res4 '())
+	(i1 0))
+
+    (set! res1 (make-list p_m1))
+    (while (< i1 p_m1)
+	   (set! res2 (* (/ 1 (expt 16 i1))
+			 (- (/ 4 (+ (* 8 i1) 1))
+			    (/ 2 (+ (* 8 i1) 4))
+			    (/ 1 (+ (* 8 i1) 5))
+			    (/ 1 (+ (* 8 i1) 6)))))
+	   (list-set! res1 i1 res2)
+	   (set! i1 (in i1)))
+
+    (set! res3 (grsp-opz (apply + res1)))
+    
+    ;; Compose results.
+    (cond ((equal? p_b1 #t)
+	   (set! res4 (list p_m1 res3 res1)))
+	  (else (set! res4 (list p_m1 res3))))
+    
+    res4))  
