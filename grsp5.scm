@@ -136,6 +136,7 @@
 ;; - [41] En.wikipedia.org. 2021. Theil–Sen estimator - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Theil%E2%80%93Sen_estimator 
 ;;   [Accessed 10 April 2021].
+;; - [42] https://en.wikipedia.org/wiki/Triangular_distribution
 
 
 (define-module (grsp grsp5)
@@ -242,7 +243,11 @@
 	    grsp-weibull-mgf
 	    grsp-weibull-cf
 	    grsp-theil-sen-estimator
-	    grsp-theil-sen-estimator-mth))
+	    grsp-theil-sen-estimator-mth
+	    grsp-triangular-kurtosis
+	    grsp-triangular-mean
+	    grsp-triangular-variance
+	    grsp-triangular-median))
 
 
 ;;;; grsp-feature-scaling - Scales p_n to the interval [p_nmin, p_nmax].
@@ -3022,3 +3027,111 @@
     (set! res4 (grsp-median1 res3))
     
     res4))	     
+
+
+;;;; grsp-triangular-kurtosis - Excess kurtosis of a triangular distribution.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Sources:
+;; - [42].
+;;
+(define (grsp-triangular-kurtosis)
+  (let ((res1 0.0))
+
+    (set! res1 (/ -3 5))
+
+    res1))
+
+
+;;;; grsp-triangular-mean - Mean of a triangular distribution.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_a1: a, (-inf.0, +inf.0).
+;; - p_b1: b, b >= a.
+;; - p_c1: c, mode.
+;;
+;; Sources:
+;; - [42].
+;;
+(define (grsp-triangular-mean p_a1 p_b1 p_c1)
+  (let ((res1 0.0))
+
+    (set! res1 (/ (+ p_a1 p_b1 p_c1) 3)) 
+
+    res1))
+
+
+;;;; grsp-triangular-variance - Variance of a triangular distribution.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_a1: a.
+;; - p_b1: b.
+;; - p_c1: c.
+;;
+;; Sources:
+;; - [42].
+;;
+(define (grsp-triangular-variance p_a1 p_b1 p_c1)
+  (let ((res1 0.0)
+	(res2 0)
+	(a1 0)
+	(b1 0)
+	(c1 0))
+
+    (set! a1 p_a1)
+    (set! b1 p_b1)
+    (set! c1 p_c1)    
+    (set! res2 (+ (expt a1 2)
+		  (expt b1 2)
+		  (expt c1 2)
+		  (* -1 a1 b1)
+		  (* -1 a1 c1)
+		  (* -1 b1 c1)))
+
+    ;; Compose result.
+    (set! res1 (/ res2 18))
+    
+    res1))
+
+
+;;;; grsp-triangular-median - Median of a triangular distribution.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_a1: a.
+;; - p_b1: b.
+;; - p_c1: c.
+;;
+;; Sources:
+;; - [42].
+;;
+(define (grsp-triangular-median p_a1 p_b1 p_c1)
+  (let ((res1 0.0)
+	(a1 0.0)
+	(b1 0.0)
+	(c1 0.0)
+	(c2 0.0)
+	(d1 0.0))
+
+    (set! a1 p_a1)
+    (set! b1 p_b1)
+    (set! c1 p_c1)  
+    (set! c2 (/ (+ a1 b1) 2))
+    (set! d1 (- b1 a1))
+
+    (cond ((>= c1 c2)
+	   (set! res1 (+ a1 (sqrt (/ (* d1 (- c1 a1)) 2)))))
+	  (else 
+	   (set! res1 (- b1 (sqrt (/ (* d1 (- b1 c1)) 2))))))
+
+    res1))

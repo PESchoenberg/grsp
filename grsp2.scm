@@ -133,6 +133,15 @@
 ;; - [40] En.wikipedia.org. 2021. Heaviside step function - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Heaviside_step_function
 ;;   [Accessed 2 September 2021].
+;; - [41] En.wikipedia.org. 2021. Rectangular function - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Rectangular_function
+;;   [Accessed 9 September 2021].
+;; - [42] En.wikipedia.org. 2021. Triangular function - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Triangular_function [Accessed
+;;   9 September 2021].
+;; - [43] En.wikipedia.org. 2021. Absolute value - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Absolute_value [Accessed 9
+;;   September 2021].
 
 
 (define-module (grsp grsp2)
@@ -222,7 +231,9 @@
 	    grsp-dirac-delta
 	    grsp-multi-delta
 	    grsp-multi-heavyside-step
-	    grsp-euler-number))
+	    grsp-euler-number
+	    grsp-rectangular
+	    grsp-triangular))
 
 
 ;;;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -2095,7 +2106,7 @@
     res1))
 
 
-;; grsp-rectangle-method - Approximates the value of an integral..
+;;;; grsp-rectangle-method - Approximates the value of an integral.
 ;;
 ;; Keywords:
 ;; - function, integral, calculus, summation, series, integration
@@ -2131,7 +2142,7 @@
     res1))
 
 
-;; grsp-kronecker-delta - Returns 1 if p_n1 equals p_n2, zero otherwise.
+;;;; grsp-kronecker-delta - Returns 1 if p_n1 equals p_n2, zero otherwise.
 ;;
 ;; Keywords:
 ;; - function, binary.
@@ -2152,7 +2163,7 @@
     res1))
 
 
-;; grsp-dirac-delta - Returns +inf.0 if p_n1 equals zero, zero otherwise.
+;;;; grsp-dirac-delta - Returns +inf.0 if p_n1 equals zero, zero otherwise.
 ;;
 ;; Keywords:
 ;; - function, binary.
@@ -2172,12 +2183,15 @@
     res1))
 
 
-;; grsp-multi-delta - If p_b1 is #t then:
+;;;; grsp-multi-delta - If p_b1 is #t then:
 ;; - if p_n1 is equal to p_n2, the function returns p_n3.
 ;; - If p_n1 is not equal to p_n2, returns p_n4.
 ;; If p_b1 if #f, then:
 ;; - if p_n1 is equal to p_n2, the function returns p_n4.
 ;; - If p_n1 is not equal to p_n2, returns p_n3.
+;;
+;; Keywords:
+;; - function.
 ;;
 ;; Arguments:
 ;; - p_b1: boolean.
@@ -2215,12 +2229,15 @@
     res1))
 
 
-;; grsp-multi-heavyside-step - If p_b1 is #t then:
+;;;; grsp-multi-heavyside-step - If p_b1 is #t then:
 ;; - If p_n2 is greater or equal to p_n1, return p_n4.
 ;; - Otherwise return p_n3.
 ;; If p_b1 is #f, then:
 ;; - if p_n2 is less or equal to p_n1, return p_n4.
 ;; - Otherwise return p_n3.
+;;
+;; Keywords:
+;; - function.
 ;;
 ;; Arguments:
 ;; - p_b1: boolean.
@@ -2257,7 +2274,10 @@
     res1))
 
 
-;; grsp-euler-number - Calculates e as a summation of p_n1 iterations.
+;;;; grsp-euler-number - Calculates e as a summation of p_n1 iterations.
+;;
+;; Keywords:
+;; - function.
 ;;
 ;; Arguments:
 ;; - p_n1: iterations.
@@ -2272,4 +2292,48 @@
     
     res1))
 
+
+;;;; grsp-rectangular - rectangular function.
+;;
+;; Keywords:
+;; - function, gate, pulse, pi, unit, normalized, boxcar
+;;
+;; Arguments:
+;; - p_n1.
+;;
+;; Sources:
+;; - [41].
+;;
+(define (grsp-rectangular p_n1)
+  (let ((res1 0.0)
+	(n1 0.0))
+
+    (set! n1 (abs p_n1))
+    (cond ((= n1 0.5)
+	   (set! res1 0.5))
+	  ((< n1 0.5)
+	   (set! res1 1.0)))
+
+    res1))
+
+
+;;;; grsp-triangular - triangular function.
+;;
+;; Keywords:
+;; - function, gate, pulse, pi, unit, normalized, boxcar
+;;
+;; Arguments:
+;; - p_n1.
+;;
+;; Sources:
+;; - [41][42][43].
+;;
+(define (grsp-triangular p_n1)
+  (let ((res1 0.0)
+	(n1 0.0))
+
+    (set! n1 p_n1)
+    (set! res1 (abs (* (grsp-rectangular (/ n1 2)) (- 1 (abs n1)))))
+    
+    res1))
 

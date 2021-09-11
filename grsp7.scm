@@ -49,7 +49,8 @@
 	    grsp-geo-pyramidv
 	    grsp-geo-pi-machin
 	    grsp-geo-pi-shanks1
-	    grsp-geo-pi-shanks2))
+	    grsp-geo-pi-shanks2
+	    grsp-geo-pi-atan))
 
 
 ;;;; grsp-geo-circle - Area of a circle.
@@ -302,3 +303,20 @@
     (set! res1 (* 4 (+ res2 res3 res4)))
 
     res1))
+
+
+;;;; grsp-geo-pi-atan - Approximates pi as a simple atan product.
+;;
+;; Keywords:
+;; - geometry, pi.
+;;
+;; Sources:
+;; - [1].
+;;
+(define (grsp-geo-pi-atan)
+  (let ((res1 0.0))
+
+    (set! res1 (* 4.0 (atan 1.0)))
+
+    res1))
+
