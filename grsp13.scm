@@ -262,7 +262,7 @@
     res2))
 
 
-;; grsp-seq-euler - Returns a list of p_n1 elements which added together
+;;;; grsp-seq-euler - Returns a list of p_n1 elements which added together
 ;; amount to the value of the Euler number.
 ;;
 ;; Keywords:
@@ -304,7 +304,7 @@
     res4))
 
 
-;; grsp-seq-pi - Pi expressed as an infinite series using the BBP method
+;;;; grsp-seq-pi - Pi expressed as an infinite series using the BBP method
 ;; developed by Bayley, Bourwen and Plouffe in 1997.
 ;;
 ;; Keywords:
