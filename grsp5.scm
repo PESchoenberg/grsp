@@ -136,7 +136,9 @@
 ;; - [41] En.wikipedia.org. 2021. Theil–Sen estimator - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Theil%E2%80%93Sen_estimator 
 ;;   [Accessed 10 April 2021].
-;; - [42] https://en.wikipedia.org/wiki/Triangular_distribution
+;; - [42] En.wikipedia.org. 2021. Triangular distribution - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Triangular_distribution
+;;   [Accessed 13 September 2021].
 
 
 (define-module (grsp grsp5)
@@ -247,7 +249,9 @@
 	    grsp-triangular-kurtosis
 	    grsp-triangular-mean
 	    grsp-triangular-variance
-	    grsp-triangular-median))
+	    grsp-triangular-median
+	    grsp-triangular-pdf
+	    grsp-triangular-entropy))
 
 
 ;;;; grsp-feature-scaling - Scales p_n to the interval [p_nmin, p_nmax].
@@ -3076,6 +3080,9 @@
 ;; - p_b1: b.
 ;; - p_c1: c.
 ;;
+;; Notes:
+;; - See grsp-triangular-mean for argument properties.
+;;
 ;; Sources:
 ;; - [42].
 ;;
@@ -3112,6 +3119,9 @@
 ;; - p_b1: b.
 ;; - p_c1: c.
 ;;
+;; Notes:
+;; - See grsp-triangular-mean for argument properties.
+;;
 ;; Sources:
 ;; - [42].
 ;;
@@ -3135,3 +3145,73 @@
 	   (set! res1 (- b1 (sqrt (/ (* d1 (- b1 c1)) 2))))))
 
     res1))
+
+
+;;;; grsp-triangular-pdf - probability density function of a triangular
+;; distribution.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_a1: a.
+;; - p_b1: b.
+;; - p_c1: c.
+;; - p_x1; x.
+;;
+;; Notes:
+;; - See grsp-triangular-mean for argument properties.
+;;
+;; Sources:
+;; - [42].
+;;
+(define (grsp-triangular-pdf p_a1 p_b1 p_c1 p_x1)
+  (let ((res1 0)
+	(a1 0)
+	(b1 0)
+	(c1 0)
+	(d1 0)
+	(x1 0))
+
+    (set! a1 p_a1)
+    (set! b1 p_b1)
+    (set! c1 p_c1)
+    (set! x1 p_x1)
+    (set! d1 (- b1 a1))
+
+    (cond ((and (<= a1 x1) (< x1 c1))
+	   (set! res1 (/ (* 2 (- x1 a1)) (* d1 (- c1 a1)))))
+	  ((= x1 c1)
+	   (set! res1 (/ 2 d1)))
+	  ((and (< c1 x1) (<= x1 b1))
+	   (set! res1 (/ (* 2 (- b1 x1)) (* d1 (- b1 c1))))))	  	   
+    
+    res1))
+
+
+;;;; grsp-triangular-entropy - Entropy of a triangular distribution.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_a1: a.
+;; - p_b1: b, b > a.
+;;
+;; Notes:
+;; - See grsp-triangular-mean for additional argument properties.
+;;
+;; Sources:
+;; - [42].
+;;
+(define (grsp-triangular-entropy p_a1 p_b1)
+  (let ((res1 0)
+	(a1 0)
+	(b1 0))
+
+    (set! a1 p_a1)
+    (set! b1 p_b1)
+    (set! res1 (* 0.5 (log (/ (- b1 a1) 2))))
+
+    res1))
+
