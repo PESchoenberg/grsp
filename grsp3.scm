@@ -81,25 +81,27 @@
 ;; - [18] Mathispower4u. (2020). LU Decomposition. [online] Available at:
 ;;   https://www.youtube.com/watch?v=UlWcofkUDDU [Accessed 5 Mar. 2020].
 ;; - [19] En.wikipedia.org. 2021. Genetic algorithm - Wikipedia. [online]
-;;   Available at: <https://en.wikipedia.org/wiki/Genetic_algorithm>
+;;   Available at: https://en.wikipedia.org/wiki/Genetic_algorithm
 ;;   [Accessed 13 May 2021].
 ;; - [20] En.wikipedia.org. 2021. Crossover (genetic algorithm) - Wikipedia.
-;;   [online] Available at: <https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)>
+;;   [online] Available at: https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)
 ;;   [Accessed 13 May 2021].
 ;; - [21] En.wikipedia.org. 2021. Mutation (genetic algorithm) - Wikipedia.
-;;   [online] Available at: <https://en.wikipedia.org/wiki/Mutation_(genetic_algorithm)>
+;;   [online] Available at: https://en.wikipedia.org/wiki/Mutation_(genetic_algorithm)
 ;;   [Accessed 13 May 2021].
 ;; - [22] En.wikipedia.org. 2021. Selection (genetic algorithm) - Wikipedia.
-;;   [online] Available at: <https://en.wikipedia.org/wiki/Selection_(genetic_algorithm)>
+;;   [online] Available at: https://en.wikipedia.org/wiki/Selection_(genetic_algorithm)
 ;;   [Accessed 13 May 2021].
 ;; - [23] fitness, A., 2015. Accumulated normalized fitness. [online] Stack
 ;;   Overflow. Available at:
-;;   <https://stackoverflow.com/questions/27524241/accumulated-normalized-fitness>
+;;   https://stackoverflow.com/questions/27524241/accumulated-normalized-fitness
 ;;   [Accessed 13 May 2021].
+;; - [24] En.wikipedia.org. 2021. Multiset - Wikipedia. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Multiset [Accessed 17 September 2021].
 
 
 ;; Compilation and REPL examples:
-;;(use-modules (grsp grsp0)(grsp grsp1)(grsp grsp2)(grsp grsp3)(grsp grsp4)(grsp grsp5)(grsp grsp6)(grsp grsp7)(grsp grsp8)(grsp grsp9)(grsp grsp10)(grsp grsp11)(grsp grsp12)(grsp grsp13))
+;; (use-modules (grsp grsp0)(grsp grsp1)(grsp grsp2)(grsp grsp3)(grsp grsp4)(grsp grsp5)(grsp grsp6)(grsp grsp7)(grsp grsp8)(grsp grsp9)(grsp grsp10)(grsp grsp11)(grsp grsp12)(grsp grsp13))
 ;;
 ;; (define X (grsp-matrix-create 1 4 4))
 ;; (define Y (grsp-matrix-create 2 4 4))
@@ -211,7 +213,8 @@
 	    grsp-matrix-keyon
 	    grsp-matrix-col-aupdate
 	    grsp-matrix-row-selectc
-	    grsp-matrix-is-empty))
+	    grsp-matrix-is-empty
+	    grsp-matrix-is-multiset))
 
 
 ;;;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -5389,7 +5392,7 @@
     res1))
 
 
-;;;; grsp-matrix-fitness-rprnd - Basic fitness function based on pseudo -  random
+;;;; grsp-matrix-fitness-rprnd - Basic fitness function based on pseudo - random
 ;; numbers.
 ;;
 ;; Keywords:
@@ -5656,3 +5659,57 @@
 
     res1))
 
+
+;;;; grsp-matrix-is-multiset - Returns #t if the matrix has reteated elements, #f
+;; otherwise.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;;
+;; Sources:
+;; - [24].
+;;
+(define (grsp-matrix-is-multiset p_a1)
+  (let ((res1 0)
+	(res2 #f)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(i1 0)
+	(j1 0)
+	(n1 0)
+	(n2 0)
+	(b1 #f))
+
+    ;; Create safety matrices. 
+    (set! res1 (grsp-matrix-cpy p_a1))
+    
+    ;; Extract boundaries.
+    (set! lm1 (grsp-matrix-esi 1 res1))
+    (set! hm1 (grsp-matrix-esi 2 res1))
+    (set! ln1 (grsp-matrix-esi 3 res1))
+    (set! hn1 (grsp-matrix-esi 4 res1))	
+
+    ;; Cycle the matrix and find the first (set) element that has
+    ;; multiplicity.
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+	   (set! j1 ln1)
+	   (while (<= j1 hn1)
+		  (set! n2 (array-ref res1 i1 j1))
+		  (set! n1 (grsp-matrix-total-element res1 n2))
+		  (cond ((> n1 1)
+			 (set! b1 #t)
+			 (set! i1 hm1)
+			 (set! j1 hn1)))
+		  (set! j1 (in j1)))
+	   (set! i1 (in i1)))
+
+    ;; Cmpose result.
+    (set! res2 b1)
+
+    res2))
