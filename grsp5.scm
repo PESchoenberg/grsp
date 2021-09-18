@@ -251,7 +251,9 @@
 	    grsp-triangular-variance
 	    grsp-triangular-median
 	    grsp-triangular-pdf
-	    grsp-triangular-entropy))
+	    grsp-triangular-entropy
+	    grsp-triangular-cdf
+	    grsp-triangular-skewness))
 
 
 ;;;; grsp-feature-scaling - Scales p_n to the interval [p_nmin, p_nmax].
@@ -3046,6 +3048,9 @@
 
     (set! res1 (/ -3 5))
 
+    ;; Compose result.
+    (set! res1 (grsp-opz res1))    
+    
     res1))
 
 
@@ -3067,6 +3072,9 @@
 
     (set! res1 (/ (+ p_a1 p_b1 p_c1) 3)) 
 
+    ;; Compose result.
+    (set! res1 (grsp-opz res1))
+    
     res1))
 
 
@@ -3105,6 +3113,7 @@
 
     ;; Compose result.
     (set! res1 (/ res2 18))
+    (set! res1 (grsp-opz res1))    
     
     res1))
 
@@ -3144,6 +3153,9 @@
 	  (else 
 	   (set! res1 (- b1 (sqrt (/ (* d1 (- b1 c1)) 2))))))
 
+    ;; Compose result.
+    (set! res1 (grsp-opz res1))
+    
     res1))
 
 
@@ -3185,6 +3197,9 @@
 	   (set! res1 (/ 2 d1)))
 	  ((and (< c1 x1) (<= x1 b1))
 	   (set! res1 (/ (* 2 (- b1 x1)) (* d1 (- b1 c1))))))	  	   
+
+    ;; Compose result.
+    (set! res1 (grsp-opz res1))
     
     res1))
 
@@ -3213,5 +3228,101 @@
     (set! b1 p_b1)
     (set! res1 (* 0.5 (log (/ (- b1 a1) 2))))
 
+    ;; Compose result.
+    (set! res1 (grsp-opz res1))
+    
     res1))
 
+
+;;;; grsp-triangular-cdf - Cumulative distribution function of a triangular
+;; distribution.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_a1: a.
+;; - p_b1: b.
+;; - p_c1: c.
+;; - p_x1; x.
+;;
+;; Notes:
+;; - See grsp-triangular-mean for argument properties.
+;;
+;; Sources:
+;; - [42].
+;;
+(define (grsp-triangular-cdf p_a1 p_b1 p_c1 p_x1)
+  (let ((res1 0)
+	(a1 0)
+	(b1 0)
+	(c1 0)
+	(d1 0)
+	(x1 0))
+
+    (set! a1 p_a1)
+    (set! b1 p_b1)
+    (set! c1 p_c1)
+    (set! x1 p_x1)
+    (set! d1 (- b1 a1))
+
+    (cond ((and (<= x1 c1) (< a1 x1))
+	   (set! res1 (/ (expt (- x1 a1) 2) (* d1 (- c1 a1)))))
+	  ((and (< x1 b1) (< c1 x1))
+	   (set! res1 (- 1 (/ (expt (- b1 x1) 2) (* d1 (- b1 c1))))))
+	  ((<= b1 x1)
+	   (set! res1 1)))
+
+    ;; Compose result.
+    (set! res1 (grsp-opz res1))
+    
+    res1))
+
+
+;;;; grsp-triangular-skewness - Skewness of a triangular distribution.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_a1: a.
+;; - p_b1: b.
+;; - p_c1: c.
+;;
+;; Notes:
+;; - See grsp-triangular-mean for argument properties.
+;;
+;; Sources:
+;; - [42].
+;;
+(define (grsp-triangular-skewness p_a1 p_b1 p_c1)
+  (let ((res1 0)
+	(a1 0)
+	(b1 0)
+	(c1 0)
+	(res2 0)
+	(res3 0))
+
+    (set! a1 p_a1)
+    (set! b1 p_b1)
+    (set! c1 p_c1)
+
+    (set! res2 (* (sqrt 2)
+		  (+ a1 b1 (* -2 c1))
+		  (- (* 2 a1) b1 c1)
+		  (+ a1 (* -2 b1) c1)))
+
+    (set! res3 (* 5 (expt (+ (expt a1 2)
+			     (expt b1 2)
+			     (expt c1 2)
+			     (* a1 b1)
+			     (* a1 c1)
+			     (* b1 c1))
+			  (/ 3 2))))
+
+    (set! res1 (/ res2 res3))
+
+    ;; Compose result.
+    (set! res1 (grsp-opz res1))    
+    
+    res1))
