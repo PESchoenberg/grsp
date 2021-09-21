@@ -2959,7 +2959,7 @@
 		  ;; - 1: col number.
 		  ;; - 2: value.
 		  ;; If this is the last element of the matrix, do not add the
-		  ;; new line character at the endo of the string.
+		  ;; new line character at the end of the string.
 		  (cond ((equal? (and (>= j1 hn1) (>= i1 hm1)) #t)
 			 (set! s1 (strings-append (list (grsp-n2s i1)
 							s2
@@ -5685,7 +5685,7 @@
 	(n2 0)
 	(b1 #f))
 
-    ;; Create safety matrices. 
+    ;; Create safety matrix. 
     (set! res1 (grsp-matrix-cpy p_a1))
     
     ;; Extract boundaries.
@@ -5709,7 +5709,9 @@
 		  (set! j1 (in j1)))
 	   (set! i1 (in i1)))
 
-    ;; Cmpose result.
+    ;; Compose result.
     (set! res2 b1)
 
     res2))
+    
+
