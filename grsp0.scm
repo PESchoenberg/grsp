@@ -61,7 +61,8 @@
 	    grsp-ask
 	    grsp-placebo
 	    in
-	    de))
+	    de
+	    grsp-argtype))
 
 
 ;;;; pline - Displays character p_n p_m times in one line at the console.
@@ -472,3 +473,27 @@
 
     res1))
 
+
+;; grs-argtype - Decrement p_n1 by one.
+;;
+;; Keywords:
+;; - console, arguments, types.
+;;
+;; Arguments:
+;; - p_a1: argument.
+;;
+;; Output:
+;; - 0: undefined.
+;;
+(define (grsp-argtype p_a1)
+  (let ((res1 0))
+
+    (cond ((char? p_a1)
+	   (set! res1 1))
+	  ((string? p_a1)
+	   (set! res1 2))
+	  
+	  ((boolean? p_a1)
+	   (set! res1 10)))
+	  
+    res1))

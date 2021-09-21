@@ -139,6 +139,7 @@
 ;; - [42] En.wikipedia.org. 2021. Triangular distribution - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Triangular_distribution
 ;;   [Accessed 13 September 2021].
+;; - [43] https://en.wikipedia.org/wiki/Continuous_uniform_distribution
 
 
 (define-module (grsp grsp5)
