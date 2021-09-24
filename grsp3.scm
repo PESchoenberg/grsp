@@ -214,7 +214,8 @@
 	    grsp-matrix-col-aupdate
 	    grsp-matrix-row-selectc
 	    grsp-matrix-is-empty
-	    grsp-matrix-is-multiset))
+	    grsp-matrix-is-multiset
+	    grsp-matrix-argtype))
 
 
 ;;;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -5715,3 +5716,89 @@
     res2))
     
 
+;;;; grsp-matrix-argtype - Finds the type of each element of matrix p_a1
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;;
+;; Output:
+;; A matix of the same dimensions and shape as p_a1 but containing the type of
+;; each one of its elements according to the folloing representation:
+;; - 0: undefined.
+;; - 1: list.
+;; - 2: string.
+;; - 3: array.
+;; - 4: boolean.
+;; - 5: char.
+;; - 6: integer.
+;; - 7: real.
+;; - 8: complex.
+;; - 9: inf.
+;; - 10: nan.
+;;
+;; Sources:
+;; - [grsp0.4][grsp0.5].
+;;
+(define (grsp-matrix-argtype p_a1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(n1 0)
+	(m1 0)
+	(n2 0)
+	(i1 0)
+	(j1 0))
+	
+    ;; Create safety matrix. 
+    (set! res2 (grsp-matrix-cpy p_a1))
+    (set! res1 res2)
+    
+    ;; Extract boundaries.
+    (set! lm1 (grsp-matrix-esi 1 res2))
+    (set! hm1 (grsp-matrix-esi 2 res2))
+    (set! ln1 (grsp-matrix-esi 3 res2))
+    (set! hn1 (grsp-matrix-esi 4 res2))		
+
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+
+	   (set! j1 ln1)
+	   (while (<= j1 hn1)
+
+		  (cond ((list? (array-ref res2 i1 j1))
+			 (set! res3 1))
+			((string? (array-ref res2 i1 j1))
+			 (set! res3 2))	  
+			((array? (array-ref res2 i1 j1))
+			 (set! res3 3))	  
+			((boolean? (array-ref res2 i1 j1))
+			 (set! res3 4))
+			((char? (array-ref res2 i1 j1))
+			 (set! res3 5))	  
+			((integer? (array-ref res2 i1 j1))
+			 (set! res3 6))
+			((real? (array-ref res2 i1 j1))
+			 (set! res3 7))
+			((complex? (array-ref res2 i1 j1))
+			 (set! res3 8)))
+
+		  ;; This should be processed separatedly.
+		  (cond ((< res3 8)
+			 (cond ((inf? (array-ref res2 i1 j1))
+				(set! res3 9))
+			       ((nan? (array-ref res2 i1 j1))
+				(set! res3 10)))))
+		  
+		  (array-set! res1 res3 i1 j1)
+		  (set! j1 (in j1)))
+
+	   (set! i1 (in i1)))
+    
+    res1))
