@@ -38,7 +38,8 @@
 ;; - [3] Edronkin, P. (2019). sqlp - Simple terminal query and .sql file
 ;;   processing for  Sqlite3. [online] sqlp. Available at:
 ;;   https://peschoenberg.github.io/sqlp/ [Accessed 5 Oct. 2019].
-
+;; - [4] https://www.gnu.org/software/guile/manual/html_node/Dynamic-Types.html#Dynamic-Types
+;; - [5] https://www.gnu.org/software/guile/manual/html_node/Data-Types.html#Data-Types
 
 (define-module (grsp grsp0)
   #:export (pline
@@ -474,7 +475,7 @@
     res1))
 
 
-;; grs-argtype - Decrement p_n1 by one.
+;;;; grsp-argtype - Finds the type of p_a1.
 ;;
 ;; Keywords:
 ;; - console, arguments, types.
@@ -484,16 +485,46 @@
 ;;
 ;; Output:
 ;; - 0: undefined.
+;; - 1: list.
+;; - 2: string.
+;; - 3: array.
+;; - 4: boolean.
+;; - 5: char.
+;; - 6: integer.
+;; - 7: real.
+;; - 8: complex.
+;; - 9: inf.
+;; - 10: nan.
+;;
+;; Sources:
+;; - [4][5].
 ;;
 (define (grsp-argtype p_a1)
-  (let ((res1 0))
+  (let ((res1 0)
+	(a1 0))
 
-    (cond ((char? p_a1)
+    (cond ((list? p_a1)
 	   (set! res1 1))
 	  ((string? p_a1)
-	   (set! res1 2))
-	  
+	   (set! res1 2))	  
+	  ((array? p_a1)
+	   (set! res1 3))	  
 	  ((boolean? p_a1)
-	   (set! res1 10)))
-	  
+	   (set! res1 4))
+	  ((char? p_a1)
+	   (set! res1 5))	  
+	  ((integer? p_a1)
+	   (set! res1 6))
+	  ((real? p_a1)
+	   (set! res1 7))
+	  ((complex? p_a1)
+	   (set! res1 8)))
+
+    ;; This should be processed separatedly.
+    (cond ((< res1 8)
+	   (cond ((inf? p_a1)
+		  (set! res1 9))
+		 ((nan? p_a1)
+		  (set! res1 10)))))		 
+    
     res1))
