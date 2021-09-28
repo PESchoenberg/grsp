@@ -215,7 +215,8 @@
 	    grsp-matrix-row-selectc
 	    grsp-matrix-is-empty
 	    grsp-matrix-is-multiset
-	    grsp-matrix-argtype))
+	    grsp-matrix-argtype
+	    grsp-matrix-argstru))
 
 
 ;;;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -5725,7 +5726,7 @@
 ;; - p_a1: matrix.
 ;;
 ;; Output:
-;; A matix of the same dimensions and shape as p_a1 but containing the type of
+;; A matrix of the same dimensions and shape as p_a1 but containing the type of
 ;; each one of its elements according to the folloing representation:
 ;; - 0: undefined.
 ;; - 1: list.
@@ -5800,5 +5801,72 @@
 		  (set! j1 (in j1)))
 
 	   (set! i1 (in i1)))
+    
+    res1))
+
+
+;; grsp-matrix-argstru - Finds the data types of each column of an n x m matrix.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;;
+;; Output:
+;; - For an m x n matrix, returns a 1 x n matrix containing the codes that
+;;   correspond to the type of each column according to:
+;;   - 0: undefined.
+;;   - 1: list.
+;;   - 2: string.
+;;   - 3: array.
+;;   - 4: boolean.
+;;   - 5: char.
+;;   - 6: integer.
+;;   - 7: real.
+;;   - 8: complex.
+;;   - 9: inf.
+;;   - 10: nan.
+;;
+(define (grsp-matrix-argstru p_a1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(lm3 0)
+	(hm3 0)
+	(ln3 0)
+	(hn3 0)
+	(j3 0)
+	(n1 0)
+	(n2 0)
+	(n3 0))
+
+    ;; Create safety matrix. 
+    (set! res2 (grsp-matrix-cpy p_a1))
+
+    ;; Create argtype matrix.
+    (set! res3 (grsp-matrix-argtype res2))
+
+    ;; Extract boundaries.
+    (set! lm3 (grsp-matrix-esi 1 res3))
+    (set! hm3 (grsp-matrix-esi 2 res3))
+    (set! ln3 (grsp-matrix-esi 3 res3))
+    (set! hn3 (grsp-matrix-esi 4 res3))
+
+    ;; Create results matrix.
+    (set! n3 (grsp-matrix-te1 ln3 hn3))
+    (set! res1 (grsp-matrix-create 0 1 n3))
+
+    ;, Cycle.
+    (set! j3 ln3)
+    (while (<= j3 hn3)
+	   (set! n1 (array-ref res3 lm3 j3))
+	   ;;(set! n2 (grsp-matrix-col-total-element "!=" res3 j3 n1))
+	   ;;(cond ((> n2 0)
+		  ;;(array-set! res1 0 0 j3))
+		 ;;(else (array-set! res1 n1 0 j3)))
+	   (array-set! res1 n1 0 j3)
+	   
+	   (set! j3 (in j3)))
     
     res1))
