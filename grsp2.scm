@@ -142,6 +142,8 @@
 ;; - [43] En.wikipedia.org. 2021. Absolute value - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Absolute_value [Accessed 9
 ;;   September 2021].
+;; - [44] En.wikipedia.org. 2020. Givens Rotation. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Givens_rotation [Accessed 25 March 2020].
 
 
 (define-module (grsp grsp2)
@@ -974,8 +976,7 @@
 ;; - p_v2.
 ;;
 ;; Sources:
-;; - En.wikipedia.org. 2020. Givens Rotation. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Givens_rotation [Accessed 25 March 2020].
+;; - [44].
 ;;
 ;; Output:
 ;; - A list containing the values for c, s, and r, in that order.
@@ -1768,7 +1769,7 @@
 ;; function truncates one and rounds the other according to p_s1.
 ;;
 ;; Keywords:
-;; - function, classificatin, sorting.
+;; - function, classification, sorting.
 ;;
 ;; Arguments:
 ;; - p_s1: determines which half is rounded and wich one is truncated if p_n1 is

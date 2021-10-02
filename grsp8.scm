@@ -46,7 +46,9 @@
 ;;   GELU, SELU, ELU, ReLU and more. [online] Available at:
 ;;   https://mlfromscratch.com/activation-functions-explained [Accessed 28
 ;;   January 2021].
-;; - [7] https://en.wikipedia.org/wiki/Evolutionary_algorithm#
+;; - [7] En.wikipedia.org. 2021. Evolutionary algorithm - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Evolutionary_algorithm
+;;   [Accessed 29 September 2021].
 
 
 (define-module (grsp grsp8)
@@ -163,7 +165,7 @@
     res1))
 
 
-;;;; grsp-ann-net-reconf - Reconfigure the network.
+;;;; grsp-ann-net-reconf - Reconfigure a neural network.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -227,7 +229,7 @@
 
 ;;;; grsp-ann-net-preb - Purges and rebuilds the net from discarded connections
 ;; and nodes. While the network can survive and remain useful even if its
-;; entropy increases, purging it should  be done in order to keep it to its
+;; entropy increases, purging it should be done in order to keep it to its
 ;; minimum possible size for efficiency reasons.
 ;;
 ;; Keywords:
@@ -279,7 +281,7 @@
     res1))
 
 
-;;;; grsp-ann-id-create - Created a new id number for a row in nodes or conns
+;;;; grsp-ann-id-create - Creates a new id number for a row in nodes or conns
 ;; and updates the corresponding matrix element.
 ;;
 ;; Keywords:
@@ -305,7 +307,7 @@
     res1))
 
 
-;;;; grsp-ann-item-create - Create in the ann a node or connection with
+;;;; grsp-ann-item-create - Creates in the ann a node or connection with
 ;; argument list p_l2.
 ;;
 ;; Keywords:
@@ -421,7 +423,7 @@
     res1))
 
 
-;; grsp-ann2dbc - Save neural network to csv database.
+;; grsp-ann2dbc - Saves a neural network to a csv database.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -453,7 +455,7 @@
     (grsp-mc2dbc-csv p_d1 count "count.csv")))
 
 
-;; grsp-dbc2ann - Retrieve ann from csv database.
+;; grsp-dbc2ann - Retrieves an ann from a csv database.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -481,8 +483,8 @@
     res1))
 
 
-;;;; grsp-ann-net-create-ffn - Create ann by matrix data. Each row of the matrix
-;; should contain data for the creation of one layer of the ann.
+;;;; grsp-ann-net-create-ffn - Creates an  ann by matrix data. Each row of the
+;; matrix should contain data for the creation of one layer of the ann.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -812,7 +814,7 @@
     res1))
 
 
-;;;; grsp-ann-net-mutate - Mutate and randomize ann p_l1.
+;;;; grsp-ann-net-mutate - Mutates and randomizes ann p_l1.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -976,7 +978,7 @@
     res1))
 
 
-;;;; grsp-ann-row-updatei - Update col p_j2 with value p_n2 of element with id
+;;;; grsp-ann-row-updatei - Updates col p_j2 with value p_n2 of element with id
 ;; p_id of table p_a1 (nodes or conns).
 ;;
 ;; Keywords:
@@ -998,7 +1000,7 @@
     res1))
 
 
-;;;; grsp-ann-conns-of-node - Find the connections that reach node with id p_id
+;;;; grsp-ann-conns-of-node - Finds the connections that reach node with id p_id
 ;; aacording to p_s1 in p_a1.
 ;;
 ;; Keywords:
@@ -1124,7 +1126,7 @@
     res4))
 
 
-;;;; grsp-ann-actifun - Select function p_n1 passing argument p_n2.
+;;;; grsp-ann-actifun - Selects function p_n1 passing argument p_n2.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -1200,7 +1202,7 @@
     res1))
 
 
-;;;; grsp-ann-nodes-eval - Perform one iteration of evaluation of all nodes
+;;;; grsp-ann-nodes-eval - Performs one iteration of evaluation of all nodes
 ;; in ann p_l1 using the input data of p_a4.
 ;;
 ;; Keywords:
@@ -1349,7 +1351,7 @@
     res1))
 
 
-;;;; grsp-ann-idata-update - Input the data of p_a4 into ann p_l1.
+;;;; grsp-ann-idata-update - Inputs data of matrix p_a4 into ann p_l1.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -1464,9 +1466,9 @@
     res1))
 
 
-;;;; grsp-odata2idata - Provides feedback from odata to idata. Transforms
-;; data from the output layer of an ann into data for the input layer of the
-;; same or a different network.
+;;;; grsp-odata2idata - Provides feedback by tranfering data from from odata to
+;; idata matrices. Transforms data from the output layer of an ann into data for
+;; the input layer of the same or a different network.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
