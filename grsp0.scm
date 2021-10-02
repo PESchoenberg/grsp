@@ -38,8 +38,15 @@
 ;; - [3] Edronkin, P. (2019). sqlp - Simple terminal query and .sql file
 ;;   processing for  Sqlite3. [online] sqlp. Available at:
 ;;   https://peschoenberg.github.io/sqlp/ [Accessed 5 Oct. 2019].
-;; - [4] https://www.gnu.org/software/guile/manual/html_node/Dynamic-Types.html#Dynamic-Types
-;; - [5] https://www.gnu.org/software/guile/manual/html_node/Data-Types.html#Data-Types
+;; - [4] Gnu.org. 2021. Dynamic Types (Guile Reference Manual). [online]
+;;   Available at:
+;;   https://www.gnu.org/software/guile/manual/html_node/Dynamic-Types.html
+;;   [Accessed 1 October 2021].
+;; - [5] Gnu.org. 2021. Data Types (Guile Reference Manual). [online]
+;;   Available at:
+;;   https://www.gnu.org/software/guile/manual/html_node/Data-Types.html
+;;   [Accessed 1 October 2021].
+
 
 (define-module (grsp grsp0)
   #:export (pline

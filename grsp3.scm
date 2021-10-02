@@ -4263,7 +4263,7 @@
     res1))
 
 
-;;;; grsp-matrix-row-div. - Relational division
+;;;; grsp-matrix-row-div. - Relational division.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors, relational.
@@ -5662,7 +5662,7 @@
     res1))
 
 
-;;;; grsp-matrix-is-multiset - Returns #t if the matrix has reteated elements, #f
+;;;; grsp-matrix-is-multiset - Returns #t if the matrix has repeated elements, #f
 ;; otherwise.
 ;;
 ;; Keywords:
@@ -5839,7 +5839,8 @@
 	(j3 0)
 	(n1 0)
 	(n2 0)
-	(n3 0))
+	(n3 0)
+	(n4 0))
 
     ;; Create safety matrix. 
     (set! res2 (grsp-matrix-cpy p_a1))
@@ -5857,15 +5858,17 @@
     (set! n3 (grsp-matrix-te1 ln3 hn3))
     (set! res1 (grsp-matrix-create 0 1 n3))
 
-    ;, Cycle.
+    ;;(display res1)
+    
+    ;; Cycle.
     (set! j3 ln3)
+    (set! n2 0)
     (while (<= j3 hn3)
 	   (set! n1 (array-ref res3 lm3 j3))
-	   ;;(set! n2 (grsp-matrix-col-total-element "!=" res3 j3 n1))
-	   ;;(cond ((> n2 0)
-		  ;;(array-set! res1 0 0 j3))
-		 ;;(else (array-set! res1 n1 0 j3)))
-	   (array-set! res1 n1 0 j3)
+	   ;;(set! n2 (grsp-matrix-col-total-element "#!=" res3 j3 n1))
+	   (cond ((> n2 0)
+		  (array-set! res1 0 0 j3))
+		 (else (array-set! res1 n1 0 j3)))
 	   
 	   (set! j3 (in j3)))
     
