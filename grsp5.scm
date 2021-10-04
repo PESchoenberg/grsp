@@ -15,7 +15,7 @@
 ;;
 ;;   This program is distributed in the hope that it will be useful,
 ;;   but WITHOUT ANY WARRANTY; without even the implied warranty of
-;;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 ;;   GNU Lesser General Public License for more details.
 ;;
 ;;   You should have received a copy of the GNU Lesser General Public License
@@ -139,7 +139,10 @@
 ;; - [42] En.wikipedia.org. 2021. Triangular distribution - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Triangular_distribution
 ;;   [Accessed 13 September 2021].
-;; - [43] https://en.wikipedia.org/wiki/Continuous_uniform_distribution
+;; - [43] En.wikipedia.org. 2021. Continuous uniform distribution - Wikipedia.
+;;   [online] Available at:
+;;   https://en.wikipedia.org/wiki/Continuous_uniform_distribution
+;;   [Accessed 3 October 2021].
 
 
 (define-module (grsp grsp5)
@@ -254,7 +257,9 @@
 	    grsp-triangular-pdf
 	    grsp-triangular-entropy
 	    grsp-triangular-cdf
-	    grsp-triangular-skewness))
+	    grsp-triangular-skewness
+	    grsp-cuniform-mean
+	    grsp-cuniform-support))
 
 
 ;;;; grsp-feature-scaling - Scales p_n to the interval [p_nmin, p_nmax].
@@ -3325,5 +3330,48 @@
 
     ;; Compose result.
     (set! res1 (grsp-opz res1))    
+    
+    res1))
+
+
+;;;; grsp-cuniform-mean - Mean and median of a continuous uniform distribution.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_a1: a.
+;; - p_b1: b.
+;;
+;; Sources:
+;; - [43].
+;;
+(define (grsp-cuniform-mean p_a1 p_b1)
+  (let ((res1 0))
+
+    (set! res1 (* 0.5 (+ p_a1 p_b1)))
+    
+    res1))
+
+
+;;;; grsp-cuniform-support - Finds if p_x1 lies within the interval [p_a1, p_b1]
+;; in a continuous uniform distribution.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_a1: a.
+;; - p_b1: b.
+;; - P-x1; x.
+;;
+;; Sources:
+;; - [43].
+;;
+(define (grsp-cuniform-support p_a1 p_b1 p_x1)
+  (let ((res1 #f))
+
+    (cond ((and (>= p_x1 p_a1) (<= p_x1 p_b1))
+	   (set! res1 #t)))
     
     res1))
