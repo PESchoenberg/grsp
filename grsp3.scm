@@ -15,7 +15,7 @@
 ;;
 ;;   This program is distributed in the hope that it will be useful,
 ;;   but WITHOUT ANY WARRANTY; without even the implied warranty of
-;;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 ;;   GNU Lesser General Public License for more details.
 ;;
 ;;   You should have received a copy of the GNU Lesser General Public License
@@ -98,14 +98,6 @@
 ;;   [Accessed 13 May 2021].
 ;; - [24] En.wikipedia.org. 2021. Multiset - Wikipedia. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Multiset [Accessed 17 September 2021].
-
-
-;; Compilation and REPL examples:
-;; (use-modules (grsp grsp0)(grsp grsp1)(grsp grsp2)(grsp grsp3)(grsp grsp4)(grsp grsp5)(grsp grsp6)(grsp grsp7)(grsp grsp8)(grsp grsp9)(grsp grsp10)(grsp grsp11)(grsp grsp12)(grsp grsp13))
-;;
-;; (define X (grsp-matrix-create 1 4 4))
-;; (define Y (grsp-matrix-create 2 4 4))
-;; (define R (grsp-matrix-opew "#+" X Y))
 
 
 (define-module (grsp grsp3)
@@ -307,7 +299,7 @@
     (cond ((eq? (grsp-eiget m1 0) #t)
 	   (cond ((eq? (grsp-eiget n1 0) #t)
 
-		  ;; For an identity matrix, First set all elements to 0.
+		  ;; For an identity matrix, first set all elements to 0.
 		  (cond ((equal? p_s1 "#I")
 			 (set! s1 0))
 			((equal? p_s1 "#AI")
@@ -873,7 +865,7 @@
 	(j1 0)
 	(k1 0))
 
-    ;; Extract the boundaries of the matrix.
+    ;; Extract the boundaries of the argument matrix.
     (set! lm1 (grsp-matrix-esi 1 res1))
     (set! hm1 (grsp-matrix-esi 2 res1))
     (set! ln1 (grsp-matrix-esi 3 res1))
@@ -1018,7 +1010,7 @@
 	(i1 0)
 	(j1 0))
 
-    ;; Extract the boundaries of the matrix.
+    ;; Extract the boundaries of the argument matrix.
     (set! lm1 (grsp-matrix-esi 1 res1))
     (set! hm1 (grsp-matrix-esi 2 res1))
     (set! ln1 (grsp-matrix-esi 3 res1))
@@ -1097,7 +1089,7 @@
 	(ln1 0)
 	(hn1 0))
     
-    ;; Extract the boundaries of the matrix.
+    ;; Extract the boundaries of the argument matrix.
     (set! lm1 (grsp-matrix-esi 1 res1))
     (set! hm1 (grsp-matrix-esi 2 res1))
     (set! ln1 (grsp-matrix-esi 3 res1))
@@ -1177,7 +1169,7 @@
 	(ln1 0)
 	(hn1 0))
     
-    ;; Extract the boundaries of the matrix.
+    ;; Extract the boundaries of the argument matrix.
     (set! lm1 (grsp-matrix-esi 1 res1))
     (set! hm1 (grsp-matrix-esi 2 res1))
     (set! ln1 (grsp-matrix-esi 3 res1))
@@ -1365,7 +1357,7 @@
 	(ln1 0)
 	(hn1 0))	
 
-    ;; Extract the boundaries of the matrix.
+    ;; Extract the boundaries of the argument matrix.
     (set! lm1 (grsp-matrix-esi 1 p_a1))
     (set! hm1 (grsp-matrix-esi 2 p_a1))
     (set! ln1 (grsp-matrix-esi 3 p_a1))
@@ -1503,7 +1495,7 @@
 	(hn1 0)
 	(b1 #f))
     
-    ;; Extract boundaries of the matrix.
+    ;; Extract boundaries of the argument matrix.
     (set! lm1 (grsp-matrix-esi 1 res1))
     (set! hm1 (grsp-matrix-esi 2 res1))
     (set! ln1 (grsp-matrix-esi 3 res1))
@@ -1656,7 +1648,7 @@
 	(i1 0)
 	(j1 0))
 
-    ;; Extract the boundaries of the matrix.
+    ;; Extract the boundaries of the argument matrix.
     (set! lm1 (grsp-matrix-esi 1 res1))
     (set! hm1 (grsp-matrix-esi 2 res1))
     (set! ln1 (grsp-matrix-esi 3 res1))
@@ -1757,7 +1749,7 @@
 	(ln1 0)
 	(hn1 0))
 
-    ;; Extract the boundaries of the matrix.
+    ;; Extract the boundaries of the argument matrix.
     (set! lm1 (grsp-matrix-esi 1 res1))
     (set! hm1 (grsp-matrix-esi 2 res1))
     (set! ln1 (grsp-matrix-esi 3 res1))
@@ -2087,7 +2079,7 @@
 	(j1 0)
 	(k1 0))
 
-    ;; Extract the boundaries of the matrix.
+    ;; Extract the boundaries of the argument matrix.
     (set! lm1 (grsp-matrix-esi 1 res1))
     (set! hm1 (grsp-matrix-esi 2 res1))
     (set! ln1 (grsp-matrix-esi 3 res1))
@@ -2139,7 +2131,7 @@
 	(t1 0)
 	(t2 0))
 
-    ;; Extract the boundaries of the matrix.
+    ;; Extract the boundaries of the argument matrix.
     (set! lm1 (grsp-matrix-esi 1 p_a1))
     (set! hm1 (grsp-matrix-esi 2 p_a1))
     (set! ln1 (grsp-matrix-esi 3 p_a1))
@@ -2198,7 +2190,7 @@
 
     (cond ((equal? (grsp-matrix-is-square p_a1))
 	   
-	   ;; Extract the boundaries of the matrix.
+	   ;; Extract the boundaries of the argument matrix.
 	   (set! lm1 (grsp-matrix-esi 1 p_a1))
 	   (set! hm1 (grsp-matrix-esi 2 p_a1))
 	   (set! ln1 (grsp-matrix-esi 3 p_a1))
@@ -2236,7 +2228,7 @@
 	(ln1 0)
 	(hn1 0))
 
-    ;; Extract the boundaries of the matrix.
+    ;; Extract the boundaries of the argument matrix.
     (set! lm1 (grsp-matrix-esi 1 p_a1))
     (set! hm1 (grsp-matrix-esi 2 p_a1))
     (set! ln1 (grsp-matrix-esi 3 p_a1))
@@ -2265,7 +2257,7 @@
 	(i1 0)
 	(j1 0))
 
-    ;; Extract the boundaries of the matrix.
+    ;; Extract the boundaries of the argument matrix.
     (set! lm1 (grsp-matrix-esi 1 p_a1))
     (set! hm1 (grsp-matrix-esi 2 p_a1))
     (set! ln1 (grsp-matrix-esi 3 p_a1))
@@ -2328,7 +2320,7 @@
 	(j1 0)
 	(k1 0))
 
-    ;; Extract the boundaries of the matrix.
+    ;; Extract the boundaries of the argument matrix.
     (set! lm1 (grsp-matrix-esi 1 p_a1))
     (set! hm1 (grsp-matrix-esi 2 p_a1))
     (set! ln1 (grsp-matrix-esi 3 p_a1))
@@ -2368,7 +2360,7 @@
 	(k1 0)
 	(k2 0))
 
-    ;; Extract the boundaries of the matrix.
+    ;; Extract the boundaries of the argument matrix.
     (set! lm1 (grsp-matrix-esi 1 p_a1))
     (set! hm1 (grsp-matrix-esi 2 p_a1))
     (set! ln1 (grsp-matrix-esi 3 p_a1))
@@ -2503,7 +2495,7 @@
     ;; different conditional. Otherwise does not work well (bug?).
     (cond ((equal? v1 #f)
 	   
-           ;; Extract the boundaries of the matrix.
+           ;; Extract the boundaries of the argument matrix.
 	   (set! lm1 (grsp-matrix-esi 1 p_a1))
 	   (set! hm1 (grsp-matrix-esi 2 p_a1))
 	   (set! ln1 (grsp-matrix-esi 3 p_a1))
@@ -2534,7 +2526,7 @@
 	(j1 0)
 	(k1 1))
 
-    ;; Extract the boundaries of the matrix.
+    ;; Extract the boundaries of the argument matrix.
     (set! lm1 (grsp-matrix-esi 1 p_a1))
     (set! hm1 (grsp-matrix-esi 2 p_a1))
     (set! ln1 (grsp-matrix-esi 3 p_a1))
@@ -2568,7 +2560,7 @@
 	(i1 0)
 	(n1 (- (length p_l1) 1)))
 
-    ;; Cycle over the list and copy its elements to the matrix.
+    ;; Cycle over the list and copy its elements to the argument matrix.
     (while (<= i1 n1)
 	   (array-set! res1 (list-ref p_l1 i1) 0 i1)
 	   (set! i1 (+ i1 1)))
@@ -2591,7 +2583,7 @@
 	(ln1 0)
 	(hn1 0))
 
-    ;; Extract the boundaries of the matrix.
+    ;; Extract the boundaries of the argument matrix.
     (set! ln1 (grsp-matrix-esi 3 p_a1))
     (set! hn1 (grsp-matrix-esi 4 p_a1))
 
@@ -2625,7 +2617,7 @@
 	(j1 0)
 	(j2 0))
 
-    ;; Extract the boundaries of the matrix.
+    ;; Extract the boundaries of the argument matrix.
     (set! lm1 (grsp-matrix-esi 1 p_a1))
     (set! hm1 (grsp-matrix-esi 2 p_a1))
     (set! ln1 (grsp-matrix-esi 3 p_a1))
@@ -2809,7 +2801,7 @@
 	(vn 0)
 	(ve 0))
 
-    ;; Extract the boundaries of the matrix.
+    ;; Extract the boundaries of the argument matrix.
     (set! lm1 (grsp-matrix-esi 1 p_a1))
     (set! hm1 (grsp-matrix-esi 2 p_a1))
     (set! ln1 (grsp-matrix-esi 3 p_a1))
@@ -2871,7 +2863,7 @@
 	(vn 0)
 	(ve 0))
 
-    ;; Extract the boundaries of the matrix.
+    ;; Extract the boundaries of the argument matrix.
     (set! lm1 (grsp-matrix-esi 1 p_a1))
     (set! hm1 (grsp-matrix-esi 2 p_a1))
     (set! ln1 (grsp-matrix-esi 3 p_a1))
@@ -2934,7 +2926,7 @@
 	(i1 0)
 	(j1 0))
 
-    ;; Extract the boundaries of the matrix.
+    ;; Extract the boundaries of the argument matrix.
     (set! lm1 (grsp-matrix-esi 1 p_a1))
     (set! hm1 (grsp-matrix-esi 2 p_a1))
     (set! ln1 (grsp-matrix-esi 3 p_a1))
@@ -3145,13 +3137,13 @@
     (set! res1 res2)
     (set! res1 (grsp-matrix-opsc "#*" res1 0))
     
-    ;; Extract the boundaries of the matrix.
+    ;; Extract the boundaries of the first matrix.
     (set! lm1 (grsp-matrix-esi 1 res1))
     (set! hm1 (grsp-matrix-esi 2 res1))
     (set! ln1 (grsp-matrix-esi 3 res1))
     (set! hn1 (grsp-matrix-esi 4 res1))	
 
-    ;; Extract the boundaries of the matrix.
+    ;; Extract the boundaries of the second matrix.
     (set! lm2 (grsp-matrix-esi 1 res2))
     (set! hm2 (grsp-matrix-esi 2 res2))
     (set! ln2 (grsp-matrix-esi 3 res2))
@@ -3232,7 +3224,7 @@
     (set! res1 (grsp-matrix-create 0 1 2))
     (set! res2 (grsp-matrix-sort "#asc" p_a1))
 
-    ;; Extract the boundaries of the matrix.
+    ;; Extract the boundaries of the second matrix.
     (set! lm2 (grsp-matrix-esi 1 res2))
     (set! hm2 (grsp-matrix-esi 2 res2))
     (set! ln2 (grsp-matrix-esi 3 res2))
@@ -3274,7 +3266,7 @@
 	(b1 #f)
 	(b2 #f))
 
-    ;; Extract the boundaries of the matrix.
+    ;; Extract the boundaries of the argument matrix.
     (set! lm1 (grsp-matrix-esi 1 p_a1))
     (set! hm1 (grsp-matrix-esi 2 p_a1))
     (set! ln1 (grsp-matrix-esi 3 p_a1))
@@ -3396,7 +3388,7 @@
 	(n2 0)
 	(n3 0))
 
-    ;; Extract the boundaries of the matrix.
+    ;; Extract the boundaries of the argument matrix.
     (set! lm1 (grsp-matrix-esi 1 p_a1))
     (set! hm1 (grsp-matrix-esi 2 p_a1))
     (set! ln1 (grsp-matrix-esi 3 p_a1))
@@ -3474,7 +3466,7 @@
 	(n1 0)
 	(n2 0))
 
-    ;; Extract the boundaries of the matrix.
+    ;; Extract the boundaries of the argument matrix.
     (set! lm1 (grsp-matrix-esi 1 p_a1))
     (set! hm1 (grsp-matrix-esi 2 p_a1))
     (set! ln1 (grsp-matrix-esi 3 p_a1))
@@ -3616,7 +3608,7 @@
 
     (cond ((equal? p_s1 "#asc")
 	   
-	   ;; Extract the boundaries of the matrix.
+	   ;; Extract the boundaries of the argument matrix.
 	   (set! lm1 (grsp-matrix-esi 1 p_a1))
 	   (set! hm1 (grsp-matrix-esi 2 p_a1))
 	   (set! ln1 (grsp-matrix-esi 3 p_a1))
@@ -3691,7 +3683,7 @@
 	(i2 0)
 	(i3 0))
 
-    ;; Extract the boundaries of the matrix.
+    ;; Extract the boundaries of the argument matrix.
     (set! lm1 (grsp-matrix-esi 1 p_a1))
     (set! hm1 (grsp-matrix-esi 2 p_a1))
     (set! ln1 (grsp-matrix-esi 3 p_a1))
@@ -3762,13 +3754,13 @@
 	(i2 0)
 	(j2 0))
 
-    ;; Extract the boundaries of the p_a1 matrix.
+    ;; Extract the boundaries of the first matrix.
     (set! lm1 (grsp-matrix-esi 1 p_a1))
     (set! hm1 (grsp-matrix-esi 2 p_a1))
     (set! ln1 (grsp-matrix-esi 3 p_a1))
     (set! hn1 (grsp-matrix-esi 4 p_a1))
 
-    ;; Extract the boundaries of the p_a2 matrix.
+    ;; Extract the boundaries of the second matrix.
     (set! lm2 (grsp-matrix-esi 1 p_a2))
     (set! hm2 (grsp-matrix-esi 2 p_a2))
     (set! ln2 (grsp-matrix-esi 3 p_a2))
@@ -4442,7 +4434,7 @@
 	(ln1 0)
 	(hn1 0))	
 
-    ;; Extract boundaries of the matrix.
+    ;; Extract boundaries of the argument matrix.
     (set! lm1 (grsp-matrix-esi 1 p_a1))
     (set! hm1 (grsp-matrix-esi 2 p_a1))
     (set! ln1 (grsp-matrix-esi 3 p_a1))
@@ -4478,11 +4470,11 @@
     (set! res1 (grsp-matrix-cpy p_a1))
     (set! res2 (grsp-matrix-cpy p_a2))
 
-    ;; Extract boundaries of the matrix.
+    ;; Extract boundaries of the first matrix.
     (set! hm1 (grsp-matrix-esi 2 res1))
     (set! ln1 (grsp-matrix-esi 3 res1))
 
-    ;; Extract boundaries of the matrix.
+    ;; Extract boundaries of the second matrix.
     (set! lm2 (grsp-matrix-esi 1 res2))
     (set! hm2 (grsp-matrix-esi 2 res2))
     (set! ln2 (grsp-matrix-esi 3 res2))
@@ -4528,7 +4520,7 @@
 	(n3 0)
 	(n4 0))
 
-    ;; Create matrices. 
+    ;; Create safety matrices. 
     (set! res1 (grsp-matrix-cpy p_a1))
     (set! res2 (grsp-matrix-cpy p_a2))
 
@@ -4585,7 +4577,7 @@
 	(i1 0)
 	(j1 0))
 
-    ;; Create matrix. 
+    ;; Create safety matrix. 
     (set! res1 (grsp-matrix-cpy p_a1))
     
     ;; Cycle and replace.
@@ -4726,7 +4718,7 @@
 	(i1 0)
 	(j1 0))
 
-    ;; Create matrix. 
+    ;; Create safety matrix. 
     (set! res1 (grsp-matrix-cpy p_a1))
 
     ;; Extract initial boundaries.
@@ -4770,7 +4762,7 @@
 	(hn2 0)
 	(j2 0))
 
-    ;; Create matrices. 
+    ;; Create safety matrices. 
     (set! res1 (grsp-matrix-cpy p_a1))
     (set! res2 (grsp-l2m p_l1))
     
@@ -4836,7 +4828,7 @@
 	(i1 0)
 	(i2 0))
 
-    ;; Create matrices. 
+    ;; Create safety matrices. 
     (set! res1 (grsp-matrix-cpy p_a1))
     (set! res2 (grsp-matrix-cpy p_a2))
 
@@ -4925,7 +4917,7 @@
 	(tn2 0)
 	(am1 0))
 
-    ;; Create matrices. 
+    ;; Create safety matrices. 
     (set! res1 (grsp-matrix-cpy p_a1))
     (set! res2 (grsp-matrix-cpy p_a2))
 
@@ -4982,7 +4974,7 @@
 	(i1 0)
 	(n1 0))
 
-    ;; Create matrices. 
+    ;; Create safety matrices. 
     (set! res1 (grsp-matrix-cpy p_a1))
 
     ;; We need to sort the matrix since we will later read the first row of
