@@ -259,7 +259,13 @@
 	    grsp-triangular-cdf
 	    grsp-triangular-skewness
 	    grsp-cuniform-mean
-	    grsp-cuniform-support))
+	    grsp-cuniform-support
+	    grsp-cuniform-pdf
+	    grsp-cuniform-cgf
+	    grsp-cuniform-cdf
+	    grsp-cuniform-variance
+	    grsp-cuniform-entropy
+	    grsp-cuniform-kurtosis))
 
 
 ;;;; grsp-feature-scaling - Scales p_n to the interval [p_nmin, p_nmax].
@@ -3361,9 +3367,9 @@
 ;; - statistics, probability.
 ;;
 ;; Arguments:
-;; - p_a1: a.
-;; - p_b1: b.
-;; - P-x1; x.
+;; - p_a1: a, for interval [-inf.0, +inf.0].
+;; - p_b1: b, for interval [-inf.0, +inf.0].
+;; - P_x1: x.
 ;;
 ;; Sources:
 ;; - [43].
@@ -3373,5 +3379,139 @@
 
     (cond ((and (>= p_x1 p_a1) (<= p_x1 p_b1))
 	   (set! res1 #t)))
+    
+    res1))
+
+
+;;;; grsp-cuniform-pdf - PDF, continuous uniform distribution.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_a1: a, for interval [-inf.0, +inf.0].
+;; - p_b1: b, for interval [-inf.0, +inf.0].
+;; - P_x1: x.
+;;
+;; Sources:
+;; - [43].
+;;
+(define (grsp-cuniform-pdf p_a1 p_b1 p_x1)
+  (let ((res1 0))
+
+    (cond ((equal? (grsp-cuniform-support p_a1 p_b1 p_x1) #t)
+	   (set! res1 (/ 1 (- p_b1 p_a1)))))
+    
+    res1))
+
+
+;;;; grs-cuniform-cgf - Cumulant generating function for continuous uniform
+;; distribution.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_n1: n.
+;; - p_b2.
+;; - p_s1.
+;; - p_n2.
+;; - p_m1.
+;; - p_m2.
+;;
+;; Notes:
+;; - For specs on all arguments except p_n1, see grsp-complex-bernoulli-number.
+;;
+;; Sources:
+;; - [43].
+;;
+(define (grsp-cuniform-cgf p_n1 p_b2 p_s1 p_n2 p_m1 p_m2)
+  (let ((res1 0))
+
+    (set! res1 (/ (grsp-complex-bernoulli-number p_b2 p_s1 p_n2 p_m1 p_m2) p_n1))
+
+    res1))
+
+
+;;;; grsp-cuniform-cdf - CDF, continuous uniform distribution.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_a1: a, for interval [-inf.0, +inf.0].
+;; - p_b1: b, for interval [-inf.0, +inf.0].
+;; - P_x1: x.
+;;
+;; Sources:
+;; - [43].
+;;
+(define (grsp-cuniform-cdf p_a1 p_b1 p_x1)
+  (let ((res1 0))
+
+    (cond ((equal? (grsp-cuniform-support p_a1 p_b1 p_x1) #t)
+	   (set! res1 (/ (- p_x1 p_a1) (- p_b1 p_a1))))
+	  ((> p_x1 p_b1)
+	   (set! res1 1)))
+    
+    res1))
+
+
+
+;;;; grsp-cuniform-variance - Variance, continuous uniform distribution.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_a1: a, for interval [-inf.0, +inf.0].
+;; - p_b1: b, for interval [-inf.0, +inf.0].
+;;
+;; Sources:
+;; - [43].
+;;
+(define (grsp-cuniform-variance p_a1 p_b1)
+  (let ((res1 0.0))
+
+    (set! res1 (* (/ 1 12) (expt (* p_b1 p_a1) 2)))
+    
+    res1))
+
+
+;;;; grsp-cuniform-entropy - Entropy, continuous uniform distribution.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_a1: a, for interval [-inf.0, +inf.0].
+;; - p_b1: b, for interval [-inf.0, +inf.0].
+;;
+;; Sources:
+;; - [43].
+;;
+(define (grsp-cuniform-entropy p_a1 p_b1)
+  (let ((res1 0.0))
+
+    (set! res1 (log (- p_b1 p_a1)))
+    
+    res1))
+  
+
+;;;; grsp-cuniform-kurtosis - Excess kurtosis, continuous uniform distribution.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Sources:
+;; - [42].
+;;
+(define (grsp-cuniform-kurtosis)
+  (let ((res1 0.0))
+
+    (set! res1 (/ -6 5))
+
+    ;; Compose result.
+    (set! res1 (grsp-opz res1))    
     
     res1))
