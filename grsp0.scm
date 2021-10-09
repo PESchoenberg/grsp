@@ -48,6 +48,7 @@
 ;;   Available at:
 ;;   https://www.gnu.org/software/guile/manual/html_node/Data-Types.html
 ;;   [Accessed 1 October 2021].
+;; - [6] https://academic.oup.com/bib/article/19/3/537/2769437
 
 
 (define-module (grsp grsp0)
