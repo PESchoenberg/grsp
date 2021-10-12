@@ -143,6 +143,7 @@
 ;;   [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Continuous_uniform_distribution
 ;;   [Accessed 3 October 2021].
+;; - [44] https://en.wikipedia.org/wiki/Gumbel_distribution
 
 
 (define-module (grsp grsp5)
@@ -259,13 +260,17 @@
 	    grsp-triangular-cdf
 	    grsp-triangular-skewness
 	    grsp-cuniform-mean
+	    grsp-cuniform-median
 	    grsp-cuniform-support
 	    grsp-cuniform-pdf
 	    grsp-cuniform-cgf
 	    grsp-cuniform-cdf
 	    grsp-cuniform-variance
 	    grsp-cuniform-entropy
-	    grsp-cuniform-kurtosis))
+	    grsp-cuniform-kurtosis
+	    grsp-cuniform-skewness
+	    grsp-gumbel-support
+	    grsp-gumbel-kurtosis))
 
 
 ;;;; grsp-feature-scaling - Scales p_n to the interval [p_nmin, p_nmax].
@@ -3340,7 +3345,7 @@
     res1))
 
 
-;;;; grsp-cuniform-mean - Mean and median of a continuous uniform distribution.
+;;;; grsp-cuniform-mean - Mean of a continuous uniform distribution.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -3353,6 +3358,26 @@
 ;; - [43].
 ;;
 (define (grsp-cuniform-mean p_a1 p_b1)
+  (let ((res1 0))
+
+    (set! res1 (* 0.5 (+ p_a1 p_b1)))
+    
+    res1))
+
+
+;;;; grsp-cuniform-median - Median of a continuous uniform distribution.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_a1: a.
+;; - p_b1: b.
+;;
+;; Sources:
+;; - [43].
+;;
+(define (grsp-cuniform-median p_a1 p_b1)
   (let ((res1 0))
 
     (set! res1 (* 0.5 (+ p_a1 p_b1)))
@@ -3504,14 +3529,61 @@
 ;; - statistics, probability.
 ;;
 ;; Sources:
-;; - [42].
+;; - [43].
 ;;
 (define (grsp-cuniform-kurtosis)
   (let ((res1 0.0))
 
-    (set! res1 (/ -6 5))
+    (set! res1 (grsp-opz (/ -6 5)))
 
-    ;; Compose result.
-    (set! res1 (grsp-opz res1))    
-    
+    res1))
+
+
+;;;; grsp-cuniform-skewness - Skewness, continuous uniform distribution.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Sources:
+;; - [43].
+;;
+(define (grsp-cuniform-skewness)
+  (let ((res1 0.0))
+
+    res1))
+
+
+;;;; grsp-gumbel-skewness - Skewness, gumbel distribution. Returns #t
+;; if p_x1 is supported, #f otherwise.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_x1: number.
+;;
+;; Sources:
+;; - [44].
+;;
+(define (grsp-gumbel-support p_x1)
+  (let ((res1 #f))
+
+    (set! res1 (real? p_x1))
+
+    res1))
+
+
+;;;; grsp-gumbel-kurtosis - Excess kurtosis, gumbel distribution.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Sources:
+;; - [44].
+;;
+(define (grsp-gumbel-kurtosis)
+  (let ((res1 0.0))
+
+    (set! res1 (grsp-opz (/ 12 5)))
+
     res1))
