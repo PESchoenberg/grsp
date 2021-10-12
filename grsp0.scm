@@ -48,7 +48,12 @@
 ;;   Available at:
 ;;   https://www.gnu.org/software/guile/manual/html_node/Data-Types.html
 ;;   [Accessed 1 October 2021].
-;; - [6] https://academic.oup.com/bib/article/19/3/537/2769437
+;; - [6] Academic.oup.com. 2021. How the strengths of Lisp-family languages
+;;   facilitate building complex and flexible bioinformatics applications.
+;;   Bohdan B Khomtchouk, Edmund Weitz, Peter D Karp, Claes Wahlestedt.
+;;   [online] Available at:
+;;   https://academic.oup.com/bib/article-pdf/19/3/537/25603287/bbw130.pdf
+;;   [Accessed 11 October 2021].
 
 
 (define-module (grsp grsp0)
