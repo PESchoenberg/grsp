@@ -143,7 +143,9 @@
 ;;   [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Continuous_uniform_distribution
 ;;   [Accessed 3 October 2021].
-;; - [44] https://en.wikipedia.org/wiki/Gumbel_distribution
+;; - [44] En.wikipedia.org. 2021. Gumbel distribution - Wikipedia. [online]
+;;   Available at: <https://en.wikipedia.org/wiki/Gumbel_distribution>
+;;   [Accessed 14 October 2021].
 
 
 (define-module (grsp grsp5)
@@ -270,7 +272,12 @@
 	    grsp-cuniform-kurtosis
 	    grsp-cuniform-skewness
 	    grsp-gumbel-support
-	    grsp-gumbel-kurtosis))
+	    grsp-gumbel-kurtosis
+	    grsp-gumbel-median
+	    grsp-gumbel-skewness
+	    grsp-gumbel-pdf
+	    grsp-gumbel-cdf
+	    grsp-gumbel-mean))
 
 
 ;;;; grsp-feature-scaling - Scales p_n to the interval [p_nmin, p_nmax].
@@ -3553,7 +3560,7 @@
     res1))
 
 
-;;;; grsp-gumbel-skewness - Skewness, gumbel distribution. Returns #t
+;;;; grsp-gumbel-skewness - Skewness, Gumbel distribution. Returns #t
 ;; if p_x1 is supported, #f otherwise.
 ;;
 ;; Keywords:
@@ -3573,7 +3580,7 @@
     res1))
 
 
-;;;; grsp-gumbel-kurtosis - Excess kurtosis, gumbel distribution.
+;;;; grsp-gumbel-kurtosis - Excess kurtosis, Gumbel distribution.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -3586,4 +3593,104 @@
 
     (set! res1 (grsp-opz (/ 12 5)))
 
+    res1))
+
+
+;;;; grsp-gumbel-median - Median, Gumbel distribution.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_b1: scale, real, (0, +inf.0).
+;; - p_u1: location (real).
+;;
+;; Sources:
+;; - [44].
+;;
+(define (grsp-gumbel-median p_b1 p_u1)
+  (let ((res1 0.0))
+
+    (set! res1 (- p_u1 (* p_b1 (log (log 2)))))
+
+    res1))
+
+
+;;;; grsp-gumbel-skewness - Skewness, Gumbel distribution.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Sources:
+;; - [44].
+;;
+(define (grsp-gumbel-skewness)
+  (let ((res1 1.14))
+
+    res1))
+
+
+;;;; grsp-gumbel-pdf - PDF, Gumbel distribution.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_b1: scale, real, (0, +inf.0).
+;; - p_u1: location (real).
+;; - p_x1: number.
+;;
+;; Sources:
+;; - [44].
+;;
+(define (grsp-gumbel-pdf p_b1 p_u1 p_x1)
+  (let ((res1 0.0)
+	(z1 0.0)
+	(z2 0.0))
+
+    (set! z1 (/ (- p_x1 p_u1) p_b1))
+    (set! z2 (* -1 (+ z1 (expt (grsp-e) (* -1 z1)))))
+    (set! res1 (* (/ 1 p_b1) (expt (grsp-e) z2)))
+
+    res1))
+
+
+;;;; grsp-gumbel-cdf - CDF, Gumbel distribution.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_b1: scale, real, (0, +inf.0).
+;; - p_u1: location (real).
+;; - p_x1: number.
+;;
+;; Sources:
+;; - [44].
+;;
+(define (grsp-gumbel-cdf p_b1 p_u1 p_x1)
+  (let ((res1 0.0))
+
+    (set! res1 (expt (grsp-e) (expt (* -1 (grsp-e)) (/ (* -1 (- p_x1 p_u1)) p_b1))))
+    
+    res1))
+
+
+;;;; grsp-gumbel-mean - Mean, Gumbel distribution.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_b1: scale, real, (0, +inf.0).
+;; - p_u1: location (real).
+;;
+;; Sources:
+;; - [44].
+;;
+(define (grsp-gumbel-mean p_b1 p_u1)
+  (let ((res1 0.0))
+
+    (set! res1 (+ p_u1 (* p_b1 (grsp-em))))
+    
     res1))
