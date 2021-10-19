@@ -62,6 +62,7 @@
   #:use-module (grsp grsp10)
   #:use-module (ice-9 threads)  
   #:export (grsp-ann-net-create-000
+	    grsp-ann-net-create-ffv
 	    grsp-ann-net-miter
 	    grsp-ann-net-reconf
 	    grsp-ann-net-preb
@@ -97,7 +98,7 @@
 ;; Arguments:
 ;; - p_b1:
 ;;   - #t: to return lists with one element with zeros as values.
-;;   - #f: for emty lists.
+;;   - #f: for empty lists.
 ;;
 ;; Output:
 ;; - A list with three elements. The first is a matrix for the definition
@@ -161,6 +162,43 @@
     (cond ((equal? p_b1 #t)
 	   (set! res1 (list nodes conns count)))
 	  (else (set! res1 (grsp-ann-net-preb nodes conns count))))
+    
+    res1))
+
+
+;;;; grsp-ann-net-spec-ffv - A convenience function that combines
+;; grsp-ann-net-create-ffn and grsp-ann-net-create-ffn to creates a forward
+;; feed network of a variable number of layers and elements contained in each
+;; layer.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_nl: number of nodes in layer 0.
+;; - p_nm: number of intermediate layers.
+;; - p_nn: number of nodes in intermediate layers.
+;; - p_af: activation function for intermediate nodes.
+;; - p_nh: number of nodes in final layer.
+;;
+;; Notes:
+;; - See also grsp-ann-net-spec-ffn and grsp-ann-net-create-ffn.
+;;
+;; Output:
+;; - A list with two elements combining the results of:
+;;   - grsp-ann-net-spec-ffn.
+;;   - grsp-ann-net-create-ffn.
+;;
+(define (grsp-ann-net-create-ffv p_nl p_nm p_nn p_af p_nh)
+  (let ((res1 '())
+	(res2 0)
+	(res3 0))
+
+    (set! res2 (grsp-ann-net-spec-ffn p_nl p_nm p_nn p_af p_nh))
+    (set! res3 (grsp-ann-net-create-ffn res2))
+
+    ;; Compose results.
+    (set! res1 (list res2 res3))
     
     res1))
 
@@ -483,7 +521,7 @@
     res1))
 
 
-;;;; grsp-ann-net-create-ffn - Creates an  ann by matrix data. Each row of the
+;;;; grsp-ann-net-create-ffn - Creates an ann by matrix data. Each row of the
 ;; matrix should contain data for the creation of one layer of the ann.
 ;;
 ;; Keywords:
@@ -1466,7 +1504,7 @@
     res1))
 
 
-;;;; grsp-odata2idata - Provides feedback by tranfering data from from odata to
+;;;; grsp-odata2idata - Provides feedback by transfer of data from from odata to
 ;; idata matrices. Transforms data from the output layer of an ann into data for
 ;; the input layer of the same or a different network.
 ;;

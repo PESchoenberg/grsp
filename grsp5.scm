@@ -277,7 +277,9 @@
 	    grsp-gumbel-skewness
 	    grsp-gumbel-pdf
 	    grsp-gumbel-cdf
-	    grsp-gumbel-mean))
+	    grsp-gumbel-mean
+	    grsp-gumbel-variance
+	    grsp-gumbel-entropy))
 
 
 ;;;; grsp-feature-scaling - Scales p_n to the interval [p_nmin, p_nmax].
@@ -3694,3 +3696,42 @@
     (set! res1 (+ p_u1 (* p_b1 (grsp-em))))
     
     res1))
+
+
+;;;; grsp-gumbel-variance - Variance, Gumbel distribution.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_b1: scale, real, (0, +inf.0).
+;;
+;; Sources:
+;; - [44].
+;;
+(define (grsp-gumbel-variance p_b1)
+  (let ((res1 0.0))
+
+    (set! res1 (* (/ (expt (grsp-pi) 2) 6) (expt p_b1 2)))
+    
+    res1))
+
+
+;;;; grsp-gumbel-entropy - Entropy, Gumbel distribution.
+;;
+;; Keywords:
+;; - statistics, probability.
+;;
+;; Arguments:
+;; - p_b1: scale, real, (0, +inf.0).
+;;
+;; Sources:
+;; - [44].
+;;
+(define (grsp-gumbel-entropy p_b1)
+  (let ((res1 0.0))
+
+    (set! res1 (+ (log p_b1) (grsp-em) 1))
+    
+    res1))
+
