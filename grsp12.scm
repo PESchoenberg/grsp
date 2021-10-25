@@ -28,7 +28,10 @@
 ;; - Read sources for limitations on function parameters.
 ;;
 ;; Sources:
-;; - [1] https://en.wikipedia.org/wiki/Differential_evolution
+;; - [1] En.wikipedia.org. 2021. Differential evolution - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Differential_evolution
+;;   [Accessed 21 October 2021].
+
 
 (define-module (grsp grsp12)
   #:use-module (grsp grsp0)

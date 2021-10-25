@@ -2294,7 +2294,7 @@
     res1))
 
 
-;;;; grsp-rectangular - rectangular function.
+;;;; grsp-rectangular - Rectangular function.
 ;;
 ;; Keywords:
 ;; - function, gate, pulse, pi, unit, normalized, boxcar
@@ -2318,7 +2318,7 @@
     res1))
 
 
-;;;; grsp-triangular - triangular function.
+;;;; grsp-triangular - Triangular function.
 ;;
 ;; Keywords:
 ;; - function, gate, pulse, pi, unit, normalized, boxcar
