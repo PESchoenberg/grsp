@@ -3185,7 +3185,7 @@
     res1))
 
 
-;;;; grsp-triangular-pdf - probability density function of a triangular
+;;;; grsp-triangular-pdf - Probability density function of a triangular
 ;; distribution.
 ;;
 ;; Keywords:

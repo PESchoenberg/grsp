@@ -179,8 +179,8 @@
 ;;
 ;; Arguments:
 ;; - p_b1: #t if you want to return only the base ann list composed of matrices
-;;   nodes, conns and count , #f if you want to return also the associated
-;;   matrix created during the process as the fourth lelemnt of the ann list.
+;;   nodes, conns and count , or #f if you want to return also the associated
+;;   matrix created during the process as the fourth elemnt of the ann list.
 ;; - p_n2: number of mutation iterations desired.
 ;; - p_nl: number of nodes in layer 0.
 ;; - p_nm: number of intermediate layers.
@@ -209,16 +209,18 @@
 	(l3 '(5 7))
 	(i1 1))
 
+    ;; Create the ann.
     (set! res2 (grsp-ann-net-spec-ffn p_nl p_nm p_nn p_af p_nh))
     (set! res3 (grsp-ann-net-create-ffn res2))
     
-    ;; Mutate in order to randomize values.
+    ;; Mutate in order to randomize values, as many tumes as defined by argument
+    ;; p_n2. In order not t mutate the network, set p_n2 = 0 so that the following
+    ;; cycle gets ignored entirely.
     (while (<= i1 p_n2)
 	   (set! res3 (grsp-ann-net-mutate res3 1 "#normal" 0.0 0.15 "#normal" 0.0 0.15 l1 l3))
 	   (set! i1 (in i1)))
 
-    ;; Compose results (the first element of res3 is not returned).
-    ;;(set! res1 (list res2 (list-ref res3 1) (list-ref res3 2)))
+    ;; Compose results depending on p_b1.
     (cond ((equal? p_b1 #f)	   
 	   (set! res1 (list (grsp-ann-get-nodes res3)
 			    (grsp-ann-get-conns res3)
@@ -418,7 +420,7 @@
 
 
 ;; grsp-ann-nodes-create - Creates node p_l2 connected according to p_l3 in
-;; ann p_l1
+;; ann p_l1.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -1366,7 +1368,7 @@
 ;; - See grsp-matrix-create fo detals on argument p_s1. Some configurations might
 ;;   require a symmetric matrix (3 x 3) to work.
 ;; - Column 0 will be set to zero. You should set the values  of this col
-;;   acording to the id of each node to be evaluated with the gived data.
+;;   acording to the id of each node to be evaluated with the given data.
 ;; - You might have to modify the elements of columns 0 and 1 in order to provide
 ;;   useful values for different nodes.
 ;;
@@ -1425,7 +1427,7 @@
 ;; - p_a4: matrix, idata. An m x 4 matrix containing the data for the input
 ;;   nodes of the neural network according to the following format:
 ;;   - Col 0: id of the receptive node.
-;;   - Col 1: number that coresponds to the column in the nodes matrix in which
+;;   - Col 1: number that corresponds to the column in the nodes matrix in which
 ;;   - for the row whose col 0 is equal to the id value passed in col 0 of the
 ;;     idata matrix the input value will be stored.
 ;;   - Col 2: number.
