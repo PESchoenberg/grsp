@@ -1922,7 +1922,7 @@
     res1))
 
 
-;; grsp-absop - Simple arithmetic ops between absolute values of p_n2 and p_n1
+;; grsp-absop - Simple arithmetic ops between absolute values of p_n2 and p_n1.
 ;;
 ;; Keywords:
 ;; - function, absolute.

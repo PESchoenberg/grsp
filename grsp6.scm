@@ -70,6 +70,10 @@
 ;; - [16] Es.wikipedia.org. 2020. Métrica De Alcubierre. [online] Available at:
 ;;   https://es.wikipedia.org/wiki/M%C3%A9trica_de_Alcubierre
 ;;   [Accessed 5 November 2020].
+;; - [17] Es.wikipedia.org. 2021. Métrica de Schwarzschild - Wikipedia, la
+;;   enciclopedia libre. [online] Available at:
+;;   https://es.wikipedia.org/wiki/M%C3%A9trica_de_Schwarzschild
+;;   [Accessed 28 October 2021].
 
 
 (define-module (grsp grsp6)
@@ -211,7 +215,7 @@
     res1))
 
 
-;;;; grsp-lorentz-factor - Calculates gamma, or Lorentz factor.
+;;;; grsp-lorentz-factor - Calculates gamma (Lorentz factor).
 ;;
 ;; Keywords:
 ;; - relativity.

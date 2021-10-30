@@ -3524,7 +3524,7 @@
     res1))
 
 
-;;;; grsp-matrix-row-delete - Delete rows from matrix p_a1 for which condition
+;;;; grsp-matrix-row-delete - Deletes rows from matrix p_a1 for which condition
 ;; p_s1 is met with regards to value p_n1 in column p_j1.
 ;;
 ;; Keywords:
@@ -3797,7 +3797,7 @@
     res1))
 
 
-;;;; grsp-matrix-row-selectn - Select from p_a1 only the rows specified in list
+;;;; grsp-matrix-row-selectn - Selects from p_a1 only the rows specified in list
 ;; p_l1.
 ;;
 ;; Keywords:
@@ -3876,7 +3876,7 @@
     res1))
 
 
-;;;; grsp-matrix-col-selectn - Select from p_a1 only the columns specified in
+;;;; grsp-matrix-col-selectn - Selects from p_a1 only the columns specified in
 ;; list p_l1.
 ;;
 ;; Keywords:
@@ -3906,8 +3906,8 @@
     res1))
 
 
-;;;; grsp-matrix-col-select - Select columns from matrix p_a1 for which condition
-;; p_s1 is met with regards to value p_n1 in row p_i1.
+;;;; grsp-matrix-col-select - Selects columns from matrix p_a1 for which
+;; condition p_s1 is met with regards to value p_n1 in row p_i1.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors, relational.
@@ -4447,7 +4447,7 @@
     res1))
 
 
-;; grsp-matrix-append - append all the rows of p_a2 below the rows of p_a1.
+;; grsp-matrix-append - Appends all the rows of p_a2 below the rows of p_a1.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors, relational.
@@ -4635,7 +4635,7 @@
     res1))
 
 
-;;;; grsp-matrix-col-total-element - Count the number of ocurrences of elements
+;;;; grsp-matrix-col-total-element - Counts the number of ocurrences of elements
 ;; in column p_j1 of matrix p_a1 for which relationship p_s1 is fulfilled with
 ;; regards to p_n1.
 ;;
@@ -4890,7 +4890,7 @@
     res6))
 	
 
-;; grsp-matrix-col-append - Append all the columns of p_a2 to the right of p_a1,
+;; grsp-matrix-col-append - Appends all the columns of p_a2 to the right of p_a1,
 ;; row by row.
 ;;
 ;; Keywords:
@@ -4997,7 +4997,7 @@
     res2))
 
 
-;;;; grsp-mn2ll - Cast m x n matrix p_a1 into a list of m elements which are
+;;;; grsp-mn2ll - Casts m x n matrix p_a1 into a list of m elements which are
 ;; themselves lists of n elements each.
 ;;
 ;; Keywords:
@@ -5549,7 +5549,7 @@
     res1))
 
 
-;; grsp-matrix-col-aupdate - Update all elements of column p_n1 of matrix p_a1,
+;; grsp-matrix-col-aupdate - Updates all elements of column p_n1 of matrix p_a1,
 ;; setting value p_n2 in them.
 ;;
 ;; Keywords:

@@ -1289,7 +1289,7 @@
     res1))
 
 
-;;;; grsp-cop-mbird-mth -Multithreaded variant of grsp-cop-mbird.
+;;;; grsp-cop-mbird-mth - Multithreaded variant of grsp-cop-mbird.
 ;;
 ;; Keywords:
 ;; - function, test, optimization, artificial, landscape.
