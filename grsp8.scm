@@ -238,6 +238,7 @@
 ;;
 ;; Arguments:
 ;; - p_s1: reconfiguration method.
+;;   - "#no": none.
 ;;   - "#bp": backpropagation.
 ;; - p_l1: ann (list).
 ;;
@@ -254,9 +255,9 @@
     (set! l1 (grsp-ann-deletes l1))
 
     ;; Callibrate.
-    ;;(cond ((equal? p_s1 "#bp")
-	   ;; Backpropagation
-	   ;;))
+    (cond ((equal? p_s1 "#bp")
+	   (grsp-placebo " "))
+	  (else (grsp-placebo " ")))
     
     ;; Compose results.
     (set! res1 l1)
