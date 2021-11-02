@@ -62,6 +62,7 @@
 	    newlines
 	    clear
 	    pres
+	    pres2
 	    newspaces
 	    strings-append
 	    read-file-as-string
@@ -163,6 +164,23 @@
     (set! res1 (string-append p_s1 (string-append " = " p_s2)))
       (display res1)
       (newline)))
+
+
+;;;; pres2 - Display results. Does not require p_s2 to be a string.
+;;
+;; Keywords:
+;; - console, strings.
+;;
+;; Arguments:
+;; - p_s1: reference, string.
+;; - p_s2: result.
+;;
+(define (pres2 p_s1 p_s2)
+  (newline)
+  (display p_s1)
+  (display " = ")
+  (display p_s2)
+  (newline))
 
 
 ;;;; newspaces - Adds p_n blank spaces to string p_l.
