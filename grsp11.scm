@@ -38,7 +38,8 @@
 	    grsp-lal-leqe
 	    grsp-lal-opio
 	    grsp-lal-opsc
-	    grsp-lal-mutation))
+	    grsp-lal-mutation
+	    grsp-lal-dev))
 
 
 ;;;; grsp-lal-rel - Replace element in list. Replace element p_j1 of list p_l1
@@ -256,3 +257,28 @@
     (set! res1 (grsp-m2l res2))
     
     res1))
+
+
+;;;; grsp-lal-dev - Display, enumerated vertically. Displays list elements, each
+;; on a different line.
+;;
+;; Keywords:
+;; - function, algebra, lists.
+;;
+;; Arguments:
+;; - p_b1: boolean.
+;;   - #t: shows element ordinals.
+;;   - #f: does not show ordinals.
+;; - p_l1: list
+;;
+(define (grsp-lal-dev p_b1 p_l1)
+  (let ((nh 0)
+	(j1 0))
+
+    (set! nh (length p_l1))
+    (while (< j1 nh)
+	   (cond ((equal? p_b1 #t)
+		  (pres2 (grsp-n2s j1) (list-ref p_l1 j1)))
+		 (else (pres2 " " (list-ref p_l1 j1))))
+	   (set! j1 (in j1)))))
+
