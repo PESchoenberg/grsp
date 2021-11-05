@@ -88,9 +88,7 @@
 	    grsp-ann-idata-update
 	    grsp-ann-odata-update
 	    grsp-odata2idata
-	    grsp-ann-get-nodes
-	    grsp-ann-get-conns
-	    grsp-ann-get-count))
+	    grsp-ann-get-matrix))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network.
@@ -178,9 +176,12 @@
 ;; - function, ann, neural network.
 ;;
 ;; Arguments:
-;; - p_b1: #t if you want to return only the base ann list composed of matrices
-;;   nodes, conns and count , or #f if you want to return also the associated
-;;   matrix created during the process as the fourth elemnt of the ann list.
+;; - p_b1:
+;;   - #t if you want to return only the base ann list composed of matrices
+;;     nodes, conns and count.
+;;   - #f if you want to return also the associated matrix created during the
+;;     process as the fourth element of the ann list, meaning that this option
+;;     returns nodes, conns, count and specs matrices.
 ;; - p_n2: number of mutation iterations desired.
 ;; - p_nl: number of nodes in layer 0.
 ;; - p_nm: number of intermediate layers.
@@ -222,9 +223,9 @@
 
     ;; Compose results depending on p_b1.
     (cond ((equal? p_b1 #f)	   
-	   (set! res1 (list (grsp-ann-get-nodes res3)
-			    (grsp-ann-get-conns res3)
-			    (grsp-ann-get-count res3)
+	   (set! res1 (list (grsp-ann-get-matrix "nodes" res3)
+			    (grsp-ann-get-matrix "conns" res3)
+			    (grsp-ann-get-matrix "count" res3)
 			    res2)))
 	  (else (set! res1 res3)))
     
@@ -447,9 +448,9 @@
 	(cc 0))
 
     ;; Extract matrices and lists.
-    (set! nodes (grsp-ann-get-nodes p_l1))
-    (set! conns (grsp-ann-get-conns p_l1))
-    (set! count (grsp-ann-get-count p_l1))
+    (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
+    (set! conns (grsp-ann-get-matrix "conns" p_l1))
+    (set! count (grsp-ann-get-matrix "count" p_l1))
     (set! l2 p_l2)
 
     ;; Update node count in counter and l2.
@@ -512,9 +513,9 @@
     (set! l1 p_l1)
     
     ;; Extract matrices and lists.
-    (set! nodes (grsp-ann-get-nodes l1))
-    (set! conns (grsp-ann-get-conns l1))
-    (set! count (grsp-ann-get-count l1))    
+    (set! nodes (grsp-ann-get-matrix "nodes" l1))
+    (set! conns (grsp-ann-get-matrix "conns" l1))
+    (set! count (grsp-ann-get-matrix "count" l1))    
 
     ;; Save to database.
     (grsp-mc2dbc-csv p_d1 nodes "nodes.csv")
@@ -926,9 +927,9 @@
     (set! l2 p_l2)
     
     ;; Extract matrices and lists.
-    (set! nodes (grsp-ann-get-nodes l2))
-    (set! conns (grsp-ann-get-conns l2))
-    (set! count (grsp-ann-get-count l2))    
+    (set! nodes (grsp-ann-get-matrix "nodes" l2))
+    (set! conns (grsp-ann-get-matrix "conns" l2))
+    (set! count (grsp-ann-get-matrix "count" l2))    
     
     ;; Mutate nodes.
     (set! l1 p_l1)
@@ -992,9 +993,9 @@
     (set! l2 p_l2)
     
     ;; Extract matrices and lists.
-    (parallel (set! nodes (grsp-ann-get-nodes l2))
-	      (set! conns (grsp-ann-get-conns l2))
-	      (set! count (grsp-ann-get-count l2)))
+    (parallel (set! nodes (grsp-ann-get-matrix "nodes" l2))
+	      (set! conns (grsp-ann-get-matrix "conns" l2))
+	      (set! count (grsp-ann-get-matrix "count" l2)))
     
     (parallel ((set! l1 p_l1)
 	       (set! nodes (grsp-matrix-col-lmutation nodes p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 l1)))
@@ -1032,9 +1033,9 @@
 	(count 0))
 
     ;; Extract matrices and lists.
-    (set! nodes (grsp-ann-get-nodes p_l1))
-    (set! conns (grsp-ann-get-conns p_l1))
-    (set! count (grsp-ann-get-count p_l1))    
+    (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
+    (set! conns (grsp-ann-get-matrix "conns" p_l1))
+    (set! count (grsp-ann-get-matrix "count" p_l1))     
     
     (set! nodes (grsp-matrix-row-delete "#=" nodes 1 0))
     (set! conns (grsp-matrix-row-delete "#=" conns 1 0))
@@ -1299,9 +1300,9 @@
     (set! res1 p_l1)
     
     ;; Extract matrices and lists.
-    (set! nodes (grsp-ann-get-nodes res1))
-    (set! conns (grsp-ann-get-conns res1))
-    (set! count (grsp-ann-get-count res1))    
+    (set! nodes (grsp-ann-get-matrix "nodes" res1))
+    (set! conns (grsp-ann-get-matrix "conns" res1))
+    (set! count (grsp-ann-get-matrix "count" res1))    
     
     ;; Sort nodes by layer number.
     (set! nodes (grsp-matrix-row-sort "#asc" nodes 3))
@@ -1468,9 +1469,9 @@
 	(idata 0))
 
     ;; Extract matrices and lists.
-    (set! nodes (grsp-ann-get-nodes p_l1))
-    (set! conns (grsp-ann-get-conns p_l1))
-    (set! count (grsp-ann-get-count p_l1))    
+    (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
+    (set! conns (grsp-ann-get-matrix "conns" p_l1))
+    (set! count (grsp-ann-get-matrix "count" p_l1))    
     (set! idata p_a4)
         
     ;; Extract boundaries of idata.
@@ -1631,7 +1632,7 @@
     res1))
 
 
-;;;; grsp-ann-get-nodes - Get the nodes matrix from ann p_l1.
+;;;; grsp-ann-get-matrix - Get matrix p_s1 from ann p_l1.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -1642,50 +1643,32 @@
 ;; Output:
 ;; - Matrix.
 ;;
-(define (grsp-ann-get-nodes p_l1)
-  (let ((res1 0))
+(define (grsp-ann-get-matrix p_s1 p_l1)
+  (let ((res1 '())
+	(n1 0)
+	(n2 0))
 
-    ;; Extract matrix.
-    (set! res1 (list-ref p_l1 0))
-    
-    res1))
+    ;; Find the number of elements in the list.
+    (set! n2 (length p_l1))
 
+    ;; Find the element number that corresponds to p_s1. Elements
+    ;; within the ann should always follow the order stated below.
+    (cond ((equal? p_s1 "nodes")
+	   (set! n1 0))
+	  ((equal? p_s1 "conns")
+	   (set! n1 1))	  
+	  ((equal? p_s1 "count")
+	   (set! n1 2))
+	  ((equal? p_s1 "specs")
+	   (set! n1 3))	  
+	  ((equal? p_s1 "idata")
+	   (set! n1 4))
+	  ((equal? p_s1 "odata")
+	   (set! n1 5)))
 
-;;;; grsp-ann-get-conns - Get the conns matrix from ann p_l1.
-;;
-;; Keywords:
-;; - function, ann, neural network.
-;;
-;; Arguments:
-;; - p_l1: ann.
-;;
-;; Output:
-;; - Matrix.
-;;
-(define (grsp-ann-get-conns p_l1)
-  (let ((res1 0))
-
-    ;; Extract matrix.
-    (set! res1 (list-ref p_l1 1))
-    
-    res1))
-
-
-;;;; grsp-ann-get-count - Get the count matrix from ann p_l1.
-;;
-;; Keywords:
-;; - function, ann, neural network.
-;;
-;; Arguments:
-;; - p_l1: ann.
-;;
-;; Output:
-;; - Matrix.
-;;
-(define (grsp-ann-get-count p_l1)
-  (let ((res1 0))
-
-    ;; Extract matrix.
-    (set! res1 (list-ref p_l1 2))
+    ;; n1 starts from 0. n2 is counted from 1.
+    (cond ((< n1 n2)
+	   (set! res1 (list-ref p_l1 n1))))
     
     res1))  
+
