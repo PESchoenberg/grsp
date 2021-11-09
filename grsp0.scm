@@ -445,7 +445,8 @@
 ;; p_s1: string representing the question to ask.
 ;;
 ;; Output:
-;; - Returns a string with the user's input.
+;; - Returns data from the user's input. You may need to use symbol->[type] in
+;;   order to return the proper type variable for your needs.
 ;;
 (define (grsp-ask p_s1)
   (let ((res1 " "))
