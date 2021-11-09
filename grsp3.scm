@@ -98,6 +98,7 @@
 ;;   [Accessed 13 May 2021].
 ;; - [24] En.wikipedia.org. 2021. Multiset - Wikipedia. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Multiset [Accessed 17 September 2021].
+;; - [25] http://www.gnuplotting.org/plotting-data/
 
 
 (define-module (grsp grsp3)
@@ -157,6 +158,8 @@
 	    grsp-mc2dbc-sqlite3
 	    grsp-mc2dbc-hdf5
 	    grsp-mc2dbc-csv
+	    grsp-mc2dbc-gnuplot1
+	    grsp-mc2dbc-gnuplot2	    
 	    grsp-matrix-interval-mean
 	    grsp-matrix-determinant-lu
 	    grsp-matrix-is-invertible
@@ -2975,6 +2978,155 @@
 
     (grsp-save-to-file s3 rp "w")))
 
+
+;;;; grsp-mc2dbc-gnuplot1 - Creates a gnuplot data (.data) table from
+;; matrix p_a1. data format is identical to csv tables except that
+;; commas are replaced by spaces.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, databases.
+;;
+;; Arguments:
+;; - p_d1: database name.
+;; - p_a1: matrix.
+;; - p_t1: gnuplot data file name.
+;;
+;; Sources:
+;; - [25].
+;;
+(define (grsp-mc2dbc-gnuplot1 p_d1 p_a1 p_t1)
+  (let ((lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(ve 0)
+	(rp "")
+	(s1 "")
+	(s2 " ")
+	(s3 "")
+	(d1 p_d1)
+	(t1 p_t1)
+	(i1 0)
+	(j1 0))
+
+    ;; Extract the boundaries of the argument matrix.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1))
+
+    ;; Test if p_d1 exists. If not, create it.
+    (cond ((equal? (file-exists? d1) #f)
+	   (mkdir d1)))
+    
+    ;; We have to create the relative path.
+    (set! rp (strings-append (list d1 "/" t1) 0))
+    
+    ;; Loop over p_a1 and extract each value and insert it into the new table.
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+	   (set! j1 ln1)
+	   (while (<= j1 hn1)
+		  
+		  ;; Extract and analize each element of the matrix.
+		  (set! ve (array-ref p_a1 i1 j1))
+
+		  ;; Create the string record.
+		  ;; - 0: row number.
+		  ;; - 1: col number.
+		  ;; - 2: value.
+		  ;; If this is the last element of the matrix, do not add the
+		  ;; new line character at the end of the string.
+		  (cond ((equal? (and (>= j1 hn1) (>= i1 hm1)) #t)
+			 (set! s1 (strings-append (list (grsp-n2s i1)
+							s2
+							(grsp-n2s j1)
+							s2
+							(grsp-n2s ve)) 0)))
+			(else (set! s1 (strings-append (list (grsp-n2s i1)
+							     s2
+							     (grsp-n2s j1)
+							     s2 (grsp-n2s ve)
+							     "\n") 0))))
+		  
+		  ;; Add the line string to the file string.
+		  (set! s3 (strings-append (list s3 s1) 0))
+		  
+		  (set! j1 (+ j1 1)))
+	   
+	   (set! i1 (+ i1 1)))
+
+    (grsp-save-to-file s3 rp "w")))
+
+
+;;;; grsp-mc2dbc-gnuplot2 - Creates a gnuplot data (.data) table from
+;; matrix p_a1. Rows are represented as lines, columns are sparated
+;; with spaces.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, databases.
+;;
+;; Arguments:
+;; - p_d1: database name.
+;; - p_a1: matrix.
+;; - p_t1: gnuplot data file name.
+;;
+;; Sources:
+;; - [25].
+;;
+(define (grsp-mc2dbc-gnuplot2 p_d1 p_a1 p_t1)
+  (let ((lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(ve 0)
+	(rp "")
+	(s1 "")
+	(s2 " ")
+	(s3 "")
+	(d1 p_d1)
+	(t1 p_t1)
+	(i1 0)
+	(j1 0))
+
+    ;; Extract the boundaries of the argument matrix.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1))
+
+    ;; Test if p_d1 exists. If not, create it.
+    (cond ((equal? (file-exists? d1) #f)
+	   (mkdir d1)))
+    
+    ;; We have to create the relative path.
+    (set! rp (strings-append (list d1 "/" t1) 0))
+    
+    ;; Loop over p_a1 and extract each value and insert it into the new table.
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+
+	   ;; Initialize line string on each new line.
+	   (set! s1 "")
+	   
+	   (set! j1 ln1)
+	   (while (<= j1 hn1)
+		  
+		  ;; Extract and analize each element of the matrix.
+		  (set! ve (array-ref p_a1 i1 j1))
+
+		  ;; Create the string record.
+		  (set! s1 (string-append s1 (grsp-n2s ve)))
+		  
+		  (set! j1 (+ j1 1)))
+
+		  ;; Add the line string to the file string.
+		  (set! s3 (strings-append (list s3 s1) 0))
+	   
+	   (set! i1 (+ i1 1)))
+
+    (grsp-save-to-file s3 rp "w")))
+  
 
 ;;;; grsp-matrix-interval-mean - Creates a 3 x 1 matrix containing the following
 ;; values:
