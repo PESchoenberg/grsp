@@ -2980,7 +2980,7 @@
 
 
 ;;;; grsp-mc2dbc-gnuplot1 - Creates a gnuplot data (.data) table from
-;; matrix p_a1. data format is identical to csv tables except that
+;; matrix p_a1. data format is identical to grsp csv tables except that
 ;; commas are replaced by spaces.
 ;;
 ;; Keywords:
@@ -3059,7 +3059,7 @@
     (grsp-save-to-file s3 rp "w")))
 
 
-;;;; grsp-mc2dbc-gnuplot2 - Creates a gnuplot data (.data) table from
+;;;; grsp-mc2dbc-gnuplot2 - Creates a gnuplot data (.dat) table from
 ;; matrix p_a1. Rows are represented as lines, columns are sparated
 ;; with spaces.
 ;;
@@ -3083,7 +3083,7 @@
 	(rp "")
 	(s1 "")
 	(s2 " ")
-	(s3 "")
+	(s3 "\n")
 	(d1 p_d1)
 	(t1 p_t1)
 	(i1 0)
@@ -3106,22 +3106,23 @@
     (set! i1 lm1)
     (while (<= i1 hm1)
 
-	   ;; Initialize line string on each new line.
-	   (set! s1 "")
-	   
 	   (set! j1 ln1)
 	   (while (<= j1 hn1)
-		  
+    		  
 		  ;; Extract and analize each element of the matrix.
 		  (set! ve (array-ref p_a1 i1 j1))
 
-		  ;; Create the string record.
-		  (set! s1 (string-append s1 (grsp-n2s ve)))
+		  ;; Create the string record
+		  (cond ((> j1 ln1)
+			 (set! s1 (strings-append (list s1 (grsp-n2s ve)) 1)))
+			(else (set! s1 (grsp-n2s ve))))
 		  
 		  (set! j1 (+ j1 1)))
 
-		  ;; Add the line string to the file string.
-		  (set! s3 (strings-append (list s3 s1) 0))
+	   ;; Add the line string to the file string.
+	   (cond ((> i1 lm1)
+		  (set! s3 (strings-append (list s3 "\n"s1) 0)))
+		 (else (set! s3 s1)))
 	   
 	   (set! i1 (+ i1 1)))
 
