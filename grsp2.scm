@@ -2,7 +2,7 @@
 ;;
 ;; grsp2.scm
 ;;
-;; Real number functions.
+;; Real num. unctions.
 ;;
 ;; =============================================================================
 ;;
@@ -235,7 +235,9 @@
 	    grsp-multi-heavyside-step
 	    grsp-euler-number
 	    grsp-rectangular
-	    grsp-triangular))
+	    grsp-triangular
+	    grsp-2ex
+	    grsp-1n))
 
 
 ;;;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -2338,3 +2340,34 @@
     
     res1))
 
+
+;;;; grsp-2ex - A quick way to calculate (expt 2 p_n1).
+;;
+;; Keywords:
+;; - function.
+;;
+;; Arguments:
+;; - p_n1.
+;;
+(define (grsp-2ex p_n1)
+  (let ((res1 0.0))
+
+    (set! res1 (expt 2.0 p_n1))
+
+    res1))
+
+
+;;;; grsp-1n - A quick way to calculate (/ 1 p_n1).
+;;
+;; Keywords:
+;; - function.
+;;
+;; Arguments:
+;; - p_n1.
+;;
+(define (grsp-1n p_n1)
+  (let ((res1 0.0))
+
+    (set! res1 (/ 1.0 p_n1))
+
+    res1))

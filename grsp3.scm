@@ -3046,9 +3046,10 @@
 			(else (set! s1 (strings-append (list (grsp-n2s i1)
 							     s2
 							     (grsp-n2s j1)
-							     s2 (grsp-n2s ve)
+							     s2
+							     (grsp-n2s ve)
 							     "\n") 0))))
-		  
+		   
 		  ;; Add the line string to the file string.
 		  (set! s3 (strings-append (list s3 s1) 0))
 		  
@@ -3083,7 +3084,7 @@
 	(rp "")
 	(s1 "")
 	(s2 " ")
-	(s3 "\n")
+	(s3 "")
 	(d1 p_d1)
 	(t1 p_t1)
 	(i1 0)
@@ -3095,6 +3096,9 @@
     (set! ln1 (grsp-matrix-esi 3 p_a1))
     (set! hn1 (grsp-matrix-esi 4 p_a1))
 
+    ;; Create file header.
+    (set! s3 (strings-append (list "# " p_t1 "\n") 0))
+    
     ;; Test if p_d1 exists. If not, create it.
     (cond ((equal? (file-exists? d1) #f)
 	   (mkdir d1)))
@@ -3121,8 +3125,9 @@
 
 	   ;; Add the line string to the file string.
 	   (cond ((> i1 lm1)
-		  (set! s3 (strings-append (list s3 "\n"s1) 0)))
-		 (else (set! s3 s1)))
+		  (set! s3 (strings-append (list s3 "\n" s1) 0)))
+		 ;;(else (set! s3 s1)))
+		 (else (set! s3 (strings-append (list s3 s1) 0))))
 	   
 	   (set! i1 (+ i1 1)))
 
@@ -6002,8 +6007,6 @@
     ;; Create results matrix.
     (set! n3 (grsp-matrix-te1 ln3 hn3))
     (set! res1 (grsp-matrix-create 0 1 n3))
-
-    ;;(display res1)
     
     ;; Cycle.
     (set! j3 ln3)

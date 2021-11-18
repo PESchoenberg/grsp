@@ -69,7 +69,7 @@
 	    grsp-ann-counter-upd
 	    grsp-ann-id-create
 	    grsp-ann-item-create
-	    grsp-ann-conns-eval
+	    ;;grsp-ann-conns-eval
 	    grsp-ann-nodes-create
 	    grsp-ann2dbc
 	    grsp-dbc2ann
@@ -152,17 +152,19 @@
   (let ((res1 '())
 	(nodes 0)
 	(conns 0)
-	(count 0))
+	(count 0)
+	(idata 0))
 
     ;; Create matrices with just one row.
     (set! nodes (grsp-matrix-create 0 1 11))
     (set! conns (grsp-matrix-create 0 1 10))
     (set! count (grsp-matrix-create 0 1 4))
+    (set! idata (grsp-matrix-create 0 1 1))
     
     ;; Rebuild the list.
     (cond ((equal? p_b1 #t)
 	   (set! res1 (list nodes conns count)))
-	  (else (set! res1 (grsp-ann-net-preb nodes conns count))))
+	  (else (set! res1 (grsp-ann-net-preb nodes conns count idata))))
     
     res1))
 
@@ -307,8 +309,9 @@
 ;; - p_a1: nodes matrix.
 ;; - p_a2: conns matrix.
 ;; - p_a3: count matrix.
+;; - p_a4: idata matrix.
 ;;
-(define (grsp-ann-net-preb p_a1 p_a2 p_a3)
+(define (grsp-ann-net-preb p_a1 p_a2 p_a3 p_a4)
   (let ((res1 '())
 	(s1 "#="))
 
@@ -318,7 +321,7 @@
     (set! p_a1 (grsp-matrix-row-delete s1 p_a1 1 0))
     
     ;; Compose results.
-    (set! res1 (list p_a1 p_a2 p_a3))
+    (set! res1 (list p_a1 p_a2 p_a3 p_a4))
 
     res1))
 
@@ -442,6 +445,7 @@
 	(nodes 0)
 	(conns 0)
 	(count 0)
+	(idata 0)
 	(hn 0)
 	(i1 0)
 	(cn 0)
@@ -451,6 +455,7 @@
     (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
     (set! conns (grsp-ann-get-matrix "conns" p_l1))
     (set! count (grsp-ann-get-matrix "count" p_l1))
+    (set! idata (grsp-ann-get-matrix "idata" p_l1))
     (set! l2 p_l2)
 
     ;; Update node count in counter and l2.
@@ -486,7 +491,7 @@
 		  (set! i1 (in i1)))))
     
     ;; Compose results.
-    (set! res1 (list nodes conns count))
+    (set! res1 (list nodes conns count idata))
     
     res1))
 
@@ -508,19 +513,22 @@
 	(l1 '())
 	(nodes 0)
 	(conns 0)
-	(count 0))
+	(count 0)
+	(idata 0))
 
     (set! l1 p_l1)
     
     ;; Extract matrices and lists.
     (set! nodes (grsp-ann-get-matrix "nodes" l1))
     (set! conns (grsp-ann-get-matrix "conns" l1))
-    (set! count (grsp-ann-get-matrix "count" l1))    
+    (set! count (grsp-ann-get-matrix "count" l1))
+    (set! idata (grsp-ann-get-matrix "idata" l1))
 
     ;; Save to database.
     (grsp-mc2dbc-csv p_d1 nodes "nodes.csv")
     (grsp-mc2dbc-csv p_d1 conns "conns.csv")
-    (grsp-mc2dbc-csv p_d1 count "count.csv")))
+    (grsp-mc2dbc-csv p_d1 count "count.csv")
+    (grsp-mc2dbc-csv p_d1 idata "idata.csv")))
 
 
 ;; grsp-dbc2ann - Retrieves an ann from a csv database.
@@ -539,14 +547,16 @@
   (let ((res1 '())
 	(nodes 0)
 	(conns 0)
-	(count 0))	
+	(count 0)
+	(idata 0))
 
     (set! nodes (grsp-dbc2mc-csv p_d1 "nodes.csv"))
     (set! conns (grsp-dbc2mc-csv p_d1 "conns.csv"))
-    (set! count (grsp-dbc2mc-csv p_d1 "count.csv"))    
+    (set! count (grsp-dbc2mc-csv p_d1 "count.csv"))
+    (set! idata (grsp-dbc2mc-csv p_d1 "idata.csv"))
 
     ;; Compose results.
-    (set! res1 (list nodes conns count))
+    (set! res1 (list nodes conns count idata))
     
     res1))
 
@@ -669,7 +679,8 @@
 	(t4 0)	
 	(nodes 0)
 	(conns 0)
-	(count 0))
+	(count 0)
+	(idata 0))
 
     ;; Copy argument matrix.
     (set! res2 (grsp-matrix-cpy p_a1))
@@ -678,6 +689,7 @@
     (set! nodes (grsp-matrix-create 0 1 11))
     (set! conns (grsp-matrix-create 0 1 10))
     (set! count (grsp-matrix-create -1 1 4))
+    (set! idata (grsp-matrix-create 0 1 1))
     
     ;; Extract the boundaries of the argument matrix.
     (set! lm1 (grsp-matrix-esi 1 res2))
@@ -748,7 +760,7 @@
 		  ;; - The second part contains everything else. That is, given
 		  ;;   the row sort and selectc ops performed, res4 from now on
 		  ;;   will contain what would be processed in the next
-		  ;;   iteration, excludign what will be processed on this one.
+		  ;;   iteration, excluding what will be processed on this one.
 		  (set! l2 (grsp-matrix-row-selectc "#=" res4 3 y1))
 		  (set! res3 (list-ref l2 0))
 		  (set! res4 (list-ref l2 1))
@@ -808,7 +820,7 @@
 		 (else (set! b1 #f))))
 	    
     ;; Compose results.
-    (set! res1 (grsp-ann-net-preb nodes conns count))
+    (set! res1 (grsp-ann-net-preb nodes conns count idata))
     
     res1))
 
@@ -922,14 +934,16 @@
 	(l3 '())
 	(nodes 0)
 	(conns 0)
-	(count 0))
+	(count 0)
+	(idata 0))
 
     (set! l2 p_l2)
     
     ;; Extract matrices and lists.
     (set! nodes (grsp-ann-get-matrix "nodes" l2))
     (set! conns (grsp-ann-get-matrix "conns" l2))
-    (set! count (grsp-ann-get-matrix "count" l2))    
+    (set! count (grsp-ann-get-matrix "count" l2))
+    (set! idata (grsp-ann-get-matrix "idata" l2))
     
     ;; Mutate nodes.
     (set! l1 p_l1)
@@ -940,7 +954,7 @@
     (set! conns (grsp-matrix-col-lmutation conns p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 l3))
 
     ;; Compose results.
-    (set! res1 (list nodes conns count))    
+    (set! res1 (list nodes conns count idata))    
 
     res1))
 
@@ -988,14 +1002,16 @@
 	(l3 '())
 	(nodes 0)
 	(conns 0)
-	(count 0))
+	(count 0)
+	(idata 0))
 
     (set! l2 p_l2)
     
     ;; Extract matrices and lists.
     (parallel (set! nodes (grsp-ann-get-matrix "nodes" l2))
 	      (set! conns (grsp-ann-get-matrix "conns" l2))
-	      (set! count (grsp-ann-get-matrix "count" l2)))
+	      (set! count (grsp-ann-get-matrix "count" l2))
+	      (set! idata (grsp-ann-get-matrix "idata" l2)))
     
     (parallel ((set! l1 p_l1)
 	       (set! nodes (grsp-matrix-col-lmutation nodes p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 l1)))
@@ -1003,7 +1019,7 @@
 	       (set! conns (grsp-matrix-col-lmutation conns p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 l3))))
 
     ;; Compose results.
-    (set! res1 (list nodes conns count))    
+    (set! res1 (list nodes conns count idata))    
     
     res1))
 
@@ -1030,18 +1046,20 @@
   (let ((res1 '())
 	(nodes 0)
 	(conns 0)
-	(count 0))
+	(count 0)
+	(idata 0))
 
     ;; Extract matrices and lists.
     (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
     (set! conns (grsp-ann-get-matrix "conns" p_l1))
-    (set! count (grsp-ann-get-matrix "count" p_l1))     
+    (set! count (grsp-ann-get-matrix "count" p_l1))
+    (set! idata (grsp-ann-get-matrix "idata" p_l1))
     
     (set! nodes (grsp-matrix-row-delete "#=" nodes 1 0))
     (set! conns (grsp-matrix-row-delete "#=" conns 1 0))
 
     ;; Compose results.
-    (set! res1 (list nodes conns count))
+    (set! res1 (list nodes conns count idata))
 
     res1))
 
@@ -1132,20 +1150,11 @@
     (set! res1 (grsp-matrix-row-select "#=" p_a1 0 p_id))
     (set! b1 (grsp-matrix-is-empty res1))
     (cond ((equal? b1 #t) ;; If node exists.
-	   ;; ***
-	   (display " nf ")
-	   ;; ***
+
 	   ;; If the node has incoming connections then we need to process them.
 	   (set! res2 (grsp-ann-conns-of-node "#to" p_a2 p_id))
 	   (set! b2 (grsp-matrix-is-empty res2))
-	   ;; ***
-	   (display " res2: ")
-	   (display res2)
-	   ;; ***
 	   (cond ((equal? b2 #f)
-		  ;; ***
-		  (display " res2 ok ")
-		  ;; ***
 		  (set! n1 (grsp-matrix-opio "#+c" res2 5))
 		  (set! n2 (grsp-matrix-opio "#+c" res2 7))
 		  (set! n6 (+ n1 n2))
@@ -1158,14 +1167,6 @@
 	   
 	   ;; Set value.
 	   (set! n6 (* (+ n6 n9) n5))
-	   ;; ***
-	   (display n5 )
-	   (display " ")
-	   (display n9 )
-	   (display " n6: ")
-	   (display n6 )
-	   (display " ")
-	   ;; ***
 	   
 	   ;; Select activation function and calculate.
 	   (set! l1 (list n6))
@@ -1185,9 +1186,6 @@
 	  
 	  ;; Commit.
 	  ((equal? b1 #f) ;; If node does not exist.
-	   ;; ***
-	   (display " nnf ")
-	   ;; ***	   
 	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 3 p_id 1 0))
 	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 4 p_id 1 0))))
 	   
@@ -1271,16 +1269,21 @@
 
 
 ;;;; grsp-ann-nodes-eval - Performs one iteration of evaluation of all nodes
-;; in ann p_l1 using the input data of p_a4.
+;; in ann p_l1 using idata.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
 ;;
 ;; Arguments:
-;; - p_l1: ann.
+;; - p_l1: ann with the following elements:
+;;   - nodes.
+;;   - conns.
+;;   - count.
+;;   - idata.
 ;;
 ;; Notes:
-;; - Use grsp-ann-idata-update before this function to pass actual data to the ann.
+;; - Use grsp-ann-idata-update before this function to pass actual data to the
+;;   ann.
 ;;
 ;; Output:
 ;; - Updated ann.
@@ -1295,14 +1298,16 @@
 	(i1 0)
 	(nodes 0)
 	(conns 0)
-	(count 0))
+	(count 0)
+	(idata 0))
 
     (set! res1 p_l1)
     
     ;; Extract matrices and lists.
     (set! nodes (grsp-ann-get-matrix "nodes" res1))
     (set! conns (grsp-ann-get-matrix "conns" res1))
-    (set! count (grsp-ann-get-matrix "count" res1))    
+    (set! count (grsp-ann-get-matrix "count" res1))
+    (set! idata (grsp-ann-get-matrix "idata" res1))
     
     ;; Sort nodes by layer number.
     (set! nodes (grsp-matrix-row-sort "#asc" nodes 3))
@@ -1318,12 +1323,6 @@
     (while (<= i1 hm1)
 	   
 	   (set! id (array-ref nodes i1 0))
-	   ;; ***
-	   (display i1)
-	   (display " ")
-	   (display id)
-	   (display " - ")
-	   ;; ***
 	   (grsp-ann-node-eval id nodes conns count)
 	   
 	   (set! i1 (in i1)))
@@ -1332,7 +1331,7 @@
     (grsp-ann-counter-upd count 2)
     
     ;; Compose results.
-    (set! res1 (list nodes conns count))
+    (set! res1 (list nodes conns count idata))
 
     res1))    
 
@@ -1419,26 +1418,30 @@
     res1))
 
 
-;;;; grsp-ann-idata-update - Inputs data of matrix p_a4 into ann p_l1.
+;;;; grsp-ann-idata-update - Inputs data of idata into matrices nodes and conns
+;; of ann p_l1.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
 ;;
 ;; Arguments:
-;; - p_l1: ann.
-;; - p_a4: matrix, idata. An m x 4 matrix containing the data for the input
-;;   nodes of the neural network according to the following format:
-;;   - Col 0: id of the receptive node.
-;;   - Col 1: number that corresponds to the column in the nodes matrix in which
-;;   - for the row whose col 0 is equal to the id value passed in col 0 of the
-;;     idata matrix the input value will be stored.
-;;   - Col 2: number.
-;;   - Col 3: type, the kind of element that will receive this data.
-;;     - 0: for node.
-;;     - 1: for connection.
+;; - p_l1: ann list with the following elements:
+;;   - nodes.
+;;   - conns.
+;;   - count.
+;;   - idata: matrix, idata. An m x 4 matrix containing the data for the input
+;;     nodes of the neural network according to the following format:
+;;     - Col 0: id of the receptive node.
+;;     - Col 1: number that corresponds to the column in the nodes matrix in
+;;       which for the row whose col 0 is equal to the id value passed in col 0
+;;       of the idata matrix the input value will be stored.
+;;     - Col 2: number.
+;;     - Col 3: type, the kind of element that will receive this data.
+;;       - 0: for node.
+;;       - 1: for connection.
 ;;
 ;; Notes:
-;; - While normally p_a4 would be used to pass data to input nodes, the matrix
+;; - While normally idata would be used to pass data to input nodes, the matrix
 ;;   could be used to pass other values to the nodes matrix.
 ;; - Use this function before calling grsp-ann-nodes-eval in order to provide
 ;;   input data to the nn.
@@ -1446,7 +1449,7 @@
 ;; Output:
 ;; - Updated ann p_l1.
 ;;
-(define (grsp-ann-idata-update p_l1 p_a4)
+(define (grsp-ann-idata-update p_l1)
   (let ((res1 '())
 	(res2 0)
 	(lm1 0)
@@ -1472,7 +1475,7 @@
     (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
     (set! conns (grsp-ann-get-matrix "conns" p_l1))
     (set! count (grsp-ann-get-matrix "count" p_l1))    
-    (set! idata p_a4)
+    (set! idata (grsp-ann-get-matrix "idata" p_l1))
         
     ;; Extract boundaries of idata.
     (set! lm4 (grsp-matrix-esi 1 idata))
@@ -1498,7 +1501,7 @@
 	   (set! i4 (in i4)))
 
     ;; Compose results.
-    (set! res1 (list nodes conns count))
+    (set! res1 (list nodes conns count idata))
     
     res1))
 
