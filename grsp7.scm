@@ -31,7 +31,9 @@
 ;; - [1] En.wikipedia.org. 2021. Approximations of π - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Approximations_of_%CF%80
 ;;   [Accessed 6 September 2021].
-
+;; - [2] https://en.wikipedia.org/wiki/Pl%C3%BCcker%27s_conoid
+;; - [3] https://en.wikipedia.org/wiki/Saddle_point
+;; - [4] https://en.wikipedia.org/wiki/List_of_complex_and_algebraic_surfaces
 
 (define-module (grsp grsp7)
   #:use-module (grsp grsp0)
@@ -50,7 +52,10 @@
 	    grsp-geo-pi-machin
 	    grsp-geo-pi-shanks1
 	    grsp-geo-pi-shanks2
-	    grsp-geo-pi-atan))
+	    grsp-geo-pi-atan
+	    grsp-geo-pluecker-conoid
+	    grsp-geo-hyperbolic-paraboloid
+	    grsp-geo-monkey-saddle))
 
 
 ;;;; grsp-geo-circle - Area of a circle.
@@ -320,3 +325,62 @@
 
     res1))
 
+
+;;;; grsp-geo-pluecker-conoid - Pluecker's conoid function.
+;;
+;; Keywords:
+;; - geometry, conoids.
+;;
+;; Arguments:
+;; - p_x1: x
+;; - p_y1: y.
+;;
+;; Sources:
+;; - [2].
+;;
+(define (grsp-geo-pluecker-conoid p_x1 p_y1)
+  (let ((res1 0.0))
+
+    (set! res1 (/ (* 2.0 p_x1 p_y1) (+ (expt p_x1 2) (expt p_y1 2))))
+    
+    res1))
+
+
+;;;; grsp-geo-hyperbolic-paraboloid - Hyperbolic paraboloid function.
+;;
+;; Keywords:
+;; - geometry, saddle, surface, hyperbolic, paraboloid.
+;;
+;; Arguments:
+;; - p_x1: x
+;; - p_y1: y.
+;;
+;; Sources:
+;; - [3][4].
+;;
+(define (grsp-geo-hyperbolic-paraboloid p_x1 p_y1)
+  (let ((res1 0.0))
+
+    (set! res1 (grsp-opz (- (expt p_x1 2) (expt p_y1 2))))
+    
+    res1))
+
+
+;;;; grsp-geo-monkey-saddle - Monkey saddle function.
+;;
+;; Keywords:
+;; - geometry, saddle, surface, hyperbolic, paraboloid.
+;;
+;; Arguments:
+;; - p_x1: x
+;; - p_y1: y.
+;;
+;; Sources:
+;; - [3][4].
+;;
+(define (grsp-geo-monkey-saddle p_x1 p_y1)
+  (let ((res1 0.0))
+
+    (set! res1 (grsp-opz (- (expt p_x1 3) (* 3 p_x1 (expt p_y1 2)))))
+    
+    res1))

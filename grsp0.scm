@@ -79,7 +79,8 @@
 	    grsp-placebo
 	    in
 	    de
-	    grsp-argtype))
+	    grsp-argtype
+	    grsp-dstr))
 
 
 ;;;; pline - Displays character p_n p_m times in one line at the console.
@@ -562,3 +563,21 @@
 		  (set! res1 10)))))		 
     
     res1))
+
+
+;;;; grsp-dstr - Duplicates string p_s1 by concatenationg it with itself.
+;;
+;; Keywords:
+;; - console, arguments, types.
+;;
+;; Arguments:
+;; - p_s1: string.
+;;
+;;
+(define (grsp-dstr p_s1)
+  (let ((res1 p_s1))
+
+    (set! res1 (string-append res1 p_s1))
+
+    res1))
+
