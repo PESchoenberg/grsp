@@ -34,6 +34,7 @@
 ;; - [2] https://en.wikipedia.org/wiki/Pl%C3%BCcker%27s_conoid
 ;; - [3] https://en.wikipedia.org/wiki/Saddle_point
 ;; - [4] https://en.wikipedia.org/wiki/List_of_complex_and_algebraic_surfaces
+;; - [5] https://en.wikipedia.org/wiki/Dupin_cyclide
 
 (define-module (grsp grsp7)
   #:use-module (grsp grsp0)
@@ -55,7 +56,9 @@
 	    grsp-geo-pi-atan
 	    grsp-geo-pluecker-conoid
 	    grsp-geo-hyperbolic-paraboloid
-	    grsp-geo-monkey-saddle))
+	    grsp-geo-monkey-saddle
+	    grsp-geo-conev
+	    grsp-dupin-cyclide))
 
 
 ;;;; grsp-geo-circle - Area of a circle.
@@ -383,4 +386,69 @@
 
     (set! res1 (grsp-opz (- (expt p_x1 3) (* 3 p_x1 (expt p_y1 2)))))
     
+    res1))
+
+
+;;;; grsp-geo-conev - Volume of a cone.
+;;
+;; Keywords:
+;; - geometry, volume.
+;;
+;; Arguments:
+;; - p_ab: base area.
+;; - p_h1: height.
+;;
+(define (grsp-geo-conev p_ab p_h1)
+  (let ((res1 0))
+
+    (set! res1 (* (grsp-1n 3.0) p_ab p_h1))
+    
+    res1))
+
+
+;;;; grsp-geo-dupin-cyclide - Calculates x, y and y values for a cyclide of
+;; Dupin.
+;;
+;; Arguments:
+;; - p_a1: a. Axis.
+;; - p_b1: b. Axis.
+;; - p_c1: c. Linear eeccentricity.
+;; - p_d1: d. Axis.
+;; - p_u1: u. [0, 2Pi).
+;; - p_v1: v. [0, 2Pi).
+;;
+;; Notes:
+;; - TODO: more testing.
+;;
+;; Output:
+;; - A list containing x, y, z values.
+;;
+;; Sources:
+;; - [5].
+;;
+(define (grsp-dupin-cyclide p_a1 p_b1 p_c1 p_d1 p_u1 p_v1)
+  (let ((res1 '())
+	(x1 0)
+	(y1 0)
+	(z1 0)
+	(c1 0)
+	(c2 0)
+	(c3 0))
+
+    (set! c2 (* (cos p_u1) (cos p_v1)))
+    (set! c3 (- p_a1 c2))
+
+    ;; x.
+    (set! x1 (/ (+ (* p_d1 (- p_c1 (* p_a1 c2))) (* (expt p_b1 2) (cos p_u1))) c3))
+    
+    ;; y.
+    (set! y1 (/ (- p_b1 (sin (* p_u1 (- p_a1 (- p_d1 (cos p_v1)))))) c3))
+    
+    ;; z.
+    (set! z1 (/ (* p_b1 (sin (* p_v1 (- (* p_c1 (cos p_u1)) p_d1)))) c3))
+    
+
+    ;; Compose results.
+    (set! res1 (list x1 y1 z1))
+
     res1))
