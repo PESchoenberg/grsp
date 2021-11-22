@@ -144,7 +144,7 @@
 ;;   https://en.wikipedia.org/wiki/Continuous_uniform_distribution
 ;;   [Accessed 3 October 2021].
 ;; - [44] En.wikipedia.org. 2021. Gumbel distribution - Wikipedia. [online]
-;;   Available at: <https://en.wikipedia.org/wiki/Gumbel_distribution>
+;;   Available at: https://en.wikipedia.org/wiki/Gumbel_distribution
 ;;   [Accessed 14 October 2021].
 
 

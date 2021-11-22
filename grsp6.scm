@@ -74,7 +74,9 @@
 ;;   enciclopedia libre. [online] Available at:
 ;;   https://es.wikipedia.org/wiki/M%C3%A9trica_de_Schwarzschild
 ;;   [Accessed 28 October 2021].
-;; - [18] https://en.wikipedia.org/wiki/Equations_of_motion
+;; - [18] En.wikipedia.org. 2021. Equations of motion - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Equations_of_motion
+;;   [Accessed 21 November 2021].
 
 
 (define-module (grsp grsp6)

@@ -31,10 +31,18 @@
 ;; - [1] En.wikipedia.org. 2021. Approximations of π - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Approximations_of_%CF%80
 ;;   [Accessed 6 September 2021].
-;; - [2] https://en.wikipedia.org/wiki/Pl%C3%BCcker%27s_conoid
-;; - [3] https://en.wikipedia.org/wiki/Saddle_point
-;; - [4] https://en.wikipedia.org/wiki/List_of_complex_and_algebraic_surfaces
-;; - [5] https://en.wikipedia.org/wiki/Dupin_cyclide
+;; - [2] En.wikipedia.org. 2021. Plücker's conoid - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Pl%C3%BCcker%27s_conoid
+;;   [Accessed 21 November 2021].
+;; - [3] En.wikipedia.org. 2021. Saddle point - Wikipedia. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Saddle_point [Accessed 21 November 2021].
+;; - [4] En.wikipedia.org. 2021. List of complex and algebraic surfaces -
+;;   Wikipedia. [online] Available at:
+;;   https://en.wikipedia.org/wiki/List_of_complex_and_algebraic_surfaces
+;;   [Accessed 21 November 2021].
+;; - [5] En.wikipedia.org. 2021. Dupin cyclide - Wikipedia. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Dupin_cyclide [Accessed 21 November 2021].
+
 
 (define-module (grsp grsp7)
   #:use-module (grsp grsp0)
