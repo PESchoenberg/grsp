@@ -181,10 +181,10 @@
 ;; Arguments:
 ;; - p_b1:
 ;;   - #t if you want to return only the base ann list composed of matrices
-;;     nodes, conns and count.
+;;     nodes, conns, count, idata and odata.
 ;;   - #f if you want to return also the associated matrix created during the
-;;     process as the fourth element of the ann list, meaning that this option
-;;     returns nodes, conns, count and specs matrices.
+;;     process as the sixth of the ann list, meaning that this option returns
+;;     nodes, conns, count, idata, odata and specs matrices.
 ;; - p_n2: number of mutation iterations desired.
 ;; - p_nl: number of nodes in layer 0.
 ;; - p_nm: number of intermediate layers.
@@ -229,6 +229,8 @@
 	   (set! res1 (list (grsp-ann-get-matrix "nodes" res3)
 			    (grsp-ann-get-matrix "conns" res3)
 			    (grsp-ann-get-matrix "count" res3)
+			    (grsp-ann-get-matrix "idata" res3)
+			    (grsp-ann-get-matrix "odata" res3)
 			    res2)))
 	  (else (set! res1 res3)))
     

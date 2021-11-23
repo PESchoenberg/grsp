@@ -98,7 +98,9 @@
 ;;   [Accessed 13 May 2021].
 ;; - [24] En.wikipedia.org. 2021. Multiset - Wikipedia. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Multiset [Accessed 17 September 2021].
-;; - [25] http://www.gnuplotting.org/plotting-data/
+;; - [25] Gnuplotting.org. 2021. Plotting data « Gnuplotting. [online]
+;;   Available at: http://www.gnuplotting.org/plotting-data/
+;;   [Accessed 21 November 2021].
 
 
 (define-module (grsp grsp3)
