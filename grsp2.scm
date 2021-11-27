@@ -389,7 +389,7 @@
 ;; Keywords:
 ;; - function, combinatorics.
 ;;
-;; Arguemnts:
+;; Arguments:
 ;; - p_n1: integer >= 0
 ;; - p_k1: integer between [0, p_n1].
 ;;
@@ -415,7 +415,7 @@
 ;; Keywords:
 ;; - function, combinatorics.
 ;;
-;; Arguemnts:
+;; Arguments:
 ;; - p_n1: integer >= 0
 ;; - p_k1: integer >= 0 and <= p_n1.
 ;;
@@ -1421,6 +1421,7 @@
 ;; Keywords:
 ;; - function, factorial, stirling.
 ;;
+;; Arguments:
 ;; - p_n1: number for which its factorial is to be approximated.
 ;;
 ;; Sources:
@@ -1440,7 +1441,7 @@
 ;; Keywords:
 ;; - function, airy.
 ;;
-;; arguments:
+;; Arguments:
 ;; - p_x1.
 ;;
 ;; Sources:

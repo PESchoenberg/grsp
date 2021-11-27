@@ -432,7 +432,7 @@
     res1))
 
 
-;; grsp-ann-nodes-create - Creates node p_l2 connected according to p_l3 in
+;;;; grsp-ann-nodes-create - Creates node p_l2 connected according to p_l3 in
 ;; ann p_l1.
 ;;
 ;; Keywords:
@@ -506,7 +506,7 @@
     res1))
 
 
-;; grsp-ann2dbc - Saves a neural network to a csv database.
+;;;; grsp-ann2dbc - Saves a neural network to a csv database.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -544,7 +544,7 @@
     (grsp-mc2dbc-csv p_d1 odata "odata.csv")))
     
 
-;; grsp-dbc2ann - Retrieves an ann from a csv database.
+;;;; grsp-dbc2ann - Retrieves an ann from a csv database.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -1411,7 +1411,7 @@
     res1))
 
 
-;; grsp-ann-net-nmutate-omth - Safely mutates and randomizes ann p_l2 using a
+;;;; grsp-ann-net-nmutate-omth - Safely mutates and randomizes ann p_l2 using a
 ;; standard normal distribution.
 ;;
 ;; Keywords:

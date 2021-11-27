@@ -66,7 +66,7 @@
 	    grsp-geo-hyperbolic-paraboloid
 	    grsp-geo-monkey-saddle
 	    grsp-geo-conev
-	    grsp-dupin-cyclide))
+	    grsp-ellyptic-cyclide))
 
 
 ;;;; grsp-geo-circle - Area of a circle.
@@ -414,8 +414,8 @@
     res1))
 
 
-;;;; grsp-geo-dupin-cyclide - Calculates x, y and y values for a cyclide of
-;; Dupin.
+;;;; grsp-geo-ellyptic-cyclide - Calculates x, y and y values for an ellyptic
+;; cyclide.
 ;;
 ;; Arguments:
 ;; - p_a1: a. Axis.
@@ -434,7 +434,7 @@
 ;; Sources:
 ;; - [5].
 ;;
-(define (grsp-dupin-cyclide p_a1 p_b1 p_c1 p_d1 p_u1 p_v1)
+(define (grsp-ellyptic-cyclide p_a1 p_b1 p_c1 p_d1 p_u1 p_v1)
   (let ((res1 '())
 	(x1 0)
 	(y1 0)
@@ -454,7 +454,6 @@
     
     ;; z.
     (set! z1 (/ (* p_b1 (sin (* p_v1 (- (* p_c1 (cos p_u1)) p_d1)))) c3))
-    
 
     ;; Compose results.
     (set! res1 (list x1 y1 z1))

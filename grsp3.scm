@@ -1046,7 +1046,6 @@
 			((equal? p_s1 "#rw")
 			 (array-set! res2 p_v1 i1 j1))			  
 			((equal? p_s1 "#rprnd")
-			 ;;(array-set! res2 (+ 0.0 (* p_v1 (random:normal))) i1 j1))
 			 (array-set! res2 (grsp-rprnd "#normal" 0.0 p_v1) i1 j1))			
 			((equal? p_s1 "#si")
 			 (array-set! res2 (grsp-complex-inv p_s1 (array-ref res1 i1 j1)) i1 j1))
@@ -2044,7 +2043,7 @@
     (set! ln1 (grsp-matrix-esi 3 p_a1))
     (set! hn1 (grsp-matrix-esi 4 p_a1))
 
-    ;; Copy elements of p_a1, rows p_m1 and p_m2 to separeate arrays.
+    ;; Copy elements of p_a1, rows p_m1 and p_m2 to separate arrays.
     (set! res2 (grsp-matrix-subcpy p_a1 p_m1 p_m1 ln1 hn1))
     (set! res3 (grsp-matrix-subcpy p_a1 p_m2 p_m2 ln1 hn1))
 
@@ -2156,7 +2155,7 @@
     res2))
 
 
-;;;; grsp-matrix-is-sparse - Returns #t if matrix density of p_a1 is < 0.5, #f
+;;;; grsp-matrix-is-sparse - Returns #t if matrix density of p_a1 is < 0.5, or #f
 ;; otherwise.
 ;;
 ;; Keywords:
@@ -2175,7 +2174,7 @@
 
 
 ;;;; grsp-matrix-is-symmetric-md - Returns #t if matrix p_a1 is symmetric along 
-;; its main diagonal, #f otherwise.
+;; its main diagonal; #f otherwise.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
@@ -2279,7 +2278,7 @@
     res1))
 
     
-;;;; grsp-matrix-is-hadamard - Returns #t if matrix p_a1 is of Hadamard type, #f
+;;;; grsp-matrix-is-hadamard - Returns #t if matrix p_a1 is of Hadamard type; #f
 ;; otherwise.
 ;;
 ;; Keywords:
@@ -2304,7 +2303,7 @@
     res1))
 	   
 
-;;;; grsp-matrix-is-markov - Returns #t if matrix p_a1 is of Markov type, #f
+;;;; grsp-matrix-is-markov - Returns #t if matrix p_a1 is of Markov type; #f
 ;; otherwise.
 ;;
 ;; Keywords:
@@ -2346,7 +2345,7 @@
 
 
 ;;;; grsp-matrix-is-signature - Returns #t if matrix p_a1 is of signature
-;; type, #f otherwise.
+;; type; #f otherwise.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
@@ -2388,7 +2387,7 @@
 
 
 ;;;; grsp-matrix-is-single-entry - Returns #t if matrix p_a1 is of single entry 
-;; type for value p_v1, #f otherwise.
+;; type for value p_v1; #f otherwise.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
@@ -2512,7 +2511,7 @@
     res1))
 
 
-;;;; grsp-matrix-is-metzler - Returns #t if matrix p_a1 is of Metzler type, #f
+;;;; grsp-matrix-is-metzler - Returns #t if matrix p_a1 is of Metzler type; #f
 ;; otherwise.
 ;;
 ;; Keywords:

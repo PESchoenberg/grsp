@@ -603,8 +603,8 @@
 
 
 ;;;; grsp-ifrprnd-num - If a pseudo random number generated with the arguments of
-;; the function is less than p_n1, the function returns 1, or 0 otherwise. (type
-;; 18),
+;; the function is less than p_n1, the function returns 1, or 0 otherwise; (type
+;; 18).
 ;;
 ;; Keywords:
 ;; - function, activation, ann.
