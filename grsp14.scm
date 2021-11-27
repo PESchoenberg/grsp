@@ -68,7 +68,13 @@
 ;;
 (define (grsp-date-is-m31 p_m1)
   (let ((res1 #f))
-    (cond ((or (= p_m1 1) (= p_m1 3) (= p_m1 5) (= p_m1 7) (= p_m1 8) (= p_m1 10) (= p_m1 12))
+    (cond ((or (= p_m1 1)
+	       (= p_m1 3)
+	       (= p_m1 5)
+	       (= p_m1 7)
+	       (= p_m1 8)
+	       (= p_m1 10)
+	       (= p_m1 12))
 	   (set! res1 #t)))
 
     res1))
@@ -96,8 +102,8 @@
     res1))
 
 
-;;;; grsp-date-nextm - Calculates the next month of month p_m1 in the same or next
-;; year, if applicable.
+;;;; grsp-date-nextm - Calculates the next month of month p_m1 in the same or
+;; next year, if applicable.
 ;;
 ;; Keywords:
 ;; - date, time, calendar, chronology.
@@ -188,7 +194,8 @@
 ;; - date, time, calendar, chronology.
 ;;
 ;; Output:
-;; - A list of three strings with dates for the present and two subsequent months.
+;; - A list of three strings with dates for the present and two subsequent
+;;   months.
 ;;
 (define (grsp-date-ldm3m)
   (let ((eot '())
@@ -247,9 +254,24 @@
 	   (set! d3 d0)))
 
     ;; Create date strings.
-    (set! res1 (strings-append (list (grsp-n2s d1) s1 (grsp-n2s m1) s1 (grsp-n2s y1)) 0))
-    (set! res2 (strings-append (list (grsp-n2s d2) s1 (grsp-n2s m2) s1 (grsp-n2s y2)) 0))
-    (set! res3 (strings-append (list (grsp-n2s d3) s1 (grsp-n2s m3) s1 (grsp-n2s y3)) 0))    
+    (set! res1 (strings-append (list (grsp-n2s d1)
+				     s1
+				     (grsp-n2s m1)
+				     s1
+				     (grsp-n2s y1))
+			       0))
+    (set! res2 (strings-append (list (grsp-n2s d2)
+				     s1
+				     (grsp-n2s m2)
+				     s1
+				     (grsp-n2s y2))
+			       0))
+    (set! res3 (strings-append (list (grsp-n2s d3)
+				     s1
+				     (grsp-n2s m3)
+				     s1
+				     (grsp-n2s y3))
+			       0))    
 
     ;; Compose results.
     (set! res4 (list res1 res2 res3))

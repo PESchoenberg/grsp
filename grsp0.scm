@@ -27,6 +27,7 @@
 
 ;;;; General notes:
 ;; - Read sources for limitations on function parameters.
+;;
 ;; - Compilation:
 ;;   - (use-modules (grsp grsp0)(grsp grsp1)(grsp grsp2)(grsp grsp3)(grsp grsp4)(grsp grsp5)(grsp grsp6)(grsp grsp7)(grsp grsp8)(grsp grsp9)(grsp grsp10)(grsp grsp11)(grsp grsp12)(grsp grsp13)(grsp grsp14))
 ;;
@@ -80,7 +81,8 @@
 	    in
 	    de
 	    grsp-argtype
-	    grsp-dstr))
+	    grsp-dstr
+	    grsp-jstr))
 
 
 ;;;; pline - Displays character p_n p_m times in one line at the console.
@@ -478,7 +480,7 @@
     res1))
 
 
-;; in - Increment p_n1 by one.
+;; in - Increments p_n1 by one.
 ;;
 ;; Keywords:
 ;; - console, numbers.
@@ -494,7 +496,7 @@
     res1))
 
 
-;; de - Decrement p_n1 by one.
+;; de - Decrements p_n1 by one.
 ;;
 ;; Keywords:
 ;; - console, numbers.
@@ -565,14 +567,14 @@
     res1))
 
 
-;;;; grsp-dstr - Duplicates string p_s1 by concatenationg it with itself.
+;;;; grsp-dstr - Duplicates string p_s1 by concatenationg it with itself so that
+;; if from p_s1 is obtained p_s1+p_s1.
 ;;
 ;; Keywords:
 ;; - console, arguments, types.
 ;;
 ;; Arguments:
 ;; - p_s1: string.
-;;
 ;;
 (define (grsp-dstr p_s1)
   (let ((res1 p_s1))
@@ -581,3 +583,38 @@
 
     res1))
 
+
+;;;; grsp-jstr - Will form a string of p_n1 elements, including strings p_s1,
+;; p_s2 and enough repetitions of string p_s3 in roder to justify p_s1 to the
+;; left and p_s2 to the right.
+;;
+;; Keywords:
+;; - console, strings.
+;;
+;; Arguments:
+;; - p_s1: string.
+;; - p_s2: string.
+;; - p_s3: string (one element in length).
+;; - p_n1: number. Should be greater than the length of p_s1, p_s2 and p_s3
+;;   put together.
+;;
+(define (grsp-jstr p_s1 p_s2 p_s3 p_n1)
+  (let ((res1 " ")
+	(l1 0)
+	(l2 0)
+	(l3 0)
+	(n1 0)
+	(i1 0)
+	(s3 ""))
+
+    (set! l1 (string-length p_s1))
+    (set! l2 (string-length p_s2))  
+    (set! n1 (- p_n1 (+ l1 l2)))
+
+    (while (< l3 n1)
+	   (set! s3 (string-append s3 p_s3))
+	   (set! l3 (string-length s3)))
+
+    (set! res1 (strings-append (list p_s1 s3 p_s2) 0))
+    
+    res1))
