@@ -916,7 +916,7 @@
     res1))
 
 
-;; grsp-complex-riemann-zeta - Riemann Zeta function.
+;;;; grsp-complex-riemann-zeta - Riemann Zeta function.
 ;;
 ;; Keywords:
 ;; - complex.
@@ -962,7 +962,8 @@
     res1))
 
 
-;; grsp-complex-riemann-fezeta - Riemann Zeta, functional equation (for z1 in (-inf.0, 0).
+;;;; grsp-complex-riemann-fezeta - Riemann Zeta, functional equation
+;; (for z1 in (-inf.0, 0).
 ;;
 ;; Keywords:
 ;; - complex.
@@ -1009,7 +1010,7 @@
     res1))
 
 
-;; grsp-complex-riemann-euzeta - Riemann Zeta, for z1 in (1, +inf.0).
+;;;; grsp-complex-riemann-euzeta - Riemann Zeta, for z1 in (1, +inf.0).
 ;;
 ;; Keywords:
 ;; - complex.
@@ -1040,7 +1041,7 @@
     res1))
 
 
-;; grsp-complex-riemann-cszeta - Riemann Zeta, for z1 in (0, 1).
+;;;; grsp-complex-riemann-cszeta - Riemann Zeta, for z1 in (0, 1).
 ;;
 ;; Keywords:
 ;; - complex.
@@ -1071,7 +1072,7 @@
     res1))
 
 
-;; grsp-complex-bernoulli-number - Bernoulli numbers calculated by means of
+;;;; grsp-complex-bernoulli-number - Bernoulli numbers calculated by means of
 ;; Riemann's Zeta function.
 ;;
 ;; Keywords:

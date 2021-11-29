@@ -44,8 +44,8 @@
 	    grsp-evo-mod1-evolve))
 
 
-;; grsp-evo-mod1-ff1 - Calculates the fitness of each individual as a measure of
-;; it attaining proximity to the problem's goal, expressed as asuccesive
+;;;; grsp-evo-mod1-ff1 - Calculates the fitness of each individual as a measure
+;; of it attaining proximity to the problem's goal, expressed as asuccesive
 ;; base operation p_s1 on all elements corresponding to columns contaiend in
 ;; p_l1 of matrix p_a1. Differential evolution.
 ;;
@@ -101,7 +101,7 @@
   res1))
 
 
-;; grsp-evo-mod1-pop-create - Creates a population matrix according to the
+;;;; grsp-evo-mod1-pop-create - Creates a population matrix according to the
 ;; following structure:
 ;; - Col 0: id.
 ;; - Col 1: status.
@@ -151,7 +151,7 @@
     res1))
 
 
-;; grsp-evo-mod1-evolve - Evolve results.
+;;;; grsp-evo-mod1-evolve - Evolve results.
 ;;
 ;; Keywords:
 ;; - function, evolution, genetic.

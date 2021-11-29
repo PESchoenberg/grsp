@@ -83,8 +83,7 @@
 	    grsp-cop-rosenbrock2
 	    grsp-cop-mbird
 	    grsp-cop-mbird-mth
-	    grsp-cop-simionescu
-	    grsp-bffe))
+	    grsp-cop-simionescu))
 
 
 ;;;; grsp-sop-booth - Booth test, single objective function.
@@ -800,7 +799,7 @@
 ;; - function, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
-;; - p_a1: 1 x n vector with n elements, representing an n-dimensinal problem.
+;; - p_a1: 1 x n vector with n elements, representing an n-dimensional problem.
 ;;   [-inf.0, +inf.0]
 ;;
 ;; Sources:
@@ -1113,7 +1112,9 @@
 	(res3 0))
 
     (parallel (set! res2 (* (sin p_x1) (sin p_y1)))
-	      (set! res3 (grsp-eex (abs (- 100 (/ (sqrt (+ (expt p_x1 2) (expt p_y1 2))) (grsp-pi)))))))
+	      (set! res3 (grsp-eex (abs (- 100 (/ (sqrt (+ (expt p_x1 2)
+							   (expt p_y1 2)))
+						  (grsp-pi)))))))
 
     (set! res1 (* -1 0.0001 (expt (+ (abs (* res2 res3)) 1) 0.1)))
     
@@ -1141,7 +1142,9 @@
     (set! res2 (* (sin p_x1) (cos p_y1)))
 
     ;; res3.
-    (set! res3 (grsp-eex (abs (- 1 (/ (sqrt (+ (expt p_x1 2) (expt p_y1 2))) (grsp-pi))))))
+    (set! res3 (grsp-eex (abs (- 1 (/ (sqrt (+ (expt p_x1 2)
+					       (expt p_y1 2)))
+				      (grsp-pi))))))
 
     ;; Compose results.
     (set! res1 (* -1 (abs (* res2 res3))))
@@ -1360,9 +1363,9 @@
     res1))
     
 
-(define (grsp-bffe p_f1 p_i1 p_n1)
-  (let ((res1 0))
+;;(define (grsp-bffe p_f1 p_i1 p_n1)
+  ;;(let ((res1 0))
 
-    (set! res1 p_f1)
+    ;;(set! res1 p_f1)
 
-    res1))
+    ;;res1))

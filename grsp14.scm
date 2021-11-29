@@ -24,7 +24,6 @@
 
 ;;;; General notes:
 ;; - Read sources for limitations on function parameters.
-;;
 
 
 (define-module (grsp grsp14)
