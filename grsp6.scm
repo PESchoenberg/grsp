@@ -238,7 +238,7 @@
 
 
 ;;;; grsp-time-dilation - Calculates time t' from t at a given position x in
-;; same inertial frame
+;; same inertial frame.
 ;;
 ;; Keywords:
 ;; - relativity.
@@ -366,7 +366,7 @@
     res1))
 
 
-;;;; grsp-velocity - Calculates velocity on one axis.
+;;;; grsp-velocity - Calculates velocity, one axis.
 ;;
 ;; Keywords:
 ;; - dynamics.
@@ -385,7 +385,7 @@
     res1))
 
 
-;;;; grsp-acceleration - Calculates acceleration on one axis.
+;;;; grsp-acceleration - Calculates acceleration, one axis.
 ;;
 ;; Keywords:
 ;; - dynamics.

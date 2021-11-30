@@ -846,7 +846,7 @@
     res1))
 
 
-;; grsp-sd2 - Sample standard deviation.
+;;;; grsp-sd2 - Sample standard deviation.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -2234,7 +2234,7 @@
     res1))
 
 
-;; grsp-erlang-variance - Variance, Erlang distribution.
+;;;; grsp-erlang-variance - Variance, Erlang distribution.
 ;;
 ;; Keywords:
 ;; - statistics, probability.
@@ -2920,7 +2920,7 @@
     res1))
 
 
-;; grsp-theil-sen-estimator - Slope estimator, line fitting.
+;;;; grsp-theil-sen-estimator - Slope estimator, line fitting.
 ;;
 ;; Keywords:
 ;; - statistics, probability, line, fitting, estimator, linear, regression.
@@ -2990,7 +2990,7 @@
     res4))
 
 
-;; grsp-theil-sen-estimator-mth - Multithreaded variant of
+;;;; grsp-theil-sen-estimator-mth - Multithreaded variant of
 ;; grsp-theil-sen-estimator.
 ;;
 ;; Keywords:

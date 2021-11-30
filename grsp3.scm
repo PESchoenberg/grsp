@@ -3210,7 +3210,7 @@
 
 
 ;;;; grsp-matrix-is-invertible - Returns #t if matrix si invertible if its
-;; determinant is != 0, #f otherwise.
+;; determinant is != 0; #f otherwise.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
@@ -4267,7 +4267,7 @@
 
 
 ;;;; grsp-matrix-ajoin - Antijoin. Produces a matrix of elements of p_a1 that
-;; cannot be njoined to p_a2 given p_n1 and p_n2
+;; cannot be njoined to p_a2 given p_n1 and p_n2.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors, relational.
@@ -4718,7 +4718,7 @@
 
 
 ;;;; grsp-matrix-subrepv - Replaces a submatrix or section of matrix p_a1,
-;; defined  by coordinates (p_m1, p_n1) and (p_m2, p_n2) with value p_v1
+;; defined  by coordinates (p_m1, p_n1) and (p_m2, p_n2) with value p_v1.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
@@ -4754,7 +4754,7 @@
 ;; grsp-matrix-subswap - Swaps the contents of the submatrix defined by
 ;; coordinates (p_m1, p_n1) for its upper right vertex and  (p_m2, p_n2)
 ;; as its lowest left vertex with a submatrix with its upper right vertex at
-;; (p_m3, p_n3) and the same size and shape as the first submatix.
+;; (p_m3, p_n3) and the same size and shape as the first submatrix.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
@@ -5049,8 +5049,8 @@
     res6))
 	
 
-;; grsp-matrix-col-append - Appends all the columns of p_a2 to the right of p_a1,
-;; row by row.
+;;;; grsp-matrix-col-append - Appends all the columns of p_a2 to the right of
+;; p_a1 row by row.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors, relational.
@@ -5708,8 +5708,8 @@
     res1))
 
 
-;; grsp-matrix-col-aupdate - Updates all elements of column p_n1 of matrix p_a1,
-;; setting value p_n2 in them.
+;;;; grsp-matrix-col-aupdate - Updates all elements of column p_n1 of matrix
+;; p_a1, setting value p_n2 in them.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
@@ -5741,7 +5741,7 @@
     res1))
 
 
-;; grsp-matrix-row-selectc - Returns a list containing the result of a
+;;;; grsp-matrix-row-selectc - Returns a list containing the result of a
 ;; grsp-matrix-row-select operation as well as the complement of it in two
 ;; matrices.
 ;;
@@ -5795,7 +5795,7 @@
   res1))
 
 
-;;;; grsp-matrix-is-empty - Returns #t if the matrix has no elements, #f
+;;;; grsp-matrix-is-empty - Returns #t if the matrix has no elements; #f
 ;; otherwise.
 ;;
 ;; Keywords:
@@ -5813,7 +5813,7 @@
     res1))
 
 
-;;;; grsp-matrix-is-multiset - Returns #t if the matrix has repeated elements, #f
+;;;; grsp-matrix-is-multiset - Returns #t if the matrix has repeated elements; #f
 ;; otherwise.
 ;;
 ;; Keywords:
@@ -5868,7 +5868,7 @@
     res2))
     
 
-;;;; grsp-matrix-argtype - Finds the type of each element of matrix p_a1
+;;;; grsp-matrix-argtype - Finds the type of each element of matrix p_a1.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
@@ -6022,3 +6022,4 @@
 	   (set! j3 (in j3)))
     
     res1))
+
