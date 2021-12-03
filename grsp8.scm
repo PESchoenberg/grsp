@@ -27,6 +27,81 @@
 ;;;; General notes:
 ;; - Read sources for limitations on function parameters.
 ;;
+;; - A grsp neural network is essentially a list of matrices that constitute a
+;;   database in itself according to the developments of file grsp3. The format
+;;   and structure of the matrices used in grsp8 is as follows:
+;;
+;;   - nodes:
+;;     - Col 0: id.
+;;     - Col 1: status.
+;;       - 0: dead.
+;;       - 1: inactive.
+;;       - 2: active.
+;;     - Col 2: type.
+;;       - 0: input.
+;;       - 1: neuron.
+;;       - 2: output.
+;;     - Col 3: layer.
+;;     - Col 4: layer pos.
+;;     - Col 5: bias.
+;;     - Col 6: output value.
+;;     - Col 7: associated function.
+;;     - Col 8: evol.
+;;     - Col 9: weight.
+;;     - Col 10: iter.
+;;
+;;   - conns:
+;;     - Col 0: id.
+;;     - Col 1: status.
+;;       - 0: dead.
+;;       - 1: inactive.
+;;       - 2: active.
+;;     - Col 2: type.
+;;       - 1: normal.
+;;     - Col 3: from.
+;;     - Col 4: to.
+;;     - Col 5: value.
+;;     - Col 6: evol.
+;;     - Col 7: weight.
+;;     - Col 8: iter.
+;;     - Col 9: to layer pos.
+;;
+;;   - count:
+;;     - Col 0: nodes id counter.
+;;     - Col 1: conns id counter.
+;;     - Col 2: iteration counter.
+;;     - Col 3: layer counter.
+;;
+;;   - idata:
+;;     - Col 0: id of the receptive node.
+;;     - Col 1: number that corresponds to the column in the nodes matrix in
+;;       which for the row whose col 0 is equal to the id value passed in col 0
+;;       of the idata matrix the input value will be stored.
+;;     - Col 2: number.
+;;     - Col 3: type, the kind of element that will receive this data.
+;;       - 0: for node.
+;;       - 1: for connection.
+;;
+;;   - odata:
+;;     - Col 0: id of each output node.
+;;     - Col 1: layer.
+;;     - Col 2: layer pos.
+;;     - Col 3: number (result).
+;;
+;;   - specs:
+;;     - Col 0: layer number.
+;;     - Col 1: number of nodes for present layer.
+;;     - Col 2: type of node.
+;;       - 0: input.
+;;       - 1: neuron.
+;;       - 2: output.
+;;     - Col 3: activation function.
+;;
+;;   - odtid:
+;;     - Col 0: output node (from).
+;;     - Col 1: input node (to).
+;;     - Col 2: value.
+;;
 ;; Sources:
 ;; - [1] En.wikipedia.org. 2021. Artificial Neural Network. [online] Available
 ;;   at: https://en.wikipedia.org/wiki/Artificial_neural_network [Accessed 25
@@ -87,7 +162,8 @@
 	    grsp-ann-idata-update
 	    grsp-ann-odata-update
 	    grsp-odata2idata
-	    grsp-ann-get-matrix))
+	    grsp-ann-get-matrix
+	    grsp-ann-matrix-create))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network.
@@ -101,51 +177,19 @@
 ;;   - #f: for empty lists.
 ;;
 ;; Output:
-;; - A list with three elements. The first is a matrix for the definition
-;;   of nodes. The second, a matrix for the definition of connections
-;;   between those nodes, according to:
-;;
-;;   - nodes:
-;;     - Col 0: id.
-;;     - Col 1: status.
-;;       - 0: dead.
-;;       - 1: inactive.
-;;       - 2: active.
-;;     - Col 2: type.
-;;       - 0: input.
-;;       - 1: neuron.
-;;       - 2: output.
-;;     - Col 3: layer.
-;;     - Col 4: layer pos.
-;;     - Col 5: bias.
-;;     - Col 6: output value.
-;;     - Col 7: associated function.
-;;     - Col 8: evol.
-;;     - Col 9: weight.
-;;     - Col 10: iter.
-;;   - conns:
-;;     - Col 0: id.
-;;     - Col 1: status.
-;;       - 0: dead.
-;;       - 1: inactive.
-;;       - 2: active.
-;;     - Col 2: type.
-;;       - 1: normal.
-;;     - Col 3: from.
-;;     - Col 4: to.
-;;     - Col 5: value.
-;;     - Col 6: evol.
-;;     - Col 7: weight.
-;;     - Col 8: iter.
-;;     - Col 9: to layer pos.
-;;
-;; and the third element is a 1x4 counter matrix that defines the id of
-;; nodes and conns elements, as well as the iteration  and layer counters
-;; according to:
-;; - Col 0: nodes id counter.
-;; - Col 1: conns id counter.
-;; - Col 2: iteration counter.
-;; - Col 3: layer counter.
+;; - A list with seven elements, in this order.
+;;   - nodes: a matrix for the definition of nodes.
+;;   - conns: a matrix for the definition of connections between those
+;;     nodes.
+;;   - count: a 1x4 counter matrix that defines the id of nodes amd conns
+;;     elements, as well as the iteration and layer counters.
+;;   - idata: a data input matrix. This is what goes into an ann.
+;;   - odata: an output matrix. This is what comes out of the output nodes
+;;     of the ann.
+;;   - specs: a matrix that contains the structural specifications of an ann.
+;;   - odtid: a matrix that provides feedback structure from odata to idata.
+;; - For more details on thse matrices, see "Format of matrices used in grsp8"
+;;     above.
 ;;
 (define (grsp-ann-net-create-000 p_b1)
   (let ((res1 '())
@@ -154,20 +198,22 @@
 	(count 0)
 	(idata 0)
 	(odata 0)
-	(specs 0))
+	(specs 0)
+	(odtid 0))
 
     ;; Create matrices with just one row.
-    (set! nodes (grsp-matrix-create 0 1 11))
-    (set! conns (grsp-matrix-create 0 1 10))
-    (set! count (grsp-matrix-create 0 1 4))
-    (set! idata (grsp-matrix-create 0 1 1))
-    (set! odata (grsp-matrix-create 0 1 1))
-    (set! specs (grsp-matrix-create 0 1 1))     
+    (set! nodes (grsp-ann-matrix-create "nodes" 1))
+    (set! conns (grsp-ann-matrix-create "conns" 1))
+    (set! count (grsp-ann-matrix-create "count" 1))
+    (set! idata (grsp-ann-matrix-create "idata" 1))
+    (set! odata (grsp-ann-matrix-create "odata" 1))
+    (set! specs (grsp-ann-matrix-create "specs" 1))
+    (set! odtid (grsp-ann-matrix-create "odtid" 1))
     
     ;; Rebuild the list.
     (cond ((equal? p_b1 #t)
 	   (set! res1 (list nodes conns count idata odata specs)))
-	  (else (set! res1 (grsp-ann-net-preb nodes conns count idata odata specs))))
+	  (else (set! res1 (grsp-ann-net-preb nodes conns count idata odata specs odtid))))
     
     res1))
 
@@ -186,7 +232,7 @@
 ;;     nodes, conns, count, idata, odata and empty specs.
 ;;   - #f if you want to return also the associated matrix created during the
 ;;     process as the sixth of the ann list, meaning that this option returns
-;;     nodes, conns, count, idata, odata and spec matrices.
+;;     full nodes, conns, count, idata, odata and specs matrices.
 ;; - p_n2: number of mutation iterations desired.
 ;; - p_nl: number of nodes in layer 0.
 ;; - p_nm: number of intermediate layers.
@@ -199,29 +245,33 @@
 ;;   grsp-ann-net-mutate on how these functions operate.
 ;; - Mean and standard deviation for grsp-ann-net-mutate are 0.0 and 0.15
 ;;   respectively.
+;; - See "Format of matrices used in grsp8" on top of this file for details
+;;   on each matrix used.
 ;; - A standard distribution is used for grsp-ann-net-mutate also.
 ;;
 ;; Output:
-;; - A list with two elements combining the results provided by:
+;; - A list with elements combining the results provided by:
 ;;   - grsp-ann-net-specs-ffn.
 ;;   - grsp-ann-net-create-ffn.
 ;;   - grsp-ann-net-mutate.
 ;;
 (define (grsp-ann-net-create-ffv p_b1 p_n2 p_nl p_nm p_nn p_af p_nh)
   (let ((res1 '())
-	(res2 0)
+	(specs 0)
+	(odtid 0)
 	(res3 0)
 	(l1 '(5 9))
 	(l3 '(5 7))
 	(i1 1))
 
     ;; Create the ann.
-    (set! res2 (grsp-ann-net-specs-ffn p_nl p_nm p_nn p_af p_nh))
-    (set! res3 (grsp-ann-net-create-ffn res2))
+    (set! specs (grsp-ann-net-specs-ffn p_nl p_nm p_nn p_af p_nh))
+    (set! res3 (grsp-ann-net-create-ffn specs))
+    (set! odtid (grsp-ann-matrix-create "odtid" 1))
     
     ;; Mutate in order to randomize values, as many tumes as defined by argument
-    ;; p_n2. In order not t mutate the network, set p_n2 = 0 so that the following
-    ;; cycle gets ignored entirely.
+    ;; p_n2. In order not t mutate the network, set p_n2 = 0 so that the 
+    ;; following cycle gets ignored entirely.
     (while (<= i1 p_n2)
 	   (set! res3 (grsp-ann-net-mutate res3 1 "#normal" 0.0 0.15 "#normal" 0.0 0.15 l1 l3))
 	   (set! i1 (in i1)))
@@ -233,8 +283,8 @@
 			    (grsp-ann-get-matrix "count" res3)
 			    (grsp-ann-get-matrix "idata" res3)
 			    (grsp-ann-get-matrix "odata" res3)
-			    ;;(grsp-ann-get-matrix "specs" res3))))
-			    res2)))
+			    specs
+			    odtid)))
 	  (else (set! res1 res3)))
     
     res1))
@@ -318,12 +368,15 @@
 ;; - p_a4: idata.
 ;; - p_a5: odata.
 ;; - p_a6: specs.
+;; - p_a7: odtid.
 ;;
 ;; Notes:
 ;; - In this case, matrices must be passed as separate arguments, not as a list
 ;;   of matrices like in most grsp8 functions.
+;; - See "Format of matrices used in grsp8" on top of this file for details
+;;   on each matrix used.
 ;;
-(define (grsp-ann-net-preb p_a1 p_a2 p_a3 p_a4 p_a5 p_a6)
+(define (grsp-ann-net-preb p_a1 p_a2 p_a3 p_a4 p_a5 p_a6 p_a7)
   (let ((res1 '())
 	(s1 "#="))
 
@@ -333,7 +386,7 @@
     (set! p_a1 (grsp-matrix-row-delete s1 p_a1 1 0))
     
     ;; Compose results.
-    (set! res1 (list p_a1 p_a2 p_a3 p_a4 p_a5 p_a6))
+    (set! res1 (list p_a1 p_a2 p_a3 p_a4 p_a5 p_a6 p_a7))
 
     res1))
 
@@ -350,6 +403,10 @@
 ;;   - 1: updates conns counter.
 ;;   - 2: updates iteration counter.
 ;;   - 3: updates layer counter.
+;;
+;; Notes:
+;; - See "Format of matrices used in grsp8" on top of this file for details
+;;   on each matrix used.
 ;;
 ;; Output:
 ;; - Returns a new id number, either for nodes, conns, iteration or layer
@@ -378,6 +435,10 @@
 ;;   - 0: new id for nodes.
 ;;   - 1: new id for conns.
 ;;
+;; Notes:
+;; - See "Format of matrices used in grsp8" on top of this file for details
+;;   on each matrix used.
+;;
 (define (grsp-ann-id-create p_a1 p_a3 p_n1)
   (let ((res1 p_a1)
 	(hm1 1))
@@ -404,6 +465,10 @@
 ;;   - 0: for nodes.
 ;;   - 1: for conns
 ;; - p_l2: list containing the values for the matrix row.
+;;
+;; Notes:
+;; - See "Format of matrices used in grsp8" on top of this file for details
+;;   on each matrix used.
 ;;
 (define (grsp-ann-item-create p_a1 p_a2 p_a3 p_n1 p_l2) 
   (let ((res1 0)
@@ -447,6 +512,10 @@
 ;; - p_l2: list, node definition.
 ;; - p_l3: list of connections for p_l1.
 ;;
+;; Notes:
+;; - See "Format of matrices used in grsp8" on top of this file for details
+;;   on each matrix used.
+;;
 ;; Output:
 ;; - Updated ann in list format.
 ;;
@@ -460,6 +529,7 @@
 	(idata 0)
 	(odata 0)
 	(specs 0)
+	(odtid 0)
 	(hn 0)
 	(i1 0)
 	(cn 0)
@@ -472,6 +542,7 @@
     (set! idata (grsp-ann-get-matrix "idata" p_l1))
     (set! odata (grsp-ann-get-matrix "odata" p_l1))
     (set! specs (grsp-ann-get-matrix "specs" p_l1))
+    (set! specs (grsp-ann-get-matrix "odtid" p_l1))
     (set! l2 p_l2)
 
     ;; Update node count in counter and l2.
@@ -507,7 +578,7 @@
 		  (set! i1 (in i1)))))
     
     ;; Compose results.
-    (set! res1 (list nodes conns count idata odata specs))
+    (set! res1 (list nodes conns count idata odata specs odtid))
     
     res1))
 
@@ -532,7 +603,8 @@
 	(count 0)
 	(idata 0)
 	(odata 0)
-	(specs 0))
+	(specs 0)
+	(odtid 0))
 
     (set! l1 p_l1)
     
@@ -543,6 +615,7 @@
     (set! idata (grsp-ann-get-matrix "idata" l1))
     (set! odata (grsp-ann-get-matrix "odata" l1))
     (set! specs (grsp-ann-get-matrix "specs" l1))
+    (set! odtid (grsp-ann-get-matrix "odtid" l1))    
 
     ;; Save to database.
     (grsp-mc2dbc-csv p_d1 nodes "nodes.csv")
@@ -550,7 +623,8 @@
     (grsp-mc2dbc-csv p_d1 count "count.csv")
     (grsp-mc2dbc-csv p_d1 idata "idata.csv")
     (grsp-mc2dbc-csv p_d1 odata "odata.csv")
-    (grsp-mc2dbc-csv p_d1 specs "specs.csv")))
+    (grsp-mc2dbc-csv p_d1 specs "specs.csv")
+    (grsp-mc2dbc-csv p_d1 odtid "odtid.csv")))
     
 
 ;;;; grsp-dbc2ann - Retrieves an ann from a csv database.
@@ -572,7 +646,8 @@
 	(count 0)
 	(idata 0)	
 	(odata 0)
-	(specs 0))
+	(specs 0)
+	(odtid 0))
 
     (set! nodes (grsp-dbc2mc-csv p_d1 "nodes.csv"))
     (set! conns (grsp-dbc2mc-csv p_d1 "conns.csv"))
@@ -580,9 +655,10 @@
     (set! idata (grsp-dbc2mc-csv p_d1 "idata.csv"))
     (set! odata (grsp-dbc2mc-csv p_d1 "odata.csv"))
     (set! specs (grsp-dbc2mc-csv p_d1 "specs.csv"))
+    (set! odtid (grsp-dbc2mc-csv p_d1 "odtid.csv"))    
 
     ;; Compose results.
-    (set! res1 (list nodes conns count idata odata specs))
+    (set! res1 (list nodes conns count idata odata specs odtid))
     
     res1))
 
@@ -594,64 +670,15 @@
 ;; - function, ann, neural network.
 ;;
 ;; Arguments:
-;; - p_a1: matrix of format:
-;;   - Col 0: layer number.
-;;   - Col 1: number of nodes for present layer.
-;;   - Col 2: type of node.
-;;     - 0: input.
-;;     - 1: neuron.
-;;     - 2: output.
-;;   - Col 3: activation function.
+;; - p_a1: specs matrix:
 ;;
 ;; Notes:
-;; - See also grsp-ann-net-spec-ffn.
+;; - See "Format of matrices used in grsp8" on top of this file for details
+;;   on each matrix used.
+;; - See also grsp-ann-net-specs-ffn.
 ;;
 ;; Output:
-;; - A list with three elements. The first is a matrix for the definition
-;;   of nodes. The second, a matrix for the definition of connections
-;;   between those nodes, according to:
-;;
-;;   - nodes:
-;;     - Col 0: id.
-;;     - Col 1: status.
-;;       - 0: dead.
-;;       - 1: inactive.
-;;       - 2: active.
-;;     - Col 2: type.
-;;       - 0: input.
-;;       - 1: neuron.
-;;       - 2: output.
-;;     - Col 3: layer.
-;;     - Col 4: layer pos.
-;;     - Col 5: bias.
-;;     - Col 6: output value.
-;;     - Col 7: associated function.
-;;     - Col 8: evol.
-;;     - Col 9: weight.
-;;     - Col 10: iter.
-;;   - conns:
-;;     - Col 0: id.
-;;     - Col 1: status.
-;;       - 0: dead.
-;;       - 1: inactive.
-;;       - 2: active.
-;;     - Col 2: type.
-;;       - 1: normal.
-;;     - Col 3: from.
-;;     - Col 4: to.
-;;     - Col 5: value.
-;;     - Col 6: evol.
-;;     - Col 7: weight.
-;;     - Col 8: iter.
-;;     - Col 9: to layer pos.
-;;
-;; and the third element is a 1x4 counter matrix that defines the id of
-;; nodes and conns elements, as well as the iteration  and layer counters
-;; according to:
-;; - Col 0: nodes id counter.
-;; - Col 1: conns id counter.
-;; - Col 2: iteration counter.
-;; - Col 3: layer counter.
+;; - ann with its component matrices.
 ;;
 (define (grsp-ann-net-create-ffn p_a1)
   (let ((res1 '())
@@ -708,18 +735,21 @@
 	(count 0)
 	(idata 0)
 	(odata 0)
-	(specs 0))
+	(specs 0)
+	(odtid 0))
 
     ;; Copy argument matrix.
     (set! res2 (grsp-matrix-cpy p_a1))
 
     ;; Create matrices with just one row.
-    (set! nodes (grsp-matrix-create 0 1 11))
-    (set! conns (grsp-matrix-create 0 1 10))
+    (set! nodes (grsp-ann-matrix-create "nodes" 1))
+    (set! conns (grsp-ann-matrix-create "conns" 1))
     (set! count (grsp-matrix-create -1 1 4))
-    (set! idata (grsp-matrix-create 0 1 1))
-    (set! odata (grsp-matrix-create 0 1 1))
-    (set! specs (grsp-matrix-create 0 1 1)) 
+    (set! idata (grsp-ann-matrix-create "idata" 1))
+    (set! odata (grsp-ann-matrix-create "odata" 1))
+    (set! specs (grsp-ann-matrix-create "specs" 1))
+    (set! odtid (grsp-ann-matrix-create "odtid" 1))
+
     
     ;; Extract the boundaries of the argument matrix.
     (set! lm1 (grsp-matrix-esi 1 res2))
@@ -850,7 +880,7 @@
 		 (else (set! b1 #f))))
 	    
     ;; Compose results.
-    (set! res1 (grsp-ann-net-preb nodes conns count idata odata specs))
+    (set! res1 (grsp-ann-net-preb nodes conns count idata odata specs odtid))
     
     res1))
 
@@ -869,17 +899,12 @@
 ;; - p_nh: number of nodes in final layer.
 ;;
 ;; Notes:
+;; - See "Format of matrices used in grsp8" on top of this file for details
+;;   on each matrix used.
 ;; - See also grsp-ann-net-create-ffn.
 ;;
 ;; Output:
-;; - A matrix with the following structure:
-;;   - Col 0: layer number.
-;;   - Col 1: number of nodes for present layer.
-;;   - Col 2: type of node.
-;;     - 0: input.
-;;     - 1: neuron.
-;;     - 2: output.
-;;   - Col 3: activation function.
+;; - specs matrix.
 ;;
 (define (grsp-ann-net-specs-ffn p_nl p_nm p_nn p_af p_nh)
   (let ((res1 0)
@@ -953,9 +978,11 @@
 ;;
 ;; Notes:
 ;; - See grsp-matrix-col-lmutation.
-;; - You can mutate any element that corresponds to the ann, passed via arguments
-;;   p_l1 and p_l3 but be careful, since modifying random elements other than
-;;   those mentioned above could yield unexpected results.
+;; - You can mutate any element that corresponds to the ann, passed via 
+;;   arguments p_l1 and p_l3 but be careful, since modifying random elements
+;;   other than those mentioned above could yield unexpected results
+;; - See "Format of matrices used in grsp8" on top of this file for details
+;;   on each matrix used.
 ;;
 (define (grsp-ann-net-mutate p_l2 p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 p_l1 p_l3)
   (let ((res1 '())
@@ -967,7 +994,8 @@
 	(count 0)
 	(idata 0)
 	(odata 0)
-	(specs 0))
+	(specs 0)
+	(odtid 0))
 
     (set! l2 p_l2)
     
@@ -978,6 +1006,7 @@
     (set! idata (grsp-ann-get-matrix "idata" l2))
     (set! odata (grsp-ann-get-matrix "odata" l2))
     (set! specs (grsp-ann-get-matrix "specs" l2))
+    (set! odtid (grsp-ann-get-matrix "odtid" l2))    
     
     ;; Mutate nodes.
     (set! l1 p_l1)
@@ -988,7 +1017,7 @@
     (set! conns (grsp-matrix-col-lmutation conns p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 l3))
 
     ;; Compose results.
-    (set! res1 (list nodes conns count idata odata specs))    
+    (set! res1 (list nodes conns count idata odata specs odtid))    
 
     res1))
 
@@ -1028,6 +1057,8 @@
 ;;   those mentioned above could yield unexpected results, even altering the
 ;;   structure of the network iteslf or render it unusable. Always backup your
 ;;   ANN before toying with this function.
+;; - See "Format of matrices used in grsp8" on top of this file for details
+;;   on each matrix used.
 ;;
 (define (grsp-ann-net-mutate-mth p_l2 p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 p_l1 p_l3)
   (let ((res1 '())
@@ -1039,7 +1070,8 @@
 	(count 0)
 	(idata 0)
 	(odata 0)
-	(specs 0))
+	(specs 0)
+	(odtid 0))
 
     (set! l2 p_l2)
     
@@ -1049,7 +1081,8 @@
 	      (set! count (grsp-ann-get-matrix "count" l2))
 	      (set! idata (grsp-ann-get-matrix "idata" l2))
 	      (set! odata (grsp-ann-get-matrix "odata" l2))
-	      (set! specs (grsp-ann-get-matrix "specs" l2)))	      
+	      (set! specs (grsp-ann-get-matrix "specs" l2))
+	      (set! odtid (grsp-ann-get-matrix "odtid" l2)))    
     
     (parallel ((set! l1 p_l1)
 	       (set! nodes (grsp-matrix-col-lmutation nodes p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 l1)))
@@ -1057,7 +1090,7 @@
 	       (set! conns (grsp-matrix-col-lmutation conns p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 l3))))
 
     ;; Compose results.
-    (set! res1 (list nodes conns count idata odata specs))    
+    (set! res1 (list nodes conns count idata odata specs odtid))    
     
     res1))
 
@@ -1087,7 +1120,8 @@
 	(count 0)
 	(idata 0)
 	(odata 0)
-	(specs 0))
+	(specs 0)
+	(odtid 0))
 
     ;; Extract matrices and lists.
     (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
@@ -1096,12 +1130,13 @@
     (set! idata (grsp-ann-get-matrix "idata" p_l1))
     (set! odata (grsp-ann-get-matrix "odata" p_l1))
     (set! specs (grsp-ann-get-matrix "specs" p_l1))
+    (set! odtid (grsp-ann-get-matrix "odtid" p_l1))    
     
     (set! nodes (grsp-matrix-row-delete "#=" nodes 1 0))
     (set! conns (grsp-matrix-row-delete "#=" conns 1 0))
 
     ;; Compose results.
-    (set! res1 (list nodes conns count idata odata specs))
+    (set! res1 (list nodes conns count idata odata specs odtid))
 
     res1))
 
@@ -1317,15 +1352,11 @@
 ;; - function, ann, neural network.
 ;;
 ;; Arguments:
-;; - p_l1: ann with the following elements:
-;;   - nodes.
-;;   - conns.
-;;   - count.
-;;   - idata.
-;;   - odata.
-;;   - specs.
+;; - p_l1: ann.
 ;;
 ;; Notes:
+;; - See "Format of matrices used in grsp8" on top of this file for details
+;;   on each matrix used.
 ;; - Use grsp-ann-idata-update before this function to pass actual data to the
 ;;   ann.
 ;;
@@ -1345,7 +1376,8 @@
 	(count 0)
 	(idata 0)
 	(odata 0)
-	(specs 0))
+	(specs 0)
+	(odtid 0))
 
     (set! res1 p_l1)
     
@@ -1356,6 +1388,7 @@
     (set! idata (grsp-ann-get-matrix "idata" res1))
     (set! odata (grsp-ann-get-matrix "odata" res1))
     (set! specs (grsp-ann-get-matrix "specs" res1))
+    (set! odtid (grsp-ann-get-matrix "odtid" res1))    
     
     ;; Sort nodes by layer number.
     (set! nodes (grsp-matrix-row-sort "#asc" nodes 3))
@@ -1379,7 +1412,7 @@
     (grsp-ann-counter-upd count 2)
     
     ;; Compose results.
-    (set! res1 (list nodes conns count idata odata specs))
+    (set! res1 (list nodes conns count idata odata specs odtid))
 
     res1))    
 
@@ -1414,12 +1447,17 @@
 ;; - p_m1: number of rows.
 ;;
 ;; Notes:
-;; - See grsp-matrix-create fo detals on argument p_s1. Some configurations might
-;;   require a symmetric matrix (3 x 3) to work.
+;; - See grsp-matrix-create fo detals on argument p_s1. Some configurations 
+;;   might require a symmetric matrix (3 x 3) to work.
 ;; - Column 0 will be set to zero. You should set the values  of this col
 ;;   acording to the id of each node to be evaluated with the given data.
-;; - You might have to modify the elements of columns 0 and 1 in order to provide
-;;   useful values for different nodes.
+;; - You might have to modify the elements of columns 0 and 1 in order to
+;;   provide useful values for different nodes.
+;; - See "Format of matrices used in grsp8" on top of this file for details
+;;   on each matrix used.
+;;
+;; Output:
+;; - idata.
 ;;
 (define (grsp-ann-idata-create p_s1 p_m1)
   (let ((res1 0))
@@ -1473,28 +1511,14 @@
 ;; - function, ann, neural network.
 ;;
 ;; Arguments:
-;; - p_l1: ann list with the following elements:
-;;   - nodes.
-;;   - conns.
-;;   - count.
-;;   - idata: matrix, idata. An m x 4 matrix containing the data for the input
-;;     nodes of the neural network according to the following format:
-;;     - Col 0: id of the receptive node.
-;;     - Col 1: number that corresponds to the column in the nodes matrix in
-;;       which for the row whose col 0 is equal to the id value passed in col 0
-;;       of the idata matrix the input value will be stored.
-;;     - Col 2: number.
-;;     - Col 3: type, the kind of element that will receive this data.
-;;       - 0: for node.
-;;       - 1: for connection.
-;;   - odata.
-;;   - specs.
-;;
+;; - p_l1: ann.
 ;; Notes:
 ;; - While normally idata would be used to pass data to input nodes, the matrix
 ;;   could be used to pass other values to the nodes matrix.
 ;; - Use this function before calling grsp-ann-nodes-eval in order to provide
 ;;   input data to the nn.
+;; - See "Format of matrices used in grsp8" on top of this file for details
+;;   on each matrix used.
 ;;
 ;; Output:
 ;; - Updated ann p_l1.
@@ -1521,7 +1545,8 @@
 	(count 0)
 	(idata 0)
 	(odata 0)
-	(specs 0))
+	(specs 0)
+	(odtid 0))
 
     ;; Extract matrices and lists.
     (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
@@ -1529,7 +1554,8 @@
     (set! count (grsp-ann-get-matrix "count" p_l1))    
     (set! idata (grsp-ann-get-matrix "idata" p_l1))
     (set! odata (grsp-ann-get-matrix "odata" p_l1))
-    (set! specs (grsp-ann-get-matrix "specs" p_l1)) 
+    (set! specs (grsp-ann-get-matrix "specs" p_l1))
+    (set! odtid (grsp-ann-get-matrix "odtid" p_l1))     
         
     ;; Extract boundaries of idata.
     (set! lm4 (grsp-matrix-esi 1 idata))
@@ -1555,7 +1581,7 @@
 	   (set! i4 (in i4)))
 
     ;; Compose results.
-    (set! res1 (list nodes conns count idata odata specs))
+    (set! res1 (list nodes conns count idata odata specs odtid))
     
     res1))
 
@@ -1568,13 +1594,13 @@
 ;; Arguments:
 ;; - p_l1: ann.
 ;;
+;; Notes:
+;; - See "Format of matrices used in grsp8" on top of this file for details
+;;   on each matrix used.
+;;
 ;; Output:
-;; - Matrix, odata. An m x 4 matrix containing the data from the output
-;;   nodes of the neural network according to the following format:
-;;   - Col 0: id of each output node.
-;;   - Col 1: layer.
-;;   - Col 2: layer pos.
-;;   - Col 3: number (result).
+;; - odata. An m x 4 matrix containing the data from the output nodes of the
+;;   neural network.
 ;;
 (define (grsp-ann-odata-update p_l1)
   (let ((res1 0)
@@ -1606,22 +1632,10 @@
 ;;   - Col 1: output odata layer pos (pos output).
 ;;
 ;; Notes:
+;; - See "Format of matrices used in grsp8" on top of this file for details
+;;   on each matrix used.
 ;; - The function delivers an idata table based on the odata pand conversion
 ;;   table provided.
-;; - See grsp-ann-idata-update for a description of the idata format.
-;;   - Col 0: id of the receptive node.
-;;   - Col 1: number that corresponds to the column in the nodes matrix in which
-;;   - For the row whose col 0 is equal to the id value passed in col 0 of the
-;;     idata matrix the input value will be stored.
-;;   - Col 2: number.
-;;   - Col 3: type, the kind of element that will receive this data.
-;;     - 0: for node.
-;;     - 1: for connection.	
-;; - See grsp-ann-odata-update for a description of the odata format.
-;;   - Col 0: id of each output node.
-;;   - Col 1: layer.
-;;   - Col 2: layer pos.
-;;   - Col 3: number (result).
 ;;
 ;; Output:
 ;; - A matrix in idata table that can take the place of that table or be
@@ -1698,7 +1712,7 @@
 ;; - p_l1: ann.
 ;;
 ;; Output:
-;; - Matrix.
+;; - One of the elements (matrix) of ann p_l1, as specified by p_s1.
 ;;
 (define (grsp-ann-get-matrix p_s1 p_l1)
   (let ((res1 '())
@@ -1721,11 +1735,55 @@
 	  ((equal? p_s1 "odata")
 	   (set! n1 4))
 	  ((equal? p_s1 "specs")
-	   (set! n1 5)))	  
+	   (set! n1 5))
+	  ((equal? p_s1 "odtid")
+	   (set! n1 6)))    
 
     ;; n1 starts from 0. n2 is counted from 1.
     (cond ((< n1 n2)
 	   (set! res1 (list-ref p_l1 n1))))
     
     res1))  
+
+
+;;;; grsp-ann-matrix-create - Creates a zero-filled matrix fo type
+;; p_s1 with p_m1 rows.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_s1: matrix to create:
+;;   - "nodes".
+;;   - "conns".
+;;   - "count".
+;;   - "idata".
+;;   - "odata".
+;;   - "specs".
+;;   - "odtid".
+;; - p_m1: number of rows.
+;;
+(define (grsp-ann-matrix-create p_s1 p_m1)
+  (let ((res1 '())
+	(n1 1))
+
+    (cond ((equal? p_s1 "nodes")
+	   (set! n1 11))
+	  ((equal? p_s1 "conns")
+	   (set! n1 10))	  
+	  ((equal? p_s1 "count")
+	   (set! n1 4)) 
+	  ((equal? p_s1 "idata")
+	   (set! n1 4))
+	  ((equal? p_s1 "odata")
+	   (set! n1 4))
+	  ((equal? p_s1 "specs")
+	   (set! n1 4))
+	  ((equal? p_s1 "odtid")
+	   (set! n1 3)))  
+
+    (set! res1 (grsp-matrix-create 0 p_m1 n1))    
+    
+    res1))
+	
 
