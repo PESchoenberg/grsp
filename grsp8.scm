@@ -98,9 +98,9 @@
 ;;     - Col 3: activation function.
 ;;
 ;;   - odtid:
-;;     - Col 0: output node (from).
-;;     - Col 1: input node (to).
-;;     - Col 2: value.
+;;     - Col 0: input idata layer pos (pos input).
+;;     - Col 1: output odata layer pos (pos output).
+
 ;;
 ;; Sources:
 ;; - [1] En.wikipedia.org. 2021. Artificial Neural Network. [online] Available
@@ -341,15 +341,16 @@
   (let ((res1 '())
 	(i1 0))
 
+    (set! res1 p_l1)
+    
     ;; Eval.
     (while (< i1 p_n1)
-	   ;;(set! p_l1 (grsp-ann-net-iter p_l1))
-	   ;;(set! p_l1 (grsp-ann-net-reconf p_s1 p_l1))
+	   (set! res1 (grsp-ann-nodes-eval res1))
+	   ;;(set! res1 (grsp-ann-net-reconf p_s1 res1))
 	   (set! i1 (in i1)))
     
     ;; Compose results.
-    (set! res1 p_l1)
-    
+
     res1))
 
 
@@ -542,7 +543,7 @@
     (set! idata (grsp-ann-get-matrix "idata" p_l1))
     (set! odata (grsp-ann-get-matrix "odata" p_l1))
     (set! specs (grsp-ann-get-matrix "specs" p_l1))
-    (set! specs (grsp-ann-get-matrix "odtid" p_l1))
+    (set! odtid (grsp-ann-get-matrix "odtid" p_l1))
     (set! l2 p_l2)
 
     ;; Update node count in counter and l2.
@@ -1626,10 +1627,7 @@
 ;;
 ;; Arguments:
 ;; - p_a5: odata.
-;; - p_a6: odata to idata conversion table. An m x 2 matrix with the following
-;;   format:
-;;   - Col 0: input idata layer pos (pos input).
-;;   - Col 1: output odata layer pos (pos output).
+;; - p_a6: odtid; data conversion table.
 ;;
 ;; Notes:
 ;; - See "Format of matrices used in grsp8" on top of this file for details
@@ -1780,10 +1778,8 @@
 	  ((equal? p_s1 "specs")
 	   (set! n1 4))
 	  ((equal? p_s1 "odtid")
-	   (set! n1 3)))  
+	   (set! n1 2)))  
 
     (set! res1 (grsp-matrix-create 0 p_m1 n1))    
     
     res1))
-	
-
