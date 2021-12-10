@@ -45,7 +45,7 @@
 
 
 ;;;; grsp-evo-mod1-ff1 - Calculates the fitness of each individual as a measure
-;; of it attaining proximity to the problem's goal, expressed as asuccesive
+;; of it attaining proximity to the problem's goal expressed as a succesive
 ;; base operation p_s1 on all elements corresponding to columns contaiend in
 ;; p_l1 of matrix p_a1. Differential evolution.
 ;;

@@ -31,7 +31,7 @@
 ;;   database in itself according to the developments of file grsp3. The format
 ;;   and structure of the matrices used in grsp8 is as follows:
 ;;
-;;   - nodes:
+;;   - Elem 0: nodes.
 ;;     - Col 0: id.
 ;;     - Col 1: status.
 ;;       - 0: dead.
@@ -50,7 +50,7 @@
 ;;     - Col 9: weight.
 ;;     - Col 10: iter.
 ;;
-;;   - conns:
+;;   - Elem 1: conns.
 ;;     - Col 0: id.
 ;;     - Col 1: status.
 ;;       - 0: dead.
@@ -66,13 +66,13 @@
 ;;     - Col 8: iter.
 ;;     - Col 9: to layer pos.
 ;;
-;;   - count:
+;;   - Elem 2: count.
 ;;     - Col 0: nodes id counter.
 ;;     - Col 1: conns id counter.
 ;;     - Col 2: iteration counter.
 ;;     - Col 3: layer counter.
 ;;
-;;   - idata:
+;;   - Elem 3: idata.
 ;;     - Col 0: id of the receptive node.
 ;;     - Col 1: number that corresponds to the column in the nodes matrix in
 ;;       which for the row whose col 0 is equal to the id value passed in col 0
@@ -82,13 +82,13 @@
 ;;       - 0: for node.
 ;;       - 1: for connection.
 ;;
-;;   - odata:
+;;   - Elem 4: odata.
 ;;     - Col 0: id of each output node.
 ;;     - Col 1: layer.
 ;;     - Col 2: layer pos.
 ;;     - Col 3: number (result).
 ;;
-;;   - specs:
+;;   - Elem 5: specs.
 ;;     - Col 0: layer number.
 ;;     - Col 1: number of nodes for present layer.
 ;;     - Col 2: type of node.
@@ -97,7 +97,7 @@
 ;;       - 2: output.
 ;;     - Col 3: activation function.
 ;;
-;;   - odtid:
+;;   - Elem 6: odtid:
 ;;     - Col 0: input idata layer pos (pos input).
 ;;     - Col 1: output odata layer pos (pos output).
 
@@ -124,6 +124,12 @@
 ;; - [7] En.wikipedia.org. 2021. Evolutionary algorithm - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Evolutionary_algorithm
 ;;   [Accessed 29 September 2021].
+;; - [8] En.wikipedia.org. 2021. Karger's algorithm - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Karger%27s_algorithm
+;;   [Accessed 7 December 2021].
+;; - [9] En.wikipedia.org. 2021. Las Vegas algorithm - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Las_Vegas_algorithm
+;;   [Accessed 7 December 2021].
 
 
 (define-module (grsp grsp8)
@@ -163,7 +169,8 @@
 	    grsp-ann-odata-update
 	    grsp-odata2idata
 	    grsp-ann-get-matrix
-	    grsp-ann-matrix-create))
+	    grsp-ann-matrix-create
+	    grsp-ann-idata-atlorpin))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network.
@@ -1707,6 +1714,13 @@
 ;; - function, ann, neural network.
 ;;
 ;; Arguments:
+;; - p_s1: selected:
+;;   - "nodes".
+;;   - "conns".
+;;   - "count".
+;;   - "idata".
+;;   - "odata".
+;;   - "specs".
 ;; - p_l1: ann.
 ;;
 ;; Output:
@@ -1744,7 +1758,7 @@
     res1))  
 
 
-;;;; grsp-ann-matrix-create - Creates a zero-filled matrix fo type
+;;;; grsp-ann-matrix-create - Creates a zero-filled matrix of type
 ;; p_s1 with p_m1 rows.
 ;;
 ;; Keywords:
@@ -1783,3 +1797,40 @@
     (set! res1 (grsp-matrix-create 0 p_m1 n1))    
     
     res1))
+
+
+;;;; grsp-ann-idata-atlorpinn - Basic for all input nodes. Provides an
+;; idata table that contains at least one row per input node.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_l1: ann.
+;;
+(define (grsp-ann-idata-atlorpin p_l1)
+  (let ((res1 '())
+	(nodes 0)
+	(conns 0)
+	(count 0)
+	(idata 0)
+	(odata 0)
+	(specs 0)
+	(odtid 0))
+
+    ;; Extract matrices and lists.
+    (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
+    (set! conns (grsp-ann-get-matrix "conns" p_l1))
+    (set! count (grsp-ann-get-matrix "count" p_l1))    
+    (set! idata (grsp-ann-get-matrix "idata" p_l1))
+    (set! odata (grsp-ann-get-matrix "odata" p_l1))
+    (set! specs (grsp-ann-get-matrix "specs" p_l1))
+    (set! odtid (grsp-ann-get-matrix "odtid" p_l1)) 
+
+    ;; Make a row in idata per input in nodes.
+    
+    ;; Compose results.
+    (set! res1 (list nodes conns count idata odata specs odtid))
+
+    res1))
+

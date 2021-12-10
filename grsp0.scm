@@ -585,7 +585,7 @@
 
 
 ;;;; grsp-jstr - Will form a string of p_n1 elements, including strings p_s1,
-;; p_s2 and enough repetitions of string p_s3 in roder to justify p_s1 to the
+;; p_s2 and enough repetitions of string p_s3 in order to justify p_s1 to the
 ;; left and p_s2 to the right.
 ;;
 ;; Keywords:
