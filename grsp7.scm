@@ -417,6 +417,9 @@
 ;;;; grsp-geo-ellyptic-cyclide - Calculates x, y and y values for an ellyptic
 ;; cyclide.
 ;;
+;; Keywords:
+;; - geometry, topology.
+;;
 ;; Arguments:
 ;; - p_a1: a. Axis.
 ;; - p_b1: b. Axis.
@@ -447,7 +450,8 @@
     (set! c3 (- p_a1 c2))
 
     ;; x.
-    (set! x1 (/ (+ (* p_d1 (- p_c1 (* p_a1 c2))) (* (expt p_b1 2) (cos p_u1))) c3))
+    (set! x1 (/ (+ (* p_d1 (- p_c1 (* p_a1 c2)))
+		   (* (expt p_b1 2) (cos p_u1))) c3))
     
     ;; y.
     (set! y1 (/ (- p_b1 (sin (* p_u1 (- p_a1 (- p_d1 (cos p_v1)))))) c3))

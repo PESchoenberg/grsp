@@ -24,7 +24,7 @@
 
 ;;;; General notes:
 ;; - Read sources for limitations on function parameters.
-;; - Always take into account the odd behavior of numeric sequences before use.
+;; - Always take into account the odd behavior of numeric sequences before using.
 ;;
 ;; Sources:
 ;; - [1] En.wikipedia.org. 2021. Collatz conjecture - Wikipedia. [online]

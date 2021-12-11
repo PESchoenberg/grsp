@@ -2345,7 +2345,7 @@
 ;;;; grsp-2ex - A quick way to calculate (expt 2 p_n1).
 ;;
 ;; Keywords:
-;; - function.
+;; - function, exponent.
 ;;
 ;; Arguments:
 ;; - p_n1.
@@ -2361,7 +2361,7 @@
 ;;;; grsp-1n - A quick way to calculate (/ 1 p_n1).
 ;;
 ;; Keywords:
-;; - function.
+;; - function, division, fractions.
 ;;
 ;; Arguments:
 ;; - p_n1.

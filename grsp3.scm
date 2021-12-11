@@ -213,7 +213,8 @@
 	    grsp-matrix-is-empty
 	    grsp-matrix-is-multiset
 	    grsp-matrix-argtype
-	    grsp-matrix-argstru))
+	    grsp-matrix-argstru
+	    grsp-matrix-row-subrepal))
 
 
 ;;;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -6023,3 +6024,61 @@
     
     res1))
 
+
+;;;; grsp-matrix-row-subrepal - Replaces row p_m1 of matrix p_a1 with the values
+;; contained in list p_l1. If row p_m1 does not exist then a new row is added to
+;; place the values of p_l1.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_m1: rown number.
+;; - p_l1: list of values to update in row p_m1 of matrix p_a1.
+;;
+;; Notes:
+;; - Make sure that p_l1 has as many elements as p_a1's rows.
+;;
+(define (grsp-matrix-row-subrepal p_a1 p_m1 p_l2)
+  (let ((res1 0)
+	(res2 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(n1 0)
+	(b1 #f)
+	(m1 p_m1))
+
+    ;; Create safety matrix. 
+    (set! res1 (grsp-matrix-cpy p_a1))
+
+    ;; Extract boundaries.
+    (set! lm1 (grsp-matrix-esi 1 res1))
+    (set! hm1 (grsp-matrix-esi 2 res1))
+    (set! ln1 (grsp-matrix-esi 3 res1))
+    (set! hn1 (grsp-matrix-esi 4 res1))
+
+    ;; Convert list into row vector.
+    (set! res2 (grsp-l2m p_l2))
+    
+    ;; Evaluate if the function will:
+    ;; - Edit an existing row.
+    ;; - Add a row at the bottom of the matrix.
+    (cond ((< m1 lm1)
+	   (set! b1 #t))
+	  ((> m1 hm1)
+	   (set! b1 #t)))
+
+    (cond ((equal? b1 #t)
+	   (set! res1 (grsp-matrix-subexp res1 1 0))
+	   
+	   ;; Extract boundaries since the matrix has changed
+	   (set! lm1 (grsp-matrix-esi 1 res1))
+	   (set! hm1 (grsp-matrix-esi 2 res1))
+	   (set! m1 hm1)))	   
+    
+    (set! res1 (grsp-matrix-subrep res1 res2 m1 ln1))
+    
+    res1))
