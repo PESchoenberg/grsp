@@ -1799,7 +1799,7 @@
     res1))
 
 
-;;;; grsp-ann-idata-atlorpinn - Basic for all input nodes. Provides an
+;;;; grsp-ann-idata-atlorpin - Basic for all input nodes. Provides an
 ;; idata table that contains at least one row per input node.
 ;;
 ;; Keywords:
@@ -1810,6 +1810,18 @@
 ;;
 (define (grsp-ann-idata-atlorpin p_l1)
   (let ((res1 '())
+	(res2 0)
+	(lm2 0)
+	(hm2 0)
+	(ln2 0)
+	(hn2 0)
+	(hm3 0)
+	(lm4 0)
+	(hm4 0)
+	(m3 0)
+	(m4 0)
+	(i2 0)
+	(j2 0)
 	(nodes 0)
 	(conns 0)
 	(count 0)
@@ -1827,7 +1839,41 @@
     (set! specs (grsp-ann-get-matrix "specs" p_l1))
     (set! odtid (grsp-ann-get-matrix "odtid" p_l1)) 
 
+    ;; Create safety matrix. 
+    (set! res2 (grsp-matrix-cpy nodes))
+    
     ;; Make a row in idata per input in nodes.
+    (set! res2 (grsp-matrix-row-select "#=" res2 2 0))
+
+    ;; Extract boundaries of the selected rows.
+    (set! lm2 (grsp-matrix-esi 1 res2))
+    (set! hm2 (grsp-matrix-esi 2 res2))
+    (set! ln2 (grsp-matrix-esi 3 res2))
+    (set! hn2 (grsp-matrix-esi 4 res2))
+
+    (set! lm4 (grsp-matrix-esi 1 idata))
+    (set! hm4 (grsp-matrix-esi 2 idata))
+    (set! m4 (- hm4 lm4))
+    
+    ;; Cycle.
+    (set! i2 lm2)
+    (while (<= i2 hm2)
+
+	   ;; Create new row.
+	   (set! hm3 (grsp-matrix-esi 2 idata))
+	   (set! m3 (+ hm3 1))
+	   (set! idata (grsp-matrix-row-subrepal idata m3 (list )))
+
+	   ;; Fill data .
+	   (array-set! idata (array-ref res2 i2 0) m3 0) ;; id
+	   (array-set! idata 6 m3 1) ;; output value col.
+	   (array-set! idata 0 m3 2) ;; number, 0 for now.
+	   (array-set! idata 0 m3 3) ;; for node	   
+	   
+	   (set! i2 (in i2)))
+
+    ;; Purge.
+    (set! idata (grsp-matrix-subdell idata 0 (list 0 0 0 0)))
     
     ;; Compose results.
     (set! res1 (list nodes conns count idata odata specs odtid))

@@ -214,7 +214,8 @@
 	    grsp-matrix-is-multiset
 	    grsp-matrix-argtype
 	    grsp-matrix-argstru
-	    grsp-matrix-row-subrepal))
+	    grsp-matrix-row-subrepal
+	    grsp-matrix-subdell))
 
 
 ;;;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -6078,7 +6079,45 @@
 	   (set! lm1 (grsp-matrix-esi 1 res1))
 	   (set! hm1 (grsp-matrix-esi 2 res1))
 	   (set! m1 hm1)))	   
-    
+
     (set! res1 (grsp-matrix-subrep res1 res2 m1 ln1))
     
     res1))
+
+
+;;;; grsp-matrix-subdell - Deletes row p_n1 from matrix p_a1 if its
+;; elements are equal to those in list p_l1.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_l1: list.
+;;
+(define (grsp-matrix-subdell p_a1 p_m1 p_l1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(ln2 0)
+	(hn2 0)
+	(b1 #f))
+
+    ;; Cast list as matrix.
+    (set! res2 (grsp-l2m p_l1))
+
+    ;; Extract boundaries.
+    (set! ln2 (grsp-matrix-esi 3 res2))
+    (set! hn2 (grsp-matrix-esi 4 res2))
+
+    ;; Extract the requested row of the input matrix as a vector.
+    (set! res3 (grsp-matrix-subcpy p_a1 p_m1 p_m1 ln2 hn2))
+
+    ;; Compare.
+    (set! b1 (grsp-matrix-is-equal res2 res3))
+
+    (cond ((equal? b1 #t)
+	   (set! res1 (grsp-matrix-subdel "#Delr" p_a1 p_m1))))
+	  
+    res1))
+
