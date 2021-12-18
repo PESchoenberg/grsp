@@ -31,7 +31,8 @@
 ;;   database in itself according to the developments of file grsp3. The format
 ;;   and structure of the matrices used in grsp8 is as follows:
 ;;
-;;   - Elem 0: nodes.
+;;   - Elem 0: nodes. Matrix. Each row of this matrix contains data representing
+;;     the properties and processes of a specific node of a neural network.
 ;;     - Col 0: id.
 ;;     - Col 1: status.
 ;;       - 0: dead.
@@ -50,7 +51,8 @@
 ;;     - Col 9: weight.
 ;;     - Col 10: iter.
 ;;
-;;   - Elem 1: conns.
+;;   - Elem 1: conns. Matrix. Each row contains data representing the properties
+;;     and processes of a specific connection between nodes.
 ;;     - Col 0: id.
 ;;     - Col 1: status.
 ;;       - 0: dead.
@@ -66,13 +68,14 @@
 ;;     - Col 8: iter.
 ;;     - Col 9: to layer pos.
 ;;
-;;   - Elem 2: count.
+;;   - Elem 2: count. Matrix. Each element of this table is a counter related
+;;     to a specific ann.
 ;;     - Col 0: nodes id counter.
 ;;     - Col 1: conns id counter.
 ;;     - Col 2: iteration counter.
 ;;     - Col 3: layer counter.
 ;;
-;;   - Elem 3: idata.
+;;   - Elem 3: idata. Matrix. Contains an instance of input data.
 ;;     - Col 0: id of the receptive node.
 ;;     - Col 1: number that corresponds to the column in the nodes matrix in
 ;;       which for the row whose col 0 is equal to the id value passed in col 0
@@ -82,13 +85,16 @@
 ;;       - 0: for node.
 ;;       - 1: for connection.
 ;;
-;;   - Elem 4: odata.
+;;   - Elem 4: odata. Matrix. Contains am instance of data originated in the
+;;     output nodes of a neural  network. Essentialy, this matrix contains the
+;;     results of a network iteration.
 ;;     - Col 0: id of each output node.
 ;;     - Col 1: layer.
 ;;     - Col 2: layer pos.
 ;;     - Col 3: number (result).
 ;;
-;;   - Elem 5: specs.
+;;   - Elem 5: specs. Matrix. Each row contains specifications for a neural
+;;     network layer. This is a recipe for ann construction.
 ;;     - Col 0: layer number.
 ;;     - Col 1: number of nodes for present layer.
 ;;     - Col 2: type of node.
@@ -97,7 +103,10 @@
 ;;       - 2: output.
 ;;     - Col 3: activation function.
 ;;
-;;   - Elem 6: odtid:
+;;   - Elem 6: odtid. Matrix. Establishes a correlation between the data
+;;     found on each iteration n on the output nodes of a neural network and
+;;     the input data that will be found on the input nodes during iteration
+;;     (+ n 1), in the case that the network works by means of a feedback loop.
 ;;     - Col 0: input idata layer pos (pos input).
 ;;     - Col 1: output odata layer pos (pos output).
 
@@ -170,7 +179,9 @@
 	    grsp-odata2idata
 	    grsp-ann-get-matrix
 	    grsp-ann-matrix-create
-	    grsp-ann-idata-atlorpin))
+	    grsp-ann-idata-atlorpn
+	    grsp-ann-odata-atlorpn
+	    grsp-ann-odtid-atlorpn))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network.
@@ -293,6 +304,11 @@
 			    specs
 			    odtid)))
 	  (else (set! res1 res3)))
+
+    ;; Update idata, odata and odtid tables.
+    (set! res1 (grsp-ann-idata-atlorpn res1))
+    (set! res1 (grsp-ann-odata-atlorpn res1))
+    (set! res1 (grsp-ann-odtid-atlorpn res1))
     
     res1))
 
@@ -1799,7 +1815,7 @@
     res1))
 
 
-;;;; grsp-ann-idata-atlorpin - Basic for all input nodes. Provides an
+;;;; grsp-ann-idata-atlorpn - Basic data for all input nodes. Provides an
 ;; idata table that contains at least one row per input node.
 ;;
 ;; Keywords:
@@ -1808,7 +1824,7 @@
 ;; Arguments:
 ;; - p_l1: ann.
 ;;
-(define (grsp-ann-idata-atlorpin p_l1)
+(define (grsp-ann-idata-atlorpn p_l1)
   (let ((res1 '())
 	(res2 0)
 	(lm2 0)
@@ -1862,7 +1878,7 @@
 	   ;; Create new row.
 	   (set! hm3 (grsp-matrix-esi 2 idata))
 	   (set! m3 (+ hm3 1))
-	   (set! idata (grsp-matrix-row-subrepal idata m3 (list )))
+	   (set! idata (grsp-matrix-row-subrepal idata m3 (list 0 0 0 0)))
 
 	   ;; Fill data .
 	   (array-set! idata (array-ref res2 i2 0) m3 0) ;; id
@@ -1879,4 +1895,150 @@
     (set! res1 (list nodes conns count idata odata specs odtid))
 
     res1))
+
+
+;;;; grsp-ann-odata-atlorpn - Basic data for all output nodes. Provides an
+;; odata table that contains at least one row per output node.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_l1: ann.
+;;
+(define (grsp-ann-odata-atlorpn p_l1)
+  (let ((res1 '())
+	(res2 0)
+	(lm2 0)
+	(hm2 0)
+	(ln2 0)
+	(hn2 0)
+	(hm3 0)
+	(lm4 0)
+	(hm4 0)
+	(m3 0)
+	(m4 0)
+	(i2 0)
+	(j2 0)
+	(nodes 0)
+	(conns 0)
+	(count 0)
+	(idata 0)
+	(odata 0)
+	(specs 0)
+	(odtid 0))
+
+    ;; Extract matrices and lists.
+    (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
+    (set! conns (grsp-ann-get-matrix "conns" p_l1))
+    (set! count (grsp-ann-get-matrix "count" p_l1))    
+    (set! idata (grsp-ann-get-matrix "idata" p_l1))
+    (set! odata (grsp-ann-get-matrix "odata" p_l1))
+    (set! specs (grsp-ann-get-matrix "specs" p_l1))
+    (set! odtid (grsp-ann-get-matrix "odtid" p_l1)) 
+
+    ;; Create safety matrix. 
+    (set! res2 (grsp-matrix-cpy nodes))
+    
+    ;; Make a row in odata per output in nodes.
+    (set! res2 (grsp-matrix-row-select "#=" res2 2 2))
+
+    ;; Extract boundaries of the selected rows.
+    (set! lm2 (grsp-matrix-esi 1 res2))
+    (set! hm2 (grsp-matrix-esi 2 res2))
+    (set! ln2 (grsp-matrix-esi 3 res2))
+    (set! hn2 (grsp-matrix-esi 4 res2))
+
+    (set! lm4 (grsp-matrix-esi 1 odata))
+    (set! hm4 (grsp-matrix-esi 2 odata))
+    (set! m4 (- hm4 lm4))
+    
+    ;; Cycle.
+    (set! i2 lm2)
+    (while (<= i2 hm2)
+
+	   ;; Create new row.
+	   (set! hm3 (grsp-matrix-esi 2 odata))
+	   (set! m3 (+ hm3 1))
+	   (set! odata (grsp-matrix-row-subrepal odata m3 (list 0 0 0 0)))
+
+	   ;; Fill data.
+	   (array-set! odata (array-ref res2 i2 0) m3 0) ;; id
+	   (array-set! odata (array-ref res2 i2 3) m3 1) ;; layer.
+	   (array-set! odata (array-ref res2 i2 4) m3 2) ;; layer pos.
+	   (array-set! odata (array-ref res2 i2 6) m3 3) ;; output value col.	   
+	   
+	   (set! i2 (in i2)))
+
+    ;; Purge.
+    (set! odata (grsp-matrix-subdell odata 0 (list 0 0 0 0)))
+    
+    ;; Compose results.
+    (set! res1 (list nodes conns count idata odata specs odtid))
+
+    res1))
+
+
+;;;; grsp-ann-odtid-atlorpn - Basic data for output to input (odata to idata)
+;; feedback. This function builds a table that correlates each output node to
+;; one input node for direct feedback loops. It requires that both matrices
+;; should have the same number of rows in order to establish a node-to-node
+;; relationship.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_l1: ann.
+;;
+(define (grsp-ann-odtid-atlorpn p_l1)
+  (let ((res1 '())
+	(i1 0)
+	(j1 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(nodes 0)
+	(conns 0)
+	(count 0)
+	(idata 0)
+	(odata 0)
+	(specs 0)
+	(odtid 0))
+
+    (set! res1 p_l1)
+    
+    ;; Extract matrices and lists.
+    (set! nodes (grsp-ann-get-matrix "nodes" res1))
+    (set! conns (grsp-ann-get-matrix "conns" res1))
+    (set! count (grsp-ann-get-matrix "count" res1))    
+    (set! idata (grsp-ann-get-matrix "idata" res1))
+    (set! odata (grsp-ann-get-matrix "odata" res1))
+    (set! specs (grsp-ann-get-matrix "specs" res1))
+    (set! odtid (grsp-ann-get-matrix "odtid" res1))
+
+    (cond ((equal? (grsp-matrix-is-samedim idata odata) #t)
+    
+	   ;; Extract boundaries.
+	   (set! lm1 (grsp-matrix-esi 1 idata))
+	   (set! hm1 (grsp-matrix-esi 2 idata))
+	   (set! ln1 (grsp-matrix-esi 3 idata))
+	   (set! hn1 (grsp-matrix-esi 4 idata))
+
+	   (set! odtid (grsp-matrix-create 0 (+ (- hm1 lm1) 1) 2))
+	   
+	   ;; Loop and update odtid.
+	   (set! i1 lm1)
+	   (while (<= i1 hm1)
+		  (array-set! odtid (array-ref idata i1 0) i1 0)
+		  (array-set! odtid (array-ref odata i1 0) i1 1)
+		  (set! i1 (in i1)))
+	   
+	   ;; Compose results.
+	   (set! res1 (list nodes conns count idata odata specs odtid))))    
+
+    res1))
+
+	
 
