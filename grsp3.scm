@@ -215,7 +215,8 @@
 	    grsp-matrix-argtype
 	    grsp-matrix-argstru
 	    grsp-matrix-row-subrepal
-	    grsp-matrix-subdell))
+	    grsp-matrix-subdell
+	    grsp-matrix-is-samedim))
 
 
 ;;;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -4416,7 +4417,7 @@
     res1))
 
 
-;;;; grsp-matrix-row-div. - Relational division.
+;;;; grsp-matrix-row-div - Relational division.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors, relational.
@@ -5516,6 +5517,10 @@
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
 ;;
+;; Output:
+;; - Returns #t if both matrices have the same number of rows and columns; #f
+;;   otherwise.
+;;
 (define (grsp-matrix-same-dims p_a1 p_a2)
   (let ((res1 #f)
 	(lm1 0)
@@ -6036,7 +6041,7 @@
 ;; Arguments:
 ;; - p_a1: matrix.
 ;; - p_m1: rown number.
-;; - p_l1: list of values to update in row p_m1 of matrix p_a1.
+;; - p_l2: list of values to update in row p_m1 of matrix p_a1.
 ;;
 ;; Notes:
 ;; - Make sure that p_l1 has as many elements as p_a1's rows.
@@ -6120,4 +6125,52 @@
 	   (set! res1 (grsp-matrix-subdel "#Delr" p_a1 p_m1))))
 	  
     res1))
+
+
+;;;; grsp-matrix-is-samedim - Returns #t if the dimensionality of matrix p_a1
+;; and matrix p_a2 is the same, but not necessarily have the same elements.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;; 
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_a2: matrix.
+;;
+;; Output:
+;; - Returns #t if both matrices have the same number of rows and columns; #f
+;;   otherwise.
+;;
+(define (grsp-matrix-is-samedim p_a1 p_a2)
+  (let ((res1 #f)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(lm2 0)
+	(hm2 0)
+	(ln2 0)
+	(hn2 0))
+
+    ;; Extract the boundaries of the first matrix.
+    (set! lm1 (grsp-matrix-esi 1 p_a1))
+    (set! hm1 (grsp-matrix-esi 2 p_a1))
+    (set! ln1 (grsp-matrix-esi 3 p_a1))
+    (set! hn1 (grsp-matrix-esi 4 p_a1))
+
+    ;; Extract the boundaries of the second matrix.
+    (set! lm2 (grsp-matrix-esi 1 p_a2))
+    (set! hm2 (grsp-matrix-esi 2 p_a2))
+    (set! ln2 (grsp-matrix-esi 3 p_a2))
+    (set! hn2 (grsp-matrix-esi 4 p_a2))
+
+    ;; Compare the size of both matrices.
+    (cond ((= lm1 lm2)
+	   (cond ((= hm1 hm2)
+		  (cond ((= ln1 ln2)
+			 (cond ((= hn1 hn2)
+				(set! res1 #t)))))))))
+    
+    res1))
+
 
