@@ -221,7 +221,8 @@
 	    grsp-ann-matrix-create
 	    grsp-ann-idata-atlorpn
 	    grsp-ann-odata-atlorpn
-	    grsp-ann-odtid-atlorpn))
+	    grsp-ann-odtid-atlorpn
+	    grsp-m2datai))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network.
@@ -2131,8 +2132,8 @@
     (set! odata (grsp-ann-get-matrix "odata" res1))
     (set! specs (grsp-ann-get-matrix "specs" res1))
     (set! odtid (grsp-ann-get-matrix "odtid" res1))
-    (set! datai (grsp-ann-get-matrix "datai" p_l1))
-    (set! datao (grsp-ann-get-matrix "datao" p_l1))    
+    (set! datai (grsp-ann-get-matrix "datai" res1))
+    (set! datao (grsp-ann-get-matrix "datao" res1))    
 
     (cond ((equal? (grsp-matrix-is-samedim idata odata) #t)
     
@@ -2156,5 +2157,101 @@
 
     res1))
 
-	
 
+;;;; grsp-m2datai - Casts the data of a grso3 matrix in datai format. 
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_b1: boolean.
+;;   - #t: to overwrite current datai matrix.
+;;   - #f: to add new rows to current datai.
+;; - p_a1: data matrix.
+;; - p_id: idata.
+;; - p_di: datai.
+;; - p_n1: classifier.
+;;
+;; Output:
+;; - grsp8 ann with an updated datai table.
+;;
+(define (grsp-m2datai p_b1 p_a1 p_id p_di p_n1)
+  (let ((res1 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(lm2 0)
+	(hm2 0)
+	(ln2 0)
+	(hn2 0)
+	(lm3 0)
+	(hm3 0)
+	(ln3 0)
+	(hn3 0)	
+	(i3 0)
+	(j3 0)
+	(j4 0)
+	(idata 0)
+	(datai 0))
+    
+    ;; Create new datai if applicable.
+    (cond ((equal? p_b1 #t)
+	   (set! datai (grsp-ann-matrix-create "datai" 1)))
+	  (else (set! datai p_di)))
+
+    (set! idata p_id)
+
+    ;; Extract boundaries.
+    (set! lm1 (grsp-matrix-esi 1 idata))
+    (set! hm1 (grsp-matrix-esi 2 idata))
+    (set! ln1 (grsp-matrix-esi 3 idata))
+    (set! hn1 (grsp-matrix-esi 4 idata))
+
+    (set! lm2 (grsp-matrix-esi 1 datai))
+    (set! hm2 (grsp-matrix-esi 2 datai))
+    (set! ln2 (grsp-matrix-esi 3 datai))
+    (set! hn2 (grsp-matrix-esi 4 datai))    
+
+    (set! lm3 (grsp-matrix-esi 1 p_a1))
+    (set! hm3 (grsp-matrix-esi 2 p_a1))
+    (set! ln3 (grsp-matrix-esi 3 p_a1))
+    (set! hn3 (grsp-matrix-esi 4 p_a1))  
+    
+    ;; Cycle thorough res1 row by row.
+    (set! i3 lm3)
+    (set! j4 lm1)
+    (while (<= i3 hm3)
+
+	   ;; Read as many columns from p_a1 as there are rows in idata.
+	   (set! j3 lm1)
+	   (while (<= j3 hm1)
+
+		  ;; Start by creating a new row in datai that will hold the data
+		  ;; from one element of p_a1 of the row being read from idata.
+		  (set! datai (grsp-matrix-subexp datai 1 0))
+
+		  ;; Update datai m-size data.
+		  (set! hn2 (grsp-matrix-esi 4 datai))
+		  
+		  ;; Read row j3 from idata to get data to construct a new
+		  ;; datai row and  create new datai row.
+		  (array-set! datai (array-ref idata j3 0) j4 0) ;; Id of the receptive node.
+		  (array-set! datai (array-ref idata j3 1) j4 1) ;; Column to input data in.
+		  (array-set! datai (array-ref p_a1 i3 j3) j4 2) ;; Value to input.
+		  (array-set! datai 0 j4 3)                      ;; Type (in this case, input node).
+		  (array-set! datai (array-ref idata j3 4) j4 4) ;; Record contro.
+		  (array-set! datai p_n1 j4 5)                   ;; User-provided classifier.
+
+		  (set! j4 (in j4))
+		  (set! j3 (in j3)))
+	   
+	   (set! i3 (in i3)))
+
+    ;; Purge datai.
+    ;;(cond ((equal? p_b1 #t)
+	   ;;(set! datai (grsp-matrix-subdell datai 0 (list 0 0 0 0 0)))))
+    
+    (set! res1 datai)
+    
+    res1))
