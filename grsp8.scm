@@ -2276,6 +2276,7 @@
 ;;
 (define (grsp-ann-datai-update p_a1 p_l1 p_n1)
   (let ((res1 '())
+	(res2 0)
 	(i1 0)
 	(j1 0)
 	(lm1 0)
@@ -2293,19 +2294,19 @@
 	(datao 0))
 
     ;; Create safety matrix.
-    (set! res1 (grsp-matrix-cpy p_l1))   
-    ;(set! res1 p_l1)
+    ;(set! res2 (grsp-matrix-cpy p_l1))   
+    (set! res2 p_l1)
     
     ;; Extract matrices and lists.
-    (set! nodes (grsp-ann-get-matrix "nodes" res1))
-    (set! conns (grsp-ann-get-matrix "conns" res1))
-    (set! count (grsp-ann-get-matrix "count" res1))    
-    (set! idata (grsp-ann-get-matrix "idata" res1))
-    (set! odata (grsp-ann-get-matrix "odata" res1))
-    (set! specs (grsp-ann-get-matrix "specs" res1))
-    (set! odtid (grsp-ann-get-matrix "odtid" res1))
-    (set! datai (grsp-ann-get-matrix "datai" res1))
-    (set! datao (grsp-ann-get-matrix "datao" res1))
+    (set! nodes (grsp-ann-get-matrix "nodes" res2))
+    (set! conns (grsp-ann-get-matrix "conns" res2))
+    (set! count (grsp-ann-get-matrix "count" res2))    
+    (set! idata (grsp-ann-get-matrix "idata" res2))
+    (set! odata (grsp-ann-get-matrix "odata" res2))
+    (set! specs (grsp-ann-get-matrix "specs" res2))
+    (set! odtid (grsp-ann-get-matrix "odtid" res2))
+    (set! datai (grsp-ann-get-matrix "datai" res2))
+    (set! datao (grsp-ann-get-matrix "datao" res2))
 
     ;; Cast p_a1 as datai.
     (set! datai (grsp-m2datai p_a1 idata datai p_n1))
