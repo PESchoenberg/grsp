@@ -1,7 +1,17 @@
 ;; =============================================================================
 ;;
 ;; grsp3.scm
-;;
+;;;;     - Col 0: id of the receptive node.
+;;     - Col 1: number that corresponds to the column in the nodes matrix in
+;;       which for the row whose col 0 is equal to the id value passed in col 0
+;;       of the idata matrix the input value will be stored.
+;;     - Col 2: number.
+;;     - Col 3: type, the kind of element that will receive this data.
+;;       - 0: for node.
+;;       - 1: for connection.
+;;     - Col 4: record control.
+;;       - 0: default.
+;;       - 1: iteration end.
 ;; Matrices.
 ;;
 ;; =============================================================================

@@ -222,7 +222,8 @@
 	    grsp-ann-idata-atlorpn
 	    grsp-ann-odata-atlorpn
 	    grsp-ann-odtid-atlorpn
-	    grsp-m2datai))
+	    grsp-m2datai
+	    grsp-ann-datai-update))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network.
@@ -2106,6 +2107,7 @@
 ;;
 (define (grsp-ann-odtid-atlorpn p_l1)
   (let ((res1 '())
+	(res2 0)
 	(i1 0)
 	(j1 0)
 	(lm1 0)
@@ -2122,18 +2124,19 @@
 	(datai 0)
 	(datao 0))
 
-    (set! res1 p_l1)
+    ;; Create safety matrix.   
+    (set! res2 p_l1)
     
     ;; Extract matrices and lists.
-    (set! nodes (grsp-ann-get-matrix "nodes" res1))
-    (set! conns (grsp-ann-get-matrix "conns" res1))
-    (set! count (grsp-ann-get-matrix "count" res1))    
-    (set! idata (grsp-ann-get-matrix "idata" res1))
-    (set! odata (grsp-ann-get-matrix "odata" res1))
-    (set! specs (grsp-ann-get-matrix "specs" res1))
-    (set! odtid (grsp-ann-get-matrix "odtid" res1))
-    (set! datai (grsp-ann-get-matrix "datai" res1))
-    (set! datao (grsp-ann-get-matrix "datao" res1))    
+    (set! nodes (grsp-ann-get-matrix "nodes" res2))
+    (set! conns (grsp-ann-get-matrix "conns" res2))
+    (set! count (grsp-ann-get-matrix "count" res2))    
+    (set! idata (grsp-ann-get-matrix "idata" res2))
+    (set! odata (grsp-ann-get-matrix "odata" res2))
+    (set! specs (grsp-ann-get-matrix "specs" res2))
+    (set! odtid (grsp-ann-get-matrix "odtid" res2))
+    (set! datai (grsp-ann-get-matrix "datai" res2))
+    (set! datao (grsp-ann-get-matrix "datao" res2))    
 
     (cond ((equal? (grsp-matrix-is-samedim idata odata) #t)
     
@@ -2164,18 +2167,18 @@
 ;; - function, ann, neural network.
 ;;
 ;; Arguments:
-;; - p_b1: boolean.
-;;   - #t: to overwrite current datai matrix.
-;;   - #f: to add new rows to current datai.
 ;; - p_a1: data matrix.
 ;; - p_id: idata.
 ;; - p_di: datai.
 ;; - p_n1: classifier.
 ;;
+;; Notes: 
+;; - See grsp-ann-datai-update.
+;;
 ;; Output:
 ;; - grsp8 ann with an updated datai table.
 ;;
-(define (grsp-m2datai p_b1 p_a1 p_id p_di p_n1)
+(define (grsp-m2datai p_a1 p_id p_di p_n1)
   (let ((res1 0)
 	(lm1 0)
 	(hm1 0)
@@ -2194,13 +2197,12 @@
 	(j4 0)
 	(idata 0)
 	(datai 0))
-    
-    ;; Create new datai if applicable.
-    (cond ((equal? p_b1 #t)
-	   (set! datai (grsp-ann-matrix-create "datai" 1)))
-	  (else (set! datai p_di)))
 
+    ;; Create safety matrices. 
+    ;(set! idata (grsp-matrix-cpy p_id))
+    ;(set! datai (grsp-matrix-cpy p_di))
     (set! idata p_id)
+    (set! datai p_di)
 
     ;; Extract boundaries.
     (set! lm1 (grsp-matrix-esi 1 idata))
@@ -2249,9 +2251,140 @@
 	   (set! i3 (in i3)))
 
     ;; Purge datai.
-    ;;(cond ((equal? p_b1 #t)
-	   ;;(set! datai (grsp-matrix-subdell datai 0 (list 0 0 0 0 0)))))
+    (set! hm2 (grsp-matrix-esi 2 datai))    
+    (set! datai (grsp-matrix-subdell datai hm2 (list 0 0 0 0 0)))    
     
     (set! res1 datai)
     
+    res1))
+
+;;;; grsp-ann-data-update - Black box update of datai table using grsp-m2datai.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_a1: data matrix.
+;; - p_l1: ann.
+;; - p_n1: classifier.
+;;
+;; Notes:
+;; - See grsp-m2datai.
+;;
+;; Output:
+;; - p_l1 with an updated datai table.
+;;
+(define (grsp-ann-datai-update p_a1 p_l1 p_n1)
+  (let ((res1 '())
+	(res2 0)
+	(i1 0)
+	(j1 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(nodes 0)
+	(conns 0)
+	(count 0)
+	(idata 0)
+	(odata 0)
+	(specs 0)
+	(odtid 0)
+	(datai 0)
+	(datao 0))
+
+    ;; Create safety matrix.
+    ;(set! res2 (grsp-matrix-cpy p_l1))   
+    (set! res2 p_l1)
+    
+    ;; Extract matrices and lists.
+    (set! nodes (grsp-ann-get-matrix "nodes" res2))
+    (set! conns (grsp-ann-get-matrix "conns" res2))
+    (set! count (grsp-ann-get-matrix "count" res2))    
+    (set! idata (grsp-ann-get-matrix "idata" res2))
+    (set! odata (grsp-ann-get-matrix "odata" res2))
+    (set! specs (grsp-ann-get-matrix "specs" res2))
+    (set! odtid (grsp-ann-get-matrix "odtid" res2))
+    (set! datai (grsp-ann-get-matrix "datai" res2))
+    (set! datao (grsp-ann-get-matrix "datao" res2))
+
+    ;; Cast p_a1 as datai.
+    (set! datai (grsp-m2datai p_a1 idata datai p_n1))
+
+    ;; Compose results.
+    (set! res1 (list nodes conns count idata odata specs odtid datai datao)) 
+    
+    res1))
+
+
+;;;; grsp-datai2ann - Passes the first input group of a datai table to the input
+;; nodes of the ann and then deletes the group.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_a1: nodes.
+;; - p_a2: conns.
+;; - p_a2: datai.
+;;
+(define (grsp-datai2ann p_a1 p_a2 p_a3)
+  (let ((res1 '())
+	(res2 0)
+	(i1 0)
+	(b1 #f)
+	(n0 0)
+	(n3 0)
+	(nodes 0)
+	(conns 0)
+	(datai 0))
+
+    ;; Create safety matrices.
+    (set! nodes (grsp-matrix-cpy p_a1))
+    (set! conns (grsp-matrix-cpy p_a2))
+    (set! datai (grsp-matrix-cpy p_a3))
+
+    (set! i1 0)
+    (while ((equal? b1 #f)
+
+	    ;; Find id of target.
+	    (set! n0 (array-ref datai i1 0)) 
+	    
+	    ;; Find what kind of target we have.
+	    (set! n3 (array-ref datai i1 3))
+
+	    ;; Check control element.
+	    (cond ((= (array-ref datai i1 4) 1)
+		   (set! b1 #t)))
+	    
+	    ;; Depending on the kind of target, select the rows from one table
+	    ;; or another whose id number (col 0) is equal to n0.
+	    (cond ((= n3 0)
+		   (set! res2 (grsp-matrix-row-select "#=" nodes 0 n0)))
+		  ((= n3 1)
+		   (set! res2 (grsp-matrix-row-select "#=" conns 0 n0))))
+
+	    ;; Update res2.
+
+	    ;; Update datai (delete what ahs been hyst copied).
+	    
+	    ;; Commit.
+	    (cond ((= n3 0)
+		   (set! nodes (grsp-matrix-commit nodes res2 0)))
+		  ((= n3 1)
+		   (set! conns (grsp-matrix-commit conns res2 0))))
+	    
+	    (set! i1 (in i1))))
+    ;;     - Col 0: id of the receptive node.
+    ;;     - Col 1: number that corresponds to the column in the nodes matrix in
+    ;;       which for the row whose col 0 is equal to the id value passed in col 0
+    ;;       of the idata matrix the input value will be stored.
+    ;;     - Col 2: number.
+    ;;     - Col 3: type, the kind of element that will receive this data.
+    ;;       - 0: for node.
+    ;;       - 1: for connection.
+    ;;     - Col 4: record control.
+    ;;       - 0: default.
+    ;;       - 1: iteration end.		  
+	
     res1))
