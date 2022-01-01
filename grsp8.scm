@@ -92,6 +92,7 @@
 ;;     - Col 4: control.
 ;;       - 0: default.
 ;;       - 1: iteration end.
+;;       - 2: delete.
 ;;
 ;;   - Elem 4: odata. Matrix. Contains am instance of data originated in the
 ;;     output nodes of a neural network. I.e. this matrix contains the
@@ -103,6 +104,7 @@
 ;;     - Col 4: control.
 ;;       - 0: default.
 ;;       - 1: iteration end.
+;;       - 2: delete.
 ;;
 ;;   - Elem 5: specs. Matrix. Each row contains specifications for a neural
 ;;     network layer. This is a recipe for ann construction.
@@ -223,7 +225,8 @@
 	    grsp-ann-odata-atlorpn
 	    grsp-ann-odtid-atlorpn
 	    grsp-m2datai
-	    grsp-ann-datai-update))
+	    grsp-ann-datai-update
+	    grsp-datai2ann))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network.
@@ -2324,11 +2327,9 @@
 ;; - function, ann, neural network.
 ;;
 ;; Arguments:
-;; - p_a1: nodes.
-;; - p_a2: conns.
-;; - p_a2: datai.
+;; - p_l1: ann.
 ;;
-(define (grsp-datai2ann p_a1 p_a2 p_a3)
+(define (grsp-datai2ann p_l1)
   (let ((res1 '())
 	(res2 0)
 	(i1 0)
@@ -2337,15 +2338,27 @@
 	(n3 0)
 	(nodes 0)
 	(conns 0)
-	(datai 0))
-
-    ;; Create safety matrices.
-    (set! nodes (grsp-matrix-cpy p_a1))
-    (set! conns (grsp-matrix-cpy p_a2))
-    (set! datai (grsp-matrix-cpy p_a3))
+	(count 0)
+	(idata 0)
+	(odata 0)
+	(specs 0)
+	(odtid 0)
+	(datai 0)
+	(datao 0))
+   
+    ;; Extract matrices and lists.
+    (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
+    (set! conns (grsp-ann-get-matrix "conns" p_l1))
+    (set! count (grsp-ann-get-matrix "count" p_l1))    
+    (set! idata (grsp-ann-get-matrix "idata" p_l1))
+    (set! odata (grsp-ann-get-matrix "odata" p_l1))
+    (set! specs (grsp-ann-get-matrix "specs" p_l1))
+    (set! odtid (grsp-ann-get-matrix "odtid" p_l1))
+    (set! datai (grsp-ann-get-matrix "datai" p_l1))
+    (set! datao (grsp-ann-get-matrix "datao" p_l1))
 
     (set! i1 0)
-    (while ((equal? b1 #f)
+    (while (equal? b1 #f)
 
 	    ;; Find id of target.
 	    (set! n0 (array-ref datai i1 0)) 
@@ -2365,26 +2378,25 @@
 		   (set! res2 (grsp-matrix-row-select "#=" conns 0 n0))))
 
 	    ;; Update res2.
+	    (array-set! res2 (array-ref datai i1 2) 0 (array-ref datai i1 1))
 
-	    ;; Update datai (delete what ahs been hyst copied).
-	    
+	    ;; Mark datai record for deletion.
+	    (array-set! datai 2 i1 2)
+	    	    
 	    ;; Commit.
 	    (cond ((= n3 0)
 		   (set! nodes (grsp-matrix-commit nodes res2 0)))
 		  ((= n3 1)
 		   (set! conns (grsp-matrix-commit conns res2 0))))
 	    
-	    (set! i1 (in i1))))
-    ;;     - Col 0: id of the receptive node.
-    ;;     - Col 1: number that corresponds to the column in the nodes matrix in
-    ;;       which for the row whose col 0 is equal to the id value passed in col 0
-    ;;       of the idata matrix the input value will be stored.
-    ;;     - Col 2: number.
-    ;;     - Col 3: type, the kind of element that will receive this data.
-    ;;       - 0: for node.
-    ;;       - 1: for connection.
-    ;;     - Col 4: record control.
-    ;;       - 0: default.
-    ;;       - 1: iteration end.		  
+	    (set! i1 (in i1)))
+
+    ;; Update datai (delete what has been just copied).
+    (set! datai (grsp-matrix-row-delete "#=" datai 2 2))
+        
+    ;; Compose results.
+    (set! res1 (list nodes conns count idata odata specs odtid datai datao))
 	
     res1))
+
+
