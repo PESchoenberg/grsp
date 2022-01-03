@@ -226,7 +226,8 @@
 	    grsp-ann-odtid-atlorpn
 	    grsp-m2datai
 	    grsp-ann-datai-update
-	    grsp-datai2ann))
+	    grsp-datai2ann
+	    grsp-ann-fdif))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network.
@@ -1452,7 +1453,7 @@
 
 
 ;;;; grsp-ann-nodes-eval - Performs one iteration of evaluation of all nodes
-;; in ann p_l1 using idata.
+;; in ann p_l1.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -2202,8 +2203,6 @@
 	(datai 0))
 
     ;; Create safety matrices. 
-    ;(set! idata (grsp-matrix-cpy p_id))
-    ;(set! datai (grsp-matrix-cpy p_di))
     (set! idata p_id)
     (set! datai p_di)
 
@@ -2296,8 +2295,7 @@
 	(datai 0)
 	(datao 0))
 
-    ;; Create safety matrix.
-    ;(set! res2 (grsp-matrix-cpy p_l1))   
+    ;; Create safety matrix. 
     (set! res2 p_l1)
     
     ;; Extract matrices and lists.
@@ -2400,3 +2398,38 @@
     res1))
 
 
+;;;; grsp-ann-fdif - Applies grsp-matrix-fdif to matrix p_s1 of ann p_l1 and
+;; p_l2 to find differences between their matrices.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_s1: selected:
+;;   - "nodes".
+;;   - "conns".
+;;   - "count".
+;;   - "idata".
+;;   - "odata".
+;;   - "specs".
+;;   - "odtid".
+;;   - "datai".
+;;   - "datao".
+;; - p_l1: ann.
+;; - p_l2: ann.
+;;
+;; Notes:
+;; - See grsp3.grsp-matrix-fdif.
+;;
+(define (grsp-ann-fdif p_s1 p_l1 p_l2)
+  (let ((res1 0)
+	(a1 0)
+	(a2 0))
+   
+    ;; Extract matrices and lists.
+    (set! a1 (grsp-ann-get-matrix p_s1 p_l1))
+    (set! a2 (grsp-ann-get-matrix p_s1 p_l2))
+
+    (set! res1 (grsp-matrix-fdif a1 a2))
+
+    res1))
