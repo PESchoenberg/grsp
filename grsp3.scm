@@ -6093,7 +6093,8 @@
 
 
 ;;;; grsp-matrix-subdell - Deletes row p_n1 from matrix p_a1 if its
-;; elements are equal to those in list p_l1.
+;; elements are respetvely equal, in the same order,
+;; to those in list p_l1. 
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
@@ -6177,6 +6178,7 @@
 
 
 ;;;; grsp-matrix-fill - Fills all elements of matrix p_a1 with value p_n1.
+;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
 ;; 
@@ -6214,7 +6216,10 @@
     res1))
 
 
-;;;; grsp-matrix-fdif - Find differences between matrices p_a1 and p_a2,
+;;;; grsp-matrix-fdif - Find differences between matrices p_a1 and p_a2, This
+;; function returns a boolean-numeric matrix in which true (difference found)
+;; is expressed as the number one and false (difference not found) is
+;; represented by zweo.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
@@ -6264,8 +6269,8 @@
 			 (set! a1 (array-ref p_a1 i1 j1))
 			 (set! a2 (array-ref p_a2 i1 j1))
 			 (cond ((= a1 a2)
-				(array-set! res1 1 i1 j1))
-			       (else (array-set! res1 0 i1 j1)))
+				(array-set! res1 0 i1 j1))
+			       (else (array-set! res1 1 i1 j1)))
 
 			 (set! j1 (in j1)))
 
