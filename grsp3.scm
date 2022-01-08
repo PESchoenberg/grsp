@@ -6252,7 +6252,7 @@
     ;; Create safety matrix. 
     (set! res1 (grsp-matrix-cpy p_a1))
 	  
-    ;; Extract the boundaries of the first matrix.
+    ;; Extract the boundaries of the first matrix.***
     (set! lm1 (grsp-matrix-esi 1 res1))
     (set! hm1 (grsp-matrix-esi 2 res1))
     (set! ln1 (grsp-matrix-esi 3 res1))
