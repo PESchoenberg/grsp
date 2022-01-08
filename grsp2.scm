@@ -144,8 +144,7 @@
 ;;   September 2021].
 ;; - [44] En.wikipedia.org. 2020. Givens Rotation. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Givens_rotation [Accessed 25 March 2020].
-;; - [45] https://en.wikipedia.org/wiki/Runge%27s_phenomenon
-;; - [46] https://en.wikipedia.org/wiki/Chebyshev_nodes
+
 
 
 (define-module (grsp grsp2)
@@ -239,8 +238,7 @@
 	    grsp-rectangular
 	    grsp-triangular
 	    grsp-2ex
-	    grsp-1n
-	    grsp-runge))
+	    grsp-1n))
 
 
 ;;;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -2373,25 +2371,5 @@
   (let ((res1 0.0))
 
     (set! res1 (/ 1.0 p_n1))
-
-    res1))
-
-
-;;;; grsp-runge - Runge function. If interpolated at [-1, 1] produces
-;; oscillations at both ends of the interval (Runge phenomenon).
-;;
-;; Keywords:
-;; - function, division, fractions.
-;;
-;; Arguments:
-;; - p_n1.
-;;
-;; Sources:
-;; - [45][46].
-;;
-(define (grsp-runge p_n1)
-  (let ((res1 0.0))
-
-    (set! res1 (/ 1 (+ 1 (* 25 (expt p_n1 2)))))
 
     res1))
