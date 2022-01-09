@@ -277,7 +277,7 @@
 ;;   - "#Lehmer": Lehmer matrix.
 ;;   - "#Pascal": Pascal matrix.
 ;;   - "#CH": 0-1 checkerboard pattern matrix.
-;;   - "#CHR": 0-1 checerboard pattern matrix, randomized.
+;;   - "#CHR": 0-1 checkerboard pattern matrix, randomized.
 ;;   - "#+IJ": matrix containing the sum of i and j values.
 ;;   - "#-IJ": matrix containing the substraction of i and j values.
 ;;   - "#+IJ": matrix containing the product of i and j values.
@@ -287,6 +287,8 @@
 ;;   - "#rprnd": pseduo random values, normal distribution, sd = 0.15.
 ;;   - "#zrow": zebra row.
 ;;   - "#zcol": zebra col.
+;;   - "#n0[-m:+m]": matrix of (2m +1 ) rows and n cols, with first column
+;;     element -m and last row, first col element reaching m.
 ;; - p_m1: rows, positive integer.
 ;; - p_n1: cols, positive integer.
 ;;
@@ -300,6 +302,7 @@
 	(i1 0)
 	(j1 0)
 	(m1 p_m1)
+	(m3 p_m1)
 	(n1 p_n1)
 	(p0 0)
 	(p1 0)
@@ -371,6 +374,9 @@
 			 (set! s1 0))
 			((equal? p_s1 "#zcol")
 			 (set! s1 0))
+			((equal? p_s1 "#n0[-m:+m]")
+			 (set! s1 0)
+			 (set! m1 (+ 1 (* m1 2))))
 			
 			(else (set! s1 p_s1)))
 
@@ -569,6 +575,14 @@
 				       (array-set! res1 j1 i1 j1)
 				       (set! j1 (+ j1 1)))
 				(set! i1 (+ i1 1))))
+			((equal? p_s1 "#n0[-m:+m]")
+			 (set! m3 (* -1 m3))
+			 (while (< i1 m1)
+
+				(array-set! res1 m3 i1 0)
+				(set! m3 (in m3))
+				
+				(set! i1 (in i1))))
 			
 			((equal? p_s1 "#Q")
 			 (array-set! res1 -1 (- m1 2) (- n1 1))))))))

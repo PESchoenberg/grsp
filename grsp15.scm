@@ -46,7 +46,8 @@
   #:use-module (ice-9 threads)
   #:export (grsp-runge
 	    grsp-chebyshev-node
-	    grsp-lagrange-bpoly))
+	    grsp-lagrange-bpoly
+	    grsp-lagrange-ipoly))
 
 
 ;;;; grsp-runge - Runge function. If interpolated at [-1, 1] produces
@@ -97,8 +98,7 @@
     res1))
 
 
-;;;; grsp-chebyshev-node - Calculates Chebyshev polynomial root p_k1 of p_n1
-;; over the interval [p_a1, p_b1] for polynomial interpolation.
+;;;; grsp-lagrange-bpoly - Lagrange basis polynomial.
 ;;
 ;; Keywords:
 ;; - functions, interpolation, polynomials.
@@ -106,7 +106,7 @@
 ;; Arguments:
 ;; - p_x1: x.
 ;; - p_j1: j.
-;; - p_a1: matrix, with k+1 data points.
+;; - p_a1: matrix, data points.
 ;;
 ;; Sources:
 ;; - [3][4].
@@ -121,28 +121,68 @@
 	(xm 0)
 	(xj 0)
 	(i1 0)
-	(j1 0)
-	(k1 0))
+	(j1 0))
     
-
     ;; Create safety matrix. 
     (set! res2 (grsp-matrix-cpy p_a1))
 	  
-    ;; Extract the boundaries of the first matrix.
+    ;; Extract the boundaries of the matrix.
     (set! lm1 (grsp-matrix-esi 1 res2))
     (set! hm1 (grsp-matrix-esi 2 res2))
     (set! ln1 (grsp-matrix-esi 3 res2))
     (set! hn1 (grsp-matrix-esi 4 res2))
 
-    (set! i1 0)
-    (set! k1 (+ (- hm1 lm1) 1))
-
-    (while (<= i1 k1)
+    (set! i1 lm1)
+    (while (<= i1 hm1)
 
 	   (cond ((equal? (= i1 p_j1) #f)
 		  (set! xm (array-ref p_a1 i1 0))
 		  (set! xj (array-ref p_a1 p_j1 0))
 		  (set! res1 (* res1 (/ (- p_x1 xm) (- xj xm))))))
+	   
+	   (set! i1 (in i1)))
+    
+    res1))
+
+
+;;;; grsp-lagrange-ipoly - Lagrangre interpolation polynomial.
+;;
+;; Keywords:
+;; - functions, interpolation, polynomials.
+;;
+;; Arguments:
+;; - p_x1: x.
+;; - p_a1: matrix, data points.
+;;
+;; Sources:
+;; - [3][4].
+;;
+(define (grsp-lagrange-ipoly p_x1 p_a1)
+  (let ((res1 0.0)
+	(res2 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(i1 0)
+	(x1 0)
+	(y1 0))
+
+    ;; Create safety matrix. 
+    (set! res2 (grsp-matrix-cpy p_a1))
+	  
+    ;; Extract the boundaries of the matrix.
+    (set! lm1 (grsp-matrix-esi 1 res2))
+    (set! hm1 (grsp-matrix-esi 2 res2))
+    (set! ln1 (grsp-matrix-esi 3 res2))
+    (set! hn1 (grsp-matrix-esi 4 res2))
+
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+
+	   ;(set! x1 (array-ref res2 i1 ln1))
+	   (set! y1 (array-ref res2 i1 (+ ln1 1)))
+	   (set! res1 (+ res1 (* y1 (grsp-lagrange-bpoly p_x1 i1 res2))))
 	   
 	   (set! i1 (in i1)))
     
