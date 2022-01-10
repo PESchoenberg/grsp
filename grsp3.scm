@@ -6,7 +6,7 @@
 ;;
 ;; =============================================================================
 ;;
-;; Copyright (C) 2020 - 2021 Pablo Edronkin (pablo.edronkin at yahoo.com)
+;; Copyright (C) 2020 - 2022 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
 ;;   it under the terms of the GNU Lesser General Public License as published by
@@ -218,7 +218,8 @@
 	    grsp-matrix-subdell
 	    grsp-matrix-is-samedim
 	    grsp-matrix-fill
-	    grsp-matrix-fdif))
+	    grsp-matrix-fdif
+	    grsp-matrix-ftc))
 
 
 ;;;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -6292,3 +6293,32 @@
 	  (else (set! res1 (grsp-matrix-fill res1 n2))))
 			     
     res1))
+
+
+(define (grsp-matrix-ftc p_a1 p_n1 p_f1)
+  (let ((res1 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(i1 0)
+	(j1 0))
+
+    ;; Create safety matrix. 
+    (set! res1 (grsp-matrix-cpy p_a1))
+	  
+    ;; Extract the boundaries of the first matrix.***
+    (set! lm1 (grsp-matrix-esi 1 res1))
+    (set! hm1 (grsp-matrix-esi 2 res1))
+    (set! ln1 (grsp-matrix-esi 3 res1))
+    (set! hn1 (grsp-matrix-esi 4 res1))    
+
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+
+	   (array-set! res1 p_f1 i1 p_n1)
+	   
+	   (set! i1 (in i1)))
+    
+    res1))
+

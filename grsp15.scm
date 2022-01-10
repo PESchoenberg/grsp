@@ -4,7 +4,7 @@
 ;;
 ;; =============================================================================
 ;;
-;; Copyright (C) 2021 Pablo Edronkin (pablo.edronkin at yahoo.com)
+;; Copyright (C) 2021 - 2022 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
 ;;   it under the terms of the GNU Lesser General Public License as published by
@@ -50,8 +50,7 @@
 	    grsp-lagrange-ipoly))
 
 
-;;;; grsp-runge - Runge function. If interpolated at [-1, 1] produces
-;; oscillations at both ends of the interval (Runge phenomenon).
+;;;; grsp-runge - Runge function. 
 ;;
 ;; Keywords:
 ;; - function, division, fractions.
