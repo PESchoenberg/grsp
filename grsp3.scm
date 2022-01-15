@@ -219,7 +219,7 @@
 	    grsp-matrix-is-samedim
 	    grsp-matrix-fill
 	    grsp-matrix-fdif
-	    grsp-matrix-ftc))
+	    grsp-matrix-op123))
 
 
 ;;;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -6108,8 +6108,7 @@
 
 
 ;;;; grsp-matrix-subdell - Deletes row p_n1 from matrix p_a1 if its
-;; elements are respetvely equal, in the same order,
-;; to those in list p_l1. 
+;; elements are respetively equal, in the same order, to those in list p_l1. 
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
@@ -6234,7 +6233,7 @@
 ;;;; grsp-matrix-fdif - Find differences between matrices p_a1 and p_a2, This
 ;; function returns a boolean-numeric matrix in which true (difference found)
 ;; is expressed as the number one and false (difference not found) is
-;; represented by zweo.
+;; represented by zero.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
@@ -6295,30 +6294,72 @@
     res1))
 
 
-(define (grsp-matrix-ftc p_a1 p_n1 p_f1)
+;;;; grsp-matrix-op123 - Apply p_s1 to columns p_j1 and p_j2 of matrices
+;; p_a1 and p_a2 respectively, and place the results in column p_j3 of
+;; matrix p_a3. This is a no-frills, quick-and-dirt function that I made
+;; to test some stuff. Rhere are certainly better solutions.
+;;
+;; Arguments:
+;; - p_s1:
+;;   - "#+r": sum of all elements of row p_l1.
+;;   - "#-r": substraction of all elements of row p_l1.
+;;   - "#*r": product of all elements of row p_l1.
+;;   - "#/r": division of all elements of row p_l1.
+;; - p_a1: matrix.
+;; - p_j1: column number.
+;; - p_a2: matrix.
+;; - p_j2: column number.
+;; - p_a3: matrix.
+;; - p_j3: column number.
+;;
+;; Notes:
+;; - p_a1, p_a2 and p_a3 must have the same number of rows.
+;;
+(define (grsp-matrix-op123 p_s1 p_a1 p_j1 p_a2 p_j2 p_a3 p_j3)
   (let ((res1 0)
+	(res2 0)
+	(res3 0)
 	(lm1 0)
 	(hm1 0)
 	(ln1 0)
 	(hn1 0)
-	(i1 0)
-	(j1 0))
+	(lm2 0)
+	(hm2 0)
+	(ln2 0)
+	(hn2 0)
+	(lm3 0)
+	(hm3 0)
+	(ln3 0)
+	(hn3 0)
+	(i1 0))
 
-    ;; Create safety matrix. 
+    ;; Create safety matrices. 
     (set! res1 (grsp-matrix-cpy p_a1))
+    (set! res2 (grsp-matrix-cpy p_a2))
+    (set! res3 (grsp-matrix-cpy p_a3))
 	  
-    ;; Extract the boundaries of the first matrix.***
+    ;; Extract matrix boundaries.
     (set! lm1 (grsp-matrix-esi 1 res1))
     (set! hm1 (grsp-matrix-esi 2 res1))
     (set! ln1 (grsp-matrix-esi 3 res1))
-    (set! hn1 (grsp-matrix-esi 4 res1))    
+    (set! hn1 (grsp-matrix-esi 4 res1))
+
+    (set! lm2 (grsp-matrix-esi 1 res2))
+    (set! hm2 (grsp-matrix-esi 2 res2))
+    (set! ln2 (grsp-matrix-esi 3 res2))
+    (set! hn2 (grsp-matrix-esi 4 res2))
+
+    (set! lm3 (grsp-matrix-esi 1 res2))
+    (set! hm3 (grsp-matrix-esi 2 res2))
+    (set! ln3 (grsp-matrix-esi 3 res2))
+    (set! hn3 (grsp-matrix-esi 4 res2))    
 
     (set! i1 lm1)
     (while (<= i1 hm1)
 
-	   (array-set! res1 p_f1 i1 p_n1)
+;; (grsp-matrix-opio p_s1 p_a1 p_l1)
 	   
 	   (set! i1 (in i1)))
     
-    res1))
+    res3))
 
