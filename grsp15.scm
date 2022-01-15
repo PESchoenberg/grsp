@@ -36,7 +36,6 @@
 ;; - [4] En.wikipedia.org. 2022. Lagrange polynomial - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Lagrange_polynomial
 ;;   [Accessed 6 January 2022].
-;; - [5] 
 
 
 (define-module (grsp grsp15)
@@ -70,7 +69,7 @@
 
 
 ;;;; grsp-chebyshev-node - Calculates Chebyshev polynomial root p_k1 of p_n1
-;; over the interval [p_a1, p_b1] for polynomial interpolation.
+;; over the interval [p_a1, p_b1].
 ;;
 ;; Keywords:
 ;; - functions, interpolation, polynomials.
@@ -125,7 +124,7 @@
     ;; Create safety matrix. 
     (set! res2 (grsp-matrix-cpy p_a1))
 	  
-    ;; Extract the boundaries of the matrix.
+    ;; Extract matrix boundaries.
     (set! lm1 (grsp-matrix-esi 1 res2))
     (set! hm1 (grsp-matrix-esi 2 res2))
     (set! ln1 (grsp-matrix-esi 3 res2))
@@ -144,7 +143,7 @@
     res1))
 
 
-;;;; grsp-lagrange-ipoly - Lagrangre interpolation polynomial.
+;;;; grsp-lagrange-ipoly - Lagrange interpolation polynomial.
 ;;
 ;; Keywords:
 ;; - functions, interpolation, polynomials.
@@ -170,7 +169,7 @@
     ;; Create safety matrix. 
     (set! res2 (grsp-matrix-cpy p_a1))
 	  
-    ;; Extract the boundaries of the matrix.
+    ;; Extract matrix boundaries.
     (set! lm1 (grsp-matrix-esi 1 res2))
     (set! hm1 (grsp-matrix-esi 2 res2))
     (set! ln1 (grsp-matrix-esi 3 res2))
@@ -179,7 +178,6 @@
     (set! i1 lm1)
     (while (<= i1 hm1)
 
-	   ;(set! x1 (array-ref res2 i1 ln1))
 	   (set! y1 (array-ref res2 i1 (+ ln1 1)))
 	   (set! res1 (+ res1 (* y1 (grsp-lagrange-bpoly p_x1 i1 res2))))
 	   
