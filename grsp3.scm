@@ -219,7 +219,7 @@
 	    grsp-matrix-is-samedim
 	    grsp-matrix-fill
 	    grsp-matrix-fdif
-	    grsp-matrix-op123))
+	    grsp-matrix-opewc))
 
 
 ;;;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
@@ -1101,6 +1101,7 @@
 ;; - This function does not validate the dimensionality or boundaries of the 
 ;;   matrices involved; the user or an additional shell function should take 
 ;;   care of that.
+;; - See grsp-matrix-opewc.
 ;;
 (define (grsp-matrix-opew p_s1 p_a1 p_a2)
   (let ((res1 p_a1)
@@ -6294,7 +6295,7 @@
     res1))
 
 
-;;;; grsp-matrix-op123 - Apply p_s1 to columns p_j1 and p_j2 of matrices
+;;;; grsp-matrix-opewc - Apply p_s1 to columns p_j1 and p_j2 of matrices
 ;; p_a1 and p_a2 respectively, and place the results in column p_j3 of
 ;; matrix p_a3. This is a no-frills, quick-and-dirt function that I made
 ;; to test some stuff. Rhere are certainly better solutions.
@@ -6317,8 +6318,9 @@
 ;;
 ;; Notes:
 ;; - p_a1, p_a2 and p_a3 must have the same number of rows.
+;; -  See grsp-matrix-opew.
 ;;
-(define (grsp-matrix-op123 p_s1 p_a1 p_j1 p_a2 p_j2 p_a3 p_j3)
+(define (grsp-matrix-opewc p_s1 p_a1 p_j1 p_a2 p_j2 p_a3 p_j3)
   (let ((res1 0)
 	(res2 0)
 	(res3 0)
@@ -6371,9 +6373,9 @@
 		 ((equal? p_s1 "#-")
 		  (set! n3 (+ n1 n2)))
 		 ((equal? p_s1 "#*")
-		  (set! n3 (+ n1 n2)))
+		  (set! n3 (* n1 n2)))
 		 ((equal? p_s1 "#/")
-		  (set! n3 (+ n1 n2)))
+		  (set! n3 (/ n1 n2)))
 		 ((equal? p_s1 "#expt")
 		  (set! n3 (expt n1 n2)))
 		 ((equal? p_s1 "#max")
