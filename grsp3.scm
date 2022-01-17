@@ -6301,10 +6301,13 @@
 ;;
 ;; Arguments:
 ;; - p_s1:
-;;   - "#+r": sum of all elements of row p_l1.
-;;   - "#-r": substraction of all elements of row p_l1.
-;;   - "#*r": product of all elements of row p_l1.
-;;   - "#/r": division of all elements of row p_l1.
+;;   - "#+": sum.
+;;   - "#-": substraction.
+;;   - "#*": product.
+;;   - "#/": division.
+;;   - "#expt": (expt p_a1(p_j1) p_a2(p_j2)).
+;;   - "#max": max function.
+;;   - "#min": min function.
 ;; - p_a1: matrix.
 ;; - p_j1: column number.
 ;; - p_a2: matrix.
@@ -6331,7 +6334,10 @@
 	(hm3 0)
 	(ln3 0)
 	(hn3 0)
-	(i1 0))
+	(i1 0)
+	(n1 0)
+	(n2 0)
+	(n3 0))
 
     ;; Create safety matrices. 
     (set! res1 (grsp-matrix-cpy p_a1))
@@ -6357,8 +6363,25 @@
     (set! i1 lm1)
     (while (<= i1 hm1)
 
-;; (grsp-matrix-opio p_s1 p_a1 p_l1)
-	   
+	   (set! n1 (array-ref res1 i1 p_j1))
+	   (set! n2 (array-ref res2 i1 p_j2))
+
+	   (cond ((equal? p_s1 "#+")
+		  (set! n3 (+ n1 n2)))
+		 ((equal? p_s1 "#-")
+		  (set! n3 (+ n1 n2)))
+		 ((equal? p_s1 "#*")
+		  (set! n3 (+ n1 n2)))
+		 ((equal? p_s1 "#/")
+		  (set! n3 (+ n1 n2)))
+		 ((equal? p_s1 "#expt")
+		  (set! n3 (expt n1 n2)))
+		 ((equal? p_s1 "#max")
+		  (set! n3 (max n1 n2)))
+		 ((equal? p_s1 "#min")
+		  (set! n3 (min n1 n2)))) 	 
+
+	   (array-set! res3 n3 i1 p_j3)	   
 	   (set! i1 (in i1)))
     
     res3))
