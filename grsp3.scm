@@ -1094,6 +1094,8 @@
 ;;   - "#expt": element wise (expt p_a1 p_a2).
 ;;   - "#max": element wise max function.
 ;;   - "#min": element wise min function.
+;;   - "#=": copy if equal.
+;;   - "#!=": copy if not equal.
 ;; - p_a1: first matrix.
 ;; - p_a2: second matrix.
 ;;
@@ -1123,11 +1125,12 @@
     ;; Create holding matrix.
     (set! res3 (grsp-matrix-create res3 (+ (- hm1 ln1) 1) (+ (- hn1 ln1) 1)))
 
-    ;; Apply bitwise operation.
+    ;; Apply elelemnt-wise operation.
     (set! i1 lm1)		 
     (while (<= i1 hm1)
 	   (set! j1 ln1)			
-	   (while (<= j1 hn1)			       
+	   (while (<= j1 hn1)
+		  
 		  (cond ((equal? p_s1 "#+")
 			 (array-set! res3 (+ (array-ref res1 i1 j1) (array-ref res2 i1 j1)) i1 j1))
 			((equal? p_s1 "#-")
@@ -1141,7 +1144,14 @@
 			((equal? p_s1 "#max")
 			 (array-set! res3 (max (array-ref res1 i1 j1) (array-ref res2 i1 j1)) i1 j1))
 			((equal? p_s1 "#min")
-			 (array-set! res3 (min (array-ref res1 i1 j1) (array-ref res2 i1 j1)) i1 j1)))			
+			 (array-set! res3 (min (array-ref res1 i1 j1) (array-ref res2 i1 j1)) i1 j1))
+			((equal? p_s1 "#=")
+			 (cond ((equal? (array-ref res1 i1 j1) (array-ref res2 i1 j1))		
+				(array-set! res3 (array-ref res1 i1 j1) i1 j1))))
+			((equal? p_s1 "#!=")
+			 (cond ((equal? (equal? (array-ref res1 i1 j1) (array-ref res2 i1 j1)) #f)
+				(array-set! res3 (array-ref res1 i1 j1) i1 j1)))))
+			
 		  (set! j1 (+ j1 1)))
 	   (set! i1 (+ i1 1)))
 
@@ -6298,7 +6308,9 @@
 ;;;; grsp-matrix-opewc - Apply p_s1 to columns p_j1 and p_j2 of matrices
 ;; p_a1 and p_a2 respectively, and place the results in column p_j3 of
 ;; matrix p_a3. This is a no-frills, quick-and-dirt function that I made
-;; to test some stuff. Rhere are certainly better solutions.
+;; to test some stuff. Rhere are certainly better solutions. This function
+;; provides an easy way to operate element-wise between columns of a single
+;; matrix or varius matrices.
 ;;
 ;; Arguments:
 ;; - p_s1:
@@ -6309,16 +6321,21 @@
 ;;   - "#expt": (expt p_a1(p_j1) p_a2(p_j2)).
 ;;   - "#max": max function.
 ;;   - "#min": min function.
-;; - p_a1: matrix.
-;; - p_j1: column number.
-;; - p_a2: matrix.
-;; - p_j2: column number.
-;; - p_a3: matrix.
-;; - p_j3: column number.
+;;   - "#=": if p_j1 is equal to p_j2, copy p_j1
+;;     to p_j3.
+;;   - "#!=": if p_j1 is not equal to p_j2, copy p_j1
+;;     to p_j3.
+;; - p_a1: matrix 1.
+;; - p_j1: col number, matrix 1.
+;; - p_a2: matrix 2.
+;; - p_j2: col number, matrix 2.
+;; - p_a3: matrix 3.
+;; - p_j3: colnumber, matrix 3.
 ;;
 ;; Notes:
-;; - p_a1, p_a2 and p_a3 must have the same number of rows.
-;; -  See grsp-matrix-opew.
+;; - p_a1, p_a2 and p_a3 must have the same number of rows. They can be
+;;   the same matrix as well.
+;; - See grsp-matrix-opew.
 ;;
 (define (grsp-matrix-opewc p_s1 p_a1 p_j1 p_a2 p_j2 p_a3 p_j3)
   (let ((res1 0)
@@ -6362,12 +6379,14 @@
     (set! ln3 (grsp-matrix-esi 3 res2))
     (set! hn3 (grsp-matrix-esi 4 res2))    
 
+    ;; Cycle.
     (set! i1 lm1)
     (while (<= i1 hm1)
 
 	   (set! n1 (array-ref res1 i1 p_j1))
 	   (set! n2 (array-ref res2 i1 p_j2))
-
+	   (set! n3 (array-ref res3 i1 p_j3))
+	   
 	   (cond ((equal? p_s1 "#+")
 		  (set! n3 (+ n1 n2)))
 		 ((equal? p_s1 "#-")
@@ -6381,7 +6400,13 @@
 		 ((equal? p_s1 "#max")
 		  (set! n3 (max n1 n2)))
 		 ((equal? p_s1 "#min")
-		  (set! n3 (min n1 n2)))) 	 
+		  (set! n3 (min n1 n2)))
+		 ((equal? p_s1 "#=")
+		  (cond ((equal? n1 n2)
+			 (set! n3 n1))))
+		 ((equal? p_s1 "#!=")
+		  (cond ((equal? (equal? n1 n2) #f)
+			 (set! n3 n1)))))	 
 
 	   (array-set! res3 n3 i1 p_j3)	   
 	   (set! i1 (in i1)))
