@@ -1873,7 +1873,7 @@
 
 
 ;;;; grsp-ann-matrix-create - Creates a zero-filled matrix of type
-;; p_s1 with p_m1 rows.
+;; p_s1 (for anns) with p_m1 rows.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -2165,7 +2165,7 @@
     res1))
 
 
-;;;; grsp-m2datai - Casts the data of a grso3 matrix in datai format. 
+;;;; grsp-m2datai - Casts the data of a grsp3 matrix in datai format. 
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -2399,7 +2399,8 @@
 
 
 ;;;; grsp-ann-fdif - Applies grsp-matrix-fdif to matrix p_s1 of ann p_l1 and
-;; p_l2 to find differences between their matrices.
+;; p_l2 to find differences between their matrices. This is useful to study the
+;; behaviour of your ann.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
