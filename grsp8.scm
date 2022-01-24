@@ -227,7 +227,8 @@
 	    grsp-m2datai
 	    grsp-ann-datai-update
 	    grsp-datai2ann
-	    grsp-ann-fdif))
+	    grsp-ann-fdif
+	    grsp-ann-updatem))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network.
@@ -2157,10 +2158,10 @@
 	   (while (<= i1 hm1)
 		  (array-set! odtid (array-ref idata i1 0) i1 0)
 		  (array-set! odtid (array-ref odata i1 0) i1 1)
-		  (set! i1 (in i1)))
+		  (set! i1 (in i1)))))
 	   
-	   ;; Compose results.
-	   (set! res1 (list nodes conns count idata odata specs odtid datai datao))))    
+    ;; Compose results.
+    (set! res1 (list nodes conns count idata odata specs odtid datai datao)) 
 
     res1))
 
@@ -2433,4 +2434,73 @@
 
     (set! res1 (grsp-matrix-fdif a1 a2))
 
+    res1))
+
+
+;;;; grsp-matrix-updatem - Updates an ann one matrix at a time.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_s1: selected:
+;;   - "nodes".
+;;   - "conns".
+;;   - "count".
+;;   - "idata".
+;;   - "odata".
+;;   - "specs".
+;;   - "odtid".
+;;   - "datai".
+;;   - "datao".
+;; - p_a1 matrix to replace the one selected by p_s1.
+;; - p_l1: ann.
+;;
+(define (grsp-ann-updatem p_s1 p_a1 p_l1)
+  (let ((res1 '())
+	(n1 0)
+	(nodes 0)
+	(conns 0)
+	(count 0)
+	(idata 0)
+	(odata 0)
+	(specs 0)
+	(odtid 0)
+	(datai 0)
+	(datao 0))	
+
+    ;; Extract matrices and lists.
+    (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
+    (set! conns (grsp-ann-get-matrix "conns" p_l1))
+    (set! count (grsp-ann-get-matrix "count" p_l1))    
+    (set! idata (grsp-ann-get-matrix "idata" p_l1))
+    (set! odata (grsp-ann-get-matrix "odata" p_l1))
+    (set! specs (grsp-ann-get-matrix "specs" p_l1))
+    (set! odtid (grsp-ann-get-matrix "odtid" p_l1))
+    (set! datai (grsp-ann-get-matrix "datai" p_l1))
+    (set! datao (grsp-ann-get-matrix "datao" p_l1))
+
+    ;; Update matrix.
+    (cond ((equal? p_s1 "nodes")
+	   (set! nodes p_a1))
+	  ((equal? p_s1 "conns")
+	   (set! conns p_a1))	  
+	  ((equal? p_s1 "count")
+	   (set! count p_a1)) 
+	  ((equal? p_s1 "idata")
+	   (set! idata p_a1))
+	  ((equal? p_s1 "odata")
+	   (set! odata p_a1))
+	  ((equal? p_s1 "specs")
+	   (set! specs p_a1))
+	  ((equal? p_s1 "odtid")
+	   (set! odtid p_a1))
+	  ((equal? p_s1 "datai")
+	   (set! datai p_a1))
+	  ((equal? p_s1 "datao")
+	   (set! datao p_a1)))
+    
+    ;; Compose results.
+    (set! res1 (list nodes conns count idata odata specs odtid datai datao))
+    
     res1))

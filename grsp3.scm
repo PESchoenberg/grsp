@@ -6345,14 +6345,6 @@
 	(hm1 0)
 	(ln1 0)
 	(hn1 0)
-	(lm2 0)
-	(hm2 0)
-	(ln2 0)
-	(hn2 0)
-	(lm3 0)
-	(hm3 0)
-	(ln3 0)
-	(hn3 0)
 	(i1 0)
 	(n1 0)
 	(n2 0)
@@ -6363,23 +6355,14 @@
     (set! res2 (grsp-matrix-cpy p_a2))
     (set! res3 (grsp-matrix-cpy p_a3))
 	  
-    ;; Extract matrix boundaries.
+    ;; Extract matrix boundaries. It is assumed that p_a2 and
+    ;; p_a3 have the same number of rows as p_a1.
     (set! lm1 (grsp-matrix-esi 1 res1))
     (set! hm1 (grsp-matrix-esi 2 res1))
     (set! ln1 (grsp-matrix-esi 3 res1))
-    (set! hn1 (grsp-matrix-esi 4 res1))
+    (set! hn1 (grsp-matrix-esi 4 res1)) 
 
-    (set! lm2 (grsp-matrix-esi 1 res2))
-    (set! hm2 (grsp-matrix-esi 2 res2))
-    (set! ln2 (grsp-matrix-esi 3 res2))
-    (set! hn2 (grsp-matrix-esi 4 res2))
-
-    (set! lm3 (grsp-matrix-esi 1 res2))
-    (set! hm3 (grsp-matrix-esi 2 res2))
-    (set! ln3 (grsp-matrix-esi 3 res2))
-    (set! hn3 (grsp-matrix-esi 4 res2))    
-
-    ;; Cycle.
+    ;; Cycle over p_a1 rows.
     (set! i1 lm1)
     (while (<= i1 hm1)
 
