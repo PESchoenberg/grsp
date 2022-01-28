@@ -227,6 +227,7 @@
 	    grsp-m2datai
 	    grsp-ann-datai-update
 	    grsp-datai2ann
+	    grsp-ann-fdifm
 	    grsp-ann-fdif
 	    grsp-ann-updatem))
 
@@ -2399,7 +2400,7 @@
     res1))
 
 
-;;;; grsp-ann-fdif - Applies grsp-matrix-fdif to matrix p_s1 of ann p_l1 and
+;;;; grsp-ann-fdifm - Applies grsp-matrix-fdif to matrix p_s1 of ann p_l1 and
 ;; p_l2 to find differences between their matrices. This is useful to study the
 ;; behaviour of your ann.
 ;;
@@ -2421,23 +2422,52 @@
 ;; - p_l2: ann.
 ;;
 ;; Notes:
-;; - See grsp3.grsp-matrix-fdif.
+;; - See grsp3.grsp-matrix-fdif, grsp-ann-fdif.
 ;;
-(define (grsp-ann-fdif p_s1 p_l1 p_l2)
-  (let ((res1 0)
-	(a1 0)
-	(a2 0))
-   
-    ;; Extract matrices and lists.
-    (set! a1 (grsp-ann-get-matrix p_s1 p_l1))
-    (set! a2 (grsp-ann-get-matrix p_s1 p_l2))
-
-    (set! res1 (grsp-matrix-fdif a1 a2))
+(define (grsp-ann-fdifm p_s1 p_l1 p_l2)
+  (let ((res1 0))
+  
+    (set! res1 (grsp-matrix-create 0 1 1))
+    (set! res1 (grsp-matrix-fdif (grsp-ann-get-matrix p_s1 p_l1)
+				 (grsp-ann-get-matrix p_s1 p_l2)))
 
     res1))
 
 
-;;;; grsp-matrix-updatem - Updates an ann one matrix at a time.
+;; grsp-ann-fdif - Appies grsp-ann-fdifm to all matrices of a neural network.
+;; This shows changes on all ann components (difference map).
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_l1: ann, first state.
+;; - p_l2: ann, second state.
+;;
+;; Notes:
+;; - See grsp3.grsp-matrix-fdifm, grsp-ann-fdifm.
+;;
+;; Output:
+;; - A list containing difference maps (matrices) for each pair of ann matrices;
+;;   this list is a representation of the differences between two networks.
+;;
+(define (grsp-ann-fdif p_l1 p_l2)
+  (let ((res1 '()))
+
+    (set! res1 (list (grsp-ann-fdifm "nodes" p_l1 p_l2)
+		     (grsp-ann-fdifm "conns" p_l1 p_l2)			    
+		     (grsp-ann-fdifm "count" p_l1 p_l2)
+		     (grsp-ann-fdifm "idata" p_l1 p_l2)
+		     (grsp-ann-fdifm "odata" p_l1 p_l2)
+		     (grsp-ann-fdifm "specs" p_l1 p_l2)
+		     (grsp-ann-fdifm "odtid" p_l1 p_l2)
+		     (grsp-ann-fdifm "datai" p_l1 p_l2)
+		     (grsp-ann-fdifm "datao" p_l1 p_l2)))
+    
+    res1))
+
+
+;;;; grsp-ann-updatem - Updates an ann one matrix at a time.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
