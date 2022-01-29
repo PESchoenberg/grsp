@@ -6255,27 +6255,31 @@
 ;;
 ;; Output:
 ;; - A matrix of the same dimensions as p_a1 and p_a2 if they have the same
-;;   diemntionality, containing elements with value 1 wherever the elements
+;;   size, containing elements with value 1 wherever the elements
 ;;   of the same coordinates in p_a1 and p_a2 are different, or 0 otherwise.
 ;; - A matrix of the same dimensions as p_a1, with NaN as values.
 ;;
 (define (grsp-matrix-fdif p_a1 p_a2)
   (let ((res1 0)
+	(res2 0)
+	(res3 0)
 	(lm1 0)
 	(hm1 0)
 	(ln1 0)
 	(hn1 0)
 	(i1 0)
 	(j1 0)
-	(a1 0)
-	(a2 0)
 	(n1 0)
-	(n2 0))
+	(n2 0)
+	(n3 0)
+	(n4 0))
 
     (set! n2 (grsp-nan))
     
     ;; Create safety matrix. 
     (set! res1 (grsp-matrix-cpy p_a1))
+    (set! res2 (grsp-matrix-cpy p_a2))
+    (set! res3 (grsp-matrix-cpy res1))
 	  
     ;; Extract the boundaries of the first matrix.***
     (set! lm1 (grsp-matrix-esi 1 res1))
@@ -6283,34 +6287,34 @@
     (set! ln1 (grsp-matrix-esi 3 res1))
     (set! hn1 (grsp-matrix-esi 4 res1))
     
-    ;; Find if matrixes have the same dimensions.
-    (cond ((equal? (grsp-matrix-is-samedim p_a1 p_a2) #t)
+    ;; Find if matrices have the same dimensions.
+    (cond ((equal? (grsp-matrix-is-samedim res1 res2) #t)
 	   (set! i1 lm1)
 	   (while (<= i1 hm1)
 		  
 		  (set! j1 ln1)
 		  (while (<= j1 hn1)
 
-			 (set! a1 (array-ref p_a1 i1 j1))
-			 (set! a2 (array-ref p_a2 i1 j1))
-			 (cond ((= a1 a2)
-				(array-set! res1 0 i1 j1))
-			       (else (array-set! res1 1 i1 j1)))
+			 (set! n3 (array-ref res1 i1 j1))
+			 (set! n4 (array-ref res2 i1 j1))
+			 (cond ((= n3 n4)
+				(array-set! res3 0 i1 j1)) ; res1
+			       (else (array-set! res3 1 i1 j1))) ; res1
 
 			 (set! j1 (in j1)))
 
 		  (set! i1 (in i1))))
-	  (else (set! res1 (grsp-matrix-fill res1 n2))))
+	  (else (set! res3 (grsp-matrix-fill res3 n2))))
 			     
-    res1))
+    res3))
 
 
 ;;;; grsp-matrix-opewc - Apply p_s1 to columns p_j1 and p_j2 of matrices
-;; p_a1 and p_a2 respectively, and place the results in column p_j3 of
+;; p_a1 and p_a2 respectively and place the results in column p_j3 of
 ;; matrix p_a3. This is a no-frills, quick-and-dirt function that I made
-;; to test some stuff. Rhere are certainly better solutions. This function
+;; to test some stuff. There are certainly better solutions. This function
 ;; provides an easy way to operate element-wise between columns of a single
-;; matrix or varius matrices.
+;; matrix or various matrices.
 ;;
 ;; Arguments:
 ;; - p_s1:
