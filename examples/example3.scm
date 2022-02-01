@@ -59,63 +59,61 @@
 (define mutations_desired 1)
 (define nodes_in_first_layer 2)
 (define intermediate_layers 1)
-(define nodes_in_intermediate_layers 1)
+(define nodes_in_intermediate_layers 2)
 (define activation_function 2)
 (define nodes_in_last_layer 1)
+(define iterations_desired 2)
+(define data_samples 10)
+(define L2 '())
+(define L3 '())
 
 ;; Main.
 (clear)
 
+;; Create data matrix. These steps produce a matrix of rows  qual to data_samples
+;; and 3 columns, then places a copy of the values of the first column into the
+;; second one and then sums those values and puts the results in the third
+;; column.
+(define X (grsp-matrix-create "#n0[-m:+m]" data_samples 3))
+(set! X (grsp-matrix-opewc "#=" X 0 X 0 X 1))
+(set! X (grsp-matrix-opewc "#+" X 0 X 1 X 2))
+
 ;; Create ann.
-(define N (grsp-ann-net-create-ffv basic_ann
-				   mutations_desired
-				   nodes_in_first_layer
-				   intermediate_layers
-				   nodes_in_intermediate_layers
-				   activation_function
-				   nodes_in_last_layer))
+(define L1 (grsp-ann-net-create-ffv basic_ann
+				    mutations_desired
+				    nodes_in_first_layer
+				    intermediate_layers
+				    nodes_in_intermediate_layers
+				    activation_function
+				    nodes_in_last_layer))
 
-;; Number of evaluation iterations.
-(define iters 1)
+;; Extract idata from ann.
+(define idata (grsp-ann-get-matrix "idata" L1))
 
-;; Define nodes.
-(define nodes (grsp-ann-get-matrix "nodes" N))
+;; Extract datai from ann.
+(define datai (grsp-ann-get-matrix "datai" L1))
 
-;; Define conns.
-(define conns (grsp-ann-get-matrix "conns" N))
+;; Extract odata.
+(define odata (grsp-ann-get-matrix "odata" L1))
 
-;; Define count.
-(define count (grsp-ann-get-matrix "count" N))
-
-;; Define idata and update values.
-(define idata (grsp-ann-idata-create "#rprnd" 2))
-(array-set! idata 0 0 0) ;; Provides input for conn id = 0.
-(array-set! idata 1 1 0) ;; Provides input for conn id = 1.
-
-;; Define odata.
-(define odata (grsp-ann-get-matrix "odata" N))
-
-;; Define datai.
-
-;; Define datao.
-
-; Define input matrix.
-
-;; Update ann.
-(cond ((equal? basic_ann #t)
-       (set! N (list nodes conns count odata)))
-      (else (set! N (list nodes conns count idata odata))))
+;; Update ann with new datai created from X.
+(set! L1 (grsp-ann-datai-update X L1 0))
 
 ;; Display ann data.
 (grsp-ld "State init:")
-(grsp-lal-dev #t N)
+(grsp-lal-dev #t L1)
 
 ;; Evaluate.
-(set! N (grsp-ann-net-miter "#no" N iters))
+(set! L2 (grsp-ann-net-miter "#no" L1 iterations_desired))
+(set! L3 (grsp-ann-fdif L1 L2))
 
 ;; Show ann after evaluation.
 (grsp-ld "State after eval:")
-(grsp-lal-dev #t N)
-	 
+(grsp-lal-dev #t L2)
+
+;; Show differences between original and processed networks.
+(grsp-ld "Diff map:")
+(grsp-lal-dev #t L3)
+
 	 
 
