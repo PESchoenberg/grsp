@@ -423,10 +423,8 @@
     ;; Eval.
     (while (< i1 p_n1)
 	   (set! res1 (grsp-ann-nodes-eval res1))
-	   ;;(set! res1 (grsp-ann-net-reconf p_s1 res1))
+	   (set! res1 (grsp-ann-net-reconf p_s1 res1))
 	   (set! i1 (in i1)))
-    
-    ;; Compose results.
 
     res1))
 
@@ -1329,7 +1327,7 @@
 	(n9 0)
 	(m5 0))
 
-    ;; First check if the node exists.
+    ;; First check if the node exists. ***
     ;; - If it does exist, then process.
     ;; - If it does not exist then kill any leftover connection (set status
     ;;   to zero).
@@ -1470,7 +1468,7 @@
 ;;   ann.
 ;;
 ;; Output:
-;; - Updated ann.
+;; - Updated ann.***
 ;;
 (define (grsp-ann-nodes-eval p_l1)
   (let ((res1 '())
@@ -1490,7 +1488,7 @@
 	(datai 0)
 	(datao 0))
 
-    (set! res1 p_l1)
+    (set! res1 p_l1)   
     
     ;; Extract matrices and lists.
     (set! nodes (grsp-ann-get-matrix "nodes" res1))
@@ -1521,7 +1519,7 @@
 	   
 	   (set! i1 (in i1)))
 	   
-    ;; Update iteration counter.
+    ;; Update iteration counter.***
     (grsp-ann-counter-upd count 2)
     
     ;; Compose results.
@@ -2167,7 +2165,7 @@
     res1))
 
 
-;;;; grsp-m2datai - Casts the data of a grsp3 matrix in datai format. 
+;;;; grsp-m2datai - Casts the data of a grsp3 matrix as datai format. 
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -2182,7 +2180,7 @@
 ;; - See grsp-ann-datai-update.
 ;;
 ;; Output:
-;; - grsp8 ann with an updated datai table.
+;; - Updated grsp8 ann datai table.
 ;;
 (define (grsp-m2datai p_a1 p_id p_di p_n1)
   (let ((res1 0)
