@@ -56,13 +56,14 @@
 
 ;; Vars.
 (define basic_ann #f) ;; #t to return a network list only composed by nodes, conns and count.
-(define mutations_desired 1)
+(define mth #f)
 (define nodes_in_first_layer 2)
 (define intermediate_layers 1)
 (define nodes_in_intermediate_layers 2)
 (define activation_function 2)
 (define nodes_in_last_layer 1)
-(define iterations_desired 2)
+(define iterations_desired 1)
+(define mutations_desired 0)
 (define data_samples 10)
 (define L2 '())
 (define L3 '())
@@ -70,7 +71,7 @@
 ;; Main.
 (clear)
 
-;; Create data matrix. These steps produce a matrix of rows  qual to data_samples
+;; Create data matrix. These steps produce a matrix of rows equal to data_samples
 ;; and 3 columns, then places a copy of the values of the first column into the
 ;; second one and then sums those values and puts the results in the third
 ;; column.
@@ -96,22 +97,29 @@
 ;; Extract odata.
 (define odata (grsp-ann-get-matrix "odata" L1))
 
-;; Update ann with new datai created from X.
+;; Update ann with new datai matrix created from X.
 (set! L1 (grsp-ann-datai-update X L1 0))
 
-;; Display ann data.
+;; Display ann data (initial state).
 (grsp-ld "State init:")
 (grsp-lal-dev #t L1)
 
 ;; Evaluate.
-(set! L2 (grsp-ann-net-miter "#no" L1 iterations_desired))
-(set! L3 (grsp-ann-fdif L1 L2))
+(set! L2 (list-copy L1))
+(set! L2 (grsp-ann-net-miter-omth mth
+				  "#no"
+				  L2
+				  iterations_desired
+				  mutations_desired))
 
-;; Show ann after evaluation.
+;; Show ann data after evaluation.
 (grsp-ld "State after eval:")
 (grsp-lal-dev #t L2)
 
-;; Show differences between original and processed networks.
+;; Find differences.
+(set! L3 (grsp-ann-fdif L1 L2))
+
+;; Show data differences between original and processed networks.
 (grsp-ld "Diff map:")
 (grsp-lal-dev #t L3)
 

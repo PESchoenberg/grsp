@@ -6270,11 +6270,8 @@
 	(i1 0)
 	(j1 0)
 	(n1 0)
-	(n2 0)
 	(n3 0)
 	(n4 0))
-
-    (set! n2 (grsp-nan))
     
     ;; Create safety matrix. 
     (set! res1 (grsp-matrix-cpy p_a1))
@@ -6298,13 +6295,13 @@
 			 (set! n3 (array-ref res1 i1 j1))
 			 (set! n4 (array-ref res2 i1 j1))
 			 (cond ((= n3 n4)
-				(array-set! res3 0 i1 j1)) ; res1
-			       (else (array-set! res3 1 i1 j1))) ; res1
+				(array-set! res3 0 i1 j1))
+			       (else (array-set! res3 1 i1 j1)))
 
 			 (set! j1 (in j1)))
 
 		  (set! i1 (in i1))))
-	  (else (set! res3 (grsp-matrix-fill res3 n2))))
+	  (else (set! res3 (grsp-matrix-fill res3 (grsp-nan)))))
 			     
     res3))
 
