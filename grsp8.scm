@@ -195,7 +195,7 @@
   #:use-module (ice-9 threads)  
   #:export (grsp-ann-net-create-000
 	    grsp-ann-net-create-ffv
-	    grsp-ann-net-miter
+	    grsp-ann-net-miter-omth
 	    grsp-ann-net-reconf
 	    grsp-ann-net-preb
 	    grsp-ann-counter-upd
@@ -401,28 +401,44 @@
     res1))
 
 
-;;;; grsp-ann-net-miter - Iterate evaluations of the network p_n1 times.
+;;;; grsp-ann-net-miter-omth - Iterate evaluations of the network p_n1 times.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
 ;;
 ;; Arguments:
+;; - p_b1:
+;;   - #t: use mutithreading.
+;;   - #f: do not use multithreading.
 ;; - p_s1: reconfiguration method. See grsp-ann-net-reconf for details.
 ;; - p_l1: ann (list).
 ;; - p_n1: iterations.
+;; - p_n2: mutations desired after each iteration.
 ;;
 ;; Output:
 ;; - p_l1 updated.
 ;;
-(define (grsp-ann-net-miter p_s1 p_l1 p_n1)
+(define (grsp-ann-net-miter-omth p_b1 p_s1 p_l1 p_n1 p_n2)
   (let ((res1 '())
-	(i1 0))
+	(i1 0)
+	(i2 0))
 
     (set! res1 p_l1)
     
     ;; Eval.
     (while (< i1 p_n1)
+	   ;;(display "\nMiter ")
+	   ;;(display i1)
+	   ;;(display "\n")
 	   (set! res1 (grsp-ann-nodes-eval res1))
+
+	   ;; Mutate.
+	   (set! i2 0)
+	   (while (< i2 p_n2)
+		  
+		  (set! res1 (grsp-ann-net-nmutate-omth p_b1 res1))
+		  (set! i2 (in i2)))
+	   
 	   (set! res1 (grsp-ann-net-reconf p_s1 res1))
 	   (set! i1 (in i1)))
 
@@ -1327,11 +1343,13 @@
 	(n9 0)
 	(m5 0))
 
-    ;; First check if the node exists. ***
+    ;; First check if the node exists.
     ;; - If it does exist, then process.
     ;; - If it does not exist then kill any leftover connection (set status
     ;;   to zero).
     (set! res1 (grsp-matrix-row-select "#=" p_a1 0 p_id))
+    ;; ***
+    (display res1)
     (set! b1 (grsp-matrix-is-empty res1))
     (cond ((equal? b1 #t) ;; If node exists.
 
@@ -1468,7 +1486,7 @@
 ;;   ann.
 ;;
 ;; Output:
-;; - Updated ann.***
+;; - Updated ann.
 ;;
 (define (grsp-ann-nodes-eval p_l1)
   (let ((res1 '())
@@ -1510,17 +1528,20 @@
     (set! ln1 (grsp-matrix-esi 3 nodes))
     (set! hn1 (grsp-matrix-esi 4 nodes)) 
     
-    ;; Evaluate nodes and its input and output connections.
+    ;; Evaluate nodes and their input and output connections.
     (set! i1 lm1)
     (while (<= i1 hm1)
 	   
 	   (set! id (array-ref nodes i1 0))
+	   (display "\nNodes ")
+	   (display id)
+	   (display "\n")
 	   (grsp-ann-node-eval id nodes conns count)
 	   
 	   (set! i1 (in i1)))
 	   
-    ;; Update iteration counter.***
-    (grsp-ann-counter-upd count 2)
+    ;; Update iteration counter.
+    (grsp-ann-counter-upd count 2)   
     
     ;; Compose results.
     (set! res1 (list nodes conns count idata odata specs odtid datai datao))
@@ -2433,7 +2454,7 @@
 
 
 ;; grsp-ann-fdif - Appies grsp-ann-fdifm to all matrices of a neural network.
-;; This shows changes on all ann components (difference map).
+;; This shows changes on all ann components (diff map).
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -2450,22 +2471,34 @@
 ;;   this list is a representation of the differences between two networks.
 ;;
 (define (grsp-ann-fdif p_l1 p_l2)
-  (let ((res1 '()))
+  (let ((res1 '())
+	(nodes 0)
+	(conns 0)
+	(count 0)
+	(idata 0)
+	(odata 0)
+	(specs 0)
+	(odtid 0)
+	(datai 0)
+	(datao 0))	
 
-    (set! res1 (list (grsp-ann-fdifm "nodes" p_l1 p_l2)
-		     (grsp-ann-fdifm "conns" p_l1 p_l2)			    
-		     (grsp-ann-fdifm "count" p_l1 p_l2)
-		     (grsp-ann-fdifm "idata" p_l1 p_l2)
-		     (grsp-ann-fdifm "odata" p_l1 p_l2)
-		     (grsp-ann-fdifm "specs" p_l1 p_l2)
-		     (grsp-ann-fdifm "odtid" p_l1 p_l2)
-		     (grsp-ann-fdifm "datai" p_l1 p_l2)
-		     (grsp-ann-fdifm "datao" p_l1 p_l2)))
+    (set! nodes (grsp-ann-fdifm "nodes" p_l1 p_l2))
+    (set! conns (grsp-ann-fdifm "conns" p_l1 p_l2))		    
+    (set! count (grsp-ann-fdifm "count" p_l1 p_l2))
+    (set! idata (grsp-ann-fdifm "idata" p_l1 p_l2))
+    (set! odata (grsp-ann-fdifm "odata" p_l1 p_l2))
+    (set! specs (grsp-ann-fdifm "specs" p_l1 p_l2))
+    (set! odtid (grsp-ann-fdifm "odtid" p_l1 p_l2))
+    (set! datai (grsp-ann-fdifm "datai" p_l1 p_l2))
+    (set! datao (grsp-ann-fdifm "datao" p_l1 p_l2))
+
+    ;; Compose results.
+    (set! res1 (list nodes conns count idata odata specs odtid datai datao))
     
     res1))
 
 
-;;;; grsp-ann-updatem - Updates an ann one matrix at a time.
+;;;; grsp-ann-updatem - Updates ann p_l1 one matrix at a time.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
