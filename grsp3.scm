@@ -5840,10 +5840,10 @@
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-empty p_a1)
-  (let ((res1 #t))
+  (let ((res1 #t)) ;; *** t f
 
     (cond ((> (grsp-matrix-total-elements p_a1) 0)
-	   (set! res1 #t)))
+	   (set! res1 #f))) 
 
     res1))
 

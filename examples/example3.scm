@@ -63,10 +63,12 @@
 (define activation_function 2)
 (define nodes_in_last_layer 1)
 (define iterations_desired 1)
-(define mutations_desired 0)
+(define mutations_desired 1)
 (define data_samples 10)
+(define verbosity #t)
 (define L2 '())
 (define L3 '())
+(define res1 0)
 
 ;; Main.
 (clear)
@@ -88,14 +90,8 @@
 				    activation_function
 				    nodes_in_last_layer))
 
-;; Extract idata from ann.
-(define idata (grsp-ann-get-matrix "idata" L1))
-
 ;; Extract datai from ann.
 (define datai (grsp-ann-get-matrix "datai" L1))
-
-;; Extract odata.
-(define odata (grsp-ann-get-matrix "odata" L1))
 
 ;; Update ann with new datai matrix created from X.
 (set! L1 (grsp-ann-datai-update X L1 0))
@@ -106,7 +102,8 @@
 
 ;; Evaluate.
 (set! L2 (list-copy L1))
-(set! L2 (grsp-ann-net-miter-omth mth
+(set! L2 (grsp-ann-net-miter-omth verbosity
+				  mth
 				  "#no"
 				  L2
 				  iterations_desired
@@ -123,5 +120,14 @@
 (grsp-ld "Diff map:")
 (grsp-lal-dev #t L3)
 
-	 
+;; Show values of output nodes.
+;; Extract odata.
+(define datao1 (grsp-ann-get-matrix "datao" L1))
+(define datao2 (grsp-ann-get-matrix "datao" L2))
+(display "\n L1 datao\n")
+(display datao1)
+(display "\n L2 datao\n")
+(display datao2)
+(display "\n")
+
 
