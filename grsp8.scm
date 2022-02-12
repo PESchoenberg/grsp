@@ -229,7 +229,8 @@
 	    grsp-datai2ann
 	    grsp-ann-fdifm
 	    grsp-ann-fdif
-	    grsp-ann-updatem))
+	    grsp-ann-updatem
+	    grsp-nodes2odata))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network.
@@ -407,6 +408,7 @@
 ;; - function, ann, neural network.
 ;;
 ;; Arguments:
+;; - p_b3: #t for verbosity.
 ;; - p_b1:
 ;;   - #t: use mutithreading.
 ;;   - #f: do not use multithreading.
@@ -418,7 +420,7 @@
 ;; Output:
 ;; - p_l1 updated.
 ;;
-(define (grsp-ann-net-miter-omth p_b1 p_s1 p_l1 p_n1 p_n2)
+(define (grsp-ann-net-miter-omth p_b3 p_b1 p_s1 p_l1 p_n1 p_n2)
   (let ((res1 '())
 	(i1 0)
 	(i2 0))
@@ -427,10 +429,8 @@
     
     ;; Eval.
     (while (< i1 p_n1)
-	   ;;(display "\nMiter ")
-	   ;;(display i1)
-	   ;;(display "\n")
-	   (set! res1 (grsp-ann-nodes-eval res1))
+
+	   (set! res1 (grsp-ann-nodes-eval p_b3 res1))
 
 	   ;; Mutate.
 	   (set! i2 0)
@@ -1319,6 +1319,7 @@
 ;; - function, ann, neural network.
 ;;
 ;; Arguments:
+;; - p_b3: #t for verbosity.
 ;; - p_id: node id.
 ;; - p_a1: matrix (nodes).
 ;; - p_a2: matrix (conns).
@@ -1327,7 +1328,7 @@
 ;; Notes:
 ;; -  Keep in mind TL0 and TL1 while using this function.
 ;;
-(define (grsp-ann-node-eval p_id p_a1 p_a2 p_a3)
+(define (grsp-ann-node-eval p_b3 p_id p_a1 p_a2 p_a3)
   (let ((res1 0)
 	(res2 0)
 	(res3 0)
@@ -1348,19 +1349,34 @@
     ;; - If it does not exist then kill any leftover connection (set status
     ;;   to zero).
     (set! res1 (grsp-matrix-row-select "#=" p_a1 0 p_id))
-    ;; ***
-    (display res1)
+
+    (cond ((equal? p_b3 #t)
+	   (display "\n Node row\n")
+	   (display res1)
+	   (display "\n")))
+    
     (set! b1 (grsp-matrix-is-empty res1))
-    (cond ((equal? b1 #t) ;; If node exists.
+    (cond ((equal? b1 #f)
 
 	   ;; If the node has incoming connections then we need to process them.
 	   (set! res2 (grsp-ann-conns-of-node "#to" p_a2 p_id))
+	   
+	   (cond ((equal? p_b3 #t)
+		  (display "\n Incoming connections\n")
+		  (display res2)
+		  (display "\n")))
+		 
 	   (set! b2 (grsp-matrix-is-empty res2))
 	   (cond ((equal? b2 #f)
 		  (set! n1 (grsp-matrix-opio "#+c" res2 5))
 		  (set! n2 (grsp-matrix-opio "#+c" res2 7))
 		  (set! n6 (+ n1 n2))
 		  (array-set! res1 n6 0 6))) ;; Value.
+
+	   (cond ((equal? p_b3 #t)
+		  (display "\n res1 (2)\n")
+		  (display res1)
+		  (display "\n")))
 	   
 	   ;; Apply activation function.
 	   (set! n5 (array-ref res1 0 5)) ;; Bias.
@@ -1373,11 +1389,17 @@
 	   ;; Select activation function and calculate.
 	   (set! l1 (list n6))
 	   (set! m5 (grsp-ann-actifun n7 l1))
+
+	   (cond ((equal? p_b3 #t)
+		  (display "\n Result of activation function\n")
+		  (display m5)
+		  (display "\n")))
 	   
 	   ;; Process output connections. These receive the output value of the
 	   ;; node as it is.
+	   
 	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 0 p_id 5 m5))
-
+	   
 	   ;; Reset element 5 of the input nodes going to node p_id to zero once
 	   ;; the data has been passed to the output connections.
 	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 4 p_id 5 0))
@@ -1390,7 +1412,12 @@
 	  ((equal? b1 #f) ;; If node does not exist.
 	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 3 p_id 1 0))
 	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 4 p_id 1 0))))
-	   
+
+	   (cond ((equal? p_b3 #t)
+		  (display "\n Value of p_a2 after eval\n")
+		  (display p_a2)
+		  (display "\n")))
+    
     res4))
 
 
@@ -1477,6 +1504,7 @@
 ;; - function, ann, neural network.
 ;;
 ;; Arguments:
+;; - p_b3: #t for verbosity.
 ;; - p_l1: ann.
 ;;
 ;; Notes:
@@ -1488,8 +1516,9 @@
 ;; Output:
 ;; - Updated ann.
 ;;
-(define (grsp-ann-nodes-eval p_l1)
+(define (grsp-ann-nodes-eval p_b3 p_l1)
   (let ((res1 '())
+	(res2 0)
 	(lm1 0)
 	(hm1 0)
 	(ln1 0)
@@ -1533,15 +1562,21 @@
     (while (<= i1 hm1)
 	   
 	   (set! id (array-ref nodes i1 0))
-	   (display "\nNodes ")
-	   (display id)
-	   (display "\n")
-	   (grsp-ann-node-eval id nodes conns count)
+	   (cond ((equal? p_b3 #t)
+		  (display "\nNode number ")
+		  (display id)
+		  (display "\n")))
+	   
+	   (grsp-ann-node-eval p_b3 id nodes conns count)
 	   
 	   (set! i1 (in i1)))
 	   
     ;; Update iteration counter.
     (grsp-ann-counter-upd count 2)   
+
+    ;; Pass output to odata.
+    ;; ***
+    (set! odata (grsp-nodes2odata nodes odata))
     
     ;; Compose results.
     (set! res1 (list nodes conns count idata odata specs odtid datai datao))
@@ -2565,3 +2600,63 @@
     (set! res1 (list nodes conns count idata odata specs odtid datai datao))
     
     res1))
+
+
+;;;; Casts the data contained in output nodes to odata table.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_a1: nodes table.
+;; - p_a2: odata table.
+;;
+;; Output:
+;; - odata table with output data.
+;;
+(define (grsp-nodes2odata p_a1 p_a2)
+  (let ((res1 0)
+	(res2 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(i1 0))
+
+;;     - Col 0: id.
+;;     - Col 1: status.
+;;       - 0: dead.
+;;       - 1: inactive.
+;;       - 2: active.
+;;     - Col 2: type.
+;;       - 0: input.
+;;       - 1: neuron.
+;;       - 2: output.
+;;     - Col 3: layer.
+;;     - Col 4: layer pos.
+;;     - Col 5: bias.
+;;     - Col 6: output value.
+;;     - Col 7: associated function.
+;;     - Col 8: evol.
+;;     - Col 9: weight.
+;;     - Col 10: iter.
+    
+;;     - Col 0: id of each output node.
+;;     - Col 1: layer.
+;;     - Col 2: layer pos.
+;;     - Col 3: number (result).
+;;     - Col 4: control.
+;;       - 0: default.
+;;       - 1: iteration end.
+;;       - 2: delete.
+
+    (set! res2 (grsp-matrix-row-select "#=" nodes 2 2))
+
+    ;; Loop over res2 and pass relevant data from each row to odata.
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+
+	   (set! i1 (in i1)))
+    
+    res1))
+
