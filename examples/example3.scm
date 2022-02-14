@@ -97,11 +97,13 @@
 (set! L1 (grsp-ann-datai-update X L1 0))
 
 ;; Display ann data (initial state).
-(grsp-ld "State init:")
+(grsp-ld "State init (L1):")
 (grsp-lal-dev #t L1)
 
 ;; Evaluate.
 (set! L2 (list-copy L1))
+(grsp-ld "State init (L2):")
+(grsp-lal-dev #t L2)
 (set! L2 (grsp-ann-net-miter-omth verbosity
 				  mth
 				  "#no"

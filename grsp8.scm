@@ -230,7 +230,8 @@
 	    grsp-ann-fdifm
 	    grsp-ann-fdif
 	    grsp-ann-updatem
-	    grsp-nodes2odata))
+	    grsp-nodes2odata
+	    grsp-odata2datao))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network.
@@ -427,19 +428,22 @@
 
     (set! res1 p_l1)
     
-    ;; Eval.
+    ;; Eval loop.
     (while (< i1 p_n1)
 
+	   ;; Evaluate nodes.
 	   (set! res1 (grsp-ann-nodes-eval p_b3 res1))
 
-	   ;; Mutate.
+	   ;; Mutate ann.
 	   (set! i2 0)
 	   (while (< i2 p_n2)
 		  
 		  (set! res1 (grsp-ann-net-nmutate-omth p_b1 res1))
 		  (set! i2 (in i2)))
-	   
+
+	   ;; Reconfigure ann.
 	   (set! res1 (grsp-ann-net-reconf p_s1 res1))
+	   
 	   (set! i1 (in i1)))
 
     res1))
@@ -1558,6 +1562,7 @@
     (set! hn1 (grsp-matrix-esi 4 nodes)) 
     
     ;; Evaluate nodes and their input and output connections.
+    ;; ***
     (set! i1 lm1)
     (while (<= i1 hm1)
 	   
@@ -1575,8 +1580,10 @@
     (grsp-ann-counter-upd count 2)   
 
     ;; Pass output to odata.
-    ;; ***
     (set! odata (grsp-nodes2odata nodes odata))
+
+    ;; Add newest odata to datao.
+    (set! datao (grsp-odata2datao odata datao))
     
     ;; Compose results.
     (set! res1 (list nodes conns count idata odata specs odtid datai datao))
@@ -2617,46 +2624,125 @@
 (define (grsp-nodes2odata p_a1 p_a2)
   (let ((res1 0)
 	(res2 0)
+	(res3 0)
 	(lm1 0)
 	(hm1 0)
 	(ln1 0)
 	(hn1 0)
-	(i1 0))
+	(lm2 0)
+	(hm2 0)
+	(ln2 0)
+	(hn2 0)
+	(n2 0)
+	(i1 0)
+	(i2 0))
 
-;;     - Col 0: id.
-;;     - Col 1: status.
-;;       - 0: dead.
-;;       - 1: inactive.
-;;       - 2: active.
-;;     - Col 2: type.
-;;       - 0: input.
-;;       - 1: neuron.
-;;       - 2: output.
-;;     - Col 3: layer.
-;;     - Col 4: layer pos.
-;;     - Col 5: bias.
-;;     - Col 6: output value.
-;;     - Col 7: associated function.
-;;     - Col 8: evol.
-;;     - Col 9: weight.
-;;     - Col 10: iter.
+    ;; Create safety matrices. 
+    (set! res1 (grsp-matrix-cpy p_a1))
+    (set! res2 (grsp-matrix-cpy p_a2))
+      
+    (set! res1 (grsp-matrix-row-select "#=" res1 2 2))
+
+    ;; Extract matrix boundaries.
+    (set! lm1 (grsp-matrix-esi 1 res1))
+    (set! hm1 (grsp-matrix-esi 2 res1))
+    (set! ln1 (grsp-matrix-esi 3 res1))
+    (set! hn1 (grsp-matrix-esi 4 res1))
+
+    (set! lm2 (grsp-matrix-esi 1 res2))
+    (set! hm2 (grsp-matrix-esi 2 res2))
+    (set! ln2 (grsp-matrix-esi 3 res2))
+    (set! hn2 (grsp-matrix-esi 4 res2))     
     
-;;     - Col 0: id of each output node.
-;;     - Col 1: layer.
-;;     - Col 2: layer pos.
-;;     - Col 3: number (result).
-;;     - Col 4: control.
-;;       - 0: default.
-;;       - 1: iteration end.
-;;       - 2: delete.
-
-    (set! res2 (grsp-matrix-row-select "#=" nodes 2 2))
-
     ;; Loop over res2 and pass relevant data from each row to odata.
     (set! i1 lm1)
-    (while (<= i1 hm1)
+    (set! i2 lm2)
+    (while (<= i2 hm2)
 
+	   ;; On iteration end, change the control value to 1.
+	   (cond ((= i1 hm1)
+		  (set! n2 1))
+		 (else (set! n2 0)))		  
+	   
+	   (array-set! res2 (array-ref res1 i1 0) i2 0) ;; Id of output node.
+	   (array-set! res2 (array-ref res1 i1 3) i2 1) ;; Layer.
+	   (array-set! res2 (array-ref res1 i1 4) i2 2) ;; Layer pos.
+	   (array-set! res2 (array-ref res1 i1 6) i2 3) ;; Result.
+	   (array-set! res2 n2 i2 4) ;; Control.
+
+	   (set! i2 (in i2))
 	   (set! i1 (in i1)))
     
-    res1))
+    res2))
 
+
+;;;; Adds the most recent data from odata (one row or record obtained from the
+;; evaluation of the nodes) to datao (table containing the results of all
+;; evaluations performed so far.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_a1: odata table.
+;; - p_a2: datao table.
+;;
+;; Output:
+;; - datao table with additional rows.
+;;
+(define (grsp-odata2datao p_a1 p_a2)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(lm1 0)
+	(hm1 0)
+	(ln1 0)
+	(hn1 0)
+	(lm2 0)
+	(hm2 0)
+	(ln2 0)
+	(hn2 0)
+	(n2 0)
+	(i1 0)
+	(i2 0)
+	(l2 '(0 0 0 0 0 0)))
+
+    ;; Create safety matrices. 
+    (set! res1 (grsp-matrix-cpy p_a1))
+    (set! res2 (grsp-matrix-cpy p_a2))
+
+    ;; Extract matrix boundaries.
+    (set! lm1 (grsp-matrix-esi 1 res1))
+    (set! hm1 (grsp-matrix-esi 2 res1))
+    (set! ln1 (grsp-matrix-esi 3 res1))
+    (set! hn1 (grsp-matrix-esi 4 res1))
+
+    (set! lm2 (grsp-matrix-esi 1 res2))
+    (set! hm2 (grsp-matrix-esi 2 res2))
+    (set! ln2 (grsp-matrix-esi 3 res2))
+    (set! hn2 (grsp-matrix-esi 4 res2))    
+
+    (set! i1 lm1)
+    (set! i2 lm2)
+    (while (<= i1 hm1)
+
+	   ;; Add a row in res2
+	   (set! res2 (grsp-matrix-subexp res2 1 0))
+	   (set! hm2 (grsp-matrix-esi 2 res2))
+
+	   ;; Copy data from res1.
+	   (array-set! res2 (array-ref res1 i1 0) i2 0)
+	   (array-set! res2 (array-ref res1 i1 1) i2 1)
+	   (array-set! res2 (array-ref res1 i1 2) i2 2)
+	   (array-set! res2 (array-ref res1 i1 3) i2 3)
+	   (array-set! res2 (array-ref res1 i1 4) i2 4)
+
+	   (set! i2 (in i2))
+	   (set! i1 (in i1)))
+
+    ;;(set! res2 (grsp-matrix-subdell res2 lm2 l2))
+    ;;(display "\n++++++++++++++++++++++++++++\n")
+    ;;(display res2)
+    ;;(display "\n++++++++++++++++++++++++++++\n")
+    
+    res2))

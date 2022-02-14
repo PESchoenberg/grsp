@@ -6118,7 +6118,7 @@
     res1))
 
 
-;;;; grsp-matrix-subdell - Deletes row p_n1 from matrix p_a1 if its
+;;;; grsp-matrix-subdell - Deletes row p_m1 from matrix p_a1 if its
 ;; elements are respetively equal, in the same order, to those in list p_l1. 
 ;;
 ;; Keywords:
@@ -6126,6 +6126,7 @@
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
+;; - p_m1: row number.
 ;; - p_l1: list.
 ;;
 (define (grsp-matrix-subdell p_a1 p_m1 p_l1)
@@ -6257,7 +6258,8 @@
 ;; - A matrix of the same dimensions as p_a1 and p_a2 if they have the same
 ;;   size, containing elements with value 1 wherever the elements
 ;;   of the same coordinates in p_a1 and p_a2 are different, or 0 otherwise.
-;; - A matrix of the same dimensions as p_a1, with NaN as values.
+;; - A matrix of the same dimensions as p_a1, with NaN as values, if matrices
+;;   have different sizes.
 ;;
 (define (grsp-matrix-fdif p_a1 p_a2)
   (let ((res1 0)
