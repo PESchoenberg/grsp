@@ -431,12 +431,24 @@
     ;; Eval loop.
     (while (< i1 p_n1)
 
+	   ;; If verbosity is on, present iteration data.
+	   (cond ((equal? p_b3 #t)
+		  (display "\n ------------------------------------------ Iteration number: ")
+		  (display i1)
+		  (display "\n")))
+	   
 	   ;; Evaluate nodes.
 	   (set! res1 (grsp-ann-nodes-eval p_b3 res1))
 
 	   ;; Mutate ann.
 	   (set! i2 0)
 	   (while (< i2 p_n2)
+
+		  ;; If verbosity is on, present mutation data.
+		  (cond ((equal? p_b3 #t)
+			 (display "\n Mutation iteration ")
+			 (display i2)
+			 (display "\n")))
 		  
 		  (set! res1 (grsp-ann-net-nmutate-omth p_b1 res1))
 		  (set! i2 (in i2)))
@@ -1316,8 +1328,8 @@
 
 
 ;;;; grsp-ann-node-eval - Evaluates node p_id and its related connections. It
-;; reads the input connections, applies the specified functon and exports the
-;; result to the output connections.
+;; reads the input connections, applies the specified activation functon and
+;; exports the result to the output connections.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -1349,24 +1361,41 @@
 	(m5 0))
 
     ;; First check if the node exists.
-    ;; - If it does exist, then process.
+    ;; - If it does exist, then evaluate.
     ;; - If it does not exist then kill any leftover connection (set status
     ;;   to zero).
     (set! res1 (grsp-matrix-row-select "#=" p_a1 0 p_id))
+  
+    (set! b1 (grsp-matrix-is-empty res1))
 
+    ;; If verbosity is on, present node data.
     (cond ((equal? p_b3 #t)
-	   (display "\n Node row\n")
+	   (display "\n +++ 1.1.1 Node row\n")
 	   (display res1)
 	   (display "\n")))
-    
-    (set! b1 (grsp-matrix-is-empty res1))
+
+    ;; If node does not exist and verbosity is on, tell that the node
+    ;; will not be processed.
+    (cond ((equal? b1 #t)
+	   (cond ((equal? p_b3 #t)
+		  (display "\n +++ 1.1.2 Node does not exist\n")
+		  (display res1)
+		  (display "\n")))))
+
+    ;; If node exists, evaluate.
     (cond ((equal? b1 #f)
 
+	   ;; If verbosity is on, tell that the node will be evaluated.
+	   (cond ((equal? p_b3 #t)
+		  (display "\n +++ 1.1.3 Evaluating node\n")
+		  (display res1)
+		  (display "\n")))
+	   
 	   ;; If the node has incoming connections then we need to process them.
 	   (set! res2 (grsp-ann-conns-of-node "#to" p_a2 p_id))
 	   
 	   (cond ((equal? p_b3 #t)
-		  (display "\n Incoming connections\n")
+		  (display "\n +++ 1.1.4 Incoming connections\n")
 		  (display res2)
 		  (display "\n")))
 		 
@@ -1378,7 +1407,7 @@
 		  (array-set! res1 n6 0 6))) ;; Value.
 
 	   (cond ((equal? p_b3 #t)
-		  (display "\n res1 (2)\n")
+		  (display "\n +++ 1.1.5 res1 (2)\n")
 		  (display res1)
 		  (display "\n")))
 	   
@@ -1395,7 +1424,7 @@
 	   (set! m5 (grsp-ann-actifun n7 l1))
 
 	   (cond ((equal? p_b3 #t)
-		  (display "\n Result of activation function\n")
+		  (display "\n +++ 1.1.6 Result of activation function\n")
 		  (display m5)
 		  (display "\n")))
 	   
@@ -1418,7 +1447,7 @@
 	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 4 p_id 1 0))))
 
 	   (cond ((equal? p_b3 #t)
-		  (display "\n Value of p_a2 after eval\n")
+		  (display "\n +++ 1.1.7 Value of p_a2 after eval\n")
 		  (display p_a2)
 		  (display "\n")))
     
@@ -1563,12 +1592,17 @@
     
     ;; Evaluate nodes and their input and output connections.
     ;; ***
+
+    (cond ((equal? p_b3 #t)
+	   (display "\n + 1.0 Evaluating nodes: \n")
+	   (display "\n")))
+    
     (set! i1 lm1)
     (while (<= i1 hm1)
 	   
 	   (set! id (array-ref nodes i1 0))
 	   (cond ((equal? p_b3 #t)
-		  (display "\nNode number ")
+		  (display "\n ++ 1.1 Node number ")
 		  (display id)
 		  (display "\n")))
 	   
@@ -2704,8 +2738,7 @@
 	(hn2 0)
 	(n2 0)
 	(i1 0)
-	(i2 0)
-	(l2 '(0 0 0 0 0 0)))
+	(i2 0))
 
     ;; Create safety matrices. 
     (set! res1 (grsp-matrix-cpy p_a1))
@@ -2739,10 +2772,5 @@
 
 	   (set! i2 (in i2))
 	   (set! i1 (in i1)))
-
-    ;;(set! res2 (grsp-matrix-subdell res2 lm2 l2))
-    ;;(display "\n++++++++++++++++++++++++++++\n")
-    ;;(display res2)
-    ;;(display "\n++++++++++++++++++++++++++++\n")
     
     res2))

@@ -63,7 +63,7 @@
 (define activation_function 2)
 (define nodes_in_last_layer 1)
 (define iterations_desired 1)
-(define mutations_desired 1)
+(define mutations_desired 0)
 (define data_samples 10)
 (define verbosity #t)
 (define L2 '())
@@ -90,20 +90,20 @@
 				    activation_function
 				    nodes_in_last_layer))
 
-;; Extract datai from ann.
-(define datai (grsp-ann-get-matrix "datai" L1))
-
-;; Update ann with new datai matrix created from X.
+;; Update ann with new datai matrix created from matrix X.
 (set! L1 (grsp-ann-datai-update X L1 0))
 
 ;; Display ann data (initial state).
-(grsp-ld "State init (L1):")
+;;(grsp-ld "State init (L1):")
+(grsp-ld "\n ------------------------------------------ Initial state (L1) ")
+
 (grsp-lal-dev #t L1)
 
+;; Make a copy of the original list so that it will be possible to compare
+;; th initial and final states.
+(set! L2 (list-copy L1)) 
+
 ;; Evaluate.
-(set! L2 (list-copy L1))
-(grsp-ld "State init (L2):")
-(grsp-lal-dev #t L2)
 (set! L2 (grsp-ann-net-miter-omth verbosity
 				  mth
 				  "#no"
@@ -112,23 +112,27 @@
 				  mutations_desired))
 
 ;; Show ann data after evaluation.
-(grsp-ld "State after eval:")
+(grsp-ld "State after eval (L2):")
 (grsp-lal-dev #t L2)
 
 ;; Find differences.
 (set! L3 (grsp-ann-fdif L1 L2))
 
 ;; Show data differences between original and processed networks.
-(grsp-ld "Diff map:")
+;;(grsp-ld "Diff map (L1 - L2):")
+(grsp-ld "\n ------------------------------------------ Diff map (L1 - L2) ")
 (grsp-lal-dev #t L3)
 
-;; Show values of output nodes.
-;; Extract odata.
+;; Extract datao from both lists.
 (define datao1 (grsp-ann-get-matrix "datao" L1))
 (define datao2 (grsp-ann-get-matrix "datao" L2))
-(display "\n L1 datao\n")
+
+;; Show values of output nodes.
+(grsp-ld "\n ------------------------------------------ Comparative results ")
+;;(display "\n Results (compare datao tables): \n")
+(display "\n Datao of initial state (L1)\n")
 (display datao1)
-(display "\n L2 datao\n")
+(display "\n Datao of final state (L2)\n")
 (display datao2)
 (display "\n")
 
