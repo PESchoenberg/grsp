@@ -69,6 +69,9 @@
 (define L2 '())
 (define L3 '())
 (define res1 0)
+(define s1 "--------------------------------------------")
+(define size 0)
+(define degree 0)
 
 ;; Main.
 (clear)
@@ -94,8 +97,7 @@
 (set! L1 (grsp-ann-datai-update X L1 0))
 
 ;; Display ann data (initial state).
-;;(grsp-ld "State init (L1):")
-(grsp-ld "\n ------------------------------------------ Initial state (L1) ")
+(grsp-ldl (strings-append (list s1 "Initial state (L1)") 1) 2 1)
 
 (grsp-lal-dev #t L1)
 
@@ -119,8 +121,7 @@
 (set! L3 (grsp-ann-fdif L1 L2))
 
 ;; Show data differences between original and processed networks.
-;;(grsp-ld "Diff map (L1 - L2):")
-(grsp-ld "\n ------------------------------------------ Diff map (L1 - L2) ")
+(grsp-ldl (strings-append (list s1 "Diff map (L1 - L2)") 1) 2 1)
 (grsp-lal-dev #t L3)
 
 ;; Extract datao from both lists.
@@ -128,12 +129,20 @@
 (define datao2 (grsp-ann-get-matrix "datao" L2))
 
 ;; Show values of output nodes.
-(grsp-ld "\n ------------------------------------------ Comparative results ")
-;;(display "\n Results (compare datao tables): \n")
+(grsp-ldl (strings-append (list s1 "Comparative results") 1) 2 1)
 (display "\n Datao of initial state (L1)\n")
 (display datao1)
 (display "\n Datao of final state (L2)\n")
 (display datao2)
 (display "\n")
 
+;; Show network properties.
+(grsp-ldl (strings-append (list s1 "Network properties") 1) 2 1)
+(display "\n Size (L2)\n")
+(set! size (grsp-ann-net-size L2))
+(display size)
+(display "\n Degree (L2)\n")
+(set! degree (grsp-ann-node-degree L2))
+(display degree)
+(display "\n")
 
