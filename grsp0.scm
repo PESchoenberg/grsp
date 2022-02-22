@@ -75,6 +75,7 @@
 	    grsp-s2n
 	    grsp-sqlp
 	    grsp-ld
+	    grsp-ldl
 	    grsp-cd
 	    grsp-ask
 	    grsp-placebo
@@ -423,6 +424,29 @@
 (define (grsp-ld p_s1)
   (newline)
   (display p_s1))
+
+
+;;;; grsp-ldl - Line, display. line. Displays p_n1 blank lines before
+;; string p_s1 and p_n2 blank lines after p_s1.
+;;
+;; Keywords:
+;; - console, strings.
+;;
+;; Arguments:
+;; - p_s1: string.
+;; - p_n1: number of new lines preceeding the string.
+;; - p_n2: number of new lines after the string.
+;;
+(define (grsp-ldl p_s1 p_n1 p_n2)
+  (let ((n1 0))
+
+    (set! n1 (- p_n1 1))
+    (cond ((< n1 0)
+	   (set! n1 0)))
+    
+    (newlines n1)
+    (display p_s1)
+    (newlines p_n2)))
 
 
 ;;;; grsp-cd - Same as grsp-ld, but performs a clear instead of newline, meaning

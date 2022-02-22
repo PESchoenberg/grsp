@@ -181,6 +181,13 @@
 ;; - [9] En.wikipedia.org. 2021. Las Vegas algorithm - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Las_Vegas_algorithm
 ;;   [Accessed 7 December 2021].
+;; - [10] Es.wikipedia.org. 2022. Teoría de grafos - Wikipedia, la enciclopedia
+;;   libre. [online] Available at:
+;;   https://es.wikipedia.org/wiki/Teor%C3%ADa_de_grafos
+;;   [Accessed 21 February 2022].
+;; - [11] En.wikipedia.org. 2022. Network science - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Network_science
+;;   [Accessed 21 February 2022].
 
 
 (define-module (grsp grsp8)
@@ -231,7 +238,9 @@
 	    grsp-ann-fdif
 	    grsp-ann-updatem
 	    grsp-nodes2odata
-	    grsp-odata2datao))
+	    grsp-odata2datao
+	    grsp-ann-net-size
+	    grsp-ann-node-degree))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network.
@@ -2774,3 +2783,116 @@
 	   (set! i1 (in i1)))
     
     res2))
+
+
+;; grsp-ann-net-size - Calculates the size of a neural network.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_l1: ann.
+;;
+;; Output:
+;; - List:
+;;   - Elem 0: number of nodes.
+;;   - Elem 1: number of connections (edges).
+;;
+;; Sources:
+;; - [11].
+;;
+(define (grsp-ann-net-size p_l1)
+  (let ((res1 '())
+	(nodes 0)
+	(conns 0)	
+	(lm1 0)
+	(hm1 0)
+	(lm2 0)
+	(hm2 0))
+
+    ;; Extract matrices and lists.
+    (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
+    (set! conns (grsp-ann-get-matrix "conns" p_l1))  
+
+    ;; Extract matrix boundaries.
+    (set! lm1 (grsp-matrix-esi 1 nodes))
+    (set! hm1 (grsp-matrix-esi 2 nodes))
+    (set! lm2 (grsp-matrix-esi 1 conns))
+    (set! hm2 (grsp-matrix-esi 2 conns))    
+
+    ;; Compose results.
+    (set! res1 (list (grsp-matrix-te1 lm1 hm1) (grsp-matrix-te1 lm2 hm2)))
+    
+    res1))
+
+
+;; grsp-ann-node-degree - Calculates the degrees of each node of ann p_l1.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_l1: ann.
+;;
+;; Output:
+;; - Matrix:
+;;   - Col 0: node id.
+;;   - Col 1: input degree.
+;;   - Col 2: output degree.
+;;   - Col 3: total degree (sum of input and output degrees).
+;;
+;; Sources:
+;; - [11].
+;;
+(define (grsp-ann-node-degree p_l1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(res4 0)
+	(nodes 0)
+	(conns 0)	
+	(lm1 0)
+	(hm1 0)
+	(i1 0)
+	(m1 0)
+	(m2 0)
+	(m3 0))
+
+    ;; Extract matrices and lists.
+    (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
+    (set! conns (grsp-ann-get-matrix "conns" p_l1))
+
+    ;; Extract matrix boundaries.
+    (set! lm1 (grsp-matrix-esi 1 nodes))
+    (set! hm1 (grsp-matrix-esi 2 nodes))
+
+    ;; Set matrix res1 to have a number of rows equal to the number of rows found
+    ;; in matrix nodes, and two columns.    
+    (set! m1 (grsp-matrix-te1 lm1 hm1))
+    (set! res1 (grsp-matrix-create 0 m1 4))
+
+    ;;Evaluate each node and sum the number of conns reaching it and the number
+    ;; of conns leaving the node. Then sum both numbers and get the total for
+    ;; each node.
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+
+	   ;; Node id.
+	   (array-set! res1 i1 i1 0)
+	   
+	   ;; Select nodes coming from current node (col 3).
+	   (set! res3 (grsp-matrix-row-select "#=" conns 3 i1))
+	   (set! res2 (grsp-matrix-te2 res3))
+	   (array-set! res1 (array-ref res2 0 0) i1 1)
+	   
+	   ;; Select nodes going to the current node (col 4).
+	   (set! res4 (grsp-matrix-row-select "#=" conns 4 i1))
+	   (set! res2 (grsp-matrix-te2 res4))
+	   (array-set! res1 (array-ref res2 0 0) i1 2)	   
+
+	   ;; Calculate total size.
+	   (array-set! res1 (+ (array-ref res1 i1 1) (array-ref res1 i1 2) ) i1 3)
+	   
+	   (set! i1 (in i1)))	   
+    
+    res1))
