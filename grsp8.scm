@@ -240,7 +240,8 @@
 	    grsp-nodes2odata
 	    grsp-odata2datao
 	    grsp-ann-net-size
-	    grsp-ann-node-degree))
+	    grsp-ann-node-degree
+	    grsp-ann-net-density))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network.
@@ -2826,7 +2827,9 @@
     res1))
 
 
-;; grsp-ann-node-degree - Calculates the degrees of each node of ann p_l1.
+;; grsp-ann-node-degree - Calculates the degree of each node of ann p_l1,
+;; considering the degree to be the number of edges (conns) connected to
+;; said node.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -2840,6 +2843,9 @@
 ;;   - Col 1: input degree.
 ;;   - Col 2: output degree.
 ;;   - Col 3: total degree (sum of input and output degrees).
+;;
+;; Notes:
+;; - See grsp-ann-net-density.
 ;;
 ;; Sources:
 ;; - [11].
@@ -2858,7 +2864,7 @@
 	(m2 0)
 	(m3 0))
 
-    ;; Extract matrices and lists.
+    ;; Extract matrices.
     (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
     (set! conns (grsp-ann-get-matrix "conns" p_l1))
 
@@ -2877,15 +2883,15 @@
     (set! i1 lm1)
     (while (<= i1 hm1)
 
-	   ;; Node id.
+	   ;; Select the node's id.
 	   (array-set! res1 i1 i1 0)
 	   
-	   ;; Select nodes coming from current node (col 3).
+	   ;; Select nodes coming from current node (conns col 3).
 	   (set! res3 (grsp-matrix-row-select "#=" conns 3 i1))
 	   (set! res2 (grsp-matrix-te2 res3))
 	   (array-set! res1 (array-ref res2 0 0) i1 1)
 	   
-	   ;; Select nodes going to the current node (col 4).
+	   ;; Select nodes going to the current node (conns col 4).
 	   (set! res4 (grsp-matrix-row-select "#=" conns 4 i1))
 	   (set! res2 (grsp-matrix-te2 res4))
 	   (array-set! res1 (array-ref res2 0 0) i1 2)	   
@@ -2894,5 +2900,42 @@
 	   (array-set! res1 (+ (array-ref res1 i1 1) (array-ref res1 i1 2) ) i1 3)
 	   
 	   (set! i1 (in i1)))	   
+    
+    res1))
+
+
+;; grsp-ann-net-density - Average degrees (directed, undirected) of network p_l1.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_l1: ann.
+;;
+;; Output:
+;; - List:
+;;   - Elem 0: undirected average.
+;;   - Elem 1: directed average.
+;;
+;; Notes:
+;; - See grsp-ann-node-degree.
+;;
+;; Sources:
+;; - [11].
+;;
+(define (grsp-ann-net-density p_l1)
+  (let ((res1 (list 0 0))
+	(res2 (list 0 0))
+	(n1 0)
+	(e1 0)
+	(m1 0))
+
+    (set! res2 (grsp-ann-net-size p_l1))
+    (set! n1 (list-ref res2 0))
+    (set! e1 (list-ref res2 1))
+    (set! m1 (/ e1 n1))
+    (set! m1 (grsp-opz m1))
+    (list-set! res1 0 m1)
+    (list-set! res1 1 (* 2 m1))
     
     res1))

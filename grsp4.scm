@@ -76,6 +76,8 @@
 ;;   enciclopedia libre. [online] Available at:
 ;;   https://es.wikipedia.org/wiki/N%C3%BAmero_de_Bernoulli
 ;;   [Accessed 25 August 2021].
+;; - [17] En.wikipedia.org. 2022. Dual number - Wikipedia. [online] Available at
+;;   https://en.wikipedia.org/wiki/Dual_number [Accessed 24 February 2022].
 
 
 (define-module (grsp grsp4)

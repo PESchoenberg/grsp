@@ -72,6 +72,7 @@
 (define s1 "--------------------------------------------")
 (define size 0)
 (define degree 0)
+(define density 0)
 
 ;; Main.
 (clear)
@@ -141,8 +142,12 @@
 (display "\n Size (L2)\n")
 (set! size (grsp-ann-net-size L2))
 (display size)
+(display "\n")
 (display "\n Degree (L2)\n")
 (set! degree (grsp-ann-node-degree L2))
 (display degree)
 (display "\n")
-
+(display "\n Density (L2)\n")
+(set! density (grsp-ann-net-density L2))
+(display density)
+(display "\n")
