@@ -188,6 +188,13 @@
 ;; - [11] En.wikipedia.org. 2022. Network science - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Network_science
 ;;   [Accessed 21 February 2022].
+;; - [12] En.wikipedia.org. 2022. Barabási–Albert model - Wikipedia. [online]
+;;   Available at:
+;;   https://en.wikipedia.org/wiki/Barab%C3%A1si%E2%80%93Albert_model
+;;   [Accessed 2 March 2022].
+;; - [13] En.wikipedia.org. 2022. Link analysis - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Link_analysis
+;;   [Accessed 2 March 2022].
 
 
 (define-module (grsp grsp8)
@@ -241,7 +248,11 @@
 	    grsp-odata2datao
 	    grsp-ann-net-size
 	    grsp-ann-node-degree
-	    grsp-ann-net-density))
+	    grsp-ann-net-adegree
+	    grsp-ann-net-density
+	    grsp-ann-net-pdensity
+	    grsp-ann-node-conns
+	    grsp-ann-nodes-conns))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network.
@@ -2800,7 +2811,7 @@
 ;;   - Elem 1: number of connections (edges).
 ;;
 ;; Sources:
-;; - [11].
+;; - [11][13].
 ;;
 (define (grsp-ann-net-size p_l1)
   (let ((res1 '())
@@ -2845,10 +2856,10 @@
 ;;   - Col 3: total degree (sum of input and output degrees).
 ;;
 ;; Notes:
-;; - See grsp-ann-net-density.
+;; - See grsp-ann-net-adegree.
 ;;
 ;; Sources:
-;; - [11].
+;; - [11][13].
 ;;
 (define (grsp-ann-node-degree p_l1)
   (let ((res1 0)
@@ -2904,7 +2915,7 @@
     res1))
 
 
-;; grsp-ann-net-density - Average degrees (directed, undirected) of network p_l1.
+;; grsp-ann-net-adegree - Average degrees (directed, undirected) of network p_l1.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -2923,7 +2934,7 @@
 ;; Sources:
 ;; - [11].
 ;;
-(define (grsp-ann-net-density p_l1)
+(define (grsp-ann-net-adegree p_l1)
   (let ((res1 (list 0 0))
 	(res2 (list 0 0))
 	(n1 0)
@@ -2939,3 +2950,132 @@
     (list-set! res1 1 (* 2 m1))
     
     res1))
+
+
+;; grsp-ann-net-density - Density of network p_l1.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_l1: ann.
+;;
+;; Sources:
+;; - [11].
+;;
+(define (grsp-ann-net-density p_l1)
+  (let ((res1 0)
+	(res2 '())
+	(e1 0)
+	(n1 0)
+	(n2 0))
+
+    ;; Extract ann properties (number of nodes and edges).
+    (set! res2 (grsp-ann-net-size p_l1))
+    (set! n1 (car res2))
+    (set! e1 (cadr res2))
+
+    ;; Calculate network density.
+    (set! n2 (* -1 n1))
+    (set! res1 (/ (* 2 (+ e1 n2 1)) (+ (* n1 (- n1 3)) 2)))
+    (set! res1 (grsp-opz res1))
+    
+    res1))
+
+
+;; grsp-ann-net-density - Planar density of network p_l1.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_l1: ann.
+;;
+;; Sources:
+;; - [11].
+;;
+(define (grsp-ann-net-pdensity p_l1)
+  (let ((res1 0)
+	(res2 '())
+	(e1 0)
+	(n1 0))
+
+    ;; Extract ann properties (number of nodes and edges).
+    (set! res2 (grsp-ann-net-size p_l1))
+    (set! n1 (car res2))
+    (set! e1 (cadr res2))
+
+    ;; Calculate network pdensity.
+    (set! res1 (/ (+ (- e1 n1) 1) (- (* 2 n1) 5)))
+    (set! res1 (grsp-opz res1))
+    
+    res1))
+
+
+;;;; grsp-ann-node-conns - Find the connections (edges) connected
+;; to node p_n1 of network p_l1.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_l1: ann.
+;; - p_n1: node id.
+;;
+;; Output:
+;; - A two element list:
+;;   - Elem 0: matrix of seleted edges reaching node p_n1.
+;;   - Elem 1: matrix of seleted edges going out of node p_n1.
+;;
+(define (grsp-ann-node-conns p_l1 p_n1)
+  (let ((res1 '())
+	(to 0)
+	(fr 0)
+	(conns 0))
+
+    ;; Extract matrix.
+    (set! conns (grsp-ann-get-matrix "conns" p_l1))
+
+    ;; Select edges going to p_n1.
+    (set! to (grsp-matrix-row-select "#=" conns 4 p_n1))
+
+    ;; Select edges going out of p_n1
+    (set! fr (grsp-matrix-row-select "#=" conns 3 p_n1))
+    
+    (set! res1 (list to fr))
+    
+    res1))
+
+
+;;;; grsp-ann-nodes-conns - Find the connections (edges) connected
+;; to each node of ann p_l1
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_l1: ann.
+;;
+;; Output:
+;; - A two element list:
+;;   - Elem 0: node record.
+;;   - Elem 1: result of applying grsp-ann-node-conns p_l1 to node
+;;     defined in elem 0.
+;;
+(define (grsp-ann-nodes-conns p_l1)
+  (let ((res1 '())
+	(nodes 0)
+	(conns 0)
+	(lm1 0)
+	(hm1 0))
+
+    ;; Extract matrices.
+    (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
+    (set! conns (grsp-ann-get-matrix "conns" p_l1))
+
+    ;; Extract matrix boundaries.
+    (set! lm1 (grsp-matrix-esi 1 nodes))
+    (set! hm1 (grsp-matrix-esi 2 nodes))
+    
+    res1))
+  
