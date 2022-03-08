@@ -75,6 +75,7 @@
 (define adegree 0)
 (define density 0)
 (define pdensity 0)
+(define cnode 0)
 
 ;; Main.
 (clear)
@@ -161,3 +162,9 @@
 (set! pdensity (grsp-ann-net-pdensity L2))
 (display pdensity)
 (display "\n")
+(display "\n Connections per node (L2)\n")
+(set! cnode (grsp-ann-nodes-conns L2))
+(display cnode)
+(display "\n")
+(grsp-lal-dev #t cnode)
+

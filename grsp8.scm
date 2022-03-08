@@ -3057,15 +3057,17 @@
 ;; - p_l1: ann.
 ;;
 ;; Output:
-;; - A two element list:
-;;   - Elem 0: node record.
-;;   - Elem 1: result of applying grsp-ann-node-conns p_l1 to node
-;;     defined in elem 0.
+;; - List of grsp-ann-node-conns results applied to each node of p_l1.
 ;;
 (define (grsp-ann-nodes-conns p_l1)
   (let ((res1 '())
+	(res2 '())
+	(res3 '())
 	(nodes 0)
 	(conns 0)
+	(i1 0)
+	(i2 0)
+	(id 0)
 	(lm1 0)
 	(hm1 0))
 
@@ -3076,6 +3078,30 @@
     ;; Extract matrix boundaries.
     (set! lm1 (grsp-matrix-esi 1 nodes))
     (set! hm1 (grsp-matrix-esi 2 nodes))
+    
+    ;; Calculate number of rows in nodes.
+    (set! i2 (grsp-matrix-te1 lm1 hm1))
+
+    ;; Update list size.
+    (set! res1 (make-list i2 0))
+    (set! res2 (make-list 2 0))
+
+    ;; Cycle.
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+
+	   ;; Extract node id.
+	   (set! id (array-ref nodes i1 0))
+
+	   ;; Add results corresponding to node id to list.
+	   (list-set! res2 0 id)
+	   (list-set! res2 1 (grsp-ann-node-conns p_l1 id))
+	   
+	   ;; Add list res2 to res1, which contains final results.
+	   (list-set! res1 i1 res2)
+	   ;;(set! res3 res2)
+	   
+	   (set! i1 (in i1)))
     
     res1))
   
