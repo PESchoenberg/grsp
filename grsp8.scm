@@ -195,6 +195,9 @@
 ;; - [13] En.wikipedia.org. 2022. Link analysis - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Link_analysis
 ;;   [Accessed 2 March 2022].
+;; - [16] En.wikipedia.org. 2022. Evolving network - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Evolving_network
+;;   [Accessed 9 March 2022].
 
 
 (define-module (grsp grsp8)
@@ -1132,6 +1135,9 @@
 ;; - See "Format of matrices used in grsp8" on top of this file for details
 ;;   on each matrix used.
 ;;
+;; Sources:
+;; - [16].
+;;
 (define (grsp-ann-net-mutate p_l2 p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 p_l1 p_l3)
   (let ((res1 '())
 	(l1 '())
@@ -1211,6 +1217,9 @@
 ;;   ANN before toying with this function.
 ;; - See "Format of matrices used in grsp8" on top of this file for details
 ;;   on each matrix used.
+;;
+;; Sources:
+;; - [16].
 ;;
 (define (grsp-ann-net-mutate-mth p_l2 p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 p_l1 p_l3)
   (let ((res1 '())
@@ -1712,6 +1721,9 @@
 ;;   - #f: single-threaded.
 ;; - p_l2: ann.
 ;;
+;; Sources:
+;; - [16].
+;;
 (define (grsp-ann-net-nmutate-omth p_b1 p_l2)
   (let ((res1 '())
 	(l1 '())
@@ -2106,7 +2118,7 @@
 	   (set! m3 (+ hm3 1))
 	   (set! idata (grsp-matrix-row-subrepal idata m3 (list 0 0 0 0)))
 
-	   ;; Fill data .
+	   ;; Fill data.
 	   (array-set! idata (array-ref res2 i2 0) m3 0) ;; id
 	   (array-set! idata 6 m3 1) ;; output value col.
 	   (array-set! idata 0 m3 2) ;; number, 0 for now.
@@ -2199,7 +2211,7 @@
 	   (array-set! odata (array-ref res2 i2 0) m3 0) ;; id
 	   (array-set! odata (array-ref res2 i2 3) m3 1) ;; layer.
 	   (array-set! odata (array-ref res2 i2 4) m3 2) ;; layer pos.
-	   (array-set! odata (array-ref res2 i2 6) m3 3) ;; output value col.	   
+	   (array-set! odata (array-ref res2 i2 6) m3 3) ;; output value col.
 	   
 	   (set! i2 (in i2)))
 
@@ -2664,7 +2676,7 @@
     res1))
 
 
-;;;; Casts the data contained in output nodes to odata table.
+;;;; grsp-nodes2odata - Casts the data contained in output nodes to odata table.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -2731,9 +2743,9 @@
     res2))
 
 
-;;;; Adds the most recent data from odata (one row or record obtained from the
-;; evaluation of the nodes) to datao (table containing the results of all
-;; evaluations performed so far.
+;;;; grsp-odata2datao - Adds the most recent data from odata (one row or record
+;; obtained from the evaluation of the nodes) to datao (table containing the
+;; results of all evaluations performed so far.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -2883,8 +2895,8 @@
     (set! lm1 (grsp-matrix-esi 1 nodes))
     (set! hm1 (grsp-matrix-esi 2 nodes))
 
-    ;; Set matrix res1 to have a number of rows equal to the number of rows found
-    ;; in matrix nodes, and two columns.    
+    ;; Set matrix res1 to have a number of rows equal to the number of rows
+    ;; found in matrix nodes, and two columns.    
     (set! m1 (grsp-matrix-te1 lm1 hm1))
     (set! res1 (grsp-matrix-create 0 m1 4))
 
@@ -2915,7 +2927,8 @@
     res1))
 
 
-;; grsp-ann-net-adegree - Average degrees (directed, undirected) of network p_l1.
+;; grsp-ann-net-adegree - Average degrees (directed, undirected) of network
+;; p_l1.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -3012,8 +3025,8 @@
     res1))
 
 
-;;;; grsp-ann-node-conns - Find the connections (edges) connected
-;; to node p_n1 of network p_l1.
+;;;; grsp-ann-node-conns - Find the connections (edges) connected to node p_n1
+;; of network p_l1.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -3024,8 +3037,8 @@
 ;;
 ;; Output:
 ;; - A two element list:
-;;   - Elem 0: matrix of seleted edges reaching node p_n1.
-;;   - Elem 1: matrix of seleted edges going out of node p_n1.
+;;   - Elem 0: matrix of seleted edges reaching node p_n1 (to).
+;;   - Elem 1: matrix of seleted edges going out of node p_n1 (from).
 ;;
 (define (grsp-ann-node-conns p_l1 p_n1)
   (let ((res1 '())
@@ -3047,8 +3060,8 @@
     res1))
 
 
-;;;; grsp-ann-nodes-conns - Find the connections (edges) connected
-;; to each node of ann p_l1
+;;;; grsp-ann-nodes-conns - Find the connections (edges) connected to each node
+;; of ann p_l1
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -3062,7 +3075,6 @@
 (define (grsp-ann-nodes-conns p_l1)
   (let ((res1 '())
 	(res2 '())
-	(res3 '())
 	(nodes 0)
 	(conns 0)
 	(i1 0)
@@ -3078,28 +3090,22 @@
     ;; Extract matrix boundaries.
     (set! lm1 (grsp-matrix-esi 1 nodes))
     (set! hm1 (grsp-matrix-esi 2 nodes))
-    
-    ;; Calculate number of rows in nodes.
+
+    ;; Define res1 as a list with a number of elements equal to the number of
+    ;; nodes.
     (set! i2 (grsp-matrix-te1 lm1 hm1))
-
-    ;; Update list size.
-    (set! res1 (make-list i2 0))
-    (set! res2 (make-list 2 0))
-
+    (set! res1 (make-list i2))
+    
     ;; Cycle.
     (set! i1 lm1)
     (while (<= i1 hm1)
 
 	   ;; Extract node id.
 	   (set! id (array-ref nodes i1 0))
-
-	   ;; Add results corresponding to node id to list.
-	   (list-set! res2 0 id)
-	   (list-set! res2 1 (grsp-ann-node-conns p_l1 id))
+	   (set! res2 (grsp-ann-node-conns p_l1 id))
 	   
 	   ;; Add list res2 to res1, which contains final results.
 	   (list-set! res1 i1 res2)
-	   ;;(set! res3 res2)
 	   
 	   (set! i1 (in i1)))
     
