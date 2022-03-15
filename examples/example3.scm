@@ -76,6 +76,7 @@
 (define density 0)
 (define pdensity 0)
 (define cnode 0)
+(define nconn 0)
 
 ;; Main.
 (clear)
@@ -146,6 +147,7 @@
 (set! size (grsp-ann-net-size L2))
 (display size)
 (display "\n")
+
 (display "\n Degree (L2)\n")
 (set! degree (grsp-ann-node-degree L2))
 (display degree)
@@ -154,17 +156,23 @@
 (set! adegree (grsp-ann-net-adegree L2))
 (display adegree)
 (display "\n")
+
 (display "\n Density (L2)\n")
 (set! density (grsp-ann-net-density L2))
 (display density)
 (display "\n")
+
 (display "\n Planar density (L2)\n")
 (set! pdensity (grsp-ann-net-pdensity L2))
 (display pdensity)
 (display "\n")
+
 (display "\n Connections per node (L2)\n")
 (set! cnode (grsp-ann-nodes-conns L2))
-(display cnode)
-(display "\n")
 (grsp-lal-dev #t cnode)
+
+(display "\n Nodes per connection (L2)\n")
+(set! nconn (grsp-ann-conns-nodes L2))
+(grsp-lal-dev #t nconn)
+
 

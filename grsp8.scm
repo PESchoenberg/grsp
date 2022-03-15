@@ -255,7 +255,9 @@
 	    grsp-ann-net-density
 	    grsp-ann-net-pdensity
 	    grsp-ann-node-conns
-	    grsp-ann-nodes-conns))
+	    grsp-ann-nodes-conns
+	    grsp-ann-conn-nodes
+	    grsp-ann-conns-nodes))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network.
@@ -3037,8 +3039,8 @@
 ;;
 ;; Output:
 ;; - A two element list:
-;;   - Elem 0: matrix of seleted edges reaching node p_n1 (to).
-;;   - Elem 1: matrix of seleted edges going out of node p_n1 (from).
+;;   - Elem 0: matrix of selected edges reaching node p_n1 (TO).
+;;   - Elem 1: matrix of selected edges going out of node p_n1 (FROM).
 ;;
 (define (grsp-ann-node-conns p_l1 p_n1)
   (let ((res1 '())
@@ -3049,10 +3051,10 @@
     ;; Extract matrix.
     (set! conns (grsp-ann-get-matrix "conns" p_l1))
 
-    ;; Select edges going to p_n1.
+    ;; Select edges going to p_n1 (TO).
     (set! to (grsp-matrix-row-select "#=" conns 4 p_n1))
 
-    ;; Select edges going out of p_n1
+    ;; Select edges going out of p_n1 (FROM).
     (set! fr (grsp-matrix-row-select "#=" conns 3 p_n1))
     
     (set! res1 (list to fr))
@@ -3103,6 +3105,130 @@
 	   ;; Extract node id.
 	   (set! id (array-ref nodes i1 0))
 	   (set! res2 (grsp-ann-node-conns p_l1 id))
+	   
+	   ;; Add list res2 to res1, which contains final results.
+	   (list-set! res1 i1 res2)
+	   
+	   (set! i1 (in i1)))
+    
+    res1))
+  
+
+;;;; grsp-ann-conn-nodes - Finds the FROM and TO nodes linked by connection p_n1
+;; of network p_l1.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_l1: ann.
+;; - p_n1: connection (edge) id.
+;;
+;; Notes:
+;; -  See grsp-ann-conns-nodes.
+;;
+;; Output:
+;; - A two element list:
+;;   - Elem 0: TO node.
+;;   - Elem 1: FROM node.
+;;
+(define (grsp-ann-conn-nodes p_l1 p_n1)
+  (let ((res1 '())
+	(res2 '())
+	(res3 '())
+	(res4 0)
+	(res5 0)
+	(res6 0)
+	(to 0)
+	(fr 0)
+	(b1 #f)
+	(b2 #f)
+	(nodes 0)
+	(conns 0))
+
+    ;; Create empty matrix.
+    (set! res6 (grsp-matrix-create 0 0 0))
+    (set! res4 res6)
+    (set! res5 res6)
+    
+    ;; Extract matrix.
+    (set! nodes (grsp-ann-get-matrix "nodes" p_l1))    
+    (set! conns (grsp-ann-get-matrix "conns" p_l1))
+
+    ;; Select node id to which p_n1 connects (TO).
+    (set! res4 (grsp-matrix-row-select "#=" conns 4 p_n1))
+    (cond ((> (grsp-matrix-col-total-element "#>=" res4 0 1) 0)
+	   (set! b1 #t)
+	   (set! to (array-ref res4 0 0))))
+
+    ;; Select node id from which p_n1 goes out (FROM).
+    (set! res5 (grsp-matrix-row-select "#=" conns 3 p_n1))
+    (cond ((> (grsp-matrix-col-total-element "#>=" res5 0 1) 0)
+	   (set! b2 #t)    
+	   (set! fr (array-ref res5 0 0))))    
+
+    ;; Select node record (row) from matrix nodes which p_n1 goes (TO).
+    (cond ((equal? b1 #t)
+	   (set! res2 (grsp-matrix-row-select "#=" nodes 0 to))))
+
+    ;; Select node record (row) from matrix nodes which p_n1 comes (FROM).
+    (cond ((equal? b2 #t)    
+	   (set! res3 (grsp-matrix-row-select "#=" nodes 0 fr))))
+    
+    (set! res1 (list res2 res3))
+	
+    res1))
+
+
+;;;; grsp-ann-conns-nodes - Finds the FROM and TO nodes linked by connections
+;; (edges) of network p_l1.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_l1: ann.
+;;
+;; Notes:
+;; - See grsp-ann-conn-nodes.
+;;
+;; Output:
+;; - grsp-ann-conn-nodes results as a matrix for each and all nodes
+;;   of p_l1. Note that connection ID is not providred in a separated column.
+;;   - Col 0: TO nodes.
+;;   - Col 1: FROM nodes.
+;;
+(define (grsp-ann-conns-nodes p_l1)
+  (let ((res1 '())
+	(res2 '())
+	(nodes 0)
+	(conns 0)
+	(i1 0)
+	(i2 0)
+	(id 0)
+	(lm1 0)
+	(hm1 0))
+
+    ;; Extract matrices.
+    (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
+    (set! conns (grsp-ann-get-matrix "conns" p_l1))
+
+    ;; Extract matrix boundaries.
+    (set! lm1 (grsp-matrix-esi 1 conns))
+    (set! hm1 (grsp-matrix-esi 2 conns))
+
+    ;; Define res1 as a list with a number of elements equal to the number of
+    ;; connections.
+    (set! i2 (grsp-matrix-te1 lm1 hm1))
+    (set! res1 (make-list i2))
+    
+    ;; Cycle.
+    (set! i1 lm1)
+    (while (<= i1 hm1)
+
+	   ;; Extract connection id.
+	   (set! id (array-ref conns i1 0))
+	   (set! res2 (grsp-ann-conn-nodes p_l1 id))
 	   
 	   ;; Add list res2 to res1, which contains final results.
 	   (list-set! res1 i1 res2)
