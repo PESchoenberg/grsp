@@ -327,6 +327,7 @@
 	(b1 #f)
 	(i1 2))
 
+    ;; Cycle.
     (while (eq? b1 #f)
 	   (cond ((= 0 (remainder p_n1 i1))
 		  (set! res1 #f)
@@ -334,6 +335,7 @@
 	   (set! i1 (+ i1 1))
 	   (cond ((>= i1 p_n1)
 		  (set! b1 #t))))
+    
     (cond ((grsp-getles p_n1 -1 1)
 	   (set! res1 #f)))
 
@@ -886,6 +888,7 @@
 			 (set! res1 (+ (/ (expt p_k1 p_n1)
 					  (grsp-fact p_k1))))
 			 (set! i1 (+ i1 1)))))))
+    
     (set! res1 (* res1 (/ 1 (grsp-e))))
 
     res1))
@@ -962,8 +965,8 @@
   (let ((res1 0))
 
     (set! res1 (+ p_y1 (* (- p_x3 p_x1)
-			 (/ (- p_y2 p_y1)
-			    (- p_x2 p_x1)))))
+			  (/ (- p_y2 p_y1)
+			     (- p_x2 p_x1)))))
 
     res1))
 
@@ -1020,6 +1023,8 @@
 	   (set! v4 (/ 1 v7))
 	   (set! v3 (* v4 v6))
 	   (set! v5 (* v2 v7))))
+
+    ;; Compose results.
     (set! res1 (list v3 v4 v5))
     
     res1))
@@ -1715,7 +1720,7 @@
 ;; - [30].
 ;;
 (define (grsp-intifint p_b1 p_z1 p_z2)
-  (let ((res1 p_z2) ; 0
+  (let ((res1 p_z2)
 	(z1 p_z1))
 
     (cond ((equal? p_b1 #t)
@@ -1809,7 +1814,8 @@
 		  (set! n2 (+ n2 1)))
 		 ((equal? s1 "#tr")
 		  (set! n3 (+ n2 1))))))
-   
+
+    ;; Compose results.
     (set! res1 (list n2 n3))
     
     res1))

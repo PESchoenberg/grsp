@@ -2,7 +2,7 @@
 ;;
 ;; grsp3.scm
 ;;
-;; Matrices.
+;; Relational matrices and databases.
 ;;
 ;; =============================================================================
 ;;
@@ -2298,6 +2298,7 @@
     (set! ln1 (grsp-matrix-esi 3 p_a1))
     (set! hn1 (grsp-matrix-esi 4 p_a1))
 
+    ;; Cycle.
     (set! i1 lm1)
     (while (<= i1 hm1)
 	   (set! j1 ln1)
@@ -2306,6 +2307,7 @@
 			 (set! res1 (+ res1 1))))
 		  (set! j1 (+ j1 1)))
 	   (set! i1 (+ i1 1)))
+    
     res1))
 
     
@@ -2361,6 +2363,7 @@
     (set! ln1 (grsp-matrix-esi 3 p_a1))
     (set! hn1 (grsp-matrix-esi 4 p_a1))
 
+    ;; Cycle.
     (set! i1 lm1)
     (while (<= i1 hm1)
 	   (set! res2 (grsp-matrix-subcpy p_a1 i1 i1 ln1 hn1))
@@ -2368,6 +2371,7 @@
 		  (set! k1 (+ k1 (grsp-matrix-opio "#+" res2 0))))
 		 (else (set! res3 #f)))
 	   (set! i1 (+ i1 1)))
+    
     (cond ((equal? res3 #t)
 	   (cond ((equal? (/ k1 (+ (- hm1 lm1) 1)) 1)
 		  (set! res1 #t)))))
@@ -2568,6 +2572,8 @@
     (set! hn1 (grsp-matrix-esi 4 p_a1))
     
     (cond ((equal? (grsp-matrix-is-square p_a1) #t)
+
+	   ;; Cycle.
 	   (set! i1 lm1)
 	   (set! res1 #t)
 	   (while (<= i1 hm1)
@@ -2661,6 +2667,7 @@
     ;; Create vector.
     (set! res1 (grsp-matrix-create 0 1 (grsp-matrix-total-elements p_a1)))
 
+    ;; Cycle.
     (set! i1 lm1)
     (while (<= i1 hm1)
 	   (set! j1 ln1)
@@ -2868,6 +2875,7 @@
 		  (set! q1 (strings-append (list "INSERT INTO " p_t1 " (Vm, Vn, Vr, Vi) VALUES (" q2 ");") 0))
 		  (system (strings-append (list "./sqlp " p_d1 " \"" q1 "\"") 0))
 		  (set! j1 (+ j1 1)))
+	   
 	   (set! i1 (+ i1 1)))))
 
 
@@ -3012,7 +3020,7 @@
 
 
 ;;;; grsp-mc2dbc-gnuplot1 - Creates a gnuplot data (.data) table from
-;; matrix p_a1. data format is identical to grsp csv tables except that
+;; matrix p_a1. Data format is identical to grsp csv tables except that
 ;; commas are replaced by spaces.
 ;;
 ;; Keywords:
@@ -3462,7 +3470,7 @@
     (set! ln1 (grsp-matrix-esi 3 p_a1))
     (set! hn1 (grsp-matrix-esi 4 p_a1))
     
-    ;; Eval
+    ;; Cycle and eval.
     (set! i1 lm1)
     (while (<= i1 hm1)
 	   (set! j1 ln1)
@@ -3665,8 +3673,8 @@
     ;; Create intermediate matrices.
     (set! res2 (grsp-matrix-create 0 1 (+ (- hn1 ln1) 1)))
     (set! res3 res2)
-    
-    ;; Eval
+
+    ;; Cycle and eval.
     (set! i1 lm1)
     (while (<= i1 hm1)
 
@@ -3881,7 +3889,8 @@
 
     ;; Create seed matrix.
     (set! res1 (grsp-matrix-create 0 1 (+ hn1 1))) 
-    
+
+    ;; Cycle.    
     (set! i1 lm1)
     (set! i2 hm1)
     (set! i3 1)
@@ -3958,14 +3967,14 @@
 
     ;; Cycle p_a2.
     (set! i2 lm2)
-    (while (<= i2 hm2);;
+    (while (<= i2 hm2)
 
 	   ;; Get the key for each row of p_a2.
 	   (set! n2 (array-ref p_a2 i2 p_j1))
 	   
 	   ;; Cycle p_a1.
 	   (set! i1 lm1)
-	   (while (<= i1 hm1);;
+	   (while (<= i1 hm1)
 
 		  ;; Get the key for each row of p_a1.
 		  (set! n1 (array-ref p_a1 i1 p_j1))
@@ -3974,7 +3983,7 @@
 		  ;; then copy data from p_a2 into p_a1.
 		  (cond ((equal? n1 n2)
 			 (set! j2 ln2)
-			 (while (<= j2 hn2);;
+			 (while (<= j2 hn2)
 				(array-set! p_a1 (array-ref p_a2 i2 j2) i1 j2)
 				(set! j2 (+ j2 1)))))			 
 
@@ -4033,7 +4042,8 @@
 
     ;; Seed matrix.
     (set! res1 (grsp-matrix-create 0 1 (+ (- hn3 ln3) 1)))
-    
+
+    ;; Cycle, main.
     (set! j2 ln2)
     (while (<= j2 hn2)
 
@@ -4826,8 +4836,8 @@
 
 
 ;;;; grsp-matrix-col-total-element - Counts the number of ocurrences of elements
-;; in column p_j1 of matrix p_a1 for which relationship p_s1 is fulfilled with
-;; regards to p_n1.
+;; in column p_j1 of matrix p_a1 for which relationship p_s1 is fulfilled with 
+;; regards to p_n1. 
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors, relational.
@@ -4885,6 +4895,7 @@
 		 ((equal? p_s1 "#!=")
 		  (cond ((equal? (= n2 p_n1) #f)
 			 (set! res1 (+ res1 1))))))
+	   
 	   (set! i1 (+ i1 1)))
     
     res1))
@@ -4917,6 +4928,7 @@
     (set! ln1 (grsp-matrix-esi 3 res1))
     (set! hn1 (grsp-matrix-esi 4 res1)) 
 
+    ;; Cycle.
     (set! i1 lm1)
     (while (<= i1 hm1)
 	   (set! j1 ln1)
@@ -4930,6 +4942,7 @@
 		  (set! hm1 (grsp-matrix-esi 2 res1))		  
 		  
 		  (set! j1 (+ j1 1)))
+	   
 	   (set! i1 (+ i1 1)))
 		  
     res1))
@@ -5040,6 +5053,7 @@
     ;; Seed matrix.
     (set! res6 (grsp-matrix-create 0 1 (+ tc1 tc2)))
 
+    ;; Extract matrix info-
     (set! lm6 (grsp-matrix-esi 1 res6))
     (set! hm6 (grsp-matrix-esi 2 res6))
     (set! ln6 (grsp-matrix-esi 3 res6))
@@ -5070,8 +5084,8 @@
 		  ;; Add the col appended rows.
 		  (set! res6 (grsp-matrix-subrep res6 res5 hm6 ln6))
 
-		  ;; Increment counters.
 		  (set! i2 (+ i2 1)))
+	   
 	   (set! i1 (+ i1 1)))
 
     ;; Compose results.
@@ -5133,7 +5147,7 @@
     ;; Expand res1.
     (set! res1 (grsp-matrix-subexp res1 am1 tn2))
     
-    ;; Append res2 to res1.
+    ;; Compose results.
     (set! res1 (grsp-matrix-subrep res1 res2 lm1 (+ hn1 1)))
     
     res1))
@@ -5179,9 +5193,11 @@
     ;; Perform the selection and then read the value of col p_j1 row 0.
     (set! i1 1)
     (while (<= i1 n1)
+	   
 	    (cond ((> i1 1)
 		   (set! res1 (grsp-matrix-row-select s1 res1 p_j1 res2))))
 	    (set! res2 (array-ref res1 0 p_j1))
+	    
 	    (set! i1 (+ i1 1)))  
     
     res2))
@@ -5355,7 +5371,7 @@
     ;; Mutate res2.
     (set! res2 (grsp-matrix-mutation res2 p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2))
 
-    ;; Copy res2 back to res1.
+    ;; Compose results.
     (set! res1 (grsp-matrix-subrep res1 res2 lm1 p_n2))
     
     res1))
@@ -5390,7 +5406,6 @@
 ;;
 (define (grsp-matrix-col-lmutation p_a1 p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 p_l1)
   (let ((res1 0)
-	;;(j1 1)
 	(j1 0)
 	(j2 0)
 	(hn1 0)
@@ -5399,12 +5414,21 @@
     ;; Create safety matrix. 
     (set! res1 (grsp-matrix-cpy p_a1))
 
+    ;; Cycle.
     (set! l1 p_l1)
     (set! hn1 (length l1))
     (while (< j1 hn1)
 	   
 	   (set! j2 (list-ref l1 j1))
-	   (set! res1 (grsp-matrix-col-mutation res1 p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 j2))
+	   (set! res1 (grsp-matrix-col-mutation res1
+						p_n1
+						p_s1
+						p_u1
+						p_v1
+						p_s2
+						p_u2
+						p_v2
+						j2))
 
 	   (set! j1 (in j1)))
 
@@ -5469,6 +5493,7 @@
     
     ;; If conditions b1 and b2 are met.
     (cond ((equal? (and (equal? b1 #t) (equal? b2 #t)))
+	   
 	   ;; Extract boundaries.
 	   (set! lm1 (grsp-matrix-esi 1 res1))
 	   (set! hm1 (grsp-matrix-esi 2 res1))
@@ -5599,7 +5624,7 @@
 ;; - p_v1: standard deviation for fitness rate.
 ;;
 ;; Notes:
-;; - This is justa convenience fitness function. You may want to create your
+;; - This is just a convenience fitness function. You may want to create your
 ;;   own for your specific task.
 ;;
 (define (grsp-matrix-fitness-rprnd p_a1 p_m1 p_n1 p_n2 p_s1 p_u1 p_v1)
@@ -5729,6 +5754,7 @@
 	   (set! i1 ln1)
 	   (set! h1 hn1)))
 
+    ;; Cycle.
     (cond ((equal? b1 #t)
 	   (while (<= i1 h1)
 		  
@@ -5767,6 +5793,7 @@
     (set! lm1 (grsp-matrix-esi 1 res1))
     (set! hm1 (grsp-matrix-esi 2 res1))
 
+    ;; Cycle.
     (while (<= i1 hm1)
 	   
 	   (array-set! res1 p_n2 i1 p_n1)
@@ -5824,7 +5851,7 @@
     ;; Find the complementary set.
     (set! res3 (grsp-matrix-row-select s2 p_a1 p_j1 p_n1))
 
-    ;; Build results.
+    ;; Compose results.
     (set! res1 (list res2 res3))
     
   res1))
@@ -5840,7 +5867,7 @@
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-empty p_a1)
-  (let ((res1 #t)) ;; *** t f
+  (let ((res1 #t))
 
     (cond ((> (grsp-matrix-total-elements p_a1) 0)
 	   (set! res1 #f))) 
@@ -5897,7 +5924,7 @@
 		  (set! j1 (in j1)))
 	   (set! i1 (in i1)))
 
-    ;; Compose result.
+    ;; Compose results.
     (set! res2 b1)
 
     res2))
@@ -5953,6 +5980,7 @@
     (set! ln1 (grsp-matrix-esi 3 res2))
     (set! hn1 (grsp-matrix-esi 4 res2))		
 
+    ;; Cycle.
     (set! i1 lm1)
     (while (<= i1 hm1)
 
@@ -6049,7 +6077,6 @@
     (set! n2 0)
     (while (<= j3 hn3)
 	   (set! n1 (array-ref res3 lm3 j3))
-	   ;;(set! n2 (grsp-matrix-col-total-element "#!=" res3 j3 n1))
 	   (cond ((> n2 0)
 		  (array-set! res1 0 0 j3))
 		 (else (array-set! res1 n1 0 j3)))
@@ -6113,6 +6140,7 @@
 	   (set! hm1 (grsp-matrix-esi 2 res1))
 	   (set! m1 hm1)))	   
 
+    ;; Compose results.
     (set! res1 (grsp-matrix-subrep res1 res2 m1 ln1))
     
     res1))
@@ -6229,6 +6257,7 @@
     (set! ln1 (grsp-matrix-esi 3 res1))
     (set! hn1 (grsp-matrix-esi 4 res1))
 
+    ;; Cycle.
     (set! i1 lm1)
     (while (<= i1 hm1)
 	   (set! j1 ln1)
@@ -6280,7 +6309,7 @@
     (set! res2 (grsp-matrix-cpy p_a2))
     (set! res3 (grsp-matrix-cpy res1))
 	  
-    ;; Extract the boundaries of the first matrix.***
+    ;; Extract the boundaries of the first matrix.
     (set! lm1 (grsp-matrix-esi 1 res1))
     (set! hm1 (grsp-matrix-esi 2 res1))
     (set! ln1 (grsp-matrix-esi 3 res1))
