@@ -153,7 +153,8 @@
   (newlines 100))
 
 
-;;;; pres - Display results.
+;;;; pres - Display results with areference string or title and an equal sign
+;; preceeding the results string.
 ;;
 ;; Keywords:
 ;; - console, strings.
@@ -161,6 +162,9 @@
 ;; Arguments:
 ;; - p_s1: reference, string.
 ;; - p_s2: result, string.
+;;
+;; Notes: 
+;; -  See pres2.
 ;;
 (define (pres p_s1 p_s2)
   (let ((res1 " "))
@@ -178,6 +182,9 @@
 ;; Arguments:
 ;; - p_s1: reference, string.
 ;; - p_s2: result.
+;;
+;; Notes: 
+;; -  See pres.
 ;;
 (define (pres2 p_s1 p_s2)
   (newline)

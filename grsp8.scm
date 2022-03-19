@@ -2,7 +2,7 @@
 ;;
 ;; grsp8.scm
 ;;
-;; Neural networks.
+;; Neural networks and network functions in general.
 ;;
 ;; =============================================================================
 ;;
@@ -260,7 +260,8 @@
 	    grsp-ann-conns-nodes))
 
 
-;;;; grsp-ann-net-create-000 - Creates an empty neural network.
+;;;; grsp-ann-net-create-000 - Creates an empty neural network as a list data
+;; data structure with basic, empty matrices.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -308,7 +309,7 @@
     (set! datai (grsp-ann-matrix-create "datai" 1))
     (set! datao (grsp-ann-matrix-create "datao" 1))    
     
-    ;; Rebuild the list.
+    ;; Rebuild the list and compose results.
     (cond ((equal? p_b1 #t)
 	   (set! res1 (list nodes conns count idata odata specs)))
 	  (else (set! res1 (grsp-ann-net-preb nodes conns count idata odata specs odtid datai datao))))
@@ -330,7 +331,15 @@
 ;;     nodes, conns, count, idata, odata and empty specs.
 ;;   - #f if you want to return also the associated matrix created during the
 ;;     process as the sixth of the ann list, meaning that this option returns
-;;     full nodes, conns, count, idata, odata and specs matrices.
+;;     full matrices:
+;;     - nodes.
+;;     - conns.
+;;     - count.
+;;     - idata.
+;;     - odata.
+;;     - specs.
+;;     - datai.
+;;     - datao.
 ;; - p_n2: number of mutation iterations desired.
 ;; - p_nl: number of nodes in layer 0.
 ;; - p_nm: number of intermediate layers.
@@ -346,6 +355,9 @@
 ;; - See "Format of matrices used in grsp8" on top of this file for details
 ;;   on each matrix used.
 ;; - A standard distribution is used for grsp-ann-net-mutate also.
+;; - Further configuration of the ann might have to be done after using
+;;   this function to change parameters such as activation functions per node,
+;;   weights, etc.
 ;;
 ;; Output:
 ;; - A list with elements combining the results provided by:
@@ -367,7 +379,7 @@
     (set! res3 (grsp-ann-net-create-ffn specs))
     (set! odtid (grsp-ann-matrix-create "odtid" 1))
     
-    ;; Mutate in order to randomize values, as many tumes as defined by argument
+    ;; Mutate in order to randomize values as many tumes as defined by argument
     ;; p_n2. In order not t mutate the network, set p_n2 = 0 so that the 
     ;; following cycle gets ignored entirely.
     (while (<= i1 p_n2)
@@ -712,9 +724,8 @@
 		  ;; connection to be created.
 		  (list-set! l3 0 cn)
 		  (list-set! l3 4 cc)
-		  
-		  ;;(set! conns (grsp-ann-item-create nodes conns count 1 (list-ref p_l3 i1)))
 		  (set! conns (grsp-ann-item-create nodes conns count 1 l3))
+		  
 		  (set! i1 (in i1)))))
     
     ;; Compose results.
@@ -890,7 +901,7 @@
 	(datai 0)
 	(datao 0))
 
-    ;; Copy argument matrix.
+    ;; Safe copy of argument matrix.
     (set! res2 (grsp-matrix-cpy p_a1))
 
     ;; Create matrices with just one row.
@@ -959,7 +970,7 @@
     (set! res4 (grsp-matrix-cpy nodes))
     (set! res4 (grsp-matrix-row-sort "#des" res4 3))
     (while (equal? b1 #t)
-	   ;;(set! res4 (grsp-matrix-row-sort "#des" res4 3))
+
 	   (set! y1 (array-ref res4 0 3))
 	   
 	   ;; If the layer number is zero, it means that we are dealing with the
@@ -967,6 +978,7 @@
 	   ;; created. Othewise, every node of the layer will be connected to
 	   ;; every node of the prior layer.
 	   (cond ((> y1 0)
+		  
 		  ;; Separate the corrent res4 into two parts:
 		  ;; - One will contain the rows (nodes) whose column 3 (layer)
 		  ;;   equals y1. This will be table res3.
@@ -1069,8 +1081,6 @@
 
     ;; Calculate number of rows based on total number of ann layers. 
     (set! m1 (+ 2 p_nm))
-
-    ;; Find id number of activation function.
     
     ;; Create empty matrix
     (set! res1 (grsp-matrix-create 0 m1 n1))
@@ -1623,8 +1633,6 @@
     (set! hn1 (grsp-matrix-esi 4 nodes)) 
     
     ;; Evaluate nodes and their input and output connections.
-    ;; ***
-
     (cond ((equal? p_b3 #t)
 	   (display "\n + 1.0 Evaluating nodes: \n")
 	   (display "\n")))
@@ -1738,7 +1746,7 @@
     (set! l1 (list 5 9))
     (set! l3 (list 5 7))
 
-    ;; Apply mutation.
+    ;; Perform mutation.
     (cond ((equal? b1 #f)
 	   (set! res1 (grsp-ann-net-mutate res1 0.5 "#normal" 0.0 0.15 "#normal" 0.0 0.15 l1 l3)))
 	  ((equal? b1 #t)
@@ -1937,8 +1945,6 @@
 		  (array-set! idata (array-ref odata cd1 3) i6 2)
 		  (array-set! idata 0 i6 3)))
 	   
-	   ;; Set col 0 (id) of idata.
-
 	   (set! i6 (in i6)))
 
     ;; Compose results.
@@ -2487,6 +2493,7 @@
     (set! datai (grsp-ann-get-matrix "datai" p_l1))
     (set! datao (grsp-ann-get-matrix "datao" p_l1))
 
+    ;; Cycle.
     (set! i1 0)
     (while (equal? b1 #f)
 
@@ -3027,7 +3034,7 @@
     res1))
 
 
-;;;; grsp-ann-node-conns - Find the connections (edges) connected to node p_n1
+;;;; grsp-ann-node-conns - Finds the connections (edges) linking to node p_n1
 ;; of network p_l1.
 ;;
 ;; Keywords:
@@ -3056,7 +3063,8 @@
 
     ;; Select edges going out of p_n1 (FROM).
     (set! fr (grsp-matrix-row-select "#=" conns 3 p_n1))
-    
+
+    ;; Compose results.
     (set! res1 (list to fr))
     
     res1))
@@ -3098,7 +3106,7 @@
     (set! i2 (grsp-matrix-te1 lm1 hm1))
     (set! res1 (make-list i2))
     
-    ;; Cycle.
+    ;; Cycle and compose results.
     (set! i1 lm1)
     (while (<= i1 hm1)
 
@@ -3146,7 +3154,7 @@
 	(nodes 0)
 	(conns 0))
 
-    ;; Create empty matrix.
+    ;; (1) Create empty matrix.
     (set! res6 (grsp-matrix-create 0 0 0))
     (set! res4 res6)
     (set! res5 res6)
@@ -3167,14 +3175,18 @@
 	   (set! b2 #t)    
 	   (set! fr (array-ref res5 0 0))))    
 
-    ;; Select node record (row) from matrix nodes which p_n1 goes (TO).
+    ;; (2) and (3) help guarantee that the correct type (matrix) will be
+    ;; returned as result considering how res6 was configured at (1).
+    
+    ;; (2) Select node record (row) from matrix nodes which p_n1 goes (TO).
     (cond ((equal? b1 #t)
 	   (set! res2 (grsp-matrix-row-select "#=" nodes 0 to))))
 
-    ;; Select node record (row) from matrix nodes which p_n1 comes (FROM).
+    ;; (3) Select node record (row) from matrix nodes which p_n1 comes (FROM).
     (cond ((equal? b2 #t)    
 	   (set! res3 (grsp-matrix-row-select "#=" nodes 0 fr))))
-    
+
+    ;; Compose results.
     (set! res1 (list res2 res3))
 	
     res1))
@@ -3222,7 +3234,7 @@
     (set! i2 (grsp-matrix-te1 lm1 hm1))
     (set! res1 (make-list i2))
     
-    ;; Cycle.
+    ;; Cycle and compose results.
     (set! i1 lm1)
     (while (<= i1 hm1)
 
