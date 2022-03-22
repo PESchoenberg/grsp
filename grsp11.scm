@@ -110,6 +110,8 @@
 
     (set! hn (length p_l1))
     (set! res1 p_l1)
+
+    ;; Cycle.
     (while (< j1 hn)
 	   (set! res1 (grsp-lal-rel p_s1 p_n1 res1 j1))
 	   (set! j1 (in j1)))

@@ -193,7 +193,8 @@
     (parallel (set! res2 (expt (+ 1.5 x1 xy) 2))
 	      (set! res3 (expt (+ 2.25 x1 (* p_x1 (expt p_y1 2))) 2))
 	      (set! res4 (expt (+ 2.625 x1 (* p_x1 (expt p_y1 3))) 2)))
-    
+
+    ;; Compose results.    
     (set! res1 (+ res2 res3 res4))
     
     res1))
@@ -336,7 +337,8 @@
 		     (set! x1 (array-ref p_a1 0 j1))
 		     (set! res3 (+ res3 (- (expt x1 2) (* 10 (cos (* p2 x1))))))
 		     (set! j1 (in j1))))
-	   
+    
+    ;; Compose results.	   
     (set! res1 (+ res2 res3))
 
     res1))
@@ -578,7 +580,8 @@
     
     (parallel (set! res2 (expt (+ (expt x 2) y -11) 2))
 	      (set! res3 (expt (+ x (expt y 2) -7) 2)))
-    
+
+    ;; Compose results.    
     (set! res1 (+ res2 res3))
 
     res1))
@@ -691,7 +694,8 @@
     
     (parallel (set! res2 (- (expt (sin (- x2 y2)) 2) 0.5))
 	      (set! res3 (expt (+ 1 (* 0.001 (+ x2 y2))) 2)))
-    
+
+    ;; Compose results.    
     (set! res1 (+ 0.5 (/ res2 res3)))
     
     res1))
@@ -757,7 +761,8 @@
 
     (parallel (set! res2 (- (expt (cos (sin (abs (- x2 y2)))) 2) 0.5))
 	      (set! res3 (expt (+ 1 (* 0.001 (+ x2 y2))) 2)))
-    
+
+    ;; Compose results.
     (set! res1 (+ 0.5 (/ res2 res3)))
     
     res1))
@@ -895,7 +900,8 @@
 
     (parallel (set! res3 (sin (sqrt (abs (+ (/ p_x1 2) y1)))))
 	      (set! res4 (* p_x1 (sin (sqrt (abs (- p_x1 y1)))))))
-    
+
+    ;; Compose results.    
     (set! res1 (- (* (* -1 y1) res3) res4))
 
     res1))
@@ -925,6 +931,7 @@
     (set! ln1 (grsp-matrix-esi 3 p_a1))
     (set! hn1 (grsp-matrix-esi 4 p_a1)) 
 
+    ;; Cycle.
     (set! j1 ln1)
     (while (<= j1 hn1)
 	   (set! x1 (array-ref p_a1 0 j1))
@@ -1003,7 +1010,8 @@
     
     (parallel (set! res2 (* -20 (grsp-eex res4)))
 	      (set! res3 (* -1 (grsp-eex res5))))
-    
+
+    ;; Compose results.    
     (set! res1 (+ res2 res3 (grsp-e) 20))
     
     res1))
@@ -1059,7 +1067,8 @@
     (parallel (set! res2 (* -1 (cos p_x1) (cos p_y1)))
 	      (set! res3 (grsp-eex (* -1 (+ (expt (- p_x1 (grsp-pi)) 2) 
 					    (expt (- p_y1 (grsp-pi)) 2))))))
-    
+
+    ;; Compose results.    
     (set! res1 (* res2 res3))
     
     res1))
@@ -1116,6 +1125,7 @@
 							   (expt p_y1 2)))
 						  (grsp-pi)))))))
 
+    ;; Compose results.    
     (set! res1 (* -1 0.0001 (expt (+ (abs (* res2 res3)) 1) 0.1)))
     
     res1))
@@ -1174,6 +1184,7 @@
 							 (expt p_y1 2)))
 						(grsp-pi)))))))
 
+    ;; Compose results.    
     (set! res1 (* -1 (abs (* res2 res3))))
     
     res1))
@@ -1362,10 +1373,3 @@
     
     res1))
     
-
-;;(define (grsp-bffe p_f1 p_i1 p_n1)
-  ;;(let ((res1 0))
-
-    ;;(set! res1 p_f1)
-
-    ;;res1))

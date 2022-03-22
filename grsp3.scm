@@ -108,7 +108,11 @@
   #:use-module (grsp grsp1)
   #:use-module (grsp grsp2)
   #:use-module (grsp grsp4)  
-  #:export (grsp-matrix-esi
+  #:export (grsp-lm
+	    grsp-hm
+	    grsp-ln
+	    grsp-hn
+	    grsp-matrix-esi
 	    grsp-matrix-create
 	    grsp-matrix-change
 	    grsp-matrix-find
@@ -222,6 +226,82 @@
 	    grsp-matrix-opewc))
 
 
+;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;;
+;; Notes:
+;; - See grsp-matrix-esi.
+;;
+;; Output:
+;; - lm value.
+;;
+(define (grsp-lm p_a1)
+  (let ((res1 0))
+    
+    (set! res1 (grsp-matrix-esi 1 p_a1))
+
+    res1))
+
+
+;;;; grsp-hm - Short form of (grsp-matrix-esi 2 p_a1).
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;;
+;; Notes:
+;; - See grsp-matrix-esi.
+;;
+;; Output:
+;; - hm value.
+;;
+(define (grsp-hm p_a1)
+  (let ((res1 0))
+    
+    (set! res1 (grsp-matrix-esi 2 p_a1))
+
+    res1))
+
+
+;;;; grsp-ln - Short form of (grsp-matrix-esi 3 p_a1).
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;;
+;; Notes:
+;; - See grsp-matrix-esi.
+;;
+;; Output:
+;; - ln value.
+;;  
+(define (grsp-ln p_a1)  
+  (let ((res1 0))
+    
+    (set! res1 (grsp-matrix-esi 3 p_a1))
+
+    res1))
+
+
+;;;; grsp-hn - Short form of (grsp-matrix-esi 4 p_a1).
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;;
+;; Notes:
+;; - See grsp-matrix-esi.
+;;
+;; Output:
+;; - hn value.
+;;  
+(define (grsp-hn p_a1)  
+  (let ((res1 0))
+    
+    (set! res1 (grsp-matrix-esi 4 p_a1))
+
+    res1))
+
+
 ;;;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
 ;;
 ;; Keywords:
@@ -229,10 +309,10 @@
 ;;
 ;; Arguments:
 ;; - p_e1: number indicating the element value desired.
-;;   - 1: low boundary for m (rows).
-;;   - 2: high boundary for m (rows).
-;;   - 3: low boundary for n (cols).
-;;   - 4: high boundary for n (cols).
+;;   - 1: lm. low boundary for m (rows).
+;;   - 2: hm. high boundary for m (rows).
+;;   - 3: ln. low boundary for n (cols).
+;;   - 4: hn. high boundary for n (cols).
 ;; - p_m1: m.
 ;;
 ;; Sources:
@@ -611,28 +691,20 @@
 ;;
 (define (grsp-matrix-change p_a1 p_v1 p_v2)
   (let ((res1 p_a1)
-	(lm1 0)
-	(hm1 0)
-	(ln1 0)
-	(hn1 0)
 	(i1 0)
 	(j1 0))
 
-    ;; Extract the boundaries of the matrix.
-    (set! lm1 (grsp-matrix-esi 1 res1))
-    (set! hm1 (grsp-matrix-esi 2 res1))
-    (set! ln1 (grsp-matrix-esi 3 res1))
-    (set! hn1 (grsp-matrix-esi 4 res1))
-
     ;; Cycle thorough the matrix and change to p_v1 those elements whose value  
     ;; is p_v1.
-    (set! i1 lm1)
-    (while (<= i1 hm1)
-	   (set! j1 ln1)
-	   (while (<= j1 hn1)
+    (set! i1 (grsp-lm res1))
+    (while (<= i1 (grsp-hm res1))
+	   
+	   (set! j1 (grsp-ln res1))
+	   (while (<= j1 (grsp-hn res1))
 		  (cond ((equal? (array-ref res1 i1 j1) p_v1)
 			 (array-set! res1 p_v2 i1 j1)))
 		  (set! j1 (+ j1 1)))
+	   
 	   (set! i1 (+ i1 1)))
 
     res1))
@@ -667,27 +739,18 @@
 ;;
 (define (grsp-matrix-find p_s1 p_a1 p_v1)
   (let ((res1 0)
-	(lm1 0)
-	(hm1 0)
-	(ln1 0)
-	(hn1 0)
-	(hm2 0)
 	(i1 0)
 	(j1 0)
 	(k1 0)
 	(c1 #f))
-
-    ;; Extract the boundaries of the matrix.
-    (set! lm1 (grsp-matrix-esi 1 p_a1))
-    (set! hm1 (grsp-matrix-esi 2 p_a1))
-    (set! ln1 (grsp-matrix-esi 3 p_a1))
-    (set! hn1 (grsp-matrix-esi 4 p_a1))	
 	      
     ;; Find the elements.
-    (set! i1 lm1)
-    (while (<= i1 hm1)
-	   (set! j1 ln1)
-	   (while (<= j1 hn1)
+    (set! i1 (grsp-lm p_a1))
+    (while (<= i1 (grsp-hm p_a1))
+	   
+	   (set! j1 (grsp-ln p_a1))
+	   (while (<= j1 (grsp-hn p_a1))
+
 		  (cond ((equal? p_s1 "#=")
 			 (cond ((equal? p_v1 (array-ref p_a1 i1 j1))
 				(set! k1 (+ k1 1))
@@ -725,13 +788,13 @@
 				(set! res1 (grsp-matrix-subexp res1 1 0))))
 
 			 ;; Fill a new row of res1 with data.
-			 (set! hm2 (grsp-matrix-esi 2 res1))
-			 (array-set! res1 i1 hm2 0)
-			 (array-set! res1 j1 hm2 1)
-
+			 (array-set! res1 i1 (grsp-hm res1) 0)
+			 (array-set! res1 j1 (grsp-hm res1) 1)
+			 
 			 (set! c1 #f)))
 		  
 		  (set! j1 (+ j1 1)))
+	   
 	   (set! i1 (+ i1 1)))
 
     res1))
@@ -752,29 +815,27 @@
 (define (grsp-matrix-transpose p_a1)
   (let ((res1 p_a1)
 	(res2 0)
-	(lm1 0)
-	(hm1 0)
-	(ln1 0)
-	(hn1 0)
 	(i1 0)
 	(j1 0))
 
-    ;; Extract the boundaries of the matrix.
-    (set! lm1 (grsp-matrix-esi 1 res1))
-    (set! hm1 (grsp-matrix-esi 2 res1))
-    (set! ln1 (grsp-matrix-esi 3 res1))
-    (set! hn1 (grsp-matrix-esi 4 res1))	
+    ;; Extract the boundaries of the matrix.	
 
     ;; Create new matrix with transposed shape.
-    (set! res2 (grsp-matrix-create res2 (+ (- hn1 ln1) 1) (+ (- hm1 lm1) 1)))
+    (set! res2 (grsp-matrix-create res2
+				   (+ (- (grsp-hn res1) (grsp-ln res1)) 1)
+				   (+ (- (grsp-hm res1) (grsp-lm res1)) 1)))
     
     ;; Transpose the elements.
-    (set! i1 lm1)
-    (while (<= i1 hm1)
-	   (set! j1 ln1)
-	   (while (<= j1 hn1)
+    (set! i1 (grsp-lm res1))
+    (while (<= i1 (grsp-hm res1))
+	   
+	   (set! j1 (grsp-ln res1))
+	   (while (<= j1 (grsp-hn res1))
+		  
 		  (array-set! res2 (array-ref res1 i1 j1) j1 i1)
+		  
 		  (set! j1 (+ j1 1)))
+	   
 	   (set! i1 (+ i1 1)))
 
     res2))
@@ -984,6 +1045,7 @@
 				(set! res2 (/ res2 (array-ref res1 i1 j1)))))))			       
 
 		  (set! j1 (+ j1 1)))
+	   
 	   (set! i1 (+ i1 1)))
 
     res2))
@@ -1047,8 +1109,10 @@
     ;; Apply scalar operation.
     (set! i1 lm1)
     (while (<= i1 hm1)
+	   
 	   (set! j1 ln1)
 	   (while (<= j1 hn1)
+		  
 		  (cond ((equal? p_s1 "#+")
 			 (array-set! res2 (+ (array-ref res1 i1 j1) p_v1) i1 j1))
 			((equal? p_s1 "#-")
@@ -1073,7 +1137,9 @@
 			 (array-set! res2 (grsp-complex-inv p_s1 (array-ref res1 i1 j1)) i1 j1))			  
 			((equal? p_s1 "#ii")
 			 (array-set! res2 (grsp-complex-inv p_s1 (array-ref res1 i1 j1)) i1 j1)))
+		  
 		  (set! j1 (+ j1 1)))
+	   
 	   (set! i1 (+ i1 1)))
 
     res2))
@@ -1128,6 +1194,7 @@
     ;; Apply elelemnt-wise operation.
     (set! i1 lm1)		 
     (while (<= i1 hm1)
+	   
 	   (set! j1 ln1)			
 	   (while (<= j1 hn1)
 		  
@@ -1153,6 +1220,7 @@
 				(array-set! res3 (array-ref res1 i1 j1) i1 j1)))))
 			
 		  (set! j1 (+ j1 1)))
+	   
 	   (set! i1 (+ i1 1)))
 
     res3))
@@ -4628,21 +4696,23 @@
 ;; - p_a1: matrix.
 ;;  
 (define (grsp-matrix-te2 p_a1)
-  (let ((res1 0)
-	(lm1 0)
-	(hm1 0)
-	(ln1 0)
-	(hn1 0))	
+  (let ((res1 0))
+	;(lm1 0)
+	;(hm1 0)
+	;(ln1 0)
+	;(hn1 0))	
 
     ;; Extract boundaries of the argument matrix.
-    (set! lm1 (grsp-matrix-esi 1 p_a1))
-    (set! hm1 (grsp-matrix-esi 2 p_a1))
-    (set! ln1 (grsp-matrix-esi 3 p_a1))
-    (set! hn1 (grsp-matrix-esi 4 p_a1))
+    ;(set! lm1 (grsp-matrix-esi 1 p_a1))
+    ;(set! hm1 (grsp-matrix-esi 2 p_a1))
+    ;(set! ln1 (grsp-matrix-esi 3 p_a1))
+    ;(set! hn1 (grsp-matrix-esi 4 p_a1))
 
     (set! res1 (grsp-matrix-create 0 1 2))
-    (array-set! res1 (grsp-matrix-te1 lm1 hm1) 0 0)
-    (array-set! res1 (grsp-matrix-te1 ln1 hn1) 0 1)   
+    ;(array-set! res1 (grsp-matrix-te1 lm1 hm1) 0 0)
+    ;(array-set! res1 (grsp-matrix-te1 ln1 hn1) 0 1)   
+    (array-set! res1 (grsp-matrix-te1 (grsp-lm p_a1) (grsp-hm p_a1)) 0 0)
+    (array-set! res1 (grsp-matrix-te1 (grsp-ln p_a1) (grsp-hn p_a1)) 0 1) 
     
     res1))
 
@@ -5304,7 +5374,7 @@
     (set! ln1 (grsp-matrix-esi 3 res1))
     (set! hn1 (grsp-matrix-esi 4 res1))
 
-    ;; Cycle over.
+    ;; Cycle.
     (set! i1 lm1)
     (while (<= i1 hm1)
 	  (set! j1 ln1)
@@ -6373,30 +6443,20 @@
   (let ((res1 0)
 	(res2 0)
 	(res3 0)
-	(lm1 0)
-	(hm1 0)
-	(ln1 0)
-	(hn1 0)
 	(i1 0)
 	(n1 0)
 	(n2 0)
 	(n3 0))
 
-    ;; Create safety matrices. 
+    ;; Create safety matrices. It is assumed that p_a2 and
+    ;; p_a3 have the same number of rows as p_a1.
     (set! res1 (grsp-matrix-cpy p_a1))
     (set! res2 (grsp-matrix-cpy p_a2))
     (set! res3 (grsp-matrix-cpy p_a3))
 	  
-    ;; Extract matrix boundaries. It is assumed that p_a2 and
-    ;; p_a3 have the same number of rows as p_a1.
-    (set! lm1 (grsp-matrix-esi 1 res1))
-    (set! hm1 (grsp-matrix-esi 2 res1))
-    (set! ln1 (grsp-matrix-esi 3 res1))
-    (set! hn1 (grsp-matrix-esi 4 res1)) 
-
     ;; Cycle over p_a1 rows.
-    (set! i1 lm1)
-    (while (<= i1 hm1)
+    (set! i1 (grsp-lm res1))
+    (while (<= (grsp-hm res1))
 
 	   (set! n1 (array-ref res1 i1 p_j1))
 	   (set! n2 (array-ref res2 i1 p_j2))
