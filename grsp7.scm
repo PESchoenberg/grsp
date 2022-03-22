@@ -267,7 +267,7 @@
     (set! res2 (* 4 (atan (/ 1 5))))
     (set! res3 (atan (/ 1 239)))
 
-    ;; Compose result.
+    ;; Compose results.
     (set! res1 (* 4 (- res2 res3)))
 
     res1))
@@ -291,7 +291,7 @@
     (set! res3 (* 2 (atan (/ 1 57))))
     (set! res4 (atan (/ 1 239)))
 
-    ;; Compose result.
+    ;; Compose results.
     (set! res1 (* 4 (+ res2 res3 res4)))
 
     res1))
@@ -315,7 +315,7 @@
     (set! res3 (* 8 (atan (/ 1 57))))
     (set! res4 (* 5 (atan (/ -1 239))))
 
-    ;; Compose result.
+    ;; Compose results.
     (set! res1 (* 4 (+ res2 res3 res4)))
 
     res1))

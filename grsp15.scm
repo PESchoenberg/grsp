@@ -175,6 +175,7 @@
     (set! ln1 (grsp-matrix-esi 3 res2))
     (set! hn1 (grsp-matrix-esi 4 res2))
 
+    ;; Cycle.
     (set! i1 lm1)
     (while (<= i1 hm1)
 

@@ -324,7 +324,7 @@
 ;;     series summation (shown only if p_b1 is passed #t).
 ;;
 ;; Sources:
-;; - grsp7.1[]
+;; - [grsp7.1]
 ;;
 (define (grsp-seq-pi p_b1 p_m1)
   (let ((res1 '())

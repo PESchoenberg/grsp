@@ -318,6 +318,7 @@
   (let ((res1 0)
 	(n1 1))
 
+    ;; Cycle.
     (while (< n1 p_l1)
 	   (set! res1 (+ res1 (/ (expt -1 (- n1 1))
 				 (expt n1 p_s1))))
@@ -378,11 +379,14 @@
 	   (cond ((< p_z1 0)
 		  (set! defined #f)))))
     (cond ((eq? defined #t)
+
+	   ;; Cycle.
 	   (while (<= i1 p_n1)
 		  (set! res3 (expt (+ 1 (/ 1 i1)) p_z1))
 		  (set! res4 (+ 1 (/ p_z1 i1)))
 		  (set! res2 (* res2 (/ res3 res4)))
 		  (set! i1 (in i1)))
+	   
 	   (set! res1 (* 1.00 (/ 1 p_z1) res2)))
 	  ((eq? defined #f)
 	   (set! res1 +inf.0)))
@@ -428,6 +432,8 @@
 	   (cond ((< p_z1 0)
 		  (set! defined #f)))))
     (cond ((eq? defined #t)
+
+	   ;; Cycle.
 	   (set! res3 (/ (expt e1 (* -1 g1 p_z1)) p_z1))
 	   (while (<= i1 p_n1)
 		  (set! z2 (/ p_z1 i1))
@@ -435,6 +441,7 @@
 		  (set! res5 (expt e1 z2))
 		  (set! res2 (* res2 res4 res5))
 		  (set! i1 (in i1)))
+	   
 	   (set! res1 (* 1.00 res3 res2)))
 	  ((eq? defined #f)
 	   (set! res1 +inf.0)))
@@ -562,9 +569,12 @@
 	   (cond ((< z2 0)
 		  (set! defined #f)))))
     (cond ((eq? defined #t)
+
+	   ;; Cycle.
 	   (while (<= i1 p_n1)
 		  (set! res2 (/ z2 (* i1 (+ i1 z2))))		  
 		  (set! i1 (+ i1 1)))
+	   
 	   (set! res1 (* -1.00 (grsp-em) res2)))
 	  ((eq? defined #f)
 	   (set! res1 +inf.0)))
@@ -1035,7 +1045,8 @@
 
     (set! m1 p_m1)
     (set! z1 p_z1)
-    
+
+    ;; Cycle.
     (while (<= i1 m1)
 	   (set! res1 (+ res1 (/ 1 (expt i1 z1))))
 	   (set! i1 (in i1)))

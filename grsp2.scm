@@ -2,7 +2,7 @@
 ;;
 ;; grsp2.scm
 ;;
-;; Real num. unctions.
+;; Real num. functions.
 ;;
 ;; =============================================================================
 ;;
@@ -888,7 +888,8 @@
 			 (set! res1 (+ (/ (expt p_k1 p_n1)
 					  (grsp-fact p_k1))))
 			 (set! i1 (+ i1 1)))))))
-    
+
+    ;; Compose results.    
     (set! res1 (* res1 (/ 1 (grsp-e))))
 
     res1))
@@ -1271,7 +1272,7 @@
     (set! res1 (/ 1 (+ (/ (expt (cos p_a1) 2)
 			  (grsp-mrc-ellipsoid p_x1 (grsp-eccentricityf-ellipsoid (grsp-flattening-ellipsoid p_x1 p_y1)) p_l1))
 		       (/ (expt (sin p_a1) 2)
-			  (grsp-pvrc-ellipsoid p_x1 p_y1 p_l1))))) ; N
+			  (grsp-pvrc-ellipsoid p_x1 p_y1 p_l1)))))
     
     res1))    
 

@@ -646,6 +646,7 @@
 	   (set! s3 (string-append s3 p_s3))
 	   (set! l3 (string-length s3)))
 
+    ;; Compose results.    
     (set! res1 (strings-append (list p_s1 s3 p_s2) 0))
     
     res1))

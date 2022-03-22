@@ -306,6 +306,7 @@
 	   (set! p_nmax p_n1))
 	  ((< p_n1 p_nmin)
 	   (set! p_nmin p_n1)))
+    
     (set! res1 (* 1.0 (/ (- p_n1 p_nmin)
 			 (- p_nmax p_nmin))))
     
@@ -502,6 +503,7 @@
 
     (set! n1 (grsp-fitin-0-1 p_n1))
     (set! n2 (grsp-fitin-0-1 p_n2))
+    
     (cond ((> n2 0.0)
 	   (set! res1 (/ (grsp-pand n1 n2) n2))))
 
@@ -879,7 +881,8 @@
     (set! n1 (grsp-matrix-total-elements p_a1))
     (set! u1 (grsp-mean1 p_a1))
     (set! res3 (/ 1 (- n1 1)))
-    
+
+    ;; Cycle.
     (set! i1 lm1)
     (while (<= i1 hm1)
 	   (set! j1 ln1)

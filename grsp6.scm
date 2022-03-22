@@ -311,7 +311,8 @@
     (set! x2 (* l1 (- p_x1 (* p_v1 p_t1))))
     (set! y2 p_y1)
     (set! z2 p_z1)
-    
+
+    ;; Compose results.
     (set! res1 (list t2 x2 y2 z2))
 
     res1))
@@ -345,7 +346,8 @@
 	      (set! x2 (* l1 (- p_x1 (* p_v1 p_t1))))
 	      (set! y2 p_y1)
 	      (set! z2 p_z1))
-    
+
+    ;; Compose results.    
     (set! res1 (list t2 x2 y2 z2))
 
     res1))
