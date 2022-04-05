@@ -93,7 +93,9 @@
 
     (cond ((equal? (grsp-date-is-m31 p_m1) #t)
 	   (set! res1 31)))
+    
     (cond ((equal? p_m1 2)
+	   
 	   (cond ((equal? (grsp-date-is-m29 p_y1) #t)
 		  (set! res1 29))
 		 (else (set! res1 28)))))
@@ -169,12 +171,15 @@
     ;; Find the number of days of two next months.
     (while (<= i1 3)
 	   (set! m1 (+ m1 1))
+	   
 	   (cond ((= m1 13)
 		  (set! m1 1)
 		  (set! y1 (+ y1 1))))
 	   (set! dm1 (grsp-date-dl m1 y1))
+	   
 	   (cond ((= i1 2)
 		  (set! res2 (list m1 y1 dm1))))
+	   
 	   (cond ((= i1 3)
 		  (set! res3 (list m1 y1 dm1))))
 
@@ -247,8 +252,10 @@
     ;; Compare current day number to the limits of the two following
     ;; months.
     (set! d1 d0)
+    
     (cond ((<= d0 d2)
 	   (set! d2 d0)))
+    
     (cond ((<= d0 d3)
 	   (set! d3 d0)))
 

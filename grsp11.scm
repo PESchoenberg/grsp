@@ -66,18 +66,27 @@
 
     (set! res1 p_l1)
     (cond ((equal? p_s1 "#!=")
+	   
 	   (cond ((equal? (equal? p_n1 (list-ref res1 p_j1)) #f)
 		  (list-set! p_l1 p_j1 p_n1))))
+	  
 	  ((equal? p_s1 "#>")
+	   
 	    (cond ((> p_n1 (list-ref res1 p_j1))
 		   (list-set! p_l1 p_j1 p_n1))))
+	  
 	  ((equal? p_s1 "#>=")
+	   
 	   (cond ((>= p_n1 (list-ref res1 p_j1))
 		  (list-set! p_l1 p_j1 p_n1))))
+	  
 	  ((equal? p_s1 "#<")
+	   
 	   (cond ((< p_n1 (list-ref res1 p_j1))
 		  (list-set! p_l1 p_j1 p_n1))))
+	  
 	  ((equal? p_s1 "#<=")
+	   
 	   (cond ((<= p_n1 (list-ref res1 p_j1))
 		  (list-set! p_l1 p_j1 p_n1)))))
     
@@ -152,10 +161,13 @@
     (cond ((equal? (grsp-lal-leql p_l1 p_l2) #t)
 	   (set! hn (length p_l1))
 	   (set! res2 #t)
+	   
 	   (while (< j1 hn)
+		  
 		  (cond ((equal? (equal? (list-ref p_l1 j1)
 					 (list-ref p_l2 j1)) #f)
 			 (set! res2 #f)))
+		  
 		  (set! j1 (in j1)))))		  
 	    
     res2))
@@ -279,8 +291,10 @@
 
     (set! nh (length p_l1))
     (while (< j1 nh)
+	   
 	   (cond ((equal? p_b1 #t)
 		  (pres2 (grsp-n2s j1) (list-ref p_l1 j1)))
 		 (else (pres2 " " (list-ref p_l1 j1))))
+	   
 	   (set! j1 (in j1)))))
 

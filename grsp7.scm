@@ -96,8 +96,7 @@
 (define (grsp-geo-spherev p_r1)
   (let ((res1 0))
 
-    (set! res1 (* (/ 4 3)
-		  (grsp-pi) (expt p_r1 3)))
+    (set! res1 (* (/ 4 3) (grsp-pi) (expt p_r1 3)))
 
     res1))
 
@@ -173,6 +172,7 @@
 
     (set! dx (- p_x2 p_x1))
     (set! dy (- p_y2 p_y1))
+    
     (cond ((= dx 0)
 	   (cond ((>= dy 0)
 		  (set! res1 +inf.0))

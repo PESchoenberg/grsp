@@ -441,11 +441,14 @@
     ;; Solve.
     (set! n2 (expt n1 2))
     (cond ((< n1 0.0)
+	   
 	   (cond ((< n1 -2.0)
 		  (set! res1 -1.0))
 		 ((>= n1 -2.0)
 		  (set! res1 (+ n1 (/ n2 4.0))))))
+	  
 	  ((>= n1 0.0)
+	   
 	   (cond ((<= n1 2.0)
 		  (set! res1 (- n1 (/ n2 4.0))))
 		 ((> n1 2.0)
@@ -591,11 +594,13 @@
 
     ;; Solve.
     (set! n2 (abs n1))
+    
     (cond ((<= n2 1.0)
 	   (set! res1 (- 1 (/ (expt n1 2) 2))))
 	  ((>= n2 2.0)
 	   (set! res1 0.0))
 	  ((> n2 1.0)
+	   
 	   (cond ((< n2 2.0)
 		  (set! res1 (* 0.5 (expt (- 2 n2) 2)))))))
 

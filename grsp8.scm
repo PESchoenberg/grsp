@@ -956,6 +956,7 @@
 		   (set! c0 (array-ref count 0 0))
 		   
 		   (set! i2 (in i2)))
+	   
 	   (set! i1 (in i1)))
 
     ;; Purge nodes table; this is necessary since on creation a single row is
@@ -1041,7 +1042,8 @@
 				
 				(set! i5 (in i5)))
 			 
-			 (set! i3 (in i3))))			
+			 (set! i3 (in i3))))
+		 
 		 (else (set! b1 #f))))
 	    
     ;; Compose results.
@@ -1419,6 +1421,7 @@
     ;; If node does not exist and verbosity is on, tell that the node
     ;; will not be processed.
     (cond ((equal? b1 #t)
+	   
 	   (cond ((equal? p_b3 #t)
 		  (display "\n +++ 1.1.2 Node does not exist\n")
 		  (display res1)
@@ -1442,6 +1445,7 @@
 		  (display "\n")))
 		 
 	   (set! b2 (grsp-matrix-is-empty res2))
+	   
 	   (cond ((equal? b2 #f)
 		  (set! n1 (grsp-matrix-opio "#+c" res2 5))
 		  (set! n2 (grsp-matrix-opio "#+c" res2 7))
@@ -1528,6 +1532,7 @@
 	(l1 '()))
 
     (set! l1 p_l1)
+    
     (cond ((= p_n1 0)
 	   (set! res1 (grsp-identity l1)))
 	  ((= p_n1 1)
@@ -1639,8 +1644,8 @@
     
     (set! i1 lm1)
     (while (<= i1 hm1)
-	   
 	   (set! id (array-ref nodes i1 0))
+	   
 	   (cond ((equal? p_b3 #t)
 		  (display "\n ++ 1.1 Node number ")
 		  (display id)
@@ -1821,7 +1826,6 @@
     ;; Pass idata data to the ann.
     (set! i4 lm4)
     (while (<= i4 hm4)
-
 	   (set! id (array-ref idata i4 0))
 	   (set! j2 (array-ref idata i4 1))
 	   (set! n2 (array-ref idata i4 2))
@@ -3165,12 +3169,14 @@
 
     ;; Select node id to which p_n1 connects (TO).
     (set! res4 (grsp-matrix-row-select "#=" conns 4 p_n1))
+    
     (cond ((> (grsp-matrix-col-total-element "#>=" res4 0 1) 0)
 	   (set! b1 #t)
 	   (set! to (array-ref res4 0 0))))
 
     ;; Select node id from which p_n1 goes out (FROM).
     (set! res5 (grsp-matrix-row-select "#=" conns 3 p_n1))
+    
     (cond ((> (grsp-matrix-col-total-element "#>=" res5 0 1) 0)
 	   (set! b2 #t)    
 	   (set! fr (array-ref res5 0 0))))    

@@ -208,6 +208,7 @@
 	   ;; Calculate mean fitness.
 	   (cond ((> (grsp-mean1-mth (grsp-matrix-col-selectn res4 '(3))) p_ft1)
 		  (set! i1 p_n1)))
+	   
 	   (set! res1 res4)
 	   
 	   ;; Mutate if not on the last cycle.
