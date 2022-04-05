@@ -153,6 +153,7 @@
     ;; If p_t1 and p_t2 are zero, ignore time displacement and use Euclidean
     ;; space. If time coordinates are not zero, use Minkowski spacetime.
     (cond ((equal? p_t1 0)
+	   
 	   (cond ((equal? p_t2 0)
 		  (set! l #f)
 		  (set! nf 1)))))
@@ -207,6 +208,7 @@
 	(l #t))
 
     (cond ((equal? p_t1 0)
+	   
 	   (cond ((equal? p_t2 0)
 		  (set! l #f)
 		  (set! nf 1)))))
@@ -214,6 +216,7 @@
     (parallel (set! nx (* (grsp-osbv "#-" 2 p_x1 p_x2) nf))
 	      (set! ny (* (grsp-osbv "#-" 2 p_y1 p_y2) nf))
 	      (set! nz (* (grsp-osbv "#-" 2 p_z1 p_z2) nf))
+	      
 	      (cond ((equal? l #t)
 		     (set! nt (expt (* (gconst "c") (- p_t1 p_t2)) 2 )))))
 
@@ -803,8 +806,7 @@
     (set! n (* x2 (gconst "gequator")))
     (set! s (expt (sin p_x1) 2))
     (set! e (grsp-eccentricity-spheroid x2 y2))
-    (set! k (/ (- (* y2 (gconst "gpoles"))
-		  n) n)) 
+    (set! k (/ (- (* y2 (gconst "gpoles")) n) n))
     (set! res1 (* (gconst "gequator")
 		  (/ (+ 1 (* k s)) (sqrt (- 1 (* e s))))))
     
@@ -837,8 +839,8 @@
     
     (parallel (set! s (expt (sin p_x1) 2))
 	      (set! e (grsp-eccentricity-spheroid x2 y2))
-	      (set! k (/ (- (* y2 (gconst "gpoles"))
-			    n) n))) 
+	      (set! k (/ (- (* y2 (gconst "gpoles")) n) n)))
+    
     (set! res1 (* (gconst "gequator")
 		  (/ (+ 1 (* k s)) (sqrt (- 1 (* e s))))))
     

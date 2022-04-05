@@ -121,11 +121,15 @@
 (define (ptit p_c1 p_l1 p_n1 p_t1)
   (if (<= p_n1 1)
       (pline p_c1 p_l1))
+  
   (if (>= p_n1 2)
       (pline p_c1 p_l1))
+  
   (display p_t1)
+  
   (if (>= p_n1 2)
       (pline p_c1 p_l1))
+  
   (newline))
 
 
@@ -220,6 +224,7 @@
       ;; Add the blank string.
       (if (= p_s1 0)
   	  (set! res1 (string-append s1 p_l1)))
+      
       (if (= p_s1 1)
 	  (set! res1 (string-append p_l1 s1)))
 
@@ -245,12 +250,16 @@
 
     (set! elem (car p_l1))
     (while (not (equal? elem #f))
+	   
 	   (if (equal? p_s1 1)
 	       (set! elem (string-append elem " ")))
+	   
 	   (set! res1 (string-append res1 elem))
 	   (set! p_l1 (cdr p_l1))
+	   
 	   (if (> (length p_l1) 0)
 	       (set! elem (car p_l1)))
+	   
 	   (if (= (length p_l1) 0)
 	       (set! elem #f)))
 
@@ -275,6 +284,7 @@
   (call-with-input-file p_f1
     (lambda (p1)
       (let loop((ls1 '()) (c1 (read-char p1)))
+	
 	(if (eof-object? c1)
 	    (begin
 	      (close-input-port p1)
@@ -305,8 +315,10 @@
 
     (if (equal? p_s1 "lt")
 	(set! res1 (< ev p_v1)))
+    
     (if (equal? p_s1 "eq")
 	(set! res1 (= ev p_v1)))
+    
     (if (equal? p_s1 "ht")
 	(set! res1 (> ev p_v1)))
 
@@ -448,6 +460,7 @@
   (let ((n1 0))
 
     (set! n1 (- p_n1 1))
+    
     (cond ((< n1 0)
 	   (set! n1 0)))
     
@@ -590,6 +603,7 @@
 
     ;; This should be processed separatedly.
     (cond ((< res1 8)
+	   
 	   (cond ((inf? p_a1)
 		  (set! res1 9))
 		 ((nan? p_a1)

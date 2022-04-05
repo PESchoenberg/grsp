@@ -452,8 +452,7 @@
 
     (set! n1 (grsp-fitin-0-1 p_n1))
     (set! n2 (grsp-fitin-0-1 p_n2))    
-    (set! res1 (- (+ n1 n2)
-		  (grsp-pand n1 n2)))
+    (set! res1 (- (+ n1 n2) (grsp-pand n1 n2)))
 
     res1))
 
@@ -477,7 +476,8 @@
 	(n2 0.0))
 
     (set! n1 (grsp-fitin-0-1 p_n1))
-    (set! n2 (grsp-fitin-0-1 p_n2))    
+    (set! n2 (grsp-fitin-0-1 p_n2))
+    
     (cond ((<= (+ n1 n2) 1)
 	   (set! res1 (+ n1 n2))))
 
@@ -886,9 +886,11 @@
     (set! i1 lm1)
     (while (<= i1 hm1)
 	   (set! j1 ln1)
+	   
 	   (while (<= j1 hn1)
 		  (set! res2 (+ res2 (expt (- (array-ref p_a1 i1 j1) u1) 2))) 
 		  (set! j1 (in j1)))
+	   
 	   (set! i1 (in i1)))   
 
     (set! res1 (sqrt (* res3 res2)))
@@ -952,23 +954,30 @@
     ;; Summation of squared differences of X and mean.
     (set! i1 lm1)
     (while (<= i1 hm1)
+	   
 	   (set! j1 ln1)
 	   (while (<= j1 hn1)
+		  
 		  (cond ((equal? p_s1 "#v")
 			 
 			 ;; Summation of all elements.
 			 (set! res2 (+ res2 (expt (- (array-ref p_a1 i1 j1) u1) 2))))
 			((equal? p_s1 "#u")
+			 
 			 (cond ((> (array-ref p_a1 i1 j1) u1)
 				
 				;; Summation of elements with value > mean.
-				(set! res2 (+ res2 (expt (- (array-ref p_a1 i1 j1) u1) 2))))))			
+				(set! res2 (+ res2 (expt (- (array-ref p_a1 i1 j1) u1) 2))))))
+			
 			((equal? p_s1 "#s")
+			 
 			 (cond ((< (array-ref p_a1 i1 j1) u1)
 				
 				;; summation of elements with values < mean.
 				(set! res2 (+ res2 (expt (- (array-ref p_a1 i1 j1) u1) 2)))))))
+		  
 		  (set! j1 (in j1)))
+	   
 	   (set! i1 (in i1)))
 
     ;; Mean of the summation of squared differences.
@@ -1089,10 +1098,12 @@
     
     (set! i1 lm1)
     (while (<= i1 hm1)
+	   
 	   (set! j1 ln1)
 	   (while (<= j1 hn1)
 		  (set! res1 (+ res1 (abs (- (array-ref p_a1 i1 j1) p_x1))))
 		  (set! j1 (in j1)))
+	   
 	   (set! i1 (in i1)))   
 
     (set! res1 (* (/ 1 n1) res1))
@@ -1378,6 +1389,7 @@
     (set! l1 (grsp-dtr "#rt" n3))
     (set! ll1 (car l1))
     (set! ll2 (cadr l1))
+    
     (cond ((equal? ll1 ll2)
 	   (set! n4 (+ ln2 (- ll1 1)))
 	   (set! n5 (+ n4 1)))
@@ -1506,12 +1518,14 @@
     ;; Eval.
     (set! i2 lm2)
     (while (<= i2 hm2)
+	   
 	   (set! j2 ln2)
 	   (while (<= j2 hn2)
 
 		  ;; Read value from res2.
 		  (set! n2 (array-ref res2 i2 j2))
 		  (set! n5 (+ n5 1))
+		  
 		  (cond ((equal? (equal? n2 n1) #f)
 
 			 ;; Count the number of occurrences of n2 in res2.
@@ -1531,10 +1545,12 @@
 			 ;; Void occurrences of n2 in res2 by setting each
 			 ;; element to value n1 once counted.
 			 (set! res2 (grsp-matrix-change res2 n2 n1))
+			 
 			 (cond ((< n5 n4)
 				(set! res3 (grsp-matrix-subexp res3 1 0))))))
 		  		  
 		  (set! j2 (in j2)))
+	   
 	   (set! i2 (in i2)))
 
     ;; Compose results.    
@@ -1589,10 +1605,12 @@
     ;; Find mode among the abs freq results qas the highest value.
     (set! i2 lm2)
     (while (<= i2 hm2)
+	   
 	   (cond ((> (array-ref res2 i2 hn2) n3)
 		  (set! n2 (array-ref res2 i2 ln2))
 		  (set! n3 (array-ref res2 i2 hn2))
-		  (array-set! res2 n4 i2 hn2)))		  
+		  (array-set! res2 n4 i2 hn2)))
+	   
 	   (set! i2 (in i2)))
 
     ;; Compose results.
@@ -2875,12 +2893,13 @@
 	(n4 0))
 
     (cond ((>= p_k1 1)
+	   
 	   (while (< i1 p_n2)
 		  (set! n2 (/ (* (expt p_t1 i1) (expt p_l1 i1))
 			      (grsp-fact i1)))
 		  (set! n4 (+ 1 (/ i1 p_k1)))
 		  (set! n3 (grsp-complex-gamma p_b2 p_s1 n4 p_n1))
-		  (set! res1 (+ res1 (* n2 n3)))
+		  (set! res1 (+ res1 (* n2 n3)))		  
 		  (set! i1 (in i1)))))
 
     res1))
@@ -2912,6 +2931,7 @@
 	(n4 0))
 
     (cond ((>= p_k1 1)
+	   
 	   (while (< i1 p_n2)
 		  (set! n2 (/ (* (expt (* p_i2 p_t1) i1) (expt p_l1 i1))
 			      (grsp-fact i1)))
@@ -3340,7 +3360,6 @@
 		  (+ a1 b1 (* -2 c1))
 		  (- (* 2 a1) b1 c1)
 		  (+ a1 (* -2 b1) c1)))
-
     (set! res3 (* 5 (expt (+ (expt a1 2)
 			     (expt b1 2)
 			     (expt c1 2)
@@ -3348,7 +3367,6 @@
 			     (* a1 c1)
 			     (* b1 c1))
 			  (/ 3 2))))
-
     (set! res1 (/ res2 res3))
 
     ;; Compose result.

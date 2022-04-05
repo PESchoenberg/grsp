@@ -278,11 +278,12 @@
 (define (grsp-sign p_n1)
   (let ((res1 0))
 
-	(set! res1 (grsp-gtels p_n1 0))
-	(cond ((equal? res1 0)
-	       (set! res1 1)))
-	
-	res1))
+    (set! res1 (grsp-gtels p_n1 0))
+    
+    (cond ((equal? res1 0)
+	   (set! res1 1)))
+    
+    res1))
 
 
 ;;;; grsp-eiget - Finds out if p_n1 is an exact integer equal or greater than
@@ -303,6 +304,7 @@
   (let ((res1 #f))
 
     (cond ((exact-integer? p_n1)
+	   
 	   (cond ((>= p_n1 p_n2)    
 		  (set! res1 #t)))))
 
@@ -329,10 +331,13 @@
 
     ;; Cycle.
     (while (eq? b1 #f)
+	   
 	   (cond ((= 0 (remainder p_n1 i1))
 		  (set! res1 #f)
 		  (set! b1 #t)))
+	   
 	   (set! i1 (+ i1 1))
+	   
 	   (cond ((>= i1 p_n1)
 		  (set! b1 #t))))
     
@@ -402,8 +407,10 @@
 (define (grsp-biconr p_n1 p_k1)
   (let ((res1 0))
 
-    (cond ((eq? (grsp-eiget p_n1 0) #t)		  
-	   (cond ((eq? (grsp-eiget p_k1 0) #t)				
+    (cond ((eq? (grsp-eiget p_n1 0) #t)
+	   
+	   (cond ((eq? (grsp-eiget p_k1 0) #t)
+		  
 		  (cond ((>= p_n1 p_k1)
 			 (set! res1 (/ (grsp-fact p_n1)
 				      (* (grsp-fact (- p_n1 p_k1))
@@ -451,7 +458,9 @@
   (let ((res #f))
 
     (cond ((> p_n1 p_n2)
+	   
 	   (cond ((< p_n1 p_n3)
+		  
 		  (set! res #t)))))
 
     res))
@@ -475,7 +484,9 @@
   (let ((res #f))
 
     (cond ((>= p_n1 p_n2)
+	   
 	   (cond ((<= p_n1 p_n3)
+		  
 		  (set! res #t)))))
 
     res))
@@ -519,6 +530,7 @@
 	(k1 0))
 
     (cond ((exact-integer? p_k1)
+	   
 	   (cond ((eq? (grsp-eiget p_b1 2) #t)
 		  (begin (while (< k1 p_k1)
 				(set! res1 (+ res1 (* (/ 1 (expt p_b1 k1))
@@ -557,7 +569,7 @@
 	  ((< n1 0)
 	   (set! res1 0))
 	  ((> n1 0)
-	   (begin (set! res1 x1)
+	   (begin (set! res1 x1)		  
 		  (while (< i1 n1)
 			 (set! res1 (expt x1 res1))
 			 (set! i1 (+ i1 1))))))
@@ -659,8 +671,11 @@
   (let ((res1 0))
 
     (cond ((exact-integer? p_n1)
+	   
 	   (cond ((exact-integer? p_k1)
+		  
 		  (cond ((odd? p_k1)
+			 
 			 (cond ((> (expt 2 p_n1) p_k1)
 				(set! res1 (grsp-krnb p_k1 2 p_n1 1))))))))))
 
@@ -710,11 +725,15 @@
 	(i1 0))
 
     (cond ((exact-integer? p_n1)
+	   
 	   (cond ((exact-integer? p_d1)
+		  
 		  (cond ((eq? (grsp-gtls p_n1 0 10) #t)
+			 
 			 (while (< i1 p_d1)
 				(set! res1 (+ res1 p_n1))
 				(set! i1 (+ i1 1))
+				
 				(cond ((< i1 p_d1)
 				       (set! res1 (* res1 10)))))))))))
 
@@ -741,6 +760,7 @@
   (let ((res1 0))
 
     (cond ((eq? (grsp-eiget p_n1 1) #t)
+	   
 	   (cond ((eq? (grsp-eiget p_b1 2) #t)
 		  (set! res1 (* 1.0 (/ (+ (expt p_b1 p_n1) 1) (+ p_b1 1))))))))
 
@@ -766,7 +786,8 @@
 (define (grsp-williams-number p_n1 p_b1)
   (let ((res1 0))
 
-    (cond ((eq? (grsp-eiget p_n1 1) #t)		  
+    (cond ((eq? (grsp-eiget p_n1 1) #t)
+	   
 	   (cond ((eq? (grsp-eiget p_b1 2) #t)				
 		  (set! res1 (- (* (- p_b1 1) (expt p_b1 p_n1)) 1))))))
 
@@ -856,7 +877,8 @@
 (define (grsp-wagstaff-prime p_n1)
   (let ((res1 0))
 
-    (cond ((eq? (grsp-eiget p_n1 1) #t)    
+    (cond ((eq? (grsp-eiget p_n1 1) #t)
+	   
 	   (cond ((eq? (odd? p_n1) #t)
 		  (set! res1 (/ (+ (expt 2 p_n1) 1) 3))))))
 
@@ -883,7 +905,9 @@
 	(i1 0))
 
     (cond ((eq? (grsp-eiget p_n1 0) #t)
+	   
 	   (cond ((eq? (grsp-eiget p_k1 0) #t)
+		  
 		  (while (<= i1 p_n1)
 			 (set! res1 (+ (/ (expt p_k1 p_n1)
 					  (grsp-fact p_k1))))
@@ -1004,11 +1028,13 @@
 	   (set! v4 0)
 	   (set! v5 (abs v1))
 	   (set! b1 #t)))
+    
     (cond ((equal? v1 0)
 	   (set! v3 0)
 	   (set! v4 (grsp-sign v2))	   
 	   (set! v5 (abs v2))
 	   (set! b1 #t)))
+    
     (cond ((> (abs v1) (abs v2))
 	   (set! v6 (/ v2 v1))
 	   (set! v7 (* (grsp-sign v1)
@@ -1017,6 +1043,7 @@
 	   (set! v4 (* v3 v7))
 	   (set! v5 (* v1 v7))
 	   (set! b1 #t)))
+    
     (cond ((equal? b1 #f)
 	   (set! v6 (/ v1 v2))
 	   (set! v7 (* (grsp-sign v2)
@@ -1243,7 +1270,8 @@
   (let ((res1 0)
 	(e1 0))
 
-    (set! e1 (grsp-eccentricityf-ellipsoid (grsp-flattening-ellipsoid p_x1 p_y1)))
+    (set! e1 (grsp-eccentricityf-ellipsoid (grsp-flattening-ellipsoid p_x1
+								      p_y1)))
     (set! res1 (/ p_x1 (sqrt (- 1 (* (expt e1 2)
 				     (expt (sin p_l1) 2))))))
 
@@ -1628,6 +1656,7 @@
 	(k1 0))
 
     (cond ((> p_n1 0)
+	   
 	   (while (< k1 p_n1)
 		  (set! res1 (+ res1 (- p_x1 k1)))
 		  (set! k1 (+ k1 1)))))
@@ -1652,6 +1681,7 @@
 	(k1 0))
 
     (cond ((> p_n1 0)
+	   
 	   (while (< k1 p_n1)
 		  (set! res1 (+ res1 (+ p_x1 k1)))
 		  (set! k1 (+ k1 1)))))
@@ -1725,6 +1755,7 @@
 	(z1 p_z1))
 
     (cond ((equal? p_b1 #t)
+	   
 	   (cond ((integer? z1)
 		  (set! res1 (round p_z2))))))
 
@@ -1810,6 +1841,7 @@
 	  ((odd? n1)
 	   (set! n1 (- n1 1))
 	   (set! n2 (/ n1 2))
+	   
 	   (cond ((equal? s1 "#rt")
 		  (set! n3 n2)
 		  (set! n2 (+ n2 1)))
@@ -1954,6 +1986,7 @@
 
     (set! n1 (abs p_n1))
     (set! n2 (abs p_n2))
+    
     (cond ((equal? p_s1 "#-")
 	   (set! res1 (- n1 n2)))
 	  ((equal? p_s1 "#+")
@@ -2058,6 +2091,7 @@
 	(n2 0))
     
     (set! n2 (/ 1 p_n1))
+    
     (cond ((equal? p_s1 "#+")
 	   (set! res1 (+ p_n1 n2)))
 	  ((equal? p_s1 "#-")
@@ -2088,9 +2122,11 @@
 	(i1 1))
 
     (while (<= i1 p_n1)
+	   
 	   (cond ((equal? p_b1 #t)
 		  (set! res1 (+ res1 (grsp-log-mth p_g1 i1))))
 		 (else (set! res1 (+ res1 (grsp-log p_g1 i1)))))
+	   
 	   (set! i1 (in i1)))
 
     res1))
@@ -2228,11 +2264,13 @@
     (set! n4 p_n4)
 
     (cond ((equal? p_b1 #t)
+	   
 	   (cond ((= n1 n2)
 		  (set! res1 n3))
 		 (else
 		  (set! res1 n4))))
 	  ((equal? p_b1 #f)
+	   
 	   (cond ((= n1 n2)
 		  (set! res1 n4))
 		 (else
@@ -2273,11 +2311,14 @@
     (set! n4 p_n4)
 
     (cond ((equal? p_b1 #t)
+	   
 	   (cond ((>= n2 n1)
 		  (set! res1 n3))
 		 (else
 		  (set! res1 n4))))
+	  
 	  ((equal? p_b1 #f)
+	   
 	   (cond ((<= n2 n1)
 		  (set! res1 n3))
 		 (else

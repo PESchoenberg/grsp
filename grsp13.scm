@@ -172,6 +172,7 @@
     (set! m1 p_m1)
     (set! r1 p_r1)
     (set! b1 p_b1)
+    
     (cond ((equal? b1 #t)
 	   (set! res3 (make-list m1 0))))
 
@@ -238,6 +239,7 @@
     (set! m1 p_m1)
     (set! p1 p_p1)
     (set! b1 p_b1)
+    
     (cond ((equal? b1 #t)
 	   (set! res3 (make-list m1 0))))
 

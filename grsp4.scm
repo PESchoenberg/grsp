@@ -233,6 +233,7 @@
 	   (set! vi (grsp-sign (imag-part p_z1))))	  
 	  (else ((set! vr (grsp-sign p_z1))
 		 (set! vi 1))))
+    
     (set! res1 (list vr vi))
     
     res1))
@@ -378,6 +379,7 @@
     (cond ((integer? p_z1)
 	   (cond ((< p_z1 0)
 		  (set! defined #f)))))
+    
     (cond ((eq? defined #t)
 
 	   ;; Cycle.
@@ -431,6 +433,7 @@
     (cond ((integer? p_z1)
 	   (cond ((< p_z1 0)
 		  (set! defined #f)))))
+    
     (cond ((eq? defined #t)
 
 	   ;; Cycle.
@@ -476,6 +479,7 @@
 
     (cond ((equal? p_s1 "#w")
 	   (set! s1 p_s1)))
+    
     (cond ((equal? s1 "#e")
 	   (set! res1 (grsp-complex-gamma-euler p_b2 p_z1 p_n1)))
 	  ((equal? s1 "#w")
@@ -568,6 +572,7 @@
     (cond ((integer? z2)
 	   (cond ((< z2 0)
 		  (set! defined #f)))))
+    
     (cond ((eq? defined #t)
 
 	   ;; Cycle.
@@ -960,6 +965,7 @@
     
     ;; Calculate according to domain intervals.
     (cond ((>= r1 0)
+	   
 	   (cond ((> r1 1) ; (1, +inf.0)
 		  (set! res1 (grsp-complex-riemann-euzeta z1 p_m1)))
 		 ((= r1 1) ; [1, 1]

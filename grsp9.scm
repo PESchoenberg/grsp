@@ -333,6 +333,7 @@
 	      (set! p2 (* 2 (grsp-pi))))
 
     (parallel (set! res2 (* 10 n1))
+	      
 	      (while (<= j1 n1)
 		     (set! x1 (array-ref p_a1 0 j1))
 		     (set! res3 (+ res3 (- (expt x1 2) (* 10 (cos (* p2 x1))))))
