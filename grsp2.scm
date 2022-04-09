@@ -2,7 +2,9 @@
 ;;
 ;; grsp2.scm
 ;;
-;; Real num. functions.
+;; Real num. functions and general-purpose stuff. In general, these functions 
+;; constitute the basis for other functions found in the grspX.scm files, where
+;; X > 2.
 ;;
 ;; =============================================================================
 ;;
@@ -26,6 +28,8 @@
 
 ;;;; General notes:
 ;; - Read sources for limitations on function parameters.
+;; - As a general policy, multithreaded functions are kept to a minimum at this
+;;   level in order to simplify mth architecture at higher programming levels.
 ;;
 ;; Sources:
 ;; - [1] https://en.wikipedia.org/wiki/Falling_and_rising_factorials
@@ -146,7 +150,6 @@
 ;;   https://en.wikipedia.org/wiki/Givens_rotation [Accessed 25 March 2020].
 
 
-
 (define-module (grsp grsp2)
   #:use-module (grsp grsp0)
   #:use-module (grsp grsp1)
@@ -238,7 +241,8 @@
 	    grsp-rectangular
 	    grsp-triangular
 	    grsp-2ex
-	    grsp-1n))
+	    grsp-1n
+	    grsp-pn123n))
 
 
 ;;;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -2419,5 +2423,23 @@
   (let ((res1 0.0))
 
     (set! res1 (/ 1.0 p_n1))
+
+    res1))
+
+
+;;;; grsp-pn123n - A quick way to calculate (+ p_n1 (* p_n2 p_n3)).
+;;
+;; Keywords:
+;; - function, division, fractions.
+;;
+;; Arguments:
+;; - p_n1. Number.
+;; - p_n2. Number.
+;; - p_n3. Number.
+;;
+(define (grsp-pn123n p_n1 p_n2 p_n3)
+  (let ((res1 0.0))
+
+    (set! res1 (+ p_n1 (* p_n2 p_n3)))
 
     res1))

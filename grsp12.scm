@@ -2,7 +2,7 @@
 ;;
 ;; grsp12.scm
 ;;
-;; Evolutionary functions.
+;; Evolutionary and genetic functions.
 ;;
 ;; =============================================================================
 ;;

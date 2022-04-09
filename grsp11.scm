@@ -38,6 +38,7 @@
 	    grsp-lal-leqe
 	    grsp-lal-opio
 	    grsp-lal-opsc
+	    grsp-lal-opew
 	    grsp-lal-mutation
 	    grsp-lal-dev))
 
@@ -241,6 +242,52 @@
     (set! res3 (grsp-m2l res2))
     
     res3))
+
+
+;;;; grsp-lal-opew - Performs element-wise operation p_s1 between lists
+;; p_l1 and p_l2.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
+;; Arguments:
+;; - p_s1: operation described as a string:
+;;   - "#+": sum.
+;;   - "#-": substraction.
+;;   - "#*": multiplication.
+;;   - "#/": division.
+;;   - "#expt": element wise (expt p_a1 p_a2).
+;;   - "#max": element wise max function.
+;;   - "#min": element wise min function.
+;;   - "#=": copy if equal.
+;;   - "#!=": copy if not equal.
+;; - p_l1: first list.
+;; - p_l2: second list.
+;;
+;; Notes:
+;; - This function does not validate the dimensionality or boundaries of the 
+;;   lists involved; the user or an additional shell function should take 
+;;   care of that.
+;; - Both lists should contain numeric elements.
+;; - See grsp-matrix-opew.
+;;
+(define (grsp-lal-opew p_s1 p_l1 p_l2)
+  (let ((res1 '())
+	(res2 0)
+	(a1 0)
+	(a2 0))
+
+    ;; Convert both lists into matrices.
+    (set! a1 (grsp-l2m p_l1))
+    (set! a2 (grsp-l2m p_l2))
+    
+    ;; Apply grsp-matrix-opew
+    (set! res2 (grsp-matrix-opew p_s1 a1 a2))
+    
+    ;; Convert resulting matrix into list.
+    (set! res1 (grsp-m2l res2))
+    
+    res1))
 
 
 ;;;; grsp-lal-mutation - Produces random mutations in the values of elements 

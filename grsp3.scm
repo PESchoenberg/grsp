@@ -2,7 +2,9 @@
 ;;
 ;; grsp3.scm
 ;;
-;; Relational matrices and databases.
+;; Relational vectors, matrices, files and databases. In general, these
+;; functions constitute the basis for other functions found in the grspX.scm
+;; files, where X > 3.
 ;;
 ;; =============================================================================
 ;;
@@ -445,88 +447,66 @@
 
 		  ;; For an identity matrix, first set all elements to 0.
 		  (cond ((equal? p_s1 "#I")			 
-			 (set! s1 0))
-			
+			 (set! s1 0))			
 			((equal? p_s1 "#AI")			 
-			 (set! s1 0))
-			
+			 (set! s1 0))			
 			((equal? p_s1 "#Q")			 
 			 (set! s1 1)
 			 (set! m1 2)
-			 (set! n1 2))
-			
+			 (set! n1 2))			
 			((equal? p_s1 "#Test1")			 
 			 (set! s1 0)
 			 (set! m1 3)
-			 (set! n1 3))
-			
+			 (set! n1 3))			
 			((equal? p_s1 "#Test2")			 
 			 (set! s1 0)
 			 (set! m1 3)
-			 (set! n1 3))
-			
+			 (set! n1 3))			
 			((equal? p_s1 "#Ladder")			 
-			 (set! s1 1))
-			
+			 (set! s1 1))			
 			((equal? p_s1 "#Arrow")			 
 			 (set! s1 0)
-			 (set! n1 m1))
-			
+			 (set! n1 m1))			
 			((equal? p_s1 "#Hilbert")			 
 			 (set! s1 0)
-			 (set! n1 m1))
-			
+			 (set! n1 m1))			
 			((equal? p_s1 "#Lehmer")			 
 			 (set! s1 0)
-			 (set! n1 m1))
-			
+			 (set! n1 m1))			
 			((equal? p_s1 "#Pascal")			 
 			 (set! s1 0)
-			 (set! n1 m1))
-			
+			 (set! n1 m1))			
 			((equal? p_s1 "#Fibonacci")			 
 			 (set! s1 0)
-			 (set! n1 m1))
-			
+			 (set! n1 m1))			
 			((equal? p_s1 "#CH")			 
-			 (set! s1 0))
-			
+			 (set! s1 0))			
 			((equal? p_s1 "#CHR")			 
-			 (set! s1 0))
-			
+			 (set! s1 0))			
 			((equal? p_s1 "#+IJ")			 
 			 (set! s1 0)
-			 (set! n1 m1))
-			
+			 (set! n1 m1))			
 			((equal? p_s1 "#-IJ")			 
 			 (set! s1 0)
-			 (set! n1 m1))
-			
+			 (set! n1 m1))			
 			((equal? p_s1 "#*IJ")			 
 			 (set! s1 1)
-			 (set! n1 m1))
-			
+			 (set! n1 m1))			
 			((equal? p_s1 "#/IJ")			 
 			 (set! s1 1)
-			 (set! n1 m1))
-			
+			 (set! n1 m1))			
 			((equal? p_s1 "#US")			 
 			 (set! s1 0)
-			 (set! n1 m1))
-			
+			 (set! n1 m1))			
 			((equal? p_s1 "#LS")			 
 			 (set! s1 0)
-			 (set! n1 m1))
-			
+			 (set! n1 m1))			
 			((equal? p_s1 "#rprnd")			 
-			 (set! s1 0))
-			
+			 (set! s1 0))			
 			((equal? p_s1 "#zrow")			 
-			 (set! s1 0))
-			
+			 (set! s1 0))			
 			((equal? p_s1 "#zcol")			 
-			 (set! s1 0))
-			
+			 (set! s1 0))			
 			((equal? p_s1 "#n0[-m:+m]")			 
 			 (set! s1 0)
 			 (set! m1 (+ 1 (* m1 2))))
@@ -561,8 +541,7 @@
 			 (array-set! res1 5 1 2)
 			 (array-set! res1 3 2 0)
 			 (array-set! res1 4 2 1)
-			 (array-set! res1 7 2 2))
-			
+			 (array-set! res1 7 2 2))			
 			((equal? p_s1 "#Test2")			 
 			 (array-set! res1 2 0 0)
 			 (array-set! res1 4 0 1)
@@ -572,18 +551,15 @@
 			 (array-set! res1 3 1 2)
 			 (array-set! res1 -6 2 0)
 			 (array-set! res1 -9 2 1)
-			 (array-set! res1 5 2 2))
-			
+			 (array-set! res1 5 2 2))			
 			((equal? p_s1 "#Ladder")
 			 
 			 (while (< i1 m1)
 				
 				(set! j1 0)
 				(while (< j1 n1)
-				       
 				       (array-set! res1 s1 i1 j1)
-				       (set! s1 (+ s1 1))
-				       
+				       (set! s1 (+ s1 1))				       
 				       (set! j1 (+ j1 1)))
 				
 				(set! i1 (+ i1 1))))
@@ -617,10 +593,8 @@
 			 (while (< i1 m1)
 				
 				(set! j1 0)
-				(while (< j1 n1)
-				       
-				       (array-set! res1 (/ 1 (- (+ (+ i1 1) (+ j1 1)) 1)) i1 j1)
-				       
+				(while (< j1 n1)				       
+				       (array-set! res1 (/ 1 (- (+ (+ i1 1) (+ j1 1)) 1)) i1 j1)				     
 				       (set! j1 (+ j1 1)))
 				
 				(set! i1 (+ i1 1))))
@@ -630,10 +604,8 @@
 			 (while (< i1 m1)
 				
 				(set! j1 0)				
-				(while (< j1 n1)
-				       
+				(while (< j1 n1)				       
 				       (array-set! res1 (/ (min (+ i1 1) (+ j1 1)) (max (+ i1 1) (+ j1 1))) i1 j1)
-				       
 				       (set! j1 (+ j1 1)))
 				
 				(set! i1 (+ i1 1))))
@@ -643,10 +615,8 @@
 			 (while (< i1 m1)
 				
 				(set! j1 0)				
-				(while (< j1 n1)
-				       
-				       (array-set! res1 (grsp-biconr (+ i1 j1) i1) i1 j1)
-				       
+				(while (< j1 n1)				       
+				       (array-set! res1 (grsp-biconr (+ i1 j1) i1) i1 j1)				       
 				       (set! j1 (+ j1 1)))
 				
 				(set! i1 (+ i1 1))))
@@ -669,16 +639,13 @@
 				       ;; easily.
 				       (cond ((equal? s1 0)					      
 					      (set! p0 0)
-					      (set! s1 1))
-					     
+					      (set! s1 1))					     
 					     ((equal? s1 1)					      
 					      (set! p0 1)
-					      (set! s1 2))
-					     
+					      (set! s1 2))					     
 					     ((equal? s1 2)					      
 					      (set! p0 1)
-					      (set! s1 3))
-					     
+					      (set! s1 3))					     
 					     ((equal? s1 3)					      
 					      (set! p0 (+ p1 p2))))
 
@@ -698,7 +665,6 @@
 				
 				(set! j1 0)
 				(while (< j1 n1)
-				       
 				       (array-set! res1 s1 i1 j1)
 				       
 				       (cond ((equal? s1 0)
@@ -731,7 +697,7 @@
 			 (while (< i1 m1)
 				
 				(set! j1 0)
-				(while (< j1 n1)				       
+				(while (< j1 n1)
 				       (array-set! res1 (+ i1 j1) i1 j1)
 				       (set! j1 (+ j1 1)))
 				
@@ -742,7 +708,7 @@
 			 (while (< i1 m1)
 				
 				(set! j1 0)
-				(while (< j1 n1)				       
+				(while (< j1 n1)
 				       (array-set! res1 (- i1 j1) i1 j1)				       
 				       (set! j1 (+ j1 1)))
 				
@@ -791,12 +757,10 @@
 			
 			((equal? p_s1 "#LS")			 
 			 (set! res1 (grsp-matrix-create "#US" m1 n1))
-			 (set! res1 (grsp-matrix-transpose res1)))
-			
+			 (set! res1 (grsp-matrix-transpose res1)))			
 			((equal? p_s1 "#rprnd")			 
 			 (set! res1 (grsp-matrix-create 1 m1 n1))
-			 (set! res1 (grsp-matrix-opsc "#rprnd" res1 0.15)))
-			
+			 (set! res1 (grsp-matrix-opsc "#rprnd" res1 0.15)))			
 			((equal? p_s1 "#zrow")
 			 
 			 (set! res1 (grsp-matrix-create 0 m1 n1))			 
@@ -1166,15 +1130,18 @@
 			((equal? p_s1 "#+md")
 			 
 			 (cond ((equal? (grsp-gtels i1 j1) 0)				
-				(set! res2 (+ res2 (array-ref res1 i1 j1))))))			
+				(set! res2 (+ res2 (array-ref res1 i1 j1))))))
+			
 			((equal? p_s1 "#-md")
 			 
 			 (cond ((equal? (grsp-gtels i1 j1) 0)				
-				(set! res2 (- res2 (array-ref res1 i1 j1))))))			
+				(set! res2 (- res2 (array-ref res1 i1 j1))))))
+			
 			((equal? p_s1 "#*md")
 			 
 			 (cond ((equal? (grsp-gtels i1 j1) 0)				
-				(set! res2 (* res2 (array-ref res1 i1 j1))))))			
+				(set! res2 (* res2 (array-ref res1 i1 j1))))))
+			
 			((equal? p_s1 "#/md")
 			 
 			 (cond ((equal? (grsp-gtels i1 j1) 0)				

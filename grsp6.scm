@@ -2,7 +2,7 @@
 ;;
 ;; grsp6.scm
 ;;
-;; Physics functions.
+;; Physics functions and related code.
 ;;
 ;; =============================================================================
 ;;
