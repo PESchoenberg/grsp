@@ -27,6 +27,8 @@
 
 ;;;; General notes:
 ;; - Read sources for limitations on function parameters.
+;; - Read at least the general notes of all scm files in this library before
+;;   use.
 ;;
 ;; - Compilation:
 ;;   - (use-modules (grsp grsp0)(grsp grsp1)(grsp grsp2)(grsp grsp3)(grsp grsp4)(grsp grsp5)(grsp grsp6)(grsp grsp7)(grsp grsp8)(grsp grsp9)(grsp grsp10)(grsp grsp11)(grsp grsp12)(grsp grsp13)(grsp grsp14)(grsp grsp15))
@@ -83,7 +85,8 @@
 	    de
 	    grsp-argtype
 	    grsp-dstr
-	    grsp-jstr))
+	    grsp-jstr
+	    grsp-hw))
 
 
 ;;;; pline - Displays character p_n p_m times in one line at the console.
@@ -98,6 +101,7 @@
 (define (pline p_c1 p_l1)
   (let ((s1 ""))
 
+    ;; Cycle.
     (let loop ((i1 0))
       (if (= i1 p_l1)
 	  (begin (newlines 1)
@@ -248,6 +252,7 @@
   (let ((res1 "")
 	(elem #f))
 
+    ;; Cycle.
     (set! elem (car p_l1))
     (while (not (equal? elem #f))
 	   
@@ -283,8 +288,7 @@
 (define (read-file-as-string p_f1)
   (call-with-input-file p_f1
     (lambda (p1)
-      (let loop((ls1 '()) (c1 (read-char p1)))
-	
+      (let loop((ls1 '()) (c1 (read-char p1)))	
 	(if (eof-object? c1)
 	    (begin
 	      (close-input-port p1)
@@ -315,7 +319,7 @@
 
     (if (equal? p_s1 "lt")
 	(set! res1 (< ev p_v1)))
-    
+   
     (if (equal? p_s1 "eq")
 	(set! res1 (= ev p_v1)))
     
@@ -656,6 +660,7 @@
     (set! l2 (string-length p_s2))  
     (set! n1 (- p_n1 (+ l1 l2)))
 
+    ;; Cycle.
     (while (< l3 n1)
 	   (set! s3 (string-append s3 p_s3))
 	   (set! l3 (string-length s3)))
@@ -664,3 +669,9 @@
     (set! res1 (strings-append (list p_s1 s3 p_s2) 0))
     
     res1))
+
+
+;;;; grsp-hw - Salutes the world. Sometimes this is all what is needed.
+;;
+(define (grsp-hw)
+  (grsp-ldl "Hello world!" 1 1))

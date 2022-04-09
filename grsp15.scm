@@ -1,6 +1,6 @@
 ;; grsp15.scm
 ;;
-;; Polynomials.
+;; Polynom-related functions.
 ;;
 ;; =============================================================================
 ;;
@@ -52,7 +52,7 @@
 ;;;; grsp-runge - Runge function. 
 ;;
 ;; Keywords:
-;; - function, division, fractions.
+;; - function, division, fractions, polynomials.
 ;;
 ;; Arguments:
 ;; - p_n1.
@@ -112,10 +112,6 @@
 (define (grsp-lagrange-bpoly p_x1 p_j1 p_a1)
   (let ((res1 1.0)
 	(res2 0)
-	(lm1 0)
-	(hm1 0)
-	(ln1 0)
-	(hn1 0)
 	(xm 0)
 	(xj 0)
 	(i1 0)
@@ -123,15 +119,10 @@
     
     ;; Create safety matrix. 
     (set! res2 (grsp-matrix-cpy p_a1))
-	  
-    ;; Extract matrix boundaries.
-    (set! lm1 (grsp-matrix-esi 1 res2))
-    (set! hm1 (grsp-matrix-esi 2 res2))
-    (set! ln1 (grsp-matrix-esi 3 res2))
-    (set! hn1 (grsp-matrix-esi 4 res2))
 
-    (set! i1 lm1)
-    (while (<= i1 hm1)
+    ;; Cycle.
+    (set! i1 (grsp-lm res2))
+    (while (<= i1 (grsp-hm res2))
 
 	   (cond ((equal? (= i1 p_j1) #f)
 		  (set! xm (array-ref p_a1 i1 0))
@@ -158,30 +149,18 @@
 (define (grsp-lagrange-ipoly p_x1 p_a1)
   (let ((res1 0.0)
 	(res2 0)
-	(lm1 0)
-	(hm1 0)
-	(ln1 0)
-	(hn1 0)
 	(i1 0)
 	(x1 0)
 	(y1 0))
 
     ;; Create safety matrix. 
     (set! res2 (grsp-matrix-cpy p_a1))
-	  
-    ;; Extract matrix boundaries.
-    (set! lm1 (grsp-matrix-esi 1 res2))
-    (set! hm1 (grsp-matrix-esi 2 res2))
-    (set! ln1 (grsp-matrix-esi 3 res2))
-    (set! hn1 (grsp-matrix-esi 4 res2))
 
     ;; Cycle.
-    (set! i1 lm1)
-    (while (<= i1 hm1)
-
-	   (set! y1 (array-ref res2 i1 (+ ln1 1)))
+    (set! i1 (grsp-lm res2))
+    (while (<= i1 (grsp-hm res2))
+	   (set! y1 (array-ref res2 i1 (+ (grsp-ln res2) 1)))
 	   (set! res1 (+ res1 (* y1 (grsp-lagrange-bpoly p_x1 i1 res2))))
-	   
 	   (set! i1 (in i1)))
     
     res1))

@@ -1,6 +1,6 @@
 ;; grsp14.scm
 ;;
-;; Date and time related.
+;; Date and time related functions.
 ;;
 ;; =============================================================================
 ;;

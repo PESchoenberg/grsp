@@ -2,7 +2,7 @@
 ;;
 ;; grsp4.scm
 ;;
-;; Complex functions.
+;; Complex functions and complex-related code.
 ;;
 ;; =============================================================================
 ;;
