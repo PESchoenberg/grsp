@@ -1761,7 +1761,7 @@
 	   (set! j1 p_n1)
 	   (set! j2 (grsp-ln p_a2))
 	   (while (<= j2 (grsp-hn p_a2))
-		  (array-set! res1 (array-ref p_a2 i2 j2) i1 j1)		  
+		  (array-set! res1 (array-ref p_a2 i2 j2) i1 j1)
 		  (set! j2 (+ j2 1))
 		  (set! j1 (+ j1 1)))
 	   
@@ -2666,7 +2666,8 @@
 
 
 ;;;; grsp-matrix-is-single-entry - Returns #t if matrix p_a1 is of single entry 
-;; type for value p_v1; #f otherwise.
+;; type for value p_v1; #f otherwise (extension of single entry concept from
+;; ine to any value).
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
@@ -3654,13 +3655,20 @@
     res1))
 
 
-;;;; grsp-matrix-trim - Trim matrix data.
+;;;; grsp-matrix-trim - Trim matrix data. Deletes elements from p_a1 that
+;; fulfill condition p_s1 regarding p_n1.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments:
-;; - p_s1: type of operaton.
+;; - p_s1: type of operation.
+;;   - "#=".
+;;   - "#>".
+;;   - "#<".
+;;   - "#>=".
+;;   - "#<=".
+;;   - "!=".
 ;; - p_a1: matrix
 ;; - p_n1: number.
 ;;
@@ -4353,7 +4361,7 @@
 
 
 ;;;; grsp-matrix-col-select - Selects columns from matrix p_a1 for which
-;; condition p_s1 is met with regards to value p_n1 in row p_i1.
+;; condition p_s1 is met with regards to value p_n1 in col p_j1.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors, relational.
