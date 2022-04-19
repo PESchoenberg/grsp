@@ -2,7 +2,7 @@
 ;;
 ;; grsp11.scm
 ;;
-;; List algebra functions.
+;; List algebra and list-related functions.
 ;;
 ;; =============================================================================
 ;;
@@ -41,6 +41,7 @@
 	    grsp-lal-opew
 	    grsp-lal-mutation
 	    grsp-lal-dev
+	    grsp-lal-devt
 	    grsp-lal-subcpy
 	    grsp-lal-subrep
 	    grsp-lal-is-nonnegative
@@ -367,6 +368,39 @@
 	   (set! j1 (in j1)))))
 
 
+
+;;;; grsp-lal-devt - Display, enumerated vertically. Displays all elements
+;; of list p_l1 vertically with titles from p_l2.
+;;
+;; Keywords:
+;; - function, algebra, lists.
+;;
+;; Arguments:
+;; - p_b1: boolean.
+;;   - #t: shows element names.
+;;   - #f: does not show names.
+;; - p_l1: list.
+;; - p_l2: list.
+;;
+(define (grsp-lal-devt p_b1 p_l1 p_l2)
+  (let ((nh 0)
+	(j1 0)
+	(s1 0)
+	(s2 0))
+
+    (set! nh (length p_l1))
+    (while (< j1 nh)
+
+	   (set! s1 (grsp-n2s j1))
+	   (set! s2 (list-ref p_l2 j1))
+	   
+	   (cond ((equal? p_b1 #t)
+		  (pres2 (strings-append (list s1 s2) 1) (list-ref p_l1 j1)))
+		 (else (pres2 s2 (list-ref p_l1 j1))))
+	   
+	   (set! j1 (in j1)))))
+
+
 ;;;; grsp-lal-subcpy - Extracts a block or sub list from list p_l1. The
 ;; process is not destructive with regards to p_l1. The user is responsible for
 ;; providing correct boundaries since the function does not check those
@@ -619,3 +653,5 @@
     (set! res1 (grsp-matrix-is-multiset (grsp-l2m p_l1)))
     
     res1))
+
+
