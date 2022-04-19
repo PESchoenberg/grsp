@@ -85,9 +85,9 @@
 ;; and 3 columns, then places a copy of the values of the first column into the
 ;; second one and then sums those values and puts the results in the third
 ;; column.
-(define X (grsp-matrix-create "#n0[-m:+m]" data_samples 3))
-(set! X (grsp-matrix-opewc "#=" X 0 X 0 X 1))
-(set! X (grsp-matrix-opewc "#+" X 0 X 1 X 2))
+(define data (grsp-matrix-create "#n0[-m:+m]" data_samples 3))
+(set! data (grsp-matrix-opewc "#=" data 0 data 0 data 1))
+(set! data (grsp-matrix-opewc "#+" data 0 data 1 data 2))
 
 ;; Create ann.
 (define L1 (grsp-ann-net-create-ffv basic_ann
@@ -98,19 +98,36 @@
 				    activation_function
 				    nodes_in_last_layer))
 
-;; Update ann with new datai matrix created from matrix X.
-(set! L1 (grsp-ann-datai-update X L1 0))
-
-;; Display ann data (initial state).
-(grsp-ldl (strings-append (list s1 "Initial state (L1)") 1) 2 1)
-
+;; Display ann data before processing (L1).
+(grsp-ldl (strings-append (list s1 "A)- Configuring ANN.") 1) 2 1)
+(display "\n Initial state of ann (L1):\n")
 (grsp-lal-dev #t L1)
+
+;; Update ann with new datai matrix created from matrix data.
+(set! L1 (grsp-ann-datai-update data L1 0))
+
+;; Show X.
+(display "\n")
+(display "\n Data matrix data (Will be used to update matrix datai).\n")
+(display "Matrix data contains raw input data (i.e from an external \n")
+(display "source or linke in this case, procedurally generated.\n\n")
+(display data)
+(display "\n")
+
+;; Display ann after datai has been updated with matrix data.
+(display "\n")
+(display "\n ANN after matrix datai has been updated with matrix data.\n")
+(display "datai matrix contains input data in the format used by the ann\n")
+(display "to receive all sorts of data.\n")
+(grsp-ann-devt #t L1)
+(display "\n")
 
 ;; Make a copy of the original list so that it will be possible to compare
 ;; th initial and final states.
 (set! L2 (list-copy L1)) 
 
 ;; Evaluate.
+(grsp-ldl (strings-append (list s1 "B)- Processing ANN.") 1) 2 1)
 (set! L2 (grsp-ann-net-miter-omth verbosity
 				  mth
 				  "#no"
@@ -119,60 +136,62 @@
 				  mutations_desired))
 
 ;; Show ann data after evaluation.
-(grsp-ld "State after eval (L2):")
-(grsp-lal-dev #t L2)
+(grsp-ldl (strings-append (list s1 "C)- ANN results.") 1) 2 1)
+(grsp-ann-devt #t L2)
 
 ;; Find differences.
 (set! L3 (grsp-ann-fdif L1 L2))
 
 ;; Show data differences between original and processed networks.
-(grsp-ldl (strings-append (list s1 "Diff map (L1 - L2)") 1) 2 1)
-(grsp-lal-dev #t L3)
+(grsp-ldl "Datao diff map (L1 -L2)." 2 0)
+(grsp-ann-devt #t L3)
 
 ;; Extract datao from both lists.
 (define datao1 (grsp-ann-get-matrix "datao" L1))
 (define datao2 (grsp-ann-get-matrix "datao" L2))
 
 ;; Show values of output nodes.
-(grsp-ldl (strings-append (list s1 "Comparative results") 1) 2 1)
-(display "\n Datao of initial state (L1)\n")
-(display datao1)
-(display "\n Datao of final state (L2)\n")
-(display datao2)
-(display "\n")
+(grsp-ldl "Datao of initial state (L1)" 2 0)
+(grsp-ldl datao1 0 1)
+(grsp-ldl "Datao of final state (L1)" 1 0)
+(grsp-ldl datao2 0 1)
 
 ;; Show network properties.
-(grsp-ldl (strings-append (list s1 "Network properties") 1) 2 1)
-(display "\n Size (L2)\n")
+(grsp-ldl (strings-append (list s1 "D)- ANN properties") 1) 2 1)
 (set! size (grsp-ann-net-size L2))
-(display size)
-(display "\n")
+(grsp-ldl "Size (L2)" 2 0)
+(grsp-ldl size 0 1)
 
-(display "\n Degree (L2)\n")
 (set! degree (grsp-ann-node-degree L2))
-(display degree)
-(display "\n")
-(display "\n Average degree (L2)\n")
+(grsp-ldl "Degree (L2)" 2 0)
+(grsp-ldl degree 0 1)
+
 (set! adegree (grsp-ann-net-adegree L2))
-(display adegree)
-(display "\n")
+(grsp-ldl "Average degree (L2)" 2 0)
+(grsp-ldl adegree 0 1)
 
-(display "\n Density (L2)\n")
 (set! density (grsp-ann-net-density L2))
-(display density)
-(display "\n")
+(grsp-ldl "Density (L2)" 2 0)
+(grsp-ldl density 0 1)
 
-(display "\n Planar density (L2)\n")
 (set! pdensity (grsp-ann-net-pdensity L2))
-(display pdensity)
-(display "\n")
+(grsp-ldl "Planar density (L2)" 2 0)
+(grsp-ldl pdensity 0 1)
 
-(display "\n Connections per node (L2)\n")
 (set! cnode (grsp-ann-nodes-conns L2))
+(grsp-ldl "Connections per node (L2)" 2 0)
 (grsp-lal-dev #t cnode)
 
-(display "\n Nodes per connection (L2)\n")
 (set! nconn (grsp-ann-conns-nodes L2))
+(grsp-ldl "Nodes per connection (L2)" 2 0)
 (grsp-lal-dev #t nconn)
 
+;;(grsp-ann-devn #t L2 0)
+;;(grsp-ann-devn #t L2 1)
+;;(grsp-ann-devn #t L2 2)
 
+;;(grsp-ann-devc #t L2 0)
+;;(grsp-ann-devc #t L2 1)
+
+
+(grsp-ann-devnc #t L2 2 0)

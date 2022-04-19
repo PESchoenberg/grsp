@@ -209,6 +209,7 @@
   #:use-module (grsp grsp5)
   #:use-module (grsp grsp9)
   #:use-module (grsp grsp10)
+  #:use-module (grsp grsp11)
   #:use-module (ice-9 threads)  
   #:export (grsp-ann-net-create-000
 	    grsp-ann-net-create-ffv
@@ -257,7 +258,12 @@
 	    grsp-ann-node-conns
 	    grsp-ann-nodes-conns
 	    grsp-ann-conn-nodes
-	    grsp-ann-conns-nodes))
+	    grsp-ann-conns-nodes
+	    grsp-ann-devt
+	    grsp-ann-devn
+	    grsp-ann-devc
+	    grsp-ann-devcl
+	    grsp-ann-devnc))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network as a list data
@@ -317,8 +323,7 @@
     res1))
 
 
-;;;; grsp-ann-net-create-ffv - A convenience function that combines
-;; grsp-ann-net-create-ffn and grsp-ann-net-create-ffn to create a forward
+;;;; grsp-ann-net-create-ffv - A convenience function that creates a forward
 ;; feed network of a variable number of layers and elements contained in each
 ;; layer.
 ;;
@@ -373,7 +378,7 @@
 	(l1 '(5 9))
 	(l3 '(5 7))
 	(i1 1))
-
+    ;; ***
     ;; Create the ann.
     (set! specs (grsp-ann-net-specs-ffn p_nl p_nm p_nn p_af p_nh))
     (set! res3 (grsp-ann-net-create-ffn specs))
@@ -492,8 +497,7 @@
 		  (set! i2 (in i2)))
 
 	   ;; Reconfigure ann.
-	   (set! res1 (grsp-ann-net-reconf p_s1 res1))
-	   
+	   (set! res1 (grsp-ann-net-reconf p_s1 res1))	   
 	   (set! i1 (in i1)))
 
     res1))
@@ -877,7 +881,7 @@
 	(a1 0)
 	(a2 0)
 	(a3 0)
-	(w1 0)
+	(w1 1) ;; 0
 	(n1 2)
 	(b1 #t)
 	(y1 0)
@@ -939,18 +943,19 @@
 	   (set! a3 (array-ref res2 i1 3))	   
 	   
 	   ;; Per each row of res2, repeat this cycle as many times as nodes per
-	   ;; layer are required.
+	   ;; layer are required. Bias set to 1 (elem 5 on l1).
 	   (set! i2 0)
-	   (while (< i2 a1)		   		   
-		   (cond ((= a2 0) ; Input node.
-			  (set! l1 (list c0 n1 0 a0 i2 0 0 a3 0 w1 i2))
-			  (set! nodes (grsp-ann-item-create nodes conns count 0 l1)))
-			 ((= a2 1) ; Neuron.
-			  (set! l1 (list c0 n1 1 a0 i2 0 0 a3 0 w1 i2))
-			  (set! nodes (grsp-ann-item-create nodes conns count 0 l1)))
-			 ((= a2 2) ; Output node.
-			  (set! l1 (list c0 n1 2 a0 i2 0 0 a3 0 w1 i2))
-			  (set! nodes (grsp-ann-item-create nodes conns count 0 l1))))
+	   (while (< i2 a1)
+		  ;; ***
+		  (cond ((= a2 0) ; Input node.
+			 (set! l1 (list c0 n1 0 a0 i2 1 0 a3 0 w1 i2))
+			 (set! nodes (grsp-ann-item-create nodes conns count 0 l1)))
+			((= a2 1) ; Neuron.
+			 (set! l1 (list c0 n1 1 a0 i2 1 0 a3 0 w1 i2))
+			 (set! nodes (grsp-ann-item-create nodes conns count 0 l1)))
+			((= a2 2) ; Output node.
+			 (set! l1 (list c0 n1 2 a0 i2 1 0 a3 0 w1 i2))
+			 (set! nodes (grsp-ann-item-create nodes conns count 0 l1))))
 		   
 		   ;;(grsp-ann-counter-upd count 0)
 		   (set! c0 (array-ref count 0 0))
@@ -1393,6 +1398,7 @@
 	(res2 0)
 	(res3 0)
 	(res4 0)
+	(res5 0)
 	(l1 '())
 	(b1 #f)
 	(b2 #f)
@@ -1440,7 +1446,7 @@
 	   (set! res2 (grsp-ann-conns-of-node "#to" p_a2 p_id))
 	   
 	   (cond ((equal? p_b3 #t)
-		  (display "\n +++ 1.1.4 Incoming connections\n")
+		  (display "\n +++ 1.1.4 Inbound connections\n")
 		  (display res2)
 		  (display "\n")))
 		 
@@ -1456,11 +1462,11 @@
 		  (display "\n +++ 1.1.5 res1 (2)\n")
 		  (display res1)
 		  (display "\n")))
-	   
+	   ;; ***
 	   ;; Apply activation function.
 	   (set! n5 (array-ref res1 0 5)) ;; Bias.
 	   (set! n7 (array-ref res1 0 7)) ;; Associated function.
-	   (set! n9 (array-ref res1 0 7)) ;; Weight.
+	   (set! n9 (array-ref res1 0 9)) ;; Weight. (was elem 7)
 	   
 	   ;; Set value.
 	   (set! n6 (* (+ n6 n9) n5))
@@ -1476,8 +1482,17 @@
 	   
 	   ;; Process output connections. These receive the output value of the
 	   ;; node as it is.
-	   
+
+	   ;; ***
+	   ;; If the node has incoming connections then we need to process them.
+	   (set! res5 (grsp-ann-conns-of-node "#from" p_a2 p_id))
+	   	   
 	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 0 p_id 5 m5))
+
+	   (cond ((equal? p_b3 #t)
+		  (display "\n +++ 1.1.7 Outbound connections and resulting values\n")
+		  (display res5)
+		  (display "\n")))
 	   
 	   ;; Reset element 5 of the input nodes going to node p_id to zero once
 	   ;; the data has been passed to the output connections.
@@ -1493,10 +1508,10 @@
 	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 4 p_id 1 0))))
 
 	   (cond ((equal? p_b3 #t)
-		  (display "\n +++ 1.1.7 Value of p_a2 after eval\n")
+		  (display "\n +++ 1.1.8 Value of p_a2 after eval\n")
 		  (display p_a2)
-		  (display "\n")))
-    
+		  (display "\n")))	   
+	   
     res4))
 
 
@@ -3255,3 +3270,185 @@
     
     res1))
   
+
+;;;; grsp-ann-devt - Displays all matrices of the ann with names.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_b1: boolean.
+;;   - #t: shows element names.
+;;   - #f: does not show names.
+;; - p_l1: ann.
+;;
+(define (grsp-ann-devt p_b1 p_l1)
+  (let ((l2 '()))
+    
+    (set! l2 (list "nodes" "conns" "count" "idata" "odata" "specs" "odtid" "datai" "datao"))
+    (grsp-lal-devt p_b1 p_l1 l2)))
+
+
+;;;; grsp-ann-devn - Describes node with id p_n1 from network p_l1.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_b1: boolean.
+;;   - #t: shows element names.
+;;   - #f: does not show names.
+;; - p_l1: ann.
+;; - p_n1: node id.
+;;
+(define (grsp-ann-devn p_b1 p_l1 p_n1)
+  (let ((l2 '())
+	(l3 '())
+	(a2 0)
+	(nodes 0))
+
+    ;; Extract matrix nodes.
+    (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
+    (set! a2 (grsp-matrix-row-select "#=" nodes 0 p_n1))
+    (set! l2 (grsp-m2l a2))
+
+    ;; Describe node row transformed into a list.
+    (display "\n --- Node values \n")
+    (set! l3 (list "id" "status" "type" "layer" "layer pos" "bias" "output value" "assoc fun" "evol" "weight" "iter"))
+    (grsp-lal-devt p_b1 l2 l3)))
+
+
+;;;; grsp-ann-devc - Describes connection with id p_n1 from network p_l1.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_b1: boolean.
+;;   - #t: shows element names.
+;;   - #f: does not show names.
+;; - p_l1: ann.
+;; - p_n1: connection id.
+;;
+(define (grsp-ann-devc p_b1 p_l1 p_n1)
+  (let ((l2 '())
+	(l3 '())
+	(a2 0)
+	(conns 0))
+
+    ;; Extract matrix conns.
+    (set! conns (grsp-ann-get-matrix "conns" p_l1))
+    (set! a2 (grsp-matrix-row-select "#=" conns 0 p_n1))
+    (set! l2 (grsp-m2l a2))
+
+    ;; Describe conns row transformed into a list.
+    (display "\n ------- Connection values \n")
+    (set! l3 (list "id" "status" "type" "from" "to" "value" "evol" "weight" "iter" "to layer pos"))
+    (grsp-lal-devt p_b1 l2 l3)))
+
+
+;;;; grsp-ann-devcl - Describes connections with from conns.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_b1: boolean.
+;;   - #t: shows element names.
+;;   - #f: does not show names.
+;; - p_a2: conns.
+;;
+(define (grsp-ann-devcl p_b1 p_a2)
+  (let ((l2 '())
+	(l3 '())
+	(a2 0))
+
+    ;; Extract matrix conns.
+    (set! l2 (grsp-m2l p_a2))
+
+    ;; Describe conns row transformed into a list.
+    (display "\n ------- Connection values \n")
+    (set! l3 (list "id" "status" "type" "from" "to" "value" "evol" "weight" "iter" "to layer pos"))
+    (grsp-lal-devt p_b1 l2 l3)))
+
+
+;;;; grsp-ann-devnc - Describes node with id p_n1 from network p_l1 and its
+;; connections.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; - p_b1: boolean.
+;;   - #t: shows element names.
+;;   - #f: does not show names.
+;; - p_l1: ann.
+;; - p_n2: connection description mode.
+;;   - 0: describe input and output connections.
+;;   - 1: describe only input connections.
+;;   - 2: describe only output connections.
+;;
+(define (grsp-ann-devnc p_b1 p_l1 p_n1 p_n2)
+  (let ((n2 0)
+	(s1 "\n ----- Node description with input and output connections.\n")
+	(conns 0)
+	(connst 0)
+	(connsf 0)
+	(nt 0)
+	(nf 0))
+
+    ;; Check for valid p_n2 values.
+    (cond ((> p_n2 2)
+	   (set! n2 0))
+	  ((< p_n2 0)
+	   (set! n2 0)))
+
+    ;; Change title, if applicable.
+    (cond ((= n2 1)
+	   (set! s1 "\n ----- Node description with input connections only.\n"))
+	  ((= n2 2)
+	   (set! s1 "\n ----- Node description with output connections only.\n")))
+
+    (grsp-ann-devn p_b1 p_l1 p_n1)
+    
+    ;; Extract matrices.
+    (set! conns (grsp-ann-get-matrix "conns" p_l1))    
+    (set! connsf (grsp-matrix-row-select "#=" conns 3 p_n1))
+    (set! connst (grsp-matrix-row-select "#=" conns 4 p_n1))
+
+    ;; Calculate number of elements that fulfill the above conditions.
+    ;;(set! nt (grsp-matrix-col-total-element "=" connst 0 p_n1))
+    ;;(set! nf (grsp-matrix-col-total-element "=" connsf 0 p_n1))
+    (set! nt (grsp-matrix-te2 connst))
+    (set! nf (grsp-matrix-te2 connsf))
+    
+    ;; Describe.
+    (display s1)
+    
+    (cond ((= n2 0)
+	   (display "\n ------ Input \n")
+	   
+	   ((cond ((> nt 0)
+		   (grsp-ann-devcl p_b1 connst))
+		  (else ((display "\n No conns. \n")))))
+	   
+	   (display "\n ------ Output \n")
+
+	   ((cond ((> nf 0)
+		   (grsp-ann-devcl p_b1 connsf))
+		  (else ((display "\n No conns. \n"))))))
+	   
+	  ((= n2 1)
+	   (display "\n ------ Input \n")
+
+	   ((cond ((> nt 0)
+		   (grsp-ann-devcl p_b1 connst))
+		  (else ((display "\n No conns. \n"))))))
+	   
+	  ((= n2 2)
+	   (display "\n ------ Output \n")
+
+	   ((cond ((> nf 0)
+		   (grsp-ann-devcl p_b1 connsf))
+		  (else ((display "\n No conns. \n")))))))))	   
+    

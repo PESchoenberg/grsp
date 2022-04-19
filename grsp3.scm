@@ -6112,7 +6112,7 @@
 ;;
 ;; Output:
 ;; A matrix of the same dimensions and shape as p_a1 but containing the type of
-;; each one of its elements according to the folloing representation:
+;; each one of its elements according to the following representation:
 ;; - 0: undefined.
 ;; - 1: list.
 ;; - 2: string.
@@ -6498,7 +6498,7 @@
 	  
     ;; Cycle over p_a1 rows.
     (set! i1 (grsp-lm res1))
-    (while (<= (grsp-hm res1))
+    (while (<= i1 (grsp-hm res1))
 	   (set! n1 (array-ref res1 i1 p_j1))
 	   (set! n2 (array-ref res2 i1 p_j2))
 	   (set! n3 (array-ref res3 i1 p_j3))
@@ -6532,4 +6532,5 @@
 	   (set! i1 (in i1)))
     
     res3))
+
 
