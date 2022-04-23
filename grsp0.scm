@@ -161,7 +161,7 @@
   (newlines 100))
 
 
-;;;; pres - Display results with areference string or title and an equal sign
+;;;; pres - Display results with a reference string or title and an equal sign
 ;; preceeding the results string.
 ;;
 ;; Keywords:

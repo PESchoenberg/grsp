@@ -186,12 +186,5 @@
 (grsp-ldl "Nodes per connection (L2)" 2 0)
 (grsp-lal-dev #t nconn)
 
-;;(grsp-ann-devn #t L2 0)
-;;(grsp-ann-devn #t L2 1)
-;;(grsp-ann-devn #t L2 2)
-
-;;(grsp-ann-devc #t L2 0)
-;;(grsp-ann-devc #t L2 1)
-
-
-(grsp-ann-devnc #t L2 2 0)
+;; Human-readable info on all nodes and connections.
+(grsp-ann-devnca #t #f L2 0)
