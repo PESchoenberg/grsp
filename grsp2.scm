@@ -242,7 +242,10 @@
 	    grsp-triangular
 	    grsp-2ex
 	    grsp-1n
-	    grsp-pn123n))
+	    grsp-pn123n
+	    grsp-closestn
+	    grsp-closestd
+	    grsp-coinflip))
 
 
 ;;;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -2048,6 +2051,9 @@
 ;; - p_v1: standard deviation.
 ;; - p_n1: number.
 ;;
+;; Notes:
+;; - See grsp-coinflip.
+;;
 (define (grsp-ifrprnd p_s1 p_u1 p_v1 p_n1)
   (let ((res1 #f))
 
@@ -2295,9 +2301,9 @@
 ;;
 ;; Arguments:
 ;; - p_b1: boolean.
-;; - p_n1; numeric.
-;; - p_n2; numeric.
-;; - p_n3; numeric.
+;; - p_n1: numeric.
+;; - p_n2: numeric.
+;; - p_n3: numeric.
 ;;
 ;; Sources:
 ;; - [40].
@@ -2337,7 +2343,7 @@
 ;; - function.
 ;;
 ;; Arguments:
-;; - p_n1: iterations.
+;; - p_n1: number, iterations.
 ;;
 (define (grsp-euler-number p_n1)
   (let ((res1 0.0)
@@ -2356,7 +2362,7 @@
 ;; - function, gate, pulse, pi, unit, normalized, boxcar
 ;;
 ;; Arguments:
-;; - p_n1.
+;; - p_n1: number.
 ;;
 ;; Sources:
 ;; - [41].
@@ -2380,7 +2386,7 @@
 ;; - function, gate, pulse, pi, unit, normalized, boxcar
 ;;
 ;; Arguments:
-;; - p_n1.
+;; - p_n1: number.
 ;;
 ;; Sources:
 ;; - [41][42][43].
@@ -2401,7 +2407,7 @@
 ;; - function, exponent.
 ;;
 ;; Arguments:
-;; - p_n1.
+;; - p_n1: number.
 ;;
 (define (grsp-2ex p_n1)
   (let ((res1 0.0))
@@ -2417,7 +2423,7 @@
 ;; - function, division, fractions.
 ;;
 ;; Arguments:
-;; - p_n1.
+;; - p_n1: number.
 ;;
 (define (grsp-1n p_n1)
   (let ((res1 0.0))
@@ -2433,13 +2439,108 @@
 ;; - function, division, fractions.
 ;;
 ;; Arguments:
-;; - p_n1. Number.
-;; - p_n2. Number.
-;; - p_n3. Number.
+;; - p_n1: number.
+;; - p_n2: number.
+;; - p_n3: number.
 ;;
 (define (grsp-pn123n p_n1 p_n2 p_n3)
   (let ((res1 0.0))
 
     (set! res1 (+ p_n1 (* p_n2 p_n3)))
 
+    res1))
+
+
+;;;; grsp-closestn - Selects between p_n2 and p_n3 depending on the lowest
+;; absolute value between both numbers and p_n1.
+;;
+;; Keywords:
+;; - function, difference, substraaction.
+;;
+;; Arguments:
+;; - p_n1: number.
+;; - p_n2: number.
+;; - p_n3: number.
+;;
+(define (grsp-closestn p_n1 p_n2 p_n3)
+  (let ((res1 0.0)
+	(d2 0)
+	(d3 0))
+
+    (set! d2 (abs (- p_n1 p_n2)))
+    (set! d3 (abs (- p_n1 p_n3)))
+
+    (cond ((<= d3 d2)
+	   (set! res1 p_n3))
+	  (else (set! res1 p_n2)))	   
+
+    res1))
+
+
+;;;; grsp-closestd - Returns the absolute value of the lowest difference between
+;; p_n1 and p_n2, and p_n1 and p_n3.
+;;
+;; Keywords:
+;; - function, difference, substraaction.
+;;
+;; Arguments:
+;; - p_n1: number.
+;; - p_n2: number.
+;; - p_n3: number.
+;;
+(define (grsp-closestd p_n1 p_n2 p_n3)
+  (let ((res1 0.0)
+	(d2 0)
+	(d3 0))
+
+    (set! d2 (abs (- p_n1 p_n2)))
+    (set! d3 (abs (- p_n1 p_n3)))
+
+    (cond ((<= d3 d2)
+	   (set! res1 d3))
+	  (else (set! res1 d2)))	   
+
+    res1))
+
+
+;;;; grsp-coinflip - Returns argument p_n2 or p_n3 depending on the application
+;; of grsp-ifrprnd tp p_n1. In other words, this function lets you select
+;; between two numbers (p_n1 and p_n2) based on a random result applied to a
+;; another one (p_n1) based on a certain probability distribution defined by
+;; p_s1, p_u1 and p_v1.
+;;
+;; Keywords:
+;; - function, random, pseudo, aleatory.
+;;
+;; Arguments:
+;; - p_s1: type of distribution.
+;;   - "#normal": normal.
+;;   - "#exp": exponential.
+;;   - "#uniform": uniform.
+;; - p_u1: mean.
+;; - p_v1: standard deviation.
+;; - p_n1: number (abs value in [0.0, 1.0]).
+;; - p_n2: number (abs value in [0.0, 1.0]).
+;; - p_n3: number (abs value in [0.0, 1.0]).
+;;
+;; Notes: 
+;; - See grsp-ifrprnd.
+;;
+(define (grsp-coinflip p_s1 p_u1 p_v1 p_n1 p_n2 p_n3)
+  (let ((res1 0)
+	(b1 #t))
+
+    ;; Transform a pseudo random result into a binary
+    ;; answer. Could have used a binary distribution
+    ;; here but this choice gives a little more flexibility
+    ;; and lets iself to simulate to some extent the
+    ;; results of using a binary distribution.
+    (set! b1 (grsp-ifrprnd p_s1 p_u1 p_v1 p_n1))
+
+    ;; Compose result.
+    (cond ((equal? b1 #t)
+	   (set! res1 p_n2))
+	  ((equal? b1 #f)
+	   (set! res1 p_n3)))
+    
     res1))
