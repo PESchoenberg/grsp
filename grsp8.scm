@@ -3502,12 +3502,13 @@
     ;; Extract matrix.
     (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
 
-    ;; Find if results matrix is empty: empty would mean no nodes present in
+    ;; Find if results matrix is empty; empty would mean no nodes present in
     ;; the network.
     (set! b2 (grsp-matrix-is-empty nodes))
     
     ;; Cycle if results matrix is not empty. If it is empty, hence there are
-    ;; no nodes and thus, no connections.
+    ;; no nodes and thus, no valid connections. A network with connections but
+    ;; no nodes would not be functional.
     (cond ((equal? b2 #f)
 	   
 	   (set! i1 (grsp-lm nodes))

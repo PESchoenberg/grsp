@@ -515,7 +515,7 @@
 ;; - console, strings.
 ;;
 ;; Arguments:
-;; p_s1: strng or number.
+;; p_s1: string or number.
 ;;
 ;; Output:
 ;; - Returns p_s1.
