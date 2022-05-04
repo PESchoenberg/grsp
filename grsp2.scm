@@ -2470,6 +2470,7 @@
     (set! d2 (abs (- p_n1 p_n2)))
     (set! d3 (abs (- p_n1 p_n3)))
 
+    ;; Compose results.    
     (cond ((<= d3 d2)
 	   (set! res1 p_n3))
 	  (else (set! res1 p_n2)))	   
@@ -2496,6 +2497,7 @@
     (set! d2 (abs (- p_n1 p_n2)))
     (set! d3 (abs (- p_n1 p_n3)))
 
+    ;; Compose results.
     (cond ((<= d3 d2)
 	   (set! res1 d3))
 	  (else (set! res1 d2)))	   

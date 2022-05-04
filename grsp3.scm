@@ -109,7 +109,8 @@
   #:use-module (grsp grsp0)
   #:use-module (grsp grsp1)
   #:use-module (grsp grsp2)
-  #:use-module (grsp grsp4)  
+  #:use-module (grsp grsp4)
+  #:use-module (ice-9 threads)  
   #:export (grsp-lm
 	    grsp-hm
 	    grsp-ln
@@ -227,7 +228,10 @@
 	    grsp-matrix-is-samedim
 	    grsp-matrix-fill
 	    grsp-matrix-fdif
-	    grsp-matrix-opewc))
+	    grsp-matrix-opewc
+	    grsp-matrix-row-opew-mth
+	    grsp-matrix-opew-mth
+	    grsp-mr2l))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -377,14 +381,11 @@
     (set! s1 (array-shape p_m1))
     
     (cond ((equal? p_e1 1)	   
-	   (set! res1 (car (car s1))))
-	  
+	   (set! res1 (car (car s1))))	  
 	  ((equal? p_e1 2)	   
-	   (set! res1 (car (cdr (car s1)))))
-	  
+	   (set! res1 (car (cdr (car s1)))))	  
 	  ((equal? p_e1 3)	   
-	   (set! res1 (car (car (cdr s1)))))
-	  
+	   (set! res1 (car (car (cdr s1)))))	  
 	  ((equal? p_e1 4)	   
 	   (set! res1 (car (cdr (car (cdr s1)))))))
 
@@ -1753,7 +1754,7 @@
 	(i2 0)
 	(j2 0))
 
-    ;; Replacement loop.
+    ;; Replacement cycle.
     (set! i2 (grsp-lm p_a2))
     (set! i1 p_m1)
     (while (<= i2 (grsp-hm p_a2))
@@ -2447,8 +2448,8 @@
     res2))
 
 
-;;;; grsp-matrix-is-sparse - Returns #t if matrix density of p_a1 is < 0.5, or #f
-;; otherwise.
+;;;; grsp-matrix-is-sparse - Returns #t if matrix density of p_a1 is < 0.5, or
+;; #f otherwise.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
@@ -2777,7 +2778,10 @@
     ;; Default identification by comparison call. Needs to be placed in a 
     ;; different conditional. Otherwise does not work well.
     (cond ((equal? v1 #f)	   
-	   (set! res1 (grsp-matrix-is-equal p_a1 (grsp-matrix-create p_s1 (+ (- (grsp-hm p_a1) (grsp-lm p_a1)) 1) (+ (- (grsp-hn p_a1) (grsp-ln p_a1)) 1))))))
+	   (set! res1 (grsp-matrix-is-equal p_a1
+					    (grsp-matrix-create p_s1
+								(+ (- (grsp-hm p_a1) (grsp-lm p_a1)) 1)
+								(+ (- (grsp-hn p_a1) (grsp-ln p_a1)) 1))))))
     
     res1))
 
@@ -2818,6 +2822,7 @@
 		  (set! i1 (+ i1 1)))))
 
     res1))    
+
 
 ;;;; grsp-l2m - Casts a list p_l1 of n elements as a 1 x n matrix.
 ;;
@@ -3387,11 +3392,8 @@
 		  (set! j1 (+ j1 1)))
 
 	   ;; Add the line string to the file string.
-	   (cond ((> i1 lm1)
-		  
+	   (cond ((> i1 lm1)		  
 		  (set! s3 (strings-append (list s3 "\n" s1) 0)))
-		 
-		 ;;(else (set! s3 s1)))
 		 (else (set! s3 (strings-append (list s3 s1) 0))))
 	   
 	   (set! i1 (+ i1 1)))
@@ -3648,7 +3650,7 @@
     (set! res1 (grsp-matrix-create 0 1 2))
     (set! res2 (grsp-matrix-sort "#asc" p_a1))
 
-    ;; Results  
+    ;; Compose results.  
     (array-set! res1 (array-ref res2 (grsp-lm res2) (grsp-ln res2)) 0 0)
     (array-set! res1 (array-ref res2 (grsp-hm res2) (grsp-hn res2)) 0 1)
     
@@ -4096,7 +4098,6 @@
 		  (set! res3 (grsp-matrix-subrep res3 res2 (+ hm3 1) ln3))
 
 		  ;; Delete.
-		  ;;(set! res4 (grsp-matrix-row-delete "#=" res4 p_j1 n2))
 		  (set! res4 (grsp-matrix-subdel "#Delr" res4 0))
 
 		  ;; Find out if res4 still has elements.
@@ -6286,6 +6287,7 @@
 	   (set! res1 (grsp-matrix-subexp res1 1 0))
 	   
 	   ;; Extract boundaries since the matrix has changed
+	   ;; due to expsnsion.
 	   (set! lm1 (grsp-matrix-esi 1 res1))
 	   (set! hm1 (grsp-matrix-esi 2 res1))
 	   (set! m1 hm1)))	   
@@ -6532,5 +6534,133 @@
 	   (set! i1 (in i1)))
     
     res3))
+
+
+;;;; grsp-matrix-opew-mth - Performs element-wise operation p_s1 between rows
+;; p_m1 and p_m2 of matrices p_a1 and p_a2 respectively; this is a multithreaded
+;; function.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, multithreaded.
+;;
+;; Arguments:
+;; - p_s1: operation described as a string:
+;;   - "#+": sum.
+;;   - "#-": substraction.
+;;   - "#*": multiplication.
+;;   - "#/": division.
+;;   - "#expt": (expt p_a1 p_a2).
+;;   - "#max": max function.
+;;   - "#min": min function.
+;; - p_a1: first matrix.
+;; - p_a2: second matrix.
+;; - p_m1: row of p_a1.
+;; - p_m2: row of p_a2.
+;;
+;; Notes:
+;; - This function does not validate the dimensionality or boundaries of the 
+;;   matrices involved; the user or an additional shell function should take 
+;;   care of that.
+;; - Both matrices should be of equal dimensions.
+;; - See grsp-matrix-opewc.
+;;
+(define (grsp-matrix-row-opew-mth p_s1 p_a1 p_a2 p_m1 p_m2)
+  (let ((res1 0)
+	(a1 0)
+	(a2 0)
+	(l1 '())
+	(l2 '())
+	(l3 '()))   
+	  
+    ;; Cast submatrices as lists.
+    (parallel (set! l1 (grsp-mr2l p_a1 p_m1))
+	      (set! l2 (grsp-mr2l p_a2 p_m2)))
+
+    ;; Operate on lists.
+    (cond ((equal? p_s1 "#+")
+	   (set! l3 (par-map + l1 l2)))
+	  ((equal? p_s1 "#-")
+	   (set! l3 (par-map - l1 l2)))
+	  ((equal? p_s1 "#*")
+	   (set! l3 (par-map * l1 l2)))
+	  ((equal? p_s1 "#/")
+	   (set! l3 (par-map / l1 l2)))
+	  ((equal? p_s1 "#expt")
+	   (set! l3 (par-map expt l1 l2)))
+	  ((equal? p_s1 "#max")
+	   (set! l3 (par-map max l1 l2)))
+	  ((equal? p_s1 "#min")
+	   (set! l3 (par-map min l1 l2))))
+    
+    ;; Cast results list as matrix.
+    (set! res1 (grsp-l2m l3))
+    
+    res1))
+
+
+;;;; grsp-mr2l - Casts row p_m1 of matrix p_a1 as a list.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;;
+(define (grsp-mr2l p_a1 p_m1)
+  (let ((res1 '())
+	(a1 0))
+
+    (set! a1 (grsp-matrix-subcpy p_a1 p_m1 p_m1 (grsp-ln p_a1) (grsp-hn p_a1)))
+    (set! res1 (grsp-m2l a1))
+    
+    res1))
+
+
+;;;; grsp-matrix-opew-mth - Performs element-wise operation p_s1 between p_a1
+;; and p_a2 in parallel.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, multithreaded.
+;;
+;; Arguments:
+;; - p_s1: operation described as a string:
+;;   - "#+": sum.
+;;   - "#-": substraction.
+;;   - "#*": multiplication.
+;;   - "#/": division.
+;;   - "#expt": (expt p_a1 p_a2).
+;;   - "#max": max function.
+;;   - "#min": min function.
+;; - p_a1: first matrix.
+;; - p_a2: second matrix.
+;;
+;; Notes:
+;; - This function does not validate the dimensionality or boundaries of the 
+;;   matrices involved; the user or an additional shell function should take 
+;;   care of that.
+;; - Both matrices should be of equal dimensions.
+;; - See grsp-matrix-opew, grsp-matrix-row-opew-mth.
+;;
+(define (grsp-matrix-opew-mth p_s1 p_a1 p_a2)
+  (let ((res1 0)
+	(a3 0)
+	(i1 0)
+	(i2 0))
+
+    ;; Safety copy.
+    (set! res1 (grsp-matrix-cpy p_a1))
+
+    ;; Cycle. Note that indexes for p_a1 and p_a2 should be initialized    
+    ;; and updated separatedly since the row ordinals for ech matrix
+    ;; might be different.
+    (set! i1 (grsp-lm p_a1))
+    (set! i2 (grsp-lm p_a2))
+    (while (<= i1 (grsp-hm p_a1))
+	   (set! a3 (grsp-matrix-row-opew-mth p_s1 p_a1 p_a2 i1 i2))
+	   (set! res1 (grsp-matrix-subrep res1 a3 i1 (grsp-ln a3)))
+	   (set! i1 (in i1))
+	   (set! i2 (in i2)))
+    
+    res1))
 
 

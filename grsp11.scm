@@ -31,7 +31,8 @@
 (define-module (grsp grsp11)
   #:use-module (grsp grsp0)
   #:use-module (grsp grsp1)
-  #:use-module (grsp grsp3)  
+  #:use-module (grsp grsp3)
+  #:use-module (ice-9 threads)
   #:export (grsp-lal-rel
 	    grsp-lal-rfl
 	    grsp-lal-leql
@@ -39,6 +40,7 @@
 	    grsp-lal-opio
 	    grsp-lal-opsc
 	    grsp-lal-opew
+	    grsp-lal-opew-mth
 	    grsp-lal-mutation
 	    grsp-lal-dev
 	    grsp-lal-devt
@@ -308,6 +310,54 @@
     
     res1))
 
+
+;;;; grsp-lal-opew - Performs element-wise operation p_s1 between lists
+;; p_l1 and p_l2, multithreaded.
+;;
+;; Keywords:
+;; - function, algebra, lists.
+;;
+;; Arguments:
+;; - p_s1: operation described as a string:
+;;   - "#+": sum.
+;;   - "#-": substraction.
+;;   - "#*": multiplication.
+;;   - "#/": division.
+;;   - "#expt": (expt p_a1 p_a2).
+;;   - "#max": max function.
+;;   - "#min": min function.
+;; - p_l1: first list.
+;; - p_l2: second list.
+;;
+;; Notes:
+;; - This function does not validate the dimensionality or boundaries of the 
+;;   lists involved; the user or an additional shell function should take 
+;;   care of that.
+;; - Both lists should contain numeric elements.
+;; - See grsp-matrix-opew.
+;; - This function works as a convenience wrapper for par-map; it is not
+;;   necessarily more efficient than par-map itself.
+;;
+(define (grsp-lal-opew-mth p_s1 p_l1 p_l2)
+  (let ((res1 '()))
+
+    (cond ((equal? p_s1 "#+")
+	   (set! res1 (par-map + p_l1 p_l2)))
+	  ((equal? p_s1 "#-")
+	   (set! res1 (par-map - p_l1 p_l2)))
+	  ((equal? p_s1 "#*")
+	   (set! res1 (par-map * p_l1 p_l2)))
+	  ((equal? p_s1 "#/")
+	   (set! res1 (par-map / p_l1 p_l2)))
+	  ((equal? p_s1 "#expt")
+	   (set! res1 (par-map expt p_l1 p_l2)))
+	  ((equal? p_s1 "#max")
+	   (set! res1 (par-map max p_l1 p_l2)))
+	  ((equal? p_s1 "#min")
+	   (set! res1 (par-map min p_l1 p_l2))))
+	  
+    res1))
+	
 
 ;;;; grsp-lal-mutation - Produces random mutations in the values of elements 
 ;; of list p_l1.
