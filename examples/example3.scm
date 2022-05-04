@@ -187,4 +187,4 @@
 (grsp-lal-dev #t nconn)
 
 ;; Human-readable info on all nodes and connections.
-(grsp-ann-devnca #t #f L2 0)
+;;(grsp-ann-devnca #t #f L2 0)

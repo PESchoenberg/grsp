@@ -1378,7 +1378,7 @@
 
 
 ;;;; grsp-ann-node-eval - Evaluates node p_id and its related connections. It
-;; reads the input connections, applies the specified activation functon and
+;; reads the input connections, applies the specified activation function and
 ;; exports the result to the output connections.
 ;;
 ;; Keywords:
@@ -1394,6 +1394,7 @@
 ;; Notes:
 ;; -  Keep in mind TL0 and TL1 while using this function.
 ;;
+;; ***
 (define (grsp-ann-node-eval p_b3 p_id p_a1 p_a2 p_a3)
   (let ((res1 0)
 	(res2 0)
@@ -1486,9 +1487,17 @@
 
 	   ;; If the node has incoming connections then we need to process them.
 	   (set! res5 (grsp-ann-conns-of-node "#from" p_a2 p_id))
-	   	   
+
+	   ;; ***
 	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 0 p_id 5 m5))
 
+	   (cond ((equal? p_b3 #t)
+		  (display "\n +++ 1.1.6.1 Activation function value passed to conn ")
+		  (display p_id)
+		  (display "\n")
+		  (display p_a2)
+		  (display "\n")))
+	   
 	   (cond ((equal? p_b3 #t)
 		  (display "\n +++ 1.1.7 Outbound connections and resulting values\n")
 		  (display res5)
@@ -1496,6 +1505,7 @@
 	   
 	   ;; Reset element 5 of the input nodes going to node p_id to zero once
 	   ;; the data has been passed to the output connections.
+	   ;; ***
 	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 4 p_id 5 0))
 	   
 	   ;; Reset element 6 of the corresponding node to zero once the data
@@ -1510,7 +1520,11 @@
 	   (cond ((equal? p_b3 #t)
 		  (display "\n +++ 1.1.8 Value of p_a2 after eval\n")
 		  (display p_a2)
-		  (display "\n")))	   
+		  (display "\n")))
+
+	   ;; ***
+	   ;; Compose results.
+	   (set! res4 (list p_a1 p_a2 p_a3))
 	   
     res4))
 
@@ -1614,6 +1628,7 @@
 (define (grsp-ann-nodes-eval p_b3 p_l1)
   (let ((res1 '())
 	(res2 0)
+	(res3 '())
 	(lm1 0)
 	(hm1 0)
 	(ln1 0)
@@ -1665,8 +1680,23 @@
 		  (display "\n ++ 1.1 Node number ")
 		  (display id)
 		  (display "\n")))
-	   
+	   ;; ***
 	   (grsp-ann-node-eval p_b3 id nodes conns count)
+	   (set! res3 (grsp-ann-node-eval p_b3 id nodes conns count))
+
+	   ;; Extract matrices and lists.
+	   (set! nodes (grsp-ann-get-matrix "nodes" res3))
+	   (set! conns (grsp-ann-get-matrix "conns" res3))
+	   (set! count (grsp-ann-get-matrix "count" res3))	   
+	   
+	   (cond ((equal? p_b3 #t)
+		  (display "\n 1.2 Nodes, conns and count after node eval\n")
+		  (display nodes)
+		  (display "\n\n")
+		  (display conns)
+		  (display "\n\n")
+		  (display count)		  
+		  (display "\n")))
 	   
 	   (set! i1 (in i1)))
 	   
@@ -3473,7 +3503,7 @@
     
 
 ;;;; grsp-ann-devnca - Describes all nodes from network p_l1 and their
-;; connections by applying grsp-ann-devnc to each node..
+;; connections by applying grsp-ann-devnc to each node.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
@@ -3506,9 +3536,9 @@
     ;; the network.
     (set! b2 (grsp-matrix-is-empty nodes))
     
-    ;; Cycle if results matrix is not empty. If it is empty, hence there are
-    ;; no nodes and thus, no valid connections. A network with connections but
-    ;; no nodes would not be functional.
+    ;; Cycle if results matrix is not empty. If it is empty, it means that there
+    ;; are no nodes and thus, no valid connections. A network with connections
+    ;; but no nodes would not be functional.
     (cond ((equal? b2 #f)
 	   
 	   (set! i1 (grsp-lm nodes))
