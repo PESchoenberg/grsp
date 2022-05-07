@@ -70,13 +70,6 @@
 (define L3 '())
 (define res1 0)
 (define s1 "--------------------------------------------")
-(define size 0)
-(define degree 0)
-(define adegree 0)
-(define density 0)
-(define pdensity 0)
-(define cnode 0)
-(define nconn 0)
 
 ;; Main.
 (clear)
@@ -157,34 +150,7 @@
 (grsp-ldl datao2 0 1)
 
 ;; Show network properties.
-(grsp-ldl (strings-append (list s1 "D)- ANN properties") 1) 2 1)
-(set! size (grsp-ann-net-size L2))
-(grsp-ldl "Size (L2)" 2 0)
-(grsp-ldl size 0 1)
-
-(set! degree (grsp-ann-node-degree L2))
-(grsp-ldl "Degree (L2)" 2 0)
-(grsp-ldl degree 0 1)
-
-(set! adegree (grsp-ann-net-adegree L2))
-(grsp-ldl "Average degree (L2)" 2 0)
-(grsp-ldl adegree 0 1)
-
-(set! density (grsp-ann-net-density L2))
-(grsp-ldl "Density (L2)" 2 0)
-(grsp-ldl density 0 1)
-
-(set! pdensity (grsp-ann-net-pdensity L2))
-(grsp-ldl "Planar density (L2)" 2 0)
-(grsp-ldl pdensity 0 1)
-
-(set! cnode (grsp-ann-nodes-conns L2))
-(grsp-ldl "Connections per node (L2)" 2 0)
-(grsp-lal-dev #t cnode)
-
-(set! nconn (grsp-ann-conns-nodes L2))
-(grsp-ldl "Nodes per connection (L2)" 2 0)
-(grsp-lal-dev #t nconn)
+(grsp-ann-stats (string-append s1 " D)- ") L2)
 
 ;; Human-readable info on all nodes and connections.
 ;;(grsp-ann-devnca #t #f L2 0)

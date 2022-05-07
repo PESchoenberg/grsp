@@ -264,7 +264,8 @@
 	    grsp-ann-devc
 	    grsp-ann-devcl
 	    grsp-ann-devnc
-	    grsp-ann-devnca))
+	    grsp-ann-devnca
+	    grsp-ann-stats))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network as a list data
@@ -480,10 +481,10 @@
 		  (display "\n ------------------------------------------ Iteration number: ")
 		  (display i1)
 		  (display "\n")))
-	   
+	   ;; ***
 	   ;; Evaluate nodes.
 	   (set! res1 (grsp-ann-nodes-eval p_b3 res1))
-
+	   
 	   ;; Mutate ann.
 	   (set! i2 0)
 	   (while (< i2 p_n2)
@@ -1446,19 +1447,20 @@
 	   
 	   ;; If the node has incoming connections then we need to process them.
 	   (set! res2 (grsp-ann-conns-of-node "#to" p_a2 p_id))
+	   (set! b2 (grsp-matrix-is-empty res2))
 	   
 	   (cond ((equal? p_b3 #t)
 		  (display "\n +++ 1.1.4 Inbound connections\n")
 		  (display res2)
-		  (display "\n")))
-		 
-	   (set! b2 (grsp-matrix-is-empty res2))
-	   
+		  (display "\n")))	   
+	   ;; ***
 	   (cond ((equal? b2 #f)
 		  (set! n1 (grsp-matrix-opio "#+c" res2 5))
 		  (set! n2 (grsp-matrix-opio "#+c" res2 7))
 		  (set! n6 (+ n1 n2))
-		  (array-set! res1 n6 0 6))) ;; Value.
+
+		  ;; Place n6 as the value of the node.
+		  (array-set! res1 n6 0 6))) 
 
 	   (cond ((equal? p_b3 #t)
 		  (display "\n +++ 1.1.5 res1 (2)\n")
@@ -1501,26 +1503,25 @@
 	   (cond ((equal? p_b3 #t)
 		  (display "\n +++ 1.1.7 Outbound connections and resulting values\n")
 		  (display res5)
-		  (display "\n")))
+		  (display "\n"))))
 	   
 	   ;; Reset element 5 of the input nodes going to node p_id to zero once
 	   ;; the data has been passed to the output connections.
-	   ;; ***
-	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 4 p_id 5 0))
+	   ;;(set! p_a2 (grsp-matrix-row-update "#=" p_a2 4 p_id 5 0))
 	   
 	   ;; Reset element 6 of the corresponding node to zero once the data
 	   ;; has been passed to the output connections.
-	   (set! p_a1 (grsp-matrix-row-update "#=" p_a1 0 p_id 6 0)))
+	   ;;(set! p_a1 (grsp-matrix-row-update "#=" p_a1 0 p_id 6 0)))
 	  
 	  ;; Commit.
-	  ((equal? b1 #f) ;; If node does not exist.
+	  ((equal? b1 #t) ;; If node does not exist.
 	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 3 p_id 1 0))
 	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 4 p_id 1 0))))
 
-	   (cond ((equal? p_b3 #t)
-		  (display "\n +++ 1.1.8 Value of p_a2 after eval\n")
-		  (display p_a2)
-		  (display "\n")))
+	  (cond ((equal? p_b3 #t)
+		 (display "\n +++ 1.1.8 Value of p_a2 after eval\n")
+		 (display p_a2)
+		 (display "\n")))
 
 	   ;; ***
 	   ;; Compose results.
@@ -3551,4 +3552,50 @@
 		  
 		  (set! i1 (in i1)))))))
 
-    
+
+;;;; grsp-ann-stats - Statistics on ann p_a1.
+;;
+;; Keywords:
+;; - function, ann, neural network.
+;;
+;; Arguments:
+;; p_s1: string, identifier.
+;; p_l1: ann.
+;;
+(define (grsp-ann-stats p_s1 p_l1)
+  (let ((size 0)
+	(degree 0)
+	(adegree 0)
+	(density 0)
+	(pdensity 0)
+	(cnode 0)
+	(nconn 0))
+	
+    (grsp-ldl (strings-append (list p_s1 "ANN properties") 1) 2 1)
+    (set! size (grsp-ann-net-size p_l1))
+    (grsp-ldl "Size " 2 0)
+    (grsp-ldl size 0 1)
+
+    (set! degree (grsp-ann-node-degree p_l1))
+    (grsp-ldl "Degree " 2 0)
+    (grsp-ldl degree 0 1)
+
+    (set! adegree (grsp-ann-net-adegree p_l1))
+    (grsp-ldl "Average degree " 2 0)
+    (grsp-ldl adegree 0 1)
+
+    (set! density (grsp-ann-net-density p_l1))
+    (grsp-ldl "Density " 2 0)
+    (grsp-ldl density 0 1)
+
+    (set! pdensity (grsp-ann-net-pdensity p_l1))
+    (grsp-ldl "Planar density " 2 0)
+    (grsp-ldl pdensity 0 1)
+
+    (set! cnode (grsp-ann-nodes-conns p_l1))
+    (grsp-ldl "Connections per node " 2 0)
+    (grsp-lal-dev #t cnode)
+
+    (set! nconn (grsp-ann-conns-nodes p_l1))
+    (grsp-ldl "Nodes per connection " 2 0)
+    (grsp-lal-dev #t nconn)))
