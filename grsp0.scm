@@ -80,13 +80,15 @@
 	    grsp-ldl
 	    grsp-cd
 	    grsp-ask
+	    grsp-ask-etc
 	    grsp-placebo
 	    in
 	    de
 	    grsp-argtype
 	    grsp-dstr
 	    grsp-jstr
-	    grsp-hw))
+	    grsp-hw
+	    grsp-gb))
 
 
 ;;;; pline - Displays character p_n p_m times in one line at the console.
@@ -508,7 +510,23 @@
 
     res1))
 
-  
+
+;;;; grsp-ask-etc - Asks top press <ENT> to continue.
+;;
+;; Keywords:
+;; - console, strings.
+;;
+;; Output:
+;; - A question asking to press <ENT> to continue.
+;;
+(define (grsp-ask-etc)
+  (let ((res1 " "))
+
+    (grsp-ask "Press <ENT> to continue.")
+    
+    res1))
+
+
 ;;;; grsp-placebo - This function is a placebo.
 ;;
 ;; Keywords:
@@ -675,4 +693,10 @@
 ;;
 (define (grsp-hw)
   (grsp-ldl "Hello world!" 1 1))
+
+
+;;;; grsp-gb - Says goodbye.
+;;
+(define (grsp-gb)
+  (grsp-ldl "Good bye!" 1 1))
 
