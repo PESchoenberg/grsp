@@ -3553,13 +3553,13 @@
 		  (set! i1 (in i1)))))))
 
 
-;;;; grsp-ann-stats - Statistics on ann p_a1.
+;;;; grsp-ann-stats - Provides basic network info and statistics on ann p_a1.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.
 ;;
 ;; Arguments:
-;; p_s1: string, identifier.
+;; p_s1: string, title or identifier.
 ;; p_l1: ann.
 ;;
 (define (grsp-ann-stats p_s1 p_l1)
