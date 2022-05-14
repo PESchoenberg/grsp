@@ -77,16 +77,75 @@
 (define datao2 0)
 
 
+;; Create default ann L1.
+(define data (grsp-matrix-create "#n0[-m:+m]" data_samples 3))
+(set! data (grsp-matrix-opewc "#=" data 0 data 0 data 1))
+(set! data (grsp-matrix-opewc "#+" data 0 data 1 data 2))
+(define L1 (grsp-ann-net-create-ffv basic_ann
+				    mutations_desired
+				    nodes_in_first_layer
+				    intermediate_layers
+				    nodes_in_intermediate_layers
+				    activation_function
+				    nodes_in_last_layer))
+
+
+;;;; example3-ann-default-values - Default values for ann.
+;;
+(define (example3-default-values)
+  (set! basic_ann #f)
+  (set! mth #f)
+  (set! nodes_in_first_layer 2)
+  (set! intermediate_layers 1)
+  (set! nodes_in_intermediate_layers 2)
+  (set! activation_function 2)
+  (set! nodes_in_last_layer 1)
+  (set! iterations_desired 1)
+  (set! mutations_desired 0)
+  (set! data_samples 10)
+  (set! verbosity #t))
+
+
+;;;; example3-ann-show-values - Shows current values for ann.
+;;
+(define (example3-show-values)
+  (pres2 "basic_ann" basic_ann)
+  (pres2 "mth" mth)
+  (pres2 "nodes_in_first_layer" nodes_in_first_layer)
+  (pres2 "intermediate_layers" intermediate_layers)
+  (pres2 "nodes_in_intermediate_layers" nodes_in_intermediate_layers)
+  (pres2 "activation_function" activation_function)
+  (pres2 "nodes_in_last_layer" nodes_in_last_layer)
+  (pres2 "iterations_desired" iterations_desired)
+  (pres2 "mutations_desired" mutations_desired)
+  (pres2 "data_samples" data_samples)
+  (pres2 "verbosity" verbosity))
+
+
+;;;; example3-set-values - Sets some ann configuration values.
+;;
+(define (example3-set-values)
+  (set! nodes_in_first_layer (grsp-askn "Nodes in first layer? "))
+  (set! intermediate_layers (grsp-askn "Intermediate layers? "))
+  (set! nodes_in_intermediate_layers (grsp-askn "Nodes in intermediate layer? "))
+  (set! activation_function (grsp-askn "Activation function? "))
+  (set! nodes_in_last_layer (grsp-askn "Nodes in last layer? "))
+  (set! iterations_desired (grsp-askn "Iterations desired? "))
+  (set! mutations_desired (grsp-askn "Mutations desired? ")))
+
+
 ;;;; example3-dadbp - Display ann data before processing (L1).
 ;;
 (define (example3-dadbp)
   (grsp-ldl (strings-append (list s1 "A)- Configuring ANN.") 1) 2 1)
   (display "\n Initial state of ann (L1):\n")
   (grsp-lal-dev #t L1)
-
+  (display "\n xxxxxxxxxxxxxxx \n")
+  (display L1)
+  (display "\n xxxxxxxxxxxxxxx \n")
   ;; Update ann with new datai matrix created from matrix data.
   (set! L1 (grsp-ann-datai-update data L1 0))
-
+  (display "\n xxxxxxxxxxxxxxx \n")
   ;; Show data table.
   (display "\n")
   (display "\n Data matrix data (Will be used to update matrix datai).\n")
@@ -105,8 +164,7 @@
 
   ;; Make a copy of the original list L1 so that it will be possible to compare
   ;; th initial and final states.
-  (set! L2 (list-copy L1)) 
-  (grsp-ask-etc))
+  (set! L2 (list-copy L1)))
 
 
 ;;;; example3-el2 - Evaluate L2.
@@ -117,15 +175,14 @@
 				    "#no"
 				    L2
 				    iterations_desired
-				    mutations_desired))
-  (grsp-ask-etc))
+				    mutations_desired)))
 
 
 ;;;; example3-sadae Show ann data after evaluation.
+;;
 (define (example3-sadae)
   (grsp-ldl (strings-append (list s1 "C)- ANN results.") 1) 2 1)
-  (grsp-ann-devt #t L2)
-  (grsp-ask-etc))  
+  (grsp-ann-devt #t L2))
 
 
 ;;;; example3-fdbl1l2 - Find differences betwween L1 (initial state) and L2 
@@ -144,21 +201,20 @@
   (grsp-ldl "Datao of initial state (L1)" 2 0)
   (grsp-ldl datao1 0 1)
   (grsp-ldl "Datao of final state (L1)" 1 0)
-  (grsp-ldl datao2 0 1)
-  (grsp-ask-etc))
+  (grsp-ldl datao2 0 1))
 
 
-;; example3-np - Show network properties.
+;;;; example3-np - Show network properties.
+;;
 (define (example3-np)
-  (grsp-ann-stats (string-append s1 " D)- Network properties") L2)
-  (grsp-ask-etc))
+  (grsp-ann-stats (string-append s1 " D)- Network properties") L2))
 
 
-;; example3-hrioanac - Human-readable info on all nodes and connections.
+;;;; example3-hrioanac - Human-readable info on all nodes and connections.
+;;
 (define (example3-hrioanac)
   (grsp-ann-stats (string-append s1 " E)- ") L2)
-  (grsp-ann-devnca #t #f L2 0)
-  (grsp-ask-etc))
+  (grsp-ann-devnca #t #f L2 0))
 
 
 ;;;; example3-menu-present - This is a presentation for the program and what it
@@ -179,6 +235,23 @@
     (if (eq? p_en "s")(set! n (grsp-ask "Press <ENT> to continue.")))))
 
 
+;;;; example3-menu-set - Menu of the set option of the main menu.
+;;
+;; Output:
+;; - Returns an integer corresponding to the menu option selected.
+;;
+(define (example3-menu-set)
+  (let ((res 0))
+    (grsp-ld "0 - Quit.")
+    (grsp-ld "1 - View current ann configuration.")
+    (grsp-ld "2 - Set default values.")
+    (grsp-ld "3 - Set new values.")        
+    (grsp-ld "4 - Create network.") 
+    
+    (set! res (grsp-ask opt))
+    res))
+
+
 ;;;; example3-menu-main - Main menu of the program.
 ;;
 ;; Output:
@@ -187,37 +260,108 @@
 (define (example3-menu-main)
   (let ((res 0))
     (grsp-ld "0 - Quit.")
-    (grsp-ld "1 - Display ann data before processing.")
-    (grsp-ld "2 - Show ann data after evaluation.")
-    (grsp-ld "3 - Evaluate L2.")
-    (grsp-ld "4 - Find differences betwween L1 and L2.")
-    (grsp-ld "5 - Show network properties.")
-    (grsp-ld "6 - Human-readable info on all nodes and connections.")
+    (grsp-ld "1 - Set.")
+    (grsp-ld "2 - Load.")
+    (grsp-ld "3 - Save.")
+    (grsp-ld "4 - Delete.")
+    (grsp-ld "5 - Play.")   
+    (grsp-ld "6 - Display ann data before processing.")
+    (grsp-ld "7 - Show ann data after evaluation.")
+    (grsp-ld "8 - Evaluate L2.")
+    (grsp-ld "9 - Find differences betwween L1 and L2.")
+    (grsp-ld "10 - Show network properties.")
+    (grsp-ld "11 - Human-readable info on all nodes and connections.")
 
     (set! res (grsp-ask opt))
     res))
 
 
-;;;; Main program.
+;;;; example3-ann-set - Defines and sets a neural network.
 ;;
-(clear)
+(define (example3-ann-set)
+  (let ((mc1 -1)
+	(res1 0))
+    
+    (while (equal? #f (equal? mc1 0))
+	   (example3-menu-present "Example3 - Set network" pdf "n")
+	   (set! mc1 (example3-menu-set))
+	   (clear)
+	   (cond ((equal? mc1 0)
+		  (grsp-cd "Up a level...\n"))
+		 ((equal? mc1 1)
+		  (example3-show-values)
+		  (grsp-ask-etc))
+		 ((equal? mc1 2)
+		  (example3-default-values)
+		  (display "\n Default values set. \n")
+		  (grsp-ask-etc))
+		 ((equal? mc1 3)
+		  (example3-set-values))
+		 ((equal? mc1 4)
+		  (example3-ann-create)
+		  (display "\n Network created. \n")
+		  (grsp-ask-etc))))
 
-;; Create data matrix. These steps produce a matrix of rows equal to data_samples
-;; and 3 columns, then places a copy of the values of the first column into the
-;; second one and then sums those values and puts the results in the third
-;; column.
-(define data (grsp-matrix-create "#n0[-m:+m]" data_samples 3))
-(set! data (grsp-matrix-opewc "#=" data 0 data 0 data 1))
-(set! data (grsp-matrix-opewc "#+" data 0 data 1 data 2))
+    (set! res1 mc1)
 
-;; Create ann L1.
-(define L1 (grsp-ann-net-create-ffv basic_ann
+    res1))
+
+;;;; example3-ann-create - Creates a network based on existing global variables.
+;;
+(define (example3-ann-create)
+  ;; Create data matrix. These steps produce a matrix of rows equal to data_samples
+  ;; and 3 columns, then places a copy of the values of the first column into the
+  ;; second one and then sums those values and puts the results in the third
+  ;; column.
+  (set! data (grsp-matrix-create "#n0[-m:+m]" data_samples 3)) ;; create
+  (set! data (grsp-matrix-opewc "#=" data 0 data 0 data 1))
+  (set! data (grsp-matrix-opewc "#+" data 0 data 1 data 2))
+
+  ;; Create ann L1.
+  (set! L1 (grsp-ann-net-create-ffv basic_ann
 				    mutations_desired
 				    nodes_in_first_layer
 				    intermediate_layers
 				    nodes_in_intermediate_layers
 				    activation_function
-				    nodes_in_last_layer))
+				    nodes_in_last_layer)))
+
+
+;;;; example3-ann-load - Loads an existing neural network.
+;;
+(define (example3-ann-load)
+  (let ((res1 '()))
+
+    res1))
+
+
+;;;; example3-ann-save - Saves an existing neural network.
+;;
+(define (example3-ann-save)
+  (let ((res1 '()))
+
+    res1))
+
+
+;;;; example3-ann-delete - Deletes an existing neural network.
+;;
+(define (example3-ann-delete)
+  (let ((res1 '()))
+
+    res1))
+
+
+;;;; example3-ann-play - Works with an existing neural network.
+;;
+(define (example3-ann-play)
+  (let ((res1 '()))
+
+    res1))
+
+
+;;;; Main program.
+;;
+(clear)
 
 ;; Main menu loop.
 (while (equal? #f (equal? mc 0))
@@ -227,17 +371,35 @@
        (cond ((equal? mc 0)
 	      (grsp-cd "Closing...\n"))
 	     ((equal? mc 1)
-	      (example3-dadbp))
+	      (example3-ann-set))
 	     ((equal? mc 2)
-	      (example3-sadae))	     
+	      (example3-ann-load)
+	      (grsp-ask-etc))
 	     ((equal? mc 3)
-	      (example3-el2))
+	      (example3-ann-save)
+	      (grsp-ask-etc))
 	     ((equal? mc 4)
-	      (example3-fdbl1l2))
+	      (example3-ann-delete)
+	      (grsp-ask-etc))
 	     ((equal? mc 5)
-	      (example3-np))
+	      (example3-ann-play)
+	      (grsp-ask-etc))	     
 	     ((equal? mc 6)
-	      (example3-hrioanac))))
+	      (example3-dadbp)
+	      (grsp-ask-etc))
+	     ((equal? mc 7)
+	      (example3-sadae)
+	      (grsp-ask-etc))
+	     ((equal? mc 8)
+	      (example3-el2)
+	      (grsp-ask-etc))
+	     ((equal? mc 9)
+	      (example3-fdbl1l2)
+	      (grsp-ask-etc))
+	     ((equal? mc 10)
+	      (example3-np)
+	      (grsp-ask-etc))
+	     ((equal? mc 11)
+	      (example3-hrioanac)
+	      (grsp-ask-etc))))
 	     
-
-

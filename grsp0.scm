@@ -80,6 +80,7 @@
 	    grsp-ldl
 	    grsp-cd
 	    grsp-ask
+	    grsp-askn
 	    grsp-ask-etc
 	    grsp-placebo
 	    in
@@ -503,6 +504,16 @@
 ;;
 (define (grsp-ask p_s1)
   (let ((res1 " "))
+
+    (newline)
+    (grsp-ld p_s1)
+    (set! res1 (read))
+
+    res1))
+
+
+(define (grsp-askn p_s1)
+  (let ((res1 0))
 
     (newline)
     (grsp-ld p_s1)
