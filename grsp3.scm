@@ -103,6 +103,19 @@
 ;; - [25] Gnuplotting.org. 2021. Plotting data « Gnuplotting. [online]
 ;;   Available at: http://www.gnuplotting.org/plotting-data/
 ;;   [Accessed 21 November 2021].
+;; - [26] Gnu.org. 2022. Scheduling (Guile Reference Manual). [online] Available
+;;   at: https://www.gnu.org/software/guile/manual/html_node/Scheduling.html
+;;   [Accessed 16 May 2022].
+;; - [27] En.wikipedia.org. 2022. Pauli matrices - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Pauli_matrices
+;;   [Accessed 16 May 2022].
+;; - [28] En.wikipedia.org. 2022. Gamma matrices - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Gamma_matrices#Dirac_basis
+;;   [Accessed 16 May 2022].
+;; - [29] En.wikipedia.org. 2022. Higher-dimensional gamma matrices - Wikipedia.
+;;   [online] Available at:
+;;   https://en.wikipedia.org/wiki/Higher-dimensional_gamma_matrices
+;;   [Accessed 16 May 2022].
 
 
 (define-module (grsp grsp3)
@@ -119,6 +132,7 @@
 	    grsp-tn
 	    grsp-matrix-esi
 	    grsp-matrix-create
+	    grsp-matrix-create-set
 	    grsp-matrix-change
 	    grsp-matrix-find
 	    grsp-matrix-transpose
@@ -838,6 +852,139 @@
 	   
 	   (set! i1 (+ i1 1)))
 
+    res1))
+
+
+;;;; grsp-matrix-create-set - Creates pre-defined sets of matrices.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
+;; Arguments:
+;; - p_s1: matrix type or element that will fill it initially.
+;;   - "#UD": User defined.
+;;   - "#Pauli": Pauli matrices sigma 1, 2 and 3.
+;;   - "#Dirac": Dirac gamma matrices 0, 1, 3 and 4.
+;; - p_n2: number of matrices to create.
+;; - p_n3: default value for said matrices.
+;; - p_m1: rows, positive integer.
+;; - p_n1: cols, positive integer.
+;;
+;; Notes:
+;; - Arguments p_n1, p_n2, p_m1 and/or p_n1 might not be relevant in the case
+;;   of some sets (for example, in the case of Pauli matrices, which are all of
+;;   2 x 2). In such cases, these two argument will not be taken into
+;;   account irrespectively of the values passed.
+;; - If argument p_s1 is passed as "#UD", arguments p_n1, p_n2 p_m1 and p_n1 do
+;;   matter.
+;; - See grsp-matrix-create.
+;;
+;; Output:
+;; - A list containing the matrices created as its elements.
+;;
+;; Sources:
+;; - [1][2][18][27][28][29].
+;;
+(define (grsp-matrix-create-set p_s1 p_n2 p_n3 p_m1 p_n1)
+  (let ((res1 '())
+	(aa 0)
+	(a0 0)
+	(a1 0)
+	(a2 0)
+	(a3 0)
+	(m1 0)
+	(n1 0)
+	(n2 0)
+	(z0p0p 0.0+0.0i)
+	(z1p0p 1.0+0.0i)
+	(z1n0p -1.0+0.0i)
+	(z1n1n -1.0-1.0i)
+	(z0p1p 0.0+1.0i)
+	(z0p1n 0.0-1.0i))
+
+    (cond ((equal? p_s1 "#UD")
+	   (set! n2 p_n2)
+	   
+	   ;; Ser default matrix values.
+	   (cond ((< n2 1)
+		  (set! n2 1)))
+
+	   (cond ((< p_m1 1)
+		  (set! p_m1 1)))
+
+	   (cond ((< p_n1 1)
+		  (set! p_n1 1)))
+
+	   (set! a0 (grsp-matrix-create p_n3 p_m1 p_n1))
+	   (set! res1 (list-set! res1 n2 a0)))
+	  
+	  ((equal? p_s1 "#Pauli")
+
+	   ;; Define rows and cols.
+	   (set! m1 2)
+	   (set! n1 2) 
+
+	   ;; Create matrix model.
+	   (set! aa (grsp-matrix-create z0p0p m1 n1))
+	   
+	   ;; Create sigma 1.
+	   (set! a0 (grsp-matrix-cpy aa))
+	   (array-set! a0 z1p0p 0 1)
+	   (array-set! a0 z1p0p 1 0)
+
+	   ;; Create sigma 2.
+	   (set! a1 (grsp-matrix-cpy aa))
+	   (array-set! a1 z0p1n 0 1)
+	   (array-set! a1 z0p1p 1 0)
+	   
+	   ;; Create sigma 3.
+	   (set! a2 (grsp-matrix-cpy aa))
+	   (array-set! a2 z1p0p 0 0)
+	   (array-set! a2 z1n0p 1 1)	   
+	   
+	   ;; Compose results for "#Pauli".
+	   (set! res1 (list a0 a1 a2)))
+
+	  ((equal? p_s1 "#Dirac")
+
+	   ;; Define rows and cols.
+	   (set! m1 4)
+	   (set! n1 4) 
+
+	   ;; Create matrix model.
+	   (set! aa (grsp-matrix-create z0p0p m1 n1))
+	   
+	   ;; Create gamma 0.
+	   (set! a0 (grsp-matrix-cpy aa))
+	   (array-set! a0 z1p0p 0 0)
+	   (array-set! a0 z1p0p 1 1)
+	   (array-set! a0 z1n0p 2 2)
+	   (array-set! a0 z1n0p 3 3)
+	   
+	   ;; Create gamma 1.
+	   (set! a1 (grsp-matrix-cpy aa))
+	   (array-set! a1 z1p0p 0 3)
+	   (array-set! a1 z1p0p 1 2)
+	   (array-set! a1 z1n0p 2 1)
+	   (array-set! a1 z1n0p 3 0)
+	   
+	   ;; Create gamma 2.
+	   (set! a2 (grsp-matrix-cpy aa))
+	   (array-set! a2 z0p1n 0 3)
+	   (array-set! a2 z0p1p 1 2)
+	   (array-set! a2 z0p1p 2 1)
+	   (array-set! a2 z0p1n 3 0)
+	   
+	   ;; Create gamma 3.
+	   (set! a3 (grsp-matrix-cpy aa))
+	   
+	   ;; Comopose results for "#Dirac".
+	   (set! res1 (list a0 a1 a2 a3))
+	   (array-set! a3 z1p0p 0 2)
+	   (array-set! a3 z1n0p 1 3)
+	   (array-set! a3 z1n0p 2 0)
+	   (array-set! a3 z1p0p 3 1)))
+    
     res1))
 
 
@@ -6641,6 +6788,9 @@
 ;; - Both matrices should be of equal dimensions.
 ;; - See grsp-matrix-opew, grsp-matrix-row-opew-mth.
 ;;
+;; Sources:
+;; - [26].
+;;
 (define (grsp-matrix-opew-mth p_s1 p_a1 p_a2)
   (let ((res1 0)
 	(a3 0)
@@ -6651,7 +6801,7 @@
     (set! res1 (grsp-matrix-cpy p_a1))
 
     ;; Cycle. Note that indexes for p_a1 and p_a2 should be initialized    
-    ;; and updated separatedly since the row ordinals for ech matrix
+    ;; and updated separatedly since the row ordinals for each matrix
     ;; might be different.
     (set! i1 (grsp-lm p_a1))
     (set! i2 (grsp-lm p_a2))
