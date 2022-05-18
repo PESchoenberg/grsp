@@ -490,7 +490,7 @@
   (display p_s1))
 
 
-;;;; grsp-ask - Input query.
+;;;; grsp-ask - Input query, string.
 ;;
 ;; Keywords:
 ;; - console, strings.
@@ -512,6 +512,17 @@
     res1))
 
 
+;;;; grsp-askn - Input query for numbers.
+;;
+;; Keywords:
+;; - console, numbers.
+;;
+;; Arguments:
+;; p_s1: string representing the question to ask.
+;;
+;; Output:
+;; - Returns data from the user's input as a number.
+;;
 (define (grsp-askn p_s1)
   (let ((res1 0))
 
