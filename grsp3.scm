@@ -116,6 +116,9 @@
 ;;   [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Higher-dimensional_gamma_matrices
 ;;   [Accessed 16 May 2022].
+;; - [30] En.wikipedia.org. 2022. Gell-Mann matrices - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Gell-Mann_matrices
+;;   [Accessed 19 May 2022].
 
 
 (define-module (grsp grsp3)
@@ -245,7 +248,9 @@
 	    grsp-matrix-opewc
 	    grsp-matrix-row-opew-mth
 	    grsp-matrix-opew-mth
-	    grsp-mr2l))
+	    grsp-mr2l
+	    grsp-matrix-is-traceless
+	    grsp-matrix-circulate))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -413,7 +418,7 @@
 ;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments:
-;; - p_s1: matrix type or element that will fill it initially.
+;; - p_s1: matrix type.
 ;;   - "#I": Identity matrix.
 ;;   - "#AI": Anti Identity matrix (anti diagonal).
 ;;   - "#Q": Quincunx matrix.
@@ -855,16 +860,18 @@
     res1))
 
 
-;;;; grsp-matrix-create-set - Creates pre-defined sets of matrices.
+;;;; grsp-matrix-create-set - Creates pre-defined sets of matrices as elements
+;; of a list.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments:
-;; - p_s1: matrix type or element that will fill it initially.
+;; - p_s1: matrix type.
 ;;   - "#UD": User defined.
-;;   - "#Pauli": Pauli matrices sigma 1, 2 and 3.
-;;   - "#Dirac": Dirac gamma matrices 0, 1, 3 and 4.
+;;   - "#Gell-Mann": Gell-Mann matrices.
+;;   - "#Pauli": Pauli matrices.
+;;   - "#Dirac": Dirac gamma matrices.
 ;; - p_n2: number of matrices to create.
 ;; - p_n3: default value for said matrices.
 ;; - p_m1: rows, positive integer.
@@ -878,23 +885,33 @@
 ;; - If argument p_s1 is passed as "#UD", arguments p_n1, p_n2 p_m1 and p_n1 do
 ;;   matter.
 ;; - See grsp-matrix-create.
+;; - In Scheme lists elements are identified by their ordinals starting at zero
+;;   instead of one. Be careful when interpreting some of these sets because it
+;;   might be easy to confuse the programming and math conventions (example;
+;;   matrix Sigma 1 would be returned as element 0 in the resulting list).
 ;;
 ;; Output:
 ;; - A list containing the matrices created as its elements.
 ;;
 ;; Sources:
-;; - [1][2][18][27][28][29].
+;; - [1][2][18][27][28][29][30].
 ;;
 (define (grsp-matrix-create-set p_s1 p_n2 p_n3 p_m1 p_n1)
   (let ((res1 '())
 	(aa 0)
 	(a0 0)
 	(a1 0)
-	(a2 0)
+	(a2 0)	
 	(a3 0)
+	(a4 0)
+	(a5 0)
+	(a6 0)
+	(a7 0)	
 	(m1 0)
 	(n1 0)
 	(n2 0)
+	(n3 0)
+	(i1 0)
 	(z0p0p 0.0+0.0i)
 	(z1p0p 1.0+0.0i)
 	(z1n0p -1.0+0.0i)
@@ -903,7 +920,10 @@
 	(z0p1n 0.0-1.0i))
 
     (cond ((equal? p_s1 "#UD")
+
+	   ;; Create list of adequate size.
 	   (set! n2 p_n2)
+	   (set! res1 (make-list n2))
 	   
 	   ;; Ser default matrix values.
 	   (cond ((< n2 1)
@@ -915,8 +935,67 @@
 	   (cond ((< p_n1 1)
 		  (set! p_n1 1)))
 
-	   (set! a0 (grsp-matrix-create p_n3 p_m1 p_n1))
-	   (set! res1 (list-set! res1 n2 a0)))
+	   ;; Create and put matrices into the list.
+	   (while (< i1 n2)
+		  (set! a0 (grsp-matrix-create p_n3 p_m1 p_n1))
+		  (list-set! res1 i1 a0)		  
+		  (set! i1 (in i1))))
+
+	  ((equal? p_s1 "#Gell-Mann")
+
+	   ;; Define rows and cols.
+	   (set! m1 3)
+	   (set! n1 3) 
+
+	   ;; Create matrix model.
+	   (set! aa (grsp-matrix-create z0p0p m1 n1))
+	   
+	   ;; Create a0.
+	   (set! a0 (grsp-matrix-cpy aa))
+	   (array-set! a0 z1p0p 0 1)
+	   (array-set! a0 z1p0p 1 0)	   
+
+	   ;; Create a1.
+	   (set! a1 (grsp-matrix-cpy aa))
+	   (array-set! a1 z0p1n 0 1)
+	   (array-set! a1 z0p1p 1 0)
+
+	   ;; Create a2.
+	   (set! a2 (grsp-matrix-cpy aa))
+	   (array-set! a2 z1p0p 0 0)
+	   (array-set! a2 z1n0p 1 1)
+
+	   ;; Create a3.
+	   (set! a3 (grsp-matrix-cpy aa))
+	   (array-set! a3 z1p0p 0 2)
+	   (array-set! a3 z1p0p 2 0)
+
+	   ;; Create a4.
+	   (set! a4 (grsp-matrix-cpy aa))
+	   (array-set! a4 z0p1n 0 2)
+	   (array-set! a4 z0p1p 2 0)
+
+	   ;; Create a5.
+	   (set! a5 (grsp-matrix-cpy aa))
+	   (array-set! a5 z1p0p 1 2)
+	   (array-set! a5 z1p0p 2 1)
+	   
+	   ;; Create a6.
+	   (set! a6 (grsp-matrix-cpy aa))
+	   (array-set! a6 z0p1n 1 2)
+	   (array-set! a6 z0p1p 2 1)
+
+	   ;; Create a7. Note that the final product is matrix a7
+	   ;; already multiplied by (/ 1 (sqrt 3)).
+	   (set! a7 (grsp-matrix-cpy aa))
+	   (array-set! a7 z1p0p 0 0)
+	   (array-set! a7 z1p0p 1 1)
+	   (array-set! a7 (* 2 z1n0p) 2 2)
+	   (set! n3 (/ 1 (sqrt 3)))
+	   (set! a7 (grsp-matrix-opsc "#*" a7 n3))
+	   
+	   ;; Compose results for "#Gell-Mann".
+	   (set! res1 (list a0 a1 a2 a3 a4 a5 a6 a7)))
 	  
 	  ((equal? p_s1 "#Pauli")
 
@@ -954,36 +1033,36 @@
 	   ;; Create matrix model.
 	   (set! aa (grsp-matrix-create z0p0p m1 n1))
 	   
-	   ;; Create gamma 0.
+	   ;; Create a0.
 	   (set! a0 (grsp-matrix-cpy aa))
 	   (array-set! a0 z1p0p 0 0)
 	   (array-set! a0 z1p0p 1 1)
 	   (array-set! a0 z1n0p 2 2)
 	   (array-set! a0 z1n0p 3 3)
 	   
-	   ;; Create gamma 1.
+	   ;; Create a1.
 	   (set! a1 (grsp-matrix-cpy aa))
 	   (array-set! a1 z1p0p 0 3)
 	   (array-set! a1 z1p0p 1 2)
 	   (array-set! a1 z1n0p 2 1)
 	   (array-set! a1 z1n0p 3 0)
 	   
-	   ;; Create gamma 2.
+	   ;; Create a2.
 	   (set! a2 (grsp-matrix-cpy aa))
 	   (array-set! a2 z0p1n 0 3)
 	   (array-set! a2 z0p1p 1 2)
 	   (array-set! a2 z0p1p 2 1)
 	   (array-set! a2 z0p1n 3 0)
 	   
-	   ;; Create gamma 3.
+	   ;; Create a3.
 	   (set! a3 (grsp-matrix-cpy aa))
-	   
-	   ;; Comopose results for "#Dirac".
-	   (set! res1 (list a0 a1 a2 a3))
 	   (array-set! a3 z1p0p 0 2)
 	   (array-set! a3 z1n0p 1 3)
 	   (array-set! a3 z1n0p 2 0)
-	   (array-set! a3 z1p0p 3 1)))
+	   (array-set! a3 z1p0p 3 1)
+	   
+	   ;; Comopose results for "#Dirac".
+	   (set! res1 (list a0 a1 a2 a3))))
     
     res1))
 
@@ -6813,4 +6892,40 @@
     
     res1))
 
+
+;;;; grsp-matrix-is-traceless - Returns #t if matrix p_a1 is square and the
+;; sum of its main diagonal elements equals zero; false otherwise.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;;
+(define (grsp-matrix-is-traceless p_a1)
+  (let ((res1 #f))
+
+    (cond ((equal? (grsp-matrix-is-square p_a1) #t)
+	   
+	   (cond ((equal? (grsp-matrix-opio "#+md" p_a1 0) 0)
+		  (set! res1 #t)))))
+    
+    res1))
+
+
+;;;; grsp-matrix-circulate - Circulates a 1 x n matrix.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;;
+;; Output:
+;; - If matrix is not of 1 x n dimensions, it returns p_a1.
+;; - If matrix is of 1 x n dimensions, it returns a 1 x n matrix
+;;   where each element m is returned as element m+1 on the returned
+;;   matrix, and emement mh is returned as element 0.
+;;
+(define (grsp-matrix-circulate p_a1)
+  (let ((res1 0))
+
+    res1))
 
