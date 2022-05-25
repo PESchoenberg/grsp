@@ -250,7 +250,9 @@
 	    grsp-matrix-opew-mth
 	    grsp-mr2l
 	    grsp-matrix-is-traceless
-	    grsp-matrix-circulate))
+	    grsp-matrix-movemm
+	    grsp-matrix-movsmm
+	    grsp-matrix-movcrm))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -6913,19 +6915,127 @@
     res1))
 
 
-;;;; grsp-matrix-circulate - Circulates a 1 x n matrix.
+;;;; grsp-matrix-movemm - Circulates (moves) the value found at (p_m1, p_n1)
+;; of matrix p_a1 to position (p_m2, p_n2) of matrixp_a2. This allows for
+;; independent, element by element discrete movement of values between
+;; matrices.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
+;; - p_a2: matrix.
+;; - p_m1: row ordinal of p_a1.
+;; - p_n1: col ordinal of p_a1.
+;; - p_m2: row ordinal of p_a2.
+;; - p_n2: col ordinal of p_a2.
+;;
+;; Notes:
+;; - This function does not check the dimensions of the matrices involved.
 ;;
 ;; Output:
-;; - If matrix is not of 1 x n dimensions, it returns p_a1.
-;; - If matrix is of 1 x n dimensions, it returns a 1 x n matrix
-;;   where each element m is returned as element m+1 on the returned
-;;   matrix, and emement mh is returned as element 0.
+;; - Matrix with the value in question changed.
 ;;
-(define (grsp-matrix-circulate p_a1)
+(define (grsp-matrix-movemm p_a1 p_a2 p_m1 p_n1 p_m2 p_n2)
   (let ((res1 0))
 
+    (set! res1 (grsp-matrix-cpy p_a2))
+    (array-set! res1 (array-ref p_a1 p_m1 p_n1) p_m2 p_n2)
+    
     res1))
 
+
+;;;; grsp-matrix-movsmm - Swaps element located at position (p_m1, p_n1) of
+;; matrix p_a1 with element located at p_a2 (p_m2, p_n2).
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_a2: matrix.
+;; - p_m1: row ordinal of p_a1.
+;; - p_n1: col ordinal of p_a1.
+;; - p_m2: row ordinal of p_a2.
+;; - p_n2: col ordinal of p_a2.
+;;
+;; Notes:
+;; - This function does not check the dimensions of the matrices involved.
+;;
+;; Output:
+;; - List containing matrices p_a1 and p_a2 with elements in question swapped.
+;;
+(define (grsp-matrix-movsmm p_a1 p_a2 p_m1 p_n1 p_m2 p_n2)
+  (let ((res1 '())
+	(a1 0)
+	(a2 0)
+	(n1 0)
+	(n2 0))
+
+    ;; Make safety copies of matrices.
+    (set! a1 (grsp-matrix-cpy p_a1))
+    (set! a2 (grsp-matrix-cpy p_a2))
+
+    ;; Store intermediate values.
+    (set! n1 (array-ref a1 p_m1 p_n1))
+    (set! n2 (array-ref a2 p_m2 p_n2))
+
+    ;; Swap values.
+    (array-set! a1 n2 p_m1 p_n1)
+    (array-set! a2 n1 p_m2 p_n2)
+
+    ;; Compose results.
+    (set! res1 (list a1 a2))
+    
+    res1))
+
+
+;;;; grsp-matrix-movcrm - Circulates row p_m1 of matrix p_a1 by p_j2
+;; elements from left to right, or lower col number to higher col number.
+;;
+;; Arguments.
+;; - p_a1: matrix.
+;; - p_m1: row number.
+;; - p_j2: number of cols to circulate.
+;;
+;; Notes:
+;; - This function does not vaildate if row p_m1 actually exists on
+;;   matrix p_a1.
+;;
+(define (grsp-matrix-movcrm p_a1 p_m1 p_j2)
+  (let ((res1 0)
+	(nl (grsp-ln p_a1))
+	(nh (grsp-hn p_a1))
+	(j1 0)
+	(j2 1)
+	(n1 0)
+	(n2 0)
+	(n3 0))
+
+    (set! res1 (grsp-matrix-cpy p_a1))
+
+    ;; Cycle as many timeas as you want to circulate the row.
+    (while (<= j2 p_j2)
+
+	   ;; Cyccle that corresponds to a one-element circulation.
+	   (set! j1 nh)
+	   (while (>= j1 nl)
+		  ;; Get the value of the current element accoridng to
+		  ;; coordinates (p_m1, j1).
+		  (set! n1 (array-ref res1 p_m1 j1))
+		  
+		  (cond ((equal? j1 nh)
+			 ;; Special case of the last row element.
+			 (set! n2 n1)
+			 (set! n3 (array-ref res1 p_m1 (- j1 1)))
+			 (array-set! res1 n3 p_m1 j1))
+			((equal? (and (< j1 nh) (> j1 nl)) #t)
+			 ;; Replace the value of the current element with
+			 ;; the value of the prior element (the one that
+			 ;; has a col index lower by one).
+			 (set! n3 (array-ref res1 p_m1 (- j1 1)))
+			 (array-set! res1 n3 p_m1 j1))
+			((equal? j1 nl)
+			 ;; special case of the first row element.
+			 (array-set! res1 n2 p_m1 j1)))
+		  
+		  (set! j1 (de j1)))
+
+	   (set! j2 (in j2)))
+    
+    res1))
