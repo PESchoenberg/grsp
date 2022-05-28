@@ -81,6 +81,10 @@
 ;;   https://en.wikipedia.org/wiki/Wormhole[Accessed 25 January 2022].
 ;; - [20] En.wikipedia.org. 2022. ER = EPR - Wikipedia. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/ER_%3D_EPR [Accessed 25 January 2022].
+;; - [21] En.wikipedia.org. 2022. Bloch sphere - Wikipedia. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Bloch_sphere [Accessed 26 May 2022].
+;; - [22] En.wikipedia.org. 2022. Riemann sphere - Wikipedia. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Riemann_sphere [Accessed 26 May 2022].
 
 
 (define-module (grsp grsp6)

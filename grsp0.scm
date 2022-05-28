@@ -57,6 +57,8 @@
 ;;   [online] Available at:
 ;;   https://academic.oup.com/bib/article-pdf/19/3/537/25603287/bbw130.pdf
 ;;   [Accessed 11 October 2021].
+;; - [7] https://en.wikipedia.org/wiki/Mathematics_Subject_Classification
+;; - [8] https://en.wikipedia.org/wiki/ACM_Computing_Classification_System
 
 
 (define-module (grsp grsp0)
