@@ -1,6 +1,6 @@
 ;; grsp15.scm
 ;;
-;; Polynom-related functions.
+;; Poly-related functions.
 ;;
 ;; =============================================================================
 ;;

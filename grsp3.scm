@@ -119,7 +119,10 @@
 ;; - [30] En.wikipedia.org. 2022. Gell-Mann matrices - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Gell-Mann_matrices
 ;;   [Accessed 19 May 2022].
-
+;; - [31] https://en.wikipedia.org/wiki/Quantum_logic_gate
+;; - [32] https://en.wikipedia.org/wiki/Quantum_circuit
+;; - [33] https://en.wikipedia.org/wiki/Penrose_graphical_notation
+;; - [34] https://en.wikipedia.org/wiki/Categorical_quantum_mechanics
 
 (define-module (grsp grsp3)
   #:use-module (grsp grsp0)
@@ -136,6 +139,7 @@
 	    grsp-matrix-esi
 	    grsp-matrix-create
 	    grsp-matrix-create-set
+	    grsp-matrix-create-fix
 	    grsp-matrix-change
 	    grsp-matrix-find
 	    grsp-matrix-transpose
@@ -252,7 +256,9 @@
 	    grsp-matrix-is-traceless
 	    grsp-matrix-movemm
 	    grsp-matrix-movsmm
-	    grsp-matrix-movcrm))
+	    grsp-matrix-movcrm
+	    grsp-matrix-movtrm
+	    grsp-matrix-ldiagonal))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -448,7 +454,7 @@
 ;; - p_n1: cols, positive integer.
 ;;
 ;; Sources:
-;; - [1][2][18].
+;; - [1][2][18][31].
 ;;
 (define (grsp-matrix-create p_s1 p_m1 p_n1)
   (let ((res1 0)
@@ -1066,6 +1072,61 @@
 	   ;; Comopose results for "#Dirac".
 	   (set! res1 (list a0 a1 a2 a3))))
     
+    res1))
+
+
+;;;; grsp-matrix-create-fix - Creates pre-defined matrices of specific sizes.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
+;; Arguments:
+;; - p_s1: matrix type.
+;;   - "#X": Pauli X. NOT.
+;;   - "#Y": Pauli Y.
+;;   - "#Z": Pauli Z.
+;;   - "QI": single qubit identity.
+;;   - "#H": Hadamard.
+;;   - "#P": phase shift (requires also p_z1).
+;;   - "#CX": controlled NOT.
+;; - p_z1: complex, matrix scalar multiplier.
+;;
+;; Sources:
+;; - [31][32][33][34]. https://en.wikipedia.org/wiki/Quantum_logic_gate
+;;
+(define (grsp-matrix-create-fix p_s1 p_z1)
+  (let ((res1 0)
+	(z0p0p 0.0+0.0i)
+	(z1p0p 1.0+0.0i)
+	(z1n0p -1.0+0.0i)
+	(z1n1n -1.0-1.0i)
+	(z0p1p 0.0+1.0i)
+	(z0p1n 0.0-1.0i))	
+
+    (cond ((equal? p_s1 "#X")
+	   (set! res1 (list-ref (grsp-matrix-create-set "#Pauli" 0 0 0 0) 0)))
+	  ((equal? p_s1 "#Y")
+	   (set! res1 (list-ref (grsp-matrix-create-set "#Pauli" 0 0 0 0) 1)))
+	  ((equal? p_s1 "#Z")
+	   (set! res1 (list-ref (grsp-matrix-create-set "#Pauli" 0 0 0 0) 2)))
+	  ((equal? p_s1 "#QI")	   
+	   (set! res1 (grsp-matrix-create "#I" 2 2))
+	   (set! res1 (grsp-matrix-opsc "#*" res1 z1p0p)))
+	  ((equal? p_s1 "#CX")
+	   (set! res1 (grsp-matrix-create z0p0p 4 4))
+	   (array-set! res1 z1p0p 0 0)
+	   (array-set! res1 z1p0p 1 1)
+	   (array-set! res1 z1p0p 2 3)
+	   (array-set! res1 z1p0p 3 2))
+	  ((equal? p_s1 "#H")
+	   (set! res1 (grsp-matrix-create z1p0p 2 2))
+	   (array-set! res1 z1n0p 1 1)
+	   (set! res1 (grsp-matrix-opsc "#*" res1 (/ 1 (sqrt 2)))))
+	  ((equal? p_s1 "#P")
+	   (set! res1 (grsp-matrix-create z0p0p 2 2))
+	   (array-set! res1 z1p0p 0 0)
+	   (array-set! res1 (grsp-complex-eif p_z1) 1 1)))
+	  
     res1))
 
 
@@ -6916,7 +6977,7 @@
 
 
 ;;;; grsp-matrix-movemm - Circulates (moves) the value found at (p_m1, p_n1)
-;; of matrix p_a1 to position (p_m2, p_n2) of matrixp_a2. This allows for
+;; of matrix p_a1 to position (p_m2, p_n2) of matrix p_a2. This allows for
 ;; independent, element by element discrete movement of values between
 ;; matrices.
 ;;
@@ -6989,6 +7050,9 @@
 ;; elements from left to right, or lower col number to higher col number.
 ;;
 ;; Arguments.
+;; - p_b1: boolean.
+;;   - #t: circulate from left to right.
+;;   - #f: circulate from right to left.
 ;; - p_a1: matrix.
 ;; - p_m1: row number.
 ;; - p_j2: number of cols to circulate.
@@ -6997,7 +7061,7 @@
 ;; - This function does not vaildate if row p_m1 actually exists on
 ;;   matrix p_a1.
 ;;
-(define (grsp-matrix-movcrm p_a1 p_m1 p_j2)
+(define (grsp-matrix-movcrm p_b1 p_a1 p_m1 p_j2)
   (let ((res1 0)
 	(nl (grsp-ln p_a1))
 	(nh (grsp-hn p_a1))
@@ -7009,33 +7073,127 @@
 
     (set! res1 (grsp-matrix-cpy p_a1))
 
-    ;; Cycle as many timeas as you want to circulate the row.
-    (while (<= j2 p_j2)
+    (cond ((equal? p_b1 #t)
+	   
+	   ;; Cycle as many times as you want to circulate the row from left
+	   ;; to right.
+	   (while (<= j2 p_j2)
 
-	   ;; Cyccle that corresponds to a one-element circulation.
-	   (set! j1 nh)
-	   (while (>= j1 nl)
-		  ;; Get the value of the current element accoridng to
-		  ;; coordinates (p_m1, j1).
-		  (set! n1 (array-ref res1 p_m1 j1))
-		  
-		  (cond ((equal? j1 nh)
-			 ;; Special case of the last row element.
-			 (set! n2 n1)
-			 (set! n3 (array-ref res1 p_m1 (- j1 1)))
-			 (array-set! res1 n3 p_m1 j1))
-			((equal? (and (< j1 nh) (> j1 nl)) #t)
-			 ;; Replace the value of the current element with
-			 ;; the value of the prior element (the one that
-			 ;; has a col index lower by one).
-			 (set! n3 (array-ref res1 p_m1 (- j1 1)))
-			 (array-set! res1 n3 p_m1 j1))
-			((equal? j1 nl)
-			 ;; special case of the first row element.
-			 (array-set! res1 n2 p_m1 j1)))
-		  
-		  (set! j1 (de j1)))
+		  ;; Cycle that corresponds to a one-element circulation.
+		  (set! j1 nh)
+		  (while (>= j1 nl)
+			 ;; Get the value of the current element according to
+			 ;; coordinates (p_m1, j1).
+			 (set! n1 (array-ref res1 p_m1 j1))
+			 
+			 (cond ((equal? j1 nh)
+				;; Special case of the last row element.
+				(set! n2 n1)
+				(set! n3 (array-ref res1 p_m1 (- j1 1)))
+				(array-set! res1 n3 p_m1 j1))
+			       ((equal? (and (< j1 nh) (> j1 nl)) #t)
+				;; Replace the value of the current element with
+				;; the value of the prior element (the one that
+				;; has a col index lower by one).
+				(set! n3 (array-ref res1 p_m1 (- j1 1)))
+				(array-set! res1 n3 p_m1 j1))
+			       ((equal? j1 nl)
+				;; special case of the first row element.
+				(array-set! res1 n2 p_m1 j1)))
+			 
+			 (set! j1 (de j1)))
 
-	   (set! j2 (in j2)))
+		  (set! j2 (in j2))))
+
+	  ((equal? p_b1 #f)
+
+	   ;; Cycle as many times as you want to circulate the row from right
+	   ;; to left.
+	   (while (<= j2 p_j2)
+
+		  ;; Cycle that corresponds to a one-element circulation.
+		  (set! j1 nl)
+		  (while (<= j1 nh)
+			 ;; Get the value of the current element according to
+			 ;; coordinates (p_m1, j1).
+			 (set! n1 (array-ref res1 p_m1 j1))
+			 
+			 (cond ((equal? j1 nl)
+				;; Special case of the first row element.
+				(set! n2 n1)
+				(set! n3 (array-ref res1 p_m1 (+ j1 1)))
+				(array-set! res1 n3 p_m1 j1))
+			       ((equal? (and (< j1 nh) (> j1 nl)) #t)
+				;; Replace the value of the current element with
+				;; the value of the posterior element (the one that
+				;; has a col index higher by one).
+				(set! n3 (array-ref res1 p_m1 (+ j1 1)))
+				(array-set! res1 n3 p_m1 j1))
+			       ((equal? j1 nh)
+				;; special case of the first row element.
+				(array-set! res1 n2 p_m1 j1)))
+			 
+			 (set! j1 (in j1)))
+
+		  (set! j2 (in j2))) ))
     
+    res1))
+
+
+;;;; grsp-matrix-movtrm - Given matrix p_a1, this function will take each
+;; element p_a1(0,n) and will place it on p_a1(n,n) if p_b1 is #t, or each
+;; element p_a1(n,0) and will place it on p_a1(n,n) if p_b1 is #f, until it
+;; reaches n = m.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;;
+(define (grsp-matrix-movtrm p_b1 p_a1)
+  (let ((res1 0)
+	(j1 (grsp-ln p_a1)))
+
+    (set! res1 (grsp-matrix-cpy p_a1))
+    
+    (while (equal? (and (<= j1 (grsp-hm res1)) (<= j1 (grsp-hn res1))) #t)
+	   
+	   (cond ((equal? p_b1 #t)
+		  (array-set! res1 (array-ref res1 (grsp-lm res1) j1) j1 j1))
+		 (else
+		  (array-set! res1 (array-ref res1 j1 (grsp-ln res1)) j1 j1)))
+	   
+	   (set! j1 (in j1)))
+    
+    res1))
+
+
+;;;; grsp-matrix-ldiagonal - Replaces every element of matrix p_a1 with value
+;; p_n1 except those on the main diagonal.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_n1: number.
+;;
+(define (grsp-matrix-ldiagonal p_a1 p_n1)
+  (let ((res1 0)
+	(i1 (grsp-lm p_a1))
+	(j1 (grsp-ln p_a1)))
+
+    ;; Mace safety copy.
+    (set! res1 (grsp-matrix-cpy p_a1))
+
+    ;; Cycle and replace all elements of the matrix except in the case
+    ;; of those with m = n (equal row and col numbers, meaning that they
+    ;; are in the main diagonal.
+    (while (<= i1 (grsp-hm res1))
+
+	   (set! j1 (grsp-ln res1))
+	   (while (<= j1 (grsp-hn res1))
+		  
+		  (cond ((equal? (equal? i1 j1) #f)
+			 (array-set! res1 p_n1 i1 j1)))
+
+		  (set! j1 (in j1)))
+
+	   (set! i1 (in i1)))
+	   
     res1))

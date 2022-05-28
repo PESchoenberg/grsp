@@ -114,7 +114,8 @@
 	    grsp-complex-riemann-fezeta
 	    grsp-complex-riemann-euzeta
 	    grsp-complex-riemann-cszeta
-	    grsp-complex-bernoulli-number))
+	    grsp-complex-bernoulli-number
+	    grsp-complex-eif))
   
 
 ;;;; grsp-complex-inv-imag - Calculates the inverse of the imaginary
@@ -1142,3 +1143,18 @@
 	   (set! res1 -0.5))) ;; Z(0).
     
     res1))
+
+
+;;;; grsp-complex-eif - Phase shift.
+;;
+;; Arguments:
+;; - p_f1: shift value.
+;;
+(define (grsp-complex-eif p_f1)
+  (let ((res1 0)
+	(z0p1p 0.0+1.0i))
+
+    (set! res1 (expt (grsp-e) (* z0p1p p_f1)))
+
+    res1))
+	  
