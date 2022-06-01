@@ -115,7 +115,8 @@
 	    grsp-complex-riemann-euzeta
 	    grsp-complex-riemann-cszeta
 	    grsp-complex-bernoulli-number
-	    grsp-complex-eif))
+	    grsp-complex-eif
+	    grsp-mr))
   
 
 ;;;; grsp-complex-inv-imag - Calculates the inverse of the imaginary
@@ -1151,10 +1152,18 @@
 ;; - p_f1: shift value.
 ;;
 (define (grsp-complex-eif p_f1)
-  (let ((res1 0)
-	(z0p1p 0.0+1.0i))
+  (let ((res1 0))
 
-    (set! res1 (expt (grsp-e) (* z0p1p p_f1)))
+    (set! res1 (expt (grsp-e) (* (grsp-mr 0 1) p_f1)))
 
     res1))
-	  
+
+;;;; grsp-mr - Returns a cokmplex number in rectangular form with real p_n1 and
+;; imaginary component p_n2). This is a wrapper for Guile's make-rectangular
+;; function but with a shorter syntax.
+(define (grsp-mr p_n1 p_n2)
+  (let ((res1 (make-rectangular p_n1 p_n2)))
+    
+    res1))
+
+
