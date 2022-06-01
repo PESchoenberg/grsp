@@ -1,4 +1,4 @@
-;; =============================================================================
+0;; =============================================================================
 ;;
 ;; grsp3.scm
 ;;
@@ -119,10 +119,34 @@
 ;; - [30] En.wikipedia.org. 2022. Gell-Mann matrices - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Gell-Mann_matrices
 ;;   [Accessed 19 May 2022].
-;; - [31] https://en.wikipedia.org/wiki/Quantum_logic_gate
-;; - [32] https://en.wikipedia.org/wiki/Quantum_circuit
-;; - [33] https://en.wikipedia.org/wiki/Penrose_graphical_notation
-;; - [34] https://en.wikipedia.org/wiki/Categorical_quantum_mechanics
+;; - [31] En.wikipedia.org. 2022. Quantum logic gate - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Quantum_logic_gate
+;;   [Accessed 31 May 2022].
+;; - [32] En.wikipedia.org. 2022. Quantum circuit - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Quantum_circuit
+;;   [Accessed 31 May 2022].
+;; - [33] En.wikipedia.org. 2022. Penrose graphical notation - Wikipedia.
+;;   [online] Available at:
+;;   https://en.wikipedia.org/wiki/Penrose_graphical_notatio
+;;   [Accessed 31 May 2022].
+;; - [34] En.wikipedia.org. 2022. Categorical quantum mechanics - Wikipedia.
+;;   [online] Available at:
+;;   https://en.wikipedia.org/wiki/Categorical_quantum_mechanics
+;;   [Accessed 31 May 2022].
+;; - [35] En.wikipedia.org. 2022. Qutrit - Wikipedia. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Qutrit#Qutrit_quantum_gates
+;;   [Accessed 31 May 2022].
+;; - [36] En.wikipedia.org. 2022. Tensor product - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Tensor_product
+;;   [Accessed 31 May 2022].
+;; - [37] En.wikipedia.org. 2022. Kronecker product - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Kronecker_product
+;;   [Accessed 31 May 2022].
+;; - [38] Product, T., Borah, M. and Orrick, W., 2022. Tensor product and
+;;   Kronecker Product. [online] Mathematics Stack Exchange. Available at:
+;;   https://math.stackexchange.com/questions/203947/tensor-product-and-kronecker-product
+;;   [Accessed 1 June 2022].
+
 
 (define-module (grsp grsp3)
   #:use-module (grsp grsp0)
@@ -920,12 +944,12 @@
 	(n2 0)
 	(n3 0)
 	(i1 0)
-	(z0p0p 0.0+0.0i)
-	(z1p0p 1.0+0.0i)
-	(z1n0p -1.0+0.0i)
-	(z1n1n -1.0-1.0i)
-	(z0p1p 0.0+1.0i)
-	(z0p1n 0.0-1.0i))
+	(z0p0p (grsp-mr 0.0 0.0))
+	(z1p0p (grsp-mr 1.0 0.0))
+	(z1n0p (grsp-mr -1.0 0.0))
+	(z1n1n (grsp-mr -1.0 -1.0))
+	(z0p1p (grsp-mr 0.0 1.0))
+	(z0p1n (grsp-mr 0.0 -10.0)))
 
     (cond ((equal? p_s1 "#UD")
 
@@ -1082,20 +1106,34 @@
 ;;
 ;; Arguments:
 ;; - p_s1: matrix type.
-;;   - "#X": Pauli X. NOT.
-;;   - "#Y": Pauli Y.
-;;   - "#Z": Pauli Z.
-;;   - "QI": single qubit identity.
-;;   - "#H": Hadamard.
-;;   - "#P": phase shift (requires also p_z1).
-;;   - "#CX": controlled NOT.
+;;   - "#X": Qubit quantum gate. Pauli X. NOT.
+;;   - "#Y": Qubit quantum gate. Pauli Y.
+;;   - "#Z": Qubit quantum gate. Pauli Z.
+;;   - "#QI": Qubit quantum gate. single qubit identity.
+;;   - "#H": Qubit quantum gate. Hadamard.
+;;   - "#P": Qubit quantum gate. Phase shift, requires also p_z1.
+;;   - "#S": Qubit quantum gate. S.
+;;   - "#T": Qubit quantum gate. T.
+;;   - "#CX": Qubit quantum gate. Controlled X.
+;;   - "#CY": Qubit quantum gate. Controlled Y.
+;;   - "#CZ": Qubit quantum gate. Controlled Z.
+;;   - "#CP": Qubit quantum gate. Controlled P, requires also p_z1 and state |11>.
+;;   - "#RX": Qubit quantum gate. Rotation operator on X, requires also p_z1 (theta).
+;;   - "#RY": Qubit quantum gate. Rotation operator on Y, requires also p_z1 (theta).
+;;   - "#RZ": Qubit quantum gate. Rotation operator on Z, requires also p_z1 (theta).
+;;   - "#SWAP": Qubit quantum gate. SWAP.
+;;   - "#CCX": Qubit quantum gate. CCX. Toffoli.
+;;   - "#SQX": Qubit quantum gate. SQX. Square root of X.
 ;; - p_z1: complex, matrix scalar multiplier.
 ;;
 ;; Sources:
-;; - [31][32][33][34]. https://en.wikipedia.org/wiki/Quantum_logic_gate
+;; - [31][32][33][34][35]. https://en.wikipedia.org/wiki/Quantum_logic_gate https://en.wikipedia.org/wiki/Qutrit#Qutrit_quantum_gates
 ;;
 (define (grsp-matrix-create-fix p_s1 p_z1)
   (let ((res1 0)
+	(z1 0.0+0.0i)
+	(z1p1p 1.0+1.0i)
+	(z1p1n 1.0-1.0i)
 	(z0p0p 0.0+0.0i)
 	(z1p0p 1.0+0.0i)
 	(z1n0p -1.0+0.0i)
@@ -1118,6 +1156,13 @@
 	   (array-set! res1 z1p0p 1 1)
 	   (array-set! res1 z1p0p 2 3)
 	   (array-set! res1 z1p0p 3 2))
+	  ((equal? p_s1 "#CY")
+	   (set! res1 (grsp-matrix-create "#I" 4 4))
+	   (set! res1 (grsp-matrix-opsc "#*" res1 z1p0p))
+	   (array-set! res1 z0p0p 2 2)
+	   (array-set! res1 z0p1n 2 3)
+	   (array-set! res1 z0p1p 3 2)
+	   (array-set! res1 z0p0p 3 3))	  
 	  ((equal? p_s1 "#H")
 	   (set! res1 (grsp-matrix-create z1p0p 2 2))
 	   (array-set! res1 z1n0p 1 1)
@@ -1125,8 +1170,60 @@
 	  ((equal? p_s1 "#P")
 	   (set! res1 (grsp-matrix-create z0p0p 2 2))
 	   (array-set! res1 z1p0p 0 0)
-	   (array-set! res1 (grsp-complex-eif p_z1) 1 1)))
-	  
+	   (array-set! res1 (grsp-complex-eif p_z1) 1 1))
+	  ((equal? p_s1 "#CP")
+	   (set! res1 (grsp-matrix-create "#I" 4 4))
+	   (set! res1 (grsp-matrix-opsc "#*" res1 z1p0p))
+	   (array-set! res1 (grsp-complex-eif p_z1) 3 3))
+	  ((equal? p_s1 "#RX")
+	   (set! res1 (grsp-matrix-create z0p0p 2 2))
+	   (set! z1 (/ p_z1 2))
+	   (array-set! res1 (cos z1) 0 0)
+	   (array-set! res1 (grsp-mr 0 (sin z1)) 0 1)
+	   (array-set! res1 (grsp-mr 0 (sin z1)) 1 0)
+	   (array-set! res1 (cos z1) 1 1))
+	  ((equal? p_s1 "#RY")
+	   (set! res1 (grsp-matrix-create z0p0p 2 2))
+	   (set! z1 (/ p_z1 2))
+	   (array-set! res1 (cos z1) 0 0)
+	   (array-set! res1 (* -1 (sin z1)) 0 1)
+	   (array-set! res1 (sin z1) 1 0)
+	   (array-set! res1 (cos z1) 1 1))
+	  ((equal? p_s1 "#RZ")
+	   (set! res1 (grsp-matrix-create z0p0p 2 2))
+	   (array-set! res1 (grsp-eex (grsp-mr 0 (* -1 (/ p_z1 2)))) 0 0)
+	   (array-set! res1 z0p0p 0 1)
+	   (array-set! res1 z0p0p 1 0)	
+	   (array-set! res1 (grsp-eex (grsp-mr 0 (/ p_z1 2))) 1 1))
+	  ((equal? p_s1 "#S")	  
+	   (set! res1 (grsp-matrix-create-fix "#QI" 0))
+	   (array-set! res1 z0p1p 1 1))
+	  ((equal? p_s1 "#T")	  
+	   (set! res1 (grsp-matrix-create-fix "#QI" 0))
+	   (array-set! res1 (grsp-complex-eif (/ (grsp-pi) 4)) 1 1))
+	  ((equal? p_s1 "#CZ")
+	   (set! res1 (grsp-matrix-create "#I" 4 4))
+	   (array-set! res1 z1n0p 3 3)
+	   (set! res1 (grsp-matrix-opsc "#*" res1 z1p0p)))
+	  ((equal? p_s1 "#SWAP")
+	   (set! res1 (grsp-matrix-create z0p0p 4 4))
+	   (array-set! res1 z1p0p 0 0)
+	   (array-set! res1 z1p0p 1 2)
+	   (array-set! res1 z1p0p 2 1)
+	   (array-set! res1 z1p0p 3 3))
+	  ((equal? p_s1 "#CCX")
+	   (set! res1 (grsp-matrix-create "#I" 8 8))
+	   (set! res1 (grsp-matrix-opsc "#*" res1 z1p0p))
+	   (array-set! res1 z0p0p 6 6)
+	   (array-set! res1 z0p0p 7 7)
+	   (array-set! res1 z1p0p 6 7)
+	   (array-set! res1 z1p0p 7 6))
+	  ((equal? p_s1 "#SQX")
+	   (set! res1 (grsp-matrix-create z1p1p 2 2))
+	   (array-set! res1 z1p1n 0 1)
+	   (array-set! res1 z1p1n 1 0)
+	   (set! res1 (grsp-matrix-opsc "#*" res1 0.5))))
+	   
     res1))
 
 
@@ -1611,7 +1708,7 @@
 ;; p_a1 and p_a2.
 ;;
 ;; Keywords:
-;; - function, algebra, matrix, matrices, vectors.
+;; - function, algebra, matrix, matrices, vectors, hadamard, direct, schur.
 ;;
 ;; Arguments:
 ;; - p_s1: operation described as a string:
@@ -1858,6 +1955,8 @@
 ;;   - "#-": matrix to matrix substraction.
 ;;   - "#*": matrix to matrix multiplication.
 ;;   - "#/": matrix to matrix pseudo-division.
+;;   - "#(+): Kronecker sum."
+;;   - "#(*): Kronecker product."
 ;; - p_a1: first matrix.
 ;; - p_a2: second matrix.
 ;;
@@ -1866,11 +1965,18 @@
 ;;   matrices involved; the user or an additional shell function should take
 ;;   care of that.
 ;;
+;; Sources:
+;; - [36][37][38].
+;;
 (define (grsp-matrix-opmm p_s1 p_a1 p_a2)
   (let ((res1 p_a1)
 	(res2 p_a2)
 	(res4 0)
 	(res3 0)
+	(res5 0)
+	(res6 0)
+	(I1 0)
+	(I2 0)
 	(lm1 0)
 	(hm1 0)
 	(ln1 0)
@@ -1886,7 +1992,9 @@
 	(lm3 0)
 	(hm3 0)
 	(ln3 0)
-	(hn3 0))
+	(hn3 0)
+	(i3 0)
+	(j3 0))
 
     ;; Extract the boundaries of the first matrix.
     (set! lm1 (grsp-matrix-esi 1 res1))
@@ -1953,8 +2061,56 @@
 	  ((equal? p_s1 "#+")	   
 	   (set! res3 (grsp-matrix-opew p_s1 res1 res2)))	  
 	  ((equal? p_s1 "#-")	   
-	   (set! res3 (grsp-matrix-opew p_s1 res1 res2))))
+	   (set! res3 (grsp-matrix-opew p_s1 res1 res2)))
+	  ((equal? p_s1 "#(+)")
+	   (set! I1 (grsp-matrix-create "#I" (grsp-tm p_a2) (grsp-tm p_a2)))
+	   (set! I2 (grsp-matrix-create "#I" (grsp-tm p_a1) (grsp-tm p_a1)))
+	   (set! res5 (grsp-matrix-opmm "#(*)" p_a1 I2))
+	   (set! res6 (grsp-matrix-opmm "#(*)" I1 p_a2))
+	   (set! res3 (grsp-matrix-opmm "#+" res5 res6)))
+	  ((equal? p_s1 "#(*)")
+	   (set! res5 (grsp-matrix-cpy p_a2))
+	   
+	   ;; This requires a definition of the results matrix since the
+	   ;; Kronecker product generates a matrix M of (m1*m2)*(n1*n2)
+	   ;; size.
+	   ;; ***
+	   (set! res3 (grsp-matrix-create 0
+					  (* (grsp-tm p_a1) (grsp-tm p_a2))
+					  (* (grsp-tn p_a1) (grsp-tn p_a2))))
 
+	   ;; Cycle over p_a1 and perform a scalar product between each element
+	   ;; of p_a1 and matrix p_a2
+	   (set! i3 (grsp-lm res3))
+	   (set! j3 (grsp-ln res3))
+	   (set! i1 (grsp-lm p_a1))
+	   (while (<= i1 (grsp-hm p_a1))
+
+		  (set! j3 (grsp-ln res3))
+		  (set! j1 (grsp-ln p_a1))
+		  (while (<= j1 (grsp-hn p_a1))
+
+			 ;; Perform scalar product between p_a1(i1,j1) and p_b1.
+			 (set! res5 (grsp-matrix-opsc "#*" p_a2 (array-ref p_a1 i1 j1)))
+
+			 ;; Paste res5 into res3.
+			 (set! res3 (grsp-matrix-subrep res3 res5 i3 j3))
+
+			 ;; Find the next position in res3 where to paste the
+			 ;; next matrix resulting from the scalar product.
+			 ;;(display "\n")
+			 ;;(display i3)
+			 ;;(display " ")
+			 ;;(display j3)
+			 ;;(display "\n--\n")
+			 ;;(display res3)
+			 ;;(display "\n-----------------\n")
+			 (set! j3 (+ j3 (grsp-tn p_a2)))
+			 (set! j1 (in j1)))
+		  
+		  (set! i3 (+ i3 (grsp-tm p_a2)))
+		  (set! i1 (in i1)))))
+    
     res3))
 
 
