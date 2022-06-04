@@ -6,8 +6,8 @@
 ;;
 ;; example4.scm
 ;;
-;; A sample of grsp ann functions. This program calculates the Kronecker product
-;; and Kronecker sum of two matrices.
+;; A sample of grsp functions. This program shows how function grsp-matrix-opmm
+;; works.
 ;;
 ;; Compilation:
 ;;
@@ -72,13 +72,7 @@
 (array-set! M2 6 1 0)
 (array-set! M2 7 1 1)
 
-;; Calculate the Kronecker product.
-(define M3 (grsp-matrix-opmm "#(*)" M1 M2))
-
-;; Calculate the Kronecker product.
-(define M4 (grsp-matrix-opmm "#(+)" M1 M2))
-
-;; Display results.
+;; Calculate and display results.
 (display "\n")
 (display "\nMatrix 1:\n")
 (display M1)
@@ -86,9 +80,21 @@
 (display "\nMatrix 2:\n")
 (display M2)
 (display "\n")
+(display "\nMatrix sum:\n")
+(display (grsp-matrix-opmm "#(+)" M1 M2))
+(display "\n")
+(display "\nMatrix substraction:\n")
+(display (grsp-matrix-opmm "#(-)" M1 M2))
+(display "\n")
+(display "\nMatrix multiplication:\n")
+(display (grsp-matrix-opmm "#(+)" M1 M2))
+(display "\n")
+(display "\nMatrix pseudo-division:\n")
+(display (grsp-matrix-opmm "#(+)" M1 M2))
+(display "\n")
 (display "\nKronecker product:\n")
-(display M3)
+(display (grsp-matrix-opmm "#(*)" M1 M2))
 (display "\n")
 (display "\nKronecker sum:\n")
-(display M4)
+(display (grsp-matrix-opmm "#(+)" M1 M2))
 (display "\n")
