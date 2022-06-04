@@ -1122,6 +1122,8 @@
 ;;   - "#RY": Qubit quantum gate. Rotation operator on Y, requires also p_z1 (theta).
 ;;   - "#RZ": Qubit quantum gate. Rotation operator on Z, requires also p_z1 (theta).
 ;;   - "#SWAP": Qubit quantum gate. SWAP.
+;;   - "#SQSWAP": Qubit quantum gate. Square root of SWAP.
+;;   - "#CSWAP": Qubit quantum gate. CSWAP, Fredkin.
 ;;   - "#CCX": Qubit quantum gate. CCX. Toffoli.
 ;;   - "#SQX": Qubit quantum gate. SQX. Square root of X.
 ;; - p_z1: complex, matrix scalar multiplier.
@@ -1131,7 +1133,14 @@
 ;;
 (define (grsp-matrix-create-fix p_s1 p_z1)
   (let ((res1 0)
+	(res2 0)
+	(res3 9)
+	(res4 0)
+	(res5 0)
+	(res6 0)
 	(z1 0.0+0.0i)
+	(z2 1.0+1.0i)
+	(z3 1.0-1.0i)
 	(z1p1p 1.0+1.0i)
 	(z1p1n 1.0-1.0i)
 	(z0p0p 0.0+0.0i)
@@ -1211,6 +1220,17 @@
 	   (array-set! res1 z1p0p 1 2)
 	   (array-set! res1 z1p0p 2 1)
 	   (array-set! res1 z1p0p 3 3))
+	  ((equal? p_s1 "#SQSWAP")
+	   (set! res1 (grsp-matrix-create-fix "#SWAP" 0))
+	   (set! z2 (* 0.5 z2))
+	   (set! z3 (* 0.5 z3))
+	   (array-set! res1 z2 1 1)
+	   (array-set! res1 z2 2 2)
+	   (array-set! res1 z3 1 2)
+	   (array-set! res1 z3 2 1))
+	  ((equal? p_s1 "#CSWAP")
+	   (set! res1 (grsp-matrix-create "#I" 8 8))
+	   (set! res1 (grsp-matrix-subcpy res1 (grsp-matrix-create "#I" 2 2) 5 5)))
 	  ((equal? p_s1 "#CCX")
 	   (set! res1 (grsp-matrix-create "#I" 8 8))
 	   (set! res1 (grsp-matrix-opsc "#*" res1 z1p0p))
