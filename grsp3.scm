@@ -127,7 +127,7 @@
 ;;   [Accessed 31 May 2022].
 ;; - [33] En.wikipedia.org. 2022. Penrose graphical notation - Wikipedia.
 ;;   [online] Available at:
-;;   https://en.wikipedia.org/wiki/Penrose_graphical_notatio
+;;   https://en.wikipedia.org/wiki/Penrose_graphical_notation
 ;;   [Accessed 31 May 2022].
 ;; - [34] En.wikipedia.org. 2022. Categorical quantum mechanics - Wikipedia.
 ;;   [online] Available at:
@@ -146,6 +146,12 @@
 ;;   Kronecker Product. [online] Mathematics Stack Exchange. Available at:
 ;;   https://math.stackexchange.com/questions/203947/tensor-product-and-kronecker-product
 ;;   [Accessed 1 June 2022].
+;; - [39] En.wikipedia.org. 2022. List of named matrices - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/List_of_named_matrices
+;;   [Accessed 6 June 2022].
+;; - [40] https://en.wikipedia.org/wiki/Hermitian_adjoint
+;; - [41] https://en.wikipedia.org/wiki/Conjugate_transpose
+;; - [42] https://en.wikipedia.org/wiki/Minor_(linear_algebra)
 
 
 (define-module (grsp grsp3)
@@ -164,6 +170,7 @@
 	    grsp-matrix-create
 	    grsp-matrix-create-set
 	    grsp-matrix-create-fix
+	    grsp-matrix-create-dim
 	    grsp-matrix-change
 	    grsp-matrix-find
 	    grsp-matrix-transpose
@@ -282,7 +289,12 @@
 	    grsp-matrix-movsmm
 	    grsp-matrix-movcrm
 	    grsp-matrix-movtrm
-	    grsp-matrix-ldiagonal))
+	    grsp-matrix-ldiagonal
+	    grsp-matrix-minor
+	    grsp-matrix-minor-cofactor
+	    grsp-matrix-cofactor
+	    grsp-matrix-inverse
+	    grsp-matrix-adjugate))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -949,7 +961,7 @@
 	(z1n0p (grsp-mr -1.0 0.0))
 	(z1n1n (grsp-mr -1.0 -1.0))
 	(z0p1p (grsp-mr 0.0 1.0))
-	(z0p1n (grsp-mr 0.0 -10.0)))
+	(z0p1n (grsp-mr 0.0 -1.0)))
 
     (cond ((equal? p_s1 "#UD")
 
@@ -1099,7 +1111,7 @@
     res1))
 
 
-;;;; grsp-matrix-create-fix - Creates pre-defined matrices of specific sizes.
+;;;; grsp-matrix-create-fix - Creates pre-defined matrices of specific sizes and values.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
@@ -1114,6 +1126,7 @@
 ;;   - "#P": Qubit quantum gate. Phase shift, requires also p_z1.
 ;;   - "#S": Qubit quantum gate. S.
 ;;   - "#T": Qubit quantum gate. T.
+;;   - "#TDG" Quibit quantum gate. T dagger. COnjugater transpose of T. Tdg gate.
 ;;   - "#CX": Qubit quantum gate. Controlled X.
 ;;   - "#CY": Qubit quantum gate. Controlled Y.
 ;;   - "#CZ": Qubit quantum gate. Controlled Z.
@@ -1124,8 +1137,13 @@
 ;;   - "#SWAP": Qubit quantum gate. SWAP.
 ;;   - "#SQSWAP": Qubit quantum gate. Square root of SWAP.
 ;;   - "#CSWAP": Qubit quantum gate. CSWAP, Fredkin.
+;;   - "#ISWAP": Qubit quantum gate. Imaginary SWAP.
+;;   - "#SQISWAP": Qubit quantum gate. Square root of imaginary SWAP.
 ;;   - "#CCX": Qubit quantum gate. CCX. Toffoli.
 ;;   - "#SQX": Qubit quantum gate. SQX. Square root of X.
+;;   - "#RXX"; Qubit quantum gate. Ising coupling gate, X, requires also p_z1.
+;;   - "#RYY"; Qubit quantum gate. Ising coupling gate, Y, requires also p_z1.
+;;   - "#RZZ"; Qubit quantum gate. Ising coupling gate, Z, requires also p_z1.
 ;; - p_z1: complex, matrix scalar multiplier.
 ;;
 ;; Sources:
@@ -1141,6 +1159,7 @@
 	(z1 0.0+0.0i)
 	(z2 1.0+1.0i)
 	(z3 1.0-1.0i)
+	(z4 1.0+0.0i)
 	(z1p1p 1.0+1.0i)
 	(z1p1n 1.0-1.0i)
 	(z0p0p 0.0+0.0i)
@@ -1210,6 +1229,9 @@
 	  ((equal? p_s1 "#T")	  
 	   (set! res1 (grsp-matrix-create-fix "#QI" 0))
 	   (array-set! res1 (grsp-complex-eif (/ (grsp-pi) 4)) 1 1))
+	  ((equal? p_s1 "#TDG")
+	   (set! res1 (grsp-matrix-create-fix "#T" 0))
+	   (set! res1 (grsp-matrix-conjugate-transpose res1)))	  
 	  ((equal? p_s1 "#CZ")
 	   (set! res1 (grsp-matrix-create "#I" 4 4))
 	   (array-set! res1 z1n0p 3 3)
@@ -1230,7 +1252,27 @@
 	   (array-set! res1 z3 2 1))
 	  ((equal? p_s1 "#CSWAP")
 	   (set! res1 (grsp-matrix-create "#I" 8 8))
-	   (set! res1 (grsp-matrix-subcpy res1 (grsp-matrix-create "#I" 2 2) 5 5)))
+	   (set! res1 (grsp-matrix-opsc "#*" res1 z1p0p))
+	   (array-set! res1 z0p0p 5 5)
+	   (array-set! res1 z1p0p 5 6)
+	   (array-set! res1 z1p0p 6 5)
+	   (array-set! res1 z0p0p 6 6))
+	  ((equal? p_s1 "#ISWAP")
+	   (set! res1 (grsp-matrix-create z0p0p 4 4))
+	   (array-set! res1 z1p0p 0 0)
+	   (array-set! res1 z0p1p 1 2)
+	   (array-set! res1 z0p1p 2 1)
+	   (array-set! res1 z1p0p 3 3))
+	  ((equal? p_s1 "#SQISWAP")
+	   (set! res1 (grsp-matrix-create z0p0p 4 4))
+	   (set! z2 (/ 1 (sqrt 2)))
+	   (set! z3 (* z2 z0p1p))
+	   (array-set! res1 z1p0p 0 0)
+	   (array-set! res1 z2 1 1)
+	   (array-set! res1 z3 1 2)
+	   (array-set! res1 z3 2 1)
+	   (array-set! res1 z2 2 2)	   
+	   (array-set! res1 z1p0p 3 3))	 	  
 	  ((equal? p_s1 "#CCX")
 	   (set! res1 (grsp-matrix-create "#I" 8 8))
 	   (set! res1 (grsp-matrix-opsc "#*" res1 z1p0p))
@@ -1242,8 +1284,70 @@
 	   (set! res1 (grsp-matrix-create z1p1p 2 2))
 	   (array-set! res1 z1p1n 0 1)
 	   (array-set! res1 z1p1n 1 0)
-	   (set! res1 (grsp-matrix-opsc "#*" res1 0.5))))
-	   
+	   (set! res1 (grsp-matrix-opsc "#*" res1 0.5)))	  
+	  ((equal? p_s1 "#RXX")
+	   (set! res1 (grsp-matrix-create z0p0p 4 4))
+	   (set! z1 (/ p_z1 2))
+	   (set! z2 (* (cos z1) z1p0p))
+	   (set! z3 (* (sin z1) z0p1n))
+	   (array-set! res1 z2 0 0)
+	   (array-set! res1 z3 0 3)
+	   (array-set! res1 z2 1 1)
+	   (array-set! res1 z3 1 2)
+	   (array-set! res1 z3 2 1)
+	   (array-set! res1 z2 2 2)
+	   (array-set! res1 z3 3 0)
+	   (array-set! res1 z2 3 3))
+	  ((equal? p_s1 "#RYY")
+	   (set! res1 (grsp-matrix-create z0p0p 4 4))
+	   (set! z1 (/ p_z1 2))
+	   (set! z2 (* (cos z1) z1p0p))
+	   (set! z3 (* (sin z1) z0p1n))
+	   (set! z4 (* (sin z1) z0p1p))	   
+	   (array-set! res1 z2 0 0)
+	   (array-set! res1 z4 0 3)
+	   (array-set! res1 z2 1 1)
+	   (array-set! res1 z3 1 2)
+	   (array-set! res1 z3 2 1)
+	   (array-set! res1 z2 2 2)
+	   (array-set! res1 z4 3 0)
+	   (array-set! res1 z2 3 3))
+	  ((equal? p_s1 "#RZZ")
+	   (set! res1 (grsp-matrix-create z0p0p 4 4))
+	   (set! z1 (/ p_z1 2))
+	   (set! z2 (* z1 z0p1p))
+	   (set! z3 (* z1 z0p1n))
+	   (array-set! res1 z3 0 0)
+	   (array-set! res1 z2 1 1)
+	   (array-set! res1 z2 2 2)
+	   (array-set! res1 z3 3 3)))	  
+    res1))
+
+
+;;;; grsp-matrix-create-dim - Generates a matrix of type p_s1 based on the
+;; size of p_a1. This may be useful - for example - to create an identity
+;; matrix of the size of a matrix you have without having to find out its
+;; size specifically.
+;;
+;;;; grsp-matrix-find - Find all occurrences of p_v1 in matrix p_a1 that
+;; statisfy condition p_s1.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
+;; Arguments:
+;; . p_s1: see grsp-matrix-create.
+;; - p_a2: matrix.
+;;
+(define (grsp-matrix-create-dim p_s1 p_a1)
+  (let ((res1 0)
+	(a2 0))
+
+    ;; Extract the number of rows and cols of p_a1 and create a new matrix of
+    ;; type p_s1 with the same size.
+    (set! a2 (grsp-matrix-te2 p_a1))
+    (set! res1 (grsp-matrix-create p_s1 (array-ref a2 0 0) (array-ref a2 0 1)))
+
     res1))
 
 
@@ -1429,14 +1533,18 @@
     res2))
 
 
-;;;; grsp-matrix-transpose-conjugate - Calculates the transpose conjugate matrix
+;;;; grsp-matrix-conjugate-transpose - Calculates the conjugate transpose matrix
 ;; of p_a1.
 ;;
 ;; Keywords:
-;; - function, algebra, matrix, matrices, vectors.
+;; - function, algebra, matrix, matrices, vectors, hermitian conjugate, adjoint,
+;; transjugate.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
+;;
+;; Sources:
+;; - [40][41].
 ;;
 (define (grsp-matrix-conjugate-transpose p_a1)
   (let ((res1 p_a1)
@@ -2599,6 +2707,9 @@
 ;; Arguments:
 ;; - p_a1: matrix.
 ;;
+;; Sources:
+;; - [40].
+;;
 (define (grsp-matrix-is-hermitian p_a1)
   (let ((res1 #f))
 
@@ -2829,12 +2940,12 @@
 ;; - [6].
 ;;
 (define (grsp-matrix-decompose p_s1 p_a1)
-  (let ((res1 p_a1)
+  (let ((res1 0)
 	(res2 '())
 	(res3 0)
 	(res4 0)
 	(L 0)
-	(U p_a1)
+	(U 0)
 	(lm1 0)
 	(hm1 0)
 	(ln1 0)
@@ -2843,6 +2954,10 @@
 	(j1 0)
 	(k1 0))
 
+    ;; Safety copies.
+    (set! res1 (grsp-matrix-cpy p_a1))
+    (set! U (grsp-matrix-cpy p_a1))
+    
     ;; Extract the boundaries of the argument matrix.
     (set! lm1 (grsp-matrix-esi 1 res1))
     (set! hm1 (grsp-matrix-esi 2 res1))
@@ -3922,7 +4037,7 @@
 	(a2 '())
 	(detl 1)
 	(detu 1))
-
+;; ***
     ;; Perform a LU decomposition over p_a1
     (set! a2 (grsp-matrix-decompose "#LU" p_a1))
     (set! L (car a2))
@@ -7157,6 +7272,9 @@
 ;; independent, element by element discrete movement of values between
 ;; matrices.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
@@ -7182,6 +7300,9 @@
 
 ;;;; grsp-matrix-movsmm - Swaps element located at position (p_m1, p_n1) of
 ;; matrix p_a1 with element located at p_a2 (p_m2, p_n2).
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -7224,6 +7345,9 @@
 
 ;;;; grsp-matrix-movcrm - Circulates row p_m1 of matrix p_a1 by p_j2
 ;; elements from left to right, or lower col number to higher col number.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments.
 ;; - p_b1: boolean.
@@ -7321,6 +7445,9 @@
 ;; element p_a1(n,0) and will place it on p_a1(n,n) if p_b1 is #f, until it
 ;; reaches n = m.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
 ;; Arguments:
 ;; - p_a1: matrix.
 ;;
@@ -7344,6 +7471,9 @@
 
 ;;;; grsp-matrix-ldiagonal - Replaces every element of matrix p_a1 with value
 ;; p_n1 except those on the main diagonal.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -7372,4 +7502,149 @@
 
 	   (set! i1 (in i1)))
 	   
+    res1))
+
+
+;;;; grsp-matrix-minor - Find the (p_m1, p_n1) minor of p_a1.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_m1: row coordinate.
+;; - p_n1: col cordinate.
+;;
+;; Sources:
+;; - [42].
+;;
+(define (grsp-matrix-minor p_a1 p_m1 p_n1)
+  (let ((res1 0)
+	(a1 0))
+
+    ;; Make safety copy. Matrix p_a1 will not be altered.
+    (set! a1 (grsp-matrix-cpy p_a1))
+
+    ;; Delete row p_m1.
+    (set! a1 (grsp-matrix-subdel "#Delr" a1 p_m1))
+    
+    ;; Delete col p_n1.
+    (set! a1 (grsp-matrix-subdel "#Delc" a1 p_n1))
+    
+    ;; Find the determinant of p_a1 after trimming.
+    (set! res1 (grsp-matrix-determinant-lu a1))
+    
+    res1))
+
+
+;;;; grsp-matrix-minor-cofactor - Find the (p_m1, p_n1) cofactor of p_a1 based
+;; on its (p_m1, p_n1) minor.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_m1: row coordinate.
+;; - p_n1: col cordinate.
+;;
+;; Sources:
+;; - [42].
+;;
+(define (grsp-matrix-minor-cofactor p_a1 p_m1 p_n1)
+  (let ((res1 0)
+	(n1 0))
+
+    ;; Find the minor.
+    (set! n1 (grsp-matrix-minor p_a1 p_m1 p_n1))
+
+    ;; Calculate the cofactor.
+    (set! res1 (* n1 (expt -1 (+ p_m1 p_n1))))
+
+    res1))
+
+
+;;;; grsp-matrix-cofactor - Calculates the cofactor matrix of matrix p_a1.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;;
+;; Sources:
+;; - [42].
+;;
+(define (grsp-matrix-cofactor p_a1)
+  (let ((res1 0)
+	(i1 0)
+	(j1 0))
+
+    ;; Set res1 to be a matrix of the same size as p_a1.
+    (set! res1 (grsp-matrix-create-dim 0 p_a1))
+    
+    (set! i1 (grsp-lm p_a1))
+    (while (<= i1 (grsp-hm p_a1))
+
+	   (set! j1 (grsp-ln p_a1))
+	   (while (<= j1 (grsp-hm p_a1))
+		  (array-set! res1 (grsp-matrix-minor-cofactor p_a1 i1 j1) i1 j1)
+		  (set! j1 (in j1)))
+
+	   (set! i1 (in i1)))
+    
+    res1))
+
+
+;;;; grsp-matrix-inverse - Calculates the inverse of matrix p_a1.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;;
+;; Sources:
+;; - [42].
+;;
+(define (grsp-matrix-inverse p_a1)
+  (let ((res1 0)
+	(a1 0)
+	(a2 0)
+	(n1 0))
+
+    (set! a1 (grsp-matrix-cpy p_a1))
+    (set! a2 (grsp-matrix-cpy p_a1))
+    
+    (cond ((equal? (grsp-matrix-is-invertible a1) #t)
+
+	   ;; Transpose of cofactor matrix (adjugate).
+	   (set! a2 (grsp-matrix-adjugate a1))
+
+	   ;; Inverse of the determinant.
+	   (set! n1 (/ 1 (grsp-matrix-determinant-lu a1)))
+	   
+	   ;; FInal result.
+	   (set! res1 (grsp-matrix-opsc "#*" a2 n1))))
+	   
+    res1))
+
+
+;;;; grsp-matrix-adjugate - Calculates the adjugate of matrix p_a1 (transpose of
+;; cofactor of p_a1).
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;;
+;; Sources:
+;; - [42].
+;;
+(define (grsp-matrix-adjugate p_a1)
+  (let ((res1 0))
+
+    (set! res1 (grsp-matrix-transpose (grsp-matrix-cofactor p_a1)))
+    
     res1))
