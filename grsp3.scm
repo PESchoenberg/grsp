@@ -149,9 +149,15 @@
 ;; - [39] En.wikipedia.org. 2022. List of named matrices - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/List_of_named_matrices
 ;;   [Accessed 6 June 2022].
-;; - [40] https://en.wikipedia.org/wiki/Hermitian_adjoint
-;; - [41] https://en.wikipedia.org/wiki/Conjugate_transpose
-;; - [42] https://en.wikipedia.org/wiki/Minor_(linear_algebra)
+;; - [40] En.wikipedia.org. 2022. Hermitian adjoint - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Hermitian_adjoint
+;;   [Accessed 9 June 2022].
+;; - [41] En.wikipedia.org. 2022. Conjugate transpose - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Conjugate_transpose
+;;   [Accessed 9 June 2022].
+;; - [42] En.wikipedia.org. 2022. Minor (linear algebra) - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Minor_(linear_algebra)
+;;   [Accessed 9 June 2022].
 
 
 (define-module (grsp grsp3)
@@ -2202,7 +2208,7 @@
 	   ;; This requires a definition of the results matrix since the
 	   ;; Kronecker product generates a matrix M of (m1*m2)*(n1*n2)
 	   ;; size.
-	   ;; ***
+	   
 	   (set! res3 (grsp-matrix-create 0
 					  (* (grsp-tm p_a1) (grsp-tm p_a2))
 					  (* (grsp-tn p_a1) (grsp-tn p_a2))))
@@ -2944,8 +2950,10 @@
 	(res2 '())
 	(res3 0)
 	(res4 0)
+	(A 0)
 	(L 0)
 	(U 0)
+	(R 0)
 	(lm1 0)
 	(hm1 0)
 	(ln1 0)
@@ -2954,6 +2962,7 @@
 	(j1 0)
 	(k1 0))
 
+    ;; ***
     ;; Safety copies.
     (set! res1 (grsp-matrix-cpy p_a1))
     (set! U (grsp-matrix-cpy p_a1))
@@ -2965,16 +2974,57 @@
     (set! hn1 (grsp-matrix-esi 4 res1))	
 
     (cond ((equal? p_s1 "#LU")
+
+	   ;; Create safety copy of p_a1.
+	   (set! A (grsp-matrix-cpy p_a1))
+	   
+	   ;; Create L and U matrices of the same size as p_a1.
+	   (set! L (grsp-matrix-create-dim "#I" A))
+	   (set! U (grsp-matrix-create-dim "#I" A))
+
+	   ;; First row of U will be the same as first row of A.
+	   (set! U (grsp-matrix-subrep U
+				       (grsp-matrix-subcpy A
+							   (grsp-lm A)
+							   (grsp-lm A)
+							   (grsp-ln A)
+							   (grsp-hn A))
+				       (grsp-lm U)
+				       (grsp-ln U)))
+
+	   ;; U
+	   (set! i1 (grsp-lm A))
+	   (while (<= i1 (grsp-hm A))
+
+		  (set! j1 (grsp-ln A))
+		  (while (<= j1 (grsp-hn A))
+
+			 (set! k1 (grsp-lm A))
+			 (set! res3 0)
+			 (while (<= k1 (- i1 1))
+
+				(set! res3 (+ res3 (* (array-ref L i1 k1) (array-ref U k1 j1))))
+				
+				(set! k1 (in k1)))
+
+			 (array-set! U (- (array-ref A i1 j1) res3) i1 j1)
+			 
+			 (set! j1 (in j1)))
+			 
+		  (set! i1 (in i1)))
+	   (set! res2 (list L U)))	   
+	  ((equal? p_s1 "#LUV")
 	   (set! L (grsp-matrix-create "#I" (+ (- hm1 ln1) 1) (+ (- hn1 ln1) 1)))
 	   (set! i1 (+ lm1 1))
-	   	   
+	   ;; ***
 	   ;; Column cycle.
 	   (while (<= i1 hm1)
 		  
 		  (set! j1 ln1)
 		  (set! k1 ln1)
-		  (while (< j1 i1)
-			 
+		  (while (<= j1 i1)
+
+			 ;; For all rows except the first one.
 			 (cond ((> k1 ln1)
 				
 				(while (<= k1 j1)				       
@@ -2982,7 +3032,8 @@
 				       (set! k1 (+ k1 1)))
 				
 				(set! k1 ln1)))
-			 
+
+			 ;; For the first row.
 			 (cond ((equal? k1 ln1)				
 				(set! res4 (grsp-matrix-row-opar U L k1 j1 i1 j1))				
 				(set! k1 (+ k1 1))))

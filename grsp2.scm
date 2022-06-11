@@ -245,7 +245,8 @@
 	    grsp-pn123n
 	    grsp-closestn
 	    grsp-closestd
-	    grsp-coinflip))
+	    grsp-coinflip
+	    grsp-fn))
 
 
 ;;;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -2545,4 +2546,34 @@
 	  ((equal? b1 #f)
 	   (set! res1 p_n3)))
     
+    res1))
+
+
+;;;; grsp-fn - A convenience function that Finds the number that produces p_n2
+;; from applying operation p_s1 to p_n1.
+;;
+;; Keywords:
+;; - function, arithmetic, operations, equations.
+;;
+;; Arguments:
+;; - p_s1: string
+;;   - "#+": sum.
+;;   - "#-": substraction.
+;;   - "#*": multiplication.
+;;   - "#/": division.
+;; - p_n1: number. Operand.
+;; - p_n2: number. Result.
+;;
+(define (grsp-fn p_s1 p_n1 p_n2)
+  (let ((res1 0))
+
+    (cond ((equal? p_s1 "#+")
+	   (set! res1 (- p_n2 p_n1)))
+	  ((equal? p_s1 "#-")
+	   (set! res1 (- p_n1 p_n2)))
+	  ((equal? p_s1 "#*")
+	   (set! res1 (/ p_n2 p_n1)))
+	  ((equal? p_s1 "#/")
+	   (set! res1 (/ p_n1 p_n2))))
+	  
     res1))
