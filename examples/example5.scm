@@ -57,36 +57,56 @@
 
 
 ;; Main program
+;;
+;; Sources:
+;; - [1] This example is based on #linearalgebra, 2019. LU decomposition - An
+;;   Example. [video] Available at:
+;;   https://www.youtube.com/watch?v=BFYFkn-eOQk&list=TLPQMDkwNjIwMjJXvv49HK93tw&index=3
+;;   [Accessed 14 June 2022].
+;; 
 (clear)
 
-;; Create matrices.
-(define M1 (grsp-matrix-create 0 2 2))
-(array-set! M1 4 0 0)
-(array-set! M1 3 0 1)
-(array-set! M1 6 1 0)
-(array-set! M1 3 1 1)
+;; Create matrix and input elements.
+(define A (grsp-matrix-create 0 4 4))
+(array-set! A 2 0 0)
+(array-set! A 4 0 1)
+(array-set! A 3 0 2)
+(array-set! A 5 0 3)
+(array-set! A -4 1 0)
+(array-set! A -7 1 1)
+(array-set! A -5 1 2)
+(array-set! A -8 1 3)
+(array-set! A 6 2 0)
+(array-set! A 8 2 1)
+(array-set! A 2 2 2)
+(array-set! A 9 2 3)
+(array-set! A 4 3 0)
+(array-set! A 9 3 1)
+(array-set! A -2 3 2)
+(array-set! A 14 3 3)
 
 
 ;; Calculate and display results.
 (display "\n")
-(display "\nMatrix 1:\n")
-(display M1)
-(display "\n")
-(display "\nLU decomposition:\n")
-(define LU (grsp-matrix-decompose "#LU" M1))
+(display "LU decomposition (A = L*U):")
+(define LU (grsp-matrix-decompose "#LU" A))
 (define L (car LU))
 (define U (car (cdr LU)))
-(display "\n")
+(newlines 1)
+(display "Martix A:")
+(newlines 1)
+(display A)
+(newlines 2)
 (display "Matrix L")
-(display "\n")
+(newlines 1)
 (display L)
-(display "\n")
+(newlines 2)
 (display "Matrix U")
-(display "\n")
+(newlines 1)
 (display U)
-(display "\n")
-(display "L * U")
-(display "\n")
+(newlines 2)
+(display "L * U check")
+(newlines 1)
 (display (grsp-matrix-opmm "#*" L U))
 (display "\n")
 

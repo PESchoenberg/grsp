@@ -1148,6 +1148,9 @@
 
 ;;;; grsp-complex-eif - Phase shift.
 ;;
+;; Keywords:
+;; - complex.
+;;
 ;; Arguments:
 ;; - p_f1: shift value.
 ;;
@@ -1158,9 +1161,17 @@
 
     res1))
 
-;;;; grsp-mr - Returns a cokmplex number in rectangular form with real p_n1 and
+;;;; grsp-mr - Returns a complex number in rectangular form with real p_n1 and
 ;; imaginary component p_n2). This is a wrapper for Guile's make-rectangular
 ;; function but with a shorter syntax.
+;;
+;; Keywords:
+;; - complex.
+;;
+;; Arguments:
+;; - p_n1: number.
+;; - p_n2: number.
+;;
 (define (grsp-mr p_n1 p_n2)
   (let ((res1 (make-rectangular p_n1 p_n2)))
     

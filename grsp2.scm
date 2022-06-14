@@ -246,7 +246,8 @@
 	    grsp-closestn
 	    grsp-closestd
 	    grsp-coinflip
-	    grsp-fn))
+	    grsp-fn
+	    grsp-fn3))
 
 
 ;;;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -2576,4 +2577,25 @@
 	  ((equal? p_s1 "#/")
 	   (set! res1 (/ p_n1 p_n2))))
 	  
+    res1))
+
+
+;;;; grsp-fn3 - Finds x so that p_n2 - (x*p_n1) = p_n3.
+;;
+;; Keywords:
+;; - function, arithmetic, operations, equations.
+;;
+;; Arguments:
+;; - p_n1: number.
+;; - p_n2: number.
+;; - p_n3: number.
+;;
+;; Notes:
+;; - p_n1 should not equal zero.
+;;
+(define (grsp-fn3 p_n1 p_n2 p_n3)
+  (let ((res1 0.0+0.0i))
+
+    (set! res1 (/ (- p_n2 p_n3) p_n1))
+    
     res1))
