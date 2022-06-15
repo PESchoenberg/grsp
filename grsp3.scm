@@ -2936,7 +2936,7 @@
 ;;
 ;; Arguments:
 ;; - p_s1: decomposition type.
-;;   - "#LU": LU by Gaussian elimination.
+;;   - "#LU": LU decomposition.
 ;; - p_a1: matrix to be decomposed.
 ;; - This function does not perform viability checks on p_a1 for the 
 ;;   required operation; the user or an additional shell function should take 
@@ -2948,100 +2948,69 @@
 (define (grsp-matrix-decompose p_s1 p_a1)
   (let ((res1 0)
 	(res2 '())
-	(res3 0)
-	(res4 0)
+	(b1 #t)
 	(A 0)
 	(L 0)
 	(U 0)
-	(R 0)
-	(lm1 0)
-	(hm1 0)
-	(ln1 0)
-	(hn1 0)
 	(i1 0)
 	(j1 0)
-	(k1 0))
+	(k1 0)
+	(l1 0)
+	(n1 0)
+	(n2 0))
 
-    ;; ***
-    ;; Safety copies.
-    (set! res1 (grsp-matrix-cpy p_a1))
-    (set! U (grsp-matrix-cpy p_a1))
+    ;; Safety copy.
+    (set! A (grsp-matrix-cpy p_a1))    
     
-    ;; Extract the boundaries of the argument matrix.
-    (set! lm1 (grsp-matrix-esi 1 res1))
-    (set! hm1 (grsp-matrix-esi 2 res1))
-    (set! ln1 (grsp-matrix-esi 3 res1))
-    (set! hn1 (grsp-matrix-esi 4 res1))	
-
     (cond ((equal? p_s1 "#LU")
 
-	   ;; Create safety copy of p_a1.
-	   (set! A (grsp-matrix-cpy p_a1))
-	   
 	   ;; Create L and U matrices of the same size as p_a1.
 	   (set! L (grsp-matrix-create-dim "#I" A))
-	   (set! U (grsp-matrix-create-dim "#I" A))
+	   (set! U (grsp-matrix-cpy p_a1))
 
-	   ;; First row of U will be the same as first row of A.
-	   (set! U (grsp-matrix-subrep U
-				       (grsp-matrix-subcpy A
-							   (grsp-lm A)
-							   (grsp-lm A)
-							   (grsp-ln A)
-							   (grsp-hn A))
-				       (grsp-lm U)
-				       (grsp-ln U)))
-
-	   ;; U
-	   (set! i1 (grsp-lm A))
-	   (while (<= i1 (grsp-hm A))
-
-		  (set! j1 (grsp-ln A))
-		  (while (<= j1 (grsp-hn A))
-
-			 (set! k1 (grsp-lm A))
-			 (set! res3 0)
-			 (while (<= k1 (- i1 1))
-
-				(set! res3 (+ res3 (* (array-ref L i1 k1) (array-ref U k1 j1))))
-				
-				(set! k1 (in k1)))
-
-			 (array-set! U (- (array-ref A i1 j1) res3) i1 j1)
-			 
-			 (set! j1 (in j1)))
-			 
-		  (set! i1 (in i1)))
-	   (set! res2 (list L U)))	   
-	  ((equal? p_s1 "#LUV")
-	   (set! L (grsp-matrix-create "#I" (+ (- hm1 ln1) 1) (+ (- hn1 ln1) 1)))
-	   (set! i1 (+ lm1 1))
-	   ;; ***
-	   ;; Column cycle.
-	   (while (<= i1 hm1)
+	   (set! l1 (grsp-lm A))
+	   (while (<= l1 (grsp-hm A))
 		  
-		  (set! j1 ln1)
-		  (set! k1 ln1)
-		  (while (<= j1 i1)
+		  ;; i2 needs to be initalized for the second row (the first row is
+		  ;; copied as is to U). 
+		  ;;(set! i1 (+ (grsp-lm A) 1))
+		  (set! i1 (+ l1 1))
 
-			 ;; For all rows except the first one.
-			 (cond ((> k1 ln1)
-				
-				(while (<= k1 j1)				       
-				       (array-set! U (* (array-ref U (- k1 1) j1) res4) k1 j1)
-				       (set! k1 (+ k1 1)))
-				
-				(set! k1 ln1)))
+		  ;; Main cycle.
+		  (while (<= i1 (grsp-hm A))
 
-			 ;; For the first row.
-			 (cond ((equal? k1 ln1)				
-				(set! res4 (grsp-matrix-row-opar U L k1 j1 i1 j1))				
-				(set! k1 (+ k1 1))))
-			 
-			 (set! j1 (+ j1 1)))
-		  
-		  (set! i1 (+ i1 1)))
-	   
+			 ;; j1 will be initialized to the leftmost (lowest)
+			 ;; col number.
+			 ;;(set! j1 (grsp-ln A))
+			 (set! j1 l1)
+			 (while (< j1 i1)
+				
+				;; Find the multiplier.
+				;;(set! n1 (grsp-fn3 (array-ref A (- i1 1) j1) (array-ref A i1 j1) 0))
+				(set! n1 (grsp-fn3 (array-ref A (grsp-lm A) j1) (array-ref A i1 j1) 0))
+
+				;; Replace L(i1,j1) with the multiplier.
+				(array-set! L n1 i1 j1)
+
+				;; Replace U(i1,j1) with zero.
+				(array-set! U 0 i1 j1)
+				
+				;; Update elements in U(i1, ..).
+				(set! k1 (+ j1 1))
+				(while (<= k1 (grsp-hn A)) 
+
+				       (set! n2 (- (array-ref U i1 k1) (* n1 (array-ref U (- i1 1) k1))))
+				       (array-set! U n2 i1 k1)
+
+				       (set! k1 (in k1)))
+				
+				(set! j1 (in j1))) 
+			 ;; ***
+			 (set! i1 (in i1))) ;; 5:31 - 6:28 First cycle works correctly for first col in all rows.
+
+		  (set! l1 (in l1)))
+
+	   ;; Compose results for LU decomposition.
 	   (set! res2 (list L U))))
 
     res2))
@@ -4088,7 +4057,7 @@
 	(a2 '())
 	(detl 1)
 	(detu 1))
-;; ***
+
     ;; Perform a LU decomposition over p_a1
     (set! a2 (grsp-matrix-decompose "#LU" p_a1))
     (set! L (car a2))
@@ -7699,3 +7668,5 @@
     (set! res1 (grsp-matrix-transpose (grsp-matrix-cofactor p_a1)))
     
     res1))
+
+
