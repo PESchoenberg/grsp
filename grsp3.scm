@@ -2948,6 +2948,10 @@
 (define (grsp-matrix-decompose p_s1 p_a1)
   (let ((res1 0)
 	(res2 '())
+	(res3 0)
+	(res4 0)
+	(res5 0)
+	(res6 0)
 	(b1 #t)
 	(A 0)
 	(L 0)
@@ -2971,48 +2975,102 @@
 	   (set! l1 (grsp-lm A))
 	   (while (<= l1 (grsp-hm A))
 		  
-		  ;; i2 needs to be initalized for the second row (the first row is
+		  ;; i1 needs to be initalized for the second row (the first row is
 		  ;; copied as is to U). 
-		  ;;(set! i1 (+ (grsp-lm A) 1))
 		  (set! i1 (+ l1 1))
 
 		  ;; Main cycle.
 		  (while (<= i1 (grsp-hm A))
 
-			 ;; j1 will be initialized to the leftmost (lowest)
-			 ;; col number.
-			 ;;(set! j1 (grsp-ln A))
+			 ;; j1 will be initialized to the leftmost (lowest) col number.
 			 (set! j1 l1)
 			 (while (< j1 i1)
 				
-				;; Find the multiplier.
-				;;(set! n1 (grsp-fn3 (array-ref A (- i1 1) j1) (array-ref A i1 j1) 0))
-				(set! n1 (grsp-fn3 (array-ref A (grsp-lm A) j1) (array-ref A i1 j1) 0))
-
+				;; Find multiplier.
+				;;(set! n1 (grsp-fn3 (array-ref A j1 j1) (array-ref A i1 j1) 0))
+				(set! n1 (grsp-fn3 (array-ref A j1 j1) (array-ref A i1 j1) 0))
+				
 				;; Replace L(i1,j1) with the multiplier.
-				(array-set! L n1 i1 j1)
+				(array-set! L n1 i1 j1) ;;
 
 				;; Replace U(i1,j1) with zero.
-				(array-set! U 0 i1 j1)
+				(array-set! U 0 i1 j1) ;;
 				
 				;; Update elements in U(i1, ..).
 				(set! k1 (+ j1 1))
-				(while (<= k1 (grsp-hn A)) 
+				(while (<= k1 (grsp-hn A)) ;;
 
 				       (set! n2 (- (array-ref U i1 k1) (* n1 (array-ref U (- i1 1) k1))))
-				       (array-set! U n2 i1 k1)
+				       (array-set! U n2 i1 k1) ;;
 
-				       (set! k1 (in k1)))
+				       (set! k1 (in k1))) ;;
 				
-				(set! j1 (in j1))) 
+				(set! j1 (in j1))) ;;
 			 ;; ***
 			 (set! i1 (in i1))) ;; 5:31 - 6:28 First cycle works correctly for first col in all rows.
 
 		  (set! l1 (in l1)))
 
 	   ;; Compose results for LU decomposition.
-	   (set! res2 (list L U))))
+	   (set! res2 (list L U)))
+	  ((equal? p_s1 "#PALU")
 
+	   ;; https://rosettacode.org/wiki/LU_decomposition#Julia
+	   
+	   ;; Create L and U matrices of the same size as p_a1.
+	   (set! L (grsp-matrix-create-dim "#I" A))
+	   (set! U (grsp-matrix-cpy p_a1))	   
+
+	   ;; U
+	   (set! i1 (grsp-lm A))
+	   (while (<= i1 (grsp-hm A))
+		  
+		  (set! j1 (grsp-ln A))			      
+		  (while (<= j1 (grsp-hn A))
+
+			 (set! k1 1)
+			 (set! res4 0)
+			 (while (<= k1 (- i1 1))
+
+				(set! res4 (+ res4 (* (array-ref U k1 j1) (array-ref L i1 k1))))
+				
+				(set! k1 (in k1)))
+
+			 (set! res3 (- (array-ref A i1 j1) res4))
+			 
+			 (array-set! U res3 i1 j1)
+			 
+			 (set! j1 (in j1)))
+		  
+		  (set! i1 (in i1)))
+
+	   ;; L
+	   (set! i1 (grsp-lm A))
+	   (while (<= i1 (grsp-hm A))
+		  
+		  (set! j1 (grsp-ln A))			      
+		  (while (<= j1 (grsp-hn A))
+
+			 (set! k1 1)
+			 (set! res5 0)
+			 (while (<= k1 (- j1 1))
+
+				(set! res5 (+ res5 (* (array-ref U k1 j1) (array-ref L i1 k1))))
+				
+				(set! k1 (in k1)))
+
+			 (set! res4 (- (array-ref A i1 j1) res5))
+			 (set! res3 (* (/ 1 (array-ref U j1 j1)) res4))
+			 
+			 (array-set! L res3 i1 j1)
+			 
+			 (set! j1 (in j1)))
+		  
+		  (set! i1 (in i1)))	   
+	   
+	   ;; Compose results for LU decomposition.
+	   (set! res2 (list L U))))
+    
     res2))
 
 
