@@ -57,8 +57,14 @@
 ;;   [online] Available at:
 ;;   https://academic.oup.com/bib/article-pdf/19/3/537/25603287/bbw130.pdf
 ;;   [Accessed 11 October 2021].
-;; - [7] https://en.wikipedia.org/wiki/Mathematics_Subject_Classification
-;; - [8] https://en.wikipedia.org/wiki/ACM_Computing_Classification_System
+;; - [7] En.wikipedia.org. 2022. Mathematics Subject Classification - Wikipedia.
+;;   [online] Available at:
+;;   https://en.wikipedia.org/wiki/Mathematics_Subject_Classification
+;;   [Accessed 16 June 2022].
+;; - [8] En.wikipedia.org. 2022. ACM Computing Classification System -
+;;   Wikipedia. [online] Available at:
+;;   https://en.wikipedia.org/wiki/ACM_Computing_Classification_System
+;;   [Accessed 16 June 2022].
 
 
 (define-module (grsp grsp0)
@@ -91,19 +97,21 @@
 	    grsp-dstr
 	    grsp-jstr
 	    grsp-hw
-	    grsp-gb))
+	    grsp-gb
+	    grsp-string-tlength
+	    grsp-string-ltlength))
 
 
-;;;; pline - Displays character p_n p_m times in one line at the console.
+;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
 ;;
 ;; Keywords:
 ;; - console, strings.
 ;;
 ;; Arguments:
-;; - p_c1: line character to display.
+;; - p_s1: line character to display.
 ;; - p_l1: line length.
 ;;
-(define (pline p_c1 p_l1)
+(define (pline p_s1 p_l1)
   (let ((s1 ""))
 
     ;; Cycle.
@@ -112,7 +120,7 @@
 	  (begin (newlines 1)
 		 (display s1)
 		 (newlines 1))
-	  (begin (set! s1 (string-append s1 p_c1))
+	  (begin (set! s1 (string-append s1 p_s1))
 	         (loop (+ i1 1)))))))
 
 
@@ -122,27 +130,27 @@
 ;; - console, strings.
 ;;
 ;; Arguments:
-;; - p_c1: line character to display.
+;; - p_s1: line string to display.
 ;; - p_l1: line length.
 ;; - p_n1: number of lines (1 or 2, defaults to 1 line above title).
 ;; - p_t1: title to display.
 ;;
-(define (ptit p_c1 p_l1 p_n1 p_t1)
+(define (ptit p_s1 p_l1 p_n1 p_t1)
   (if (<= p_n1 1)
-      (pline p_c1 p_l1))
+      (pline p_s1 p_l1))
   
   (if (>= p_n1 2)
-      (pline p_c1 p_l1))
+      (pline p_s1 p_l1))
   
   (display p_t1)
   
   (if (>= p_n1 2)
-      (pline p_c1 p_l1))
+      (pline p_s1 p_l1))
   
   (newline))
 
 
-;;;; newlines - Repeats function newline p_n times.
+;;;; newlines - Repeats function newline p_n1 times.
 ;;
 ;; Keywords:
 ;; - console, strings.
@@ -207,15 +215,15 @@
   (newline))
 
 
-;;;; newspaces - Adds p_n blank spaces to string p_l.
+;;;; newspaces - Adds p_n blank spaces to string p_l1.
 ;;
 ;; Keywords:
 ;; - console, strings.
 ;;
 ;; Arguments:
-;; - p_n: number of blanks to add.
-;; - p_l: string to display.
-;; - p_s: side where to add spaces,
+;; - p_n1: number of blanks to add.
+;; - p_l1: string to display.
+;; - p_s1: side where to add spaces,
 ;;   - 0 for left side.
 ;;   - 1 for right side.
 ;;
@@ -715,12 +723,94 @@
 
 ;;;; grsp-hw - Salutes the world. Sometimes this is all what is needed.
 ;;
+;; Keywords:
+;; - console, strings.
+;;
 (define (grsp-hw)
   (grsp-ldl "Hello world!" 1 1))
 
 
 ;;;; grsp-gb - Says goodbye.
 ;;
+;; Keywords:
+;; - console, strings.
+;;
 (define (grsp-gb)
   (grsp-ldl "Good bye!" 1 1))
 
+
+;;;; grsp-string-tlength - Returns the length of trimmed string p_s2.
+;;
+;; Keywords:
+;; - console, strings.
+;;
+;; Arguments:
+;; - p_s1: sitring. Mode.
+;;   - "#l": trim left.
+;;   - "#r": trim right.
+;;   - "#b": trim left and right.
+;;   - "#n": do not trim.
+;; - p_s2: string.
+;;
+(define (grsp-string-tlength p_s1 p_s2)
+  (let ((res1 0))
+
+    (cond ((equal? p_s1 "#l")
+	   (set! res1 (string-length (string-trim p_s2))))
+	  ((equal? p_s1 "#r")
+	   (set! res1 (string-length (string-trim-right p_s2))))
+	  ((equal? p_s1 "#b")
+	   (set! res1 (string-length (string-trim-both p_s2))))
+	  ((equal? p_s1 "#n")
+	   (set! res1 (string-length p_s2))))
+	  
+    res1))
+
+
+;;;; grsp-string-ltlength - Find the length of each string on a string list.
+;;
+;; Keywords:
+;; - console, strings.
+;;
+;; Arguments:
+;; - p_s1: sitring. Mode.
+;;   - "#l": trim left.
+;;   - "#r": trim right.
+;;   - "#b": trim left and right.
+;;   - "#n": do not trim.
+;; - p_l1: list of strings.
+;;
+;; Notes:
+;; - See grsp-string-tlengt.
+;;
+(define (grsp-string-ltlength p_s1 p_l1)
+  (let ((res1 '())
+	(res2 '())
+	(j1 0)
+	(n1 0)
+	(s2 "")
+	(hn (length p_l1)))    
+
+    ;; Trim according to p_s1.
+    (cond ((equal? p_s1 "#l")
+	   (set! res2 (map string-trim p_l1)))
+	  ((equal? p_s1 "#r")
+	   (set! res2 (map string-trim-right p_l1)))
+	  ((equal? p_s1 "#b")
+	   (set! res2 (map string-trim-both p_l1)))
+	  ((equal? p_s1 "#n")
+	   (set! res2 p_l1)))
+
+    ;; Create results list.
+    (set! res1 (make-list hn 0))
+
+    ;; Cycle.
+    (while (< j1 hn)
+
+	   (set! s2 (list-ref res2 j1))
+	   (set! n1 (string-length s2))
+	   (list-set! res1 j1 n1)
+	   
+	   (set! j1 (+ j1 1)))
+    
+    res1))
