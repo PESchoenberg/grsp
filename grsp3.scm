@@ -300,7 +300,12 @@
 	    grsp-matrix-minor-cofactor
 	    grsp-matrix-cofactor
 	    grsp-matrix-inverse
-	    grsp-matrix-adjugate))
+	    grsp-matrix-adjugate
+	    grsp-mn2ms
+	    grsp-matrix-spjustify
+	    grsp-matrix-slongest
+	    grsp-ms2s
+	    grsp-matrix-display))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -2958,8 +2963,15 @@
 	(U 0)
 	(i1 0)
 	(j1 0)
+	(i2 0)
+	(ip 0)
+	(jp 0)
+	(j2 0)
 	(k1 0)
 	(l1 0)
+	(m1 0)
+	(pivot 0)
+	(multi 0)
 	(n1 0)
 	(n2 0))
 
@@ -2972,23 +2984,22 @@
 	   (set! L (grsp-matrix-create-dim "#I" A))
 	   (set! U (grsp-matrix-cpy p_a1))
 
-	   (set! l1 (grsp-lm A))
-	   (while (<= l1 (grsp-hm A))
+	   (set! l1 (grsp-lm U))
+	   (while (<= l1 (grsp-hm U))
 		  
 		  ;; i1 needs to be initalized for the second row (the first row is
 		  ;; copied as is to U). 
 		  (set! i1 (+ l1 1))
 
 		  ;; Main cycle.
-		  (while (<= i1 (grsp-hm A))
+		  (while (<= i1 (grsp-hm U))
 
 			 ;; j1 will be initialized to the leftmost (lowest) col number.
 			 (set! j1 l1)
 			 (while (< j1 i1)
 				
 				;; Find multiplier.
-				;;(set! n1 (grsp-fn3 (array-ref A j1 j1) (array-ref A i1 j1) 0))
-				(set! n1 (grsp-fn3 (array-ref A j1 j1) (array-ref A i1 j1) 0))
+				(set! n1 (grsp-fn3 (array-ref U j1 j1) (array-ref U i1 j1) 0))
 				
 				;; Replace L(i1,j1) with the multiplier.
 				(array-set! L n1 i1 j1) ;;
@@ -2998,7 +3009,8 @@
 				
 				;; Update elements in U(i1, ..).
 				(set! k1 (+ j1 1))
-				(while (<= k1 (grsp-hn A)) ;;
+				;;(set! k1 (+ i1 1))
+				(while (<= k1 (grsp-hn U)) ;;
 
 				       (set! n2 (- (array-ref U i1 k1) (* n1 (array-ref U (- i1 1) k1))))
 				       (array-set! U n2 i1 k1) ;;
@@ -3010,74 +3022,17 @@
 			 (set! i1 (in i1))) ;; 5:31 - 6:28 First cycle works correctly for first col in all rows.
 
 		  (set! l1 (in l1)))
-
-	   ;; Compose results for LU decomposition.
-	   (set! res2 (list L U)))
-	  ((equal? p_s1 "#PALU")
-
-	   ;; https://rosettacode.org/wiki/LU_decomposition#Julia
-	   
-	   ;; Create L and U matrices of the same size as p_a1.
-	   (set! L (grsp-matrix-create-dim "#I" A))
-	   (set! U (grsp-matrix-cpy p_a1))	   
-
-	   ;; U
-	   (set! i1 (grsp-lm A))
-	   (while (<= i1 (grsp-hm A))
-		  
-		  (set! j1 (grsp-ln A))			      
-		  (while (<= j1 (grsp-hn A))
-
-			 (set! k1 1)
-			 (set! res4 0)
-			 (while (<= k1 (- i1 1))
-
-				(set! res4 (+ res4 (* (array-ref U k1 j1) (array-ref L i1 k1))))
-				
-				(set! k1 (in k1)))
-
-			 (set! res3 (- (array-ref A i1 j1) res4))
-			 
-			 (array-set! U res3 i1 j1)
-			 
-			 (set! j1 (in j1)))
-		  
-		  (set! i1 (in i1)))
-
-	   ;; L
-	   (set! i1 (grsp-lm A))
-	   (while (<= i1 (grsp-hm A))
-		  
-		  (set! j1 (grsp-ln A))			      
-		  (while (<= j1 (grsp-hn A))
-
-			 (set! k1 1)
-			 (set! res5 0)
-			 (while (<= k1 (- j1 1))
-
-				(set! res5 (+ res5 (* (array-ref U k1 j1) (array-ref L i1 k1))))
-				
-				(set! k1 (in k1)))
-
-			 (set! res4 (- (array-ref A i1 j1) res5))
-			 (set! res3 (* (/ 1 (array-ref U j1 j1)) res4))
-			 
-			 (array-set! L res3 i1 j1)
-			 
-			 (set! j1 (in j1)))
-		  
-		  (set! i1 (in i1)))	   
 	   
 	   ;; Compose results for LU decomposition.
 	   (set! res2 (list L U))))
-    
+	   
     res2))
 
 
 ;;;; grsp-matrix-density - Returns the density value of matrix p_a1.
 ;;
 ;; Keywords:
-;; - function, algebra, matrix, matrices, vectors.
+77;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -7727,4 +7682,169 @@
     
     res1))
 
+
+;;;; grsp-mn2ms - Casts numeric matrix p_a1 into a string matrix.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, strings.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;;
+(define (grsp-mn2ms p_a1)
+  (let ((res1 "")	
+	(i1 0)
+	(j1 0)
+	(s1 ""))
+
+    ;; Create a results string matrix of the same dimensions as p_a1.
+    (set! res1 (grsp-matrix-create-dim "" p_a1))
+
+    ;; Cycle thorough both matrices, cast each element of p_a1 as a string
+    ;; and copy it to the exact position into res1.
+    (set! i1 (grsp-lm p_a1))
+    (while (<= i1 (grsp-hm p_a1))
+
+	   (set! j1 (grsp-ln p_a1))
+	   (while (<= j1 (grsp-hn p_a1))
+		  (array-set! res1 (grsp-n2s (array-ref p_a1 i1 j1)) i1 j1)
+		  
+		  (set! j1 (in j1)))
+
+	   (set! i1 (in i1)))	      
+    
+    res1))
+
+
+;;;; grsp-string-lpjustify - Applies grsp-string-pjustify to every element of
+;; p_a1, producing a matrix of strings of equal length, padded with p_s3 and
+;; lustified according to p_s1.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, strings.
+;;
+;; Arguments:
+;; - p_s1: string. Mode.
+;;   - "#l": p_s2 to the left.
+;;   - "#r": p_s2 to the right.
+;;   - "#b": center p_s2.
+;; - p_a1: matrix of strings.
+;; - p_s3: string for padding (one char length).
+;; - p_n1: numeric. Length of padded and justified string.
+;;
+(define (grsp-matrix-spjustify p_s1 p_a1 p_s3 p_n1)
+  (let ((res1 "")
+	(s2 "")
+	(i1 0)
+	(j1 0))
+
+    ;; Make safety copy.
+    (set! res1 (grsp-matrix-cpy p_a1))
+    
+    (set! i1 (grsp-lm res1))
+    (while (<= i1 (grsp-hm res1))
+
+	   (set! j1 (grsp-ln res1))
+	   (while (<= j1 (grsp-hn res1))
+
+		  (set! s2 (grsp-string-pjustify p_s1 (array-ref res1 i1 j1) p_s3 p_n1))
+		  (array-set! res1 s2 i1 j1)		  
+		  (set! j1 (in j1)))
+	   
+	   (set! i1 (in i1)))
+    
+    res1))
+
+
+;;;; grsp-matrix-slongest - Finds the length in number of characters of the
+;; longest string of string matrix p_a1.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, strings.
+;;
+;; Arguments:
+;; - p_a1: matrix. String.
+;;
+(define (grsp-matrix-slongest p_a1)
+  (let ((res1 0)
+	(n1 0)
+	(s1 "")
+	(i1 0)
+	(j1 0))
+
+    (set! i1 (grsp-lm p_a1))
+    (while (<= i1 (grsp-hm p_a1))
+
+	   (set! j1 (grsp-ln p_a1))
+	   (while (<= j1 (grsp-hn p_a1))
+
+		  (set! s1 (array-ref p_a1 i1 j1))
+		  (set! n1 (string-length s1))
+		  
+		  (cond ((> n1 res1)
+			 (set! res1 n1)))
+		  
+		  (set! j1 (in j1)))
+
+	   (set! i1 (in i1)))
+    
+    res1))
+
+
+;;;; grsp-mn2s - Creates a formatted long string from p_a1 for display.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, strings.
+;;
+;; Arguments:
+;; - p_a1: matrix. String.
+;;
+(define (grsp-ms2s p_a1)
+  (let ((res1 "")
+	(a2 "")
+	(l1 0)
+	(i1 0)
+	(j1 0))
+
+    ;; Find the lonest string in the matrix.
+    (set! l1 (+ (grsp-matrix-slongest p_a1) 1))
+
+    ;; Justify.
+    (set! a2 (grsp-matrix-spjustify "#r" p_a1 " " l1))
+
+    (set! i1 (grsp-lm p_a1))
+    (while (<= i1 (grsp-hm p_a1))
+	   
+	   (set! j1 (grsp-ln p_a1))
+	   (while (<= j1 (grsp-hn p_a1))
+
+		  (set! res1 (string-append res1 (array-ref a2 i1 j1)))
+		  
+		  (set! j1 (in j1)))
+
+	   ;; Insert a new line string after a row is completed.	   
+	   (set! res1 (string-append res1 "\n"))
+	   
+	   (set! i1 (in i1)))
+    
+    res1))
+
+
+;;;; grsp-matrix-display - Displays matrix p_a1 in an easy-to-interpret format.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, strings.
+;;
+;; Arguments:
+;; - p_a1: matrix. Numeric.
+;;
+(define (grsp-matrix-display p_a1)
+  (let ((res1 "")
+	(a1 ""))
+
+    (set! a1 (grsp-mn2ms p_a1))
+    (set! res1 (grsp-ms2s a1))
+    
+    (display res1)))
+  
 

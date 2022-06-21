@@ -99,7 +99,14 @@
 	    grsp-hw
 	    grsp-gb
 	    grsp-string-tlength
-	    grsp-string-ltlength))
+	    grsp-string-ltlength
+	    grsp-string-ltrim
+	    grsp-string-pjustify
+	    grsp-string-repeat
+	    grsp-string-lpjustify
+	    grsp-ln2ls
+	    grsp-ls2ln
+	    grsp-ls2s))
 
 
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
@@ -753,7 +760,8 @@
 ;; - p_s2: string.
 ;;
 (define (grsp-string-tlength p_s1 p_s2)
-  (let ((res1 0))
+  (let ((res1 0)
+	(res2 0))
 
     (cond ((equal? p_s1 "#l")
 	   (set! res1 (string-length (string-trim p_s2))))
@@ -767,7 +775,7 @@
     res1))
 
 
-;;;; grsp-string-ltlength - Find the length of each string on a string list.
+;;;; grsp-string-ltlength - Find the length of each string in a string list.
 ;;
 ;; Keywords:
 ;; - console, strings.
@@ -781,7 +789,7 @@
 ;; - p_l1: list of strings.
 ;;
 ;; Notes:
-;; - See grsp-string-tlengt.
+;; - See grsp-string-tlength, grsp-string-ltrim.
 ;;
 (define (grsp-string-ltlength p_s1 p_l1)
   (let ((res1 '())
@@ -792,15 +800,8 @@
 	(hn (length p_l1)))    
 
     ;; Trim according to p_s1.
-    (cond ((equal? p_s1 "#l")
-	   (set! res2 (map string-trim p_l1)))
-	  ((equal? p_s1 "#r")
-	   (set! res2 (map string-trim-right p_l1)))
-	  ((equal? p_s1 "#b")
-	   (set! res2 (map string-trim-both p_l1)))
-	  ((equal? p_s1 "#n")
-	   (set! res2 p_l1)))
-
+    (set! res2 (grsp-string-ltrim p_s1 p_l1))
+    
     ;; Create results list.
     (set! res1 (make-list hn 0))
 
@@ -814,3 +815,203 @@
 	   (set! j1 (+ j1 1)))
     
     res1))
+
+
+;;;; grsp-string-ltrim - Trim spaces on all elements of list p_l1 according to
+;; p_s1.
+;;
+;; Keywords:
+;; - console, strings.
+;;
+;; Arguments:
+;; - p_s1: sitring. Mode.
+;;   - "#l": trim left.
+;;   - "#r": trim right.
+;;   - "#b": trim left and right.
+;;   - "#n": do not trim.
+;; - p_l1: list of strings.
+;;
+;; Notes:
+;; - See grsp-string-tlength.
+;;
+(define (grsp-string-ltrim p_s1 p_l1)
+  (let ((res1 '()))  
+
+    (set! res1 p_l1)
+    
+    ;; Trim according to p_s1.
+    (cond ((equal? p_s1 "#l")
+	   (set! res1 (map string-trim res1)))
+	  ((equal? p_s1 "#r")
+	   (set! res1 (map string-trim-right res1)))
+	  ((equal? p_s1 "#b")
+	   (set! res1 (map string-trim-both res1))))
+    
+    res1))
+
+
+;;;; grsp-string-pjustify - Pads with string p_s3 and justifies string p_s2
+;; into a string of total length p_n1.
+;;
+;; Keywords:
+;; - console, strings.
+;;
+;; Arguments:
+;; - p_s1: string. Mode.
+;;   - "#l": p_s2 to the left.
+;;   - "#r": p_s2 to the right.
+;;   - "#b": center p_s2.
+;; - p_s2: string.
+;; - p_s3: string for padding (one char length).
+;; - p_n1: numeric. Length of padded and justified string.
+;;
+(define (grsp-string-pjustify p_s1 p_s2 p_s3 p_n1)
+  (let ((res1 p_s2)
+	(s4 "")
+	(s5 "")
+	(j1 0)
+	(n1 p_n1)
+	(n2 (string-length p_s2))
+	(n3 0)
+	(n4 0))
+
+    ;; n1 cannot be shorter than n2.
+    (cond ((< n1 n2)
+	   (set! n1 n2)))
+
+    ;; If n1 equals n2 for whatever reason, there is no need to justify
+    ;; anything because the resulting string will be of the same length
+    ;; as p_s2, so the function returns the original p_s2.
+    (cond ((> n1 n2)
+	   ;; Find out how many characters should be padded using p_s3.
+	   (set! n3 (- n1 n2))
+	   
+	   ;; Compose results.
+	   (cond ((equal? p_s1 "#r")
+		  (set! s4 (grsp-string-repeat p_s3 n3))
+		  (set! res1 (strings-append (list s4 p_s2) 0)))
+		 ((equal? p_s1 "#l")
+		  (set! s4 (grsp-string-repeat p_s3 n3))
+		  (set! res1 (strings-append (list p_s2 s4) 0)))
+		 ((equal? p_s1 "#b")
+		  
+		  (cond ((odd? n3)
+			 (set! n4 (/ (- n3 1) 2))
+			 (set! s4 (grsp-string-repeat p_s3 n4))
+			 (set! s5 (grsp-string-repeat p_s3 (+ n4 1))))			 
+			((even? n3)
+			 (set! n4 (/ n3 2))
+			 (set! s4 (grsp-string-repeat p_s3 n4))
+			 (set! s5 s4)))
+
+		  (set! res1 (strings-append (list s5 p_s2 s4) 0))))))
+    
+    res1))
+
+
+;;;; grsp-string-repeat - Concatenate p_n1 copies of string p_s1
+;;
+;; Keywords:
+;; - console, strings.
+;;
+;; Arguments:
+;; - p_s1: string.
+;; - p_n1: number. How many times should p_s1 be repeated.
+;;
+(define (grsp-string-repeat p_s1 p_n1)
+  (let ((res1 "")
+	(j1 0))
+
+    (while (< j1 p_n1)
+	   (set! res1 (string-append res1 p_s1))
+	   (set! j1 (in j1)))
+
+    res1))
+
+
+;;;; grsp-string-lpjustify - Applies grsp-string-pjustify to every element of
+;; p_l1, producing a list of strings of equal length, padded with p_s3 and
+;; lustified according to p_s1.
+;;
+;; Keywords:
+;; - console, strings.
+;;
+;; Arguments:
+;; - p_s1: string. Mode.
+;;   - "#l": p_s2 to the left.
+;;   - "#r": p_s2 to the right.
+;;   - "#b": center p_s2.
+;; - p_l1: list of strings.
+;; - p_s3: string for padding (one char length).
+;; - p_n1: numeric. Length of padded and justified string.
+;;
+(define (grsp-string-lpjustify p_s1 p_l1 p_s3 p_n1)
+  (let ((res1 '())
+	(s2 "")
+	(hn (length p_l1))
+	(j1 0))
+
+    ;; Create results list.
+    (set! res1 (make-list hn s2))
+
+    ;; Cycle.
+    (while (< j1 hn)
+	   (list-set! res1 j1 (grsp-string-pjustify p_s1 (list-ref p_l1 j1) p_s3 p_n1))
+	   (set! j1 (in j1)))
+    
+    res1))
+
+
+;;;; grsp-ln2ls - Casts a list of numbers as a list of strings.
+;;
+;; Keywords:
+;; - console, strings.
+;;
+;; Arguments:
+;; - p_l1: list of numbers to convert to strings.
+;;
+(define (grsp-ln2ls p_l1)
+  (let ((res1 '()))
+
+    (set! res1 (map grsp-n2s p_l1))
+    
+    res1))
+
+
+;;;; grsp-ls2ln - Casts a list of strings as a list of numbers.
+;;
+;; Keywords:
+;; - console, strings.
+;;
+;; Arguments:
+;; - p_l1: list of strings to convert to numbers.
+;;
+(define (grsp-ls2ln p_l1)
+  (let ((res1 '()))
+
+    (set! res1 (map grsp-s2n p_l1))
+    
+    res1))
+
+
+;;;; grsp-ls2s - Casts a list of strings as single string.
+;;
+;; Keywords:
+;; - console, strings.
+;;
+;; Arguments:
+;; - p_l1: list of strings to convert to a single string. 
+;;
+(define (grsp-ls2s p_l1)
+  (let ((res1 "")
+	(hn (length p_l1))
+	(j1 0))
+
+    ;; Cycle.
+    (while (< j1 hn)
+	   (set! res1 (string-append res1 (list-ref p_l1 j1)))
+	   (set! j1 (in j1)))
+
+    res1))
+
+
