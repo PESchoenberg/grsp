@@ -2,7 +2,7 @@
 ;;
 ;; grsp5.scm
 ;;
-;; Statistical and probabilistic functions.
+;; Stats and probabilistic functions.
 ;;
 ;; =============================================================================
 ;;
