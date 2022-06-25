@@ -962,7 +962,8 @@
     res1))
 
 
-;;;; grsp-ln2ls - Casts a list of numbers as a list of strings.
+;;;; grsp-ln2ls - Casts a list of numbers as a list of strings that represent
+;; numbers.
 ;;
 ;; Keywords:
 ;; - console, strings.
@@ -978,7 +979,8 @@
     res1))
 
 
-;;;; grsp-ls2ln - Casts a list of strings as a list of numbers.
+;;;; grsp-ls2ln - Casts a list of strings representing numbers as a list of
+;; numbers.
 ;;
 ;; Keywords:
 ;; - console, strings.
@@ -1007,7 +1009,7 @@
 	(hn (length p_l1))
 	(j1 0))
 
-    ;; Cycle.
+    ;; Cycle list and append.
     (while (< j1 hn)
 	   (set! res1 (string-append res1 (list-ref p_l1 j1)))
 	   (set! j1 (in j1)))

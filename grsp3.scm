@@ -32,6 +32,8 @@
 ;;   its current version it is not intended to be particulary fast. It does not 
 ;;   make use of any additional non-Scheme library like BLAS or Lapack.
 ;; - As a convention here, m represents rows, n represents columns.
+;; - All matrices referred in this file are numeric except wherever specifically
+;;   stated.
 ;;
 ;; Sources:
 ;; - [1] Hep.by. (2020). Array Procedures - Guile Reference Manual. [online]
@@ -158,6 +160,7 @@
 ;; - [42] En.wikipedia.org. 2022. Minor (linear algebra) - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Minor_(linear_algebra)
 ;;   [Accessed 9 June 2022].
+;; - [43] https://www.geeksforgeeks.org/doolittle-algorithm-lu-decomposition/
 
 
 (define-module (grsp grsp3)
@@ -305,7 +308,9 @@
 	    grsp-matrix-spjustify
 	    grsp-matrix-slongest
 	    grsp-ms2s
-	    grsp-matrix-display))
+	    grsp-matrix-display
+	    grsp-ms2mn
+	    grsp-matrix-tio))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -2941,44 +2946,88 @@
 ;;
 ;; Arguments:
 ;; - p_s1: decomposition type.
-;;   - "#LU": LU decomposition.
+;;   - "#LUD": LU decomposition. Doolitle.
+;;   - "#LUG": LU decomposition. Gauss.
 ;; - p_a1: matrix to be decomposed.
 ;; - This function does not perform viability checks on p_a1 for the 
 ;;   required operation; the user or an additional shell function should take 
 ;;   care of that.
 ;;
 ;; Sources:
-;; - [6].
+;; - [6][43].
 ;;
 (define (grsp-matrix-decompose p_s1 p_a1)
   (let ((res1 0)
 	(res2 '())
-	(res3 0)
-	(res4 0)
-	(res5 0)
-	(res6 0)
 	(b1 #t)
 	(A 0)
 	(L 0)
 	(U 0)
 	(i1 0)
 	(j1 0)
-	(i2 0)
-	(ip 0)
-	(jp 0)
-	(j2 0)
 	(k1 0)
 	(l1 0)
-	(m1 0)
-	(pivot 0)
-	(multi 0)
+	(sum 0)
 	(n1 0)
-	(n2 0))
+	(n2 0)
+	(n3 0))
 
     ;; Safety copy.
     (set! A (grsp-matrix-cpy p_a1))    
+
+    (cond ((equal? p_s1 "#LUD")
+	   	   
+	   ;; Create L and U matrices of the same size as p_a1.
+	   (set! L (grsp-matrix-create-dim "#I" A))
+	   (set! U (grsp-matrix-create-dim 0 A))
+
+	   (set! n1 (grsp-hm A))
+	   (set! i1 (grsp-lm A))
+	   (while (<= i1 n1)
+
+		  ;; U
+		  (set! k1 i1)
+		  (while (<= k1 n1)
+
+			 ;; Summation of L(i1, j1) * U(j1, k1)
+			 (set! sum 0)
+			 (set! j1 (grsp-lm A))
+			 (while (< j1 i1)
+				(set! sum (+ sum (* (array-ref L i1 j1) (array-ref U j1 k1))))				
+				(set! j1 (in j1)))
+
+			 ;; Evaluation of U(i1, k1)
+			 (array-set! U (- (array-ref A i1 k1) sum) i1 k1)			       
+			 (set! k1 (in k1)))
+
+		  ;; L
+		  (set! k1 i1)
+		  (while (<= k1 n1)
+
+			 (set! b1 #t)
+			 (cond ((= i1 k1)
+				(set! b1 #f)
+				(array-set! L 1 i1 i1)))
+			 (cond ((equal? b1 #t)				
+				(set! sum  0)
+
+				;; Summation of L(k1 j1) * U (j1 i1)
+				(set! j1 (grsp-lm A))
+				(while (< j1 i1)
+				       (set! sum (+ sum (* (array-ref L k1 j1) (array-ref U j1 i1))))
+				       (set! j1 (in j1)))
+
+				;; Evaluation of L (k1 j1)
+				(array-set! L (/ (- (array-ref A k1 j1) sum) (array-ref U i1 i1)) k1 i1)))
+			 
+			 (set! k1 (in k1)))
+		  
+		  (set! i1 (in i1)))
+	   		  
+	   ;; Compose results for LUD.
+	   (set! res2 (list L U))))
     
-    (cond ((equal? p_s1 "#LU")
+    (cond ((equal? p_s1 "#LUG")
 
 	   ;; Create L and U matrices of the same size as p_a1.
 	   (set! L (grsp-matrix-create-dim "#I" A))
@@ -3023,7 +3072,7 @@
 
 		  (set! l1 (in l1)))
 	   
-	   ;; Compose results for LU decomposition.
+	   ;; Compose results for LUG.
 	   (set! res2 (list L U))))
 	   
     res2))
@@ -4072,7 +4121,7 @@
 	(detu 1))
 
     ;; Perform a LU decomposition over p_a1
-    (set! a2 (grsp-matrix-decompose "#LU" p_a1))
+    (set! a2 (grsp-matrix-decompose "#LUD" p_a1))
     (set! L (car a2))
     (set! U (car (cdr a2)))
 
@@ -7694,8 +7743,7 @@
 (define (grsp-mn2ms p_a1)
   (let ((res1 "")	
 	(i1 0)
-	(j1 0)
-	(s1 ""))
+	(j1 0))
 
     ;; Create a results string matrix of the same dimensions as p_a1.
     (set! res1 (grsp-matrix-create-dim "" p_a1))
@@ -7791,7 +7839,8 @@
     res1))
 
 
-;;;; grsp-mn2s - Creates a formatted long string from p_a1 for display.
+;;;; grsp-mn2s - Creates a formatted long string from p_a1 for display. This
+;; function transforms all elements of a string matrix into a unified string-
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors, strings.
@@ -7830,7 +7879,8 @@
     res1))
 
 
-;;;; grsp-matrix-display - Displays matrix p_a1 in an easy-to-interpret format.
+;;;; grsp-matrix-display - Displays matrix p_a1 in a visually-intuitive
+;; format.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors, strings.
@@ -7848,3 +7898,113 @@
     (display res1)))
   
 
+;;;; grsp-ms2mn - Casts string matrix p_a1 into a numeric matrix.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, strings.
+;;
+;; Arguments:
+;; - p_a1: matrix. String.
+;;
+;; Notes:
+;; - The strings corresponding to each element must correspond
+;;   to numbers, for example "42" or "666".
+;;
+(define (grsp-ms2mn p_a1)
+  (let ((res1 0)	
+	(i1 0)
+	(j1 0)
+	(n1 0))
+
+    ;; Create a results numeric matrix of the same dimensions as p_a1.
+    (set! res1 (grsp-matrix-create-dim 0 p_a1))
+
+    ;; Cycle thorough both matrices, cast each element of p_a1 as a number
+    ;; and copy it to the exact position into res1.
+    (set! i1 (grsp-lm p_a1))
+    (while (<= i1 (grsp-hm p_a1))
+
+	   (set! j1 (grsp-ln p_a1))
+	   (while (<= j1 (grsp-hn p_a1))
+		  (array-set! res1 (grsp-s2n (array-ref p_a1 i1 j1)) i1 j1)
+		  
+		  (set! j1 (in j1)))
+
+	   (set! i1 (in i1)))	      
+    
+    res1))
+
+
+;;;; grsp-matrix-tio - Turns into number p_n1 every number between established
+;; limits or p_n2 otherwise.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, strings.
+;;
+;; Arguments:
+;; - p_s1: string. Interval mode (inclusive or exclusive).
+;;   - "#[]" l inclusive, h inclusive.
+;;   - "#[)" l inclusive, h exclusive.
+;;   - "#(]" l exclusive, h inclusive.
+;;   - "#()" l exclusive, h exclusive.
+;; - p_a1: matrix.
+;; - p_n1: value to set if condition is met.
+;; - p_n2: value to set otherwise.
+;; - p_min: number. Lower limit.
+;; - p_max: higher limit.
+;;
+(define (grsp-matrix-tio p_s1 p_a1 p_n1 p_n2 p_min p_max)
+  (let ((res1 0)
+	(b1 #f)
+	(i1 0)
+	(j1 0)
+	(n1 0)
+	(n2 0))
+
+    ;; Safety copy.
+    (set! res1 (grsp-matrix-cpy p_a1))
+
+    ;; Row cycle.
+    (set! i1 (grsp-lm res1))
+    (while (<= i1 (grsp-hm res1))
+
+	   ;; Col cycle.
+	   (set! j1 (grsp-ln res1))
+	   (while (<= j1 (grsp-hn res1))
+
+		  ;; Get current value at position i1 j1.
+		  (set! n1 (array-ref res1 i1 j1))
+
+		  ;; Selec mode.
+		  (cond ((equal? p_s1 "#[]")
+			 
+			 (cond ((equal? (and (>= n1 p_min) (<= n1 p_max)) #t)
+				(set! n1 p_n1))
+			       (else (set! n1 p_n2))))
+			
+			((equal? p_s1 "#[)")
+			 
+			 (cond ((equal? (and (>= n1 p_min) (< n1 p_max)) #t)
+				(set! n1 p_n1))
+			       (else (set! n1 p_n2))))
+			
+			((equal? p_s1 "#(]")
+			 
+			 (cond ((equal? (and (> n1 p_min) (<= n1 p_max)) #t)
+				(set! n1 p_n1))
+			       (else (set! n1 p_n2))))
+			
+			((equal? p_s1 "#()")
+			 
+			 (cond ((equal? (and (> n1 p_min) (< n1 p_max)) #t)
+				(set! n1 p_n1))
+			       (else (set! n1 p_n2)))))
+
+		  ;; Set new, capped value.
+		  (array-set! res1 n1 i1 j1)
+				 
+		  (set! j1 (in j1)))
+	   
+	   (set! i1 (in i1)))
+    
+    res1))
