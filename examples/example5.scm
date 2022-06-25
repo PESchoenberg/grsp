@@ -89,7 +89,7 @@
 ;; Calculate and display results.
 (display "\n")
 (display "LU decomposition (A = L*U):")
-(define LU (grsp-matrix-decompose "#LU" A))
+(define LU (grsp-matrix-decompose "#LUD" A))
 (define L (car LU))
 (define U (car (cdr LU)))
 (newlines 1)
@@ -112,7 +112,7 @@
 (newlines 1)
 (grsp-matrix-display A)
 (newlines 1)
-(display "Equality check passed? ")
+(display "Equality check (A = L * U) passed? ")
 (display (grsp-matrix-is-equal A LU2))
 (newlines 1)
 
