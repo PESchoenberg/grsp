@@ -160,7 +160,24 @@
 ;; - [42] En.wikipedia.org. 2022. Minor (linear algebra) - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Minor_(linear_algebra)
 ;;   [Accessed 9 June 2022].
-;; - [43] https://www.geeksforgeeks.org/doolittle-algorithm-lu-decomposition/
+;; - [43] GeeksforGeeks. 2022. Doolittle Algorithm : LU Decomposition -
+;;   GeeksforGeeks. [online] Available at:
+;;   https://www.geeksforgeeks.org/doolittle-algorithm-lu-decomposition/
+;;   [Accessed 27 June 2022].
+;; - [44] En.wikipedia.org. 2022. Crout matrix decomposition - Wikipedia.
+;;   [online] Available at:
+;;   https://en.wikipedia.org/wiki/Crout_matrix_decomposition
+;;   [Accessed 27 June 2022].
+;; - [45] En.wikipedia.org. 2022. Unit vector - Wikipedia. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Unit_vector [Accessed 27 June 2022].
+;; - [46] En.wikipedia.org. 2022. Dot product - Wikipedia. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Dot_product [Accessed 27 June 2022].
+;; - [47] En.wikipedia.org. 2022. Inner product space - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Inner_product_space
+;;   [Accessed 27 June 2022].
+;; - [48] En.wikipedia.org. 2022. Gram–Schmidt process - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Gram%E2%80%93Schmidt_process
+;;   [Accessed 27 June 2022].
 
 
 (define-module (grsp grsp3)
@@ -191,6 +208,7 @@
 	    grsp-matrix-opew
 	    grsp-matrix-opfn
 	    grsp-matrix-opmm
+	    grsp-matrix-opmsc
 	    grsp-matrix-cpy
 	    grsp-matrix-subcpy
 	    grsp-matrix-subrep
@@ -310,7 +328,11 @@
 	    grsp-ms2s
 	    grsp-matrix-display
 	    grsp-ms2mn
-	    grsp-matrix-tio))
+	    grsp-matrix-tio
+	    grsp-matrix-diagonal-update
+	    grsp-matrix-diagonal-vector
+	    grsp-matrix-row-proj
+	    grsp-matrix-row-gsog))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -929,6 +951,7 @@
 ;; Arguments:
 ;; - p_s1: matrix type.
 ;;   - "#UD": User defined.
+;;   - "#SBC": standard basis, cartesian.
 ;;   - "#Gell-Mann": Gell-Mann matrices.
 ;;   - "#Pauli": Pauli matrices.
 ;;   - "#Dirac": Dirac gamma matrices.
@@ -954,7 +977,7 @@
 ;; - A list containing the matrices created as its elements.
 ;;
 ;; Sources:
-;; - [1][2][18][27][28][29][30].
+;; - [1][2][18][27][28][29][30][45].
 ;;
 (define (grsp-matrix-create-set p_s1 p_n2 p_n3 p_m1 p_n1)
   (let ((res1 '())
@@ -1001,6 +1024,31 @@
 		  (list-set! res1 i1 a0)		  
 		  (set! i1 (in i1))))
 
+	  ((equal? p_s1 "#SBC")
+
+	   ;; Define rows and cols. This creates three different colum
+	   ;; vectors.
+	   (set! m1 3)
+	   (set! n1 1) 
+
+	   ;; Create matrix model.
+	   (set! aa (grsp-matrix-create 0 m1 n1))
+	   
+	   ;; Create i.
+	   (set! a0 (grsp-matrix-cpy aa)) 
+	   (array-set! a0 z1p0p 0 0)	   
+
+	   ;; Create j.
+	   (set! a1 (grsp-matrix-cpy aa))	   
+	   (array-set! a1 z1p0p 1 0)
+
+	   ;; Create k.
+	   (set! a2 (grsp-matrix-cpy aa))
+	   (array-set! a2 z1p0p 2 0)	   
+	   
+	   ;; Compose results for "#SBC".
+	   (set! res1 (list a0 a1 a2)))	   	   
+	  
 	  ((equal? p_s1 "#Gell-Mann")
 
 	   ;; Define rows and cols.
@@ -1121,7 +1169,7 @@
 	   (array-set! a3 z1n0p 2 0)
 	   (array-set! a3 z1p0p 3 1)
 	   
-	   ;; Comopose results for "#Dirac".
+	   ;; Compose results for "#Dirac".
 	   (set! res1 (list a0 a1 a2 a3))))
     
     res1))
@@ -2088,7 +2136,8 @@
     res3))
 
 
-;;;; grsp-matrix-opmm - Performs operation p_s1 between matrices p_a1 and p_a2.
+;;;; grsp-matrix-opmm - Performs operation p_s1 between matrices p_a1 and p_a2
+;; producing a matrix as a result.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
@@ -2205,7 +2254,7 @@
 	  ((equal? p_s1 "#+")	   
 	   (set! res3 (grsp-matrix-opew p_s1 res1 res2)))	  
 	  ((equal? p_s1 "#-")	   
-	   (set! res3 (grsp-matrix-opew p_s1 res1 res2)))
+	   (set! res3 (grsp-matrix-opew p_s1 res1 res2)))	  
 	  ((equal? p_s1 "#(+)")
 	   (set! I1 (grsp-matrix-create "#I" (grsp-tm p_a2) (grsp-tm p_a2)))
 	   (set! I2 (grsp-matrix-create "#I" (grsp-tm p_a1) (grsp-tm p_a1)))
@@ -2242,13 +2291,6 @@
 
 			 ;; Find the next position in res3 where to paste the
 			 ;; next matrix resulting from the scalar product.
-			 ;;(display "\n")
-			 ;;(display i3)
-			 ;;(display " ")
-			 ;;(display j3)
-			 ;;(display "\n--\n")
-			 ;;(display res3)
-			 ;;(display "\n-----------------\n")
 			 (set! j3 (+ j3 (grsp-tn p_a2)))
 			 (set! j1 (in j1)))
 		  
@@ -2256,6 +2298,39 @@
 		  (set! i1 (in i1)))))
     
     res3))
+
+
+;;;; grsp-matrix-opmsc - Operations between two matrices that produce a scalar
+;; result.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
+;; Arguments:
+;; - p_s1: operation described as a string:
+;;   - "#.R": dot product (real numbers).
+;;   - "#.C": dot product (complex numbers).
+;;
+;; Notes:
+;; - Real matrices should have the same dimensions.
+;; - For complex matrices take into account transposition of p_a2.
+;;
+;; Sources:
+;; - [45][46][47].
+;;
+(define (grsp-matrix-opmsc p_s1 p_a1 p_a2)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0))
+
+    (cond ((equal? p_s1 "#.R")
+	   (set! res2 (grsp-matrix-opew "#*" p_a1 p_a2))
+	   (set! res1 (grsp-matrix-opio "#+" res2 0)))
+	  ((equal? p_s1 "#.C")
+	   (set! res3 (grsp-matrix-conjugate-transpose p_a2))
+	   (set! res1 (grsp-matrix-opmsc "#.R" res3 p_a1))))
+
+    res1))
 
 
 ;;;; grsp-matrix-cpy - Copies matrix p_a1, element wise.
@@ -2947,7 +3022,6 @@
 ;; Arguments:
 ;; - p_s1: decomposition type.
 ;;   - "#LUD": LU decomposition. Doolitle.
-;;   - "#LUG": LU decomposition. Gauss.
 ;; - p_a1: matrix to be decomposed.
 ;; - This function does not perform viability checks on p_a1 for the 
 ;;   required operation; the user or an additional shell function should take 
@@ -2957,25 +3031,38 @@
 ;; - [6][43].
 ;;
 (define (grsp-matrix-decompose p_s1 p_a1)
-  (let ((res1 0)
-	(res2 '())
+  (let ((res1 '())
 	(b1 #t)
 	(A 0)
 	(L 0)
 	(U 0)
+	(D 0)
+	(Q 0)
+	(R 0)
 	(i1 0)
 	(j1 0)
 	(k1 0)
-	(l1 0)
 	(sum 0)
+	(fak 0)
 	(n1 0)
 	(n2 0)
-	(n3 0))
+	(m1 0))
 
     ;; Safety copy.
     (set! A (grsp-matrix-cpy p_a1))    
 
-    (cond ((equal? p_s1 "#LUD")
+    (cond ((equal? p_s1 "#QRH") ;; ***
+
+	   (set! n1 (+ (grsp-hn A) 1))
+	   (set! m1 (+ (grsp-hm A) 1))
+	   (set! R (grsp-matrix-cpy A))
+	   (set! Q (grsp-matrix-create "#I" m1 m1))
+	   
+
+	   ;; Compose results for QRH.
+	   (set! res1 (list Q R)))
+	  
+	  ((equal? p_s1 "#LUD")
 	   	   
 	   ;; Create L and U matrices of the same size as p_a1.
 	   (set! L (grsp-matrix-create-dim "#I" A))
@@ -2989,14 +3076,14 @@
 		  (set! k1 i1)
 		  (while (<= k1 n1)
 
-			 ;; Summation of L(i1, j1) * U(j1, k1)
+			 ;; Summation.
 			 (set! sum 0)
 			 (set! j1 (grsp-lm A))
 			 (while (< j1 i1)
 				(set! sum (+ sum (* (array-ref L i1 j1) (array-ref U j1 k1))))				
 				(set! j1 (in j1)))
 
-			 ;; Evaluation of U(i1, k1)
+			 ;; Evaluation.
 			 (array-set! U (- (array-ref A i1 k1) sum) i1 k1)			       
 			 (set! k1 (in k1)))
 
@@ -3011,13 +3098,13 @@
 			 (cond ((equal? b1 #t)				
 				(set! sum  0)
 
-				;; Summation of L(k1 j1) * U (j1 i1)
+				;; Summation.
 				(set! j1 (grsp-lm A))
 				(while (< j1 i1)
 				       (set! sum (+ sum (* (array-ref L k1 j1) (array-ref U j1 i1))))
 				       (set! j1 (in j1)))
 
-				;; Evaluation of L (k1 j1)
+				;; Evaluation.
 				(array-set! L (/ (- (array-ref A k1 j1) sum) (array-ref U i1 i1)) k1 i1)))
 			 
 			 (set! k1 (in k1)))
@@ -3025,57 +3112,9 @@
 		  (set! i1 (in i1)))
 	   		  
 	   ;; Compose results for LUD.
-	   (set! res2 (list L U))))
-    
-    (cond ((equal? p_s1 "#LUG")
-
-	   ;; Create L and U matrices of the same size as p_a1.
-	   (set! L (grsp-matrix-create-dim "#I" A))
-	   (set! U (grsp-matrix-cpy p_a1))
-
-	   (set! l1 (grsp-lm U))
-	   (while (<= l1 (grsp-hm U))
-		  
-		  ;; i1 needs to be initalized for the second row (the first row is
-		  ;; copied as is to U). 
-		  (set! i1 (+ l1 1))
-
-		  ;; Main cycle.
-		  (while (<= i1 (grsp-hm U))
-
-			 ;; j1 will be initialized to the leftmost (lowest) col number.
-			 (set! j1 l1)
-			 (while (< j1 i1)
-				
-				;; Find multiplier.
-				(set! n1 (grsp-fn3 (array-ref U j1 j1) (array-ref U i1 j1) 0))
-				
-				;; Replace L(i1,j1) with the multiplier.
-				(array-set! L n1 i1 j1) ;;
-
-				;; Replace U(i1,j1) with zero.
-				(array-set! U 0 i1 j1) ;;
-				
-				;; Update elements in U(i1, ..).
-				(set! k1 (+ j1 1))
-				;;(set! k1 (+ i1 1))
-				(while (<= k1 (grsp-hn U)) ;;
-
-				       (set! n2 (- (array-ref U i1 k1) (* n1 (array-ref U (- i1 1) k1))))
-				       (array-set! U n2 i1 k1) ;;
-
-				       (set! k1 (in k1))) ;;
-				
-				(set! j1 (in j1))) ;;
-			 ;; ***
-			 (set! i1 (in i1))) ;; 5:31 - 6:28 First cycle works correctly for first col in all rows.
-
-		  (set! l1 (in l1)))
+	   (set! res1 (list L U))))
 	   
-	   ;; Compose results for LUG.
-	   (set! res2 (list L U))))
-	   
-    res2))
+    res1))
 
 
 ;;;; grsp-matrix-density - Returns the density value of matrix p_a1.
@@ -8006,5 +8045,150 @@
 		  (set! j1 (in j1)))
 	   
 	   (set! i1 (in i1)))
+    
+    res1))
+
+
+;;;; grsp-matrix-diagonal-update - Replaces all the elements of the main
+;; diagonal of a square matrix p_a1 with value p_n1.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, strings.
+;;
+;; Arguments:
+;; - p_a1: matrix (should be square).
+;; - p_n1: number. New value for diagonal elements.
+;;
+(define (grsp-matrix-diagonal-update p_a1 p_n1)
+  (let ((res1 0)
+	(i1 0)
+	(j1 0))
+
+    ;; Safety copy.
+    (set! res1 (grsp-matrix-cpy p_a1))
+    
+    ;; Cycle rows.
+    (set! i1 (grsp-lm res1))
+    (while (<= i1 (grsp-hm res1))
+
+	   ;; Cycle cols.
+	   (set! j1 (grsp-lm res1))
+	   (while (<= j1 (grsp-hm res1))	   
+
+		  (cond ((= i1 j1)
+			 (array-set! res1 p_n1 i1 j1)))
+		  
+		  (set! j1 (in j1)))
+
+	   (set! i1 (in i1)))
+		  
+    res1))
+
+
+;;;; grsp-matrix-diagonal-vector - Creates a vector (horizontal) with the
+;; elements of the diagonal of matrix p_a1.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, strings.
+;;
+;; Arguments:
+;; - p_a1: matrix (should be square).
+;;
+(define (grsp-matrix-diagonal-vector p_a1)
+  (let ((res1 0)
+	(n1 0)
+	(i1 0)
+	(j1 0))
+
+    (set! n1 (grsp-matrix-te1 (grsp-lm p_a1) (grsp-hm p_a1)))
+    (set! res1 (grsp-matrix-create 0 1 n1))
+
+    (set! i1 (grsp-lm p_a1))
+    (set! j1 (grsp-ln res1))
+    (while (<= i1 (grsp-hm p_a1))
+	   (array-set! res1 (array-ref p_a1 i1 i1) 0 j1)
+	   (set! j1 (in j1))	 
+	   (set! i1 (in i1)))
+    
+    res1))
+
+;;;; grsp-matrix-row-proj - Orthogonal projection of p_a1 over p_a2.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, strings.
+;;
+;; Arguments:
+;; - p_a1: row vector.
+;; - p_a1: row vector.
+;;
+(define (grsp-matrix-row-proj p_a1 p_a2)
+  (let ((res1 0)
+	(res2 0)
+	(uv 0)
+	(uu 0))
+
+    (set! uv (grsp-matrix-opmsc "#.R" p_a2 p_a1))
+    (set! uu (grsp-matrix-opmsc "#.R" p_a2 p_a2))
+    (set! res2 (/ uv uu))
+    (set! res1 (grsp-matrix-opsc "#*" p_a2 res2))
+    
+    res1))
+
+
+;;;; grsp-matrix-row-gsog - Applies the Gram - Schmidt process to the
+;; columns of matrix p_a1.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, strings.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;;
+;; Sources:
+;; -[48].
+;;
+(define (grsp-matrix-row-gsog p_a1)
+  (let ((res1 0)
+	(U 0)
+	(V 0)
+	(u 0)
+	(v 0)
+	(s 0)
+	(k1 0)
+	(j1 0))
+
+    (set! U (grsp-matrix-cpy p_a1))
+    (set! V (grsp-matrix-cpy p_a1))
+    (set! k1 (grsp-ln V))
+    (while (<= k1 (grsp-hn V))
+	   ;; https://en.wikipedia.org/wiki/Gram%E2%80%93Schmidt_process
+	   (set! v (grsp-matrix-subcpy V (grsp-lm V) (grsp-hm V) k1 k1))
+	   (cond ((= k1 (grsp-ln V))
+		  (set! u v))
+		 ((> k1 (grsp-ln V))
+		  
+		  (set! j1 (grsp-ln V))
+		  (while (<= j1 (- k1 1))
+			 (set! s (+ s (grsp-matrix-row-proj v u)))			 
+			 (set! k1 (in k1)))
+		  
+		  (set! u (grsp-matrix-opmm "#-" v s))))
+		 
+	   (grsp-matrix-subrep U u (grsp-lm u) k1)
+
+	   (newline)
+	   (display s)
+	   (newline)
+	   (display j1)
+	   (newline)
+	   (display v)
+	   (newline)
+	   (display u)
+	   (newline)
+	   (display U)
+	   
+	   (set! k1 (in j1)))
+
+    (set! res1 U)
     
     res1))
