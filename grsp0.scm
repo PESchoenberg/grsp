@@ -118,6 +118,9 @@
 ;; - p_s1: line character to display.
 ;; - p_l1: line length.
 ;;
+;; Examples:
+;; - example1.scm, example3.scm
+;;
 (define (pline p_s1 p_l1)
   (let ((s1 ""))
 
@@ -141,6 +144,9 @@
 ;; - p_l1: line length.
 ;; - p_n1: number of lines (1 or 2, defaults to 1 line above title).
 ;; - p_t1: title to display.
+;;
+;; Examples:
+;; - example1.scm, example3.scm
 ;;
 (define (ptit p_s1 p_l1 p_n1 p_t1)
   (if (<= p_n1 1)
@@ -177,6 +183,9 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
+;; Examples:
+;; - example3.scm
+;;
 (define (clear)
   (newlines 100))
 
@@ -193,6 +202,9 @@
 ;;
 ;; Notes: 
 ;; -  See pres2.
+;;
+;; Examples: 
+;; - example1.scm 
 ;;
 (define (pres p_s1 p_s2)
   (let ((res1 " "))
@@ -234,6 +246,9 @@
 ;;   - 0 for left side.
 ;;   - 1 for right side.
 ;;
+;; Examples: 
+;; - example1.scm
+;;
 (define (newspaces p_n1 p_l1 p_s1)
   (let ((res1 " ")
 	(s1 ""))
@@ -267,6 +282,9 @@
 ;; - p_s1: add a blank space after each list element.
 ;;   - 0 for no spaces.
 ;;   - 1 to add one blank space.
+;;
+;; Examples:
+;; - example1.scm, example3.scm
 ;;
 (define (strings-append p_l1 p_s1)
   (let ((res1 "")
@@ -329,6 +347,9 @@
 ;;   - "eq" equal to.
 ;;   - "ht" higher than.
 ;; - p_v1: version number to check against.
+;;
+;; Examples: 
+;; - example1.scm
 ;;
 ;; Output:
 ;; - Boolean. Defaults to #f if p_s1 is entered incorrectly.
@@ -464,6 +485,9 @@
 ;; Arguments:
 ;; - p_s1: string.
 ;;
+;; Examples:
+;; - example3.scm
+;;
 (define (grsp-ld p_s1)
   (newline)
   (display p_s1))
@@ -479,6 +503,9 @@
 ;; - p_s1: string.
 ;; - p_n1: number of new lines preceeding the string.
 ;; - p_n2: number of new lines after the string.
+;;
+;; Examples:
+;; - example3.scm
 ;;
 (define (grsp-ldl p_s1 p_n1 p_n2)
   (let ((n1 0))
@@ -514,6 +541,9 @@
 ;;
 ;; Arguments:
 ;; p_s1: string representing the question to ask.
+;;
+;; Examples:
+;; - example3.scm
 ;;
 ;; Output:
 ;; - Returns data from the user's input. You may need to use symbol->[type] in
@@ -554,6 +584,9 @@
 ;;
 ;; Keywords:
 ;; - console, strings.
+;;
+;; Examples:
+;; - example3.scm
 ;;
 ;; Output:
 ;; - A question asking to press <ENT> to continue.

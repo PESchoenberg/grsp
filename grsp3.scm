@@ -527,6 +527,9 @@
 ;; - p_m1: rows, positive integer.
 ;; - p_n1: cols, positive integer.
 ;;
+;; Examples:
+;; - example3.scm, example5.scm
+;;
 ;; Sources:
 ;; - [1][2][18][31].
 ;;
@@ -1210,8 +1213,11 @@
 ;;   - "#RZZ"; Qubit quantum gate. Ising coupling gate, Z, requires also p_z1.
 ;; - p_z1: complex, matrix scalar multiplier.
 ;;
+;; Examples:
+;; - example7.scm
+;;
 ;; Sources:
-;; - [31][32][33][34][35]. https://en.wikipedia.org/wiki/Quantum_logic_gate https://en.wikipedia.org/wiki/Qutrit#Qutrit_quantum_gates
+;; - [31][32][33][34][35].
 ;;
 (define (grsp-matrix-create-fix p_s1 p_z1)
   (let ((res1 0)
@@ -1922,6 +1928,9 @@
 ;;   care of that.
 ;; - See grsp-matrix-opewc.
 ;;
+;; Examples:
+;; - example3.scm
+;;
 (define (grsp-matrix-opew p_s1 p_a1 p_a2)
   (let ((res1 p_a1)
 	(res2 p_a2)
@@ -2158,6 +2167,9 @@
 ;;   matrices involved; the user or an additional shell function should take
 ;;   care of that.
 ;;
+;; Examples:
+;; - example5.scm
+;;
 ;; Sources:
 ;; - [36][37][38].
 ;;
@@ -2340,6 +2352,9 @@
 ;;
 ;; Arguments:
 ;; p_a1: matrix to be copied.
+;;
+;; Examples:
+;; - example5.scm
 ;;
 ;; Output:
 ;; - A copy of p_a1.
@@ -2668,6 +2683,9 @@
 ;; Arguments:
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
+;;
+;; Examples:
+;; - example5.scm
 ;;
 (define (grsp-matrix-is-equal p_a1 p_a2)
   (let ((res1 p_a1)
@@ -3027,6 +3045,9 @@
 ;;   required operation; the user or an additional shell function should take 
 ;;   care of that.
 ;;
+;; Examples:
+;; - example5.scm
+;;
 ;; Sources:
 ;; - [6][43].
 ;;
@@ -3052,11 +3073,10 @@
     (set! A (grsp-matrix-cpy p_a1))    
 
     (cond ((equal? p_s1 "#QRH") ;; ***
+	   ;; https://www.cs.cornell.edu/~bindel/class/cs6210-f09/lec18.pdf
+	   (set! Q (grsp-matrix-create-dim "#I" A))
+	   (set! R (grsp-matrix-cpy p_a1))
 
-	   (set! n1 (+ (grsp-hn A) 1))
-	   (set! m1 (+ (grsp-hm A) 1))
-	   (set! R (grsp-matrix-cpy A))
-	   (set! Q (grsp-matrix-create "#I" m1 m1))
 	   
 
 	   ;; Compose results for QRH.
@@ -4140,7 +4160,7 @@
 
 
 ;;;; grsp-matrix-determinant-lu - Finds the determinant of matrix p_a1 using the
-;; LU decompostion.  
+;; LU decompostion (Doolitle).  
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
@@ -5809,7 +5829,11 @@
 	(i1 0))
 
     ;; Extract column p_j1.
-    (set! res2 (grsp-matrix-subcpy p_a1 (grsp-lm p_a1) (grsp-hm p_a1) p_j1 p_j1))
+    (set! res2 (grsp-matrix-subcpy p_a1
+				   (grsp-lm p_a1)
+				   (grsp-hm p_a1)
+				   p_j1
+				   p_j1))
 
     ;; Cycle and count.
     (set! i1 (grsp-lm p_a1))
@@ -6288,7 +6312,11 @@
     (set! res1 (grsp-matrix-cpy p_a1))
 
     ;; Extract column to mutate.
-    (set! res2 (grsp-matrix-subcpy res1 (grsp-lm res1) (grsp-hm res1) p_n2 p_n2))    
+    (set! res2 (grsp-matrix-subcpy res1
+				   (grsp-lm res1)
+				   (grsp-hm res1)
+				   p_n2
+				   p_n2))    
 
     ;; Mutate res2.
     (set! res2 (grsp-matrix-mutation res2 p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2))
@@ -6486,8 +6514,8 @@
     res1))
 
 
-;;;; grsp-matrix-same_dims - Checks if p_a1 and p_a2 have the same number of rows
-;; and columns.
+;;;; grsp-matrix-same_dims - Checks if p_a1 and p_a2 have the same number of
+;; rows and columns.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
@@ -6575,7 +6603,7 @@
 	(j2 0)
 	(r1 0))
 
-    ;; Normalize fitness values (p_j2) and accumulated normalized fitness
+    ;; Normalize fitness values (p_j2) and accumulated normalized fitness.
     (set! j2 (grsp-matrix-opio "#+c" p_a1 p_j1))
     (set! i1 (grsp-lm p_a1))
     (while (<= i1 (grsp-hm p_a1))
@@ -6615,11 +6643,11 @@
 ;; Notes:
 ;; - This function will overwrite anything on row or column p_n1.
 ;; - Do not use with set!
-;; - Interstingly, you can use these keys to unequivocally identify anything; you
-;;   can, for example, set a column wit unique identifiers within a matrix to
-;;   point to specific kinds of files. That is, if you set column n as containing
-;;   keys, each key can identify a txt or pdf file, for example, which is pointed
-;;   from the matrix.
+;; - Interstingly, you can use these keys to unequivocally identify anything;
+;;   you can, for example, set a column wit unique identifiers within a matrix
+;;   to point to specific kinds of files. That is, if you set column n as
+;;   containing keys, each key can identify a txt or pdf file, for example,
+;;   which is pointed from the matrix.
 ;;
 (define (grsp-matrix-keyon p_s1 p_a1 p_n1 p_n2 p_n3)
   (let ((res1 0)
@@ -7546,8 +7574,8 @@
 				(array-set! res1 n3 p_m1 j1))
 			       ((equal? (and (< j1 nh) (> j1 nl)) #t)
 				;; Replace the value of the current element with
-				;; the value of the posterior element (the one that
-				;; has a col index higher by one).
+				;; the value of the posterior element (the one
+				;; that has a col index higher by one).
 				(set! n3 (array-ref res1 p_m1 (+ j1 1)))
 				(array-set! res1 n3 p_m1 j1))
 			       ((equal? j1 nh)
@@ -7926,6 +7954,9 @@
 ;;
 ;; Arguments:
 ;; - p_a1: matrix. Numeric.
+;;
+;; Examples:
+;; - example5.scm
 ;;
 (define (grsp-matrix-display p_a1)
   (let ((res1 "")

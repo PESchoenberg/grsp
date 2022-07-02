@@ -366,6 +366,9 @@
 ;;   this function to change parameters such as activation functions per node,
 ;;   weights, etc.
 ;;
+;; Examples:
+;; - example3.scm
+;;
 ;; Output:
 ;; - A list with elements combining the results provided by:
 ;;   - grsp-ann-net-specs-ffn.
@@ -462,6 +465,9 @@
 ;; - p_l1: ann (list).
 ;; - p_n1: iterations.
 ;; - p_n2: mutations desired after each iteration.
+;;
+;; Examples:
+;; - example3.scm
 ;;
 ;; Output:
 ;; - p_l1 updated.
@@ -2021,6 +2027,9 @@
 ;;   - "datao".
 ;; - p_l1: ann.
 ;;
+;; Examples:
+;; - example3.scm
+;;
 ;; Output:
 ;; - One of the elements (matrix) of ann p_l1, as specified by p_s1.
 ;;
@@ -2461,6 +2470,9 @@
 ;; Notes:
 ;; - See grsp-m2datai.
 ;;
+;; Examples:
+;; - example3.scm
+;;
 ;; Output:
 ;; - p_l1 with an updated datai table.
 ;;
@@ -2633,6 +2645,9 @@
 ;;
 ;; Notes:
 ;; - See grsp3.grsp-matrix-fdifm, grsp-ann-fdifm.
+;;
+;; Examples:
+;; - example3.scm
 ;;
 ;; Output:
 ;; - A list containing difference maps (matrices) for each pair of ann matrices;
@@ -3313,6 +3328,9 @@
 ;;   - #f: does not show names.
 ;; - p_l1: ann.
 ;;
+;; Examples:
+;; - example3.scm
+;;
 (define (grsp-ann-devt p_b1 p_l1)
   (let ((l2 '()))
     
@@ -3525,6 +3543,9 @@
 ;; Notes:
 ;; - See grsp-ann-devnc
 ;;
+;; Examples:
+;; - example3.scm
+;;
 (define (grsp-ann-devnca p_b1 p_b3 p_l1 p_n2)
   (let ((i1 0)
 	(nodes 0)
@@ -3561,6 +3582,9 @@
 ;; Arguments:
 ;; p_s1: string, title or identifier.
 ;; p_l1: ann.
+;;
+;; Examples:
+;; - example3.scm
 ;;
 (define (grsp-ann-stats p_s1 p_l1)
   (let ((size 0)
