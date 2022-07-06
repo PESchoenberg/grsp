@@ -7,7 +7,7 @@
 ;; example6.scm
 ;;
 ;; A sample of grsp functions. This program shows how function 
-;; grsp-matrix-decompose works.
+;; grsp-matrix-decompose works ("#QRH").
 ;;
 ;; Compilation:
 ;;
@@ -15,7 +15,7 @@
 ;;
 ;; - Enter the following:
 ;;
-;;   guile example6.scm 
+;;   guile example8.scm 
 ;;
 ;; ==============================================================================
 ;;
@@ -59,10 +59,8 @@
 ;; Main program
 ;;
 ;; Sources:
-;; - [1] This example is based on Youtube.com. 2022. [online] Available at:
-;;   https://www.youtube.com/watch?v=FAnNBw7d0vg&list=TLPQMjYwNjIwMjKMd-cFx4S92Q&index=3
-;;   [Accessed 29 June 2022].
-;; 
+;; - See example8.scm.
+;;
 (clear)
 
 ;; Create matrix and input elements.
@@ -74,32 +72,32 @@
 
 ;; Calculate and display results.
 (display "\n")
-(display "LU decomposition (A = L*U):")
-(define LU (grsp-matrix-decompose "#LUD" A))
-(define L (car LU))
-(define U (car (cdr LU)))
+(display "QR decomposition (A = Q*R):")
+(define QR (grsp-matrix-decompose "#QRH" A))
+(define Q (car QR))
+(define R (car (cdr QR)))
 (newlines 1)
 (display "Martix A:")
 (newlines 1)
 (grsp-matrix-display A)
 (newlines 2)
-(display "Matrix L")
+(display "Matrix Q")
 (newlines 1)
-(grsp-matrix-display L)
+(grsp-matrix-display Q)
 (newlines 2)
-(display "Matrix U")
+(display "Matrix R")
 (newlines 1)
-(grsp-matrix-display U)
+(grsp-matrix-display R)
 (newlines 2)
-(display "L * U")
+(display "Q * R")
 (newlines 1)
-(define LU2 (grsp-matrix-opmm "#*" L U))
-(grsp-matrix-display LU2)
+(define QR2 (grsp-matrix-opmm "#*" Q R))
+(grsp-matrix-display QR2)
 (newlines 1)
 (grsp-matrix-display A)
 (newlines 1)
-(display "Equality check (A = L * U) passed? ")
-(display (grsp-matrix-is-equal A LU2))
+(display "Equality check (A = Q * R) passed? ")
+(display (grsp-matrix-is-equal A QR2))
 (newlines 1)
 
 
