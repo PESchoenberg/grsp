@@ -178,6 +178,9 @@
 ;; - [48] En.wikipedia.org. 2022. Gram–Schmidt process - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Gram%E2%80%93Schmidt_process
 ;;   [Accessed 27 June 2022].
+;; - [49] https://people.inf.ethz.ch/gander/papers/qrneu.pdf
+;; - [50] https://www.cs.cornell.edu/~bindel/class/cs6210-f09/lec18.pdf
+;; - [51] https://people.math.wisc.edu/~roch/mmids/qr-4-ls-by-qr.html
 
 
 (define-module (grsp grsp3)
@@ -1178,7 +1181,8 @@
     res1))
 
 
-;;;; grsp-matrix-create-fix - Creates pre-defined matrices of specific sizes and values.
+;;;; grsp-matrix-create-fix - Creates pre-defined matrices of specific sizes
+;; and values.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
@@ -1193,14 +1197,19 @@
 ;;   - "#P": Qubit quantum gate. Phase shift, requires also p_z1.
 ;;   - "#S": Qubit quantum gate. S.
 ;;   - "#T": Qubit quantum gate. T.
-;;   - "#TDG" Quibit quantum gate. T dagger. COnjugater transpose of T. Tdg gate.
+;;   - "#TDG" Quibit quantum gate. T dagger. COnjugater transpose of T.
+;;     Tdg gate.
 ;;   - "#CX": Qubit quantum gate. Controlled X.
 ;;   - "#CY": Qubit quantum gate. Controlled Y.
 ;;   - "#CZ": Qubit quantum gate. Controlled Z.
-;;   - "#CP": Qubit quantum gate. Controlled P, requires also p_z1 and state |11>.
-;;   - "#RX": Qubit quantum gate. Rotation operator on X, requires also p_z1 (theta).
-;;   - "#RY": Qubit quantum gate. Rotation operator on Y, requires also p_z1 (theta).
-;;   - "#RZ": Qubit quantum gate. Rotation operator on Z, requires also p_z1 (theta).
+;;   - "#CP": Qubit quantum gate. Controlled P, requires also p_z1 and state
+;;     |11>.
+;;   - "#RX": Qubit quantum gate. Rotation operator on X, requires also p_z1
+;;     (theta).
+;;   - "#RY": Qubit quantum gate. Rotation operator on Y, requires also p_z1
+;;     (theta).
+;;   - "#RZ": Qubit quantum gate. Rotation operator on Z, requires also p_z1
+;;     (theta).
 ;;   - "#SWAP": Qubit quantum gate. SWAP.
 ;;   - "#SQSWAP": Qubit quantum gate. Square root of SWAP.
 ;;   - "#CSWAP": Qubit quantum gate. CSWAP, Fredkin.
@@ -1390,7 +1399,8 @@
 	   (array-set! res1 z3 0 0)
 	   (array-set! res1 z2 1 1)
 	   (array-set! res1 z2 2 2)
-	   (array-set! res1 z3 3 3)))	  
+	   (array-set! res1 z3 3 3)))
+    
     res1))
 
 
@@ -1398,9 +1408,6 @@
 ;; size of p_a1. This may be useful - for example - to create an identity
 ;; matrix of the size of a matrix you have without having to find out its
 ;; size specifically.
-;;
-;;;; grsp-matrix-find - Find all occurrences of p_v1 in matrix p_a1 that
-;; statisfy condition p_s1.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
@@ -1540,8 +1547,6 @@
 	(i1 0)
 	(j1 0))
 
-    ;; Extract the boundaries of the matrix.	
-
     ;; Create new matrix with transposed shape.
     (set! res2 (grsp-matrix-create res2
 				   (+ (- (grsp-hn res1) (grsp-ln res1)) 1)
@@ -1608,7 +1613,7 @@
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors, hermitian conjugate, adjoint,
-;; transjugate.
+;;   transjugate.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -3039,7 +3044,8 @@
 ;;
 ;; Arguments:
 ;; - p_s1: decomposition type.
-;;   - "#LUD": LU decomposition. Doolitle.
+;;   - "#LUD": LU decomposition, Doolitle.
+;;   - "#QRMG: QR decomposition, modified Gram-Schmidt.
 ;; - p_a1: matrix to be decomposed.
 ;; - This function does not perform viability checks on p_a1 for the 
 ;;   required operation; the user or an additional shell function should take 
@@ -3049,7 +3055,7 @@
 ;; - example5.scm
 ;;
 ;; Sources:
-;; - [6][43].
+;; - [6][43][49][50][51].
 ;;
 (define (grsp-matrix-decompose p_s1 p_a1)
   (let ((res1 '())
@@ -3071,17 +3077,109 @@
 
     ;; Safety copy.
     (set! A (grsp-matrix-cpy p_a1))    
+    
+    (cond ((equal? p_s1 "#QRMG") ;; ***
 
-    (cond ((equal? p_s1 "#QRH") ;; ***
-	   ;; https://www.cs.cornell.edu/~bindel/class/cs6210-f09/lec18.pdf
-	   (set! Q (grsp-matrix-create-dim "#I" A))
-	   (set! R (grsp-matrix-cpy p_a1))
-
+	   ;; https://people.inf.ethz.ch/gander/papers/qrneu.pdf
+	   (set! Q (grsp-matrix-create 0 (grsp-tm A) (grsp-tn A)))
+	   (set! R (grsp-matrix-create 0 (grsp-tn A) (grsp-tn A)))
 	   
+	   (set! k1 (grsp-ln A))
+	   (while (<= k1 (grsp-hn A))
+
+		  ;; R
+		  (set! sum 0)
+		  (set! j1 (grsp-lm A))
+		  (while (<= j1 (grsp-hm A))
+			 (set! sum (+ sum (expt (array-ref A j1 k1) 2)))			
+			 (set! j1 (in j1)))
+		  
+		  (array-set! R (sqrt sum) k1 k1)
+
+		  ;; Q
+		  (set! j1 (grsp-lm A))
+		  (while (<= j1 (grsp-hm A))
+			 (array-set! Q (/ (array-ref A j1 k1) (array-ref R k1 k1)) j1 k1)
+			 (set! j1 (in j1)))
+		  
+		  ;; A
+		  (set! i1 (+ k1 1))
+		  (while (<= i1 (grsp-hn A))
+			 
+			 (set! sum 0)
+			 (set! j1 (grsp-lm A))
+			 (while (<= j1 (grsp-hm A))
+				(set! sum (+ sum (* (array-ref A j1 i1) (array-ref Q j1 k1))))
+				(set! j1 (in j1)))
+				
+			 (array-set! R sum k1 i1)
+			 
+			 (set! j1 (grsp-lm A))
+			 (while (<= j1 (grsp-hm A))
+				(array-set! A (- (array-ref A j1 i1) (* (array-ref R k1 i1) (array-ref Q j1 k1))) j1 i1)
+				(set! j1 (in j1)))
+				 
+			 (set! i1 (in i1)))
+		  
+		  (set! k1 (in k1)))	   
+
+	   ;; Compose results for QRMG.
+	   (set! res1 (list Q R)))
+
+	  ((equal? p_s1 "#QRH")
+
+	   ;; https://people.inf.ethz.ch/gander/papers/qrneu.pdf
+	   ;; https://people.math.wisc.edu/~roch/mmids/qr-4-ls-by-qr.html
+	   (set! Q (grsp-matrix-create "#I" (grsp-tn A) (grsp-tn A)))
+	   (set! R (grsp-matrix-cpy A)) 
+
+	   ;; This also requires vector D.
+	   (set! D (grsp-matrix-diagonal-vector p_a1))
+	   
+	   (set! j1 (grsp-ln A))
+	   (while (<= j1 (grsp-hn A))
+		  
+		  (set! sum 0)
+		  (set! i1 j1)
+		  (while (<= i1 (grsp-hm A))
+			     (set! sum (+ sum (expt (array-ref A i1 j1) 2)))
+			     (set! i1 (in i1)))
+
+		  (set! sum (sqrt sum))
+		  
+		  (cond ((> (array-ref A j1 j1) 0)
+			 (array-set! D (* -1 sum) 0 j1))
+			(else (array-set! D sum 0 j1)))
+		  
+		  (set! fak (sqrt (* sum (+ sum (abs (array-ref A j1 j1))))))
+		  (array-set! A (- (array-ref A j1 j1) (array-ref D 0 j1)) j1 j1) 
+		  
+		  (set! k1 j1)
+		  (while (<= k1 (grsp-lm A))
+			 (array-set! A (/ (array-ref A k1 j1) fak) k1 j1)
+			 (set! k1 (in k1)))
+
+		  (set! i1 (+ j1 1))
+		  (while (<= i1 (grsp-hn A))
+			 (set! sum 0)
+
+			 (set! k1 j1)
+			 (while (<= k1 (grsp-lm A))
+				(set! sum (+ sum (* (array-ref A k1 j1) (array-ref A k1 i1))))
+				(set! k1 (in k1)))
+
+			 (set! k1 j1)
+			 (while (<= k1 (grsp-lm A))
+				(array-set! A (- (array-ref A k1 i1) (* (array-ref A k1 j1) sum)) k1 i1)
+				(set! k1 (in k1)))
+			 
+			 (set! i1 (in i1)))
+		  
+		  (set! j1 (in j1)))
 
 	   ;; Compose results for QRH.
 	   (set! res1 (list Q R)))
-	  
+	   
 	  ((equal? p_s1 "#LUD")
 	   	   
 	   ;; Create L and U matrices of the same size as p_a1.
