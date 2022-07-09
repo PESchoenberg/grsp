@@ -178,9 +178,20 @@
 ;; - [48] En.wikipedia.org. 2022. Gram–Schmidt process - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Gram%E2%80%93Schmidt_process
 ;;   [Accessed 27 June 2022].
-;; - [49] https://people.inf.ethz.ch/gander/papers/qrneu.pdf
-;; - [50] https://www.cs.cornell.edu/~bindel/class/cs6210-f09/lec18.pdf
-;; - [51] https://people.math.wisc.edu/~roch/mmids/qr-4-ls-by-qr.html
+;; - [49] 1980. Algorithms for the QR-Decomposition. [ebook] Zuerich. Gander.
+;;   Available at: https://people.inf.ethz.ch/gander/papers/qrneu.pdf
+;;   [Accessed 6 July 2022].
+;; - [50] Bindel, 2017. Householder QR. [ebook] Available at:
+;;   https://www.cs.cornell.edu/~bindel/class/cs6210-f09/lec18.pdf
+;;   [Accessed 6 July 2022].
+;; - [51] People.math.wisc.edu. 2022. qr-4-ls-by-qr. [online] Available at:
+;;   https://people.math.wisc.edu/~roch/mmids/qr-4-ls-by-qr.html
+;;   [Accessed 6 July 2022].
+;; - [52] En.wikipedia.org. 2022. Wilson matrix - Wikipedia. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Wilson_matrix [Accessed 7 July 2022].
+;; - [53] En.wikipedia.org. 2022. Cholesky decomposition - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Cholesky_decomposition
+;;   [Accessed 7 July 2022].
 
 
 (define-module (grsp grsp3)
@@ -1217,16 +1228,17 @@
 ;;   - "#SQISWAP": Qubit quantum gate. Square root of imaginary SWAP.
 ;;   - "#CCX": Qubit quantum gate. CCX. Toffoli.
 ;;   - "#SQX": Qubit quantum gate. SQX. Square root of X.
-;;   - "#RXX"; Qubit quantum gate. Ising coupling gate, X, requires also p_z1.
-;;   - "#RYY"; Qubit quantum gate. Ising coupling gate, Y, requires also p_z1.
-;;   - "#RZZ"; Qubit quantum gate. Ising coupling gate, Z, requires also p_z1.
+;;   - "#RXX": Qubit quantum gate. Ising coupling gate, X, requires also p_z1.
+;;   - "#RYY": Qubit quantum gate. Ising coupling gate, Y, requires also p_z1.
+;;   - "#RZZ": Qubit quantum gate. Ising coupling gate, Z, requires also p_z1.
+;;   - "#Wilson", Wilson matrix.
 ;; - p_z1: complex, matrix scalar multiplier.
 ;;
 ;; Examples:
 ;; - example7.scm
 ;;
 ;; Sources:
-;; - [31][32][33][34][35].
+;; - [31][32][33][34][35][52].
 ;;
 (define (grsp-matrix-create-fix p_s1 p_z1)
   (let ((res1 0)
@@ -1399,7 +1411,25 @@
 	   (array-set! res1 z3 0 0)
 	   (array-set! res1 z2 1 1)
 	   (array-set! res1 z2 2 2)
-	   (array-set! res1 z3 3 3)))
+	   (array-set! res1 z3 3 3))
+	  ((equal? p_s1 "#Wilson")
+	   (set! res1 (grsp-matrix-create 0 4 4))
+	   (array-set! res1 5 0 0)
+	   (array-set! res1 7 0 1)
+	   (array-set! res1 6 0 2)
+	   (array-set! res1 5 0 3)
+	   (array-set! res1 7 1 0)
+	   (array-set! res1 10 1 1)
+	   (array-set! res1 8 1 2)
+	   (array-set! res1 7 1 3)
+	   (array-set! res1 6 2 0)
+	   (array-set! res1 8 2 1)
+	   (array-set! res1 10 2 2)
+	   (array-set! res1 9 2 3)
+	   (array-set! res1 5 3 0)
+	   (array-set! res1 7 3 1)
+	   (array-set! res1 9 3 2)
+	   (array-set! res1 10 3 3)))	   
     
     res1))
 
@@ -3046,6 +3076,7 @@
 ;; - p_s1: decomposition type.
 ;;   - "#LUD": LU decomposition, Doolitle.
 ;;   - "#QRMG: QR decomposition, modified Gram-Schmidt.
+;;   - "#LL": LL decomposition, Cholesky-Banachiewicz.
 ;; - p_a1: matrix to be decomposed.
 ;; - This function does not perform viability checks on p_a1 for the 
 ;;   required operation; the user or an additional shell function should take 
@@ -3062,10 +3093,12 @@
 	(b1 #t)
 	(A 0)
 	(L 0)
+	(Lct 0)
 	(U 0)
 	(D 0)
 	(Q 0)
 	(R 0)
+	(H 0)
 	(i1 0)
 	(j1 0)
 	(k1 0)
@@ -3077,10 +3110,8 @@
 
     ;; Safety copy.
     (set! A (grsp-matrix-cpy p_a1))    
-    
-    (cond ((equal? p_s1 "#QRMG") ;; ***
-
-	   ;; https://people.inf.ethz.ch/gander/papers/qrneu.pdf
+	   
+    (cond ((equal? p_s1 "#QRMG")
 	   (set! Q (grsp-matrix-create 0 (grsp-tm A) (grsp-tn A)))
 	   (set! R (grsp-matrix-create 0 (grsp-tn A) (grsp-tn A)))
 	   
@@ -3126,60 +3157,52 @@
 	   ;; Compose results for QRMG.
 	   (set! res1 (list Q R)))
 
-	  ((equal? p_s1 "#QRH")
+	  ;; ***************************
 
-	   ;; https://people.inf.ethz.ch/gander/papers/qrneu.pdf
-	   ;; https://people.math.wisc.edu/~roch/mmids/qr-4-ls-by-qr.html
-	   (set! Q (grsp-matrix-create "#I" (grsp-tn A) (grsp-tn A)))
-	   (set! R (grsp-matrix-cpy A)) 
-
-	   ;; This also requires vector D.
-	   (set! D (grsp-matrix-diagonal-vector p_a1))
+	  ((equal? p_s1 "#UH")
+	   ;; https://downloads.hindawi.com/journals/ddns/2015/649423.pdf
+	   ;; https://journals.aps.org/prresearch/pdf/10.1103/PhysRevResearch.4.013144
+	   ;; https://www.maths.manchester.ac.uk/~higham/papers/hisc90.pdf
+	   ;; https://www.cs.ucdavis.edu/~bai/Winter09/nakatsukasabaigygi09.pdf
+	   (set! U (grsp-matrix-cpy A))
+	   (set! H (grsp-matrix-cpy A))
 	   
-	   (set! j1 (grsp-ln A))
-	   (while (<= j1 (grsp-hn A))
-		  
-		  (set! sum 0)
-		  (set! i1 j1)
-		  (while (<= i1 (grsp-hm A))
-			     (set! sum (+ sum (expt (array-ref A i1 j1) 2)))
-			     (set! i1 (in i1)))
+	   ;; Compose results for UH.
+	   (set! res1 (list U H)))
+	  
+	  ;; ***************************
 
-		  (set! sum (sqrt sum))
-		  
-		  (cond ((> (array-ref A j1 j1) 0)
-			 (array-set! D (* -1 sum) 0 j1))
-			(else (array-set! D sum 0 j1)))
-		  
-		  (set! fak (sqrt (* sum (+ sum (abs (array-ref A j1 j1))))))
-		  (array-set! A (- (array-ref A j1 j1) (array-ref D 0 j1)) j1 j1) 
-		  
-		  (set! k1 j1)
-		  (while (<= k1 (grsp-lm A))
-			 (array-set! A (/ (array-ref A k1 j1) fak) k1 j1)
-			 (set! k1 (in k1)))
+	  ((equal? p_s1 "#LL")
 
-		  (set! i1 (+ j1 1))
-		  (while (<= i1 (grsp-hn A))
+	   ;; Create matrix L based on the dimensions of A.
+	   (set! L (grsp-matrix-create 0 (grsp-tm A) (grsp-tn A)))
+
+	   ;; Cycle.
+	   (set! i1 (grsp-lm A))
+	   (while (<= i1 (grsp-hm A))
+
+		  (set! j1 (grsp-lm A))
+		  (while (<= j1 i1)
+
 			 (set! sum 0)
-
-			 (set! k1 j1)
-			 (while (<= k1 (grsp-lm A))
-				(set! sum (+ sum (* (array-ref A k1 j1) (array-ref A k1 i1))))
+			 (set! k1 (grsp-lm A))
+			 (while (< k1 j1)
+				(set! sum (+ sum (* (array-ref L i1 k1) (array-ref L j1 k1))))
 				(set! k1 (in k1)))
 
-			 (set! k1 j1)
-			 (while (<= k1 (grsp-lm A))
-				(array-set! A (- (array-ref A k1 i1) (* (array-ref A k1 j1) sum)) k1 i1)
-				(set! k1 (in k1)))
-			 
-			 (set! i1 (in i1)))
-		  
-		  (set! j1 (in j1)))
+			 (cond ((equal? i1 j1)
+				(array-set! L (sqrt (- (array-ref A i1 i1) sum)) i1 j1))			       
+			       (else (array-set! L (* (/ 1.0 (array-ref L j1 j1)) (- (array-ref A i1 j1) sum)) i1 j1)))
+				
+			 (set! j1 (in j1)))
 
-	   ;; Compose results for QRH.
-	   (set! res1 (list Q R)))
+		  (set! i1 (in i1)))
+
+	   (set! Lct (grsp-matrix-conjugate-transpose L))
 	   
+	   ;; Compose results for LL.
+	   (set! res1 (list L Lct)))
+	  
 	  ((equal? p_s1 "#LUD")
 	   	   
 	   ;; Create L and U matrices of the same size as p_a1.
