@@ -393,7 +393,16 @@
     ;; p_n2. In order not t mutate the network, set p_n2 = 0 so that the 
     ;; following cycle gets ignored entirely.
     (while (<= i1 p_n2)
-	   (set! res3 (grsp-ann-net-mutate res3 1 "#normal" 0.0 0.15 "#normal" 0.0 0.15 l1 l3))
+	   (set! res3 (grsp-ann-net-mutate res3
+					   1
+					   "#normal"
+					   0.0
+					   0.15
+					   "#normal"
+					   0.0
+					   0.15
+					   l1
+					   l3))
 	   (set! i1 (in i1)))
 
     ;; Compose results depending on p_b1.
@@ -474,6 +483,8 @@
 ;;
 (define (grsp-ann-net-miter-omth p_b3 p_b1 p_s1 p_l1 p_n1 p_n2)
   (let ((res1 '())
+	(s1 "\n ------------------------------------------ Iteration number: ")
+	(s2 "\n Mutation iteration ")
 	(i1 0)
 	(i2 0))
 
@@ -484,7 +495,7 @@
 
 	   ;; If verbosity is on, present iteration data.
 	   (cond ((equal? p_b3 #t)
-		  (display "\n ------------------------------------------ Iteration number: ")
+		  (display s1)
 		  (display i1)
 		  (display "\n")))
 	   ;; ***
@@ -497,7 +508,7 @@
 
 		  ;; If verbosity is on, present mutation data.
 		  (cond ((equal? p_b3 #t)
-			 (display "\n Mutation iteration ")
+			 (display s2)
 			 (display i2)
 			 (display "\n")))
 		  
@@ -889,7 +900,7 @@
 	(a1 0)
 	(a2 0)
 	(a3 0)
-	(w1 1) ;; 0
+	(w1 1)
 	(n1 2)
 	(b1 #t)
 	(y1 0)
@@ -954,16 +965,28 @@
 	   ;; layer are required. Bias set to 1 (elem 5 on l1).
 	   (set! i2 0)
 	   (while (< i2 a1)
-		  ;; ***
+
 		  (cond ((= a2 0) ; Input node.
 			 (set! l1 (list c0 n1 0 a0 i2 1 0 a3 0 w1 i2))
-			 (set! nodes (grsp-ann-item-create nodes conns count 0 l1)))
+			 (set! nodes (grsp-ann-item-create nodes
+							   conns
+							   count
+							   0
+							   l1)))
 			((= a2 1) ; Neuron.
 			 (set! l1 (list c0 n1 1 a0 i2 1 0 a3 0 w1 i2))
-			 (set! nodes (grsp-ann-item-create nodes conns count 0 l1)))
+			 (set! nodes (grsp-ann-item-create nodes
+							   conns
+							   count
+							   0
+							   l1)))
 			((= a2 2) ; Output node.
 			 (set! l1 (list c0 n1 2 a0 i2 1 0 a3 0 w1 i2))
-			 (set! nodes (grsp-ann-item-create nodes conns count 0 l1))))
+			 (set! nodes (grsp-ann-item-create nodes
+							   conns
+							   count
+							   0
+							   l1))))
 		   
 		   ;;(grsp-ann-counter-upd count 0)
 		   (set! c0 (array-ref count 0 0))
@@ -1051,7 +1074,11 @@
 				(set! o0 (array-ref res5 i5 0)) ;; Node id.
 				(set! o3 (array-ref res5 i5 3)) ;; Layer.
 				(set! o4 (array-ref res5 i5 4)) ;; Layer pos.
-				(set! conns (grsp-ann-item-create nodes conns count 1 (list 0 2 1 o0 t0 0 0 0 0 t4)))
+				(set! conns (grsp-ann-item-create nodes
+								  conns
+								  count
+								  1
+								  (list 0 2 1 o0 t0 0 0 0 0 t4)))
 				
 				(set! i5 (in i5)))
 			 
@@ -1060,7 +1087,15 @@
 		 (else (set! b1 #f))))
 	    
     ;; Compose results.
-    (set! res1 (grsp-ann-net-preb nodes conns count idata odata specs odtid datai datao))
+    (set! res1 (grsp-ann-net-preb nodes
+				  conns
+				  count
+				  idata
+				  odata
+				  specs
+				  odtid
+				  datai
+				  datao))
     
     res1))
 
@@ -1108,6 +1143,7 @@
     (set! i1 lm1)
     (while (<= i1 hm1)
 	   (array-set! res1 i1 i1 0)
+	   
 	   (cond ((= i1 lm1)
 		  ;; Set values for first row.		  
 		  (array-set! res1 p_nl i1 1)
@@ -1122,6 +1158,7 @@
 		       (array-set! res1 1 i1 2)
 		       (array-set! res1 p_af i1 3)))
 
+	   
 	   (set! i1 (in i1)))
 	   
     res1))
@@ -1147,10 +1184,10 @@
 ;;   - "#uniform": uniform.
 ;; - p_u2: mean for element random value.
 ;; - p_v2: standard deviation for element random value.
-;; - p_l1: list of elements (cols) of nodes to mutate. Usually values sould be:
+;; - p_l1: list of elements (cols) of nodes to mutate. Usually values should be:
 ;;   - 5: bias.
 ;;   - 9: weight.
-;; - p_l3: list of elements (cols) of conns to mutate. Usually values sould be:
+;; - p_l3: list of elements (cols) of conns to mutate. Usually values should be:
 ;;   - 5: value.
 ;;   - 7: weight.
 ;;
@@ -1195,11 +1232,27 @@
     
     ;; Mutate nodes.
     (set! l1 p_l1)
-    (set! nodes (grsp-matrix-col-lmutation nodes p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 l1))
+    (set! nodes (grsp-matrix-col-lmutation nodes
+					   p_n1
+					   p_s1
+					   p_u1
+					   p_v1
+					   p_s2
+					   p_u2
+					   p_v2
+					   l1))
 
     ;; Mutate conns.
     (set! l3 p_l3)
-    (set! conns (grsp-matrix-col-lmutation conns p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 l3))
+    (set! conns (grsp-matrix-col-lmutation conns
+					   p_n1
+					   p_s1
+					   p_u1
+					   p_v1
+					   p_s2
+					   p_u2
+					   p_v2
+					   l3))
 
     ;; Compose results.
     (set! res1 (list nodes conns count idata odata specs odtid datai datao))    
@@ -1228,10 +1281,10 @@
 ;;   - "#uniform": uniform.
 ;; - p_u2: mean for element random value.
 ;; - p_v2: standard deviation for element random value.
-;; - p_l1: list of elements (cols) of nodes to mutate. Usually values sould be:
+;; - p_l1: list of elements (cols) of nodes to mutate. Usually values should be:
 ;;   - 5: bias.
 ;;   - 9: weight.
-;; - p_l3: list of elements (cols) of conns to mutate. Usually values sould be:
+;; - p_l3: list of elements (cols) of conns to mutate. Usually values should be:
 ;;   - 5: value.
 ;;   - 7: weight.
 ;;
@@ -1277,9 +1330,25 @@
 	      (set! datao (grsp-ann-get-matrix "datao" l2)))
     
     (parallel ((set! l1 p_l1)
-	       (set! nodes (grsp-matrix-col-lmutation nodes p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 l1)))
+	       (set! nodes (grsp-matrix-col-lmutation nodes
+						      p_n1
+						      p_s1
+						      p_u1
+						      p_v1
+						      p_s2
+						      p_u2
+						      p_v2
+						      l1)))
 	      ((set! l3 p_l3)
-	       (set! conns (grsp-matrix-col-lmutation conns p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 l3))))
+	       (set! conns (grsp-matrix-col-lmutation conns
+						      p_n1
+						      p_s1
+						      p_u1
+						      p_v1
+						      p_s2
+						      p_u2
+						      p_v2
+						      l3))))
 
     ;; Compose results.
     (set! res1 (list nodes conns count idata odata specs odtid datai datao))    
@@ -1401,7 +1470,6 @@
 ;; Notes:
 ;; -  Keep in mind TL0 and TL1 while using this function.
 ;;
-;; ***
 (define (grsp-ann-node-eval p_b3 p_id p_a1 p_a2 p_a3)
   (let ((res1 0)
 	(res2 0)
@@ -1805,9 +1873,27 @@
 
     ;; Perform mutation.
     (cond ((equal? b1 #f)
-	   (set! res1 (grsp-ann-net-mutate res1 0.5 "#normal" 0.0 0.15 "#normal" 0.0 0.15 l1 l3)))
+	   (set! res1 (grsp-ann-net-mutate res1
+					   0.5
+					   "#normal"
+					   0.0
+					   0.15
+					   "#normal"
+					   0.0
+					   0.15
+					   l1
+					   l3)))
 	  ((equal? b1 #t)
-	   (set! res1 (grsp-ann-net-mutate-mth res1 0.5 "#normal" 0.0 0.15 "#normal" 0.0 0.15 l1 l3))))
+	   (set! res1 (grsp-ann-net-mutate-mth res1
+					       0.5
+					       "#normal"
+					       0.0
+					       0.15
+					       "#normal"
+					       0.0
+					       0.15
+					       l1
+					       l3))))
 
     res1))
 
@@ -3398,7 +3484,7 @@
     (grsp-lal-devt p_b1 l2 l3)))
 
 
-;;;; grsp-ann-devcl - Describes connections from conns mat5rix.
+;;;; grsp-ann-devcl - Describes connections from conns matrix.
 ;;
 ;; Keywords:
 ;; - function, ann, neural network.

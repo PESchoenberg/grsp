@@ -4,10 +4,10 @@
 
 ;; ==============================================================================
 ;;
-;; example6.scm
+;; example9.scm
 ;;
 ;; A sample of grsp functions. This program shows how function 
-;; grsp-matrix-decompose works ("#QRH").
+;; grsp-matrix-decompose works ("#LL").
 ;;
 ;; Compilation:
 ;;
@@ -15,7 +15,7 @@
 ;;
 ;; - Enter the following:
 ;;
-;;   guile example8.scm 
+;;   guile example9.scm 
 ;;
 ;; ==============================================================================
 ;;
@@ -59,45 +59,53 @@
 ;; Main program
 ;;
 ;; Sources:
-;; - See example8.scm.
+;; - See example8.scm, grsp3.scm.
 ;;
 (clear)
 
 ;; Create matrix and input elements.
-(define A (grsp-matrix-create 0 2 2))
-(array-set! A 1 0 0)
-(array-set! A 3 0 1)
-(array-set! A 1 1 0)
-(array-set! A -1 1 1)
+(define A (grsp-matrix-create 0 3 3))
+(array-set! A 4 0 0)
+(array-set! A 12 0 1)
+(array-set! A -16 0 2)
+
+(array-set! A 12 1 0)
+(array-set! A 37 1 1)
+(array-set! A -43 1 2)
+
+(array-set! A -16 2 0)
+(array-set! A -43 2 1)
+(array-set! A 98 2 2)
+
 
 ;; Calculate and display results.
 (display "\n")
-(display "QR decomposition (A = Q*R):")
-(define QR (grsp-matrix-decompose "#QRH" A))
-(define Q (car QR))
-(define R (car (cdr QR)))
+(display "QR decomposition (A = L*Lct):")
+(define LL (grsp-matrix-decompose "#LL" A))
+(define L (car LL))
+(define Lct (car (cdr LL)))
 (newlines 1)
 (display "Martix A:")
 (newlines 1)
 (grsp-matrix-display A)
 (newlines 2)
-(display "Matrix Q")
+(display "Matrix L")
 (newlines 1)
-(grsp-matrix-display Q)
+(grsp-matrix-display L)
 (newlines 2)
-(display "Matrix R")
+(display "Matrix Lct")
 (newlines 1)
-(grsp-matrix-display R)
+(grsp-matrix-display Lct)
 (newlines 2)
-(display "Q * R")
+(display "L * Lct")
 (newlines 1)
-(define QR2 (grsp-matrix-opmm "#*" Q R))
-(grsp-matrix-display QR2)
+(define LL2 (grsp-matrix-opmm "#*" L Lct))
+(grsp-matrix-display LL2)
 (newlines 1)
 (grsp-matrix-display A)
 (newlines 1)
-(display "Equality check (A = Q * R) passed? ")
-(display (grsp-matrix-is-equal A QR2))
+(display "Equality check (A = L * Lct) passed? ")
+(display (grsp-matrix-is-equal A LL2))
 (newlines 1)
 
 

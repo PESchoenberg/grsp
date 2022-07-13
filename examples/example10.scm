@@ -4,10 +4,10 @@
 
 ;; ==============================================================================
 ;;
-;; example5.scm
+;; example10.scm
 ;;
 ;; A sample of grsp functions. This program shows how function 
-;; grsp-matrix-decompose works using the LU method.
+;; grsp-matrix-decompose works ("#SVD").
 ;;
 ;; Compilation:
 ;;
@@ -15,7 +15,7 @@
 ;;
 ;; - Enter the following:
 ;;
-;;   guile example5.scm 
+;;   guile example10.scm 
 ;;
 ;; ==============================================================================
 ;;
@@ -59,61 +59,54 @@
 ;; Main program
 ;;
 ;; Sources:
-;; - [1] This example is based on #linearalgebra, 2019. LU decomposition - An
-;;   Example. [video] Available at:
-;;   https://www.youtube.com/watch?v=BFYFkn-eOQk&list=TLPQMDkwNjIwMjJXvv49HK93tw&index=3
-;;   [Accessed 14 June 2022].
-;; 
+;; - See example8.scm, grsp3.scm.
+;;
 (clear)
 
 ;; Create matrix and input elements.
-(define A (grsp-matrix-create 0 4 4))
-(array-set! A 2 0 0)
-(array-set! A 4 0 1)
-(array-set! A 3 0 2)
-(array-set! A 5 0 3)
-(array-set! A -4 1 0)
-(array-set! A -7 1 1)
-(array-set! A -5 1 2)
-(array-set! A -8 1 3)
-(array-set! A 6 2 0)
-(array-set! A 8 2 1)
-(array-set! A 2 2 2)
-(array-set! A 9 2 3)
-(array-set! A 4 3 0)
-(array-set! A 9 3 1)
-(array-set! A -2 3 2)
-(array-set! A 14 3 3)
+(define A (grsp-matrix-create 0 3 3))
+(array-set! A 4 0 0)
+(array-set! A 12 0 1)
+(array-set! A -16 0 2)
+
+(array-set! A 12 1 0)
+(array-set! A 37 1 1)
+(array-set! A -43 1 2)
+
+(array-set! A -16 2 0)
+(array-set! A -43 2 1)
+(array-set! A 98 2 2)
 
 
 ;; Calculate and display results.
 (display "\n")
-(display "LU decomposition (A = L*U):")
-(define LU (grsp-matrix-decompose "#LUD" A))
-(define L (car LU))
-(define U (car (cdr LU)))
+(display "SVD decomposition (A = U*W*V):")
+(define UWV (grsp-matrix-decompose "#SVD" A))
+(define U (car UWV))
+(define W (cadr UWV))
+(define V (caadr UWV))
 (newlines 1)
-(display "Martix A:")
-(newlines 1)
-(grsp-matrix-display A)
-(newlines 2)
-(display "Matrix L")
-(newlines 1)
-(grsp-matrix-display L)
-(newlines 2)
-(display "Matrix U")
+(display "Martix U:")
 (newlines 1)
 (grsp-matrix-display U)
 (newlines 2)
-(display "L * U")
+(display "Matrix W")
 (newlines 1)
-(define LU2 (grsp-matrix-opmm "#*" L U))
-(grsp-matrix-display LU2)
+(grsp-matrix-display W)
+(newlines 2)
+(display "Matrix V")
+(newlines 1)
+(grsp-matrix-display V)
+(newlines 2)
+(display "U * W * V")
+(newlines 1)
+(define UWV2 (grsp-matrix-opmm "#*" U (grsp-matrix-opmm "#*" W V)))
+(grsp-matrix-display UWV2)
 (newlines 1)
 (grsp-matrix-display A)
 (newlines 1)
-(display "Equality check (A = L * U) passed? ")
-(display (grsp-matrix-is-equal A LU2))
+(display "Equality check (A = U * W * V) passed? ")
+(display (grsp-matrix-is-equal A UWV2))
 (newlines 1)
 
 
