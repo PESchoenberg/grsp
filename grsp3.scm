@@ -1,4 +1,4 @@
-0;; =============================================================================
+;; =============================================================================
 ;;
 ;; grsp3.scm
 ;;
@@ -61,7 +61,7 @@
 ;;   https://en.wikipedia.org/wiki/Elementary_matrix#Operations
 ;;   [Accessed 24 Feb. 2020].
 ;; - [9] En.wikipedia.org. 2020. Determinant. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Determinant> [Accessed 2 August 2020].
+;;   https://en.wikipedia.org/wiki/Determinant [Accessed 2 August 2020].
 ;; - [10] En.wikipedia.org. 2020. Leibniz Formula For Determinants. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Leibniz_formula_for_determinants
 ;;   [Accessed 4 August 2020].
@@ -88,13 +88,16 @@
 ;;   Available at: https://en.wikipedia.org/wiki/Genetic_algorithm
 ;;   [Accessed 13 May 2021].
 ;; - [20] En.wikipedia.org. 2021. Crossover (genetic algorithm) - Wikipedia.
-;;   [online] Available at: https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)
+;;   [online] Available at:
+;;   https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)
 ;;   [Accessed 13 May 2021].
 ;; - [21] En.wikipedia.org. 2021. Mutation (genetic algorithm) - Wikipedia.
-;;   [online] Available at: https://en.wikipedia.org/wiki/Mutation_(genetic_algorithm)
+;;   [online] Available at:
+;;   https://en.wikipedia.org/wiki/Mutation_(genetic_algorithm)
 ;;   [Accessed 13 May 2021].
 ;; - [22] En.wikipedia.org. 2021. Selection (genetic algorithm) - Wikipedia.
-;;   [online] Available at: https://en.wikipedia.org/wiki/Selection_(genetic_algorithm)
+;;   [online] Available at:
+;;   https://en.wikipedia.org/wiki/Selection_(genetic_algorithm)
 ;;   [Accessed 13 May 2021].
 ;; - [23] fitness, A., 2015. Accumulated normalized fitness. [online] Stack
 ;;   Overflow. Available at:
@@ -192,6 +195,9 @@
 ;; - [53] En.wikipedia.org. 2022. Cholesky decomposition - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Cholesky_decomposition
 ;;   [Accessed 7 July 2022].
+;; - [54] Es.wikipedia.org. 2022. Norma matricial - Wikipedia, la enciclopedia
+;;   libre. [online] Available at: https://es.wikipedia.org/wiki/Norma_matricial
+;;   [Accessed 10 July 2022].
 
 
 (define-module (grsp grsp3)
@@ -266,6 +272,7 @@
 	    grsp-mc2dbc-gnuplot2	    
 	    grsp-matrix-interval-mean
 	    grsp-matrix-determinant-lu
+	    grsp-matrix-determinant-qr
 	    grsp-matrix-is-invertible
 	    grsp-eigenval-opio
 	    grsp-matrix-sort
@@ -346,7 +353,9 @@
 	    grsp-matrix-diagonal-update
 	    grsp-matrix-diagonal-vector
 	    grsp-matrix-row-proj
-	    grsp-matrix-row-gsog))
+	    grsp-matrix-normp
+	    grsp-matrix-normf
+	    grsp-matrix-normm))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -1732,7 +1741,7 @@
 	  
     ;; Apply internal operation.
     (set! i1 (grsp-lm res1))
-    (while (<= j1 (grsp-hm res1))
+    (while (<= i1 (grsp-hm res1))
 
 	   (set! j1 (grsp-ln res1))
 	   (while (<= j1 (grsp-hn res1))
@@ -2368,7 +2377,16 @@
 (define (grsp-matrix-opmsc p_s1 p_a1 p_a2)
   (let ((res1 0)
 	(res2 0)
-	(res3 0))
+	(res3 0)
+	(res4 0)
+	(inf 0)
+	(sup 0)
+	(n1 0)
+	(n2 0)
+	(i1 0)
+	(i2 0)
+	(j1 0)
+	(j2 0))
 
     (cond ((equal? p_s1 "#.R")
 	   (set! res2 (grsp-matrix-opew "#*" p_a1 p_a2))
@@ -4313,6 +4331,36 @@
 
     ;; Calculate the determinant of p_a1.
     (set! res1 (* detl detu))
+    
+    res1))
+
+
+;;;; grsp-matrix-determinant-qr - Finds the determinant of matrix p_a1 using the
+;; QR decompostion.  
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;;
+;; Sources:
+;; - [9][10][11][12][13].
+;;
+(define (grsp-matrix-determinant-qr p_a1)
+  (let ((res1 0)
+	(a1 0)
+	(Q 0)
+	(R 0))
+
+    (set! a1 (grsp-matrix-cpy p_a1))
+    
+    ;; Perform a QR decomposition over a1
+    (set! a1 (grsp-matrix-decompose "#QRMG" a1))
+    (set! Q (car a1))
+    (set! R (cadr a1))
+    
+    (set! res1 (abs (grsp-matrix-opio "#*md" R 0)))
     
     res1))
 
@@ -7455,6 +7503,7 @@
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
+;; - p_m1: row number.
 ;;
 (define (grsp-mr2l p_a1 p_m1)
   (let ((res1 '())
@@ -7462,6 +7511,26 @@
 
     (set! a1 (grsp-matrix-subcpy p_a1 p_m1 p_m1 (grsp-ln p_a1) (grsp-hn p_a1)))
     (set! res1 (grsp-m2l a1))
+    
+    res1))
+
+
+;;;; grsp-mr2l - Place on row p_m1 of matrix p_a1, starting at col p_n1
+;; the contents of listp p_l1 as matrix elements.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_m1: row number.
+;; - p_n1: col number.
+;; - p_l1: list.
+;;
+(define (grsp-l2mr p_a1 p_m1 p_n1 p_l1)
+  (let ((res1 0))
+
+    (set! res1 (grsp-matric-cpy p_a1))
     
     res1))
 
@@ -8264,6 +8333,7 @@
     
     res1))
 
+
 ;;;; grsp-matrix-row-proj - Orthogonal projection of p_a1 over p_a2.
 ;;
 ;; Keywords:
@@ -8280,67 +8350,76 @@
 	(uu 0))
 
     (set! uv (grsp-matrix-opmsc "#.R" p_a2 p_a1))
-    (set! uu (grsp-matrix-opmsc "#.R" p_a2 p_a2))
+    ;;(set! uu (grsp-matrix-opmsc "#.R" p_a2 p_a2))
+    (set! uu (grsp-matrix-normf uu))
     (set! res2 (/ uv uu))
     (set! res1 (grsp-matrix-opsc "#*" p_a2 res2))
     
     res1))
 
 
-;;;; grsp-matrix-row-gsog - Applies the Gram - Schmidt process to the
-;; columns of matrix p_a1.
+;;;; grsp-matrix-normp - Calculates the matrix norm using the vector p-norm
+;; rule.
 ;;
 ;; Keywords:
-;; - function, algebra, matrix, matrices, vectors, strings.
+;; - function, algebra, matrix, matrices, vectors, entry wise.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_p1: p.
+;;
+;; Notes:
+;; . Not defined for p_p1 = 0.
+;;
+;; Sources:
+;; - [54].
+;;
+(define (grsp-matrix-normp p_a1 p_p1)
+  (let ((res1 0)
+	(res2 0))
+    
+    (set! res1 (grsp-matrix-cpy p_a1))
+    (set! res1 (grsp-matrix-opfn "#abs" res1))
+    (set! res1 (grsp-matrix-opsc "#expt" res1 p_p1))
+    (set! res2 (grsp-matrix-opio "#+" res1 0))
+    (set! res2 (expt res2 (/ 1 p_p1)))
+    
+    res2))
+
+
+;;;; grsp-matrix-normf - Calculates the matrix Frobenius norm.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, entry wise.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
 ;;
 ;; Sources:
-;; -[48].
+;; - [54].
 ;;
-(define (grsp-matrix-row-gsog p_a1)
-  (let ((res1 0)
-	(U 0)
-	(V 0)
-	(u 0)
-	(v 0)
-	(s 0)
-	(k1 0)
-	(j1 0))
+(define (grsp-matrix-normf p_a1)
+  (let ((res1 0))
 
-    (set! U (grsp-matrix-cpy p_a1))
-    (set! V (grsp-matrix-cpy p_a1))
-    (set! k1 (grsp-ln V))
-    (while (<= k1 (grsp-hn V))
-	   ;; https://en.wikipedia.org/wiki/Gram%E2%80%93Schmidt_process
-	   (set! v (grsp-matrix-subcpy V (grsp-lm V) (grsp-hm V) k1 k1))
-	   (cond ((= k1 (grsp-ln V))
-		  (set! u v))
-		 ((> k1 (grsp-ln V))
-		  
-		  (set! j1 (grsp-ln V))
-		  (while (<= j1 (- k1 1))
-			 (set! s (+ s (grsp-matrix-row-proj v u)))			 
-			 (set! k1 (in k1)))
-		  
-		  (set! u (grsp-matrix-opmm "#-" v s))))
-		 
-	   (grsp-matrix-subrep U u (grsp-lm u) k1)
+    (set! res1 (grsp-matrix-normp p_a1 2))
 
-	   (newline)
-	   (display s)
-	   (newline)
-	   (display j1)
-	   (newline)
-	   (display v)
-	   (newline)
-	   (display u)
-	   (newline)
-	   (display U)
-	   
-	   (set! k1 (in j1)))
+    res1))
 
-    (set! res1 U)
-    
+
+;;;; grsp-matrix-normm - Calculates the matrix Manhattan norm.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, entry wise.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;;
+;; Sources:
+;; - [54].
+;;
+(define (grsp-matrix-normm p_a1)
+  (let ((res1 0))
+
+    (set! res1 (grsp-matrix-normp p_a1 1))
+
     res1))
