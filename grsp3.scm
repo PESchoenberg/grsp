@@ -332,6 +332,7 @@
 	    grsp-matrix-row-opew-mth
 	    grsp-matrix-opew-mth
 	    grsp-mr2l
+	    grsp-l2mr
 	    grsp-matrix-is-traceless
 	    grsp-matrix-movemm
 	    grsp-matrix-movsmm
@@ -660,26 +661,14 @@
 				
 				(set! i1 (+ i1 1))))
 			
-			((equal? p_s1 "#Test1")			 
-			 (array-set! res1 1 0 0)
-			 (array-set! res1 4 0 1)
-			 (array-set! res1 -3 0 2)
-			 (array-set! res1 -2 1 0)
-			 (array-set! res1 8 1 1)
-			 (array-set! res1 5 1 2)
-			 (array-set! res1 3 2 0)
-			 (array-set! res1 4 2 1)
-			 (array-set! res1 7 2 2))			
-			((equal? p_s1 "#Test2")			 
-			 (array-set! res1 2 0 0)
-			 (array-set! res1 4 0 1)
-			 (array-set! res1 -4 0 2)
-			 (array-set! res1 1 1 0)
-			 (array-set! res1 -4 1 1)
-			 (array-set! res1 3 1 2)
-			 (array-set! res1 -6 2 0)
-			 (array-set! res1 -9 2 1)
-			 (array-set! res1 5 2 2))			
+			((equal? p_s1 "#Test1")
+			 (set! res1 (grsp-l2mr res1 (list 1 4 -3) 0 0))
+			 (set! res1 (grsp-l2mr res1 (list -2 8 5) 1 0))
+			 (set! res1 (grsp-l2mr res1 (list 3 4 7) 2 0)))	
+			((equal? p_s1 "#Test2")
+			 (set! res1 (grsp-l2mr res1 (list 2 4 -4) 0 0))
+			 (set! res1 (grsp-l2mr res1 (list 1 -4 3) 1 0))
+			 (set! res1 (grsp-l2mr res1 (list -6 -9 5) 2 0)))
 			((equal? p_s1 "#Ladder")
 			 
 			 (while (< i1 m1)
@@ -1423,22 +1412,10 @@
 	   (array-set! res1 z3 3 3))
 	  ((equal? p_s1 "#Wilson")
 	   (set! res1 (grsp-matrix-create 0 4 4))
-	   (array-set! res1 5 0 0)
-	   (array-set! res1 7 0 1)
-	   (array-set! res1 6 0 2)
-	   (array-set! res1 5 0 3)
-	   (array-set! res1 7 1 0)
-	   (array-set! res1 10 1 1)
-	   (array-set! res1 8 1 2)
-	   (array-set! res1 7 1 3)
-	   (array-set! res1 6 2 0)
-	   (array-set! res1 8 2 1)
-	   (array-set! res1 10 2 2)
-	   (array-set! res1 9 2 3)
-	   (array-set! res1 5 3 0)
-	   (array-set! res1 7 3 1)
-	   (array-set! res1 9 3 2)
-	   (array-set! res1 10 3 3)))	   
+	   (set! res1 (grsp-l2mr res1 (list 5 7 6 5) 0 0))
+	   (set! res1 (grsp-l2mr res1 (list 7 10 8 7) 1 0))
+	   (set! res1 (grsp-l2mr res1 (list 6 8 10 9) 2 0))
+	   (set! res1 (grsp-l2mr res1 (list 5 7 9 10) 3 0))))
     
     res1))
 
@@ -3110,6 +3087,9 @@
   (let ((res1 '())
 	(b1 #t)
 	(A 0)
+	(At 0)
+	(AAt 0)
+	(AtA 0)
 	(L 0)
 	(Lct 0)
 	(U 0)
@@ -3190,6 +3170,15 @@
 	  
 	  ;; ***************************
 
+	  ((equal? p_s1 "#SVD")
+	   ;; https://web.mit.edu/be.400/www/SVD/Singular_Value_Decomposition.htm
+	   (set! At (grsp-matrix-transpose A))
+	   (set! AAt (grsp-matrix-opmm "#*" A At))
+	   (set! AtA (grsp-matrix-opmm "#*" At A))
+
+	   ;; Compose results for SVD.
+	   (set! res1 (list S V D)))
+	   
 	  ((equal? p_s1 "#LL")
 
 	   ;; Create matrix L based on the dimensions of A.
@@ -7185,7 +7174,7 @@
 	   (set! res1 (grsp-matrix-subexp res1 1 0))
 	   
 	   ;; Extract boundaries since the matrix has changed
-	   ;; due to expsnsion.
+	   ;; due to expansion.
 	   (set! lm1 (grsp-matrix-esi 1 res1))
 	   (set! hm1 (grsp-matrix-esi 2 res1))
 	   (set! m1 hm1)))	   
@@ -7515,22 +7504,28 @@
     res1))
 
 
-;;;; grsp-mr2l - Place on row p_m1 of matrix p_a1, starting at col p_n1
-;; the contents of listp p_l1 as matrix elements.
+;;;; grsp-l2mr - Place on row p_m1 of matrix p_a1, starting at col p_n1
+;; the contents of list p_l1 as matrix elements.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
+;; - p_l2: list.
 ;; - p_m1: row number.
 ;; - p_n1: col number.
-;; - p_l1: list.
 ;;
-(define (grsp-l2mr p_a1 p_m1 p_n1 p_l1)
-  (let ((res1 0))
+;; Examples:
+;; - example9.scm
+;;
+(define (grsp-l2mr p_a1 p_l2 p_m1 p_n1)
+  (let ((res1 0)
+	(res2 0))
 
-    (set! res1 (grsp-matric-cpy p_a1))
+    (set! res1 (grsp-matrix-cpy p_a1))
+    (set! res2 (grsp-l2m p_l2))
+    (set! res1 (grsp-matrix-subrep res1 res2 p_m1 p_n1))
     
     res1))
 

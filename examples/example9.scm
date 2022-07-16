@@ -65,18 +65,10 @@
 
 ;; Create matrix and input elements.
 (define A (grsp-matrix-create 0 3 3))
-(array-set! A 4 0 0)
-(array-set! A 12 0 1)
-(array-set! A -16 0 2)
 
-(array-set! A 12 1 0)
-(array-set! A 37 1 1)
-(array-set! A -43 1 2)
-
-(array-set! A -16 2 0)
-(array-set! A -43 2 1)
-(array-set! A 98 2 2)
-
+(set! A (grsp-l2mr A (list 4 12 -16) 0 0))
+(set! A (grsp-l2mr A (list 12 37 -43) 1 0))
+(set! A (grsp-l2mr A (list -16 -43 98) 2 0))
 
 ;; Calculate and display results.
 (display "\n")
