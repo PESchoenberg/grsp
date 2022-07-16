@@ -67,10 +67,8 @@
 
 ;; Create matrix and input elements.
 (define A (grsp-matrix-create 0 2 2))
-(array-set! A 1 0 0)
-(array-set! A 3 0 1)
-(array-set! A 1 1 0)
-(array-set! A -1 1 1)
+(set! A (grsp-l2mr A (list 1 3) 0 0))
+(set! A (grsp-l2mr A (list 1 -1) 1 0))
 
 ;; Calculate and display results.
 (display "\n")
