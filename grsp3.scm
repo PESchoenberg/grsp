@@ -198,6 +198,23 @@
 ;; - [54] Es.wikipedia.org. 2022. Norma matricial - Wikipedia, la enciclopedia
 ;;   libre. [online] Available at: https://es.wikipedia.org/wiki/Norma_matricial
 ;;   [Accessed 10 July 2022].
+;; - [55] En.wikipedia.org. 2022. QR algorithm - Wikipedia. [online] Available
+;;   at: https://en.wikipedia.org/wiki/QR_algorithm [Accessed 18 July 2022].
+;; - [56] En.wikipedia.org. 2022. List of numerical analysis topics -
+;;   Wikipedia. [online] Available at:
+;;   https://en.wikipedia.org/wiki/List_of_numerical_analysis_topics
+;;   [Accessed 18 July 2022].
+;; - [57] En.wikipedia.org. 2022. Matrix splitting - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Matrix_splitting
+;;   [Accessed 21 July 2022].
+;; - [58] En.wikipedia.org. 2022. Gauss–Seidel method - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Gauss%E2%80%93Seidel_method
+;;   [Accessed 21 July 2022].
+;; - [59] En.wikipedia.org. 2022. Jacobi method - Wikipedia. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Jacobi_method [Accessed 21 July 2022].
+;; - [60] En.wikipedia.org. 2022. Spectral radius - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Spectral_radius
+;;   [Accessed 22 July 2022].
 
 
 (define-module (grsp grsp3)
@@ -356,7 +373,12 @@
 	    grsp-matrix-row-proj
 	    grsp-matrix-normp
 	    grsp-matrix-normf
-	    grsp-matrix-normm))
+	    grsp-matrix-normm
+	    grsp-eigenval-qr
+	    grsp-eigenvec
+	    grsp-matrix-is-srddominant
+	    grsp-matrix-jacobim
+	    grsp-matrix-sradius))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -3097,6 +3119,8 @@
 	(Q 0)
 	(R 0)
 	(H 0)
+	(S 0)
+	(V 0)
 	(i1 0)
 	(j1 0)
 	(k1 0)
@@ -3551,7 +3575,7 @@
 ;;   - "#I": identity.
 ;;   - "#AI": anti-identity.
 ;;   - "#Square".
-;;   - "#S": symetric.
+;;   - "#S": symmetric.
 ;;   - "#MD": main diagonal.
 ;;   - "#Hermitian".
 ;;   - "#Binary".
@@ -8418,3 +8442,242 @@
     (set! res1 (grsp-matrix-normp p_a1 1))
 
     res1))
+
+
+;;;; grsp-eigenval-qr - Calculates eigenvalues using iterations of the QR
+;; decomposition.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, entry wise.
+;;
+;; Arguments:
+;; - p_s1: decomposition method (QR).
+;; - p_a1: matrix.
+;; - p_n1: max number of iterations.
+;;
+;; Notes:
+;; - See grsp-matrix-decompose for suitable decomposition methods.
+;;
+;; Output:
+;; - A one-row matrix containing the eigenvalues of p_a1.
+;;
+;; Sources:
+;; - [55][56].
+;;
+(define (grsp-eigenval-qr p_s1 p_a1 p_n1)
+  (let ((res1 0)
+	(res2 0)
+	(b1 #f)
+	(A 0)
+	(Q 0)
+	(R 0)
+	(i1 0))
+
+    (set! A (grsp-matrix-cpy p_a1))
+
+    ;; Apply decomposition repeatedly.
+    (while (equal? b1 #f)
+
+	   (cond ((> i1 0)
+		  (set! Q (car res1))
+		  (set! R (cadr res1))
+		  (set! A (grsp-matrix-opmm "#*" R Q))))
+	   
+	   (set! res1 (grsp-matrix-decompose p_s1 A))	   
+	   
+	   (set! i1 (in i1))
+
+	   (cond ((> i1 p_n1)
+		  (set! b1 #t)))
+	   
+	   (cond ((equal? (grsp-matrix-identify "#I" (car res1)) #t)
+		  (set! b1 #t))))
+
+    ;; Extract elements from the main diagonal.
+    (set! res2 (grsp-matrix-diagonal-vector A))
+    
+    res2))
+
+
+;;;; grsp-eigenvec- Calculates eigenvectors based on p_a1 and p_a2.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
+;; Arguments:
+;; - p_a1: square matrix.
+;; - p_a2: vector containing the eigenvalues of p_a1.
+;;
+;; Notes:
+;; - See grsp-eigenval-qr.
+;; - TODO: still needs working.
+;;
+;; Sources:
+;; - [55][56].
+;;
+(define (grsp-eigenvec p_a1 p_a2)
+  (let ((res1 0)
+	(A 0)
+	(I 0)
+	(V 0)
+	(i1 0)
+	(j2 0))
+
+    ;; Create matrices.
+    (set! A (grsp-matrix-cpy p_a1))
+    (set! I (grsp-matrix-create-dim "#I" A))
+    (set! V (grsp-matrix-transpose p_a2))
+
+    ;; Solve for each eigenvalue.
+    (set! j2 (grsp-lm V))
+    (while (<= j2 (grsp-hm V))
+
+	   (set! j2 (in j2)))
+    
+    res1))
+
+
+;;;; grsp-matrix-is-srddominant - Returns #t if square matrix p_a1 is strictly
+;; row diagonally dominant; #f otherwise.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
+;; Arguments:
+;; - p_a1: matrix, square.
+;;
+;; Sources:
+;; - [59].
+;;
+(define (grsp-matrix-is-srddominant p_a1)
+  (let ((res1 #f)
+	(i1 0)
+	(j1 0)
+	(n1 0)
+	(a1 0)
+	(a2 0))
+
+    (set! i1 (grsp-lm p_a1))
+    (while (<= i1 (grsp-hm p_a1))
+
+	   ;; Find the absolute value of the diagonal element.
+	   (set! a1 (abs (array-ref p_a1 i1 i1)))
+	   
+	   (set! j1 (grsp-ln p_a1))
+	   (while (<= j1 (grsp-hn p_a1))
+
+		  ;; Find the absolute value of the current element.
+		  (set! a2 (abs (array-ref p_a1 i1 j1)))
+
+		  ;; Only apply when i1 is not equal to j1.
+		  (cond ((equal? (equal? i1 j1) #f)
+
+			 ;; If the a1 is less or equal than a2 at least once,
+			 ;; then the matrix is not strictly row dominant.
+			 (cond ((<= a1 a2)
+				(set! n1 (in n1))))))
+		  
+		  (set! j1 (in j1)))
+
+	   (set! i1 (in i1)))
+
+    ;; Only if n1 remains zero the matrix will be considered strictly row
+    ;; diagonally dominant.
+    (cond ((= n1 0)
+	   (set! res1 #t)))
+    
+    res1))
+
+
+;;;; grsp-matrix-jacobim - Implementation of the Jacobi method for solving a
+;; system Ax = b.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors.
+;;
+;; Arguments:
+;; - p_s1: decomposition method (QR).
+;; - p_a1: matrix A.
+;; - p_b1: matrix b.
+;; - p_x1: natrix x.
+;; - p_n1: max number of iterations.
+;;
+;; Notes:
+;; - See grsp-matrix-sradiu.
+;;
+;; Sources:
+;; - [57][59].
+;;
+(define (grsp-matrix-jacobim p_s1 p_a1 p_x1 p_b1 p_n1)
+  (let ((res1 0)
+	(A 0)
+	(X 0)
+	(B 0)
+	(sum 0)
+	(b1 #f)
+	(i1 0)
+	(j1 0)
+	(n1 0))
+
+    ;; safety copies.
+    (set! A (grsp-matrix-cpy p_a1))
+    (set! B (grsp-matrix-cpy p_b1))
+    (set! X (grsp-matrix-cpy p_x1))    
+    
+    (while (equal? b1 #f)
+
+	   (set! i1 (grsp-lm A))
+	   (while (<= i1 (grsp-hm A))
+
+		  (set! sum 0)
+		  (set! j1 (grsp-ln A))
+		  (while (<= j1 (grsp-hm A))
+
+			 (cond ((equal? (grsp-eq i1 j1) #f)
+				(set! sum (+ sum (* (array-ref A i1 j1) (array-ref X j1 0))))))
+
+			 (set! j1 (in j1)))
+
+		  (array-set! X (* (/ 1 (array-ref A i1 j1)) (- (array-ref B i1 0) sum )) i1 0)
+		  
+		  (set! i1 (in i1)))
+
+	   (set! n1 (in n1))
+	   (cond ((>= n1 p_n1)
+		  (set! b1 #t)))
+
+	   (cond ((< (grsp-matrix-sradius p_s1 A p_n1) 1)
+		  (set! b1 #t)))
+	   
+	   (cond ((equal? b1 #f)
+		  (set! b1 (grsp-matrix-is-srddominant A)))))
+    
+    (set! res1 A)
+    
+    res1))
+
+
+;;;; grsp-matrix-sradius - Calculates the spectral radius of matrix p_a1- 
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, entry wise.
+  ;;
+;; Arguments:
+;; - p_s1: decomposition method (QR).
+;; - p_a1: matrix (square).
+;; - p_n1: max number of iterations.
+;;
+;; Notes:
+;; - See grsp-matrix-decompose for suitable decomposition methods for eigenvalue
+;;   calculation.
+;;
+;; Sources:
+;; - [60].
+;;
+(define (grsp-matrix-sradius p_s1 p_a1 p_n1)
+  (let ((res1 0))
+
+    (set! res1 (array-ref (grsp-matrix-minmax (grsp-eigenval-qr p_s1 p_a1 p_n1)) 0 1))
+    
+    res1))
+
