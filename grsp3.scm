@@ -923,7 +923,7 @@
 				       (set! j1 (+ j1 1)))
 				
 				(set! i1 (+ i1 1))))
-			
+				    
 			((equal? p_s1 "#n0[-m:+m]")			 
 			 (set! m3 (* -1 m3))
 			 
@@ -992,6 +992,7 @@
 ;;   - "#Gell-Mann": Gell-Mann matrices.
 ;;   - "#Pauli": Pauli matrices.
 ;;   - "#Dirac": Dirac gamma matrices.
+;;   - "#srdd": Ax = b with A stirctly diagonal.
 ;; - p_n2: number of matrices to create.
 ;; - p_n3: default value for said matrices.
 ;; - p_m1: rows, positive integer.
@@ -1169,6 +1170,25 @@
 	   ;; Compose results for "#Pauli".
 	   (set! res1 (list a0 a1 a2)))
 
+	  ((equal? p_s1 "#srdd")
+	   ;; ***
+	   (set! m1 p_m1)	   
+	   (set! a0 (grsp-matrix-create "#rprnd" m1 m1)) ;; A
+	   (set! a1 (grsp-matrix-create "#rprnd" m1 1)) ;; x
+	   (set! a2 (grsp-matrix-create 0 m1 1)) ;; b
+	   
+	   (while (<= i1 (grsp-hm a0))
+
+		  (set! n1 (array-ref a0 i1 i1))
+		  (array-set! a0 (- (grsp-matrix-opio "#+r" a0 i1) n1) i1 i1)
+		  
+		  (set! i1 (in i1)))
+
+	   (set! a2 (grsp-matrix-opmm "#*" a0 a1))
+
+	   ;; Compose results.
+	   (set! res1 (list a0 a1 a2)))
+	   
 	  ((equal? p_s1 "#Dirac")
 
 	   ;; Define rows and cols.
@@ -8473,23 +8493,29 @@
 	(R 0)
 	(i1 0))
 
+    ;; Safety copy.
     (set! A (grsp-matrix-cpy p_a1))
 
-    ;; Apply decomposition repeatedly.
+    ;; Apply decomposition repeatedly until conditions are
+    ;; met.
     (while (equal? b1 #f)
 
+	   ;; Unpack list of matrices.
 	   (cond ((> i1 0)
 		  (set! Q (car res1))
 		  (set! R (cadr res1))
 		  (set! A (grsp-matrix-opmm "#*" R Q))))
-	   
+
+	   ;; Apply decomposition.
 	   (set! res1 (grsp-matrix-decompose p_s1 A))	   
 	   
 	   (set! i1 (in i1))
 
+	   ;; Check for number of iterations.
 	   (cond ((> i1 p_n1)
 		  (set! b1 #t)))
-	   
+
+	   ;; Check if res1 is an identity matrix.
 	   (cond ((equal? (grsp-matrix-identify "#I" (car res1)) #t)
 		  (set! b1 #t))))
 
@@ -8589,8 +8615,8 @@
     res1))
 
 
-;;;; grsp-matrix-jacobim - Implementation of the Jacobi method for solving a
-;; system Ax = b.
+;;;; grsp-matrix-jacobim - Implementation of the Jacobi method for solving 
+;; Ax = b.
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
@@ -8603,10 +8629,10 @@
 ;; - p_n1: max number of iterations.
 ;;
 ;; Notes:
-;; - See grsp-matrix-sradiu.
+;; - See grsp-matrix-sradius.
 ;;
 ;; Sources:
-;; - [57][59].
+;; - [57][59][60].
 ;;
 (define (grsp-matrix-jacobim p_s1 p_a1 p_x1 p_b1 p_n1)
   (let ((res1 0)
@@ -8617,7 +8643,10 @@
 	(b1 #f)
 	(i1 0)
 	(j1 0)
-	(n1 0))
+	(n1 0)
+	(n2 0)
+	(n3 0)
+	(n4 0))
 
     ;; safety copies.
     (set! A (grsp-matrix-cpy p_a1))
@@ -8631,14 +8660,20 @@
 
 		  (set! sum 0)
 		  (set! j1 (grsp-ln A))
-		  (while (<= j1 (grsp-hm A))
+		  (while (<= j1 (grsp-hn A))
 
 			 (cond ((equal? (grsp-eq i1 j1) #f)
 				(set! sum (+ sum (* (array-ref A i1 j1) (array-ref X j1 0))))))
 
 			 (set! j1 (in j1)))
 
-		  (array-set! X (* (/ 1 (array-ref A i1 j1)) (- (array-ref B i1 0) sum )) i1 0)
+		  (set! n2 (- (array-ref B i1 0) sum ))
+		  (display n2)
+		  (set! n3 (/ 1 (array-ref A i1 j1))) ;;;;; j1
+		  (display n3)
+		  (set! n4 (* n3 n2))
+		  (display n4)
+		  (array-set! X n4 i1 0)
 		  
 		  (set! i1 (in i1)))
 
@@ -8660,7 +8695,7 @@
 ;;;; grsp-matrix-sradius - Calculates the spectral radius of matrix p_a1- 
 ;;
 ;; Keywords:
-;; - function, algebra, matrix, matrices, vectors, entry wise.
+;; - function, algebra, matrix, matrices, vectors.
   ;;
 ;; Arguments:
 ;; - p_s1: decomposition method (QR).
