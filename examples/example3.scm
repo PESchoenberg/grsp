@@ -150,7 +150,7 @@
   (display "\n")
   (display "\n Data matrix data (Will be used to update matrix datai).\n")
   (display "Matrix data contains raw input data (i.e from an external \n")
-  (display "source or linke in this case, procedurally generated.\n\n")
+  (display "source or like in this case, procedurally generated.\n\n")
   (display data)
   (display "\n")
 

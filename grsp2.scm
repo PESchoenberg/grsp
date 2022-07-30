@@ -248,7 +248,8 @@
 	    grsp-coinflip
 	    grsp-fn
 	    grsp-fn3
-	    grsp-eq))
+	    grsp-eq
+	    grsp-srprnd))
 
 
 ;;;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -2602,6 +2603,7 @@
     res1))
 
 ;;;; grsp-eq - Returns #t if p_n1 and p_n2 are equal; #f otherwise.
+;;
 ;; Keywords:
 ;; - function, arithmetic, operations, equations.
 ;;
@@ -2616,3 +2618,21 @@
 	   (set! res1 #t)))
 
     res1))
+
+
+;;;; grsp-srprnd - Generates a string that appends to p_s1 a random number.
+;;
+;; Keywords:
+;; - function, random, string.
+;;
+;; Arguments:
+;; - p_s1: srting.
+;;
+(define (grsp-srprnd p_s1)
+  (let ((res1 ""))
+
+    (set! res1 (string-append p_s1 (grsp-n2s (grsp-rprnd "#uniform" 0.0 0.1))))
+    ;;(set! res1 (string-append p_s1 (grsp-n2s (grsp-rprnd "#normal" 100.0 50))))
+    
+    res1))
+
