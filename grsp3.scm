@@ -8667,17 +8667,18 @@
 
 			 (set! j1 (in j1)))
 
-		  (set! n2 (- (array-ref B i1 0) sum ))
-		  (display n2)
-		  (set! n3 (/ 1 (array-ref A i1 j1))) ;;;;; j1
-		  (display n3)
-		  (set! n4 (* n3 n2))
-		  (display n4)
-		  (array-set! X n4 i1 0)
+		  ;(set! n2 (- (array-ref B i1 0) sum))
+		  ;(set! n3 (/ 1 (array-ref A i1 i1)))
+		  ;(set! n4 (* n3 n2))
+		  ;(array-set! X n4 i1 0)
+		  (array-set! X (/ (- (array-ref B i1 0) sum) (array-ref A i1 i1)) i1 0)
+		  
 		  
 		  (set! i1 (in i1)))
 
 	   (set! n1 (in n1))
+
+	   ;; Convergence conditions.
 	   (cond ((>= n1 p_n1)
 		  (set! b1 #t)))
 
@@ -8686,8 +8687,9 @@
 	   
 	   (cond ((equal? b1 #f)
 		  (set! b1 (grsp-matrix-is-srddominant A)))))
-    
-    (set! res1 A)
+
+    ;(set! res1 A)
+    (set! res1 X)
     
     res1))
 
