@@ -106,7 +106,9 @@
 	    grsp-string-lpjustify
 	    grsp-ln2ls
 	    grsp-ls2ln
-	    grsp-ls2s))
+	    grsp-ls2s
+	    grsp-s2ln
+	    grsp-ln2s))
 
 
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
@@ -1050,3 +1052,39 @@
     res1))
 
 
+;;;; grsp-s2ln - String to list of numbers representing the Unicode number of
+;; each character in the original string.
+;;
+;; Keywords:
+;; - console, strings.
+;;
+;; Arguments:
+;; - p_s1: string.
+;;
+(define (grsp-s2ln p_s1 p_s2)
+  (let ((res1 '())
+	(l1 '()))
+	     
+    (set! l1 (string->list p_s1))
+    (set! res1 (map char->integer l1))
+    
+    res1))
+
+
+;;;; grsp-ln2ls - List of numbers to string. The numbers in the list should
+;; represent Unicode character.
+;;
+;; Keywords:
+;; - console, strings.
+;;
+;; Arguments:
+;; - p_l1: list.
+;;
+(define (grsp-ln2s p_l1)
+  (let ((res1 "")
+	(l1 '()))
+
+    (set! l1 (map integer->char p_l1))
+    (set! res1 (list->string l1))
+    
+    res1))
