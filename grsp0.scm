@@ -108,7 +108,11 @@
 	    grsp-ls2ln
 	    grsp-ls2s
 	    grsp-s2ln
-	    grsp-ln2s))
+	    grsp-ln2s
+	    grsp-generate-file-name
+	    grsp-list-file-name
+	    grsp-trprnd
+	    grsp-s2u))
 
 
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
@@ -1061,7 +1065,7 @@
 ;; Arguments:
 ;; - p_s1: string.
 ;;
-(define (grsp-s2ln p_s1 p_s2)
+(define (grsp-s2ln p_s1)
   (let ((res1 '())
 	(l1 '()))
 	     
@@ -1088,3 +1092,107 @@
     (set! res1 (list->string l1))
     
     res1))
+
+
+;;;; grsp-generate-file-name - Generates a file name string that appends to
+;; string p_s1 a random number and a file descriptor in order to provide an
+;; unique file name even if the descriptor or p_s1 are the same in various
+;; instances.
+;;
+;; Keywords:
+;; - function, random, string.
+;;
+;; Arguments:
+;; - p_b1: boolean.
+;;   - #t: if p_s1 and a separator are to be used.
+;;   - #f: otherwise.
+;; - p_s1: string.
+;; - p_s2: string, file type descriptor (example "txt").
+;;
+;; Notes:
+;; - See grsp-list-fname
+;;
+(define (grsp-generate-file-name p_b1 p_s1 p_s2)
+  (let ((res1 ""))
+
+    (cond ((equal? p_b1 #t)
+	   (set! res1 (strings-append (list p_s1 "-" (grsp-trprnd) "." p_s2) 0)))
+	  (else (set! res1 (strings-append (list (grsp-trprnd) "." p_s2) 0))))
+    
+    res1))
+
+
+;;;; grsp-list-file-name - Transforms a string created by grsp-generate-fname
+;; into a three-element list.
+;;
+;; Keywords:
+;; - function, random, string.
+;;
+;; Arguments:
+;; - p_s1: string.
+;;
+;; Notes:
+;; - The user should provide a valid string for this function. See
+;;   grsp-generate-fname.
+;;
+(define (grsp-list-file-name p_s1)
+  (let ((res1 '())
+	(n1 0)
+	(n2 0)
+	(s1 "")
+	(s2 "")
+	(s3 ""))
+
+    ;; Find relevant characters.
+    (cond ((equal? (equal? (string-index p_s1 #\.) #f) #f)
+
+	   (cond ((equal? (equal? (string-index p_s1 #\-) #f) #f)
+		  (set! n1 (string-index p_s1 #\-))
+		  (set! n2 (string-index p_s1 #\.))
+
+		  (set! s1 (substring p_s1 0 n1))
+		  (set! s2 (substring p_s1 (+ n1 1) n2))
+		  (set! s3 (substring p_s1 (+ n2 1)))))
+
+	   (cond ((equal? (equal? (string-index p_s1 #\-) #f) #t)
+		  (set! n2 (string-index p_s1 #\.))
+		  
+		  (set! s2 (substring p_s1 0 n2))
+		  (set! s3 (substring p_s1 (+ n2 1))))))) 
+    
+    ;; Compose results.
+    (set! res1 (list s1 s2 s3))
+    
+    res1))
+
+
+;;;; grsp-trprnd - Generates a string containing numeric characters,
+;; which is a combination of a timestamp and a random number (uniform
+;; distribution.
+;;
+;; Keywords:
+;; - function, random, string.
+;;
+(define (grsp-trprnd)
+  (let ((res1 0))
+
+    (set! res1 (strings-append (list (grsp-n2s (current-time))
+				     (grsp-n2s (random 1000000000)))
+			       0))
+    
+    res1))
+
+
+;;;; grsp-s2u - Casts a string as a number composed of a succession of the
+;; unicode representation of each character interpected by the unicode
+;; representation of the character #\| . This is a useful way to store
+;; strings in numeric matrices as integers.
+;;
+;; Arguments
+;; - p_s1: string
+;;
+(define (grsp-s2u p_s1)
+  (let ((res1 0))
+
+    res1))
+

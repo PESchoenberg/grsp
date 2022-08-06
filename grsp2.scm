@@ -248,10 +248,7 @@
 	    grsp-coinflip
 	    grsp-fn
 	    grsp-fn3
-	    grsp-eq
-	    grsp-generate-fname
-	    grsp-list-fname
-	    grsp-trprnd))
+	    grsp-eq))
 
 
 ;;;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -2622,57 +2619,4 @@
     res1))
 
 
-;;;; grsp-generate-fname - Generates a file name string that appends to string
-;; p_s1 a random number and a file descriptor.
-;;
-;; Keywords:
-;; - function, random, string.
-;;
-;; Arguments:
-;; - p_s1: string.
-;; - p_s2: string, file type descriptor (example "txt").
-;;
-;; Notes:
-;; - See grsp-list-fname
-;;
-(define (grsp-generate-fname p_s1 p_s2)
-  (let ((res1 ""))
 
-    (set! res1 (strings-append (list p_s1 "-" (grsp-trprnd) "." p_s2) 0))
-    
-    res1))
-
-
-;;;; grsp-list-fname - Transforms a string created by grsp-generate-fname
-;; into a three-element list.
-;;
-;; Keywords:
-;; - function, random, string.
-;;
-;; Arguments:
-;; - p_s1: string.
-;;
-;; Notes:
-;; - See grsp-generate-fname
-;;
-(define (grsp-list-fname p_s1)
-  (let ((res1 '()))
-
-    res1))
-
-
-;;;; grsp-trprnd - Generates a string containing numeric characters,
-;; which is a combination of a timestamp and a random number (uniform
-;; distribution.
-;;
-;; Keywords:
-;; - function, random, string.
-;;
-(define (grsp-trprnd)
-  (let ((res1 0))
-
-    (set! res1 (strings-append (list (grsp-n2s (current-time))
-				     (grsp-n2s (random 1000000000)))
-			       0))
-    
-    res1))
