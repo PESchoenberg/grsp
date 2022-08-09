@@ -112,7 +112,9 @@
 	    grsp-generate-file-name
 	    grsp-list-file-name
 	    grsp-trprnd
-	    grsp-s2u))
+	    grsp-intercal
+	    grsp-s2dbc
+	    grsp-ln2ns))
 
 
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
@@ -1084,6 +1086,10 @@
 ;; Arguments:
 ;; - p_l1: list.
 ;;
+;; Notes: 
+;; - grsp-ln2s casts unicode number sets to alphanumeric characters, while
+;;   grsp-ln2ss casts unicode number sets as a numeric string.
+;;
 (define (grsp-ln2s p_l1)
   (let ((res1 "")
 	(l1 '()))
@@ -1137,31 +1143,15 @@
 ;;
 (define (grsp-list-file-name p_s1)
   (let ((res1 '())
-	(n1 0)
-	(n2 0)
-	(s1 "")
-	(s2 "")
-	(s3 ""))
+	(l1 '())
+	(l2 '()))
 
-    ;; Find relevant characters.
-    (cond ((equal? (equal? (string-index p_s1 #\.) #f) #f)
+    ;; Split on finding relevant characters.
+    (set! l1 (string-split p_s1 #\-))
+    (set! l2 (string-split (cadr l1) #\.))
 
-	   (cond ((equal? (equal? (string-index p_s1 #\-) #f) #f)
-		  (set! n1 (string-index p_s1 #\-))
-		  (set! n2 (string-index p_s1 #\.))
-
-		  (set! s1 (substring p_s1 0 n1))
-		  (set! s2 (substring p_s1 (+ n1 1) n2))
-		  (set! s3 (substring p_s1 (+ n2 1)))))
-
-	   (cond ((equal? (equal? (string-index p_s1 #\-) #f) #t)
-		  (set! n2 (string-index p_s1 #\.))
-		  
-		  (set! s2 (substring p_s1 0 n2))
-		  (set! s3 (substring p_s1 (+ n2 1))))))) 
-    
     ;; Compose results.
-    (set! res1 (list s1 s2 s3))
+    (set! res1 ((car l1) (car l2) (cadr l2)))
     
     res1))
 
@@ -1183,16 +1173,155 @@
     res1))
 
 
-;;;; grsp-s2u - Casts a string as a number composed of a succession of the
-;; unicode representation of each character interpected by the unicode
-;; representation of the character #\| . This is a useful way to store
+;;;; grsp-intercal - Intercalates string p_s2 between the characters of string
+;; p_s3 according to mode p_s1.
+;;
+;; Keywords:
+;; - function, random, string.
+;;
+;; Arguments:
+;; - p_s1: string.
+;;   - "#l": place p_s2 only at the beginning.
+;;   - "#h": place p_s2 only at the end
+;;   - "#m": place p_s2 between characters bun neither at the beginning nor the
+;;     end.
+;;   - "#lm": place p_s2 at the beginning and between characters but not at the
+;;     end.
+;;   - "#mh": place p_s2 between the middle characters and at the end of the
+;;     string.
+;;   - "#lh": place p_s2 at the beginning and at the end of the string, but not
+;;     between characters.
+;;   - "#lmh": place p_s2 at the beginning, between characters and at the end.
+;; - p_s2: string to place between characters.
+;; - p_s3: string to be modified.
+;;
+(define (grsp-intercal p_s1 p_s2 p_s3)
+  (let ((res1 "")
+	(b1 #f)
+	(s3 "")
+	(s4 "")
+	(sus "")
+	(j1 0)
+	(hn 0))
+
+    (set! s3 p_s3)
+    (set! s3 (string-trim-both s3))
+    (set! hn (- (string-length s3) 1))
+
+    ;; If p_s2 will be inserted only at the extremes.
+    (cond ((equal? p_s1 "#l")
+	   (set! b1 #t)
+	   (set! res1 (strings-append (list p_s2 s3) 0)))
+	  ((equal? p_s1 "#h")
+	   (set! b1 #t)
+	   (set! res1 (strings-append (list s3 p_s2) 0)))
+	  ((equal? p_s1 "#lh")
+	   (set! b1 #t)
+	   (set! res1 (strings-append (list p_s2 s3 p_s2) 0))))
+
+    ;; If p_s2 will be inserted also beteen characters.
+    (cond ((equal? b1 #f)
+
+	   (cond ((equal? p_s1 "#m")
+
+		  (while (<= j1 hn)
+
+			 (set! s4 (substring s3 j1 (+ j1 1)))
+			 
+			 (cond ((> j1 0)
+				(set! sus (strings-append (list sus p_s2 s4) 0)))
+			       (else (set! sus s4)))
+			 
+			 (set! j1 (in j1)))
+		  
+		  (set! res1 sus))
+		 ((equal? p_s1 "#mh")
+		  (set! s3 (grsp-intercal "#m" p_s2 s3))
+		  (set! res1 (grsp-intercal "#h" p_s2 s3)))
+		 ((equal? p_s1 "#lmh")
+		  (set! s3 (grsp-intercal "#m" p_s2 s3))
+		  (set! res1 (grsp-intercal "#lh" p_s2 s3)))
+		 ((equal? p_s1 "#lm")
+		  (set! s3 (grsp-intercal "#m" p_s2 s3))
+		  (set! res1 (grsp-intercal "#l" p_s2 s3))))
+
+	   ))
+		  		  
+    res1))
+
+
+;;;; grsp-s2dbc - Casts a string as a number composed of a succession of the
+;; unicode representation of each character string interpected by the unicode
+;; representation of the string "|" . This is a useful way to store
 ;; strings in numeric matrices as integers.
+;;
+;; Keywords:
+;; - function, random, string.
 ;;
 ;; Arguments
 ;; - p_s1: string
 ;;
-(define (grsp-s2u p_s1)
-  (let ((res1 0))
+;; Notes:
+;; - See grsp-dbc2s.
+;; - String "|" is used to clearly separate each character string and hence the
+;;   unicode number of each one of them.
+;;
+(define (grsp-s2dbc p_s1)
+  (let ((res1 0)
+	(l1 '())
+	(s1 "")
+	(s2 ""))
+
+    (set! s1 (grsp-intercal "#lmh" "|" p_s1))
+    (set! l1 (grsp-s2ln s1))
+    (set! s2 (grsp-ln2ns l1))
+    (set! res1 (grsp-s2n s2))
+    
+    res1))
+
+
+;;;; grsp-dbc2s - Inverse function of grsp-s2dbc.
+;;
+;; Keywords:
+;; - function, random, string.
+;;
+;; Arguments:
+;; - p_n1: number. Should have been composed as described in grsp-s2dbc.
+;;
+(define (grsp-dbc2s p_n1)
+  (let ((res1 ""))
 
     res1))
 
+
+;;;; grsp-ln2ns - List of numbers to numeric string. The numbers in the list
+;; should represent Unicode character.
+;;
+;; Keywords:
+;; - console, strings.
+;;
+;; Arguments:
+;; - p_l1: list.
+;;
+;; Notes: 
+;; - grsp-ln2s casts unicode number sets to alphanumeric characters, while
+;;   grsp-ln2ss casts unicode number sets as a numeric string.
+;;
+(define (grsp-ln2ns p_l1)
+  (let ((res1 "")
+	(s1 0)
+	(j1 0)
+	(hn 0))
+
+    (set! hn (- (length p_l1) 1))
+    (while (<= j1 hn)
+
+	   (set! s1 (grsp-n2s (list-ref p_l1 j1)))
+	   (cond ((= j1 0)
+		  (set! res1 s1))
+		 (else (set! res1 (string-append res1 s1))))
+
+	   (set! j1 (in j1)))
+    
+    res1))
+  
