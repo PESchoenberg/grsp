@@ -576,6 +576,9 @@
 ;; Examples:
 ;; - example3.scm, example5.scm
 ;;
+;; Notes:
+;; - See grsp0.grsp-s2dbc, grsp0.grsp-dbc2s.
+;;
 ;; Sources:
 ;; - [1][2][18][31].
 ;;
@@ -1010,6 +1013,8 @@
 ;;   instead of one. Be careful when interpreting some of these sets because it
 ;;   might be easy to confuse the programming and math conventions (example;
 ;;   matrix Sigma 1 would be returned as element 0 in the resulting list).
+;; - See grsp0.grsp-s2dbc, grsp0.grsp-dbc2s.
+;;
 ;;
 ;; Output:
 ;; - A list containing the matrices created as its elements.
@@ -1276,6 +1281,9 @@
 ;;
 ;; Examples:
 ;; - example7.scm
+;;
+;; Notes:
+;; - See grsp0.grsp-s2dbc, grsp0.grsp-dbc2s.
 ;;
 ;; Sources:
 ;; - [31][32][33][34][35][52].
