@@ -68,6 +68,7 @@
 
 
 (define-module (grsp grsp0)
+  #:use-module (ice-9 string-fun)
   #:export (pline
 	    ptit
 	    newlines
@@ -114,7 +115,9 @@
 	    grsp-trprnd
 	    grsp-intercal
 	    grsp-s2dbc
-	    grsp-ln2ns))
+	    grsp-ln2ns
+	    grsp-dbc2s
+	    grsp-lns2ln))
 
 
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
@@ -1024,7 +1027,7 @@
 ;; numbers.
 ;;
 ;; Keywords:
-;; - console, strings.
+;; - console, strings, utf, database.
 ;;
 ;; Arguments:
 ;; - p_l1: list of strings to convert to numbers.
@@ -1077,11 +1080,11 @@
     res1))
 
 
-;;;; grsp-ln2ls - List of numbers to string. The numbers in the list should
-;; represent Unicode character.
+;;;; grsp-ln2s - List of numbers to string. The numbers in the list should
+;; represent Unicode charactesr.
 ;;
 ;; Keywords:
-;; - console, strings.
+;; - console, strings, unicode, utf.
 ;;
 ;; Arguments:
 ;; - p_l1: list.
@@ -1253,7 +1256,8 @@
 ;;;; grsp-s2dbc - Casts a string as a number composed of a succession of the
 ;; unicode representation of each character string interpected by the unicode
 ;; representation of the string "|" . This is a useful way to store
-;; strings in numeric matrices as integers.
+;; strings in numeric matrices as integers. This function converts any string
+;; to a number apt to be stored in a grsp relational matrix.
 ;;
 ;; Keywords:
 ;; - function, random, string.
@@ -1262,7 +1266,7 @@
 ;; - p_s1: string
 ;;
 ;; Notes:
-;; - See grsp-dbc2s.
+;; - See grsp-dbc2s, grsp3.grsp-matrix-create.
 ;; - String "|" is used to clearly separate each character string and hence the
 ;;   unicode number of each one of them.
 ;;
@@ -1280,7 +1284,9 @@
     res1))
 
 
-;;;; grsp-dbc2s - Inverse function of grsp-s2dbc.
+;;;; grsp-dbc2s - Inverse function of grsp-s2dbc. This function converts back
+;; strings initially converted into numbers by grsp-s2dbc back to string,
+;; human readable form.
 ;;
 ;; Keywords:
 ;; - function, random, string.
@@ -1288,9 +1294,24 @@
 ;; Arguments:
 ;; - p_n1: number. Should have been composed as described in grsp-s2dbc.
 ;;
+;; Notes:
+;; - See grsp-s2dbc, grsp3.grsp-matrix-create.
+;;
 (define (grsp-dbc2s p_n1)
-  (let ((res1 ""))
+  (let ((res1 "")
+	(l1 '())
+	(s1 "")
+	(s2 "")
+	(s3 "")
+	(s4 ""))
 
+    (set! s1 (grsp-n2s p_n1))
+    (set! s2 (string-replace-substring s1 "124" "|"))
+    (set! s3 (string-split s2 #\|))
+    (set! l1 (grsp-lns2ln s3))
+    (set! s4 (grsp-ln2s l1))
+    (set! res1 s4)
+    
     res1))
 
 
@@ -1325,3 +1346,26 @@
     
     res1))
   
+
+;;;; grsp-lns2ln - Casts a list of numeric strings representing Unicode
+;; characters into numbers representing those Unicode characters.
+;;
+;; Keywords:
+;; - console, strings.
+;;
+;; Arguments:
+;; - p_l1: list.
+;;
+(define (grsp-lns2ln p_l1)
+  (let ((res1 '())
+	(l1 '())
+	(l2 '())
+	(j1 0)
+	(s1 ""))
+
+    (set! l1 p_l1)
+    (set! l2 (delete "" l1))   
+    (set! res1 (map grsp-s2n l2))
+    
+    res1))
+
