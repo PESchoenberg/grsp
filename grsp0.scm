@@ -31,7 +31,7 @@
 ;;   use.
 ;;
 ;; - Compilation:
-;;   - (use-modules (grsp grsp0)(grsp grsp1)(grsp grsp2)(grsp grsp3)(grsp grsp4)(grsp grsp5)(grsp grsp6)(grsp grsp7)(grsp grsp8)(grsp grsp9)(grsp grsp10)(grsp grsp11)(grsp grsp12)(grsp grsp13)(grsp grsp14)(grsp grsp15))
+;;   - (use-modules (grsp grsp0)(grsp grsp1)(grsp grsp2)(grsp grsp3)(grsp grsp4)(grsp grsp5)(grsp grsp6)(grsp grsp7)(grsp grsp8)(grsp grsp9)(grsp grsp10)(grsp grsp11)(grsp grsp12)(grsp grsp13)(grsp grsp14)(grsp grsp15)(grsp grsp16))
 ;;
 ;; Sources:
 ;; - [1] Shido.info. (2019). 9. IO. [online] Available at:
@@ -117,7 +117,12 @@
 	    grsp-s2dbc
 	    grsp-ln2ns
 	    grsp-dbc2s
-	    grsp-lns2ln))
+	    grsp-lns2ln
+	    grsp-dsc
+	    grsp-dscn
+	    grsp-dline
+	    grsp-dtext
+	    displayl))
 
 
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
@@ -1302,15 +1307,22 @@
 	(l1 '())
 	(s1 "")
 	(s2 "")
-	(s3 "")
-	(s4 ""))
+	(s3 ""))
 
+    ;; Convert number to string.
     (set! s1 (grsp-n2s p_n1))
+
+    ;; Replace sequences of "124" with "|".
     (set! s2 (string-replace-substring s1 "124" "|"))
+
+    ;; Split string along character #\|.
     (set! s3 (string-split s2 #\|))
+
+    ;; Casy from list of numeric strings to list of numbers.
     (set! l1 (grsp-lns2ln s3))
-    (set! s4 (grsp-ln2s l1))
-    (set! res1 s4)
+
+    ;; Cast from list of numbers to one string that rebuilds the original one.
+    (set! res1 (grsp-ln2s l1))
     
     res1))
 
@@ -1369,3 +1381,66 @@
     
     res1))
 
+
+;;;; grsp-dsc - Displays double semicolon for comments.
+;;
+;; Keywords:
+;; - console, strings.
+;;
+(define (grsp-dsc)
+  (display ";; "))
+
+
+;;;; grsp-dscn - Displays double semicolon and a free line.
+;;
+;; Keywords:
+;; - console, strings.
+;;
+(define (grsp-dscn)
+  (grsp-dsc)
+  (newline))
+
+;;;; grsp-dline - Displays a double line.
+;;
+;; Keywords:
+;; - console, strings.
+;;
+(define (grsp-dline)
+  (grsp-dsc)
+  (display (grsp-string-repeat "=" 78))
+  (newline))
+
+
+;;;; grsp-dtext - Displays a commented line.
+;;
+;; Keywords:
+;; - console, strings.
+;;
+;; Arguments:
+;; - p_l1: list.
+;;
+(define (grsp-dtext p_s1)
+  (grsp-dsc)
+  (display p_s1)
+  (newline))
+
+
+;;;; displayl - Displays all elements of list p_l1 separated by string p_s1.
+;;
+;; Keywords:
+;; - console, strings.
+;;
+;; Arguments:
+;; - p_s1: string.
+;; - p_l1: list.
+;;
+(define (displayl p_s1 p_l1)
+  (let ((j1 0))
+  
+    (while (< j1 (length p_l1))
+
+	   (display p_s1)
+	   (display (list-ref p_l1 j1))	   
+	   
+	   (set! j1 (in j1)))))
+  
