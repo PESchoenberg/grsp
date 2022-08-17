@@ -37,7 +37,7 @@
 ;; ==============================================================================
 
 
-; Reqired modules.
+; Required modules.
 (use-modules (grsp grsp0)
 	     (grsp grsp1)
 	     (grsp grsp2)
