@@ -1086,7 +1086,7 @@
 
 
 ;;;; grsp-ln2s - List of numbers to string. The numbers in the list should
-;; represent Unicode charactesr.
+;; represent Unicode characters.
 ;;
 ;; Keywords:
 ;; - console, strings, unicode, utf.
