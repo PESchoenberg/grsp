@@ -89,7 +89,7 @@
 ;;;; grsp-sop-booth - Booth test, single objective function.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number, [-10.0, 10.0].
@@ -110,7 +110,7 @@
 ;;;; grsp-sop-bukin6 - Bukin 6 test, single objective function.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number, [-15.0, -5.0].
@@ -131,7 +131,7 @@
 ;;;; grsp-sop-beale - Beale single objective function.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number, [-4.5, 4.5].
@@ -170,7 +170,7 @@
 ;;;; grsp-sop-beale-mth - Multithreaded variant of grsp-sop-beale-mth.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number, [-4.5, 4.5].
@@ -203,7 +203,7 @@
 ;;;; grsp-sop-matyas - Matyas test, single objective function.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number, [-10.0, 10.0].
@@ -232,7 +232,7 @@
 ;;;; grsp-sop-matyas-mth - Multithreaded variant of grsp-sop-matyas.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number, [-10.0, 10.0].
@@ -254,7 +254,7 @@
 ;;;; grsp-sop-rastrigin - Rastrigin test, single objective function.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_a1: 1 x n vector with n elements, representing an n-dimensinal problem.
@@ -304,7 +304,7 @@
 ;;;; grsp-sop-rastrigin-mth - Multithreaded version of grsp-sop-rastrigin.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_a1: 1 x n vector with n elements, representing an n-dimensinal problem.
@@ -348,7 +348,7 @@
 ;;;; grsp-sop-goldstein-price - Goldstein-Price test, single objective function.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number, [-2.0, 2.0].
@@ -398,7 +398,7 @@
 ;; grsp-sop-goldstein-price.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number, [-2.0, 2.0].
@@ -447,7 +447,7 @@
 ;;;; grsp-sop-levi13 - Levi test, single objective function.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number, [-10.0, 10.0].
@@ -490,7 +490,7 @@
 ;;;; grsp-sop-levi13-mth - Multithreaded variant of grsp-sop-levi13.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number, [-10.0, 10.0].
@@ -526,7 +526,7 @@
 ;;;; grsp-sop-himmelblau - Himmelblau test, single objective function.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number, [-5.0, 5.0].
@@ -562,7 +562,7 @@
 ;;;; grsp-sop-himmelblau-mth - Multithreaded variant of grsp-sop-himmelblau.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number, [-5.0, 5.0].
@@ -591,7 +591,7 @@
 ;;;; grsp-sop-3camel - Three hump camel test, single objective function.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number, [-5.0, 5.0].
@@ -615,7 +615,7 @@
 ;;;; grsp-sop-mccormick - McCormick test, single objective function.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number, [-1.5, 4.0].
@@ -639,7 +639,7 @@
 ;;;; grsp-sop-schaffer2 - Schaffer 2 test, single objective function.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number, [-100.0, 100.0].
@@ -674,7 +674,7 @@
 ;;;; grsp-sop-schaffer2-mth - Multithreaded variant of grsp-sop-schaffer2.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number, [-100.0, 100.0].
@@ -705,7 +705,7 @@
 ;;;; grsp-sop-schaffer4 - Schaffer 4 test, single objective function.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number, [-100.0, 100.0].
@@ -740,7 +740,7 @@
 ;;;; grsp-sop-schaffer4-mth - Multithreaded variant of grsp-sop-schaffer4.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number, [-100.0, 100.0].
@@ -772,7 +772,7 @@
 ;;;; grsp-sop-spheret - Sphere test, single objective function.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_a1: 1 x n vector with n elements, representing an n-dimensinal problem.
@@ -802,7 +802,7 @@
 ;;;; grsp-sop-rosenbrock - Rosenbrock test, single objective function.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_a1: 1 x n vector with n elements, representing an n-dimensional problem.
@@ -845,7 +845,7 @@
 ;;;; grsp-sop-eggholder - Eggholder test, single objective function.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number, [-512.0, 512.0].
@@ -880,7 +880,7 @@
 ;;;; grsp-sop-eggholder-mth - Multithreaded variant of grsp-sop-eggholder
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number, [-512.0, 512.0].
@@ -911,7 +911,7 @@
 ;;;; grsp-sop-styblinski-tang - S & T test, single objective function.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_a1: 1 x n vector with n elements, representing an n-dimensinal problem.
@@ -946,7 +946,7 @@
 ;;;; grsp-sop-ackley - Ackley test, single objective function.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number, [-5.0, +5.0].
@@ -987,7 +987,7 @@
 ;;;; grsp-sop-ackley-mth - Multithreaded variant of grsp-sop-ackley
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number, [-5.0, +5.0].
@@ -1021,7 +1021,7 @@
 ;;;; grsp-sop-easom - Easom test, single objective function.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number, [-10.0, 10.0].
@@ -1051,7 +1051,7 @@
 ;;;; grsp-sop-easom-mth - Multithreaded variant of grsp-sop-easom.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number, [-10.0, 10.0].
@@ -1078,7 +1078,7 @@
 ;;;; grsp-sop-cit - Cross-in-tray test, single objective function.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number, [-10.0, 10.0].
@@ -1107,7 +1107,7 @@
 ;;;; grsp-sop-cit-mth - Multithreaded variant of grsp-sop-cit.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number, [-10.0, 10.0].
@@ -1135,7 +1135,7 @@
 ;;;; grsp-sop-hoelder - Hoelder test, single objective function.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number, [-10.0, 10.0].
@@ -1166,7 +1166,7 @@
 ;;;; grsp-sop-hoelder-mth - Multithreaded variant of grsp-sop-hoelder.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number, [-10.0, 10.0].
@@ -1197,7 +1197,7 @@
 ;; - p_x1 = p_y1 - 2 <= 0
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number [-1.5, 1.5].
@@ -1231,7 +1231,7 @@
 ;; - p_x1**2 + p_y1**2 <= 2
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number [-1.5, 1.5].
@@ -1261,7 +1261,7 @@
 ;; (disk). Returns +nan.0 for unconstraied arguments.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number.
@@ -1307,7 +1307,7 @@
 ;;;; grsp-cop-mbird-mth - Multithreaded variant of grsp-cop-mbird.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number.
@@ -1345,7 +1345,7 @@
 ;; (disk). Returns +nan.0 for unconstraied arguments.
 ;;
 ;; Keywords:
-;; - function, test, optimization, artificial, landscape.
+;; - functions, test, optimization, artificial, landscape.
 ;;
 ;; Arguments:
 ;; - p_x1: number [-1.25, 1.25].

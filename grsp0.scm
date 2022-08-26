@@ -122,7 +122,8 @@
 	    grsp-dscn
 	    grsp-dline
 	    grsp-dtext
-	    displayl))
+	    displayl
+	    displayf))
 
 
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
@@ -1086,7 +1087,7 @@
 
 
 ;;;; grsp-ln2s - List of numbers to string. The numbers in the list should
-;; represent Unicode charactesr.
+;; represent Unicode characters.
 ;;
 ;; Keywords:
 ;; - console, strings, unicode, utf.
@@ -1443,4 +1444,15 @@
 	   (display (list-ref p_l1 j1))	   
 	   
 	   (set! j1 (in j1)))))
-  
+
+
+;;;; displayf - Displays the contents of a plain text file.
+;;
+;; Keywords:
+;; - console, strings.
+;;
+;; Arguments:
+;; - p_f1: string. File name.
+;;
+(define (displayf p_f1)
+  (display (read-file-as-string p_f1)))

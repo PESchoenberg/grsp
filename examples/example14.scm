@@ -4,19 +4,17 @@
 
 ;; ==============================================================================
 ;;
-;; example13.scm
+;; example14.scm
 ;;
-;; A sample of grsp functions. This program creates a matrix of three columns
-;; and a user-define number of rows. Fills the first two colums with random
-;; values and the third one with the sum of the other two.
-;;
+;; A sample of grsp functions. This program creates a new .scm program file.
+;; 
 ;; Compilation:
 ;;
 ;; - cd to your /examples folder.
 ;;
 ;; - Enter the following:
 ;;
-;;   guile example13.scm 
+;;   guile example14.scm 
 ;;
 ;; ==============================================================================
 ;;
@@ -54,43 +52,39 @@
 	     (grsp grsp12)
 	     (grsp grsp13)
 	     (grsp grsp14)
-	     (grsp grsp15))
-
- 
-;; Vars
-(define tm 100)
-(define tn 3)
-(define i1 0)
-(define t1 "")
-
-;; Main program
-;;
-(clear)
-
-;; Create strictly row diagonally dominant matrix with random values.
-(newlines 1)
-(display "Creating matrix...")
-(define A (grsp-matrix-create "#rprnd" tm tn))
-
-;; Calculate sum.
-(set! i1 (grsp-lm A))
-(while (<= i1 (grsp-hm A))
-       (array-set! A (+ (array-ref A i1 0) (array-ref A i1 1)) i1 2)
-       (set! i1 (in i1)))
-
-;; Create table name for database.
-(set! t1 "A_example13.csv")
-
-;; Create database.
-(grsp-mc2dbc-csv "database.csv" A t1)
-
-;; Display matrix
-(newlines 1)
-(display "Matrix A:")
-(newlines 1)
-(grsp-matrix-display A)
-(newlines 1)
+	     (grsp grsp15)
+	     (grsp grsp16))
 
 
+;; Vars;
+(define fname "example15.scm")
+(define fdesc "This program file has been created using example14.scm.")
+(define pname "Pablo Edronkin")
+(define pmail "pablo.edronkin at yahoo.com")
+(define years "2018 - 2022")
+(define lmods (list (grsp-scm-pbp "" "grsp grsp0" "")
+		    (grsp-scm-pbp "\n  " "grsp grsp1" "")
+		    (grsp-scm-pbp "\n  " "grsp grsp2" "")
+		    (grsp-scm-pbp "\n  " "grsp grsp3" "")
+		    (grsp-scm-pbp "\n  " "grsp grsp4" "")
+		    (grsp-scm-pbp "\n  " "grsp grsp5" "")
+		    (grsp-scm-pbp "\n  " "grsp grsp6" "")
+		    (grsp-scm-pbp "\n  " "grsp grsp7" "")
+		    (grsp-scm-pbp "\n  " "grsp grsp8" "")
+		    (grsp-scm-pbp "\n  " "grsp grsp9" "")
+		    (grsp-scm-pbp "\n  " "grsp grsp10" "")
+		    (grsp-scm-pbp "\n  " "grsp grsp11" "")
+		    (grsp-scm-pbp "\n  " "grsp grsp12" "")
+		    (grsp-scm-pbp "\n  " "grsp grsp13" "")
+		    (grsp-scm-pbp "\n  " "grsp grsp14" "")
+		    (grsp-scm-pbp "\n  " "grsp grsp15" "")		    
+		    (grsp-scm-pbp "\n  " "grsp grsp16" "")))
+(define lcode (list ";; Main program."
+		    "(newlines 1)"
+		    "(display \"Hello world!\")"
+		    "(newlines 1)"))
 
+
+;; Main program.
+(grsp-scm-create-prg fname fdesc pname pmail years lmods lcode)
 

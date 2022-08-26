@@ -120,6 +120,9 @@
 
 ;;;; grsp-geo-rectangle - Area of a rectangle.
 ;;
+;; Keywords:
+;; - geometry.
+;;
 ;; Arguments:
 ;; - p_x1: base.
 ;; - p_y1: height.

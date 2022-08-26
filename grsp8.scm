@@ -272,7 +272,7 @@
 ;; data structure with basic, empty matrices.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_b1:
@@ -330,7 +330,7 @@
 ;; layer.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_b1:
@@ -429,7 +429,7 @@
 ;;;; grsp-ann-net-reconf - Reconfigure a neural network.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_s1: reconfiguration method.
@@ -463,7 +463,7 @@
 ;;;; grsp-ann-net-miter-omth - Iterate evaluations of the network p_n1 times.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_b3: #t for verbosity.
@@ -528,7 +528,7 @@
 ;; minimum possible size for efficiency reasons.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_a1: nodes.
@@ -565,7 +565,7 @@
 ;;;; grsp-ann-counter-upd - Updates the ann id and iteration counters.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_a3: count matrix.
@@ -596,7 +596,7 @@
 ;; and updates the corresponding matrix element.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_a1: nodes.
@@ -626,7 +626,7 @@
 ;; argument list p_l2.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_a1: nodes matrix.
@@ -676,7 +676,7 @@
 ;; ann p_l1.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_l1: list, ann.
@@ -760,7 +760,7 @@
 ;;;; grsp-ann2dbc - Saves a neural network to a csv database.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_d1: database name
@@ -810,7 +810,7 @@
 ;;;; grsp-dbc2ann - Retrieves an ann from a csv database.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_d1: database name
@@ -851,7 +851,7 @@
 ;; matrix should contain data for the creation of one layer of the ann.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_a1: specs matrix:
@@ -1104,7 +1104,7 @@
 ;; create a forward feed neural network.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_nl: number of nodes in layer 0.
@@ -1167,7 +1167,7 @@
 ;;;; grsp-ann-net-mutate - Mutates and randomizes ann p_l1.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_l2: ann.
@@ -1264,7 +1264,7 @@
 ;; Mutate and randomize ann p_l1.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_l2: ann.
@@ -1360,7 +1360,7 @@
 ;; equal to zero.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_l1: list, ann.
@@ -1410,7 +1410,7 @@
 ;; p_id of table p_a1 (nodes or conns).
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix (nodes or conns).
@@ -1432,7 +1432,7 @@
 ;; aacording to p_s1 in p_a1.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_s1: type of connection:
@@ -1458,7 +1458,7 @@
 ;; exports the result to the output connections.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_b3: #t for verbosity.
@@ -1607,7 +1607,7 @@
 ;;;; grsp-ann-actifun - Selects function p_n1 passing argument p_n2.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_n1: activation function [0,17].
@@ -1685,7 +1685,7 @@
 ;; in ann p_l1.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_b3: #t for verbosity.
@@ -1794,7 +1794,7 @@
 ;; provide input for nodes and conns.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_s1: matrix type or element that will fill it initially.
@@ -1848,7 +1848,7 @@
 ;; standard normal distribution.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_b1: select threading mode.
@@ -1902,7 +1902,7 @@
 ;; of ann p_l1.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_l1: ann.
@@ -1986,7 +1986,7 @@
 ;;;; grsp-ann-odata-update - Provides a current output data matrix for ann p_l1.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_l1: ann.
@@ -2019,7 +2019,7 @@
 ;; the input layer of the same or a different network.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_a5: odata.
@@ -2098,7 +2098,7 @@
 ;;;; grsp-ann-get-matrix - Get matrix p_s1 from ann p_l1.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_s1: selected:
@@ -2159,7 +2159,7 @@
 ;; p_s1 (for anns) with p_m1 rows.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_s1: matrix to create:
@@ -2206,7 +2206,7 @@
 ;; idata table that contains at least one row per input node.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_l1: ann.
@@ -2295,7 +2295,7 @@
 ;; odata table that contains at least one row per output node.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_l1: ann.
@@ -2387,7 +2387,7 @@
 ;; relationship.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_l1: ann.
@@ -2451,7 +2451,7 @@
 ;;;; grsp-m2datai - Casts the data of a grsp3 matrix as datai format. 
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_a1: data matrix.
@@ -2546,7 +2546,7 @@
 ;;;; grsp-ann-data-update - Black box update of datai table using grsp-m2datai.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_a1: data matrix.
@@ -2608,7 +2608,7 @@
 ;; nodes of the ann and then deletes the group.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_l1: ann.
@@ -2690,7 +2690,7 @@
 ;; behaviour of your ann.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_s1: selected:
@@ -2723,7 +2723,7 @@
 ;; This shows changes on all ann components (diff map).
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_l1: ann, first state.
@@ -2770,7 +2770,7 @@
 ;;;; grsp-ann-updatem - Updates ann p_l1 one matrix at a time.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_s1: selected:
@@ -2839,7 +2839,7 @@
 ;;;; grsp-nodes2odata - Casts the data contained in output nodes to odata table.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_a1: nodes table.
@@ -2908,7 +2908,7 @@
 ;; results of all evaluations performed so far.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_a1: odata table.
@@ -2972,7 +2972,7 @@
 ;; grsp-ann-net-size - Calculates the size of a neural network.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_l1: ann.
@@ -3015,7 +3015,7 @@
 ;; said node.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_l1: ann.
@@ -3091,7 +3091,7 @@
 ;; p_l1.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_l1: ann.
@@ -3128,7 +3128,7 @@
 ;; grsp-ann-net-density - Density of network p_l1.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_l1: ann.
@@ -3159,7 +3159,7 @@
 ;; grsp-ann-net-density - Planar density of network p_l1.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_l1: ann.
@@ -3189,7 +3189,7 @@
 ;; of network p_l1.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_l1: ann.
@@ -3225,7 +3225,7 @@
 ;; of ann p_l1
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_l1: ann.
@@ -3277,7 +3277,7 @@
 ;; of network p_l1.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_l1: ann.
@@ -3349,7 +3349,7 @@
 ;; (edges) of network p_l1.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_l1: ann.
@@ -3406,7 +3406,7 @@
 ;;;; grsp-ann-devt - Displays all matrices of the ann with labels.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_b1: boolean.
@@ -3458,7 +3458,7 @@
 ;;;; grsp-ann-devc - Describes connection with id p_n1 from network p_l1.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_b1: boolean.
@@ -3487,7 +3487,7 @@
 ;;;; grsp-ann-devcl - Describes connections from conns matrix.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_b1: boolean.
@@ -3516,7 +3516,7 @@
 ;; connections.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_b1: boolean.
@@ -3611,7 +3611,7 @@
 ;; connections by applying grsp-ann-devnc to each node.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; - p_b1: boolean.
@@ -3663,7 +3663,7 @@
 ;;;; grsp-ann-stats - Provides basic network info and statistics on ann p_a1.
 ;;
 ;; Keywords:
-;; - function, ann, neural network.
+;; - functions, ann, neural network.
 ;;
 ;; Arguments:
 ;; p_s1: string, title or identifier.

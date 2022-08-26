@@ -42,7 +42,7 @@
 ;;;; grsp-date-is-m29 - See if february has 29 days the year of query.
 ;;
 ;; Keywords:
-;; - date, time, calendar, chronology.
+;; - date, time, calendar, chronology, strings.
 ;;
 ;; Arguments:
 ;; - p_y1: year.
@@ -62,7 +62,7 @@
 ;;;; grsp-date-is-m31 - Returns #t if month p_m1 has 31 days, #f otherwise.
 ;;
 ;; Keywords:
-;; - date, time, calendar, chronology.
+;; - date, time, calendar, chronology, strings.
 ;;
 ;; Arguments:
 ;; - p_y1: year.
@@ -84,7 +84,7 @@
 ;;;; grsp-date-dl - Calculates the number of days in month p_m1 of year p_y1.
 ;;
 ;; Keywords:
-;; - date, time, calendar, chronology.
+;; - date, time, calendar, chronology, strings.
 ;;
 ;; Arguments:
 ;; - p_m1: month.
@@ -109,7 +109,7 @@
 ;; next year, if applicable.
 ;;
 ;; Keywords:
-;; - date, time, calendar, chronology.
+;; - date, time, calendar, chronology, strings.
 ;;
 ;; Arguments:
 ;; - p_m1: month.
@@ -138,7 +138,7 @@
 ;; month of the current trimester.
 ;;
 ;; Keywords:
-;; - date, time, calendar, chronology.
+;; - date, time, calendar, chronology, strings.
 ;;
 ;; Output:
 ;; - A list of three lists corresponding to the present month, the next one and
@@ -197,7 +197,7 @@
 ;; two next months
 ;;
 ;; Keywords:
-;; - date, time, calendar, chronology.
+;; - date, time, calendar, chronology, strings.
 ;;
 ;; Output:
 ;; - A list of three strings with dates for the present and two subsequent
@@ -280,7 +280,7 @@
 				     s1
 				     (grsp-n2s y3))
 			       0))    
-
+ 
     ;; Compose results.
     (set! res4 (list res1 res2 res3))
     

@@ -69,7 +69,7 @@
 ;; sequence that starts at p_n1.
 ;;
 ;; Keywords:
-;; - number, sequence, collatz, ulam, kakutani, thwaites, hasse, syracuse, erdos.
+;; - numbers, sequences, collatz, ulam, kakutani, thwaites, hasse, syracuse, erdos.
 ;;
 ;; Arguments:
 ;; - p_n1: integer > 0.
@@ -131,7 +131,7 @@
 ;;;; grsp-seq-geometric - Calculates a geometric convergent series.
 ;;
 ;; Keywords:
-;; - number, sequence, geometric, convergent.
+;; - numbers, sequences, geometric, convergent.
 ;;
 ;; Arguments:
 ;; - p_b1:
@@ -200,7 +200,7 @@
 ;;;; grsp-seq-hyperarmonic - Calculates a hyperarmonic series.
 ;;
 ;; Keywords:
-;; - number, sequence, harmonic, hyper, convergent.
+;; - numbers, sequences, harmonic, hyper, convergent.
 ;;
 ;; Arguments:
 ;; - p_b1:
@@ -270,7 +270,7 @@
 ;; amount to the value of the Euler number.
 ;;
 ;; Keywords:
-;; - number, sequence, euler.
+;; - numbers, sequences, euler.
 ;;
 ;; Arguments:
 ;; - p_b1:
@@ -312,7 +312,7 @@
 ;; developed by Bayley, Bourwen and Plouffe in 1997.
 ;;
 ;; Keywords:
-;; - number, sequence, pi.
+;; - numbers, sequences, pi.
 ;;
 ;; Arguments:
 ;; - p_b1:
