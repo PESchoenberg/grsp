@@ -799,7 +799,7 @@
 ;;;; grsp-string-tlength - Returns the length of trimmed string p_s2.
 ;;
 ;; Keywords:
-;; - console, strings.
+;; - console, trim, strings.
 ;;
 ;; Arguments:
 ;; - p_s1: sitring. Mode.
@@ -828,7 +828,7 @@
 ;;;; grsp-string-ltlength - Find the length of each string in a string list.
 ;;
 ;; Keywords:
-;; - console, strings.
+;; - console, trim, strings.
 ;;
 ;; Arguments:
 ;; - p_s1: sitring. Mode.
@@ -871,7 +871,7 @@
 ;; p_s1.
 ;;
 ;; Keywords:
-;; - console, strings.
+;; - console, trim, strings.
 ;;
 ;; Arguments:
 ;; - p_s1: sitring. Mode.
@@ -1115,7 +1115,7 @@
 ;; instances.
 ;;
 ;; Keywords:
-;; - function, random, string.
+;; - function, random, string, files, name, naming.
 ;;
 ;; Arguments:
 ;; - p_b1: boolean.

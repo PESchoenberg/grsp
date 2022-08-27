@@ -350,7 +350,8 @@
   
 
 ;;;; grsp-scm-pbp - Creates a string appending p_s1, opening parenthesis, p_s2,
-;; closing parenthesis and p_s3.
+;; closing parenthesis and p_s3. For example " " "(" "clear" ")" "\n", which
+;; leads to " (clear)\n".
 ;;
 ;; Keywords:
 ;; - lisp, guile, program, edition, programming, scheme. 
