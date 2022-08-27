@@ -56,15 +56,14 @@
 	     (grsp grsp14)
 	     (grsp grsp15))
 
-
-;; Vars
+ 
+;; Vars.
 (define tm 100)
 (define tn 3)
 (define i1 0)
 (define t1 "")
 
-;; Main program
-;;
+;; Main program.
 (clear)
 
 ;; Create strictly row diagonally dominant matrix with random values.

@@ -1,5 +1,5 @@
 ;; =============================================================================
-;;
+;; 
 ;; grsp15.scm
 ;;
 ;; Poly-related functions.
@@ -54,7 +54,7 @@
 ;;;; grsp-runge - Runge function. 
 ;;
 ;; Keywords:
-;; - function, division, fractions, polynomials.
+;; - functions, division, fractions, polynomials.
 ;;
 ;; Arguments:
 ;; - p_n1.

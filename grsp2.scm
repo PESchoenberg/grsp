@@ -1,5 +1,5 @@
 ;; =============================================================================
-;;
+;; 
 ;; grsp2.scm
 ;;
 ;; Real num. functions and general-purpose stuff. In general, these functions 
@@ -505,7 +505,7 @@
 ;;;; grsp-k2nb - Returns the value of (p_k1 * (p_r1**p_n1)) + p_b1 .
 ;;
 ;; Keywords:
-;; - function.
+;; - functions.
 ;;
 ;; Arguments:
 ;; - p_k1
@@ -524,7 +524,7 @@
 ;;;; grsp-bpp - Bailey–Borwein–Plouffe formula.
 ;;
 ;; Keywords:
-;; - function.
+;; - functions.
 ;;
 ;; Arguments:
 ;; - p_k1: summation iterations desired.
@@ -555,7 +555,7 @@
 ;; p_n1. sexp stands for super exponential.
 ;;
 ;; Keywords:
-;; - function, exp, expt.
+;; - functions, exp, expt.
 ;;
 ;; Arguments;
 ;; - p_x1: base.
@@ -591,7 +591,7 @@
 ;; height p_n1.
 ;;
 ;; Keywords:
-;; - function, logarithm.
+;; - functions, logarithm.
 ;;
 ;; Arguments;
 ;; - p_x1: base.
@@ -613,7 +613,7 @@
 ;;;; grsp-woodall-number - Calculates the Woodall number of p_n1.
 ;;
 ;; Keywords:
-;; - function, number.
+;; - functions, number.
 ;;
 ;; Arguments:
 ;; - p_n1: natural number.
@@ -637,7 +637,7 @@
 ;;;; grsp-cullen-number - Calculates the Cullen number of p_n1.
 ;;
 ;; Keywords:
-;; - function, number.
+;; - functions, number.
 ;;
 ;; Arguments:
 ;; - p_n1: any natural number.
@@ -664,7 +664,7 @@
 ;; - 2**p_n1 > p_k1.
 ;;
 ;; Keywords:
-;; - function, number.
+;; - functions, numbers.
 ;;
 ;; Arguments:
 ;; - p_k1: positive integer.
@@ -696,7 +696,7 @@
 ;; Mn = 2**p_n1 - 1 .
 ;;
 ;; Keywords:
-;; - function, number.
+;; - functions, numbers.
 ;;
 ;; Arguments:
 ;; - p_n1: positive integer.
@@ -721,7 +721,7 @@
 ;; p_d1 instances.
 ;;
 ;; Keywords:
-;; - function, number.
+;; - functions, numbers.
 ;;
 ;; Arguments:
 ;; - p_n1: natural number between [1,9].
@@ -753,7 +753,7 @@
 ;;;; grsp-wagstaff-number - Produces a Wagstaff number of base p_b1.
 ;;
 ;; Keywords:
-;; - function, number.
+;; - functions, numbers.
 ;;
 ;; Arguments:
 ;; - p_n1: natural number.
@@ -780,7 +780,7 @@
 ;;;; grsp-williams-number - Produces a Williams number of base p_b1.
 ;;
 ;; Keywords:
-;; - function, number.
+;; - functions, numbers.
 ;;
 ;; Arguments:
 ;; - p_n1: Natural number >= 1.
@@ -807,7 +807,7 @@
 ;;;; grsp-thabit-number - Produces a Thabit number.
 ;;
 ;; Keywords:
-;; - function, number.
+;; - functions, numbers.
 ;;
 ;; Arguments:
 ;; - p_n1: positive integer.
@@ -828,7 +828,7 @@
 ;;;; grsp-fermat-number - Produces a Fermat number.
 ;;
 ;; Keywords:
-;; - function, number.
+;; - functions, numbers.
 ;;
 ;; Arguments:
 ;; - p_n1: non-negative integer.
@@ -849,7 +849,7 @@
 ;;;; grsp-catalan-number - Calculates the p_n1(th) Catalan number.
 ;;
 ;; Keywords:
-;; - function, number.
+;; - functions, numbers.
 ;;
 ;; Arguments:
 ;; - p_n1: non-negative integer.
@@ -873,7 +873,7 @@
 ;;;; grsp-wagstaff-prime - Produces a Wagstaff prime number.
 ;;
 ;; Keywords:
-;; - function, primes, prime number.
+;; - functions, primes, prime number.
 ;;
 ;; Arguments:
 ;; - p_n1: Prime number.
@@ -898,7 +898,7 @@
 ;;;; grsp-dobinski-formula - Implementation of the Dobinski formula.
 ;;
 ;; Keywords:
-;; - function, dobinski.
+;; - functions, dobinski.
 ;;
 ;; Arguments:
 ;; - p_n1: non-negative integer.
@@ -932,7 +932,7 @@
 ;;;; grsp-method-netwton - Simple implementation of the Newton-Rapson method.
 ;;
 ;; Keywords:
-;; - function, newton, numerical.
+;; - functions, newton, numerical.
 ;;
 ;; Arguments:
 ;; - p_x1: x(n).
@@ -956,7 +956,7 @@
 ;;;; grsp-method-euler - Simple implementation of the Euler method.
 ;;
 ;; Keywords:
-;; - function, euler, numerical.
+;; - functions, euler, numerical.
 ;;
 ;; Arguments:
 ;; - p_y1: y(n).
@@ -981,7 +981,7 @@
 ;; (p_x1, p_x2) given p_x3.
 ;;
 ;; Keywords:
-;; - function, interpolation.
+;; - functions, interpolation.
 ;;
 ;; Arguments:
 ;; - p_x1: x1.
@@ -1010,7 +1010,7 @@
 ;; is adapted to Scheme from the original Octave code presented in the sources.
 ;;
 ;; Keywords:
-;; - function, givens.
+;; - functions, givens.
 ;;
 ;; Arguments:
 ;; - p_v1.
@@ -1072,7 +1072,7 @@
 ;; [p_nmin, p_nmax].
 ;;
 ;; Keywords:
-;; - function, trim, truncation.
+;; - functions, trim, truncation.
 ;;
 ;; Arguments:
 ;; - p_n1: real.
@@ -1098,7 +1098,7 @@
 ;;;; grsp-fitin-0-1 - Applies grsp-fitin to p_n1 within the interval [0.0, 1.0].
 ;;
 ;; Keywords:
-;; - function, trim, truncation.
+;; - functions, trim, truncation.
 ;;
 ;; Arguments:
 ;; p_n1: real.
@@ -1111,7 +1111,7 @@
 ;;;; grsp-eccentricity-spheroid - Eccentricity of a spheroid.
 ;;
 ;; Keywords:
-;; - function, curves, sphere, spheroid.
+;; - functions, curves, sphere, spheroid.
 ;;
 ;; Arguments:
 ;; - p_x1: semi major axis.
@@ -1136,7 +1136,7 @@
 ;; of an oblate ellipsoid.
 ;;
 ;; Keywords:
-;; - function, curves, ellipsoid.
+;; - functions, curves, ellipsoid.
 ;;
 ;; Arguments:
 ;; - p_s1: string
@@ -1162,7 +1162,7 @@
 ;;;; grsp-volume-ellipsoid - Volume of an ellipsoid.
 ;;
 ;; Keywords:
-;; - function, curves, ellipsoid, volume.
+;; - functions, curves, ellipsoid, volume.
 ;;
 ;; Arguments:
 ;; - p_x1: semi major axis.
@@ -1182,7 +1182,7 @@
 ;;;; grsp-tird-flattening-ellipsoid - Third flattening of an ellipsoid.
 ;;
 ;; Keywords:
-;; - function, curves, ellipsoid.
+;; - functions, curves, ellipsoid.
 ;;
 ;; Arguments:
 ;; - p_x1: semi major axis.
@@ -1203,7 +1203,7 @@
 ;;;; grsp-flattening-ellipsoid - Flattening of an ellipsoid.
 ;;
 ;; Keywords:
-;; - function, curves, ellipsoid.
+;; - functions, curves, ellipsoid.
 ;;
 ;; Arguments:
 ;; - p_x1: semi major axis.
@@ -1224,7 +1224,7 @@
 ;; based on its flattening.
 ;;
 ;; Keywords:
-;; - function, curves, ellipsoid.
+;; - functions, curves, ellipsoid.
 ;;
 ;; Arguments:
 ;; - p_f1: flattening.
@@ -1243,7 +1243,7 @@
 ;;;; grsp-mrc-ellipsoid - Meridian radius of curvature (N S).
 ;;
 ;; Keywords:
-;; - function, curves, ellipsoid.
+;; - functions, curves, ellipsoid.
 ;;
 ;; Arguments:
 ;; - p_x1: semi major axis.
@@ -1266,7 +1266,7 @@
 ;;;; grsp-pvrc-ellipsoid - Prime vertical radius of curvature (W E).
 ;;
 ;; Keywords:
-;; - function, curves, ellipsoid.
+;; - functions, curves, ellipsoid.
 ;;
 ;; Arguments:
 ;; - p_x1: semi major axis.
@@ -1292,7 +1292,7 @@
 ;; and azimuth p_a1.
 ;;
 ;; Keywords:
-;; - function, curves, ellipsoid.
+;; - functions, curves, ellipsoid.
 ;;
 ;; Arguments:
 ;; - p_x1: semi major axis.
@@ -1318,7 +1318,7 @@
 ;;;; grsp-urc-ellipsoid - Mean radius of curvature at p_l1.
 ;;
 ;; Keywords:
-;; - function, curves.
+;; - functions, curves.
 ;;
 ;; Arguments:
 ;; - p_x1: semi major axis.
@@ -1343,7 +1343,7 @@
 ;;;; grsp-r1-iugg - Mean radius of curvature (IUGG).
 ;;
 ;; Keywords:
-;; - function, curves.
+;; - functions, curves.
 ;;
 ;; Arguments:
 ;; - p_x1: semi major axis.
@@ -1363,7 +1363,7 @@
 ;;;; grsp-r2-iugg - Authalic radius (IUGG).
 ;;
 ;; Keywords:
-;; - function, curves.
+;; - functions, curves.
 ;;
 ;; Arguments:
 ;; - p_x1: semi major axis.
@@ -1394,7 +1394,7 @@
 ;;;; grsp-r3-iugg - Volumetric radius (IUGG).
 ;;
 ;; Keywords:
-;; - function, volume.
+;; - functions, volume.
 ;;
 ;; Arguments:
 ;; - p_x1: semi major axis.
@@ -1414,7 +1414,7 @@
 ;;;; grsp-r4-iugg - Mean curvature (IUGG).
 ;;
 ;; Keywords:
-;; - function, curves.
+;; - functions, curves.
 ;;
 ;; Arguments:
 ;; - p_x1: semi major axis.
@@ -1437,7 +1437,7 @@
 ;;;; grsp-fxyz-torus - Solution for f(x,y,z)
 ;;
 ;; Keywords:
-;; - function, torus.
+;; - functions, torus.
 ;;
 ;; Arguments:
 ;; - p_r1: R, distance from the center of the tube to the center of the torus.
@@ -1464,7 +1464,7 @@
 ;; to estimate the factorial pf p_n1.
 ;;
 ;; Keywords:
-;; - function, factorial, stirling.
+;; - functions, factorial, stirling.
 ;;
 ;; Arguments:
 ;; - p_n1: number for which its factorial is to be approximated.
@@ -1484,7 +1484,7 @@
 ;;;; grsp-airy-function - Solution to y'' − xy = 0.
 ;;
 ;; Keywords:
-;; - function, airy.
+;; - functions, airy.
 ;;
 ;; Arguments:
 ;; - p_x1.
@@ -1504,7 +1504,7 @@
 ;;;; grsp-sfact-pickover - Returns Pickover's superfactorial.
 ;;
 ;; Keywords:
-;; - function, factorial.
+;; - functions, factorial.
 ;;
 ;; Arguments:
 ;; - p_n1: positive integer.
@@ -1555,7 +1555,7 @@
 ;;;; grsp-hfact - Hyperfactorial.
 ;;
 ;; Keywords:
-;; - function, factorial.
+;; - functions, factorial.
 ;;
 ;; Arguments:
 ;; - p_n1: positive integer.
@@ -1581,7 +1581,7 @@
 ;;;; grsp-fact-alt - Alternating factorial.
 ;;
 ;; Keywords:
-;; - function, factorial.
+;; - functions, factorial.
 ;;
 ;; Arguments:
 ;; - p_n1: positive integer.
@@ -1602,7 +1602,7 @@
 ;;;; grsp-fact-exp - Exponential factorial.
 ;;
 ;; Keywords:
-;; - function, factorial.
+;; - functions, factorial.
 ;;
 ;; Arguments:
 ;; - p_n1: positive integer.
@@ -1627,7 +1627,7 @@
 ;; permutations with no fixed points or repetitions in a set.
 ;;
 ;; Keywords:
-;; - function, factorial.
+;; - functions, factorial.
 ;;
 ;; Arguments:
 ;; - p_n1: positive integer.
@@ -1652,7 +1652,7 @@
 ;;;; grsp-fact-low - Lower factorial.
 ;;
 ;; Keywords:
-;; - function, factorial, falling, descending, sequential.
+;; - functions, factorial, falling, descending, sequential.
 ;;
 ;; Arguments:
 ;; - p_x1: positive integer.
@@ -1677,7 +1677,7 @@
 ;;;; grsp-fact-upp - Upper factorial.
 ;;
 ;; Keywords:
-;; - function, factorial, upper, pochhammer, ascending, rising.
+;; - functions, factorial, upper, pochhammer, ascending, rising.
 ;;
 ;; Arguments:
 ;; - p_x1: positive integer.
@@ -1705,7 +1705,7 @@
 ;; is a derangement.
 ;;
 ;; Keywords:
-;; - function, ratio.
+;; - functions, ratio.
 ;;
 ;; Arguments:
 ;; - p_n1: positive integer.
@@ -1725,7 +1725,7 @@
 ;;;; grsp-ratio-derper-mth - Multithreaded version of grsp-ratio-derper.
 ;;
 ;; Keywords:
-;; - function, ratio.
+;; - functions, ratio.
 ;;
 ;; Arguments:
 ;; - p_n1: positive integer.
@@ -1748,7 +1748,7 @@
 ;; describe in the sources.
 ;;
 ;; Keywords:
-;; - function, cast, rounding.
+;; - functions, cast, rounding.
 ;;
 ;; Arguments:
 ;; - p_b1:
@@ -1775,7 +1775,7 @@
 ;;;; grsp-log - Calculates the logarithm of p_x1 in base p_g1.
 ;;
 ;; Keywords:
-;; - function.
+;; - functions.
 ;;
 ;; Arguments:
 ;; - p_g1: base.
@@ -1793,7 +1793,7 @@
 ;;;; grsp-log-mth - Multithreaded version of grsp-log.
 ;;
 ;; Keywords:
-;; - function.
+;; - functions.
 ;;
 ;; Arguments:
 ;; - p_g1: base.
@@ -1820,7 +1820,7 @@
 ;; function truncates one and rounds the other according to p_s1.
 ;;
 ;; Keywords:
-;; - function, classification, sorting.
+;; - functions, classification, sorting.
 ;;
 ;; Arguments:
 ;; - p_s1: determines which half is rounded and wich one is truncated if p_n1 is
@@ -1868,7 +1868,7 @@
 ;; exact number as real.
 ;;
 ;; Keywords:
-;; - function, cast.
+;; - functions, cast.
 ;;
 ;; Arguments:
 ;; - p_n1: number.
@@ -1884,7 +1884,7 @@
 ;;;; grsp-eex - Calculates e**p_n1.
 ;;
 ;; Keywords:
-;; - function, exp.
+;; - functions, exp.
 ;;
 ;; Arguments:
 ;; - p_n1: number.
@@ -1900,7 +1900,7 @@
 ;;;; grsp-e - Returns Euler's number as an OEIS constant.
 ;;
 ;; Keywords:
-;; - function, exp.
+;; - functions, exp.
 ;;
 (define (grsp-e)
   (let ((res1 0))
@@ -1913,7 +1913,7 @@
 ;;;; grsp-pi - Returns Pi.
 ;;
 ;; Keywords:
-;; - function, exp.
+;; - functions, exp.
 ;;
 (define (grsp-pi)
   (let ((res1 0))
@@ -1926,7 +1926,7 @@
 ;;;; grsp-em - Returns Euler-Mascheroni's Gamma.
 ;;
 ;; Keywords:
-;; - function, exp.
+;; - functions, exp.
 ;;
 (define (grsp-em)
   (let ((res1 0))
@@ -1939,7 +1939,7 @@
 ;;;; grsp-phi - Returns Phi (Golden Ratio).
 ;;
 ;; Keywords:
-;; - function, exp.
+;; - functions, exp.
 ;;
 (define (grsp-phi)
   (let ((res1 0))
@@ -1952,7 +1952,7 @@
 ;;;; grsp-nan - Returns NaN (Not a Number).
 ;;
 ;; Keywords:
-;; - function, exp.
+;; - functions, exp.
 ;;
 (define (grsp-nan)
   (let ((res1 0))
@@ -1965,7 +1965,7 @@
 ;;;; grsp-naninf - Returns nan and inf variants in a list.
 ;;
 ;; Keywords:
-;; - function, exp.
+;; - functions, exp.
 ;;
 (define (grsp-naninf)
   (let ((res1 '()))
@@ -1978,7 +1978,7 @@
 ;; grsp-absop - Simple arithmetic ops between absolute values of p_n2 and p_n1.
 ;;
 ;; Keywords:
-;; - function, absolute.
+;; - functions, absolute.
 ;;
 ;; Arguments:
 ;; - p_s1: operation.
@@ -2012,7 +2012,7 @@
 ;;;; grsp-rprnd - Pseudo random number generator, distribution p_s1.
 ;;
 ;; Keywords:
-;; - function, random, pseudo, aleatory.
+;; - functions, random, pseudo, aleatory.
 ;;
 ;; Arguments:
 ;; - p_s1: type of distribution.
@@ -2043,7 +2043,7 @@
 ;; the function is less than p_n1, the function returns #t, or #f otherwise.
 ;;
 ;; Keywords:
-;; - function, random, pseudo, aleatory.
+;; - functions, random, pseudo, aleatory.
 ;;
 ;; Arguments:
 ;; - p_s1: type of distribution.
@@ -2069,7 +2069,7 @@
 ;; grsp-nabs - Returns the negative of the absolute value of p_n1.
 ;;
 ;; Keywords:
-;; - function, absolute, negative.
+;; - functions, absolute, negative.
 ;;
 ;; Arguments:
 ;; - p_n1: real number, [-inf.0,+inf.0].
@@ -2090,7 +2090,7 @@
 ;; and 1/p_n1.
 ;;
 ;; Keywords:
-;; - function, absolute.
+;; - functions, absolute.
 ;;
 ;; Arguments:
 ;; - p_s1: operation.
@@ -2121,7 +2121,7 @@
 ;; natural times from 1 to p_n1.
 ;;
 ;; Keywords:
-;; - function, absolute.
+;; - functions, absolute.
 ;;
 ;; Arguments:
 ;; - p_b1: threading mode.
@@ -2149,7 +2149,7 @@
 ;; integer p_n1.
 ;;
 ;; Keywords:
-;; - function, absolute, collatz.
+;; - functions, absolute, collatz.
 ;;
 ;; Arguments:
 ;; - p_n1: integer > 0.
@@ -2170,7 +2170,7 @@
 ;;;; grsp-rectangle-method - Approximates the value of an integral.
 ;;
 ;; Keywords:
-;; - function, integral, calculus, summation, series, integration
+;; - functions, integral, calculus, summation, series, integration
 ;;
 ;; Arguments:
 ;; - p_l1: list containing the values for f(x) from f(0) to f(n).
@@ -2206,7 +2206,7 @@
 ;;;; grsp-kronecker-delta - Returns 1 if p_n1 equals p_n2, zero otherwise.
 ;;
 ;; Keywords:
-;; - function, binary.
+;; - functions, binary.
 ;;
 ;; Arguments:
 ;; - p_n1: number.
@@ -2227,7 +2227,7 @@
 ;;;; grsp-dirac-delta - Returns +inf.0 if p_n1 equals zero, zero otherwise.
 ;;
 ;; Keywords:
-;; - function, binary.
+;; - functions, binary.
 ;;
 ;; Arguments:
 ;; - p_n1: number.
@@ -2252,7 +2252,7 @@
 ;; - If p_n1 is not equal to p_n2, returns p_n3.
 ;;
 ;; Keywords:
-;; - function.
+;; - functions.
 ;;
 ;; Arguments:
 ;; - p_b1: boolean.
@@ -2300,7 +2300,7 @@
 ;; - Otherwise return p_n3.
 ;;
 ;; Keywords:
-;; - function.
+;; - functions.
 ;;
 ;; Arguments:
 ;; - p_b1: boolean.
@@ -2343,7 +2343,7 @@
 ;;;; grsp-euler-number - Calculates e as a summation of p_n1 iterations.
 ;;
 ;; Keywords:
-;; - function.
+;; - functions.
 ;;
 ;; Arguments:
 ;; - p_n1: number, iterations.
@@ -2362,7 +2362,7 @@
 ;;;; grsp-rectangular - Rectangular function.
 ;;
 ;; Keywords:
-;; - function, gate, pulse, pi, unit, normalized, boxcar
+;; - functions, gate, pulse, pi, unit, normalized, boxcar
 ;;
 ;; Arguments:
 ;; - p_n1: number.
@@ -2386,7 +2386,7 @@
 ;;;; grsp-triangular - Triangular function.
 ;;
 ;; Keywords:
-;; - function, gate, pulse, pi, unit, normalized, boxcar
+;; - functions, gate, pulse, pi, unit, normalized, boxcar
 ;;
 ;; Arguments:
 ;; - p_n1: number.
@@ -2407,7 +2407,7 @@
 ;;;; grsp-2ex - A quick way to calculate (expt 2 p_n1).
 ;;
 ;; Keywords:
-;; - function, exponent.
+;; - functions, exponent.
 ;;
 ;; Arguments:
 ;; - p_n1: number.
@@ -2423,7 +2423,7 @@
 ;;;; grsp-1n - A quick way to calculate (/ 1 p_n1).
 ;;
 ;; Keywords:
-;; - function, division, fractions.
+;; - functions, division, fractions.
 ;;
 ;; Arguments:
 ;; - p_n1: number.
@@ -2439,7 +2439,7 @@
 ;;;; grsp-pn123n - A quick way to calculate (+ p_n1 (* p_n2 p_n3)).
 ;;
 ;; Keywords:
-;; - function, division, fractions.
+;; - functions, division, fractions.
 ;;
 ;; Arguments:
 ;; - p_n1: number.
@@ -2458,7 +2458,7 @@
 ;; absolute value between both numbers and p_n1.
 ;;
 ;; Keywords:
-;; - function, difference, substraaction.
+;; - functions, difference, substraaction.
 ;;
 ;; Arguments:
 ;; - p_n1: number.
@@ -2485,7 +2485,7 @@
 ;; p_n1 and p_n2, and p_n1 and p_n3.
 ;;
 ;; Keywords:
-;; - function, difference, substraaction.
+;; - functions, difference, substraaction.
 ;;
 ;; Arguments:
 ;; - p_n1: number.
@@ -2515,7 +2515,7 @@
 ;; p_s1, p_u1 and p_v1.
 ;;
 ;; Keywords:
-;; - function, random, pseudo, aleatory.
+;; - functions, random, pseudo, aleatory.
 ;;
 ;; Arguments:
 ;; - p_s1: type of distribution.
@@ -2555,7 +2555,7 @@
 ;; from applying operation p_s1 to p_n1.
 ;;
 ;; Keywords:
-;; - function, arithmetic, operations, equations.
+;; - functions, arithmetic, operations, equations.
 ;;
 ;; Arguments:
 ;; - p_s1: string
@@ -2584,7 +2584,7 @@
 ;;;; grsp-fn3 - Finds x so that p_n2 - (x*p_n1) = p_n3.
 ;;
 ;; Keywords:
-;; - function, arithmetic, operations, equations.
+;; - functions, arithmetic, operations, equations.
 ;;
 ;; Arguments:
 ;; - p_n1: number.
@@ -2604,7 +2604,7 @@
 ;;;; grsp-eq - Returns #t if p_n1 and p_n2 are equal; #f otherwise.
 ;;
 ;; Keywords:
-;; - function, arithmetic, operations, equations.
+;; - functions, arithmetic, operations, equations.
 ;;
 ;; Arguments:
 ;; - p_n1: number.

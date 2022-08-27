@@ -61,7 +61,7 @@
 ;;;; grsp-identity - Identity function (type 0).
 ;;
 ;; Keywords:
-;; - function, activation, ann.
+;; - functions, activation, ann.
 ;;
 ;; Arguments:
 ;; - p_1: list containing the following parameters.
@@ -81,7 +81,7 @@
 ;;;; grsp-binary-step - Binary step function (type 1).
 ;;
 ;; Keywords:
-;; - function, activation, ann.
+;; - functions, activation, ann.
 ;;
 ;; Arguments:
 ;; - p_1: list containing the following parameters.
@@ -107,7 +107,7 @@
 ;;;; grsp-sigmoid - Sigmoid function (type 2).
 ;;
 ;; Keywords:
-;; - function, activation, ann.
+;; - functions, activation, ann.
 ;;
 ;; Arguments:
 ;; - p_1: list containing the following parameters.
@@ -132,7 +132,7 @@
 ;;;; grsp-tanh - Tanh function (type 3).
 ;;
 ;; Keywords:
-;; - function, activation, ann.
+;; - functions, activation, ann.
 ;;
 ;; Arguments:
 ;; - p_1: list containing the following parameters.
@@ -161,7 +161,7 @@
 ;;;; grsp-tanh-mth - Multithreaded variant of grsp-tanh.
 ;;
 ;; Keywords:
-;; - function, activation, ann.
+;; - functions, activation, ann.
 ;;
 ;; Arguments:
 ;; - p_1: list containing the following parameters.
@@ -191,7 +191,7 @@
 ;;;; grsp-relu - Rectified linear unit function (type 4).
 ;;
 ;; Keywords:
-;; - function, activation, ann.
+;; - functions, activation, ann.
 ;;
 ;; Arguments:
 ;; - p_1: list containing the following parameters.
@@ -217,7 +217,7 @@
 ;;;; grsp-softplus - Softplus function (type 5).
 ;;
 ;; Keywords:
-;; - function, activation, ann.
+;; - functions, activation, ann.
 ;;
 ;; Arguments:
 ;; - p_1: list containing the following parameters.
@@ -242,7 +242,7 @@
 ;;;; grsp-elu - Exponential linear unit function (type 6).
 ;;
 ;; Keywords:
-;; - function, activation, ann.
+;; - functions, activation, ann.
 ;;
 ;; Arguments:
 ;; - p_1: list containing the following parameters.
@@ -273,7 +273,7 @@
 ;;;; grsp-lrelu - Leaky rectified linear unit function (type 7).
 ;;
 ;; Keywords:
-;; - function, activation, ann.
+;; - functions, activation, ann.
 ;;
 ;; Arguments:
 ;; - p_1: list containing the following parameters.
@@ -301,7 +301,7 @@
 ;;;; grsp-selu - Scaled exponential linear unit function (type 8).
 ;;
 ;; Keywords:
-;; - function, activation, ann.
+;; - functions, activation, ann.
 ;;
 ;; Arguments:
 ;; - p_1: list containing the following parameters.
@@ -335,7 +335,7 @@
 ;;;; grsp-gelu - Gaussian error linear unit function (type 9).
 ;;
 ;; Keywords:
-;; - function, activation, ann.
+;; - functions, activation, ann.
 ;;
 ;; Arguments:
 ;; - p_1: list containing the following parameters.
@@ -365,7 +365,7 @@
 ;;;; grsp-prelu - Parametric rectified linear unit function (type 10).
 ;;
 ;; Keywords:
-;; - function, activation, ann.
+;; - functions, activation, ann.
 ;;
 ;; Arguments:
 ;; - p_1: list containing the following parameters.
@@ -396,7 +396,7 @@
 ;;;; grsp-softsign - Softsign function (type 11).
 ;;
 ;; Keywords:
-;; - function, activation, ann.
+;; - functions, activation, ann.
 ;;
 ;; Arguments:
 ;; - p_1: list containing the following parameters.
@@ -421,7 +421,7 @@
 ;;;; grsp-sqnl - Square nonlinearity unit function (type 12).
 ;;
 ;; Keywords:
-;; - function, activation, ann.
+;; - functions, activation, ann.
 ;;
 ;; Arguments:
 ;; - p_1: list containing the following parameters.
@@ -460,7 +460,7 @@
 ;;;; grsp-bent-identity - Bent identity activation function (type 13).
 ;;
 ;; Keywords:
-;; - function, activation, ann.
+;; - functions, activation, ann.
 ;;
 ;; Arguments:
 ;; - p_1: list containing the following parameters.
@@ -485,7 +485,7 @@
 ;;;; grsp-silu - Sigmoid linear function (type 14).
 ;;
 ;; Keywords:
-;; - function, activation, ann.
+;; - functions, activation, ann.
 ;;
 ;; Arguments:
 ;; - p_1: list containing the following parameters.
@@ -510,7 +510,7 @@
 ;;;; grsp-srelu - S-shaped rectified linear function (type 15).
 ;;
 ;; Keywords:
-;; - function, activation, ann.
+;; - functions, activation, ann.
 ;;
 ;; Arguments:
 ;; - p_1: list containing the following parameters.
@@ -550,7 +550,7 @@
 ;;;; grsp-gaussian - Gaussian activation function (type 16).
 ;;
 ;; Keywords:
-;; - function, activation, ann.
+;; - functions, activation, ann.
 ;;
 ;; Arguments:
 ;; - p_1: list containing the following parameters.
@@ -575,7 +575,7 @@
 ;;;; grsp-sqrbf - Sqrbf activation function (type 17).
 ;;
 ;; Keywords:
-;; - function, activation, ann.
+;; - functions, activation, ann.
 ;;
 ;; Arguments:
 ;; - p_11: list containing the following parameters.
@@ -612,7 +612,7 @@
 ;; 18).
 ;;
 ;; Keywords:
-;; - function, activation, ann.
+;; - functions, activation, ann.
 ;;
 ;; Arguments:
 ;; - p_11: list containing the following parameters.
@@ -649,7 +649,7 @@
 ;; grsp-trcrnd - Simple truncation and rounding function (type 19).
 ;;
 ;; Keywords:
-;; - function, activation, ann.
+;; - functions, activation, ann.
 ;;
 ;; Arguments:
 ;; - p_11: list containing the following parameters.

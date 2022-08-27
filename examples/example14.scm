@@ -7,7 +7,7 @@
 ;; example14.scm
 ;;
 ;; A sample of grsp functions. This program creates a new .scm program file.
-;;
+;; 
 ;; Compilation:
 ;;
 ;; - cd to your /examples folder.
@@ -56,7 +56,7 @@
 	     (grsp grsp16))
 
 
-;; Vars;
+;; Vars.
 (define fname "example15.scm")
 (define fdesc "This program file has been created using example14.scm.")
 (define pname "Pablo Edronkin")

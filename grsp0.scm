@@ -122,7 +122,8 @@
 	    grsp-dscn
 	    grsp-dline
 	    grsp-dtext
-	    displayl))
+	    displayl
+	    displayf))
 
 
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
@@ -798,7 +799,7 @@
 ;;;; grsp-string-tlength - Returns the length of trimmed string p_s2.
 ;;
 ;; Keywords:
-;; - console, strings.
+;; - console, trim, strings.
 ;;
 ;; Arguments:
 ;; - p_s1: sitring. Mode.
@@ -827,7 +828,7 @@
 ;;;; grsp-string-ltlength - Find the length of each string in a string list.
 ;;
 ;; Keywords:
-;; - console, strings.
+;; - console, trim, strings.
 ;;
 ;; Arguments:
 ;; - p_s1: sitring. Mode.
@@ -870,7 +871,7 @@
 ;; p_s1.
 ;;
 ;; Keywords:
-;; - console, strings.
+;; - console, trim, strings.
 ;;
 ;; Arguments:
 ;; - p_s1: sitring. Mode.
@@ -1114,7 +1115,7 @@
 ;; instances.
 ;;
 ;; Keywords:
-;; - function, random, string.
+;; - function, random, string, files, name, naming.
 ;;
 ;; Arguments:
 ;; - p_b1: boolean.
@@ -1443,4 +1444,15 @@
 	   (display (list-ref p_l1 j1))	   
 	   
 	   (set! j1 (in j1)))))
-  
+
+
+;;;; displayf - Displays the contents of a plain text file.
+;;
+;; Keywords:
+;; - console, strings.
+;;
+;; Arguments:
+;; - p_f1: string. File name.
+;;
+(define (displayf p_f1)
+  (display (read-file-as-string p_f1)))

@@ -378,10 +378,14 @@
 	    grsp-eigenvec
 	    grsp-matrix-is-srddominant
 	    grsp-matrix-jacobim
-	    grsp-matrix-sradius))
+	    grsp-matrix-sradius
+	    grsp-ms2ts))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -401,6 +405,9 @@
 
 
 ;;;; grsp-hm - Short form of (grsp-matrix-esi 2 p_a1).
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -440,6 +447,9 @@
 
 ;;;; grsp-hn - Short form of (grsp-matrix-esi 4 p_a1).
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices.
+;;
 ;; Arguments:
 ;; - p_a1: matrix.
 ;;
@@ -459,6 +469,9 @@
 
 ;;;; grsp-tm - Convenience function that returns the total number of rows in
 ;; p_a1.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -481,6 +494,9 @@
 
 ;;;; grsp-tn - Convenience function that returns the total number of cols in
 ;; p_a1.
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -3320,7 +3336,7 @@
 ;;;; grsp-matrix-density - Returns the density value of matrix p_a1.
 ;;
 ;; Keywords:
-77;; - function, algebra, matrix, matrices, vectors.
+;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -3730,8 +3746,8 @@
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
 ;;
-;;  Arguments:
-;;  p_l1: list.
+;; Arguments:
+;; - p_l1: list.
 ;;
 (define (grsp-l2m p_l1)
   (let ((res1 (grsp-matrix-create 0 1 (length p_l1)))
@@ -3776,8 +3792,8 @@
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
 ;;
-;;  Arguments:
-;;  p_a1: matrix.
+;; Arguments:
+;; - p_a1: matrix.
 ;;
 (define (grsp-m2v p_a1)
   (let ((res1 0)
@@ -7397,6 +7413,9 @@
 ;; provides an easy way to operate element-wise between columns of a single
 ;; matrix or various matrices.
 ;;
+;; Keywords:
+;; - function, algebra, matrix, matrices.
+;;
 ;; Arguments:
 ;; - p_s1:
 ;;   - "#+": sum.
@@ -8159,7 +8178,7 @@
 	(i1 0)
 	(j1 0))
 
-    ;; Find the lonest string in the matrix.
+    ;; Find the longest string in the matrix.
     (set! l1 (+ (grsp-matrix-slongest p_a1) 1))
 
     ;; Justify.
@@ -8675,13 +8694,8 @@
 
 			 (set! j1 (in j1)))
 
-		  ;(set! n2 (- (array-ref B i1 0) sum))
-		  ;(set! n3 (/ 1 (array-ref A i1 i1)))
-		  ;(set! n4 (* n3 n2))
-		  ;(array-set! X n4 i1 0)
 		  (array-set! X (/ (- (array-ref B i1 0) sum) (array-ref A i1 i1)) i1 0)
-		  
-		  
+		  		  
 		  (set! i1 (in i1)))
 
 	   (set! n1 (in n1))
@@ -8706,7 +8720,7 @@
 ;;
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
-  ;;
+;;
 ;; Arguments:
 ;; - p_s1: decomposition method (QR).
 ;; - p_a1: matrix (square).
@@ -8726,3 +8740,22 @@
     
     res1))
 
+
+;;;; grsp-ms2ts - Creates a text string from the file pointed by the string
+;; contained at (array-ref p_a1 p_m1 p_n1).
+;;
+;; Keywords:
+;; - function, algebra, matrix, matrices, vectors, strings.
+;;
+;; Arguments:
+;;
+(define (grsp-ms2ts p_a1 p_m1 p_n1)
+  (let ((res1 "")
+	(s2 "")
+	(n2 0))
+    
+    (set! n2 (array-ref p_a1 p_m1 p_n1))
+    (set! s2 (grsp-dbc2s n2))
+    (set! res1 (read-file-as-string s2))
+    
+    res1))
