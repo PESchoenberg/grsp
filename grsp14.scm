@@ -193,7 +193,7 @@
     res4))
 
 
-;;;; grsp-date-ldm3m - For the current date, fids the same day numbers of the
+;;;; grsp-date-ldm3m - For the current date, finds the same day numbers of the
 ;; two next months
 ;;
 ;; Keywords:

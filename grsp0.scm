@@ -1006,7 +1006,10 @@
 
     ;; Cycle.
     (while (< j1 hn)
-	   (list-set! res1 j1 (grsp-string-pjustify p_s1 (list-ref p_l1 j1) p_s3 p_n1))
+	   (list-set! res1 j1 (grsp-string-pjustify p_s1
+						    (list-ref p_l1 j1)
+						    p_s3
+						    p_n1))
 	   (set! j1 (in j1)))
     
     res1))
@@ -1115,7 +1118,7 @@
 ;; instances.
 ;;
 ;; Keywords:
-;; - function, random, string, files, name, naming.
+;; - functions, random, string, files, name, naming.
 ;;
 ;; Arguments:
 ;; - p_b1: boolean.
@@ -1141,7 +1144,7 @@
 ;; into a three-element list.
 ;;
 ;; Keywords:
-;; - function, random, string.
+;; - functions, random, string.
 ;;
 ;; Arguments:
 ;; - p_s1: string.
@@ -1170,7 +1173,7 @@
 ;; distribution.
 ;;
 ;; Keywords:
-;; - function, random, string.
+;; - functions, random, string.
 ;;
 (define (grsp-trprnd)
   (let ((res1 0))
@@ -1186,7 +1189,7 @@
 ;; p_s3 according to mode p_s1.
 ;;
 ;; Keywords:
-;; - function, random, string.
+;; - functions, random, string.
 ;;
 ;; Arguments:
 ;; - p_s1: string.
@@ -1266,7 +1269,7 @@
 ;; to a number apt to be stored in a grsp relational matrix.
 ;;
 ;; Keywords:
-;; - function, random, string.
+;; - functions, random, string.
 ;;
 ;; Arguments
 ;; - p_s1: string
@@ -1295,7 +1298,7 @@
 ;; human readable form.
 ;;
 ;; Keywords:
-;; - function, random, string.
+;; - functions, random, string.
 ;;
 ;; Arguments:
 ;; - p_n1: number. Should have been composed as described in grsp-s2dbc.
@@ -1401,6 +1404,7 @@
   (grsp-dsc)
   (newline))
 
+
 ;;;; grsp-dline - Displays a double line.
 ;;
 ;; Keywords:
@@ -1449,7 +1453,7 @@
 ;;;; displayf - Displays the contents of a plain text file.
 ;;
 ;; Keywords:
-;; - console, strings.
+;; - console, strings, engrams.
 ;;
 ;; Arguments:
 ;; - p_f1: string. File name.

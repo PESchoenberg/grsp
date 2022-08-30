@@ -41,7 +41,8 @@
 ;;   https://en.wikipedia.org/wiki/List_of_complex_and_algebraic_surfaces
 ;;   [Accessed 21 November 2021].
 ;; - [5] En.wikipedia.org. 2021. Dupin cyclide - Wikipedia. [online] Available
-;;   at: https://en.wikipedia.org/wiki/Dupin_cyclide [Accessed 21 November 2021].
+;;   at: https://en.wikipedia.org/wiki/Dupin_cyclide
+;;   [Accessed 21 November 2021].
 
 
 (define-module (grsp grsp7)
@@ -252,6 +253,7 @@
     (set! res1 (* (/ 1 3) p_a1 p_y1))
     
     res1))
+
 
 ;;;; grsp-geo-pi-machin - Approximates pi using the original John Machin's
 ;; formula.
