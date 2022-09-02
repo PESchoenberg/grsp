@@ -68,7 +68,8 @@
 (define i1 0)
 (define hm 0)
 (define s1 "")
-
+(define la '())
+(define lb '())
 
 ;; Main program.
 (clear)
@@ -92,24 +93,28 @@
 (grsp-matrix-display A)
 (newlines 1)
 
+
+;; Read files.
+(set! la (grsp-dbc2lls A (grsp-lm A) 1))
+(set! lb (grsp-dbc2lls A (grsp-hm A) 1))
+
 ;; Display the contents of the text files associated to matrix A.
 (display "Text of first file:")
+(newlines 1)
+(display (list-ref la 1))
 (newline)
-(set! i1 (grsp-lm A))
-(newline)
-(display (array-ref A i1 0))
-(display " -> ")
-(set! s1 (grsp-dbc2s (array-ref A i1 1)))
-(displayf s1)
+(display "Found at: ")
+(newlines 1)
+(display (list-ref la 0))
 (newlines 2)
+
 (display "Text of second file:")
+(newlines 1)
+(display (list-ref lb 1))
 (newline)
-(set! i1 (grsp-hm A))
-(newline)
-(display (array-ref A i1 0))
-(display " -> ")
-(set! s1 (grsp-dbc2s (array-ref A i1 1)))
-(displayf s1)
+(display "Found at: ")
+(newlines 1)
+(display (list-ref lb 0))
 (newlines 2)
       
 

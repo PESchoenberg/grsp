@@ -379,7 +379,9 @@
 	    grsp-matrix-is-srddominant
 	    grsp-matrix-jacobim
 	    grsp-matrix-sradius
-	    grsp-ms2ts))
+	    grsp-ms2ts
+	    grsp-mr2ls
+	    grsp-dbc2lls))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -8750,6 +8752,9 @@
 ;; - functions, algebra, matrix, matrices, vectors, strings.
 ;;
 ;; Arguments:
+;; - p_a1: matrix.
+;; - p_m1: row.
+;; - p_n1: col
 ;;
 (define (grsp-ms2ts p_a1 p_m1 p_n1)
   (let ((res1 "")
@@ -8762,3 +8767,41 @@
     
     res1))
 
+;;;; grsp-mr2ls - Matrix row to list of strings. Returns row p_m1 from matrix
+;; p_a1 as a list of strings.
+;;
+;; Keywords:
+;; - functions, algebra, matrix, matrices, vectors, strings, lists.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_m1: row.
+;;
+(define (grsp-mr2ls p_a1 p_m1)
+  (let ((res1 '()))
+
+    (set! res1 (map grsp-bcn2s (grsp-mr2l p_a1 p_m1)))
+
+    res1))
+
+
+;;;; grsp-dbc2lls - For database table  (matrix) element p_a1(p_m1, p_n1)
+;; returns a two element list containing:
+;; - Elem 0: the path to the plain text file as codified in the table.
+;; - Elem 1: text of the file as a single string.
+;;
+;; Keywords:
+;; - functions, algebra, matrix, matrices, vectors, strings, lists.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_m1: row.
+;; . p_n1: col.
+;;
+(define (grsp-dbc2lls p_a1 p_m1 p_n1)
+  (let ((res1 '()))
+	
+    (set! res1 (list (grsp-dbc2s (array-ref p_a1 p_m1 p_n1))
+		     (grsp-ms2ts p_a1 p_m1 p_n1)))
+    
+    res1))

@@ -94,6 +94,7 @@
 	    grsp-placebo
 	    in
 	    de
+	    grsp-bcn2s
 	    grsp-argtype
 	    grsp-dstr
 	    grsp-jstr
@@ -664,6 +665,43 @@
 
     (set! res1 (- p_n1 1))
 
+    res1))
+
+
+;;;; grsp-bcn2s - Casts p_a1 to string, being p_a1 a boolean, char or numeric
+;; argument.
+;;
+;; Keywords:
+;; - console, numbers.
+;;
+;; Arguments:
+;; - p_a1: argument (any type).
+;;
+;; Output:
+;; - String "nc2s" (not convertible to string) if the argument cannot be cast
+;;   as a string.
+;; - A string representing the argument, otherwise.
+;;
+(define (grsp-bcn2s p_a1)
+  (let ((res1 "nc2s")
+	(l1 '()))
+
+    (cond ((string? p_a1)
+	   (set! res1 p_a1))	  
+	  ((boolean? p_a1)
+	   (cond ((equal? p_a1 #t)
+		  (set! res1 "#t"))
+		 (else (set! res1 "#f"))))
+	  ((char? p_a1)
+	   (set! l1 (list p_a1))
+	   (set! res1 (list->string l1)))
+	  ((integer? p_a1)
+	   (set! res1 (number->string p_a1)))
+	  ((real? p_a1)
+	   (set! res1 (number->string p_a1)))
+	  ((complex? p_a1)
+	   (set! res1 (number->string p_a1))))
+    
     res1))
 
 
@@ -1460,3 +1498,4 @@
 ;;
 (define (displayf p_f1)
   (display (read-file-as-string p_f1)))
+
