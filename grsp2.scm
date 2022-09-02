@@ -1,6 +1,6 @@
 ;; =============================================================================
 ;; 
-;; grsp2.scm
+;; grsp2.scm 
 ;;
 ;; Real num. functions and general-purpose stuff. In general, these functions 
 ;; constitute the basis for other functions found in the grspX.scm files, where
@@ -255,7 +255,7 @@
 ;; this function is equivalent to the sgn math function.
 ;;
 ;; Keywords:
-;; - function, comparison.
+;; - functions, comparison.
 ;;
 ;; Arguments:
 ;; - p_n1: number.
@@ -280,7 +280,7 @@
 ;;;; grsp-sign - Returns 1 if p_n1 >= 0, -1 otherwise.
 ;;
 ;; Keywords:
-;; - function, comparison.
+;; - functions, comparison.
 ;;
 ;; Arguments:
 ;; - p_n1: real number.
@@ -300,7 +300,7 @@
 ;; p_n2.
 ;;
 ;; Keywords:
-;; - function, comparison.
+;; - functions, comparison.
 ;;
 ;; Arguments:
 ;; - p_n1: integer.
@@ -326,7 +326,7 @@
 ;; numbers other methods will likely be more adequate.
 ;;
 ;; Keywords:
-;; - function, primes, prime number.
+;; - functions, primes, prime number.
 ;;
 ;; Arguments:
 ;; - p_n: integer.
@@ -360,7 +360,7 @@
 ;;;; grsp-fact - Calculates the factorial of p_n1.
 ;;
 ;; Keywords:
-;; - function, factorial.
+;; - functions, factorial.
 ;;
 ;; Arguments:
 ;; - p_n1: natural number.
@@ -380,7 +380,7 @@
 ;;;; grsp-sumat - Calculates the summation of p_n1 (triangular number).
 ;;
 ;; Keywords:
-;; - function, summation.
+;; - functions, summation.
 ;;
 ;; Arguments:
 ;; - p_n1: integer >= 0.
@@ -405,7 +405,7 @@
 ;; set of p_n1 elements without repetition.
 ;;
 ;; Keywords:
-;; - function, combinatorics.
+;; - functions, combinatorics.
 ;;
 ;; Arguments:
 ;; - p_n1: integer >= 0
@@ -433,7 +433,7 @@
 ;; of p_n1 elements with repetition.
 ;;
 ;; Keywords:
-;; - function, combinatorics.
+;; - functions, combinatorics.
 ;;
 ;; Arguments:
 ;; - p_n1: integer >= 0
@@ -454,7 +454,7 @@
 ;; greater than p_n2 and smaller than p_n3, or in the interval (p_n2:p_n3).
 ;;
 ;; Keywords:
-;; - function, comparison.
+;; - functions, comparison.
 ;;
 ;; Arguments:
 ;; - p_n1
@@ -480,7 +480,7 @@
 ;; number p_n1 is greater or equal than p_n2 and smaller or equal than p_n3.
 ;;
 ;; Keywords:
-;; - function, comparison.
+;; - functions, comparison.
 ;;
 ;; Arguments:
 ;; - p_n1

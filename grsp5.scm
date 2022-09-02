@@ -100,7 +100,8 @@
 ;; - [26] En.wikipedia.org. 2021. Summary Statistics. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Summary_statistics [Accessed 1 January 2021].
 ;; - [27] En.wikipedia.org. 2021. Five-Number Summary. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Five-number_summary [Accessed 1 January 2021].
+;;   https://en.wikipedia.org/wiki/Five-number_summary
+;;   [Accessed 1 January 2021].
 ;; - [28] En.wikipedia.org. 2021. Range (Statistics). [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Range_(statistics) [Accessed 1 January 2021].
 ;; - [29] En.wikipedia.org. 2021. Algorithms For Calculating Variance. [online]
@@ -517,7 +518,7 @@
 ;; - statistics, probability.
 ;;
 ;; Arguments:
-;; - p_n1: real repesenting a probability in [0,1]
+;; - p_n1: real representing a probability in [0,1]
 ;;
 ;; Sources:
 ;; - [1].
@@ -996,9 +997,9 @@
 ;; - p_x1: probability, [0, 1].
 ;;
 ;; Output:
-;;   - Bits, if p_g1 = 2.
-;;   - Nats, if p_g1 = (grsp-e) (e).
-;;   - Dits, if p_g1 = 10.
+;; - Bits, if p_g1 = 2.
+;; - Nats, if p_g1 = (grsp-e) (e).
+;; - Dits, if p_g1 = 10.
 ;;
 ;; Sources:
 ;; - [9].
@@ -1117,7 +1118,7 @@
 ;; - statistics, probability.
 ;;
 ;; Arguments:
-;; p_n1: n.
+;; - p_n1: n.
 ;;
 ;; Sources:
 ;; - [12].
@@ -1136,9 +1137,9 @@
 ;; - statistics, probability.
 ;;
 ;; Arguments:
-;; p_x1: mean.
-;; p_x2: median.
-;; p_x3: standard deviation.
+;; - p_x1: mean.
+;; - p_x2: median.
+;; - p_x3: standard deviation.
 ;;
 ;; Sources:
 ;; - [1].
@@ -1157,9 +1158,9 @@
 ;; - statistics, probability.
 ;;
 ;; Arguments:
-;; p_x1: mean.
-;; p_x2: mode.
-;; p_x3: standard deviation.
+;; - p_x1: mean.
+;; - p_x2: mode.
+;; - p_x3: standard deviation.
 ;;
 ;; Sources:
 ;; - [20].
@@ -1178,9 +1179,9 @@
 ;; - statistics, probability.
 ;;
 ;; Arguments:
-;; p_x1: mean.
-;; p_x2: median.
-;; p_x3: standard deviation.
+;; - p_x1: mean.
+;; - p_x2: median.
+;; - p_x3: standard deviation.
 ;;
 ;; Sources:
 ;; - [20].
@@ -1199,8 +1200,8 @@
 ;; - statistics, probability.
 ;;
 ;; Arguments:
-;; p_a1: sample (matrix).
-;; p_x1: sample mean.
+;; - p_a1: sample (matrix).
+;; - p_x1: sample mean.
 ;;
 ;; Sources:
 ;; - [20][22].
@@ -1228,9 +1229,9 @@
 ;; - statistics, probability.
 ;;
 ;; Arguments:
-;; p_a1: sample (matrix).
-;; p_x1: sample mean.
-;; p_x3: standard deviation.
+;; - p_a1: sample (matrix).
+;; - p_x1: sample mean.
+;; - p_x3: standard deviation.
 ;;
 ;; Sources:
 ;; - [22][23].
@@ -1257,7 +1258,7 @@
 ;; - statistics, probability.
 ;;
 ;; Arguments:
-;; p_x4: kurtosis.
+;; - p_x4: kurtosis.
 ;;
 ;; Sources:
 ;; - [23].
@@ -1276,8 +1277,8 @@
 ;; - statistics, probability.
 ;;
 ;; Arguments:
-;; p_x1: sample mean.
-;; p_x3: sample standard deviation.
+;; - p_x1: sample mean.
+;; - p_x3: sample standard deviation.
 ;;
 ;; Sources:
 ;; - [20].

@@ -94,6 +94,7 @@
 	    grsp-placebo
 	    in
 	    de
+	    grsp-bcn2s
 	    grsp-argtype
 	    grsp-dstr
 	    grsp-jstr
@@ -667,6 +668,43 @@
     res1))
 
 
+;;;; grsp-bcn2s - Casts p_a1 to string, being p_a1 a boolean, char or numeric
+;; argument.
+;;
+;; Keywords:
+;; - console, numbers.
+;;
+;; Arguments:
+;; - p_a1: argument (any type).
+;;
+;; Output:
+;; - String "nc2s" (not convertible to string) if the argument cannot be cast
+;;   as a string.
+;; - A string representing the argument, otherwise.
+;;
+(define (grsp-bcn2s p_a1)
+  (let ((res1 "nc2s")
+	(l1 '()))
+
+    (cond ((string? p_a1)
+	   (set! res1 p_a1))	  
+	  ((boolean? p_a1)
+	   (cond ((equal? p_a1 #t)
+		  (set! res1 "#t"))
+		 (else (set! res1 "#f"))))
+	  ((char? p_a1)
+	   (set! l1 (list p_a1))
+	   (set! res1 (list->string l1)))
+	  ((integer? p_a1)
+	   (set! res1 (number->string p_a1)))
+	  ((real? p_a1)
+	   (set! res1 (number->string p_a1)))
+	  ((complex? p_a1)
+	   (set! res1 (number->string p_a1))))
+    
+    res1))
+
+
 ;;;; grsp-argtype - Finds the type of p_a1.
 ;;
 ;; Keywords:
@@ -1006,7 +1044,10 @@
 
     ;; Cycle.
     (while (< j1 hn)
-	   (list-set! res1 j1 (grsp-string-pjustify p_s1 (list-ref p_l1 j1) p_s3 p_n1))
+	   (list-set! res1 j1 (grsp-string-pjustify p_s1
+						    (list-ref p_l1 j1)
+						    p_s3
+						    p_n1))
 	   (set! j1 (in j1)))
     
     res1))
@@ -1115,7 +1156,7 @@
 ;; instances.
 ;;
 ;; Keywords:
-;; - function, random, string, files, name, naming.
+;; - functions, random, string, files, name, naming.
 ;;
 ;; Arguments:
 ;; - p_b1: boolean.
@@ -1141,7 +1182,7 @@
 ;; into a three-element list.
 ;;
 ;; Keywords:
-;; - function, random, string.
+;; - functions, random, string.
 ;;
 ;; Arguments:
 ;; - p_s1: string.
@@ -1170,7 +1211,7 @@
 ;; distribution.
 ;;
 ;; Keywords:
-;; - function, random, string.
+;; - functions, random, string.
 ;;
 (define (grsp-trprnd)
   (let ((res1 0))
@@ -1186,7 +1227,7 @@
 ;; p_s3 according to mode p_s1.
 ;;
 ;; Keywords:
-;; - function, random, string.
+;; - functions, random, string.
 ;;
 ;; Arguments:
 ;; - p_s1: string.
@@ -1266,7 +1307,7 @@
 ;; to a number apt to be stored in a grsp relational matrix.
 ;;
 ;; Keywords:
-;; - function, random, string.
+;; - functions, random, string.
 ;;
 ;; Arguments
 ;; - p_s1: string
@@ -1295,7 +1336,7 @@
 ;; human readable form.
 ;;
 ;; Keywords:
-;; - function, random, string.
+;; - functions, random, string.
 ;;
 ;; Arguments:
 ;; - p_n1: number. Should have been composed as described in grsp-s2dbc.
@@ -1401,6 +1442,7 @@
   (grsp-dsc)
   (newline))
 
+
 ;;;; grsp-dline - Displays a double line.
 ;;
 ;; Keywords:
@@ -1449,10 +1491,11 @@
 ;;;; displayf - Displays the contents of a plain text file.
 ;;
 ;; Keywords:
-;; - console, strings.
+;; - console, strings, engrams.
 ;;
 ;; Arguments:
 ;; - p_f1: string. File name.
 ;;
 (define (displayf p_f1)
   (display (read-file-as-string p_f1)))
+

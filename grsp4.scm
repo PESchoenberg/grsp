@@ -292,7 +292,7 @@
 ;; - p_z1: ordinal of the desired Fibonacci number.
 ;;
 ;; Sources:
-;; [6].
+;; - [6].
 ;;
 (define (grsp-complex-binet p_z1)
   (let ((res1 0)
