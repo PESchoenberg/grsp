@@ -381,7 +381,8 @@
 	    grsp-matrix-sradius
 	    grsp-ms2ts
 	    grsp-mr2ls
-	    grsp-dbc2lls))
+	    grsp-dbc2lls
+	    grsp-matrix-row-prkey))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -8785,8 +8786,9 @@
     res1))
 
 
-;;;; grsp-dbc2lls - For database table  (matrix) element p_a1(p_m1, p_n1)
-;; returns a two element list containing:
+;;;; grsp-dbc2lls - For database table (matrix) element p_a1(p_m1, p_n1)
+;; representing a link to a file with a numeric string, this function returns
+;; a two element string list containing:
 ;; - Elem 0: the path to the plain text file as codified in the table.
 ;; - Elem 1: text of the file as a single string.
 ;;
@@ -8798,6 +8800,9 @@
 ;; - p_m1: row.
 ;; . p_n1: col.
 ;;
+;; Notes:
+;; - See grsp0.grsp-s2dbc, grsp0.grsp-dbc2s
+;;
 (define (grsp-dbc2lls p_a1 p_m1 p_n1)
   (let ((res1 '()))
 	
@@ -8805,3 +8810,49 @@
 		     (grsp-ms2ts p_a1 p_m1 p_n1)))
     
     res1))
+
+
+;;;; grsp-matrix-row-prkey - Defines an explicit primary key on col p_n1
+;; from matrix p_a1, starting at row p_m1 and whose values equal the
+;; corresponding row numbers. The resulting primary keys are unique since row
+;; numbers are also unique.
+;;
+;; Keywords:
+;; - functions, algebra, matrix, matrices, vectors, strings, lists.
+;;
+;; Arguments:
+;; - p_a1: matrix.
+;; - p_m1: row.
+;; - p_n1: col.
+;;
+;; Note:
+;; - This function should be used carefuly to avoid messing-up primarey keys.
+;; - The function gives the choice to start at any rown number in order to
+;;   save time when assigning primary key values to new rows.
+;;
+(define (grsp-matrix-row-prkey p_a1 p_m1 p_n1)
+  (let ((res1 0)
+	(res2 0)
+	(i1 0)
+	(n2 0))
+
+    ;; Safety copy.
+    (set! res1 (grsp-matrix-cpy p_a1))
+    
+    (set! i1 p_m1)
+    (display "-----")
+    (while (<= i1 (grsp-hm res1))
+
+	   (display "1----")
+	   (set! n2 (array-ref res1 p_m1 p_n1))
+	   (display "2----")
+	   (cond ((equal? n2 0)
+		  (display "3----")
+		  (array-set! res1 p_m1 p_m1 p_n1)))
+	   	  (display "4----")
+	   (set! i1 (in i1)))
+
+    (set! res2 res1)
+  
+    res2))
+

@@ -30,6 +30,7 @@
 
 
 (define-module (grsp grsp1)
+  #:use-module (grsp grsp0) ;;;
   #:export (gconst))
 	    
 
