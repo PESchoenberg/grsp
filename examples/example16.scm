@@ -2,11 +2,11 @@
 !#
 
 
-;; ==============================================================================
+;; =============================================================================
 ;;
 ;; example16.scm
 ;;
-;; A sample of grsp functions. Created a matrix that has numerical strings as
+;; A sample of grsp functions. Creates a matrix that has numerical strings as
 ;; pinters to text files, then it creates those files and then reads them.
 ;;
 ;; Compilation:
@@ -17,7 +17,7 @@
 ;;
 ;;   guile example16.scm 
 ;;
-;; ==============================================================================
+;; =============================================================================
 ;;
 ;; Copyright (C) 2018 - 2022 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
@@ -34,7 +34,7 @@
 ;;   You should have received a copy of the GNU Lesser General Public License
 ;;   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ;;
-;; ==============================================================================
+;; =============================================================================
 
 
 ;; Required modules.
@@ -53,7 +53,8 @@
 	     (grsp grsp12)
 	     (grsp grsp13)
 	     (grsp grsp14)
-	     (grsp grsp15))
+	     (grsp grsp15)
+	     (grsp grsp16))
 
  
 ;; Vars.
@@ -71,11 +72,10 @@
 (define la '())
 (define lb '())
 
+
 ;; Main program.
 (clear)
-(newlines 1)
-
-(display "Creating files...")
+(grsp-ld "Creating files...")
 (set! fpa (string-append db fa))
 (set! fpb (string-append db fb))
 (array-set! A 0 0 0)
@@ -87,9 +87,7 @@
 
 
 ;; Display matrix
-(newlines 1)
-(display "Matrix A: first col shows a primary key. Second column shows an utc-numeric pointer to a file.")
-(newlines 1)
+(grsp-ld "Matrix A: first col shows a primary key. Second column shows an utc-numeric pointer to a file.")
 (grsp-matrix-display A)
 (newlines 1)
 
@@ -98,25 +96,15 @@
 (set! la (grsp-dbc2lls A (grsp-lm A) 1))
 (set! lb (grsp-dbc2lls A (grsp-hm A) 1))
 
+
 ;; Display the contents of the text files associated to matrix A.
-(display "Text of first file:")
-(newlines 1)
-(display (list-ref la 1))
-(newline)
-(display "Found at: ")
-(newlines 1)
-(display (list-ref la 0))
-(newlines 2)
+(grsp-ld "Text of first file:")
+(grsp-ld (list-ref la 1))
+(grsp-ld "Found at: ")
+(grsp-ldl (list-ref la 0) 0 2)
 
-(display "Text of second file:")
-(newlines 1)
-(display (list-ref lb 1))
-(newline)
-(display "Found at: ")
-(newlines 1)
-(display (list-ref lb 0))
-(newlines 2)
-      
-
-
+(grsp-ld "Text of second file:")
+(grsp-ld (list-ref lb 1))
+(grsp-ld "Found at: ")
+(grsp-ldl (list-ref lb 0 ) 0 2)
 

@@ -2,8 +2,8 @@
 ;;
 ;; grsp0.scm
 ;;
-;; Some useful, simple functions for GNU Guile Scheme programs created or   
-;; adapted during the development of several other projects.
+;; A library of some useful, simple functions for GNU Guile Scheme programs 
+;; created or adapted during the development of several other projects.
 ;;
 ;; =============================================================================
 ;;
@@ -124,7 +124,9 @@
 	    grsp-dline
 	    grsp-dtext
 	    displayl
-	    displayf))
+	    displayf
+	    grsp-slists-append
+	    grsp-lam))
 
 
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
@@ -1342,7 +1344,7 @@
 ;; - p_n1: number. Should have been composed as described in grsp-s2dbc.
 ;;
 ;; Notes:
-;; - See grsp-s2dbc, grsp3.grsp-matrix-create.
+;; - See grsp-s2dbc, grsp3.grsp-matrix-create, grsp3.grsp-dbc2lls.
 ;;
 (define (grsp-dbc2s p_n1)
   (let ((res1 "")
@@ -1498,4 +1500,56 @@
 ;;
 (define (displayf p_f1)
   (display (read-file-as-string p_f1)))
+
+
+;;;; grsp-slists-append - Appends each consecutive element of string list
+;; p_l1 to each element of string list p_l2 separated by string p_s1.
+;;
+;; Keywords:
+;; - console, strings.
+;;
+;; Arguments:
+;; - p_l1: list fo string elements.
+;; - p_l2: list fo string elements.
+;; - p_s1: string.
+;;
+(define (grsp-slists-append p_l1 p_l2 p_s1)
+  (let ((res1 '())
+	(l3 (make-list (length p_l1) p_s1)))
+
+    (set! res1 (map string-append p_l1 l3))
+    (set! res1 (map string-append res1 p_l2))
+
+    res1))
+
+
+;;;; grsp-lam - List of strings describing the available modules of the grsp
+;; library.
+;;
+;; Keywords:
+;; - console, strings.
+;;
+;;
+(define (grsp-lam)
+  (let ((res1 '()))
+
+    (set! res1 (list "(grsp grsp0)"
+		     "(grsp grsp1)"
+		     "(grsp grsp2)"
+		     "(grsp grsp3)"
+		     "(grsp grsp4)"
+		     "(grsp grsp5)"
+		     "(grsp grsp6)"
+		     "(grsp grsp7)"
+		     "(grsp grsp8)"
+		     "(grsp grsp9)"
+		     "(grsp grsp10)"
+		     "(grsp grsp11)"
+		     "(grsp grsp12)"
+		     "(grsp grsp13)"
+		     "(grsp grsp14)"
+		     "(grsp grsp15)"
+		     "(grsp grsp16)"))
+    
+    res1))
 

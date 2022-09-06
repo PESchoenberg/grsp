@@ -248,7 +248,8 @@
 	    grsp-coinflip
 	    grsp-fn
 	    grsp-fn3
-	    grsp-eq))
+	    grsp-eq
+	    grsp-n12n2))
 
 
 ;;;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -2619,4 +2620,18 @@
     res1))
 
 
+;;;; grsp-n12n2 - How much does represent p_n1 in terms of p_n2.
+;;
+;; Keywords:
+;; - functions, arithmetic, operations, equations.
+;;
+;; Arguments:
+;; - p_n1: number to convert.
+;; - p_n2: number. Scale. How much p_n2 is worth in terms of p_n1.
+;;
+(define (grsp-n12n2 p_n1 p_n2)
+  (let ((res1 0.0))
+ 
+    (set! res1 (* 1.0 (/ p_n1 p_n2)))
 
+    res1))

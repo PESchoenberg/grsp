@@ -2,11 +2,12 @@
 !#
 
 
-;; ==============================================================================
+;; =============================================================================
 ;;
 ;; example14.scm
 ;;
-;; A sample of grsp functions. This program creates a new .scm program file.
+;; A sample of grsp functions. This program creates a new .scm empty-shell
+;; program file.
 ;; 
 ;; Compilation:
 ;;
@@ -16,7 +17,7 @@
 ;;
 ;;   guile example14.scm 
 ;;
-;; ==============================================================================
+;; =============================================================================
 ;;
 ;; Copyright (C) 2018 - 2022 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
@@ -33,7 +34,7 @@
 ;;   You should have received a copy of the GNU Lesser General Public License
 ;;   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ;;
-;; ==============================================================================
+;; =============================================================================
 
 
 ;; Required modules.
@@ -85,6 +86,6 @@
 		    "(newlines 1)"))
 
 
-;; Main program.
-(grsp-scm-create-prg fname fdesc pname pmail years lmods lcode)
+;; Main program. This just consists in one function call.
+(grsp-scm-create-prg-gpl3 fname fdesc pname pmail years lmods lcode)
 
