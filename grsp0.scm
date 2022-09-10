@@ -86,6 +86,7 @@
 	    grsp-s2n
 	    grsp-sqlp
 	    grsp-ld
+	    grsp-dl
 	    grsp-ldl
 	    grsp-cd
 	    grsp-ask
@@ -511,6 +512,19 @@
 (define (grsp-ld p_s1)
   (newline)
   (display p_s1))
+
+
+;;;; grsp-dl - Display and line. Displays a newline after a string.
+;;
+;; Keywords:
+;; - console, strings.
+;;
+;; Arguments:
+;; - p_s1: string.
+;;
+(define (grsp-dl p_s1)
+  (display p_s1)
+  (newline))
 
 
 ;;;; grsp-ldl - Line, display. line. Displays p_n1 blank lines before
@@ -1009,13 +1023,13 @@
 ;; - p_n1: number. How many times should p_s1 be repeated.
 ;;
 (define (grsp-string-repeat p_s1 p_n1)
-  (let ((res1 "")
-	(j1 0))
+  (let ((res1 ""))
 
-    (while (< j1 p_n1)
-	   (set! res1 (string-append res1 p_s1))
-	   (set! j1 (in j1)))
-
+	(let loop ((j1 0))
+	  (if (< j1 p_n1)
+	      (begin (set! res1 (string-append res1 p_s1))
+		     (loop (+ j1 1)))))
+  
     res1))
 
 
@@ -1098,15 +1112,13 @@
 ;; - p_l1: list of strings to convert to a single string. 
 ;;
 (define (grsp-ls2s p_l1)
-  (let ((res1 "")
-	(hn (length p_l1))
-	(j1 0))
+  (let ((res1 ""))
 
-    ;; Cycle list and append.
-    (while (< j1 hn)
-	   (set! res1 (string-append res1 (list-ref p_l1 j1)))
-	   (set! j1 (in j1)))
-
+    (let loop ((j1 0))
+      (if (< j1 (length p_l1))
+	  (begin (set! res1 (string-append res1 (list-ref p_l1 j1)))
+		 (loop (+ j1 1)))))
+    
     res1))
 
 
@@ -1466,8 +1478,7 @@
 ;;
 (define (grsp-dtext p_s1)
   (grsp-dsc)
-  (display p_s1)
-  (newline))
+  (grsp-dl p_s1))
 
 
 ;;;; displayl - Displays all elements of list p_l1 separated by string p_s1.
@@ -1481,7 +1492,7 @@
 ;;
 (define (displayl p_s1 p_l1)
   (let ((j1 0))
-  
+    
     (while (< j1 (length p_l1))
 
 	   (display p_s1)
@@ -1509,8 +1520,8 @@
 ;; - console, strings.
 ;;
 ;; Arguments:
-;; - p_l1: list fo string elements.
-;; - p_l2: list fo string elements.
+;; - p_l1: list of string elements.
+;; - p_l2: list of string elements.
 ;; - p_s1: string.
 ;;
 (define (grsp-slists-append p_l1 p_l2 p_s1)
@@ -1523,7 +1534,7 @@
     res1))
 
 
-;;;; grsp-lam - List of strings describing the available modules of the grsp
+;;;; grsp-lam - List of strings enumerating the available modules of the grsp
 ;; library.
 ;;
 ;; Keywords:
