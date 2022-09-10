@@ -8768,6 +8768,7 @@
     
     res1))
 
+
 ;;;; grsp-mr2ls - Matrix row to list of strings. Returns row p_m1 from matrix
 ;; p_a1 as a list of strings.
 ;;
@@ -8812,7 +8813,7 @@
     res1))
 
 
-;;;; grsp-matrix-row-prkey - Defines an explicit primary key on col p_n1
+;;;; grsp-matrix-row-prkey - Defines an explicit primary key on col p_j1
 ;; from matrix p_a1, starting at row p_m1 and whose values equal the
 ;; corresponding row numbers. The resulting primary keys are unique since row
 ;; numbers are also unique.
@@ -8823,36 +8824,43 @@
 ;; Arguments:
 ;; - p_a1: matrix.
 ;; - p_m1: row.
-;; - p_n1: col.
+;; - p_j1: col.
 ;;
 ;; Note:
-;; - This function should be used carefuly to avoid messing-up primarey keys.
-;; - The function gives the choice to start at any rown number in order to
+;; - This function should be used with care to avoid messing-up primarey keys.
+;; - The function gives the choice to start at any row number in order to
 ;;   save time when assigning primary key values to new rows.
+;; - Take into account that key numbers may not coincide with row numbers.
+;; - Elements on p_j1 should be zero before applying this function.
 ;;
-(define (grsp-matrix-row-prkey p_a1 p_m1 p_n1)
+(define (grsp-matrix-row-prkey p_a1 p_m1 p_j1)
   (let ((res1 0)
-	(res2 0)
 	(i1 0)
-	(n2 0))
+	(i2 0))
 
     ;; Safety copy.
     (set! res1 (grsp-matrix-cpy p_a1))
-    
+
+    ;; Cycle.
     (set! i1 p_m1)
-    (display "-----")
+    (set! i2 i1)
     (while (<= i1 (grsp-hm res1))
 
-	   (display "1----")
-	   (set! n2 (array-ref res1 p_m1 p_n1))
-	   (display "2----")
-	   (cond ((equal? n2 0)
-		  (display "3----")
-		  (array-set! res1 p_m1 p_m1 p_n1)))
-	   	  (display "4----")
-	   (set! i1 (in i1)))
+	   ;; Only act on elements that have no value assigned as key.
+	   (cond ((equal? (array-ref res1 i1 p_j1) 0)
 
-    (set! res2 res1)
+		  ;; Check if i2 already exists as a key. If it does, increment
+		  ;; i2 and continue checking until i2 has a value that does not
+		  ;; exist in column p_j1.
+		  (cond ((> i1 0)
+			 (while (> (grsp-matrix-col-total-element "#=" p_a1 p_j1 i2) 0)
+				(set! i2 (in i2)))))
+
+		  ;; Assign key.
+		  (array-set! res1 i2 i1 p_j1)
+		  (set! i2 (in i2))))
+	   
+	   (set! i1 (in i1)))
   
-    res2))
+    res1))
 
