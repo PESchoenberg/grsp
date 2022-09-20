@@ -1543,12 +1543,12 @@
 ;; - [26].
 ;;
 (define (grsp-sfact-sp p_n1)
-  (let ((res1 1)
-	(i1 1))
+  (let ((res1 1))
 
-    (while (<= i1 p_n1)
-	   (set! res1 (* res1 (grsp-fact i1)))
-	   (set! i1 (+ i1 1)))
+    (let loop ((i1 1))
+      (if (<= i1 p_n1)
+	  (begin (set! res1 (* res1 (grsp-fact i1)))	       
+		 (loop (+ i1 1)))))
     
     res1))
 
@@ -1569,12 +1569,12 @@
 ;; - [26].
 ;;
 (define (grsp-hfact p_n1)
-  (let ((res1 1)
-	(i1 1))
+  (let ((res1 1))
 
-    (while (<= i1 p_n1)
-	   (set! res1 (* res1 (expt i1 i1)))
-	   (set! i1 (+ i1 1)))
+    (let loop ((i1 1))
+      (if (<= i1 p_n1)
+	  (begin (set! res1 (* res1 (expt i1 i1)))	       
+		 (loop (+ i1 1)))))
     
     res1))
 
@@ -1663,15 +1663,15 @@
 ;; - [1].
 ;;
 (define (grsp-fact-low p_x1 p_n1)
-  (let ((res1 1)
-	(k1 0))
+  (let ((res1 1))
 
     (cond ((> p_n1 0)
-	   
-	   (while (< k1 p_n1)
-		  (set! res1 (+ res1 (- p_x1 k1)))
-		  (set! k1 (+ k1 1)))))
-    
+
+	   (let loop ((k1 0))
+	     (if (< k1 p_n1)
+		 (begin (set! res1 (+ res1 (- p_x1 k1)))
+			(loop (+ k1 1)))))))
+
     res1))
 
 
@@ -1688,14 +1688,14 @@
 ;; - [1].
 ;;
 (define (grsp-fact-upp p_x1 p_n1)
-  (let ((res1 1)
-	(k1 0))
+  (let ((res1 1))
 
     (cond ((> p_n1 0)
-	   
-	   (while (< k1 p_n1)
-		  (set! res1 (+ res1 (+ p_x1 k1)))
-		  (set! k1 (+ k1 1)))))
+
+	   (let loop ((k1 0))
+	     (if (< k1 p_n1)
+		 (begin (set! res1 (+ res1 (+ p_x1 k1)))
+			(loop (+ k1 1)))))))
     
     res1))
 
@@ -2132,17 +2132,15 @@
 ;; - p_n1: iterations.
 ;;
 (define (grsp-salbm-omth p_b1 p_g1 p_n1)
-  (let ((res1 0)
-	(i1 1))
+  (let ((res1 0))
 
-    (while (<= i1 p_n1)
-	   
-	   (cond ((equal? p_b1 #t)
-		  (set! res1 (+ res1 (grsp-log-mth p_g1 i1))))
-		 (else (set! res1 (+ res1 (grsp-log p_g1 i1)))))
-	   
-	   (set! i1 (in i1)))
-
+    (let loop ((i1 1))
+      (if (<= i1 p_n1)
+	  (begin (cond ((equal? p_b1 #t)
+			(set! res1 (+ res1 (grsp-log-mth p_g1 i1))))
+		       (else (set! res1 (+ res1 (grsp-log p_g1 i1)))))
+		 (loop (+ i1 1)))))
+    
     res1))
 
 
@@ -2184,7 +2182,6 @@
 	(res2 0)
 	(res3 0)
 	(l1 '())
-	(i1 0)
 	(m1 0)
 	(m2 0))
 
@@ -2193,11 +2190,11 @@
     (set! m2 (- m1 1))
     (set! res1 (/ (+ (list-ref l1 0) (list-ref l1 m2)) 2))
 
-    (set! i1 1)
-    (while (<= i1 m2)
-	   (set! res2 (+ res2 (list-ref l1 i1)))
-	   (set! i1 (in i1)))
-
+    (let loop ((i1 1))
+      (if (<= i1 m2)
+	  (begin (set! res2 (+ res2 (list-ref l1 i1)))
+		 (loop (+ i1 1)))))
+    
     ;; Compose resuls.
     (set! res1 (+ res2 res3))
     
@@ -2344,18 +2341,18 @@
 ;;;; grsp-euler-number - Calculates e as a summation of p_n1 iterations.
 ;;
 ;; Keywords:
-;; - functions.
+;; - functions, euler, summations.
 ;;
 ;; Arguments:
 ;; - p_n1: number, iterations.
 ;;
 (define (grsp-euler-number p_n1)
-  (let ((res1 0.0)
-	(i1 0))
+  (let ((res1 0.0))
 
-    (while (< i1 p_n1)
-	   (set! res1 (+ res1 (/ 1 (grsp-fact i1))))
-	   (set! i1 (in i1)))
+    (let loop ((i1 0))
+      (if (<= i1 p_n1)
+	  (begin (set! res1 (+ res1 (/ 1 (grsp-fact i1))))
+		 (loop (+ i1 1)))))
     
     res1))
 
