@@ -156,6 +156,7 @@
   #:use-module (grsp grsp3)
   #:use-module (grsp grsp4)
   #:use-module (grsp grsp7)
+  #:use-module (grsp grsp11)
   #:use-module (ice-9 threads)
   #:export (grsp-feature-scaling
 	    grsp-z-score
@@ -173,6 +174,7 @@
 	    grsp-mean1
 	    grsp-mean1-mth
 	    grsp-mean2
+	    grsp-mean3
 	    grsp-mean-geometric
 	    grsp-mean-geometric-mth
 	    grsp-mean-interquartile
@@ -286,7 +288,7 @@
 ;;;; grsp-feature-scaling - Scales p_n to the interval [p_nmin, p_nmax].
 ;;
 ;; Keywords:
-;; - statistics, probability.
+;; - statistics, probability, scale, proportion.
 ;;
 ;; Arguments:
 ;; - p_n1: scalar, real.
@@ -317,7 +319,7 @@
 ;;;; grsp-z-score - Calculates the z score for a sample data point.
 ;;
 ;; Keywords:
-;; - statistics, probability.
+;; - statistics, probability, scoring, sampling.
 ;;
 ;; Arguments:
 ;; - p_n1: data point.
@@ -372,7 +374,7 @@
 ;;;; grsp-pnot - Calculates the complementary probability of p_n1.
 ;;
 ;; Keywords:
-;; - statistics, probability.
+;; - statistics, probability, complements.
 ;;
 ;; Arguments:
 ;; - p_n1: real representing a probability in [0,1].
@@ -391,7 +393,7 @@
 ;;;; grsp-pand - Calculates the probability of p_n1 and p_n2, being independent.
 ;;
 ;; Keywords:
-;; - statistics, probability.
+;; - statistics, probability, variables, independece.
 ;;
 ;; Arguments:
 ;; - p_n1: real repesenting a probability in [0,1].
@@ -413,7 +415,7 @@
 ;; being p_n1 and p_n2 not independent.
 ;;
 ;; Keywords:
-;; - statistics, probability.
+;; - statistics, probability, variables, dependence.
 ;;
 ;; Arguments:
 ;; - p_n1: real repesenting a probability in [0,1].
@@ -437,7 +439,7 @@
 ;;;; grsp-por - Calculates the probability of p_n1 or p_n2.
 ;;
 ;; Keywords:
-;; - statistics, probability.
+;; - statistics, probability, variables.
 ;;
 ;; Arguments:
 ;; - p_n1: real repesenting a probability in [0,1].
@@ -462,7 +464,7 @@
 ;; beign p_n1 and p_n2 mutually exclusive.
 ;;
 ;; Keywords:
-;; - statistics, probability.
+;; - statistics, probability, variables, exclusion.
 ;;
 ;; Arguments:
 ;; - p_n1: real repesenting a probability in [0,1].
@@ -488,7 +490,7 @@
 ;;;; grsp-pcond - Calculates the probability of p_n1 given p_n2.
 ;;
 ;; Keywords:
-;; - statistics, probability.
+;; - statistics, probability, variables, causality.
 ;;
 ;; Arguments:
 ;; - p_n1: real repesenting a probability in [0,1].
@@ -515,7 +517,7 @@
 ;; given p_n1 as a parameter, returns (abs n2).
 ;;
 ;; Keywords:
-;; - statistics, probability.
+;; - statistics, probability, absolute.
 ;;
 ;; Arguments:
 ;; - p_n1: real representing a probability in [0,1]
@@ -536,7 +538,7 @@
 ;; difference between two numbers.
 ;;
 ;; Keywords:
-;; - statistics, probability.
+;; - statistics, probability, exponential.
 ;;
 ;; Arguments:
 ;; - p_s1: operation.
@@ -569,7 +571,7 @@
 ;; then perfoms operation p_s1 between those values.
 ;;
 ;; Keywords:
-;; - statistics, probability.
+;; - statistics, probability, exponential.
 ;;
 ;; Arguments:
 ;; - p_s1: operation.
@@ -603,7 +605,7 @@
 ;; an m x n matix.
 ;;
 ;; Keywords:
-;; - statistics, probability.
+;; - statistics, probability, entropic.
 ;;
 ;; Arguments:
 ;; - p_g1: logarithm base.
@@ -638,10 +640,13 @@
 ;;;; grsp-mean1 - Expected value of a random variable X.
 ;;
 ;; Keywords:
-;; - statistics, probability.
+;; - statistics, probability, randomness, aleatory.
 ;;
 ;; Arguments:
 ;; - p_a1: sample (matrix).
+;;
+;; Notes:
+;; - See grsp-mean1.
 ;;
 ;; Sources:
 ;; - [35].
@@ -658,7 +663,7 @@
 ;;;; grsp-mean1-mth - Mutithreaded version of grsp-mean1.
 ;;
 ;; Keywords:
-;; - statistics, probability.
+;; - statistics, probability, mean, average, averaging.
 ;;
 ;; Arguments:
 ;; - p_a1: sample (matrix).
@@ -680,7 +685,7 @@
 ;; and the probability P for each outcome of X.
 ;;
 ;; Keywords:
-;; - statistics, probability.
+;; - statistics, probability, randomness, aleatory.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix, instances of X.
@@ -705,10 +710,32 @@
     res1))
 
 
+;;;; grsp-mean3 - Expected value of elements of list p_l1.
+;;
+;; Keywords:
+;; - statistics, probability, randomness, aleatory.
+;;
+;; Arguments:
+;; - p_l1: sample (ist).
+;;
+;; Notes:
+;; - See grsp-mean1.
+;;
+;; Sources:
+;; - [35].
+;;
+(define (grsp-mean3 p_l1)
+  (let ((res1 0))
+
+    (set! res1 (grsp-opz (/ (grsp-lal-opio "#+" p_l1) (length p_l1))))
+
+    res1))
+
+
 ;;;; grsp-mean-geometric - Geometric mean of elements of p_a1.
 ;;
 ;; Keywords:
-;; - statistics, probability.
+;; - statistics, probability, mean, average.
 ;;
 ;; Arguments:
 ;; - p_a1: sample (matrix).
@@ -730,7 +757,7 @@
 ;;;; grsp-mean-geometric-mth - Multithreaded verson of grsp-mean-geometric.
 ;;
 ;; Keywords:
-;; - statistics, probability.
+;; - statistics, probability, mean, average.
 ;;
 ;; Arguments:
 ;; - p_a1: sample (matrix).
@@ -751,7 +778,7 @@
 ;;;; grsp-mean-interquartile - Interquartile mean of elements of p_a1.
 ;;
 ;; Keywords:
-;; - statistics, probability.
+;; - statistics, probability, mean, average.
 ;;
 ;; Arguments:
 ;; - p_a1: sample (matrix).
@@ -784,7 +811,7 @@
 ;; elements of p_a1 should be >= 0.
 ;;
 ;; Keywords:
-;; - statistics, probability.
+;; - statistics, probability, mean, average.
 ;;
 ;; Arguments:
 ;; - p_a1: sample (matrix).
@@ -815,7 +842,7 @@
 ;;;; grsp-mean-midrange - Calculates the midrange of p_a1.
 ;;
 ;; Keywords:
-;; - statistics, probability.
+;; - statistics, probability, range, middle.
 ;;
 ;; Arguments:
 ;; - p_a1: sample (matrix).
@@ -836,7 +863,7 @@
 ;;;; grsp-sd1 - Standard deviation based on variance.
 ;;
 ;; Keywords:
-;; - statistics, probability.
+;; - statistics, probability, variance, deviation.
 ;;
 ;; Arguments:
 ;; - p_v1: variance.
@@ -852,7 +879,7 @@
 ;;;; grsp-sd2 - Sample standard deviation.
 ;;
 ;; Keywords:
-;; - statistics, probability.
+;; - statistics, probability, standard.
 ;;
 ;; Arguments:
 ;; - p_a1: sample (matrix).
@@ -869,9 +896,7 @@
 	(lm1 0)
 	(hm1 0)
 	(ln1 0)
-	(hn1 0)
-	(i1 0)
-	(j1 0))
+	(hn1 0))
 
     ;; Extract the boundaries of the matrix.
     (set! lm1 (grsp-matrix-esi 1 p_a1))
@@ -883,16 +908,15 @@
     (set! u1 (grsp-mean1 p_a1))
     (set! res3 (/ 1 (- n1 1)))
 
-    ;; Cycle.
-    (set! i1 lm1)
-    (while (<= i1 hm1)
-	   (set! j1 ln1)
-	   
-	   (while (<= j1 hn1)
-		  (set! res2 (+ res2 (expt (- (array-ref p_a1 i1 j1) u1) 2))) 
-		  (set! j1 (in j1)))
-	   
-	   (set! i1 (in i1)))   
+    (let loop ((i1 lm1))
+      (if (<= i1 hm1)	  
+
+	  (begin (let loop ((j1 ln1))
+		   (if (<= j1 hn1)
+		       (begin (set! res2 (+ res2 (expt (- (array-ref p_a1 i1 j1) u1) 2)))
+			      (loop (+ j1 1)))))
+		 
+		 (loop (+ i1 1)))))  
 
     (set! res1 (sqrt (* res3 res2)))
     
@@ -919,7 +943,7 @@
 ;; value of the squared difference of a random variable.
 ;;
 ;; Keywords:
-;; - statistics, probability.
+;; - statistics, probability, randomness, aleatory.
 ;;
 ;; Arguments:
 ;; - p_s1:
@@ -990,7 +1014,7 @@
 ;;;; grsp-surprisal - Information content of a random variable.
 ;;
 ;; Keywords:
-;; - statistics, probability.
+;; - statistics, probability, randomness, aleatory.
 ;;
 ;; Arguments:
 ;; - p_g1: logarithm base.
@@ -1050,7 +1074,7 @@
 ;;;; grsp-cv - Coefficient of variation.
 ;;
 ;; Keywords:
-;; - statistics, probability.
+;; - statistics, probability, coefficients.
 ;;
 ;; Arguments:
 ;; - p_n1: standard deviation.
@@ -1115,7 +1139,7 @@
 ;;;; grsp-bessel-corrector - Bessel corrector.
 ;;
 ;; Keywords:
-;; - statistics, probability.
+;; - statistics, probability, correction.
 ;;
 ;; Arguments:
 ;; - p_n1: n.
@@ -1294,7 +1318,7 @@
 ;;;; grsp-yule-coefficient - Yule's coefficient, skewness.
 ;;
 ;; Keywords:
-;; - statistics, probability.
+;; - statistics, probability, coefficients.
 ;;
 ;; Arguments:
 ;; - p_q1: quartile 1 (median of upper half).
@@ -1802,7 +1826,7 @@
     res1))
 
 
-;;;; grsp-gamma-kurtosis - Kurtosis, gamma distribution, parametrizationa k-t
+;;;; grsp-gamma-kurtosis - Kurtosis, gamma distribution, parametrization k-t
 ;; and a-b.
 ;;
 ;; Keywords:
@@ -1824,7 +1848,7 @@
     res1))
 
 
-;;;; grsp-gamma-skewness - Skewness, gamma distribution, parametrizationa k-t
+;;;; grsp-gamma-skewness - Skewness, gamma distribution, parametrization k-t
 ;; and a-b.
 ;;
 ;; Keywords:

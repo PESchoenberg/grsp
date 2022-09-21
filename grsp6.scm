@@ -130,7 +130,7 @@
 ;; (norm of a time-like vector).
 ;;
 ;; Keywords:
-;; - relativity.
+;; - relativity, metric.
 ;;
 ;; Arguments:
 ;; - p_t1: t1.
@@ -187,7 +187,7 @@
 ;;;; grsp-ds-mth - Multithreaded variant of grsp-ds.
 ;;
 ;; Keywords:
-;; - relativity.
+;; - relativity, metric.
 ;;
 ;; Arguments:
 ;; - p_t1: t1.
@@ -232,7 +232,7 @@
 ;;;; grsp-lorentz-factor - Calculates gamma (Lorentz factor).
 ;;
 ;; Keywords:
-;; - relativity.
+;; - relativity, dilation.
 ;;
 ;; Arguments: 
 ;; - p_v1: relative velocity between inertial frames (should be p_v1 < c).
@@ -252,7 +252,7 @@
 ;; same inertial frame.
 ;;
 ;; Keywords:
-;; - relativity.
+;; - relativity, dilation.
 ;;
 ;; Arguments: 
 ;; - p_v1: relative velocity.
@@ -273,7 +273,7 @@
 ;; conditions.
 ;;
 ;; Keywords:
-;; - relativity.
+;; - relativity, contraction.
 ;;
 ;; Arguments: 
 ;; - p_v1: relative velocity.
@@ -293,7 +293,7 @@
 ;;;; grsp-lorentz-transf-x - Lorentz transformations (x).
 ;;
 ;; Keywords:
-;; - relativity.
+;; - relativity, transform.
 ;;
 ;; Arguments: 
 ;; - p_v1: relative velocity.
@@ -328,7 +328,7 @@
 ;;;; grsp-lorentz-transf-x-mth - Multithreaded variant of grsp-lorentz-transf.
 ;;
 ;; Keywords:
-;; - relativity.
+;; - relativity, transform.
 ;;
 ;; Arguments: 
 ;; - p_v1: relative velocity.
@@ -363,10 +363,10 @@
 ;;;; grsp-beta - Calculates the beta term of the Lortentz factor.
 ;;
 ;; Keywords:
-;; - relativity.
+;; - relativity, frames, special.
 ;;
 ;; Arguments:
-;; - p_v1: relative velocity between two intertial frames.
+;; - p_v1: relative velocity between two inertial frames.
 ;;
 ;; Sources:
 ;; - [4].
@@ -382,7 +382,7 @@
 ;;;; grsp-velocity - Calculates velocity, one axis.
 ;;
 ;; Keywords:
-;; - dynamics.
+;; - dynamics, speed, velocity.
 ;;
 ;; Arguments:
 ;; - p_x1: coord 1.
@@ -401,7 +401,7 @@
 ;;;; grsp-acceleration - Calculates acceleration, one axis.
 ;;
 ;; Keywords:
-;; - dynamics.
+;; - dynamics, acceleration, increment.
 ;;
 ;; Arguments:
 ;; - p_v1: velocity 1.
@@ -420,7 +420,7 @@
 ;;;; grsp-frequency-observed - Calculates the observed frequency.
 ;;
 ;; Keywords:
-;; - waves.
+;; - waves, observable, frequency.
 ;;
 ;; Arguments:
 ;; - p_s1: see grsp-frequency-osrel.
@@ -443,7 +443,7 @@
 ;;;; grsp-frequency-emitted - Calculates the emitted frequency.
 ;;
 ;; Keywords:
-;; - waves.
+;; - waves, frequency.
 ;;
 ;; Arguments:
 ;; - p_s1: see grsp-frequency-osrel.
@@ -466,7 +466,7 @@
 ;;;; grsp-frequency-osrel - Observer - source relationship.
 ;;
 ;; Keywords:
-;; - waves.
+;; - waves, sources.
 ;;
 ;; Arguments:
 ;; - p_s1: string, relative movement between the source and the receiver.
@@ -508,7 +508,7 @@
 ;;;; grsp-redshift - Calculates redshift based on wavelength or frequency.
 ;;
 ;; Keywords:
-;; - waves.
+;; - waves, wave, shift.
 ;;
 ;; Arguments:
 ;; - p_s1: string. Defines if wl or fr is used.
@@ -534,7 +534,7 @@
 ;;;; grsp-velocity-un - Calculates velocity as distance / time.
 ;;
 ;; Keywords:
-;; - dynamics.
+;; - dynamics, distance, time.
 ;;
 ;; Arguments:
 ;; - p_l1: distance.
@@ -551,7 +551,7 @@
 ;;;; grsp-velocity-ac - Calculates velocity as acceleration * time.
 ;;
 ;; Keywords:
-;; - dynamics.
+;; - dynamics, accelerate, time, speed, velocity.
 ;;
 ;; Arguments:
 ;; - p_a1: acceleration.
@@ -568,7 +568,7 @@
 ;;;; grsp-distance-parallax - Measures the distance (PC) to a star.
 ;;
 ;; Keywords:
-;; - astro.
+;; - astro, celestial, body, measurement, distance.
 ;;
 ;; Arguments:
 ;; - p_g1: parallax (arcseconds).
@@ -584,7 +584,7 @@
 ;;;; grsp-particle-mass - Energy of a particle.
 ;;
 ;; Keywords:
-;; - relativity.
+;; - relativity, particles, energy.
 ;;
 ;; Arguments:
 ;; - p_v1: speed of the particle.
@@ -603,7 +603,7 @@
 ;; of mass m1.
 ;;
 ;; Keywords:
-;; - relativity, astro.
+;; - relativity, astro, mass.
 ;;
 ;; Arguments:
 ;; - p_m1: mass of the body (kg).
@@ -643,7 +643,7 @@
 ;;;; grsp-effective-exhaust-velocity - Calculates eev.
 ;;
 ;; Keywords:
-;; - dynamics, astro.
+;; - dynamics, astro, impulse, acceleration.
 ;;
 ;; Arguments:
 ;; - p_x1: specific impulse in dimension of time.
@@ -662,7 +662,7 @@
 ;;;; grsp-ideal-rocket - Ideal rocket equation.
 ;;
 ;; Keywords:
-;; - dynamics, astro.
+;; - dynamics, astro, ideal, model.
 ;;
 ;; Arguments:
 ;; - p_x1: specific impulse.
@@ -684,7 +684,7 @@
 ;;;; grsp-grav-earth-lat - Gravity on Earth as a function of latitude.
 ;;
 ;; Keywords:
-;; - astro.
+;; - astro, gravity, planet, earth. latitude.
 ;;
 ;; Arguments:
 ;; - p_l1: latitude [-90, 90].
@@ -707,7 +707,7 @@
 ;;;; grsp-grav-earth-alt - Gravity on Earth as a function of altitude.
 ;;
 ;; Keywords:
-;; - astro.
+;; - astro, planet, earth. latitude.
 ;;
 ;; Arguments:
 ;; - p_z1: altitude.
@@ -726,7 +726,7 @@
 ;;;; grsp-grav-radius - Gravity on a body of radius p_pr1 and mass p_m1.
 ;;
 ;; Keywords:
-;; - astro.
+;; - astro, radius, diameter.
 ;;
 ;; Arguments:
 ;; - p_r1: radius.
@@ -744,7 +744,7 @@
 ;;;; grsp-grav-ifor - International gravity formula.
 ;;
 ;; Keywords:
-;; - astro.
+;; - astro, gravity.
 ;;
 ;; Arguments:
 ;; - p_x1: latitude.
@@ -765,7 +765,7 @@
 ;;;; grsp-grav-iforh - International gravity formula + height.
 ;;
 ;; Keywords:
-;; - astro.
+;; - astro, gravity.
 ;;
 ;; Arguments:
 ;; - p_x1: latitude.

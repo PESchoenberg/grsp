@@ -198,6 +198,7 @@
 ;; - [16] En.wikipedia.org. 2022. Evolving network - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Evolving_network
 ;;   [Accessed 9 March 2022].
+;; - [17] https://en.wikipedia.org/wiki/Integrated_information_theory
 
 
 (define-module (grsp grsp8)

@@ -7684,7 +7684,7 @@
 ;; matrices.
 ;;
 ;; Keywords:
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors, moving.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -7713,7 +7713,7 @@
 ;; matrix p_a1 with element located at p_a2 (p_m2, p_n2).
 ;;
 ;; Keywords:
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors, swapping.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -7758,7 +7758,7 @@
 ;; elements from left to right, or lower col number to higher col number.
 ;;
 ;; Keywords:
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors, circulation.
 ;;
 ;; Arguments.
 ;; - p_b1: boolean.
@@ -7857,7 +7857,7 @@
 ;; reaches n = m.
 ;;
 ;; Keywords:
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors, swapping.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -7884,7 +7884,7 @@
 ;; p_n1 except those on the main diagonal.
 ;;
 ;; Keywords:
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors, diagonal, replacement, replacing, change.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -7999,7 +7999,9 @@
 
 	   (set! j1 (grsp-ln p_a1))
 	   (while (<= j1 (grsp-hm p_a1))
-		  (array-set! res1 (grsp-matrix-minor-cofactor p_a1 i1 j1) i1 j1)
+		  (array-set! res1 (grsp-matrix-minor-cofactor p_a1 i1 j1)
+			      i1
+			      j1)
 		  (set! j1 (in j1)))
 
 	   (set! i1 (in i1)))
@@ -8010,7 +8012,7 @@
 ;;;; grsp-matrix-inverse - Calculates the inverse of matrix p_a1.
 ;;
 ;; Keywords:
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors, inversion.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -8098,7 +8100,7 @@
 ;; lustified according to p_s1.
 ;;
 ;; Keywords:
-;; - functions, algebra, matrix, matrices, vectors, strings.
+;; - functions, algebra, matrix, matrices, vectors, strings, padding.
 ;;
 ;; Arguments:
 ;; - p_s1: string. Mode.
@@ -8137,7 +8139,7 @@
 ;; longest string of string matrix p_a1.
 ;;
 ;; Keywords:
-;; - functions, algebra, matrix, matrices, vectors, strings.
+;; - functions, algebra, matrix, matrices, vectors, strings, length.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix. String.
@@ -8271,7 +8273,8 @@
 ;; limits or p_n2 otherwise.
 ;;
 ;; Keywords:
-;; - functions, algebra, matrix, matrices, vectors, strings.
+;; - functions, algebra, matrix, matrices, vectors, strings, replacement,
+;;   substitution.
 ;;
 ;; Arguments:
 ;; - p_s1: string. Interval mode (inclusive or exclusive).
@@ -8346,7 +8349,8 @@
 ;; diagonal of a square matrix p_a1 with value p_n1.
 ;;
 ;; Keywords:
-;; - functions, algebra, matrix, matrices, vectors, strings.
+;; - functions, algebra, matrix, matrices, vectors, strings, replacement,
+;;   substitution.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix (should be square).
@@ -8382,7 +8386,7 @@
 ;; elements of the diagonal of matrix p_a1.
 ;;
 ;; Keywords:
-;; - functions, algebra, matrix, matrices, vectors, strings.
+;; - functions, algebra, matrix, matrices, vectors, strings, diagonal.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix (should be square).
@@ -8409,7 +8413,8 @@
 ;;;; grsp-matrix-row-proj - Orthogonal projection of p_a1 over p_a2.
 ;;
 ;; Keywords:
-;; - functions, algebra, matrix, matrices, vectors, strings.
+;; - functions, algebra, matrix, matrices, vectors, strings,
+;;   orthogonality, perpendicularity.
 ;;
 ;; Arguments:
 ;; - p_a1: row vector.
@@ -8501,7 +8506,7 @@
 ;; decomposition.
 ;;
 ;; Keywords:
-;; - functions, algebra, matrix, matrices, vectors, entry wise.
+;; - functions, algebra, matrix, matrices, vectors, entry wise, eigenvalue.
 ;;
 ;; Arguments:
 ;; - p_s1: decomposition method (QR).
@@ -8561,7 +8566,7 @@
 ;;;; grsp-eigenvec- Calculates eigenvectors based on p_a1 and p_a2.
 ;;
 ;; Keywords:
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors, eigenvector.
 ;;
 ;; Arguments:
 ;; - p_a1: square matrix.
@@ -8600,7 +8605,7 @@
 ;; row diagonally dominant; #f otherwise.
 ;;
 ;; Keywords:
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors, dominance, diagonal.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix, square.
@@ -8652,7 +8657,7 @@
 ;; Ax = b.
 ;;
 ;; Keywords:
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors, jacobian.
 ;;
 ;; Arguments:
 ;; - p_s1: decomposition method (QR).
@@ -8696,11 +8701,13 @@
 		  (while (<= j1 (grsp-hn A))
 
 			 (cond ((equal? (grsp-eq i1 j1) #f)
-				(set! sum (+ sum (* (array-ref A i1 j1) (array-ref X j1 0))))))
+				(set! sum (+ sum (* (array-ref A i1 j1)
+						    (array-ref X j1 0))))))
 
 			 (set! j1 (in j1)))
 
-		  (array-set! X (/ (- (array-ref B i1 0) sum) (array-ref A i1 i1)) i1 0)
+		  (array-set! X (/ (- (array-ref B i1 0) sum)
+				   (array-ref A i1 i1)) i1 0)
 		  		  
 		  (set! i1 (in i1)))
 
@@ -8724,7 +8731,8 @@
 ;;;; grsp-matrix-sradius - Calculates the spectral radius of matrix p_a1- 
 ;;
 ;; Keywords:
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors, decomposition,
+;;   factorization.
 ;;
 ;; Arguments:
 ;; - p_s1: decomposition method (QR).
@@ -8741,7 +8749,9 @@
 (define (grsp-matrix-sradius p_s1 p_a1 p_n1)
   (let ((res1 0))
 
-    (set! res1 (array-ref (grsp-matrix-minmax (grsp-eigenval-qr p_s1 p_a1 p_n1)) 0 1))
+    (set! res1 (array-ref (grsp-matrix-minmax (grsp-eigenval-qr p_s1 p_a1 p_n1))
+			  0
+			  1))
     
     res1))
 
@@ -8750,7 +8760,7 @@
 ;; contained at (array-ref p_a1 p_m1 p_n1).
 ;;
 ;; Keywords:
-;; - functions, algebra, matrix, matrices, vectors, strings.
+;; - functions, algebra, matrix, matrices, vectors, strings, text, pointers.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.
@@ -8794,7 +8804,8 @@
 ;; - Elem 1: text of the file as a single string.
 ;;
 ;; Keywords:
-;; - functions, algebra, matrix, matrices, vectors, strings, lists.
+;; - functions, algebra, matrix, matrices, vectors, strings, lists, pointers,
+;;   links, lists.
 ;;
 ;; Arguments:
 ;; - p_a1: matrix.

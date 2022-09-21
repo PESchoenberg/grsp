@@ -1222,7 +1222,7 @@
 
 ;;;; grsp-trprnd - Generates a string containing numeric characters,
 ;; which is a combination of a timestamp and a random number (uniform
-;; distribution.
+;; distribution).
 ;;
 ;; Keywords:
 ;; - functions, random, string.
@@ -1384,7 +1384,7 @@
 
 
 ;;;; grsp-ln2ns - List of numbers to numeric string. The numbers in the list
-;; should represent Unicode character.
+;; should represent Unicode characters.
 ;;
 ;; Keywords:
 ;; - console, strings.
@@ -1398,26 +1398,22 @@
 ;;
 (define (grsp-ln2ns p_l1)
   (let ((res1 "")
-	(s1 0)
-	(j1 0)
-	(hn 0))
+	(s1 0))
 
-    (set! hn (- (length p_l1) 1))
-    (while (<= j1 hn)
-
-	   (set! s1 (grsp-n2s (list-ref p_l1 j1)))
-	   (cond ((= j1 0)
-		  (set! res1 s1))
-		 (else (set! res1 (string-append res1 s1))))
-
-	   (set! j1 (in j1)))
+    (let loop ((j1 0))
+      (if (< j1 (length p_l1))
+	  (begin (set! s1 (grsp-n2s (list-ref p_l1 j1)))
+		 (cond ((= j1 0)
+			(set! res1 s1))
+		       (else (set! res1 (string-append res1 s1))))
+		 (loop (+ j1 1)))))
     
     res1))
   
 
 ;;;; grsp-lns2ln - Casts a list of numeric strings representing Unicode
 ;; characters into numbers representing those Unicode characters.
-;;
+5;;
 ;; Keywords:
 ;; - console, strings.
 ;;
@@ -1481,7 +1477,8 @@
   (grsp-dl p_s1))
 
 
-;;;; displayl - Displays all elements of list p_l1 separated by string p_s1.
+;;;; displayl - Displays all elements of list p_l1 separated (preceeded)
+;; by string p_s1.
 ;;
 ;; Keywords:
 ;; - console, strings.
@@ -1491,14 +1488,11 @@
 ;; - p_l1: list.
 ;;
 (define (displayl p_s1 p_l1)
-  (let ((j1 0))
-    
-    (while (< j1 (length p_l1))
-
-	   (display p_s1)
-	   (display (list-ref p_l1 j1))	   
-	   
-	   (set! j1 (in j1)))))
+  (let loop ((j1 0))
+    (if (< j1 (length p_l1))
+	(begin (display p_s1)
+	       (display (list-ref p_l1 j1))	       
+	       (loop (+ j1 1))))))
 
 
 ;;;; displayf - Displays the contents of a plain text file.
@@ -1539,7 +1533,6 @@
 ;;
 ;; Keywords:
 ;; - console, strings.
-;;
 ;;
 (define (grsp-lam)
   (let ((res1 '()))

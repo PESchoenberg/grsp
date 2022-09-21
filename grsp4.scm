@@ -123,7 +123,7 @@
 ;; component of a complex number.
 ;;
 ;; Keywords:
-;; - complex.
+;; - complex, inverse.
 ;;
 ;; Arguments:
 ;; - p_z1: complex number.
@@ -152,7 +152,7 @@
 ;; complex number.
 ;;
 ;; Keywords:
-;; - complex.
+;; - complex, inverse.
 ;;
 ;; Arguments:
 ;; - p_z1: complex number.
@@ -177,7 +177,7 @@
 ;;;; grsp-complex-inv - Calculates various inverses of complex numbers.
 ;;
 ;; Keywords:
-;; - complex.
+;; - complex, inverse.
 ;;
 ;; Arguments:
 ;; - p_s1: operation.
@@ -209,7 +209,7 @@
 ;; the signs of the real and imaginary parts of a complex number.
 ;;
 ;; Keywords:
-;; - complex.
+;; - complex, signage.
 ;;
 ;; Arguments:
 ;; - p_z1: complex number.
@@ -245,7 +245,7 @@
 ;; generator.
 ;;
 ;; Keywords:
-;; - complex.
+;; - complex, aleatory, random.
 ;;
 ;; Arguments:
 ;; - p_r1: growth rate.
@@ -265,7 +265,7 @@
 ;;;; grsp-complex-mandelbrot - Quadratic map function for the Mandelbrot set.
 ;;
 ;; Keywords:
-;; - complex.
+;; - complex, fractals.
 ;;
 ;; Arguments:
 ;; - p_z1
@@ -286,7 +286,7 @@
 ;; provides as a result the p_n1th value of the Fibonnaci series. 
 ;;
 ;; Keywords:
-;; - complex.
+;; - complex, sequences.
 ;;
 ;; Arguments:
 ;; - p_z1: ordinal of the desired Fibonacci number.
@@ -318,15 +318,13 @@
 ;; - [4].
 ;;
 (define (grsp-complex-dirichlet-eta p_s1 p_l1)
-  (let ((res1 0)
-	(n1 1))
+  (let ((res1 0))
 
-    ;; Cycle.
-    (while (< n1 p_l1)
-	   (set! res1 (+ res1 (/ (expt -1 (- n1 1))
-				 (expt n1 p_s1))))
-	   (set! n1 (in n1)))
-
+    (let loop ((i1 1))
+      (if (< i1 p_l1)
+	  (begin (set! res1 (+ res1 (/ (expt -1 (- i1 1)) (expt i1 p_s1))))
+		 (loop (+ i1 1)))))
+    
     res1))
 
 
@@ -355,7 +353,7 @@
 ;; according to Euler's infinite product representation. 
 ;;
 ;; Keywords:
-;; - complex.
+;; - complex, gamma.
 ;;
 ;; Arguments:
 ;; - p_b2: for integers.
@@ -373,7 +371,6 @@
 (define (grsp-complex-gamma-euler p_b2 p_z1 p_n1)
   (let ((res1 0)
 	(res2 1)
-	(i1 1)
 	(res3 0)
 	(res4 0)
 	(defined #t))
@@ -384,12 +381,13 @@
     
     (cond ((eq? defined #t)
 
-	   ;; Cycle.
-	   (while (<= i1 p_n1)
-		  (set! res3 (expt (+ 1 (/ 1 i1)) p_z1))
-		  (set! res4 (+ 1 (/ p_z1 i1)))
-		  (set! res2 (* res2 (/ res3 res4)))
-		  (set! i1 (in i1)))
+	   (let loop ((i1 1))
+	     (if (<= i1 p_n1)
+		 (begin (set! res3 (expt (+ 1 (/ 1 i1)) p_z1))
+			(set! res4 (+ 1 (/ p_z1 i1)))
+			(set! res2 (* res2 (/ res3 res4)))
+			(loop (+ i1 1)))))
+	   
 	   
 	   (set! res1 (* 1.00 (/ 1 p_z1) res2)))
 	  ((eq? defined #f)
@@ -405,7 +403,7 @@
 ;; according to Weierstrass.
 ;;
 ;; Keywords:
-;; - complex.
+;; - complex, gamma.
 ;;
 ;; Arguments:
 ;; - p_b2: for integers.
@@ -423,7 +421,6 @@
 (define (grsp-complex-gamma-weierstrass p_b2 p_z1 p_n1)
   (let ((res1 0)
 	(res2 1)
-	(i1 1)
 	(e1 (grsp-e))
 	(g1 (grsp-em))
 	(z2 0)
@@ -440,12 +437,13 @@
 
 	   ;; Cycle.
 	   (set! res3 (/ (expt e1 (* -1 g1 p_z1)) p_z1))
-	   (while (<= i1 p_n1)
-		  (set! z2 (/ p_z1 i1))
-		  (set! res4 (/ 1 (+ 1 z2)))
-		  (set! res5 (expt e1 z2))
-		  (set! res2 (* res2 res4 res5))
-		  (set! i1 (in i1)))
+	   (let loop ((i1 1))
+	     (if (<= i1 p_n1)
+		 (begin (set! z2 (/ p_z1 i1))
+			(set! res4 (/ 1 (+ 1 z2)))
+			(set! res5 (expt e1 z2))
+			(set! res2 (* res2 res4 res5))
+			(loop (+ i1 1)))))	   
 	   
 	   (set! res1 (* 1.00 res3 res2)))
 	  ((eq? defined #f)
@@ -460,7 +458,7 @@
 ;;;; grsp-complex-gamma - Calculates gamma using different representations. 
 ;;
 ;; Keywords:
-;; - complex.
+;; - complex, gamma.
 ;;
 ;; Arguments:
 ;; - p_b2: for integers.
@@ -493,7 +491,7 @@
 ;;;; grsp-complex-pigamma - Pi Gauss function. Calculates gamma for p_z1 + 1.
 ;;
 ;; Keywords:
-;; - complex.
+;; - complex. gamma.
 ;;
 ;; Arguments:
 ;; - p_b2: for integers.
@@ -520,11 +518,14 @@
 ;;;; grsp-complex-lngamma - Calculates the natural logarithm of gamma.
 ;;
 ;; Keywords:
-;; - complex.
+;; - complex, gamma, log.
 ;;
 ;; Arguments:
 ;; - p_z1: complex.
 ;; - p_n1: desired product iterations.
+;;
+;; Notes:
+;; - TODO: still needs some checking.
 ;;
 ;; Sources:
 ;; - [5].
@@ -535,24 +536,32 @@
 	(res3 0)
 	(res4 0)
 	(res5 0)
-	(res6 0)
-	(i1 1))
+	(res6 0))
 
+    ;; - yz
     (set! res2 (* -1 (grsp-em) p_z1))
-    (set! res3 (* -1 (log p_z1)))
-    (while (<= i1 p_n1)
-	   (set! res6 (/ p_z1 i1))
-	   (set! res4 (- res6 (log (+ 1 res6))))
-	   (set! res5 (+ res5 res4))
-	   (set! i1 (in i1)))    
 
+    ;; - ln z
+    (set! res3 (* -1 (log p_z1)))
+
+    ;; Summation.
+    (let loop ((i1 1))
+      (if (<= i1 p_n1)
+	  (begin (set! res5 (/ p_z1 i1))
+		 (set! res4 (- res5 (log (+ 1 res5))))
+		 (set! res6 (+ res6 res4))
+		 (loop (+ i1 1)))))
+
+    ;; Compose.
+    (set! res1 (+ res2 res3 res6))
+	  
     res1))
 
 
 ;;;; grsp-complex-digamma - Digamma function for p_z1 - 1.
 ;;
 ;; Keywords:
-;; - complex.
+;; - complex, digamma.
 ;;
 ;; Arguments:
 ;; - p_b2: for integers.
@@ -567,7 +576,6 @@
 (define (grsp-complex-digamma p_b2 p_z1 p_n1)
   (let ((res1 0)
 	(res2 1)
-	(i1 1)
 	(z2 (- p_z1 1))
 	(defined #t))
 
@@ -577,10 +585,10 @@
     
     (cond ((eq? defined #t)
 
-	   ;; Cycle.
-	   (while (<= i1 p_n1)
-		  (set! res2 (/ z2 (* i1 (+ i1 z2))))		  
-		  (set! i1 (+ i1 1)))
+	   (let loop ((i1 1))
+	     (if (<= i1 p_n1)
+		 (begin (set! res2 (/ z2 (* i1 (+ i1 z2))))
+			(loop (+ i1 1)))))
 	   
 	   (set! res1 (* -1.00 (grsp-em) res2)))
 	  ((eq? defined #f)
@@ -595,7 +603,7 @@
 ;;;; grsp-complex-ligamma - Lower incomplete gamma function.
 ;;
 ;; Keywords:
-;; - complex.
+;; - complex, ligamma, gamma.
 ;;
 ;; Arguments:
 ;; - p_b2: for integers.
@@ -627,7 +635,7 @@
 ;;;; grsp-complex-llgamma - Lower incomplete limiting gamma function.
 ;;
 ;; Keywords:
-;; - complex.
+;; - complex, ligamma.
 ;;
 ;; Arguments:
 ;; - p_b2: for integers.
@@ -647,18 +655,18 @@
   (let ((res1 0)
 	(res2 0)
 	(res3 0)
-	(res4 0)
-	(i1 0))
+	(res4 0))
 
     ;; res2
     (set! res2 (expt (grsp-e) (* -1 p_z2)))
 
     ;; res3
-    (while (<= i1 p_n1)
-	   (set! res3 (+ res3 (/ (expt p_z2 i1)
-				 (grsp-complex-gamma p_b2 p_s1 (+ p_z1 i1 1) p_n1))))		 
-	   (set! i1 (in i1)))   
-
+    (let loop ((i1 0))
+      (if (<= i1 p_n1)
+	  (begin (set! res3 (+ res3 (/ (expt p_z2 i1)
+				       (grsp-complex-gamma p_b2 p_s1 (+ p_z1 i1 1) p_n1))))
+		 (loop (+ i1 1)))))
+    
     ;; Compose results.
     (set! res1 (* res2 res3))
 
@@ -668,7 +676,7 @@
 ;;;; grsp-complex-uigamma - Upper incomplete gamma function.
 ;;
 ;; Keywords:
-;; - complex.
+;; - complex, uigamma.
 ;;
 ;; Arguments:
 ;; - p_b2: for integers.
@@ -696,7 +704,7 @@
 ;;;; grsp-complex-prgamma - Lower regularized gamma function P.
 ;;
 ;; Keywords:
-;; - complex.
+;; - complex, prgamma.
 ;;
 ;; Arguments:
 ;; - p_b2: for integers.
@@ -724,7 +732,7 @@
 ;;;; grsp-complex-qrgamma - Lower regularized gamma function Q.
 ;;
 ;; Keywords:
-;; - complex.
+;; - complex, qrgamma.
 ;;
 ;; Arguments:
 ;; - p_b2: for integers.
@@ -764,15 +772,15 @@
 ;;
 (define (grsp-complex-chm p_a1 p_b1 p_z1 p_n1)
   (let ((res1 0)
-	(i1 0)
 	(n2 0)
 	(n3 0))
 
-    (while (< i1 p_n1)
-	   (set! n2 (* (grsp-fact-upp p_a1 i1) (expt p_z1 i1)))
-	   (set! n3 (* (grsp-fact-upp p_b1 i1) (grsp-fact i1)))
-	   (set! res1 (+ res1 (/ n2 n3)))
-	   (set! i1 (in i1)))
+    (let loop ((i1 0))
+      (if (< i1 p_n1)
+	  (begin (set! n2 (* (grsp-fact-upp p_a1 i1) (expt p_z1 i1)))
+		 (set! n3 (* (grsp-fact-upp p_b1 i1) (grsp-fact i1)))
+		 (set! res1 (+ res1 (/ n2 n3)))
+		 (loop (+ i1 1)))))
     
     res1))
 
@@ -822,7 +830,7 @@
 ;;;; grsp-complex-erf - Gauss error function.
 ;;
 ;; Keywords:
-;; - complex.
+;; - complex, gauss.
 ;;
 ;; Arguments:
 ;; - p_z1: complex.
@@ -837,30 +845,30 @@
 	(res3 0)
 	(res4 0)
 	(res5 0)
-	(res6 0)
-	(i1 0))
+	(res6 0))
 
     ;; Res2.
     (set! res2 (/ 2 (sqrt (grsp-pi))))
 
     ;; Res3.
-    (while (< i1 p_n1)
-	   (set! res6 (+ (* 2 i1) 1))
-	   (set! res4 (* (expt -1 i1) (expt p_z1 res6)))
-	   (set! res5 (* (grsp-fact i1) res6))
-	   (set! res3 (+ res2 (/ res4 res5)))
-	   (set! i1 (in i1)))
-
+    (let loop ((i1 0))
+      (if (< i1 p_n1)
+	  (begin (set! res6 (+ (* 2 i1) 1))
+		 (set! res4 (* (expt -1 i1) (expt p_z1 res6)))
+		 (set! res5 (* (grsp-fact i1) res6))
+		 (set! res3 (+ res2 (/ res4 res5)))
+		 (loop (+ i1 1)))))    
+    
     ;; Compose results.
     (set! res1 (* res2 res3))
 	   
     res1))
 
 
-;;;; grsp-complex-erf - Gauss imaginary error function.
+;;;; grsp-complex-erfi - Gauss imaginary error function.
 ;;
 ;; Keywords:
-;; - complex.
+;; - complex, gauss.
 ;;
 ;; Arguments:
 ;; - p_z1: complex.
@@ -875,20 +883,19 @@
 	(res3 0)
 	(res4 0)
 	(res5 0)
-	(res6 0)
-	(i1 0))
+	(res6 0))
 
     ;; Res2.
     (set! res2 (/ 2 (sqrt (grsp-pi))))
 
-    ;; Res3.
-    (while (< i1 p_n1)
-	   (set! res6 (+ (* 2 i1) 1))
-	   (set! res4 (expt p_z1 res6))
-	   (set! res5 (* (grsp-fact i1) res6))
-	   (set! res3 (+ res2 (/ res4 res5)))
-	   (set! i1 (in i1)))
-
+    (let loop ((i1 0))
+      (if (< i1 p_n1)
+	  (begin (set! res6 (+ (* 2 i1) 1))
+		 (set! res4 (expt p_z1 res6))
+		 (set! res5 (* (grsp-fact i1) res6))
+		 (set! res3 (+ res2 (/ res4 res5)))
+		 (loop (+ i1 1)))))   
+    
     ;; Compose results.
     (set! res1 (* res2 res3))
 	   
@@ -898,7 +905,7 @@
 ;;;; grsp-complex-erfc - Gauss complementary error function.
 ;;
 ;; Keywords:
-;; - complex.
+;; - complex, gauss.
 ;;
 ;; Arguments:
 ;; - p_z1: complex.
@@ -918,7 +925,7 @@
 ;;;; grsp-complex-erfci - Gauss complementary imaginary error function.
 ;;
 ;; Keywords:
-;; - complex.
+;; - complex, gauss.
 ;;
 ;; Arguments:
 ;; - p_z1: complex.
@@ -1033,7 +1040,7 @@
 ;;;; grsp-complex-riemann-euzeta - Riemann Zeta, for z1 in (1, +inf.0).
 ;;
 ;; Keywords:
-;; - complex.
+;; - complex, riemann, zeta.
 ;;
 ;; Arguments
 ;; - p_z1: complex, real component must be > 1.
@@ -1046,26 +1053,20 @@
 ;; - [12][13][14][15].
 ;;
 (define (grsp-complex-riemann-euzeta p_z1 p_m1)
-  (let ((res1 0.0)
-	(z1 0.0)
-	(i1 1)
-	(m1 0))
+  (let ((res1 0.0))
 
-    (set! m1 p_m1)
-    (set! z1 p_z1)
-
-    ;; Cycle.
-    (while (<= i1 m1)
-	   (set! res1 (+ res1 (/ 1 (expt i1 z1))))
-	   (set! i1 (in i1)))
-
+    (let loop ((i1 1))
+      (if (<= i1 p_m1)
+	  (begin (set! res1 (+ res1 (/ 1 (expt i1 p_z1))))
+		 (loop (+ i1 1)))))   
+        
     res1))
 
 
 ;;;; grsp-complex-riemann-cszeta - Riemann Zeta, for z1 in (0, 1).
 ;;
 ;; Keywords:
-;; - complex.
+;; - complex, riemann, zeta.
 ;;
 ;; Arguments
 ;; - p_z1: complex, real component must be > 1.
@@ -1097,7 +1098,7 @@
 ;; Riemann's Zeta function.
 ;;
 ;; Keywords:
-;; - complex.
+;; - complex, riemann, zeta.
 ;;
 ;; Arguments
 ;; - p_b2: for integers.
