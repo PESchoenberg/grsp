@@ -984,7 +984,7 @@
 	   (while (<= j1 hn1)
 		  
 		  (cond ((equal? p_s1 "#v")
-			 
+			 ;; ***
 			 ;; Summation of all elements.
 			 (set! res2 (+ res2 (expt (- (array-ref p_a1 i1 j1) u1) 2))))
 			((equal? p_s1 "#u")
@@ -1104,14 +1104,12 @@
 ;; - [16].
 ;;
 (define (grsp-mad p_a1 p_x1)
-  (let ((res1 0)
+  (let ((res1 0.0)
 	(n1 0)
 	(lm1 0)
 	(hm1 0)
 	(ln1 0)
-	(hn1 0)
-	(i1 0)
-	(j1 0))
+	(hn1 0))
 
     ;; Extract the boundaries of the matrix.
     (set! lm1 (grsp-matrix-esi 1 p_a1))
@@ -1120,17 +1118,17 @@
     (set! hn1 (grsp-matrix-esi 4 p_a1))
 
     (set! n1 (grsp-matrix-total-elements p_a1))
-    
-    (set! i1 lm1)
-    (while (<= i1 hm1)
-	   
-	   (set! j1 ln1)
-	   (while (<= j1 hn1)
-		  (set! res1 (+ res1 (abs (- (array-ref p_a1 i1 j1) p_x1))))
-		  (set! j1 (in j1)))
-	   
-	   (set! i1 (in i1)))   
 
+    (let loop ((i1 lm1))
+      (if (<= i1 hm1)
+	  
+	  (begin (let loop ((j1 ln1))
+		   (if (<= j1 hn1)
+		       (begin (set! res1 (+ res1 (abs (- (array-ref p_a1 i1 j1) p_x1))))
+			      (loop (+ j1 1))))) 
+		 
+		 (loop (+ i1 1))))) 
+    
     (set! res1 (* (/ 1 n1) res1))
     
     res1))
@@ -1607,7 +1605,6 @@
 	(ln2 0)
 	(hn2 0)
 	(i1 0)
-	(i2 0)
 	(n1 1)
 	(n2 0)
 	(n3 0)
@@ -1628,16 +1625,16 @@
     (set! n3 n4)
     
     ;; Find mode among the abs freq results qas the highest value.
-    (set! i2 lm2)
-    (while (<= i2 hm2)
-	   
-	   (cond ((> (array-ref res2 i2 hn2) n3)
-		  (set! n2 (array-ref res2 i2 ln2))
-		  (set! n3 (array-ref res2 i2 hn2))
-		  (array-set! res2 n4 i2 hn2)))
-	   
-	   (set! i2 (in i2)))
-
+    (let loop ((i2 lm2))
+      (if (<= i2 hm2)
+	  
+	  (begin (cond ((> (array-ref res2 i2 hn2) n3)
+			(set! n2 (array-ref res2 i2 ln2))
+			(set! n3 (array-ref res2 i2 hn2))
+			(array-set! res2 n4 i2 hn2)))
+		 
+		 (loop (+ i2 1)))))
+    
     ;; Compose results.
     (array-set! res1 n2 i1 0)
     (array-set! res1 n3 i1 1)   

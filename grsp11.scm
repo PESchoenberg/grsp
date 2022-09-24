@@ -85,27 +85,27 @@
     (cond ((equal? p_s1 "#!=")
 	   
 	   (cond ((equal? (equal? p_n1 (list-ref res1 p_j1)) #f)
-		  (list-set! p_l1 p_j1 p_n1))))
+		  (list-set! res1 p_j1 p_n1))))
 	  
 	  ((equal? p_s1 "#>")
 	   
-	    (cond ((> p_n1 (list-ref res1 p_j1))
-		   (list-set! p_l1 p_j1 p_n1))))
+	   (cond ((> p_n1 (list-ref res1 p_j1))
+		  (list-set! res1 p_j1 p_n1))))
 	  
 	  ((equal? p_s1 "#>=")
 	   
 	   (cond ((>= p_n1 (list-ref res1 p_j1))
-		  (list-set! p_l1 p_j1 p_n1))))
+		  (list-set! res1 p_j1 p_n1))))
 	  
 	  ((equal? p_s1 "#<")
 	   
 	   (cond ((< p_n1 (list-ref res1 p_j1))
-		  (list-set! p_l1 p_j1 p_n1))))
+		  (list-set! res1 p_j1 p_n1))))
 	  
 	  ((equal? p_s1 "#<=")
 	   
 	   (cond ((<= p_n1 (list-ref res1 p_j1))
-		  (list-set! p_l1 p_j1 p_n1)))))
+		  (list-set! res1 p_j1 p_n1)))))
     
     res1))
 
@@ -131,17 +131,17 @@
 ;;
 (define (grsp-lal-rfl p_s1 p_n1 p_l1)
   (let ((res1 '())
-	(hn 0)
-	(j1 0))
+	(hn 0))
 
     (set! hn (length p_l1))
     (set! res1 p_l1)
 
     ;; Cycle.
-    (while (< j1 hn)
-	   (set! res1 (grsp-lal-rel p_s1 p_n1 res1 j1))
-	   (set! j1 (in j1)))
-
+    (let loop ((j1 0))
+      (if (< j1 hn)
+	  (begin (set! res1 (grsp-lal-rel p_s1 p_n1 res1 j1))
+		 (loop (+ j1 1)))))    
+    
     res1))
 
 

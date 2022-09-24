@@ -270,7 +270,6 @@
 	(res2 0)
 	(res3 0)
 	(p2 0)
-	(j1 1)
 	(n1 0)
 	(x1 0)
 	(ln1 0)
@@ -290,10 +289,11 @@
     (set! res2 (* 10 n1))
     
     ;; res3.
-    (while (<= j1 n1)
-	   (set! x1 (array-ref p_a1 0 j1))
-	   (set! res3 (+ res3 (- (expt x1 2) (* 10 (cos (* p2 x1))))))
-	   (set! j1 (in j1)))
+    (let loop ((j1 1))
+      (if (<= j1 n1)
+	  (begin (set! x1 (array-ref p_a1 0 j1))
+		 (set! res3 (+ res3 (- (expt x1 2) (* 10 (cos (* p2 x1))))))
+		 (loop (+ j1 1)))))
     
     ;; Compose results.
     (set! res1 (+ res2 res3))
@@ -320,7 +320,6 @@
 	(res2 0)
 	(res3 0)
 	(p2 0)
-	(j1 1)
 	(n1 0)
 	(x1 0)
 	(ln1 0)
@@ -333,11 +332,12 @@
 	      (set! p2 (* 2 (grsp-pi))))
 
     (parallel (set! res2 (* 10 n1))
-	      
-	      (while (<= j1 n1)
-		     (set! x1 (array-ref p_a1 0 j1))
-		     (set! res3 (+ res3 (- (expt x1 2) (* 10 (cos (* p2 x1))))))
-		     (set! j1 (in j1))))
+
+	      (let loop ((j1 1))
+		(if (<= j1 n1)
+		    (begin (set! x1 (array-ref p_a1 0 j1))
+			   (set! res3 (+ res3 (- (expt x1 2) (* 10 (cos (* p2 x1))))))
+			   (loop (+ j1 1))))))
     
     ;; Compose results.	   
     (set! res1 (+ res2 res3))
@@ -783,7 +783,6 @@
 ;;
 (define (grsp-sop-spheret p_a1)
   (let ((res1 0)
-	(j1 0)
 	(ln1 0)
 	(hn1 0))
 
@@ -791,10 +790,10 @@
     (set! ln1 (grsp-matrix-esi 3 p_a1))
     (set! hn1 (grsp-matrix-esi 4 p_a1)) 
 
-    (set! j1 ln1)
-    (while (<= j1 hn1)
-	   (set! res1 (+ res1 (expt (array-ref p_a1 0 j1) 2)))
-	   (set! j1 (in j1)))
+    (let loop ((j1 0))
+      (if (<= j1 hn1)
+	  (begin (set! res1 (+ res1 (expt (array-ref p_a1 0 j1) 2)))
+		 (loop (+ j1 1)))))
     
     res1))
 	
@@ -923,7 +922,6 @@
 (define (grsp-sop-styblinski-tang p_a1)
   (let ((res1 0)
 	(res2 0)
-	(j1 0)
 	(x1 0)
 	(ln1 0)
 	(hn1 0))
@@ -933,13 +931,13 @@
     (set! hn1 (grsp-matrix-esi 4 p_a1)) 
 
     ;; Cycle.
-    (set! j1 ln1)
-    (while (<= j1 hn1)
-	   (set! x1 (array-ref p_a1 0 j1))
-	   (set! res2 (+ (expt x1 4) (* -16 (expt x1 2)) (* 5 x1)))
-	   (set! res1 (+ res1 (/ res2 2)))
-	   (set! j1 (in j1)))
-
+    (let loop ((j1 ln1))
+      (if (<= j1 hn1)
+	  (begin (set! x1 (array-ref p_a1 0 j1))
+		 (set! res2 (+ (expt x1 4) (* -16 (expt x1 2)) (* 5 x1)))
+		 (set! res1 (+ res1 (/ res2 2)))
+		 (loop (+ j1 1)))))    
+    
     res1))
 
 
