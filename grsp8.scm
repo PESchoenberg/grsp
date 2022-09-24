@@ -198,7 +198,10 @@
 ;; - [16] En.wikipedia.org. 2022. Evolving network - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Evolving_network
 ;;   [Accessed 9 March 2022].
-;; - [17] https://en.wikipedia.org/wiki/Integrated_information_theory
+;; - [17] En.wikipedia.org. 2022. Integrated information theory - Wikipedia.
+;;   [online] Available at:
+;;   https://en.wikipedia.org/wiki/Integrated_information_theory
+;;   [Accessed 20 September 2022].
 
 
 (define-module (grsp grsp8)
@@ -382,9 +385,8 @@
 	(odtid 0)
 	(res3 0)
 	(l1 '(5 9))
-	(l3 '(5 7))
-	(i1 1))
-    ;; ***
+	(l3 '(5 7)))
+
     ;; Create the ann.
     (set! specs (grsp-ann-net-specs-ffn p_nl p_nm p_nn p_af p_nh))
     (set! res3 (grsp-ann-net-create-ffn specs))
@@ -393,19 +395,20 @@
     ;; Mutate in order to randomize values as many tumes as defined by argument
     ;; p_n2. In order not t mutate the network, set p_n2 = 0 so that the 
     ;; following cycle gets ignored entirely.
-    (while (<= i1 p_n2)
-	   (set! res3 (grsp-ann-net-mutate res3
-					   1
-					   "#normal"
-					   0.0
-					   0.15
-					   "#normal"
-					   0.0
-					   0.15
-					   l1
-					   l3))
-	   (set! i1 (in i1)))
-
+    (let loop ((i1 1))
+      (if (<= i1 p_n2)
+	  (begin (set! res3 (grsp-ann-net-mutate res3
+						 1
+						 "#normal"
+						 0.0
+						 0.15
+						 "#normal"
+						 0.0
+						 0.15
+						 l1
+						 l3))
+		 (loop (+ i1 1)))))
+    
     ;; Compose results depending on p_b1.
     (cond ((equal? p_b1 #f)	   
 	   (set! res1 (list (grsp-ann-get-matrix "nodes" res3)
@@ -1124,7 +1127,6 @@
 ;;
 (define (grsp-ann-net-specs-ffn p_nl p_nm p_nn p_af p_nh)
   (let ((res1 0)
-	(i1 0)
 	(lm1 0)
 	(hm1 0)
 	(m1 0)  ; Number of rows.
@@ -1141,9 +1143,9 @@
     (set! hm1 (grsp-matrix-esi 2 res1))
 
     ;; Cycle.
-    (set! i1 lm1)
-    (while (<= i1 hm1)
-	   (array-set! res1 i1 i1 0)
+    (let loop ((i1 lm1))
+      (if (<= i1 hm1)
+	  (begin (array-set! res1 i1 i1 0)
 	   
 	   (cond ((= i1 lm1)
 		  ;; Set values for first row.		  
@@ -1158,10 +1160,8 @@
 		 (else (array-set! res1 p_nn i1 1)
 		       (array-set! res1 1 i1 2)
 		       (array-set! res1 p_af i1 3)))
-
-	   
-	   (set! i1 (in i1)))
-	   
+		 (loop (+ i1 1)))))    
+    
     res1))
 
 
@@ -1528,7 +1528,7 @@
 		  (display "\n +++ 1.1.4 Inbound connections\n")
 		  (display res2)
 		  (display "\n")))	   
-	   ;; ***
+
 	   (cond ((equal? b2 #f)
 		  (set! n1 (grsp-matrix-opio "#+c" res2 5))
 		  (set! n2 (grsp-matrix-opio "#+c" res2 7))
@@ -1564,8 +1564,6 @@
 
 	   ;; If the node has incoming connections then we need to process them.
 	   (set! res5 (grsp-ann-conns-of-node "#from" p_a2 p_id))
-
-	   ;; ***
 	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 0 p_id 5 m5))
 
 	   (cond ((equal? p_b3 #t)
@@ -1598,7 +1596,6 @@
 		 (display p_a2)
 		 (display "\n")))
 
-	   ;; ***
 	   ;; Compose results.
 	   (set! res4 (list p_a1 p_a2 p_a3))
 	   
