@@ -70,7 +70,6 @@
 	(hm1 0)
 	(ln1 0)
 	(hn1 0)
-	(i1 0)
 	(j1 0)
 	(r1 0)
 	(l1 '()))
@@ -85,19 +84,15 @@
   (set! res2 (grsp-matrix-col-selectn p_a1 p_l1))
   
   ;; Cycle.
-  (set! i1 lm1)
-  (while (<= i1 hm1)
-
-	 ;; Attempt goal.
-	 (set! r1 (grsp-matrix-opio p_s1 p_a1 i1))
-	 (array-set! res1 r1 i1 p_n1)
-
-	 ;; Evaluate fitness as the inverse of absolute "distance" to the goal
-	 ;; (col 3 has fitness).
-	 (array-set! res1 (abs (/ 1 (- p_g1 (array-ref res1 i1 p_n1)))) i1 3)
-	 
-	 (set! i1 (in i1)))  
-
+  (let loop ((i1 lm1))
+    (if (<= i1 hm1)
+	(begin (set! r1 (grsp-matrix-opio p_s1 p_a1 i1))
+	       (array-set! res1 r1 i1 p_n1)
+	       ;; Evaluate fitness as the inverse of absolute "distance" to the goal
+	       ;; (col 3 has fitness).
+	       (array-set! res1 (abs (/ 1 (- p_g1 (array-ref res1 i1 p_n1)))) i1 3)
+	       (loop (+ i1 1)))))
+  
   res1))
 
 
