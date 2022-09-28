@@ -1198,7 +1198,6 @@
 	   (set! res1 (list a0 a1 a2)))
 
 	  ((equal? p_s1 "#srdd")
-	   ;; ***
 	   (set! m1 p_m1)	   
 	   (set! a0 (grsp-matrix-create "#rprnd" m1 m1)) ;; A
 	   (set! a1 (grsp-matrix-create "#rprnd" m1 1)) ;; x
@@ -8874,4 +8873,6 @@
 	   (set! i1 (in i1)))
   
     res1))
+
+
 
