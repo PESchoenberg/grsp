@@ -106,7 +106,7 @@
 ;; Arguments:
 ;; - p_x1: x.
 ;; - p_j1: j.
-;; - p_a1: matrix, data points.
+;; - p_a1: matrixwith data points.
 ;;
 ;; Sources:
 ;; - [3][4].
@@ -116,22 +116,19 @@
 	(res2 0)
 	(xm 0)
 	(xj 0)
-	(i1 0)
 	(j1 0))
     
     ;; Create safety matrix. 
     (set! res2 (grsp-matrix-cpy p_a1))
 
     ;; Cycle.
-    (set! i1 (grsp-lm res2))
-    (while (<= i1 (grsp-hm res2))
-
-	   (cond ((equal? (= i1 p_j1) #f)
-		  (set! xm (array-ref p_a1 i1 0))
-		  (set! xj (array-ref p_a1 p_j1 0))
-		  (set! res1 (* res1 (/ (- p_x1 xm) (- xj xm))))))
-	   
-	   (set! i1 (in i1)))
+    (let loop ((i1 (grsp-lm res2)))
+      (if (<= i1 (grsp-hm res2))
+	  (begin (cond ((equal? (= i1 p_j1) #f)
+			(set! xm (array-ref p_a1 i1 0))
+			(set! xj (array-ref p_a1 p_j1 0))
+			(set! res1 (* res1 (/ (- p_x1 xm) (- xj xm))))))
+		 (loop (+ i1 1)))))
     
     res1))
 
@@ -151,7 +148,6 @@
 (define (grsp-lagrange-ipoly p_x1 p_a1)
   (let ((res1 0.0)
 	(res2 0)
-	(i1 0)
 	(x1 0)
 	(y1 0))
 
@@ -159,11 +155,11 @@
     (set! res2 (grsp-matrix-cpy p_a1))
 
     ;; Cycle.
-    (set! i1 (grsp-lm res2))
-    (while (<= i1 (grsp-hm res2))
-	   (set! y1 (array-ref res2 i1 (+ (grsp-ln res2) 1)))
-	   (set! res1 (+ res1 (* y1 (grsp-lagrange-bpoly p_x1 i1 res2))))
-	   (set! i1 (in i1)))
+    (let loop ((i1 (grsp-lm res2)))
+      (if (<= i1 (grsp-hm res2))
+	  (begin (set! y1 (array-ref res2 i1 (+ (grsp-ln res2) 1)))
+		 (set! res1 (+ res1 (* y1 (grsp-lagrange-bpoly p_x1 i1 res2))))
+		 (loop (+ i1 1)))))
     
     res1))
 
