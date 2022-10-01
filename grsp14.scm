@@ -156,8 +156,7 @@
 	(d1 0)
 	(m1 0)
 	(y1 0)
-	(dm1 0)
-	(i1 2))
+	(dm1 0))
        
     ;; Current date.
     (set! d1 (date-day date1))
@@ -170,23 +169,23 @@
     ;; Compose this mont data as a list.
     (set! res1 (list m1 y1 dm1))
     
-    ;; Find the number of days of two next months.
-    (while (<= i1 3)
-	   (set! m1 (+ m1 1))
-	   
-	   (cond ((= m1 13)
-		  (set! m1 1)
-		  (set! y1 (+ y1 1))))
-	   (set! dm1 (grsp-date-dl m1 y1))
-	   
-	   (cond ((= i1 2)
-		  (set! res2 (list m1 y1 dm1))))
-	   
-	   (cond ((= i1 3)
-		  (set! res3 (list m1 y1 dm1))))
-
-	   (set! i1 (in i1)))
-
+    (let loop ((i1 2))
+      (if (<= i1 3)
+	  (begin (set! m1 (+ m1 1))
+		 
+		 (cond ((= m1 13)
+			(set! m1 1)
+			(set! y1 (+ y1 1))))
+		 (set! dm1 (grsp-date-dl m1 y1))
+		 
+		 (cond ((= i1 2)
+			(set! res2 (list m1 y1 dm1))))
+		 
+		 (cond ((= i1 3)
+			(set! res3 (list m1 y1 dm1))))
+		 
+		 (loop (+ i1 1)))))
+    
     ;; Compose results.
     (set! res4 (list res1 res2 res3))
 	   

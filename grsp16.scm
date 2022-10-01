@@ -170,7 +170,7 @@
 ;;   "grsp-defmod"...
 ;;
 (define (grsp-scm-defmod p_s1 p_l1 p_l2)
-  (let ((j2 1))
+  ;;(let ((j2 1))
     
     (display "(define-module ")
     (display p_s1)
@@ -178,15 +178,15 @@
     (display "\n  #:export ")
     (display (list-ref p_l2 0))
     
-    (while (< j2 (length p_l2))
-
-	   (display "\n  ")
-	   (display (list-ref p_l2 j2))
-	   
-	   (set! j2 (in j2)))
+    (let loop ((j2 1))
+      (if (< j2 (length p_l2))
+	  (begin (display "\n  ")
+		 (display (list-ref p_l2 j2))
+		 (loop (+ j2 1)))))    
+    
     
     (display "))")    
-    (newline)))
+    (newline))
 
 
 ;;;; grsp-scm-create-prg - Creates an .scm program file according to user

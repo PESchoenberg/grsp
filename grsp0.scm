@@ -898,7 +898,6 @@
 (define (grsp-string-ltlength p_s1 p_l1)
   (let ((res1 '())
 	(res2 '())
-	(j1 0)
 	(n1 0)
 	(s2 "")
 	(hn (length p_l1)))    
@@ -910,14 +909,13 @@
     (set! res1 (make-list hn 0))
 
     ;; Cycle.
-    (while (< j1 hn)
-
-	   (set! s2 (list-ref res2 j1))
-	   (set! n1 (string-length s2))
-	   (list-set! res1 j1 n1)
-	   
-	   (set! j1 (+ j1 1)))
-    
+    (let loop ((j1 0))
+      (if (< j1 hn)
+	  (begin (set! s2 (list-ref res2 j1))
+		 (set! n1 (string-length s2))
+		 (list-set! res1 j1 n1)
+		 (loop (+ j1 1)))))
+   
     res1))
 
 
@@ -1052,19 +1050,17 @@
 (define (grsp-string-lpjustify p_s1 p_l1 p_s3 p_n1)
   (let ((res1 '())
 	(s2 "")
-	(hn (length p_l1))
-	(j1 0))
+	(hn (length p_l1)))
 
     ;; Create results list.
     (set! res1 (make-list hn s2))
-
-    ;; Cycle.
-    (while (< j1 hn)
-	   (list-set! res1 j1 (grsp-string-pjustify p_s1
-						    (list-ref p_l1 j1)
-						    p_s3
-						    p_n1))
-	   (set! j1 (in j1)))
+    (let loop ((j1 0))
+      (if (< j1 hn)
+	  (begin (list-set! res1 j1 (grsp-string-pjustify p_s1
+							  (list-ref p_l1 j1)
+							  p_s3
+							  p_n1))
+		 (loop (+ j1 1)))))
     
     res1))
 
@@ -1265,7 +1261,6 @@
 	(s3 "")
 	(s4 "")
 	(sus "")
-	(j1 0)
 	(hn 0))
 
     (set! s3 p_s3)
@@ -1288,15 +1283,15 @@
 
 	   (cond ((equal? p_s1 "#m")
 
-		  (while (<= j1 hn)
-
-			 (set! s4 (substring s3 j1 (+ j1 1)))
-			 
-			 (cond ((> j1 0)
-				(set! sus (strings-append (list sus p_s2 s4) 0)))
-			       (else (set! sus s4)))
-			 
-			 (set! j1 (in j1)))
+		  (let loop ((j1 0))
+		    (if (<= j1 hn)
+			(begin (set! s4 (substring s3 j1 (+ j1 1)))
+			       
+			       (cond ((> j1 0)
+				      (set! sus (strings-append (list sus p_s2 s4) 0)))
+				     (else (set! sus s4)))
+			       
+			       (loop (+ j1 1)))))
 		  
 		  (set! res1 sus))
 		 ((equal? p_s1 "#mh")
