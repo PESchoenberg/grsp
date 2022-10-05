@@ -984,20 +984,14 @@
 	   (while (<= j1 hn1)
 		  
 		  (cond ((equal? p_s1 "#v")
-			 ;; ***
 			 ;; Summation of all elements.
 			 (set! res2 (+ res2 (expt (- (array-ref p_a1 i1 j1) u1) 2))))
-			((equal? p_s1 "#u")
-			 
-			 (cond ((> (array-ref p_a1 i1 j1) u1)
-				
+			((equal? p_s1 "#u")			 
+			 (cond ((> (array-ref p_a1 i1 j1) u1)				
 				;; Summation of elements with value > mean.
-				(set! res2 (+ res2 (expt (- (array-ref p_a1 i1 j1) u1) 2))))))
-			
-			((equal? p_s1 "#s")
-			 
-			 (cond ((< (array-ref p_a1 i1 j1) u1)
-				
+				(set! res2 (+ res2 (expt (- (array-ref p_a1 i1 j1) u1) 2))))))			
+			((equal? p_s1 "#s")			 
+			 (cond ((< (array-ref p_a1 i1 j1) u1)				
 				;; summation of elements with values < mean.
 				(set! res2 (+ res2 (expt (- (array-ref p_a1 i1 j1) u1) 2)))))))
 		  
@@ -2989,7 +2983,6 @@
 	(hm1 0)
 	(ln1 0)
 	(hn1 0)
-	(i1 0)
 	(x1 0)
 	(x2 0)
 	(y1 0)
@@ -3014,18 +3007,15 @@
     (set! res2 (grsp-matrix-create 0 (grsp-matrix-te1 lm1 hm1) 1))
 
     ;; Cycle.
-    (set! i1 lm1)
-    (while (<= i1 hm1)
-
-	   ;; Calculate slope.
-	   (set! x1 (array-ref res1 i1 (+ ln1 0)))
-	   (set! y1 (array-ref res1 i1 (+ ln1 1)))
-	   (set! x2 (array-ref res1 i1 (+ ln1 2)))
-	   (set! y2 (array-ref res1 i1 (+ ln1 3)))
-	   (array-set! res2 (grsp-geo-slope x1 y1 x2 y2) i1 0)
-	   
-	   (set! i1 (in i1)))
-
+    (let loop ((i1 lm1))
+      (if (<= i1 hm1)
+	  (begin (set! x1 (array-ref res1 i1 (+ ln1 0)))
+		 (set! y1 (array-ref res1 i1 (+ ln1 1)))
+		 (set! x2 (array-ref res1 i1 (+ ln1 2)))
+		 (set! y2 (array-ref res1 i1 (+ ln1 3)))
+		 (array-set! res2 (grsp-geo-slope x1 y1 x2 y2) i1 0)
+		 (loop (+ i1 1))))) 
+    
     ;; Delete repeated rows.
     (set! res3 (grsp-matrix-transpose (grsp-matrix-supp (grsp-matrix-sort "#asc" res2))))
     
@@ -3060,7 +3050,6 @@
 	(hm1 0)
 	(ln1 0)
 	(hn1 0)
-	(i1 0)
 	(x1 0)
 	(x2 0)
 	(y1 0)
@@ -3085,18 +3074,16 @@
     (set! res2 (grsp-matrix-create 0 (grsp-matrix-te1 lm1 hm1) 1))
 
     ;; Cycle.
-    (set! i1 lm1)
-    (while (<= i1 hm1)
-
-	   ;; Calculate slope.
-	   (parallel (set! x1 (array-ref res1 i1 (+ ln1 0)))
-		     (set! y1 (array-ref res1 i1 (+ ln1 1)))
-		     (set! x2 (array-ref res1 i1 (+ ln1 2)))
-		     (set! y2 (array-ref res1 i1 (+ ln1 3))))
-		     
-	   (array-set! res2 (grsp-geo-slope x1 y1 x2 y2) i1 0)
-	   (set! i1 (in i1)))
-
+    (let loop ((i1 lm1))
+      (if (<= i1 hm1)
+	  (begin (parallel (set! x1 (array-ref res1 i1 (+ ln1 0)))
+			   (set! y1 (array-ref res1 i1 (+ ln1 1)))
+			   (set! x2 (array-ref res1 i1 (+ ln1 2)))
+			   (set! y2 (array-ref res1 i1 (+ ln1 3))))
+		 
+		 (array-set! res2 (grsp-geo-slope x1 y1 x2 y2) i1 0)
+		 (loop (+ i1 1)))))
+    
     ;; Delete repeated rows.
     (set! res3 (grsp-matrix-transpose (grsp-matrix-supp (grsp-matrix-sort "#asc" res2))))
     

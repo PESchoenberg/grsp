@@ -537,22 +537,23 @@
 ;; - [4].
 ;;
 (define (grsp-bpp p_k1 p_b1 p_pf p_qf)
-  (let ((res1 0)
-	(k1 0))
+  (let ((res1 0))
 
     (cond ((exact-integer? p_k1)
 	   
 	   (cond ((eq? (grsp-eiget p_b1 2) #t)
-		  (begin (while (< k1 p_k1)
-				(set! res1 (+ res1 (* (/ 1 (expt p_b1 k1))
-						      (/ (p_pf k1)
-							 (p_qf k1)))))
-				(set! k1 (+ k1 1))))))))
+		  
+		  (let loop ((k1 0))
+		    (if (< k1 p_k1)
+			(begin (set! res1 (+ res1 (* (/ 1 (expt p_b1 k1))
+						     (/ (p_pf k1)
+							(p_qf k1)))))
+			       (loop (+ k1 1)))))))))
 
     res1))
 			 
 
-;;;; grsp-sexp - Performs a non-recursive tetration operation on p_x1 of height
+;;;; grsp-sexp - Performs a tetration operation on p_x1 of height
 ;; p_n1. sexp stands for super exponential.
 ;;
 ;; Keywords:
@@ -570,20 +571,18 @@
 ;; - [5].
 ;;
 (define (grsp-sexp p_x1 p_n1)
-  (let ((x1 p_x1)
-	(n1 p_n1)
-	(i1 1)
-	(res1 0))
+  (let ((res1 0))
 
-    (cond ((= n1 0)
+    (cond ((= p_n1 0)
 	   (set! res1 1))
-	  ((< n1 0)
+	  ((< p_n1 0)
 	   (set! res1 0))
-	  ((> n1 0)
-	   (begin (set! res1 x1)		  
-		  (while (< i1 n1)
-			 (set! res1 (expt x1 res1))
-			 (set! i1 (+ i1 1))))))
+	  ((> p_n1 0)
+	   (set! res1 p_x1)
+	   (let loop ((i1 1))
+	     (if (< i1 p_n1)		 
+		 (begin (set! res1 (expt p_x1 res1))
+			(loop (+ i1 1)))))))
 
     res1))
 
@@ -912,17 +911,17 @@
 ;; - [16].
 ;;
 (define (grsp-dobinski-formula p_n1 p_k1)
-  (let ((res1 0)
-	(i1 0))
+  (let ((res1 0))
 
     (cond ((eq? (grsp-eiget p_n1 0) #t)
 	   
 	   (cond ((eq? (grsp-eiget p_k1 0) #t)
-		  
-		  (while (<= i1 p_n1)
-			 (set! res1 (+ (/ (expt p_k1 p_n1)
-					  (grsp-fact p_k1))))
-			 (set! i1 (+ i1 1)))))))
+
+		  (let loop ((i1 0))
+		    (if (<= i1 p_n1)
+			(begin (set! res1 (+ (/ (expt p_k1 p_n1)
+						(grsp-fact p_k1))))
+			       (loop (+ i1 1)))))))))
 
     ;; Compose results.    
     (set! res1 (* res1 (/ 1 (grsp-e))))
