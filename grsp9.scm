@@ -332,7 +332,6 @@
 	      (set! p2 (* 2 (grsp-pi))))
 
     (parallel (set! res2 (* 10 n1))
-
 	      (let loop ((j1 1))
 		(if (<= j1 n1)
 		    (begin (set! x1 (array-ref p_a1 0 j1))
@@ -814,7 +813,6 @@
   (let ((res1 0)
 	(res2 0)
 	(res3 0)
-	(j1 0)
 	(n1 0)
 	(ln1 0)
 	(hn1 0))
@@ -823,21 +821,17 @@
     (set! ln1 (grsp-matrix-esi 3 p_a1))
     (set! hn1 (grsp-matrix-esi 4 p_a1)) 
 
-    (set! j1 ln1)
+    ;; Cycle.
     (set! n1 (- hn1 1))
-    (while (<= j1 n1)
-
-	   ;; res2.
-	   (set! res2 (* 100
-			 (expt (- (array-ref p_a1 0 (+ j1 1))
-				  (expt (array-ref p_a1 0 j1) 2)) 2)))
-
-	   ;; res3.
-	   (set! res3 (expt (- 1 (array-ref p_a1 0 j1)) 2))
-	   
-	   (set! res1 (+ res1 res2 res3))
-	   (set! j1 (in j1)))    
-
+    (let loop ((j1 ln1))
+      (if (<= j1 n1)
+	  (begin (set! res2 (* 100
+			       (expt (- (array-ref p_a1 0 (+ j1 1))
+					(expt (array-ref p_a1 0 j1) 2)) 2)))
+		 (set! res3 (expt (- 1 (array-ref p_a1 0 j1)) 2))	   
+		 (set! res1 (+ res1 res2 res3))
+		 (loop (+ j1 1)))))
+        
     res1))
 
 

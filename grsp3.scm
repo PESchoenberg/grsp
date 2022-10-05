@@ -215,6 +215,7 @@
 ;; - [60] En.wikipedia.org. 2022. Spectral radius - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Spectral_radius
 ;;   [Accessed 22 July 2022].
+;; - [61] https://en.wikipedia.org/wiki/Rotation_matrix
 
 
 (define-module (grsp grsp3)
@@ -382,7 +383,8 @@
 	    grsp-ms2ts
 	    grsp-mr2ls
 	    grsp-dbc2lls
-	    grsp-matrix-row-prkey))
+	    grsp-matrix-row-prkey
+	    grsp-matrix-strot))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -1017,7 +1019,7 @@
 ;;   - "#Gell-Mann": Gell-Mann matrices.
 ;;   - "#Pauli": Pauli matrices.
 ;;   - "#Dirac": Dirac gamma matrices.
-;;   - "#srdd": Ax = b with A stirctly diagonal.
+;;   - "#srdd": Ax = b with A strictly diagonal.
 ;; - p_n2: number of matrices to create.
 ;; - p_n3: default value for said matrices.
 ;; - p_m1: rows, positive integer.
@@ -1091,7 +1093,7 @@
 
 	  ((equal? p_s1 "#SBC")
 
-	   ;; Define rows and cols. This creates three different colum
+	   ;; Define rows and cols. This creates three different column
 	   ;; vectors.
 	   (set! m1 3)
 	   (set! n1 1) 
@@ -8875,4 +8877,21 @@
     res1))
 
 
+;;;; grsp-matrix-strot - Rotates column vector (p_v1) by angle p_t1 about the
+;; x, y or z axis.
+;;
+;; Keywords:
+;; - functions, algebra, matrix, matrices, vectors
+;;
+;; Arguments:
+;; - p_n1: rotation axis (facing the obsever).
+;; - p_v2: three element vector, representig its x,y,z values.
+;; - p_t1: angle of rotation, counterclockwise facing the observer.
+;;
+;; Sources:
+;; - [61].
+;;
+(define (grsp-matrix-strot p_n1 p_v1 p_t1)
+  (let ((res1 0))
 
+    res1))

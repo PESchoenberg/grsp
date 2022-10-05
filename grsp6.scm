@@ -224,6 +224,7 @@
 	      (cond ((equal? l #t)
 		     (set! nt (expt (* (gconst "c") (- p_t1 p_t2)) 2 )))))
 
+    ;; Compose results.
     (set! res1 (sqrt (+ nx ny nz nt)))
 	   
     res1))
