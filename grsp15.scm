@@ -56,7 +56,7 @@
 ;; Keywords:
 ;; - functions, division, fractions, polynomials.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1.
 ;;
 ;; Sources:
@@ -76,7 +76,7 @@
 ;; Keywords:
 ;; - functions, interpolation, polynomials.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: a.
 ;; - p_b1: b.
 ;; - p_k1: k.
@@ -103,7 +103,7 @@
 ;; Keywords:
 ;; - functions, interpolation, polynomials.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: x.
 ;; - p_j1: j.
 ;; - p_a1: matrixwith data points.
@@ -138,7 +138,7 @@
 ;; Keywords:
 ;; - functions, interpolation, polynomials.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: x.
 ;; - p_a1: matrix, data points.
 ;;

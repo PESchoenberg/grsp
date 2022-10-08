@@ -69,7 +69,7 @@
 ;; Keywords:
 ;; - lisp, guile, program, edition, programming, scheme. 
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string. Program name. 
 ;; - p_s2: string. Program description.
 ;;
@@ -87,7 +87,7 @@
 ;; Keywords:
 ;; - lisp, guile, program, edition, programming, scheme. 
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string. License holder name.
 ;; - p_s2: string. License holder email.
 ;; . p_s3; string. Copyright interval years.
@@ -108,7 +108,7 @@
 ;; Keywords:
 ;; - lisp, guile, program, edition, programming, scheme. 
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string. License holder name.
 ;; - p_s2: string. License holder email.
 ;; - p_s3: string. Copyright interval years.
@@ -144,7 +144,7 @@
 ;; Keywords:
 ;; - lisp, guile, program, edition, programming. 
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: list of the required modules as strings, i.e "(grsp grsp0)" "
 ;;   (grsp grsp1)"...
 ;;
@@ -162,7 +162,7 @@
 ;; Keywords:
 ;; - lisp, guile, program, edition, programming, scheme. 
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string. Module definition.
 ;; - p_l1: list of the used modules as strings, i.e "(grsp grsp0)"
 ;;   "(grsp grsp1)"...
@@ -195,7 +195,7 @@
 ;; Keywords:
 ;; - lisp, guile, program, edition, programming, scheme. 
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string. Program name, i.e. "program.scm".
 ;; - p_s2: string. Program description.
 ;; - p_f1: text file containing license info.
@@ -233,7 +233,7 @@
 ;; Keywords:
 ;; - lisp, guile, program, edition, programming, scheme. 
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string. Program name, i.e. "program.scm".
 ;; - p_s2: string. Program description.
 ;; - p_s3: string. License holder name.
@@ -273,7 +273,7 @@
 ;; Keywords:
 ;; - lisp, guile, program, edition, programming, scheme. 
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string. Program name. 
 ;; - p_s2: string. Program description.
 ;; - p_s6: string. Module definition.
@@ -313,7 +313,7 @@
 ;; Keywords:
 ;; - lisp, guile, program, edition, programming, scheme. 
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string. Program name. 
 ;; - p_s2: string. Program description.
 ;; - p_s3: string. License holder name.
@@ -356,7 +356,7 @@
 ;; Keywords:
 ;; - lisp, guile, program, edition, programming, scheme. 
 ;;
-;; Arguments:
+;; Parameters:
 ;; p_s1: string.
 ;; p_s2: string.
 ;; p_s3: string-

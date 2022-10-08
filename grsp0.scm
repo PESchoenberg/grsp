@@ -135,7 +135,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: line character to display.
 ;; - p_l1: line length.
 ;;
@@ -160,7 +160,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: line string to display.
 ;; - p_l1: line length.
 ;; - p_n1: number of lines (1 or 2, defaults to 1 line above title).
@@ -189,7 +189,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n: number of iterations.
 ;;
 (define (newlines p_n1)
@@ -217,7 +217,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: reference, string.
 ;; - p_s2: result, string.
 ;;
@@ -240,7 +240,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: reference, string.
 ;; - p_s2: result.
 ;;
@@ -260,7 +260,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: number of blanks to add.
 ;; - p_l1: string to display.
 ;; - p_s1: side where to add spaces,
@@ -298,7 +298,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: list of strings.
 ;; - p_s1: add a blank space after each list element.
 ;;   - 0 for no spaces.
@@ -338,7 +338,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_f1: file name.
 ;;
 ;; Sources:
@@ -362,7 +362,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: enter the one of the following strings.
 ;;   - "lt" less than.
 ;;   - "eq" equal to.
@@ -405,7 +405,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments: 
+;; Parameters: 
 ;; - p_s1: string to save.
 ;; - p_f1: file.
 ;; - p_m1: save mode.
@@ -428,7 +428,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: mode:
 ;;   - "#f": equivalent to rm -f, without confirmation.
 ;;   - "#c": eqivalent to rm, with confirmation.
@@ -451,7 +451,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: number to convert.
 ;;
 (define (grsp-n2s p_n1)
@@ -468,7 +468,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; p_s1: string to convert.
 ;;
 (define (grsp-s2n p_s1)
@@ -485,7 +485,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_p1: path to the sqlp executable.
 ;; - p_d1: database file, with path.
 ;; - p_s1: SQL or HDFQL snippet or file, with path.
@@ -503,7 +503,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string.
 ;;
 ;; Examples:
@@ -519,7 +519,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string.
 ;;
 (define (grsp-dl p_s1)
@@ -533,7 +533,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string.
 ;; - p_n1: number of new lines preceeding the string.
 ;; - p_n2: number of new lines after the string.
@@ -560,7 +560,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string.
 ;;
 (define (grsp-cd p_s1)
@@ -573,7 +573,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; p_s1: string representing the question to ask.
 ;;
 ;; Examples:
@@ -598,7 +598,7 @@
 ;; Keywords:
 ;; - console, numbers.
 ;;
-;; Arguments:
+;; Parameters:
 ;; p_s1: string representing the question to ask.
 ;;
 ;; Output:
@@ -638,7 +638,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; p_s1: string or number.
 ;;
 ;; Output:
@@ -657,7 +657,7 @@
 ;; Keywords:
 ;; - console, numbers.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: number.
 ;;
 (define (in p_n1)
@@ -673,7 +673,7 @@
 ;; Keywords:
 ;; - console, numbers.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: number.
 ;;
 (define (de p_n1)
@@ -690,7 +690,7 @@
 ;; Keywords:
 ;; - console, numbers.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: argument (any type).
 ;;
 ;; Output:
@@ -726,7 +726,7 @@
 ;; Keywords:
 ;; - console, arguments, types.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: argument.
 ;;
 ;; Output:
@@ -783,7 +783,7 @@
 ;; Keywords:
 ;; - console, arguments, types.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string.
 ;;
 (define (grsp-dstr p_s1)
@@ -801,7 +801,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string.
 ;; - p_s2: string.
 ;; - p_s3: string (one element in length).
@@ -855,7 +855,7 @@
 ;; Keywords:
 ;; - console, trim, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: sitring. Mode.
 ;;   - "#l": trim left.
 ;;   - "#r": trim right.
@@ -884,7 +884,7 @@
 ;; Keywords:
 ;; - console, trim, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: sitring. Mode.
 ;;   - "#l": trim left.
 ;;   - "#r": trim right.
@@ -925,7 +925,7 @@
 ;; Keywords:
 ;; - console, trim, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: sitring. Mode.
 ;;   - "#l": trim left.
 ;;   - "#r": trim right.
@@ -958,7 +958,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string. Mode.
 ;;   - "#l": p_s2 to the left.
 ;;   - "#r": p_s2 to the right.
@@ -1016,7 +1016,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string.
 ;; - p_n1: number. How many times should p_s1 be repeated.
 ;;
@@ -1038,7 +1038,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string. Mode.
 ;;   - "#l": p_s2 to the left.
 ;;   - "#r": p_s2 to the right.
@@ -1071,7 +1071,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: list of numbers to convert to strings.
 ;;
 (define (grsp-ln2ls p_l1)
@@ -1088,7 +1088,7 @@
 ;; Keywords:
 ;; - console, strings, utf, database.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: list of strings to convert to numbers.
 ;;
 (define (grsp-ls2ln p_l1)
@@ -1104,7 +1104,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: list of strings to convert to a single string. 
 ;;
 (define (grsp-ls2s p_l1)
@@ -1124,7 +1124,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string.
 ;;
 (define (grsp-s2ln p_s1)
@@ -1143,7 +1143,7 @@
 ;; Keywords:
 ;; - console, strings, unicode, utf.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: list.
 ;;
 ;; Notes: 
@@ -1168,7 +1168,7 @@
 ;; Keywords:
 ;; - functions, random, string, files, name, naming.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b1: boolean.
 ;;   - #t: if p_s1 and a separator are to be used.
 ;;   - #f: otherwise.
@@ -1194,7 +1194,7 @@
 ;; Keywords:
 ;; - functions, random, string.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string.
 ;;
 ;; Notes:
@@ -1239,7 +1239,7 @@
 ;; Keywords:
 ;; - functions, random, string.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string.
 ;;   - "#l": place p_s2 only at the beginning.
 ;;   - "#h": place p_s2 only at the end
@@ -1318,8 +1318,8 @@
 ;; Keywords:
 ;; - functions, random, string.
 ;;
-;; Arguments
-;; - p_s1: string
+;; Parameters
+;; - p_s1: string.
 ;;
 ;; Notes:
 ;; - See grsp-dbc2s, grsp3.grsp-matrix-create.
@@ -1347,7 +1347,7 @@
 ;; Keywords:
 ;; - functions, random, string.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: number. Should have been composed as described in grsp-s2dbc.
 ;;
 ;; Notes:
@@ -1384,7 +1384,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: list.
 ;;
 ;; Notes: 
@@ -1412,7 +1412,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: list.
 ;;
 (define (grsp-lns2ln p_l1)
@@ -1464,7 +1464,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: list.
 ;;
 (define (grsp-dtext p_s1)
@@ -1478,7 +1478,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string.
 ;; - p_l1: list.
 ;;
@@ -1495,7 +1495,7 @@
 ;; Keywords:
 ;; - console, strings, engrams.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_f1: string. File name.
 ;;
 (define (displayf p_f1)
@@ -1508,7 +1508,7 @@
 ;; Keywords:
 ;; - console, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: list of string elements.
 ;; - p_l2: list of string elements.
 ;; - p_s1: string.

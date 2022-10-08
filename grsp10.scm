@@ -63,7 +63,7 @@
 ;; Keywords:
 ;; - functions, activation, ann.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_1: list containing the following parameters.
 ;;   - 1: number.
 ;;
@@ -83,7 +83,7 @@
 ;; Keywords:
 ;; - functions, activation, ann.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_1: list containing the following parameters.
 ;;   - 1: number.
 ;;
@@ -109,7 +109,7 @@
 ;; Keywords:
 ;; - functions, activation, ann.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_1: list containing the following parameters.
 ;;   - 1: number.
 ;;
@@ -134,7 +134,7 @@
 ;; Keywords:
 ;; - functions, activation, ann.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_1: list containing the following parameters.
 ;;   - 1: number.
 ;;
@@ -163,7 +163,7 @@
 ;; Keywords:
 ;; - functions, activation, ann.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_1: list containing the following parameters.
 ;;   - 1: number.
 ;;
@@ -193,7 +193,7 @@
 ;; Keywords:
 ;; - functions, activation, ann.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_1: list containing the following parameters.
 ;;   - 1: number.
 ;;
@@ -219,7 +219,7 @@
 ;; Keywords:
 ;; - functions, activation, ann.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_1: list containing the following parameters.
 ;;   - 1: number.
 ;;
@@ -244,7 +244,7 @@
 ;; Keywords:
 ;; - functions, activation, ann.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_1: list containing the following parameters.
 ;;   - 1: number.
 ;;   - 2: alpha.
@@ -275,7 +275,7 @@
 ;; Keywords:
 ;; - functions, activation, ann.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_1: list containing the following parameters.
 ;;   - 1: number.
 ;;
@@ -303,7 +303,7 @@
 ;; Keywords:
 ;; - functions, activation, ann.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_1: list containing the following parameters.
 ;;   - 1: number.
 ;;   - 2: alpha.
@@ -337,7 +337,7 @@
 ;; Keywords:
 ;; - functions, activation, ann.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_1: list containing the following parameters.
 ;;   - 1: number.
 ;;   - 2: alpha.
@@ -367,7 +367,7 @@
 ;; Keywords:
 ;; - functions, activation, ann.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_1: list containing the following parameters.
 ;;   - 1: number.
 ;;   - 2: alpha.
@@ -398,7 +398,7 @@
 ;; Keywords:
 ;; - functions, activation, ann.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_1: list containing the following parameters.
 ;;   - 1: number.
 ;;
@@ -423,7 +423,7 @@
 ;; Keywords:
 ;; - functions, activation, ann.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_1: list containing the following parameters.
 ;;   - 1: number.
 ;;
@@ -462,7 +462,7 @@
 ;; Keywords:
 ;; - functions, activation, ann.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_1: list containing the following parameters.
 ;;   - 1: number.
 ;;
@@ -487,7 +487,7 @@
 ;; Keywords:
 ;; - functions, activation, ann.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_1: list containing the following parameters.
 ;;   - 1: number.
 ;;
@@ -512,7 +512,7 @@
 ;; Keywords:
 ;; - functions, activation, ann.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_1: list containing the following parameters.
 ;;   - 1: number.
 ;;   - 2: tl.
@@ -552,7 +552,7 @@
 ;; Keywords:
 ;; - functions, activation, ann.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_1: list containing the following parameters.
 ;;   - 1: number.
 ;;
@@ -577,7 +577,7 @@
 ;; Keywords:
 ;; - functions, activation, ann.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_11: list containing the following parameters.
 ;;   - 1: number.
 ;;
@@ -614,7 +614,7 @@
 ;; Keywords:
 ;; - functions, activation, ann.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_11: list containing the following parameters.
 ;;   - 1: type of distribution.
 ;;     - "#normal": normal.
@@ -651,7 +651,7 @@
 ;; Keywords:
 ;; - functions, activation, ann.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_11: list containing the following parameters.
 ;;   - Element 0: threshold.
 ;;   - Element 1: number.

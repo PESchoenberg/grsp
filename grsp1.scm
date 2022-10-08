@@ -30,13 +30,13 @@
 
 
 (define-module (grsp grsp1)
-  #:use-module (grsp grsp0) ;;;
+  #:use-module (grsp grsp0)
   #:export (gconst))
 	    
 
 ;;;; gconst - Various constants.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: constant name, string.
 ;;
 ;; Sources:
@@ -124,7 +124,7 @@
 ;; Keywords:
 ;; - constants.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: constant identifier.
 ;;
 (define (gconst p_n1)

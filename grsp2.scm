@@ -258,7 +258,7 @@
 ;; Keywords:
 ;; - functions, comparison.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: number.
 ;; - p_n2: number.
 ;;
@@ -283,7 +283,7 @@
 ;; Keywords:
 ;; - functions, comparison.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: real number.
 ;;
 (define (grsp-sign p_n1)
@@ -303,7 +303,7 @@
 ;; Keywords:
 ;; - functions, comparison.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: integer.
 ;; - p_n2: integer.
 ;;
@@ -329,7 +329,7 @@
 ;; Keywords:
 ;; - functions, primes, prime number.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n: integer.
 ;;
 ;; Output: 
@@ -363,7 +363,7 @@
 ;; Keywords:
 ;; - functions, factorial.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: natural number.
 ;; 
 ;; Output:
@@ -383,7 +383,7 @@
 ;; Keywords:
 ;; - functions, summation.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: integer >= 0.
 ;; 
 ;; Output:
@@ -408,7 +408,7 @@
 ;; Keywords:
 ;; - functions, combinatorics.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: integer >= 0
 ;; - p_k1: integer between [0, p_n1].
 ;;
@@ -436,7 +436,7 @@
 ;; Keywords:
 ;; - functions, combinatorics.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: integer >= 0
 ;; - p_k1: integer >= 0 and <= p_n1.
 ;;
@@ -457,7 +457,7 @@
 ;; Keywords:
 ;; - functions, comparison.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1
 ;; - p_n2
 ;; - p_n3
@@ -483,7 +483,7 @@
 ;; Keywords:
 ;; - functions, comparison.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1
 ;; - p_n2
 ;; - p_n3
@@ -508,7 +508,7 @@
 ;; Keywords:
 ;; - functions.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_k1
 ;; - p_r1
 ;; - p_n1
@@ -527,7 +527,7 @@
 ;; Keywords:
 ;; - functions.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_k1: summation iterations desired.
 ;; - p_b1: integer base.
 ;; - p_pf: polynomial with integer coef.
@@ -559,7 +559,7 @@
 ;; Keywords:
 ;; - functions, exp, expt.
 ;;
-;; Arguments;
+;; Parameters;
 ;; - p_x1: base.
 ;; - p_n1: rank or height of the power tower.
 ;;
@@ -593,7 +593,7 @@
 ;; Keywords:
 ;; - functions, logarithm.
 ;;
-;; Arguments;
+;; Parameters:
 ;; - p_x1: base.
 ;; - p_n1: rank or height of the power tower of the super exponentiation for
 ;;   which grsp-slog is inverse.
@@ -615,7 +615,7 @@
 ;; Keywords:
 ;; - functions, number.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: natural number.
 ;;
 ;; Output:
@@ -639,7 +639,7 @@
 ;; Keywords:
 ;; - functions, number.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: any natural number.
 ;;
 ;; Output:
@@ -666,7 +666,7 @@
 ;; Keywords:
 ;; - functions, numbers.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_k1: positive integer.
 ;; - p_n1: positive integer.
 ;;
@@ -698,7 +698,7 @@
 ;; Keywords:
 ;; - functions, numbers.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: positive integer.
 ;;
 ;; Output:
@@ -723,7 +723,7 @@
 ;; Keywords:
 ;; - functions, numbers.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: natural number between [1,9].
 ;; - p_d1: natural number.
 ;;
@@ -755,7 +755,7 @@
 ;; Keywords:
 ;; - functions, numbers.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: natural number.
 ;; - p_b1: natural number >= 2.
 ;;
@@ -782,7 +782,7 @@
 ;; Keywords:
 ;; - functions, numbers.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: Natural number >= 1.
 ;; - p_b1: Natural number >= 2.
 ;;
@@ -809,7 +809,7 @@
 ;; Keywords:
 ;; - functions, numbers.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: positive integer.
 ;;
 ;; Output:
@@ -830,7 +830,7 @@
 ;; Keywords:
 ;; - functions, numbers.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: non-negative integer.
 ;;
 ;; Output:
@@ -851,7 +851,7 @@
 ;; Keywords:
 ;; - functions, numbers.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: non-negative integer.
 ;;
 ;; Output:
@@ -875,7 +875,7 @@
 ;; Keywords:
 ;; - functions, primes, prime number.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: Prime number.
 ;;
 ;; Output:
@@ -900,7 +900,7 @@
 ;; Keywords:
 ;; - functions, dobinski.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: non-negative integer.
 ;; - p_k1: non-negative integer.
 ;;
@@ -934,7 +934,7 @@
 ;; Keywords:
 ;; - functions, newton, numerical.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: x(n).
 ;; - p_fx: f(x(b)).
 ;; - p_dx: f'(x(n)).
@@ -958,7 +958,7 @@
 ;; Keywords:
 ;; - functions, euler, numerical.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_y1: y(n).
 ;; - p_h1: h (step).
 ;; - p_f1: f(t,y).
@@ -983,7 +983,7 @@
 ;; Keywords:
 ;; - functions, interpolation.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: x1.
 ;; - p_x2: x2.
 ;; - p_x3: x3.
@@ -1012,7 +1012,7 @@
 ;; Keywords:
 ;; - functions, givens.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_v1.
 ;; - p_v2.
 ;;
@@ -1074,7 +1074,7 @@
 ;; Keywords:
 ;; - functions, trim, truncation.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: real.
 ;; - p_nmin: lower bounday of interval.
 ;; - p_nmax: higher boundary of th interval.
@@ -1100,7 +1100,7 @@
 ;; Keywords:
 ;; - functions, trim, truncation.
 ;;
-;; Arguments:
+;; Parameters:
 ;; p_n1: real.
 ;;
 (define (grsp-fitin-0-1 p_n1)
@@ -1113,7 +1113,7 @@
 ;; Keywords:
 ;; - functions, curves, sphere, spheroid.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: semi major axis.
 ;; - p_y1: semi minor axis.
 ;;
@@ -1138,7 +1138,7 @@
 ;; Keywords:
 ;; - functions, curves, ellipsoid.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string
 ;;   - "#p": polar radius.
 ;;   - "#e": equatorial radius.
@@ -1164,7 +1164,7 @@
 ;; Keywords:
 ;; - functions, curves, ellipsoid, volume.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: semi major axis.
 ;; - p_y1: semi minor axis.
 ;;
@@ -1184,7 +1184,7 @@
 ;; Keywords:
 ;; - functions, curves, ellipsoid.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: semi major axis.
 ;; - p_y1: semi minor axis.
 ;;
@@ -1205,7 +1205,7 @@
 ;; Keywords:
 ;; - functions, curves, ellipsoid.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: semi major axis.
 ;; - p_y1: semi minor axis.
 ;;
@@ -1226,7 +1226,7 @@
 ;; Keywords:
 ;; - functions, curves, ellipsoid.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_f1: flattening.
 ;;
 ;; Sources:
@@ -1245,7 +1245,7 @@
 ;; Keywords:
 ;; - functions, curves, ellipsoid.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: semi major axis.
 ;; - p_e1: eccenticity.
 ;; - p_l1: longitude.
@@ -1268,7 +1268,7 @@
 ;; Keywords:
 ;; - functions, curves, ellipsoid.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: semi major axis.
 ;; - p_y1: semi minor axis.
 ;; - p_l1: geodetic latitude.
@@ -1294,7 +1294,7 @@
 ;; Keywords:
 ;; - functions, curves, ellipsoid.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: semi major axis.
 ;; - p_y1: semi minor axis.
 ;; - p_l1: geodetic latitude.
@@ -1320,7 +1320,7 @@
 ;; Keywords:
 ;; - functions, curves.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: semi major axis.
 ;; - p_y1: semi minor axis.
 ;; - p_l1: geodetic latitude.
@@ -1345,7 +1345,7 @@
 ;; Keywords:
 ;; - functions, curves.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: semi major axis.
 ;; - p_y1: semi minor axis.
 ;;
@@ -1365,7 +1365,7 @@
 ;; Keywords:
 ;; - functions, curves.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: semi major axis.
 ;; - p_y1: semi minor axis.
 ;;
@@ -1396,7 +1396,7 @@
 ;; Keywords:
 ;; - functions, volume.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: semi major axis.
 ;; - p_y1: semi minor axis.
 ;;
@@ -1416,7 +1416,7 @@
 ;; Keywords:
 ;; - functions, curves.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: semi major axis.
 ;; - p_e1: eccentricity.
 ;;
@@ -1439,7 +1439,7 @@
 ;; Keywords:
 ;; - functions, torus.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_r1: R, distance from the center of the tube to the center of the torus.
 ;; - p_r2: r, tube radius.
 ;; - p_x1: x.
@@ -1466,7 +1466,7 @@
 ;; Keywords:
 ;; - functions, factorial, stirling.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: number for which its factorial is to be approximated.
 ;;
 ;; Sources:
@@ -1486,7 +1486,7 @@
 ;; Keywords:
 ;; - functions, airy.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1.
 ;;
 ;; Sources:
@@ -1506,7 +1506,7 @@
 ;; Keywords:
 ;; - functions, factorial.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: positive integer.
 ;;
 ;; Notes:
@@ -1531,7 +1531,7 @@
 ;; Keywords:
 ;; - function, factorial.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: positive integer.
 ;;
 ;; Notes:
@@ -1557,7 +1557,7 @@
 ;; Keywords:
 ;; - functions, factorial.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: positive integer.
 ;;
 ;; Notes:
@@ -1583,7 +1583,7 @@
 ;; Keywords:
 ;; - functions, factorial.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: positive integer.
 ;;
 ;; Sources:
@@ -1604,7 +1604,7 @@
 ;; Keywords:
 ;; - functions, factorial.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: positive integer.
 ;;
 ;; Notes:
@@ -1629,7 +1629,7 @@
 ;; Keywords:
 ;; - functions, factorial.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: positive integer.
 ;;
 ;; Sources:
@@ -1654,7 +1654,7 @@
 ;; Keywords:
 ;; - functions, factorial, falling, descending, sequential.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: positive integer.
 ;; - p_n1: iterations, positive integer.
 ;;
@@ -1679,7 +1679,7 @@
 ;; Keywords:
 ;; - functions, factorial, upper, pochhammer, ascending, rising.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: positive integer.
 ;; - p_n1: iterations, positive integer.
 ;;
@@ -1707,7 +1707,7 @@
 ;; Keywords:
 ;; - functions, ratio.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: positive integer.
 ;;
 ;; Sources:
@@ -1727,7 +1727,7 @@
 ;; Keywords:
 ;; - functions, ratio.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: positive integer.
 ;;
 ;; Sources:
@@ -1750,7 +1750,7 @@
 ;; Keywords:
 ;; - functions, cast, rounding.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b1:
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
@@ -1777,7 +1777,7 @@
 ;; Keywords:
 ;; - functions.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_g1: base.
 ;; - p_x1: exponent.
 ;;
@@ -1795,7 +1795,7 @@
 ;; Keywords:
 ;; - functions.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_g1: base.
 ;; - p_x1: exponent.
 ;;
@@ -1822,7 +1822,7 @@
 ;; Keywords:
 ;; - functions, classification, sorting.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: determines which half is rounded and wich one is truncated if p_n1 is
 ;;   odd:
 ;;   - "#rt": rounnd the first value, truncae the second.
@@ -1870,7 +1870,7 @@
 ;; Keywords:
 ;; - functions, cast.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: number.
 ;;
 (define (grsp-opz p_n1)
@@ -1886,7 +1886,7 @@
 ;; Keywords:
 ;; - functions, exp.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: number.
 ;;
 (define (grsp-eex p_n1)
@@ -1980,7 +1980,7 @@
 ;; Keywords:
 ;; - functions, absolute.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: operation.
 ;;   - "#+": sum.
 ;;   - "#-": difference.
@@ -2014,7 +2014,7 @@
 ;; Keywords:
 ;; - functions, random, pseudo, aleatory.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: type of distribution.
 ;;   - "#normal": normal.
 ;;   - "#exp": exponential.
@@ -2045,7 +2045,7 @@
 ;; Keywords:
 ;; - functions, random, pseudo, aleatory.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: type of distribution.
 ;;   - "#normal": normal.
 ;;   - "#exp": exponential.
@@ -2071,7 +2071,7 @@
 ;; Keywords:
 ;; - functions, absolute, negative.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: real number, [-inf.0,+inf.0].
 ;;
 ;; Output:
@@ -2092,7 +2092,7 @@
 ;; Keywords:
 ;; - functions, absolute.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: operation.
 ;;   - "#+": sum.
 ;;   - "#-": difference.
@@ -2123,7 +2123,7 @@
 ;; Keywords:
 ;; - functions, absolute.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b1: threading mode.
 ;;   - #t: for multithreaded.
 ;;   - #f: for single threaded calculation.
@@ -2149,7 +2149,7 @@
 ;; Keywords:
 ;; - functions, absolute, collatz.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: integer > 0.
 ;;
 ;; Sources:
@@ -2170,7 +2170,7 @@
 ;; Keywords:
 ;; - functions, integral, calculus, summation, series, integration
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: list containing the values for f(x) from f(0) to f(n).
 ;;
 ;; Sources:
@@ -2205,7 +2205,7 @@
 ;; Keywords:
 ;; - functions, binary.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: number.
 ;; - p_n2: number.
 ;;
@@ -2226,7 +2226,7 @@
 ;; Keywords:
 ;; - functions, binary.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: number.
 ;;
 ;; Sources:
@@ -2251,7 +2251,7 @@
 ;; Keywords:
 ;; - functions.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b1: boolean.
 ;; - p_n1; numeric.
 ;; - p_n2; numeric.
@@ -2299,7 +2299,7 @@
 ;; Keywords:
 ;; - functions.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b1: boolean.
 ;; - p_n1: numeric.
 ;; - p_n2: numeric.
@@ -2342,7 +2342,7 @@
 ;; Keywords:
 ;; - functions, euler, summations.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: number, iterations.
 ;;
 (define (grsp-euler-number p_n1)
@@ -2361,7 +2361,7 @@
 ;; Keywords:
 ;; - functions, gate, pulse, pi, unit, normalized, boxcar
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: number.
 ;;
 ;; Sources:
@@ -2385,7 +2385,7 @@
 ;; Keywords:
 ;; - functions, gate, pulse, pi, unit, normalized, boxcar
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: number.
 ;;
 ;; Sources:
@@ -2406,7 +2406,7 @@
 ;; Keywords:
 ;; - functions, exponent.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: number.
 ;;
 (define (grsp-2ex p_n1)
@@ -2422,7 +2422,7 @@
 ;; Keywords:
 ;; - functions, division, fractions.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: number.
 ;;
 (define (grsp-1n p_n1)
@@ -2438,7 +2438,7 @@
 ;; Keywords:
 ;; - functions, division, fractions.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: number.
 ;; - p_n2: number.
 ;; - p_n3: number.
@@ -2457,7 +2457,7 @@
 ;; Keywords:
 ;; - functions, difference, substraaction.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: number.
 ;; - p_n2: number.
 ;; - p_n3: number.
@@ -2484,7 +2484,7 @@
 ;; Keywords:
 ;; - functions, difference, substraaction.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: number.
 ;; - p_n2: number.
 ;; - p_n3: number.
@@ -2514,7 +2514,7 @@
 ;; Keywords:
 ;; - functions, random, pseudo, aleatory.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: type of distribution.
 ;;   - "#normal": normal.
 ;;   - "#exp": exponential.
@@ -2554,7 +2554,7 @@
 ;; Keywords:
 ;; - functions, arithmetic, operations, equations.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string
 ;;   - "#+": sum.
 ;;   - "#-": substraction.
@@ -2583,7 +2583,7 @@
 ;; Keywords:
 ;; - functions, arithmetic, operations, equations.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: number.
 ;; - p_n2: number.
 ;; - p_n3: number.
@@ -2603,7 +2603,7 @@
 ;; Keywords:
 ;; - functions, arithmetic, operations, equations.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: number.
 ;; - p_n2: number.
 ;;
@@ -2621,7 +2621,7 @@
 ;; Keywords:
 ;; - functions, arithmetic, operations, equations.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: number to convert.
 ;; - p_n2: number. Scale. How much p_n2 is worth in terms of p_n1.
 ;;

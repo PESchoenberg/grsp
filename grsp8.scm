@@ -278,7 +278,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b1:
 ;;   - #t: to return lists with one element with zeros as values.
 ;;   - #f: for empty lists.
@@ -336,7 +336,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b1:
 ;;   - #t if you want to return only the base ann list composed of matrices
 ;;     nodes, conns, count, idata, odata and empty specs.
@@ -435,7 +435,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: reconfiguration method.
 ;;   - "#no": none.
 ;;   - "#bp": backpropagation.
@@ -469,7 +469,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b3: #t for verbosity.
 ;; - p_b1:
 ;;   - #t: use mutithreading.
@@ -534,7 +534,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: nodes.
 ;; - p_a2: conns.
 ;; - p_a3: countx.
@@ -571,7 +571,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a3: count matrix.
 ;; - p_n1: matrix element to increment.
 ;;   - 0: updates nodes counter.
@@ -602,7 +602,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: nodes.
 ;; - p_a2: conns.
 ;; - p_a3: count.
@@ -632,7 +632,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: nodes matrix.
 ;; - p_a2: conns matrix.
 ;; - p_a3: count matrix.
@@ -682,7 +682,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: list, ann.
 ;; - p_l2: list, node definition.
 ;; - p_l3: list of connections for p_l1.
@@ -766,7 +766,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_d1: database name
 ;; - p_l1: ann.
 ;;
@@ -816,7 +816,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_d1: database name
 ;; - p_l1: ann.
 ;;
@@ -857,7 +857,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: specs matrix:
 ;;
 ;; Notes:
@@ -1110,7 +1110,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_nl: number of nodes in layer 0.
 ;; - p_nm: number of intermediate layers.
 ;; - p_nn: number of nodes in intermediate layers.
@@ -1170,7 +1170,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l2: ann.
 ;; - p_n1: mutation rate, [0, 1].
 ;; - p_s1: type of distribution.
@@ -1267,7 +1267,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l2: ann.
 ;; - p_n1: mutation rate, [0, 1].
 ;; - p_s1: type of distribution.
@@ -1363,7 +1363,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: list, ann.
 ;;
 ;; Notes:
@@ -1413,7 +1413,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix (nodes or conns).
 ;; - p_id: id (col 0).
 ;; - p_j2: column.
@@ -1435,7 +1435,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: type of connection:
 ;;   - "#fr": those going out of node p_id.
 ;;   - "#to": those reaching node p_id.
@@ -1461,7 +1461,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b3: #t for verbosity.
 ;; - p_id: node id.
 ;; - p_a1: matrix (nodes).
@@ -1607,7 +1607,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: activation function [0,17].
 ;;   - 0: identity.
 ;;   - 1: binary step.
@@ -1685,7 +1685,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b3: #t for verbosity.
 ;; - p_l1: ann.
 ;;
@@ -1794,7 +1794,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: matrix type or element that will fill it initially.
 ;;   - "#I": Identity matrix.
 ;;   - "#AI": Anti Identity matrix (anti diagonal).
@@ -1848,7 +1848,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b1: select threading mode.
 ;;   - #t: multi-threaded.
 ;;   - #f: single-threaded.
@@ -1902,7 +1902,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: ann.
 ;; Notes:
 ;; - While normally idata would be used to pass data to input nodes, the matrix
@@ -1986,7 +1986,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: ann.
 ;;
 ;; Notes:
@@ -2019,7 +2019,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a5: odata.
 ;; - p_a6: odtid; data conversion table.
 ;;
@@ -2098,7 +2098,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: selected:
 ;;   - "nodes".
 ;;   - "conns".
@@ -2159,7 +2159,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: matrix to create:
 ;;   - "nodes".
 ;;   - "conns".
@@ -2206,7 +2206,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: ann.
 ;;
 (define (grsp-ann-idata-atlorpn p_l1)
@@ -2295,7 +2295,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: ann.
 ;;
 (define (grsp-ann-odata-atlorpn p_l1)
@@ -2387,7 +2387,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: ann.
 ;;
 (define (grsp-ann-odtid-atlorpn p_l1)
@@ -2451,7 +2451,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: data matrix.
 ;; - p_id: idata.
 ;; - p_di: datai.
@@ -2547,7 +2547,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: data matrix.
 ;; - p_l1: ann.
 ;; - p_n1: classifier.
@@ -2609,7 +2609,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: ann.
 ;;
 (define (grsp-datai2ann p_l1)
@@ -2691,7 +2691,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: selected:
 ;;   - "nodes".
 ;;   - "conns".
@@ -2724,7 +2724,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: ann, first state.
 ;; - p_l2: ann, second state.
 ;;
@@ -2771,7 +2771,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: selected:
 ;;   - "nodes".
 ;;   - "conns".
@@ -2840,7 +2840,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: nodes table.
 ;; - p_a2: odata table.
 ;;
@@ -2909,7 +2909,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: odata table.
 ;; - p_a2: datao table.
 ;;
@@ -2973,7 +2973,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: ann.
 ;;
 ;; Output:
@@ -3016,7 +3016,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: ann.
 ;;
 ;; Output:
@@ -3092,7 +3092,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: ann.
 ;;
 ;; Output:
@@ -3129,7 +3129,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: ann.
 ;;
 ;; Sources:
@@ -3160,7 +3160,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: ann.
 ;;
 ;; Sources:
@@ -3190,7 +3190,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: ann.
 ;; - p_n1: node id.
 ;;
@@ -3226,7 +3226,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: ann.
 ;;
 ;; Output:
@@ -3278,7 +3278,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: ann.
 ;; - p_n1: connection (edge) id.
 ;;
@@ -3350,7 +3350,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: ann.
 ;;
 ;; Notes:
@@ -3407,7 +3407,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b1: boolean.
 ;;   - #t: shows element names.
 ;;   - #f: does not show names.
@@ -3428,7 +3428,7 @@
 ;; Keywords:
 ;; - function, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b1: boolean.
 ;;   - #t: shows element names.
 ;;   - #f: does not show names.
@@ -3459,7 +3459,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b1: boolean.
 ;;   - #t: shows element names.
 ;;   - #f: does not show names.
@@ -3488,7 +3488,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b1: boolean.
 ;;   - #t: shows element names.
 ;;   - #f: does not show names.
@@ -3517,7 +3517,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b1: boolean.
 ;;   - #t: shows element names.
 ;;   - #f: does not show names.
@@ -3612,7 +3612,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b1: boolean.
 ;;   - #t: shows element names.
 ;;   - #f: does not show names.
@@ -3664,7 +3664,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; p_s1: string, title or identifier.
 ;; p_l1: ann.
 ;;

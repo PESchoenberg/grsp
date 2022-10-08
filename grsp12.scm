@@ -52,7 +52,7 @@
 ;; Keywords:
 ;; - function, evolution, genetic, differential.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: base op.
 ;;   - "#+r": row sumation.
 ;;   - "#-r": row substraction.
@@ -110,7 +110,7 @@
 ;; Keywords:
 ;; - function, evolution, genetic.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_m1: total number of rows (individuals).
 ;; - p_n1: number of columns (+ 5 existing).
 ;;
@@ -151,7 +151,7 @@
 ;; Keywords:
 ;; - function, evolution, genetic.
 ;;
-;; Arguments.
+;; Parameters.
 ;; - p_a1: population matrix.
 ;; - p_m1: Number of individuals per generation.
 ;; - p_n1: max number of generations.

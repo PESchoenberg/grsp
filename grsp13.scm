@@ -72,7 +72,7 @@
 ;; - numbers, sequences, collatz, ulam, kakutani, thwaites, hasse, syracuse,
 ;;   erdos.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: integer > 0.
 ;; - p_m1: iterations, integer > 0.
 ;;
@@ -131,7 +131,7 @@
 ;; Keywords:
 ;; - numbers, sequences, geometric, convergent.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b1:
 ;;   - #t: calculated terms of the series will be returned.
 ;;   - #f: calculated terms of the series will not be returned.
@@ -200,7 +200,7 @@
 ;; Keywords:
 ;; - numbers, sequences, harmonic, hyper, convergent.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b1:
 ;;   - #t: calculated terms of the series will be returned.
 ;;   - #f: calculated terms of the series will not be returned.
@@ -273,7 +273,7 @@
 ;; Keywords:
 ;; - numbers, sequences, euler.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b1:
 ;;   - #t: calculated terms of the series will be returned.
 ;;   - #f: calculated terms of the series will not be returned.
@@ -316,7 +316,7 @@
 ;; Keywords:
 ;; - numbers, sequences, pi.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b1:
 ;;   - #t: calculated terms of the series will be returned.
 ;;   - #f: calculated terms of the series will not be returned.

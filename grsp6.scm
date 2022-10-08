@@ -132,7 +132,7 @@
 ;; Keywords:
 ;; - relativity, metric.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_t1: t1.
 ;; - p_t2: t2.
 ;; - p_x1: x1.
@@ -189,7 +189,7 @@
 ;; Keywords:
 ;; - relativity, metric.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_t1: t1.
 ;; - p_t2: t2.
 ;; - p_x1: x1.
@@ -235,7 +235,7 @@
 ;; Keywords:
 ;; - relativity, dilation.
 ;;
-;; Arguments: 
+;; Parameters: 
 ;; - p_v1: relative velocity between inertial frames (should be p_v1 < c).
 ;;
 ;; Sources:
@@ -255,7 +255,7 @@
 ;; Keywords:
 ;; - relativity, dilation.
 ;;
-;; Arguments: 
+;; Parameters: 
 ;; - p_v1: relative velocity.
 ;; - p_t1: proper time.
 ;;
@@ -276,7 +276,7 @@
 ;; Keywords:
 ;; - relativity, contraction.
 ;;
-;; Arguments: 
+;; Parameters: 
 ;; - p_v1: relative velocity.
 ;; - p_d1: proper length.
 ;;
@@ -296,7 +296,7 @@
 ;; Keywords:
 ;; - relativity, transform.
 ;;
-;; Arguments: 
+;; Parameters: 
 ;; - p_v1: relative velocity.
 ;; - p_t1: proper time.
 ;; - p_x1: x rel. coord.
@@ -331,7 +331,7 @@
 ;; Keywords:
 ;; - relativity, transform.
 ;;
-;; Arguments: 
+;; Parameters: 
 ;; - p_v1: relative velocity.
 ;; - p_t1: proper time.
 ;; - p_x1: x rel. coord.
@@ -366,7 +366,7 @@
 ;; Keywords:
 ;; - relativity, frames, special.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_v1: relative velocity between two inertial frames.
 ;;
 ;; Sources:
@@ -385,7 +385,7 @@
 ;; Keywords:
 ;; - dynamics, speed, velocity.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: coord 1.
 ;; - p_x2: coord 2.
 ;; - p_t1: time 1.
@@ -404,7 +404,7 @@
 ;; Keywords:
 ;; - dynamics, acceleration, increment.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_v1: velocity 1.
 ;; - p_v2: velocity 2.
 ;; - p_t1: time 1.
@@ -423,7 +423,7 @@
 ;; Keywords:
 ;; - waves, observable, frequency.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: see grsp-frequency-osrel.
 ;; - p_v1: see grsp-frequency-osrel.
 ;; - p_v2: see grsp-frequency-osrel.
@@ -446,7 +446,7 @@
 ;; Keywords:
 ;; - waves, frequency.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: see grsp-frequency-osrel.
 ;; - p_v1: see grsp-frequency-osrel.
 ;; - p_v2: see grsp-frequency-osrel.
@@ -469,7 +469,7 @@
 ;; Keywords:
 ;; - waves, sources.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string, relative movement between the source and the receiver.
 ;;   - "#++": p_v1 is added to p_v2 (receiver moves toward source), and p_v1 is
 ;;     added to p_v2 (source moves away from the receiver).
@@ -511,7 +511,7 @@
 ;; Keywords:
 ;; - waves, wave, shift.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string. Defines if wl or fr is used.
 ;;   - "#wl": for wavelength.
 ;;   - "#fr": for frequency.
@@ -537,7 +537,7 @@
 ;; Keywords:
 ;; - dynamics, distance, time.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: distance.
 ;; - p_t1: time.
 ;;
@@ -554,7 +554,7 @@
 ;; Keywords:
 ;; - dynamics, accelerate, time, speed, velocity.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: acceleration.
 ;; - p_t1: time.
 ;;
@@ -571,7 +571,7 @@
 ;; Keywords:
 ;; - astro, celestial, body, measurement, distance.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_g1: parallax (arcseconds).
 ;;
 (define (grsp-distance-parallax p_g1)
@@ -587,7 +587,7 @@
 ;; Keywords:
 ;; - relativity, particles, energy.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_v1: speed of the particle.
 ;; - p_m1: rest mass of the particle.
 ;;
@@ -606,7 +606,7 @@
 ;; Keywords:
 ;; - relativity, astro, mass.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_m1: mass of the body (kg).
 ;;
 ;; Sources:
@@ -626,7 +626,7 @@
 ;; Keywords:
 ;; - relativity, astro.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: relative distance between the main and secodary bodies.
 ;; - p_t1: orbital period of secondary arond main body.
 ;;
@@ -646,7 +646,7 @@
 ;; Keywords:
 ;; - dynamics, astro, impulse, acceleration.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: specific impulse in dimension of time.
 ;;
 ;; Sources:
@@ -665,7 +665,7 @@
 ;; Keywords:
 ;; - dynamics, astro, ideal, model.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: specific impulse.
 ;; - p_m1: initial mass.
 ;; - p_m2: final mass.
@@ -687,7 +687,7 @@
 ;; Keywords:
 ;; - astro, gravity, planet, earth. latitude.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: latitude [-90, 90].
 ;;
 ;; Sources:
@@ -710,7 +710,7 @@
 ;; Keywords:
 ;; - astro, planet, earth. latitude.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_z1: altitude.
 ;;
 (define (grsp-grav-earth-alt p_z1)
@@ -729,7 +729,7 @@
 ;; Keywords:
 ;; - astro, radius, diameter.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_r1: radius.
 ;; - p_m1: mass within p_r1.
 ;;
@@ -747,7 +747,7 @@
 ;; Keywords:
 ;; - astro, gravity.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: latitude.
 ;; - p_x2: param A.
 ;; - p_x3: param B.
@@ -768,7 +768,7 @@
 ;; Keywords:
 ;; - astro, gravity.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: latitude.
 ;; - p_x2: param A.
 ;; - p_x3: param B.
@@ -791,7 +791,7 @@
 ;; Keywords:
 ;; - astro.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: latitude.
 ;;
 ;; Sources:
@@ -823,7 +823,7 @@
 ;; Keywords:
 ;; - astro.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: latitude.
 ;;
 ;; Sources:

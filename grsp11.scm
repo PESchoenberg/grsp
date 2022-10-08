@@ -67,7 +67,7 @@
 ;; Keywords:
 ;; - console, lists.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string.
 ;;   - "#!=": not equal.
 ;;   - "#>": greater.
@@ -119,7 +119,7 @@
 ;; Keywords:
 ;; - console, lists.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string.
 ;;   - "#!=": not equal.
 ;;   - "#>": greater.
@@ -151,7 +151,7 @@
 ;; Keywords:
 ;; - function, algebra, lists.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: list.
 ;; - p_l2: list.
 ;;
@@ -171,7 +171,7 @@
 ;; Keywords:
 ;; - function, algebra, lists.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: list.
 ;; - p_l2: list.
 ;;
@@ -199,7 +199,7 @@
 ;; Keywords:
 ;; - function, algebra, lists.
 ;;
-;; Arguments;
+;; Parameters;
 ;; - p_s1: string representing the desired operation.
 ;;   - "#+": sum of all elements.
 ;;   - "#-": substraction of all elements.
@@ -226,7 +226,7 @@
 ;; Keywords:
 ;; - function, algebra, lists.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s: scalar operation.
 ;;   - "#+": scalar sum.
 ;;   - "#-": scalar substraction.
@@ -271,7 +271,7 @@
 ;; Keywords:
 ;; - function, algebra, lists.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: operation described as a string:
 ;;   - "#+": sum.
 ;;   - "#-": substraction.
@@ -317,7 +317,7 @@
 ;; Keywords:
 ;; - function, algebra, lists.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: operation described as a string:
 ;;   - "#+": sum.
 ;;   - "#-": substraction.
@@ -365,7 +365,7 @@
 ;; Keywords:
 ;; - function, algebra, lists.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: list.
 ;; - p_n1: mutation rate, [0, 1].
 ;; - p_s1: type of distribution.
@@ -398,7 +398,7 @@
 ;; Keywords:
 ;; - function, algebra, lists.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b1: boolean.
 ;;   - #t: shows element ordinals.
 ;;   - #f: does not show ordinals.
@@ -422,7 +422,7 @@
 ;; Keywords:
 ;; - function, algebra, lists.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b1: boolean.
 ;;   - #t: shows element names.
 ;;   - #f: does not show names.
@@ -454,7 +454,7 @@
 ;; Keywords:
 ;; - function, algebra, lists.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: list.
 ;; - p_ln1: lower n boundary (elem).
 ;; - p_hn1: higher n boundary (elem).
@@ -482,7 +482,7 @@
 ;; Keywords:
 ;; - function, algebra, lists.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: list.
 ;; - p_l2: list.
 ;; - p_n1: element number of p_l1 where to place the initial element of p_l2.
@@ -497,7 +497,7 @@
     (set! a1 (grsp-l2m p_l1))
     (set! a2 (grsp-l2m p_l2))
     
-    ;;  Replace with a2.
+    ;; Replace with a2.
     (set! a3 (grsp-matrix-subrep a1 a2 (grsp-lm a1) p_n1))
 
     ;; Convert extracted submatrix to list.
@@ -511,7 +511,7 @@
 ;; Keywords:
 ;; - function, algebra, lists.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 (define (grsp-lal-is-nonnegative p_l1)
@@ -533,7 +533,7 @@
 ;; Keywords:
 ;; - function, algebra, lists.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 (define (grsp-lal-is-positive p_l1)
@@ -555,7 +555,7 @@
 ;; Keywords:
 ;; - function, algebra, lists.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: numeric list.
 ;;
 (define (grsp-lal-density p_l1)
@@ -573,7 +573,7 @@
 ;; Keywords:
 ;; - function, algebra, lists.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: list.
 ;; - p_n1: element.
 ;;
@@ -591,7 +591,7 @@
 ;; Keywords:
 ;; - function, algebra, lists.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: list.
 ;; - p_n1: element.
 ;;
@@ -609,7 +609,7 @@
 ;; Keywords:
 ;; - function, algebra, lists.
 ;;
-;; Arguments
+;; Parameters
 ;; - p_s1: sort type.
 ;;   - "#asc": ascending.
 ;;   - "#des": descending.
@@ -628,7 +628,7 @@
 ;; Keywords:
 ;; - function, algebra, lists.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: list.
 ;;
 ;; Output:
@@ -650,7 +650,7 @@
 ;; Keywords:
 ;; - function, algebra, lists.
 ;;
-;; Arguments:
+;; Parameters:
 ;; p_l1: list.
 ;;
 (define (grsp-lal-supp p_l1)
@@ -667,7 +667,7 @@
 ;; Keywords:
 ;; - function, algebra, lists.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: list.
 ;; - p_l2: list.
 ;;
@@ -689,7 +689,7 @@
 ;; Keywords:
 ;; - function, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: list.
 ;;
 (define (grsp-lal-is-multiset p_l1)
