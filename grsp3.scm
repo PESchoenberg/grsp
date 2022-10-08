@@ -215,7 +215,9 @@
 ;; - [60] En.wikipedia.org. 2022. Spectral radius - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Spectral_radius
 ;;   [Accessed 22 July 2022].
-;; - [61] https://en.wikipedia.org/wiki/Rotation_matrix
+;; - [61] En.wikipedia.org. 2022. Rotation matrix - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Rotation_matrix
+;;   [Accessed 5 October 2022].
 
 
 (define-module (grsp grsp3)
@@ -392,7 +394,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 ;; Notes:
@@ -414,7 +416,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 ;; Notes:
@@ -436,7 +438,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 ;; Notes:
@@ -458,7 +460,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 ;; Notes:
@@ -481,7 +483,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 ;; Notes:
@@ -506,7 +508,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 ;; Notes:
@@ -530,7 +532,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_e1: number indicating the element value desired.
 ;;   - 1: lm. low boundary for m (rows).
 ;;   - 2: hm. high boundary for m (rows).
@@ -569,7 +571,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: matrix type.
 ;;   - "#I": Identity matrix.
 ;;   - "#AI": Anti Identity matrix (anti diagonal).
@@ -971,7 +973,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix to operate on.
 ;; - p_v1: value to be replaced within p_a1.
 ;; - p_v2: value to replace p_v1 with.
@@ -1012,7 +1014,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: matrix type.
 ;;   - "#UD": User defined.
 ;;   - "#SBC": standard basis, cartesian.
@@ -1091,6 +1093,8 @@
 		  (list-set! res1 i1 a0)		  
 		  (set! i1 (in i1))))
 
+
+	  
 	  ((equal? p_s1 "#SBC")
 
 	   ;; Define rows and cols. This creates three different column
@@ -1216,7 +1220,7 @@
 
 	   ;; Compose results.
 	   (set! res1 (list a0 a1 a2)))
-	   
+
 	  ((equal? p_s1 "#Dirac")
 
 	   ;; Define rows and cols.
@@ -1266,7 +1270,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: matrix type.
 ;;   - "#X": Qubit quantum gate. Pauli X. NOT.
 ;;   - "#Y": Qubit quantum gate. Pauli Y.
@@ -1501,7 +1505,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; . p_s1: see grsp-matrix-create.
 ;; - p_a2: matrix.
 ;;
@@ -1523,7 +1527,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: search criteria.
 ;;   - "#=": searches for all elements equal to p_v1.
 ;;   - "#>": searches for all elements greather than p_v1.
@@ -1624,7 +1628,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix to be transposed.
 ;;
 ;; Sources:
@@ -1660,7 +1664,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_n1: number, [0, 4].
 ;;
@@ -1685,7 +1689,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-conjugate p_a1)
@@ -1704,7 +1708,7 @@
 ;; - functions, algebra, matrix, matrices, vectors, hermitian conjugate, adjoint,
 ;;   transjugate.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 ;; Sources:
@@ -1724,7 +1728,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments;
+;; Parameters;
 ;; - p_s1: string representing the desired operation.
 ;;   - "#+": sum of all elements.
 ;;   - "#-": substraction of all elements.
@@ -1884,7 +1888,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s: scalar operation.
 ;;   - "#+": scalar sum.
 ;;   - "#-": scalar substraction.
@@ -2002,7 +2006,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, hadamard, direct, schur.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: operation described as a string:
 ;;   - "#+": sum.
 ;;   - "#-": substraction.
@@ -2123,7 +2127,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: function as per sources, described as a string:
 ;;   - "#abs".
 ;;   - "#truncate".
@@ -2245,7 +2249,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: operation described as a string:
 ;;   - "#+": matrix to matrix sum.
 ;;   - "#-": matrix to matrix substraction.
@@ -2412,7 +2416,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: operation described as a string:
 ;;   - "#.R": dot product (real numbers).
 ;;   - "#.C": dot product (complex numbers).
@@ -2453,7 +2457,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; p_a1: matrix to be copied.
 ;;
 ;; Examples:
@@ -2482,7 +2486,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix to be partitioned.
 ;; - p_lm1: lower m boundary (rows).
 ;; - p_hm1: higher m boundary (rows).
@@ -2523,7 +2527,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;; 
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
 ;; - p_m1: row coordinate of p_a1 where to place the upper left corner of p_a2.
@@ -2560,7 +2564,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s2 query:
 ;;   - "#=": equal.
 ;;   - "#>": greater.
@@ -2656,7 +2660,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string describing the required operation.
 ;;   - "#Delc": delete column.
 ;;   - "#Delr": delete row. 
@@ -2737,7 +2741,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix to expand.
 ;; - p_am1: rows to add.
 ;; - p_an1: cols to add.
@@ -2783,7 +2787,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;; 
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
 ;;
@@ -2837,7 +2841,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-square p_a1)
@@ -2857,7 +2861,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 ;; Notes:
@@ -2878,7 +2882,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-diagonal p_a1)
@@ -2916,7 +2920,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 ;; Sources:
@@ -2938,7 +2942,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-binary p_a1)
@@ -2957,7 +2961,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-nonnegative p_a1)
@@ -2974,7 +2978,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-positive p_a1)
@@ -3004,7 +3008,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix 1.
 ;; - p_a2: matrix 2.
 ;; - p_m1: m coord of upper row element.
@@ -3036,7 +3040,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix 1.
 ;; - p_a2: matrix 2.
 ;; - p_m1: m coord of p_a1 element.
@@ -3062,7 +3066,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: operation described as a string:
 ;;   - "#+": sum.
 ;;   - "#-": substraction.
@@ -3099,7 +3103,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_m1: row of p_a1.
 ;; - p_m2: row of p_a1.
@@ -3140,7 +3144,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: decomposition type.
 ;;   - "#LUD": LU decomposition, Doolitle.
 ;;   - "#QRMG: QR decomposition, modified Gram-Schmidt.
@@ -3345,7 +3349,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-density p_a1)
@@ -3378,7 +3382,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-sparse p_a1)
@@ -3396,7 +3400,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-symmetric-md p_a1)
@@ -3434,7 +3438,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-total-elements p_a1)
@@ -3451,7 +3455,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_v1: element value.
 ;;
@@ -3483,7 +3487,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-hadamard p_a1)
@@ -3509,7 +3513,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-markov p_a1)
@@ -3556,7 +3560,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-signature p_a1)
@@ -3597,7 +3601,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_v1: value.
 ;;
@@ -3621,7 +3625,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: matrix type.
 ;;   - "#I": identity.
 ;;   - "#AI": anti-identity.
@@ -3716,7 +3720,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-metzler p_a1)
@@ -3753,7 +3757,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: list.
 ;;
 (define (grsp-l2m p_l1)
@@ -3774,7 +3778,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 (define (grsp-m2l p_a1)
@@ -3799,7 +3803,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 (define (grsp-m2v p_a1)
@@ -3830,7 +3834,7 @@
 ;; contents of a database containing serialized complex or complex-subset
 ;; numbers.
 ;;
-;; Arguments;
+;; Parameters:
 ;; - p_db1: database name.
 ;; - p_q1: database query.
 ;;
@@ -3844,7 +3848,7 @@
 ;; the contents of a csv format database file containing serialized complex or
 ;; complex-subset numbers.
 ;;
-;; Arguments;
+;; Parameters:
 ;; - p_d1: database name.
 ;; - p_t1: table name.
 ;;
@@ -3941,7 +3945,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_d1: database name. If the name contains:
 ;;   - ".db": creates an Sqlite database.
 ;;   - ".csv": creates a csv database (folder).
@@ -3970,7 +3974,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, databases.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_d1: database name.
 ;; - p_a1: matrix.
 ;; - p_t1: table name.
@@ -4035,7 +4039,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, databases.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_d1: database name.
 ;; - p_a1: matrix.
 ;; - p_t1: table name.
@@ -4100,7 +4104,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, databases.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_d1: database name.
 ;; - p_a1: matrix.
 ;; - p_t1: table name.
@@ -4178,7 +4182,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, databases.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_d1: database name.
 ;; - p_a1: matrix.
 ;; - p_t1: gnuplot data file name.
@@ -4259,7 +4263,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, databases.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_d1: database name.
 ;; - p_a1: matrix.
 ;; - p_t1: gnuplot data file name.
@@ -4337,7 +4341,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: reference value.
 ;; - p_min: what needs to be substracted to p_n1 to define the lower boundary of
 ;;   the interval.
@@ -4368,7 +4372,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 ;; Sources:
@@ -4405,7 +4409,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 ;; Sources:
@@ -4435,7 +4439,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-invertible p_a1)
@@ -4452,7 +4456,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string.
 ;;   - "#*": product of all eigenvalues.
 ;;   - "#+": sum of all eigenvalues.
@@ -4481,7 +4485,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments
+;; Parameters:
 ;; - p_s1: sort type.
 ;;   - "#asc": ascending.
 ;;   - "#des": descending.
@@ -4591,7 +4595,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 ;; Output:
@@ -4617,7 +4621,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: type of operation.
 ;;   - "#=".
 ;;   - "#>".
@@ -4734,7 +4738,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
 ;; - p_n1:
@@ -4759,7 +4763,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string.
 ;;   - "#min".
 ;;   - "#max".
@@ -4835,7 +4839,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string.
 ;;   - "#<".
 ;;   - "#>".
@@ -4939,7 +4943,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string.
 ;;   - "#<".
 ;;   - "#>".
@@ -4984,7 +4988,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string.
 ;;   - "#asc".
 ;;   - "#des".
@@ -5076,7 +5080,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 ;; Sources:
@@ -5129,7 +5133,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
 ;; - p_j1: column number that corresponds to the shared primary key.
@@ -5211,7 +5215,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_l1: list containing row numbers.
 ;;
@@ -5291,7 +5295,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_l1: list containing col numbers.
 ;;
@@ -5321,7 +5325,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string.
 ;;   - "#<".
 ;;   - "#>".
@@ -5358,7 +5362,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_n1: column number, key of p_a1.
 ;; - p_a2: matrix.
@@ -5480,7 +5484,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
-;; Arguments:
+;; Parameters:
 ;; p_a1: matrix.
 ;; p_n1: column number, key of p_a1.
 ;; p_a2: matrix.
@@ -5522,7 +5526,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_n1: column number, key of p_a1.
 ;; - p_a2: matrix.
@@ -5613,7 +5617,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix ( 1 x n), (-inf.0, +inf.0).
 ;;
 ;; Sources:
@@ -5669,7 +5673,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_n1: column number, key of p_a1.
 ;; - p_a2: matrix.
@@ -5756,7 +5760,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string.
 ;;   - "#<".
 ;;   - "#>".
@@ -5805,7 +5809,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_lo: lower (lm or ln).
 ;; - p_hi: higher (hm or hn).
 ;;  
@@ -5823,7 +5827,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;  
 (define (grsp-matrix-te2 p_a1)
@@ -5841,7 +5845,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
 ;;  
@@ -5883,7 +5887,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_j1: column number, key of p_a1.
 ;; - p_a2: matrix.
@@ -5963,7 +5967,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;; 
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_v1: value.
 ;; - p_m1: row coordinate of p_a1.
@@ -6001,7 +6005,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;; 
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_m1: row pos 1.
 ;; - p_n1: col pos 1.
@@ -6043,7 +6047,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string.
 ;;   - "#<".
 ;;   - "#>".
@@ -6115,7 +6119,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix
 ;; - p_n1: number.
 ;;
@@ -6164,7 +6168,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix
 ;; - p_l1: number.
 ;;
@@ -6189,7 +6193,7 @@
 ;;;; grsp-matrix-clearni - Deletes all rows from matrix p_a1 where any of the
 ;; values contained in list defined by (grsp-naninf) is found at any column.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix
 ;;
 (define (grsp-matrix-clearni p_a1)
@@ -6207,7 +6211,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
 ;;
@@ -6304,7 +6308,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
 ;;  
@@ -6363,7 +6367,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string.
 ;;   - "#asc": ascending order.
 ;;   - "#des": descending order.
@@ -6413,7 +6417,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 ;; Output:
@@ -6461,7 +6465,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, genetic.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_n1: mutation rate, [0, 1].
 ;; - p_s1: type of distribution.
@@ -6517,7 +6521,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, genetic.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_n1: mutation rate, [0, 1].
 ;; - p_s1: type of distribution.
@@ -6567,7 +6571,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, genetic.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_n1: mutation rate, [0, 1].
 ;; - p_s1: type of distribution.
@@ -6623,7 +6627,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, genetic.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_ln1: lower column number of the interval to swap (p_a1).
 ;; - p_hn1: higher column number of the interval to swap (p_a1).
@@ -6712,7 +6716,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, genetic.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_ln1: lower column number of the interval to swap (p_a1).
 ;; - p_hn1: higher column number of the interval to swap (p_a1).
@@ -6753,7 +6757,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
 ;;
@@ -6778,7 +6782,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, genetic.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_m1: row.
 ;; - p_n1: col.
@@ -6808,7 +6812,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, genetic.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_s2: type of distribution for individual selection.
 ;;   - "#normal": normal.
@@ -6864,7 +6868,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string
 ;;   - "#row" will use row p_n1 as index.
 ;;   - "#col" will use column _n1 as index.
@@ -6924,7 +6928,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_n1: column number.
 ;; - p_n2: value to set on p_n1.
@@ -6952,7 +6956,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string.
 ;;   - "#<".
 ;;   - "#>".
@@ -7005,7 +7009,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-empty p_a1)
@@ -7023,7 +7027,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 ;; Sources:
@@ -7070,7 +7074,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 ;; Output:
@@ -7147,7 +7151,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 ;; Output:
@@ -7206,7 +7210,7 @@
 ;; Keywords:
 ;; - functions, ann, neural network.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_m1: rown number.
 ;; - p_l2: list of values to update in row p_m1 of matrix p_a1.
@@ -7266,7 +7270,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_m1: row number.
 ;; - p_l1: list.
@@ -7302,7 +7306,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;; 
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
 ;;
@@ -7328,7 +7332,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;; 
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-fill p_a1 p_n1)
@@ -7363,7 +7367,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;; 
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
 ;;
@@ -7423,7 +7427,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1:
 ;;   - "#+": sum.
 ;;   - "#-": substraction.
@@ -7508,7 +7512,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, multithreaded.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: operation described as a string:
 ;;   - "#+": sum.
 ;;   - "#-": substraction.
@@ -7568,7 +7572,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_m1: row number.
 ;;
@@ -7588,7 +7592,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_l2: list.
 ;; - p_m1: row number.
@@ -7614,7 +7618,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, multithreaded.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: operation described as a string:
 ;;   - "#+": sum.
 ;;   - "#-": substraction.
@@ -7665,7 +7669,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-traceless p_a1)
@@ -7687,7 +7691,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, moving.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
 ;; - p_m1: row ordinal of p_a1.
@@ -7716,7 +7720,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, swapping.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
 ;; - p_m1: row ordinal of p_a1.
@@ -7761,7 +7765,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, circulation.
 ;;
-;; Arguments.
+;; Parameters:
 ;; - p_b1: boolean.
 ;;   - #t: circulate from left to right.
 ;;   - #f: circulate from right to left.
@@ -7860,7 +7864,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, swapping.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-movtrm p_b1 p_a1)
@@ -7887,7 +7891,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, diagonal, replacement, replacing, change.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_n1: number.
 ;;
@@ -7922,7 +7926,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_m1: row coordinate.
 ;; - p_n1: col cordinate.
@@ -7955,7 +7959,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_m1: row coordinate.
 ;; - p_n1: col cordinate.
@@ -7981,7 +7985,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 ;; Sources:
@@ -8015,7 +8019,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, inversion.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 ;; Sources:
@@ -8050,7 +8054,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 ;; Sources:
@@ -8069,7 +8073,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 (define (grsp-mn2ms p_a1)
@@ -8103,7 +8107,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, strings, padding.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string. Mode.
 ;;   - "#l": p_s2 to the left.
 ;;   - "#r": p_s2 to the right.
@@ -8142,7 +8146,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, strings, length.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix. String.
 ;;
 (define (grsp-matrix-slongest p_a1)
@@ -8177,7 +8181,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix. String.
 ;;
 (define (grsp-ms2s p_a1)
@@ -8217,7 +8221,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix. Numeric.
 ;;
 ;; Examples:
@@ -8238,7 +8242,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix. String.
 ;;
 ;; Notes:
@@ -8277,7 +8281,7 @@
 ;; - functions, algebra, matrix, matrices, vectors, strings, replacement,
 ;;   substitution.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string. Interval mode (inclusive or exclusive).
 ;;   - "#[]" l inclusive, h inclusive.
 ;;   - "#[)" l inclusive, h exclusive.
@@ -8353,7 +8357,7 @@
 ;; - functions, algebra, matrix, matrices, vectors, strings, replacement,
 ;;   substitution.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix (should be square).
 ;; - p_n1: number. New value for diagonal elements.
 ;;
@@ -8389,7 +8393,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, strings, diagonal.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix (should be square).
 ;;
 (define (grsp-matrix-diagonal-vector p_a1)
@@ -8417,7 +8421,7 @@
 ;; - functions, algebra, matrix, matrices, vectors, strings,
 ;;   orthogonality, perpendicularity.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: row vector.
 ;; - p_a1: row vector.
 ;;
@@ -8442,7 +8446,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, entry wise.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_p1: p.
 ;;
@@ -8470,7 +8474,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, entry wise.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 ;; Sources:
@@ -8489,7 +8493,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, entry wise.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;
 ;; Sources:
@@ -8509,7 +8513,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, entry wise, eigenvalue.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: decomposition method (QR).
 ;; - p_a1: matrix.
 ;; - p_n1: max number of iterations.
@@ -8569,7 +8573,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, eigenvector.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: square matrix.
 ;; - p_a2: vector containing the eigenvalues of p_a1.
 ;;
@@ -8608,7 +8612,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, dominance, diagonal.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix, square.
 ;;
 ;; Sources:
@@ -8660,7 +8664,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, jacobian.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: decomposition method (QR).
 ;; - p_a1: matrix A.
 ;; - p_b1: matrix b.
@@ -8735,7 +8739,7 @@
 ;; - functions, algebra, matrix, matrices, vectors, decomposition,
 ;;   factorization.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: decomposition method (QR).
 ;; - p_a1: matrix (square).
 ;; - p_n1: max number of iterations.
@@ -8763,7 +8767,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, strings, text, pointers.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_m1: row.
 ;; - p_n1: col
@@ -8786,7 +8790,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, strings, lists.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_m1: row.
 ;;
@@ -8808,7 +8812,7 @@
 ;; - functions, algebra, matrix, matrices, vectors, strings, lists, pointers,
 ;;   links, lists.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_m1: row.
 ;; . p_n1: col.
@@ -8833,7 +8837,7 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors, strings, lists.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;; - p_m1: row.
 ;; - p_j1: col.
@@ -8883,15 +8887,51 @@
 ;; Keywords:
 ;; - functions, algebra, matrix, matrices, vectors
 ;;
-;; Arguments:
-;; - p_n1: rotation axis (facing the obsever).
+;; Parameters:
+;; - p_s1: rotation axis (facing the obsever).
+;;   - "#x". 
+;;   - "#y".
+;;   - "#z".
 ;; - p_v2: three element vector, representig its x,y,z values.
 ;; - p_t1: angle of rotation, counterclockwise facing the observer.
+;;
+;; Notes:
+;; - See grsp-matrix-create-set, "#SBC".
 ;;
 ;; Sources:
 ;; - [61].
 ;;
-(define (grsp-matrix-strot p_n1 p_v1 p_t1)
-  (let ((res1 0))
+(define (grsp-matrix-strot p_s1 p_v1 p_t1)
+  (let ((res1 0)
+	(R 0)
+	(ct (cos p_t1))
+	(st (sin p_t1))
+	(zt 0))
 
+    ;; Create rotation matrix.
+    (set! zt (* -1 st))
+    (define R (grsp-matrix-create 0.0 3 3))
+    (cond ((equal? p_s1 "#x")
+	   (array-set! R 1.0 0 0)
+	   (array-set! R ct 1 1)
+	   (array-set! R zt 1 2)
+	   (array-set! R st 2 1)
+	   (array-set! R ct 2 2))
+	  ((equal? p_s1 "#y")
+	   (array-set! R ct 0 0)
+	   (array-set! R st 0 2)
+	   (array-set! R 1.0 1 1)
+	   (array-set! R zt 2 0)
+	   (array-set! R ct 2 2))
+	  ((equal? p_s1 "#z")
+	   (array-set! R ct 0 0)
+	   (array-set! R zt 0 1)
+	   (array-set! R st 1 0)
+	   (array-set! R ct 1 1)
+	   (array-set! R 1.0 2 2)))
+
+    ;; Multiply rotation matrix by argument vector.
+    (set! res1 (grsp-matrix-opmm "#*" R p_v1))
+    
     res1))
+

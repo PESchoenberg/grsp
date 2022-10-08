@@ -125,7 +125,7 @@
 ;; Keywords:
 ;; - complex, inverse.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_z1: complex number.
 ;;
 ;; Output:
@@ -154,7 +154,7 @@
 ;; Keywords:
 ;; - complex, inverse.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_z1: complex number.
 ;;
 ;; Sources:
@@ -179,7 +179,7 @@
 ;; Keywords:
 ;; - complex, inverse.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: operation.
 ;;   - "#si": inverts the imaginary component only.
 ;;   - "#is": inverts the real component only.
@@ -211,7 +211,7 @@
 ;; Keywords:
 ;; - complex, signage.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_z1: complex number.
 ;;
 ;; Output:
@@ -247,7 +247,7 @@
 ;; Keywords:
 ;; - complex, aleatory, random.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_r1: growth rate.
 ;; - p_x1
 ;;
@@ -267,7 +267,7 @@
 ;; Keywords:
 ;; - complex, fractals.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_z1
 ;; - p_c1
 ;;
@@ -288,7 +288,7 @@
 ;; Keywords:
 ;; - complex, sequences.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_z1: ordinal of the desired Fibonacci number.
 ;;
 ;; Sources:
@@ -310,7 +310,7 @@
 ;; Keywords:
 ;; - complex.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: s.
 ;; - p_l1: iterations.
 ;;
@@ -333,7 +333,7 @@
 ;; Keywords:
 ;; - complex.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1
 ;; - p_a2
 ;; - p_x1
@@ -355,7 +355,7 @@
 ;; Keywords:
 ;; - complex, gamma.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
@@ -405,7 +405,7 @@
 ;; Keywords:
 ;; - complex, gamma.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
@@ -460,7 +460,7 @@
 ;; Keywords:
 ;; - complex, gamma.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
@@ -493,7 +493,7 @@
 ;; Keywords:
 ;; - complex. gamma.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
@@ -520,7 +520,7 @@
 ;; Keywords:
 ;; - complex, gamma, log.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_z1: complex.
 ;; - p_n1: desired product iterations.
 ;;
@@ -563,7 +563,7 @@
 ;; Keywords:
 ;; - complex, digamma.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
@@ -605,7 +605,7 @@
 ;; Keywords:
 ;; - complex, ligamma, gamma.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
@@ -637,7 +637,7 @@
 ;; Keywords:
 ;; - complex, ligamma.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
@@ -678,7 +678,7 @@
 ;; Keywords:
 ;; - complex, uigamma.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
@@ -706,7 +706,7 @@
 ;; Keywords:
 ;; - complex, prgamma.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
@@ -734,7 +734,7 @@
 ;; Keywords:
 ;; - complex, qrgamma.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
@@ -761,7 +761,7 @@
 ;; Keywords:
 ;; - complex, hypergeometric.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: a.
 ;; - p_b1: b.
 ;; - p_z1: z.
@@ -790,7 +790,7 @@
 ;; Keywords:
 ;; - complex, hypergeometric.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: a.
 ;; - p_b1: b. Non-integer.
 ;; - p_z1: z.
@@ -832,7 +832,7 @@
 ;; Keywords:
 ;; - complex, gauss.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_z1: complex.
 ;; - p_n1: iterations.
 ;;
@@ -870,7 +870,7 @@
 ;; Keywords:
 ;; - complex, gauss.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_z1: complex.
 ;; - p_n1: iterations.
 ;;
@@ -907,7 +907,7 @@
 ;; Keywords:
 ;; - complex, gauss.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_z1: complex.
 ;; - p_n1: iterations.
 ;;
@@ -927,7 +927,7 @@
 ;; Keywords:
 ;; - complex, gauss.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_z1: complex.
 ;; - p_n1: iterations.
 ;;
@@ -947,7 +947,7 @@
 ;; Keywords:
 ;; - complex.
 ;;
-;; Arguments
+;; Parameters:
 ;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
@@ -995,7 +995,7 @@
 ;; Keywords:
 ;; - complex.
 ;;
-;; Arguments
+;; Parameters:
 ;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
@@ -1042,7 +1042,7 @@
 ;; Keywords:
 ;; - complex, riemann, zeta.
 ;;
-;; Arguments
+;; Parameters:
 ;; - p_z1: complex, real component must be > 1.
 ;; - p_m1: iterations.
 ;;
@@ -1068,7 +1068,7 @@
 ;; Keywords:
 ;; - complex, riemann, zeta.
 ;;
-;; Arguments
+;; Parameters:
 ;; - p_z1: complex, real component must be > 1.
 ;; - p_m1: iterations.
 ;;
@@ -1100,7 +1100,7 @@
 ;; Keywords:
 ;; - complex, riemann, zeta.
 ;;
-;; Arguments
+;; Parameters:
 ;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
@@ -1152,7 +1152,7 @@
 ;; Keywords:
 ;; - complex.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_f1: shift value.
 ;;
 (define (grsp-complex-eif p_f1)
@@ -1169,7 +1169,7 @@
 ;; Keywords:
 ;; - complex.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: number.
 ;; - p_n2: number.
 ;;

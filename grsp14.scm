@@ -44,7 +44,7 @@
 ;; Keywords:
 ;; - date, time, calendar, chronology, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_y1: year.
 ;;
 (define (grsp-date-is-m29 p_y1)
@@ -64,7 +64,7 @@
 ;; Keywords:
 ;; - date, time, calendar, chronology, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_y1: year.
 ;;
 (define (grsp-date-is-m31 p_m1)
@@ -86,7 +86,7 @@
 ;; Keywords:
 ;; - date, time, calendar, chronology, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_m1: month.
 ;; - p_y1: year.
 ;;
@@ -111,7 +111,7 @@
 ;; Keywords:
 ;; - date, time, calendar, chronology, strings.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_m1: month.
 ;; - p_y1: year.
 ;;

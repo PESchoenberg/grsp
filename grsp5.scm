@@ -290,7 +290,7 @@
 ;; Keywords:
 ;; - statistics, probability, scale, proportion.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: scalar, real.
 ;; - p_nmin: min value for p_n.
 ;; - p_max: max value for p_x.
@@ -321,7 +321,7 @@
 ;; Keywords:
 ;; - statistics, probability, scoring, sampling.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: data point.
 ;; - p_m1: sample mean.
 ;; - p_s1: sample standard deviation.
@@ -343,7 +343,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: string determining the operation.
 ;;   - "#+": sum.
 ;;   - "#-": substraction.
@@ -376,7 +376,7 @@
 ;; Keywords:
 ;; - statistics, probability, complements.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: real representing a probability in [0,1].
 ;;
 ;; Sources:
@@ -395,7 +395,7 @@
 ;; Keywords:
 ;; - statistics, probability, variables, independece.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: real repesenting a probability in [0,1].
 ;; - p_n2: real repesenting a probability in [0,1].
 ;;
@@ -417,7 +417,7 @@
 ;; Keywords:
 ;; - statistics, probability, variables, dependence.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: real repesenting a probability in [0,1].
 ;; - p_n2: real repesenting a probability in [0,1].
 ;;
@@ -441,7 +441,7 @@
 ;; Keywords:
 ;; - statistics, probability, variables.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: real repesenting a probability in [0,1].
 ;; - p_n2: real repesenting a probability in [0,1].
 ;;
@@ -466,7 +466,7 @@
 ;; Keywords:
 ;; - statistics, probability, variables, exclusion.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: real repesenting a probability in [0,1].
 ;; - p_n2: real repesenting a probability in [0,1].
 ;;
@@ -492,7 +492,7 @@
 ;; Keywords:
 ;; - statistics, probability, variables, causality.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: real repesenting a probability in [0,1].
 ;; - p_n2: real repesenting a probability in [0,1].
 ;;
@@ -519,7 +519,7 @@
 ;; Keywords:
 ;; - statistics, probability, absolute.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: real representing a probability in [0,1]
 ;;
 ;; Sources:
@@ -540,7 +540,7 @@
 ;; Keywords:
 ;; - statistics, probability, exponential.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: operation.
 ;;   - "#+": addition.
 ;;   - "#-": substraction.
@@ -573,7 +573,7 @@
 ;; Keywords:
 ;; - statistics, probability, exponential.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1: operation.
 ;;   - "#+": addition.
 ;;   - "#-": substraction.
@@ -607,7 +607,7 @@
 ;; Keywords:
 ;; - statistics, probability, entropic.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_g1: logarithm base.
 ;;   - 2: base 2.
 ;;   - 2.71: natural base.
@@ -642,7 +642,7 @@
 ;; Keywords:
 ;; - statistics, probability, randomness, aleatory.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: sample (matrix).
 ;;
 ;; Notes:
@@ -665,7 +665,7 @@
 ;; Keywords:
 ;; - statistics, probability, mean, average, averaging.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: sample (matrix).
 ;;
 ;; Sources:
@@ -687,7 +687,7 @@
 ;; Keywords:
 ;; - statistics, probability, randomness, aleatory.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix, instances of X.
 ;; - p_a2: matrix, probabilities corresponding to each instance of X in p_a1.
 ;;
@@ -715,7 +715,7 @@
 ;; Keywords:
 ;; - statistics, probability, randomness, aleatory.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: sample (ist).
 ;;
 ;; Notes:
@@ -737,7 +737,7 @@
 ;; Keywords:
 ;; - statistics, probability, mean, average.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: sample (matrix).
 ;;
 ;; Sources:
@@ -759,7 +759,7 @@
 ;; Keywords:
 ;; - statistics, probability, mean, average.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: sample (matrix).
 ;;
 ;; Sources:
@@ -780,7 +780,7 @@
 ;; Keywords:
 ;; - statistics, probability, mean, average.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: sample (matrix).
 ;;
 ;; Sources:
@@ -813,7 +813,7 @@
 ;; Keywords:
 ;; - statistics, probability, mean, average.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: sample (matrix).
 ;;
 ;; Sources:
@@ -844,7 +844,7 @@
 ;; Keywords:
 ;; - statistics, probability, range, middle.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: sample (matrix).
 ;;
 ;; Sources:
@@ -865,7 +865,7 @@
 ;; Keywords:
 ;; - statistics, probability, variance, deviation.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_v1: variance.
 ;;
 (define (grsp-sd1 p_v1)
@@ -881,7 +881,7 @@
 ;; Keywords:
 ;; - statistics, probability, standard.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: sample (matrix).
 ;;
 ;; Sources:
@@ -928,7 +928,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: standard deviation.
 ;;
 (define (grsp-variance1 p_x1)
@@ -945,7 +945,7 @@
 ;; Keywords:
 ;; - statistics, probability, randomness, aleatory.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_s1:
 ;;   - "#v": for variance.
 ;;   - "#s": for semivariance.
@@ -1010,7 +1010,7 @@
 ;; Keywords:
 ;; - statistics, probability, randomness, aleatory.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_g1: logarithm base.
 ;; - p_x1: probability, [0, 1].
 ;;
@@ -1035,7 +1035,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_v1: sorted, 1 x n matrix (vector).
 ;;
 (define (grsp-median1 p_a1)
@@ -1070,7 +1070,7 @@
 ;; Keywords:
 ;; - statistics, probability, coefficients.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: standard deviation.
 ;; - p_n2: mean.
 ;;
@@ -1090,7 +1090,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: sample (matrix).
 ;; - p_x1: measure of central tendency.
 ;;
@@ -1133,7 +1133,7 @@
 ;; Keywords:
 ;; - statistics, probability, correction.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: n.
 ;;
 ;; Sources:
@@ -1152,7 +1152,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: mean.
 ;; - p_x2: median.
 ;; - p_x3: standard deviation.
@@ -1173,7 +1173,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: mean.
 ;; - p_x2: mode.
 ;; - p_x3: standard deviation.
@@ -1194,7 +1194,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: mean.
 ;; - p_x2: median.
 ;; - p_x3: standard deviation.
@@ -1215,7 +1215,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: sample (matrix).
 ;; - p_x1: sample mean.
 ;;
@@ -1244,7 +1244,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: sample (matrix).
 ;; - p_x1: sample mean.
 ;; - p_x3: standard deviation.
@@ -1273,7 +1273,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x4: kurtosis.
 ;;
 ;; Sources:
@@ -1292,7 +1292,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: sample mean.
 ;; - p_x3: sample standard deviation.
 ;;
@@ -1312,12 +1312,12 @@
 ;; Keywords:
 ;; - statistics, probability, coefficients.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_q1: quartile 1 (median of upper half).
 ;; - p_q2: quartile 2 (median of whole sample).
 ;; - p_q3: quartile 3 (median of lower half).
 ;;
-;; Arguments:
+;; Parameters:
 ;; - [23][24].
 ;;
 (define (grsp-yule-coefficient p_q1 p_q2 p_q3)
@@ -1333,11 +1333,11 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_q1: quartile 1 (median of upper half).
 ;; - p_q3: quartile 3 (median of lower half).
 ;;
-;; Arguments:
+;; Sources:
 ;; - [25].
 ;;
 (define (grsp-iqr p_q1 p_q3)
@@ -1354,7 +1354,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: sample (vector).
 ;;
 ;; Output:
@@ -1433,7 +1433,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: sample (vector).
 ;;
 ;; Sources:
@@ -1455,7 +1455,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: 1 x n matrix (vector) containing instances of X.
 ;; - p_a2: 1 x n matrix (vector) containing instances of Y.
 ;;
@@ -1489,7 +1489,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: sample.
 ;;
 ;; Output:
@@ -1581,7 +1581,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: sample (matrix).
 ;;
 ;; Output:
@@ -1641,7 +1641,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: mean, expected value. Lambda, [0, +inf).
 ;; - p_k1: number oc. Int, [0, +inf).
 ;;
@@ -1663,7 +1663,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: mean, expected value. Lambda, [0, +inf).
 ;; - p_k1: number oc. Int, [0, +inf).
 ;;
@@ -1685,7 +1685,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: mean, expected value. Lambda, [0, +inf).
 ;;
 ;; Sources:
@@ -1704,7 +1704,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: mean, expected value. Lambda, [0, +inf).
 ;;
 ;; Sources:
@@ -1723,7 +1723,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_l1: mean, expected value. Lambda, [0, +inf).
 ;;
 ;; Sources:
@@ -1742,7 +1742,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_k1: k. Shape, (0, +inf).
 ;; - p_t1: theta. Scale, (0, +inf).
 ;;
@@ -1762,7 +1762,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: alpha. Shape, (0, +inf).
 ;; - p_b1: beta. Scale, (0, +inf).
 ;;
@@ -1782,7 +1782,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_k1: k. Shape, (0, +inf).
 ;; - p_t1: theta, (0, +inf).
 ;;
@@ -1802,7 +1802,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: alpha. Shape, (0, +inf).
 ;; - p_b1: beta. Scale, (0, +inf).
 ;;
@@ -1823,7 +1823,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1:
 ;;   - k: for parametrization k-t.
 ;;   - alpha: for parametrization a-b.
@@ -1845,7 +1845,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1:
 ;;   - k: for parametrization k-t.
 ;;   - alpha: for parametrization a-b.
@@ -1866,7 +1866,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_k1: k. Shape. Mode requires [0, +inf).
 ;; - p_t1: theta. Scale, (0, +inf).
 ;;
@@ -1886,7 +1886,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: alpha. Shape. Mode requires [1, +inf).
 ;; - p_b1: beta. Scale, (0, +inf).
 ;;
@@ -1907,7 +1907,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
@@ -1950,7 +1950,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
@@ -1982,7 +1982,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
@@ -2024,7 +2024,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
@@ -2056,7 +2056,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
@@ -2093,7 +2093,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
@@ -2124,7 +2124,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
@@ -2161,7 +2161,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
@@ -2192,7 +2192,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_k1: k. Shape, (0, +inf).
 ;; - p_t1: theta. Scale, (0, +inf).
 ;; - p_t2: for (-inf, p_b1).
@@ -2214,7 +2214,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: alpha. 
 ;; - p_b1: beta.
 ;; - p_t2: for (-inf, p_b1).
@@ -2235,7 +2235,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_k1: k. Shape, [1, +inf). 
 ;; - p_l1: lambda. Rate, (0, +inf).
 ;;
@@ -2255,7 +2255,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_k1: k. Shape, [1, +inf). 
 ;; - p_l1: lambda. Rate, (0, +inf).
 ;;
@@ -2276,7 +2276,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_k1: k. Shape, [1, +inf). 
 ;; - p_l1: lambda. Rate, (0, +inf).
 ;;
@@ -2296,7 +2296,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_k1: k. Shape, [1, +inf). 
 ;;
 ;; Sources:
@@ -2315,7 +2315,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_k1: k. Shape, [1, +inf). 
 ;;
 ;; Sources:
@@ -2334,7 +2334,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_k1: k. Shape parameter, [1, +inf). 
 ;; - p_l1: lambda, (0, +inf).
 ;; - p_x1: [0, +inf).
@@ -2364,7 +2364,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b2: for integers.
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
@@ -2396,7 +2396,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_k1: k. Shape, [1, +inf). 
 ;; - p_l1: lambda. Rate, (0, +inf).
 ;; - p_t1: p_t1 < p_l1.
@@ -2417,7 +2417,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments: 
+;; Parameters: 
 ;; - p_l1: lambda. Rate, (0, +inf).
 ;;
 ;; Sources:
@@ -2436,7 +2436,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments: 
+;; Parameters: 
 ;; - p_x1: x.
 ;; - p_x2: mean.
 ;; - p_x3: standard deviation.
@@ -2470,7 +2470,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments: 
+;; Parameters: 
 ;; - p_x1: x.
 ;; - p_x2: mean.
 ;; - p_x3: standard deviation.
@@ -2493,7 +2493,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_g1: logarithm base.
 ;;   - 2: base 2.
 ;;   - 2.71: natural base.
@@ -2517,7 +2517,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: mean 1.
 ;; - p_x2; mean 2.
 ;; - p_x3: standard deviation 1.
@@ -2553,7 +2553,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: mean 1.
 ;; - p_x2; mean 2.
 ;; - p_x3: standard deviation 1.
@@ -2578,7 +2578,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: mean 1.
 ;; - p_x2: standard deviation.
 ;;
@@ -2600,7 +2600,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: mean 1.
 ;; - p_x2: standard deviation.
 ;;
@@ -2622,7 +2622,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_k1: shape, [0.0, +inf.0). 
 ;; - p_l1: scale, [0.0, +inf.0).
 ;;
@@ -2642,7 +2642,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_k1: shape, [0.0, +inf.0). 
 ;; - p_l1: scale, [0.0, +inf.0).
 ;; - p_b2: see grsp4.grsp-complex-gamma.
@@ -2665,7 +2665,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_k1: shape, [0.0, +inf.0). 
 ;; - p_l1: scale, [0.0, +inf.0).
 ;;
@@ -2686,7 +2686,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_k1: shape, [0.0, +inf.0). 
 ;; - p_l1: scale, [0.0, +inf.0).
 ;; - p_n1: number, [0.0, +inf.0).
@@ -2710,7 +2710,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_k1: shape, [0.0, +inf.0). 
 ;; - p_l1: scale, [0.0, +inf.0).
 ;; - p_n1: number, [0.0, +inf.0).
@@ -2738,7 +2738,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_k1: shape, [0.0, +inf.0). 
 ;; - p_l1: scale, [0.0, +inf.0).
 ;;
@@ -2760,7 +2760,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_k1: shape, [0.0, +inf.0). 
 ;; - p_l1: scale, [0.0, +inf.0).
 ;;
@@ -2782,7 +2782,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_k1: shape, [0.0, +inf.0).
 ;; - p_l1: scale, [0.0, +inf.0).
 ;; - p_b2: see grsp4.grsp-complex-gamma.
@@ -2815,7 +2815,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_k1: shape, [0.0, +inf.0).
 ;; - p_l1: scale, [0.0, +inf.0).
 ;; - p_b2: see grsp4.grsp-complex-gamma.
@@ -2857,7 +2857,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_k1: shape, [0.0, +inf.0).
 ;; - p_l1: scale, [0.0, +inf.0).
 ;; - p_b2: see grsp4.grsp-complex-gamma.
@@ -2889,7 +2889,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_k1: shape, [0.0, +inf.0).
 ;; - p_l1: scale, [0.0, +inf.0).
 ;; - p_b2: see grsp4.grsp-complex-gamma.
@@ -2926,7 +2926,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_k1: shape, [0.0, +inf.0).
 ;; - p_l1: scale, [0.0, +inf.0).
 ;; - p_b2: see grsp4.grsp-complex-gamma.
@@ -2964,7 +2964,7 @@
 ;; Keywords:
 ;; - statistics, probability, line, fitting, estimator, linear, regression.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;   - 0: x1.
 ;;   - 1: x2.
@@ -3031,7 +3031,7 @@
 ;; Keywords:
 ;; - statistics, probability, line, fitting, estimator, linear, regression.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: matrix.
 ;;   - 0: x1.
 ;;   - 1: x2.
@@ -3117,7 +3117,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: a, (-inf.0, +inf.0).
 ;; - p_b1: b, b >= a.
 ;; - p_c1: c, mode.
@@ -3141,7 +3141,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: a.
 ;; - p_b1: b.
 ;; - p_c1: c.
@@ -3181,7 +3181,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: a.
 ;; - p_b1: b.
 ;; - p_c1: c.
@@ -3223,7 +3223,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: a.
 ;; - p_b1: b.
 ;; - p_c1: c.
@@ -3267,7 +3267,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: a.
 ;; - p_b1: b, b > a.
 ;;
@@ -3298,7 +3298,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: a.
 ;; - p_b1: b.
 ;; - p_c1: c.
@@ -3342,7 +3342,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: a.
 ;; - p_b1: b.
 ;; - p_c1: c.
@@ -3389,7 +3389,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: a.
 ;; - p_b1: b.
 ;;
@@ -3409,7 +3409,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: a.
 ;; - p_b1: b.
 ;;
@@ -3430,7 +3430,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: a, for interval [-inf.0, +inf.0].
 ;; - p_b1: b, for interval [-inf.0, +inf.0].
 ;; - P_x1: x.
@@ -3452,7 +3452,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: a, for interval [-inf.0, +inf.0].
 ;; - p_b1: b, for interval [-inf.0, +inf.0].
 ;; - P_x1: x.
@@ -3475,7 +3475,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_n1: n.
 ;; - p_b2.
 ;; - p_s1.
@@ -3502,7 +3502,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: a, for interval [-inf.0, +inf.0].
 ;; - p_b1: b, for interval [-inf.0, +inf.0].
 ;; - P_x1: x.
@@ -3527,7 +3527,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: a, for interval [-inf.0, +inf.0].
 ;; - p_b1: b, for interval [-inf.0, +inf.0].
 ;;
@@ -3547,7 +3547,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: a, for interval [-inf.0, +inf.0].
 ;; - p_b1: b, for interval [-inf.0, +inf.0].
 ;;
@@ -3598,7 +3598,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number.
 ;;
 ;; Sources:
@@ -3633,7 +3633,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b1: scale, real, (0, +inf.0).
 ;; - p_u1: location (real).
 ;;
@@ -3667,7 +3667,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b1: scale, real, (0, +inf.0).
 ;; - p_u1: location (real).
 ;; - p_x1: number.
@@ -3692,7 +3692,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b1: scale, real, (0, +inf.0).
 ;; - p_u1: location (real).
 ;; - p_x1: number.
@@ -3713,7 +3713,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b1: scale, real, (0, +inf.0).
 ;; - p_u1: location (real).
 ;;
@@ -3733,7 +3733,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b1: scale, real, (0, +inf.0).
 ;;
 ;; Sources:
@@ -3752,7 +3752,7 @@
 ;; Keywords:
 ;; - statistics, probability.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_b1: scale, real, (0, +inf.0).
 ;;
 ;; Sources:

@@ -75,7 +75,7 @@
 ;; Keywords:
 ;; - geometry, curves.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_r1: radius.
 ;;
 (define (grsp-geo-circle p_r1)
@@ -91,7 +91,7 @@
 ;; Keywords:
 ;; - geometry, curves, volume.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_r1: radius.
 ;;
 (define (grsp-geo-spherev p_r1)
@@ -107,7 +107,7 @@
 ;; Keywords:
 ;; - geometry.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: base.
 ;; - p_y1: height.
 ;;
@@ -124,7 +124,7 @@
 ;; Keywords:
 ;; - geometry.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: base.
 ;; - p_y1: height.
 ;;
@@ -141,7 +141,7 @@
 ;; Keywords:
 ;; - geometry.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1.
 ;; - p_y1.
 ;; - p_x2.
@@ -160,7 +160,7 @@
 ;; Keywords:
 ;; - geometry.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1.
 ;; - p_y1.
 ;; - p_x2.
@@ -192,7 +192,7 @@
 ;; Keywords:
 ;; - geometry.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: base radius.
 ;; - p_y1: height.
 ;;
@@ -209,7 +209,7 @@
 ;; Keywords:
 ;; - geometry.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: base radius.
 ;; - p_y1: height.
 ;;
@@ -226,7 +226,7 @@
 ;; Keywords:
 ;; - geometry.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: base area.
 ;; - p_y1: height.
 ;;
@@ -243,7 +243,7 @@
 ;; Keywords:
 ;; - geometry.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: base area.
 ;; - p_y1: height.
 ;;
@@ -347,7 +347,7 @@
 ;; Keywords:
 ;; - geometry, conoids.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: x
 ;; - p_y1: y.
 ;;
@@ -367,7 +367,7 @@
 ;; Keywords:
 ;; - geometry, saddle, surface, hyperbolic, paraboloid.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: x
 ;; - p_y1: y.
 ;;
@@ -387,7 +387,7 @@
 ;; Keywords:
 ;; - geometry, saddle, surface, hyperbolic, paraboloid.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: x
 ;; - p_y1: y.
 ;;
@@ -407,7 +407,7 @@
 ;; Keywords:
 ;; - geometry, volume.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_ab: base area.
 ;; - p_h1: height.
 ;;
@@ -425,7 +425,7 @@
 ;; Keywords:
 ;; - geometry, topology.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: a. Axis.
 ;; - p_b1: b. Axis.
 ;; - p_c1: c. Linear eeccentricity.

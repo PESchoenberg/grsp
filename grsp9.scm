@@ -91,7 +91,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number, [-10.0, 10.0].
 ;; - p_y1: number, [-10.0, 10.0].
 ;;
@@ -112,7 +112,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number, [-15.0, -5.0].
 ;; - p_y1: number, [-3.0, 3.0].
 ;;
@@ -133,7 +133,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number, [-4.5, 4.5].
 ;; - p_y1: number, [-4.5, 4.5].
 ;;
@@ -172,7 +172,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number, [-4.5, 4.5].
 ;; - p_y1: number, [-4.5, 4.5].
 ;;
@@ -205,7 +205,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number, [-10.0, 10.0].
 ;; - p_y1: number, [-10.0, 10.0].
 ;;
@@ -234,7 +234,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number, [-10.0, 10.0].
 ;; - p_y1: number, [-10.0, 10.0].
 ;;
@@ -256,7 +256,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: 1 x n vector with n elements, representing an n-dimensinal problem.
 ;;
 ;; Notes:
@@ -306,7 +306,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: 1 x n vector with n elements, representing an n-dimensinal problem.
 ;;
 ;; Notes:
@@ -349,7 +349,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number, [-2.0, 2.0].
 ;; - p_y1: number, [-2.0, 2.0].
 ;;
@@ -399,7 +399,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number, [-2.0, 2.0].
 ;; - p_y1: number, [-2.0, 2.0].
 ;;
@@ -448,7 +448,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number, [-10.0, 10.0].
 ;; - p_y1: number, [-10.0, 10.0].
 ;;
@@ -491,7 +491,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number, [-10.0, 10.0].
 ;; - p_y1: number, [-10.0, 10.0].
 ;;
@@ -527,7 +527,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number, [-5.0, 5.0].
 ;; - p_y1: number, [-5.0, 5.0].
 ;;
@@ -563,7 +563,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number, [-5.0, 5.0].
 ;; - p_y1: number, [-5.0, 5.0].
 ;;
@@ -592,7 +592,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number, [-5.0, 5.0].
 ;; - p_y1: number, [-5.0, 5.0].
 ;;
@@ -616,7 +616,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number, [-1.5, 4.0].
 ;; - p_y1: number, [-3.0, 4.0].
 ;;
@@ -640,7 +640,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number, [-100.0, 100.0].
 ;; - p_y1: number, [-100.0, 100.0].
 ;;
@@ -675,7 +675,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number, [-100.0, 100.0].
 ;; - p_y1: number, [-100.0, 100.0].
 ;;
@@ -706,7 +706,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number, [-100.0, 100.0].
 ;; - p_y1: number, [-100.0, 100.0].
 ;;
@@ -741,7 +741,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number, [-100.0, 100.0].
 ;; - p_y1: number, [-100.0, 100.0].
 ;;
@@ -773,7 +773,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: 1 x n vector with n elements, representing an n-dimensinal problem.
 ;;   [-inf.0, +inf.0]
 ;;
@@ -802,7 +802,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: 1 x n vector with n elements, representing an n-dimensional problem.
 ;;   [-inf.0, +inf.0]
 ;;
@@ -840,7 +840,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number, [-512.0, 512.0].
 ;; - p_y1: number, [-512.0, 512.0].
 ;;
@@ -875,7 +875,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number, [-512.0, 512.0].
 ;; - p_y1: number, [-512.0, 512.0].
 ;;
@@ -906,7 +906,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_a1: 1 x n vector with n elements, representing an n-dimensinal problem.
 ;;   [-5.0, +5.0]
 ;;
@@ -940,7 +940,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number, [-5.0, +5.0].
 ;; - p_y1: number, [-5.0, +5.0].
 ;;
@@ -981,7 +981,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number, [-5.0, +5.0].
 ;; - p_y1: number, [-5.0, +5.0].
 ;;
@@ -1015,7 +1015,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number, [-10.0, 10.0].
 ;; - p_y1: number, [-10.0, 10.0].
 ;;
@@ -1045,7 +1045,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number, [-10.0, 10.0].
 ;; - p_y1: number, [-10.0, 10.0].
 ;;
@@ -1072,7 +1072,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number, [-10.0, 10.0].
 ;; - p_y1: number, [-10.0, 10.0].
 ;;
@@ -1101,7 +1101,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number, [-10.0, 10.0].
 ;; - p_y1: number, [-10.0, 10.0].
 ;;
@@ -1129,7 +1129,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number, [-10.0, 10.0].
 ;; - p_y1: number, [-10.0, 10.0].
 ;;
@@ -1160,7 +1160,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number, [-10.0, 10.0].
 ;; - p_y1: number, [-10.0, 10.0].
 ;;
@@ -1191,7 +1191,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number [-1.5, 1.5].
 ;; - p_y1: number [-0.5, 2.5].
 ;;
@@ -1225,7 +1225,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number [-1.5, 1.5].
 ;; - p_y1: number [-1.5, 1.5].
 ;;
@@ -1255,7 +1255,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number.
 ;; - p_y1: number.
 ;;
@@ -1301,7 +1301,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number.
 ;; - p_y1: number.
 ;;
@@ -1339,7 +1339,7 @@
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
 ;;
-;; Arguments:
+;; Parameters:
 ;; - p_x1: number [-1.25, 1.25].
 ;; - p_y1: number [-1.25, 1.25] != 0.
 ;;
