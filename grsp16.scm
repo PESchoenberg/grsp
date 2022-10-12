@@ -26,6 +26,9 @@
 
 ;;;; General notes:
 ;; - Read sources for limitations on function parameters.
+;; - These functions were developed to save some time when creating new code,
+;;   but they might also be useful for automatic code creation and self-
+;;   editing files.
 ;; - You may want to check if copyright and license info has been updated by
 ;;   means of other sources before using the texts provided here. Consider
 ;;   the info provided here regarding this issue as advisory but not

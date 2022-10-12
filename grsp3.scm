@@ -600,7 +600,7 @@
 ;; - p_n1: cols, positive integer.
 ;;
 ;; Examples:
-;; - example3.scm, example5.scm
+;; - example3.scm, example5.scm.
 ;;
 ;; Notes:
 ;; - See grsp0.grsp-s2dbc, grsp0.grsp-dbc2s.
@@ -822,7 +822,7 @@
 
 				       ;; Update indexes and values.
 				       (set! p2 p1)
-				       (set! p1 p0)				       
+				       (set! p1 p0)     
 				       (set! j1 (+ j1 1)))
 				
 				(set! i1 (+ i1 1))))
@@ -1028,12 +1028,12 @@
 ;; - p_n1: cols, positive integer.
 ;;
 ;; Notes:
-;; - Arguments p_n1, p_n2, p_m1 and/or p_n1 might not be relevant in the case
+;; - Parameters p_n1, p_n2, p_m1 and/or p_n1 might not be relevant in the case
 ;;   of some sets (for example, in the case of Pauli matrices, which are all of
-;;   2 x 2). In such cases, these two argument will not be taken into
+;;   2 x 2). In such cases, these two parameters will not be taken into
 ;;   account irrespectively of the values passed.
-;; - If argument p_s1 is passed as "#UD", arguments p_n1, p_n2 p_m1 and p_n1 do
-;;   matter.
+;; - If paramenter p_s1 is passed as "#UD", paramseters p_n1, p_n2 p_m1 and
+;;   p_n1 do matter.
 ;; - See grsp-matrix-create.
 ;; - In Scheme lists elements are identified by their ordinals starting at zero
 ;;   instead of one. Be careful when interpreting some of these sets because it
@@ -1307,7 +1307,7 @@
 ;; - p_z1: complex, matrix scalar multiplier.
 ;;
 ;; Examples:
-;; - example7.scm
+;; - example7.scm.
 ;;
 ;; Notes:
 ;; - See grsp0.grsp-s2dbc, grsp0.grsp-dbc2s.
@@ -2150,9 +2150,9 @@
 ;;   - "#asinh".
 ;;   - "#acosh".
 ;;   - "#atanh".
-;;   - "#xlog2x": x * log(2) x
-;;   - "#xlognx": x * log(2.71) x
-;;   - "#xlog10x": x * log(10) x
+;;   - "#xlog2x": x * log(2) x.
+;;   - "#xlognx": x * log(2.71) x.
+;;   - "#xlog10x": x * log(10) x.
 ;; - p_a1: matrix.
 ;;
 ;; Sources:
@@ -2266,7 +2266,7 @@
 ;;   care of that.
 ;;
 ;; Examples:
-;; - example5.scm
+;; - example5.scm.
 ;;
 ;; Sources:
 ;; - [36][37][38].
@@ -2461,7 +2461,7 @@
 ;; p_a1: matrix to be copied.
 ;;
 ;; Examples:
-;; - example5.scm
+;; - example5.scm.
 ;;
 ;; Output:
 ;; - A copy of p_a1.
@@ -2576,7 +2576,7 @@
 ;; - p_j1: col number to query.
 ;; - p_n2: element value to query according to p_s1 and p_j1.
 ;;
-;; Notes
+;; Notes:
 ;; - Obsolete. Use grsp-matrix-row-delete p_s1 instead.
 ;;
 (define (grsp-matrix-subdcn p_s2 p_a1 p_j1 p_n2)
@@ -3155,7 +3155,7 @@
 ;;   care of that.
 ;;
 ;; Examples:
-;; - example5.scm
+;; - example5.scm.
 ;;
 ;; Sources:
 ;; - [6][43][49][50][51].
@@ -3234,8 +3234,6 @@
 	   ;; Compose results for QRMG.
 	   (set! res1 (list Q R)))
 
-	  ;; ***************************
-
 	  ((equal? p_s1 "#UH")
 	   ;; https://downloads.hindawi.com/journals/ddns/2015/649423.pdf
 	   ;; https://journals.aps.org/prresearch/pdf/10.1103/PhysRevResearch.4.013144
@@ -3246,8 +3244,6 @@
 	   
 	   ;; Compose results for UH.
 	   (set! res1 (list U H)))
-	  
-	  ;; ***************************
 
 	  ((equal? p_s1 "#SVD")
 	   ;; https://web.mit.edu/be.400/www/SVD/Singular_Value_Decomposition.htm
@@ -4312,7 +4308,7 @@
 		  ;; Extract and analize each element of the matrix.
 		  (set! ve (array-ref p_a1 i1 j1))
 
-		  ;; Create the string record
+		  ;; Create the string record.
 		  (cond ((> j1 ln1)			 
 			 (set! s1 (strings-append (list s1 (grsp-n2s ve)) 1)))			
 			(else (set! s1 (grsp-n2s ve))))
@@ -4423,7 +4419,7 @@
 
     (set! a1 (grsp-matrix-cpy p_a1))
     
-    ;; Perform a QR decomposition over a1
+    ;; Perform a QR decomposition over a1.
     (set! a1 (grsp-matrix-decompose "#QRMG" a1))
     (set! Q (car a1))
     (set! R (cadr a1))
@@ -4515,7 +4511,7 @@
 	(n1 +nan.0))
 
     ;; Create res1 with the same size as res2 and fill it with zeros.
-    ;; (set! res2 p_a1)
+    ;; (set! res2 p_a1).
     (set! res2 (grsp-matrix-cpy p_a1))
     (set! res1 res2)
     (set! res1 (grsp-matrix-opsc "#*" res1 0))
@@ -4797,7 +4793,7 @@
     (set! res2 (grsp-matrix-subcpy p_a1 lm1 lm1 ln1 hn1))
     (set! res3 res2)
     
-    ;; Eval
+    ;; Eval.
     (set! i1 lm1)
     (while (<= i1 hm1)
 
@@ -5597,7 +5593,7 @@
 		  ;; Extract boundaries of the res3 matrix.
 		  (set! hm3 (grsp-matrix-esi 2 res3))	  
 
-		  ;; Add the row to the results matrix
+		  ;; Add the row to the results matrix.
 		  (set! res4 (grsp-matrix-subcpy p_a1 i1 i1 ln1 hn1))
 		  (set! res3 (grsp-matrix-subrep res3 res4 hm3 ln3))))
 		  
@@ -6120,7 +6116,7 @@
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
 ;; Parameters:
-;; - p_a1: matrix
+;; - p_a1: matrix.
 ;; - p_n1: number.
 ;;
 (define (grsp-matrix-row-deletev p_a1 p_n1)
@@ -6169,7 +6165,7 @@
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
 ;; Parameters:
-;; - p_a1: matrix
+;; - p_a1: matrix.
 ;; - p_l1: number.
 ;;
 (define (grsp-matrix-clear p_a1 p_l1)
@@ -6194,7 +6190,7 @@
 ;; values contained in list defined by (grsp-naninf) is found at any column.
 ;;
 ;; Parameters:
-;; - p_a1: matrix
+;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-clearni p_a1)
   (let ((res1 0))
@@ -6261,13 +6257,13 @@
     ;; Seed matrix.
     (set! res6 (grsp-matrix-create 0 1 (+ tc1 tc2)))
 
-    ;; Extract matrix info-
+    ;; Extract matrix info.
     (set! lm6 (grsp-matrix-esi 1 res6))
     (set! hm6 (grsp-matrix-esi 2 res6))
     (set! ln6 (grsp-matrix-esi 3 res6))
     (set! hn6 (grsp-matrix-esi 4 res6))     
 
-    ;; cycle over res1 and combine each row of it with each rown of res2 in res3
+    ;; cycle over res1 and combine each row of it with each rown of res2 in res3.
     (set! i1 lm1)
     (while (<= i1 hm1)
 
@@ -6442,7 +6438,7 @@
     (set! i1 (grsp-lm res1))
     (while (<= i1 (grsp-hm res1))
 
-	   ;; Read row i1 into res2
+	   ;; Read row i1 into res2.
 	   (set! res2 (grsp-matrix-subcpy res1
 					  i1
 					  i1
@@ -6452,7 +6448,7 @@
 	   ;; Convert res2 to list res3.
 	   (set! res3 (grsp-m2l res2))
 	   
-	   ;; Place list res3 into ist ers4.	   
+	   ;; Place list res3 into list res4.	   
 	   (list-set! res4 i1 res3)
 	   (set! i1 (+ i1 1)))
     
@@ -7599,7 +7595,7 @@
 ;; - p_n1: col number.
 ;;
 ;; Examples:
-;; - example9.scm
+;; - example9.scm.
 ;;
 (define (grsp-l2mr p_a1 p_l2 p_m1 p_n1)
   (let ((res1 0)
@@ -8225,7 +8221,7 @@
 ;; - p_a1: matrix. Numeric.
 ;;
 ;; Examples:
-;; - example5.scm
+;; - example5.scm.
 ;;
 (define (grsp-matrix-display p_a1)
   (let ((res1 "")
@@ -8691,7 +8687,7 @@
 	(n3 0)
 	(n4 0))
 
-    ;; safety copies.
+    ;; Safety copies.
     (set! A (grsp-matrix-cpy p_a1))
     (set! B (grsp-matrix-cpy p_b1))
     (set! X (grsp-matrix-cpy p_x1))    
@@ -8818,7 +8814,7 @@
 ;; . p_n1: col.
 ;;
 ;; Notes:
-;; - See grsp0.grsp-s2dbc, grsp0.grsp-dbc2s
+;; - See grsp0.grsp-s2dbc, grsp0.grsp-dbc2s.
 ;;
 (define (grsp-dbc2lls p_a1 p_m1 p_n1)
   (let ((res1 '()))
@@ -8885,7 +8881,7 @@
 ;; x, y or z axis.
 ;;
 ;; Keywords:
-;; - functions, algebra, matrix, matrices, vectors
+;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
 ;; - p_s1: rotation axis (facing the obsever).

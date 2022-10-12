@@ -249,7 +249,7 @@
 ;;
 ;; Parameters:
 ;; - p_r1: growth rate.
-;; - p_x1
+;; - p_x1: number, init.
 ;;
 ;; Sources:
 ;; - [2][3].
@@ -268,8 +268,8 @@
 ;; - complex, fractals.
 ;;
 ;; Parameters:
-;; - p_z1
-;; - p_c1
+;; - p_z1.
+;; - p_c1.
 ;;
 ;; Sources:
 ;; - [2][3].
@@ -334,11 +334,11 @@
 ;; - complex.
 ;;
 ;; Parameters:
-;; - p_a1
-;; - p_a2
-;; - p_x1
-;; - p_n1
-;; - p_n2
+;; - p_a1.
+;; - p_a2.
+;; - p_x1.
+;; - p_n1.
+;; - p_n2.
 ;;
 (define (grsp-complex-f1 p_a1 p_a2 p_x1 p_n1 p_n2)
   (let ((res1 0))
@@ -491,7 +491,7 @@
 ;;;; grsp-complex-pigamma - Pi Gauss function. Calculates gamma for p_z1 + 1.
 ;;
 ;; Keywords:
-;; - complex. gamma.
+;; - complex, gamma.
 ;;
 ;; Parameters:
 ;; - p_b2: for integers.
@@ -538,10 +538,10 @@
 	(res5 0)
 	(res6 0))
 
-    ;; - yz
+    ;; - yz.
     (set! res2 (* -1 (grsp-em) p_z1))
 
-    ;; - ln z
+    ;; - ln z.
     (set! res3 (* -1 (log p_z1)))
 
     ;; Summation.
@@ -657,10 +657,10 @@
 	(res3 0)
 	(res4 0))
 
-    ;; res2
+    ;; res2.
     (set! res2 (expt (grsp-e) (* -1 p_z2)))
 
-    ;; res3
+    ;; res3.
     (let loop ((i1 0))
       (if (<= i1 p_n1)
 	  (begin (set! res3 (+ res3 (/ (expt p_z2 i1)
@@ -847,10 +847,10 @@
 	(res5 0)
 	(res6 0))
 
-    ;; Res2.
+    ;; res2.
     (set! res2 (/ 2 (sqrt (grsp-pi))))
 
-    ;; Res3.
+    ;; res3.
     (let loop ((i1 0))
       (if (< i1 p_n1)
 	  (begin (set! res6 (+ (* 2 i1) 1))
@@ -885,7 +885,7 @@
 	(res5 0)
 	(res6 0))
 
-    ;; Res2.
+    ;; res2.
     (set! res2 (/ 2 (sqrt (grsp-pi))))
 
     (let loop ((i1 0))
@@ -975,15 +975,15 @@
     ;; Calculate according to domain intervals.
     (cond ((>= r1 0)
 	   
-	   (cond ((> r1 1) ; (1, +inf.0)
+	   (cond ((> r1 1) ; (1, +inf.0).
 		  (set! res1 (grsp-complex-riemann-euzeta z1 p_m1)))
-		 ((= r1 1) ; [1, 1]
+		 ((= r1 1) ; [1, 1].
 		  (set! res1 +inf.0))		 
-		 ((> r1 0) ; (0, 1)
+		 ((> r1 0) ; (0, 1).
 		  (set! res1 (grsp-complex-riemann-cszeta z1 p_m1)))
-		 ((= r1 0) ; [0, 0] 
+		 ((= r1 0) ; [0, 0].
 		  (set! res1 -0.5))))
-	  ((< r1 0) ;(-inf.0, 0)
+	  ((< r1 0) ; (-inf.0, 0).
 	   (set! res1 (grsp-complex-riemann-fezeta p_b2 p_s1 z1 p_m1 p_m2))))
     
     res1))
