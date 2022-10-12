@@ -437,7 +437,7 @@
 ;; - functions, combinatorics.
 ;;
 ;; Parameters:
-;; - p_n1: integer >= 0
+;; - p_n1: integer >= 0.
 ;; - p_k1: integer >= 0 and <= p_n1.
 ;;
 ;; Sources:
@@ -458,9 +458,9 @@
 ;; - functions, comparison.
 ;;
 ;; Parameters:
-;; - p_n1
-;; - p_n2
-;; - p_n3
+;; - p_n1: number.
+;; - p_n2: number.
+;; - p_n3: number.
 ;; 
 ;; Output:
 ;; - Returns #t if the condition holds. #f otherwise.
@@ -484,9 +484,9 @@
 ;; - functions, comparison.
 ;;
 ;; Parameters:
-;; - p_n1
-;; - p_n2
-;; - p_n3
+;; - p_n1: number.
+;; - p_n2: number.
+;; - p_n3: number.
 ;; 
 ;; Output:
 ;; - Returns #t if the condition holds. #f otherwise.
@@ -503,16 +503,16 @@
     res))
 
 
-;;;; grsp-k2nb - Returns the value of (p_k1 * (p_r1**p_n1)) + p_b1 .
+;;;; grsp-k2nb - Returns the value of (p_k1 * (p_r1**p_n1)) + p_b1.
 ;;
 ;; Keywords:
 ;; - functions.
 ;;
 ;; Parameters:
-;; - p_k1
-;; - p_r1
-;; - p_n1
-;; - p_b1
+;; - p_k1: number.
+;; - p_r1: number.
+;; - p_n1: number.
+;; - p_b1: number.
 ;; 
 (define (grsp-krnb p_k1 p_r1 p_n1 p_b1)
   (let ((res1 0))
@@ -693,7 +693,7 @@
 
 
 ;;;; grsp-mersenne-number - Calculates a Mersenne number according to
-;; Mn = 2**p_n1 - 1 .
+;; Mn = 2**p_n1 - 1.
 ;;
 ;; Keywords:
 ;; - functions, numbers.
@@ -964,7 +964,7 @@
 ;; - p_f1: f(t,y).
 ;;
 ;; Output:
-;; - x1(n1+1)
+;; - x1(n1+1).
 ;;
 ;; Sources:
 ;; - [19][20].
@@ -1013,8 +1013,8 @@
 ;; - functions, givens.
 ;;
 ;; Parameters:
-;; - p_v1.
-;; - p_v2.
+;; - p_v1; number, a.
+;; - p_v2; number, b.
 ;;
 ;; Sources:
 ;; - [44].
@@ -1080,7 +1080,7 @@
 ;; - p_nmax: higher boundary of th interval.
 ;;
 ;; Output:
-;; - p_n1 if it is in [p_nmin,p:nmax]
+;; - p_n1 if it is in [p_nmin,p:nmax].
 ;; - p_nmin if p_n1 < p_nmin.
 ;; - p_nmax if p_n1 > p_nmax.
 ;;
@@ -1755,7 +1755,7 @@
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
 ;; - p_z1: complex.
-;; - p_z2: complex
+;; - p_z2: complex.
 ;;
 ;; Sources:
 ;; - [30].
@@ -2075,7 +2075,7 @@
 ;; - p_n1: real number, [-inf.0,+inf.0].
 ;;
 ;; Output:
-;; - If p_n1 > 0, returns -p_n1
+;; - If p_n1 > 0, returns -p_n1.
 ;; - if p_n1 < 0, returns p_n1.
 ;;
 (define (grsp-nabs p_n1)
@@ -2168,7 +2168,7 @@
 ;;;; grsp-rectangle-method - Approximates the value of an integral.
 ;;
 ;; Keywords:
-;; - functions, integral, calculus, summation, series, integration
+;; - functions, integral, calculus, summation, series, integration.
 ;;
 ;; Parameters:
 ;; - p_l1: list containing the values for f(x) from f(0) to f(n).
@@ -2359,7 +2359,7 @@
 ;;;; grsp-rectangular - Rectangular function.
 ;;
 ;; Keywords:
-;; - functions, gate, pulse, pi, unit, normalized, boxcar
+;; - functions, gate, pulse, pi, unit, normalized, boxcar.
 ;;
 ;; Parameters:
 ;; - p_n1: number.
@@ -2383,7 +2383,7 @@
 ;;;; grsp-triangular - Triangular function.
 ;;
 ;; Keywords:
-;; - functions, gate, pulse, pi, unit, normalized, boxcar
+;; - functions, gate, pulse, pi, unit, normalized, boxcar.
 ;;
 ;; Parameters:
 ;; - p_n1: number.
@@ -2455,7 +2455,7 @@
 ;; absolute value between both numbers and p_n1.
 ;;
 ;; Keywords:
-;; - functions, difference, substraaction.
+;; - functions, difference, substraction.
 ;;
 ;; Parameters:
 ;; - p_n1: number.
@@ -2482,7 +2482,7 @@
 ;; p_n1 and p_n2, and p_n1 and p_n3.
 ;;
 ;; Keywords:
-;; - functions, difference, substraaction.
+;; - functions, difference, substraction.
 ;;
 ;; Parameters:
 ;; - p_n1: number.
@@ -2505,7 +2505,7 @@
     res1))
 
 
-;;;; grsp-coinflip - Returns argument p_n2 or p_n3 depending on the application
+;;;; grsp-coinflip - Returns parameter p_n2 or p_n3 depending on the application
 ;; of grsp-ifrprnd tp p_n1. In other words, this function lets you select
 ;; between two numbers (p_n1 and p_n2) based on a random result applied to a
 ;; another one (p_n1) based on a certain probability distribution defined by

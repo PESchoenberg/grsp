@@ -140,7 +140,7 @@
 ;; - p_l1: line length.
 ;;
 ;; Examples:
-;; - example1.scm, example3.scm
+;; - example1.scm, example3.scm.
 ;;
 (define (pline p_s1 p_l1)
   (let ((s1 ""))
@@ -167,7 +167,7 @@
 ;; - p_t1: title to display.
 ;;
 ;; Examples:
-;; - example1.scm, example3.scm
+;; - example1.scm, example3.scm.
 ;;
 (define (ptit p_s1 p_l1 p_n1 p_t1)
   (if (<= p_n1 1)
@@ -205,7 +205,7 @@
 ;; - console, strings.
 ;;
 ;; Examples:
-;; - example3.scm
+;; - example3.scm.
 ;;
 (define (clear)
   (newlines 100))
@@ -225,7 +225,7 @@
 ;; -  See pres2.
 ;;
 ;; Examples: 
-;; - example1.scm 
+;; - example1.scm. 
 ;;
 (define (pres p_s1 p_s2)
   (let ((res1 " "))
@@ -268,7 +268,7 @@
 ;;   - 1 for right side.
 ;;
 ;; Examples: 
-;; - example1.scm
+;; - example1.scm.
 ;;
 (define (newspaces p_n1 p_l1 p_s1)
   (let ((res1 " ")
@@ -305,7 +305,7 @@
 ;;   - 1 to add one blank space.
 ;;
 ;; Examples:
-;; - example1.scm, example3.scm
+;; - example1.scm, example3.scm.
 ;;
 (define (strings-append p_l1 p_s1)
   (let ((res1 "")
@@ -357,7 +357,7 @@
 
 ;;;; grsp-lang-effective-version - Checks if currently instaled GNU Guile's
 ;; effective version is less, equal or higher than value of the version
-;; argument vakue.
+;; argument.
 ;;
 ;; Keywords:
 ;; - console, strings.
@@ -370,7 +370,7 @@
 ;; - p_v1: version number to check against.
 ;;
 ;; Examples: 
-;; - example1.scm
+;; - example1.scm.
 ;;
 ;; Output:
 ;; - Boolean. Defaults to #f if p_s1 is entered incorrectly.
@@ -507,7 +507,7 @@
 ;; - p_s1: string.
 ;;
 ;; Examples:
-;; - example3.scm
+;; - example3.scm.
 ;;
 (define (grsp-ld p_s1)
   (newline)
@@ -539,7 +539,7 @@
 ;; - p_n2: number of new lines after the string.
 ;;
 ;; Examples:
-;; - example3.scm
+;; - example3.scm.
 ;;
 (define (grsp-ldl p_s1 p_n1 p_n2)
   (let ((n1 0))
@@ -577,7 +577,7 @@
 ;; p_s1: string representing the question to ask.
 ;;
 ;; Examples:
-;; - example3.scm
+;; - example3.scm.
 ;;
 ;; Output:
 ;; - Returns data from the user's input. You may need to use symbol->[type] in
@@ -1176,7 +1176,7 @@
 ;; - p_s2: string, file type descriptor (example "txt").
 ;;
 ;; Notes:
-;; - See grsp-list-fname
+;; - See grsp-list-fname.
 ;;
 (define (grsp-generate-file-name p_b1 p_s1 p_s2)
   (let ((res1 ""))

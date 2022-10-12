@@ -392,7 +392,7 @@
     (set! res3 (grsp-ann-net-create-ffn specs))
     (set! odtid (grsp-ann-matrix-create "odtid" 1))
     
-    ;; Mutate in order to randomize values as many tumes as defined by argument
+    ;; Mutate in order to randomize values as many tumes as defined by parameter
     ;; p_n2. In order not t mutate the network, set p_n2 = 0 so that the 
     ;; following cycle gets ignored entirely.
     (let loop ((i1 1))
@@ -546,7 +546,7 @@
 ;; - p_a9: datao.
 ;;
 ;; Notes:
-;; - In this case, matrices must be passed as separate arguments, not as a list
+;; - In this case, matrices must be passed as separate parameters, not as a list
 ;;   of matrices like in most grsp8 functions.
 ;; - See "Format of matrices used in grsp8" on top of this file for details
 ;;   on each matrix used.
@@ -627,7 +627,7 @@
 
 
 ;;;; grsp-ann-item-create - Creates in the ann a node or connection with
-;; argument list p_l2.
+;; parameter list p_l2.
 ;;
 ;; Keywords:
 ;; - functions, ann, neural network.
@@ -1195,7 +1195,7 @@
 ;; Notes:
 ;; - See grsp-matrix-col-lmutation.
 ;; - You can mutate any element that corresponds to the ann, passed via 
-;;   arguments p_l1 and p_l3 but be careful, since modifying random elements
+;;   parameters p_l1 and p_l3 but be careful, since modifying random elements
 ;;   other than those mentioned above could yield unexpected results
 ;; - See "Format of matrices used in grsp8" on top of this file for details
 ;;   on each matrix used.
@@ -1291,7 +1291,7 @@
 ;;
 ;; Notes:
 ;; - See grsp-matrix-col-lmutation.
-;; - You can mutate any element of a neural network passed via arguments p_l1
+;; - You can mutate any element of a neural network passed via parameters p_l1
 ;;   and p_l3 but be careful, since modifying randomly elements other than
 ;;   those mentioned above could yield unexpected results, even altering the
 ;;   structure of the network iteslf or render it unusable. Always backup your
@@ -1602,7 +1602,7 @@
     res4))
 
 
-;;;; grsp-ann-actifun - Selects function p_n1 passing argument p_n2.
+;;;; grsp-ann-actifun - Selects function p_n1 passing parameter p_n2.
 ;;
 ;; Keywords:
 ;; - functions, ann, neural network.
@@ -1818,7 +1818,7 @@
 ;; - p_m1: number of rows.
 ;;
 ;; Notes:
-;; - See grsp-matrix-create fo detals on argument p_s1. Some configurations 
+;; - See grsp-matrix-create fo detals on paramter p_s1. Some configurations 
 ;;   might require a symmetric matrix (3 x 3) to work.
 ;; - Column 0 will be set to zero. You should set the values  of this col
 ;;   acording to the id of each node to be evaluated with the given data.

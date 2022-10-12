@@ -2340,7 +2340,7 @@
 ;; - p_x1: [0, +inf).
 ;;
 ;; Notes:
-;; - See desription of grsp4.grsp-complex-gamma for details about arguments
+;; - See desription of grsp4.grsp-complex-gamma for details about parameters
 ;;   above.
 ;;
 ;; Sources:
@@ -2377,7 +2377,7 @@
 ;; - p_n1: Desired product iterations.
 ;;
 ;; Notes:
-;; - See desription of grsp4.grsp-complex-gamma for details about arguments
+;; - See desription of grsp4.grsp-complex-gamma for details about parameters
 ;;   above.
 ;;
 ;; Sources:
@@ -3147,7 +3147,7 @@
 ;; - p_c1: c.
 ;;
 ;; Notes:
-;; - See grsp-triangular-mean for argument properties.
+;; - See grsp-triangular-mean for parametric properties.
 ;;
 ;; Sources:
 ;; - [42].
@@ -3187,7 +3187,7 @@
 ;; - p_c1: c.
 ;;
 ;; Notes:
-;; - See grsp-triangular-mean for argument properties.
+;; - See grsp-triangular-mean for parametric properties.
 ;;
 ;; Sources:
 ;; - [42].
@@ -3230,7 +3230,7 @@
 ;; - p_x1; x.
 ;;
 ;; Notes:
-;; - See grsp-triangular-mean for argument properties.
+;; - See grsp-triangular-mean for parametric properties.
 ;;
 ;; Sources:
 ;; - [42].
@@ -3272,7 +3272,7 @@
 ;; - p_b1: b, b > a.
 ;;
 ;; Notes:
-;; - See grsp-triangular-mean for additional argument properties.
+;; - See grsp-triangular-mean for additional parametric properties.
 ;;
 ;; Sources:
 ;; - [42].
@@ -3305,7 +3305,7 @@
 ;; - p_x1; x.
 ;;
 ;; Notes:
-;; - See grsp-triangular-mean for argument properties.
+;; - See grsp-triangular-mean for parametric properties.
 ;;
 ;; Sources:
 ;; - [42].
@@ -3348,7 +3348,7 @@
 ;; - p_c1: c.
 ;;
 ;; Notes:
-;; - See grsp-triangular-mean for argument properties.
+;; - See grsp-triangular-mean for parametric properties.
 ;;
 ;; Sources:
 ;; - [42].
@@ -3484,7 +3484,7 @@
 ;; - p_m2.
 ;;
 ;; Notes:
-;; - For specs on all arguments except p_n1, see grsp-complex-bernoulli-number.
+;; - For specs on all parameters except p_n1, see grsp-complex-bernoulli-number.
 ;;
 ;; Sources:
 ;; - [43].

@@ -2,7 +2,7 @@
 !#
 
 
-;; ==============================================================================
+;; =============================================================================
 ;;
 ;; example13.scm
 ;;
@@ -18,7 +18,7 @@
 ;;
 ;;   guile example13.scm 
 ;;
-;; ==============================================================================
+;; =============================================================================
 ;;
 ;; Copyright (C) 2018 - 2022 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
@@ -35,7 +35,7 @@
 ;;   You should have received a copy of the GNU Lesser General Public License
 ;;   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ;;
-;; ==============================================================================
+;; =============================================================================
 
 
 ;; Required modules.
@@ -72,10 +72,10 @@
 (define A (grsp-matrix-create "#rprnd" tm tn))
 
 ;; Calculate sum.
-(set! i1 (grsp-lm A))
-(while (<= i1 (grsp-hm A))
-       (array-set! A (+ (array-ref A i1 0) (array-ref A i1 1)) i1 2)
-       (set! i1 (in i1)))
+(let loop ((i1 (grsp-lm A)))
+  (if (<= i1 (grsp-hm A))
+      (begin (array-set! A (+ (array-ref A i1 0) (array-ref A i1 1)) i1 2)
+	     (loop (+ i1 1)))))
 
 ;; Create table name for database.
 (set! t1 "A_example13.csv")
@@ -89,7 +89,4 @@
 (newlines 1)
 (grsp-matrix-display A)
 (newlines 1)
-
-
-
 
