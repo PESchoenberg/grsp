@@ -1398,7 +1398,7 @@
     ;; Create results vector.
     (set! res1 (grsp-matrix-create 0 1 5))
 
-    ;; Q2
+    ;; Q2.
     (array-set! res1 (grsp-median1 res3) 0 2)
     (set! res3 res6)
     
@@ -1414,10 +1414,10 @@
 	   (set! n4 (+ ln2 (- ll1 2)))
 	   (set! n5 (+ n4 2))))
 
-    ;; Q1
+    ;; Q1.
     (array-set! res1 (grsp-median1 (grsp-matrix-subcpy res3 lm2 hm2 ln2 n4)) 0 1)
 
-    ;; Q3
+    ;; Q3.
     (set! res3 res6)
     (array-set! res1 (grsp-median1 (grsp-matrix-subcpy res3 lm2 hm2 n5 hn2)) 0 3)
 
@@ -1928,14 +1928,14 @@
 	(res3 0)
 	(res4 0))
    
-    ;; res2
+    ;; res2.
     (set! res2 (/ 1 (* (grsp-complex-gamma p_b2 p_s1 p_k1 p_n1)
 		       (expt p_t1 p_k1))))
     
-    ;; res3
+    ;; res3.
     (set! res3 (expt p_x1 (- p_k1 1)))
     
-    ;; res4
+    ;; res4.
     (set! res4 (expt (grsp-e) (* -1 (/ p_x1 p_t1))))
 
     ;; Compose results.
@@ -2003,14 +2003,14 @@
 	(res3 0)
 	(res4 0))
    
-    ;; res2
+    ;; res2.
     (set! res2 (/ (expt p_b1 p_a1)
 		  (grsp-complex-gamma p_b2 p_s1 p_a1 p_n1)))
     
-    ;; res3
+    ;; res3.
     (set! res3 (expt p_x1 (- p_a1 1)))
     
-    ;; res4
+    ;; res4.
     (set! res4 (expt (grsp-e) (* -1 p_b1 p_x1)))
 
     ;; Compose results.
@@ -2076,10 +2076,10 @@
 	(res2 0)
 	(res3 0))
 
-    ;; res2
+    ;; res2.
     (set! res2 (/ 1 (grsp-complex-gamma p_b2 p_s1 p_k1 p_n1)))
     
-    ;; res3
+    ;; res3.
     (set! res3 (grsp-complex-ligamma p_b2 p_s1 p_k1 (/ p_x1 p_t1) p_n1))
 
     ;; Compose results.
@@ -2144,10 +2144,10 @@
 	(res2 0)
 	(res3 0))
 
-    ;; res2
+    ;; res2.
     (set! res2 (/ 1 (grsp-complex-gamma p_b2 p_s1 p_a1 p_n1)))
     
-    ;; res3
+    ;; res3.
     (set! res3 (grsp-complex-ligamma p_b2 p_s1 p_a1 (* p_b1 p_x1) p_n1))
 
     ;; Compose results.
@@ -2450,13 +2450,13 @@
 	(res3 0)
 	(res4 0))
 
-    ;; res2
+    ;; res2.
     (set! res2 (/ 1 (* p_x3 (sqrt (* 2 (grsp-pi))))))
     
-    ;; res3
+    ;; res3.
     (set! res3 (* -0.5 (expt (/ (- p_x1 p_x2) p_x3) 2)))
 
-    ;; res4
+    ;; res4.
     (set! res4 (expt (grsp-e) res3))
 
     ;; Compose results.
@@ -2532,13 +2532,13 @@
 	(res3 0)
 	(res4 0))
 
-    ;; res2
+    ;; res2.
     (set! res2 (expt (/ p_x3 p_x4) 2))
 
-    ;; res3
+    ;; res3.
     (set! res3 (/ (expt (- p_x2 p_x1) 2) (grsp-variance1 p_x4)))
 
-    ;; res4
+    ;; res4.
     (set! res4 (* 2 (log (/ p_x4 p_x3))))
 
     ;; Compose results.

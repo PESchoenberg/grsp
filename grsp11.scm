@@ -402,7 +402,7 @@
 ;; - p_b1: boolean.
 ;;   - #t: shows element ordinals.
 ;;   - #f: does not show ordinals.
-;; - p_l1: list
+;; - p_l1: list.
 ;;
 (define (grsp-lal-dev p_b1 p_l1)
   (let ((nh 0))

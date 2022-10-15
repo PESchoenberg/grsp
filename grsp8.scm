@@ -371,7 +371,7 @@
 ;;   weights, etc.
 ;;
 ;; Examples:
-;; - example3.scm
+;; - example3.scm.
 ;;
 ;; Output:
 ;; - A list with elements combining the results provided by:
@@ -480,7 +480,7 @@
 ;; - p_n2: mutations desired after each iteration.
 ;;
 ;; Examples:
-;; - example3.scm
+;; - example3.scm.
 ;;
 ;; Output:
 ;; - p_l1 updated.
@@ -502,7 +502,7 @@
 		  (display s1)
 		  (display i1)
 		  (display "\n")))
-	   ;; ***
+
 	   ;; Evaluate nodes.
 	   (set! res1 (grsp-ann-nodes-eval p_b3 res1))
 	   
@@ -638,7 +638,7 @@
 ;; - p_a3: count matrix.
 ;; - p_n1:
 ;;   - 0: for nodes.
-;;   - 1: for conns
+;;   - 1: for conns.
 ;; - p_l2: list containing the values for the matrix row.
 ;;
 ;; Notes:
@@ -767,7 +767,7 @@
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
-;; - p_d1: database name
+;; - p_d1: database name.
 ;; - p_l1: ann.
 ;;
 ;; Output:
@@ -817,7 +817,7 @@
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
-;; - p_d1: database name
+;; - p_d1: database name.
 ;; - p_l1: ann.
 ;;
 ;; Output:
@@ -992,7 +992,6 @@
 							   0
 							   l1))))
 		   
-		   ;;(grsp-ann-counter-upd count 0)
 		   (set! c0 (array-ref count 0 0))
 		   
 		   (set! i2 (in i2)))
@@ -1135,7 +1134,7 @@
     ;; Calculate number of rows based on total number of ann layers. 
     (set! m1 (+ 2 p_nm))
     
-    ;; Create empty matrix
+    ;; Create empty matrix.
     (set! res1 (grsp-matrix-create 0 m1 n1))
 
     ;; Extract the boundaries of the matrix.
@@ -1545,7 +1544,7 @@
 	   ;; Prepare data for activation function.
 	   (set! n5 (array-ref res1 0 5)) ;; Bias.
 	   (set! n7 (array-ref res1 0 7)) ;; Associated function.
-	   (set! n9 (array-ref res1 0 9)) ;; Weight. (was elem 7)
+	   (set! n9 (array-ref res1 0 9)) ;; Weight (was elem 7).
 	   
 	   ;; Set activation function input value.
 	   (set! n6 (* (+ n6 n9) n5))
@@ -1753,7 +1752,7 @@
 		  (display "\n ++ 1.1 Node number ")
 		  (display id)
 		  (display "\n")))
-	   ;; ***
+
 	   (grsp-ann-node-eval p_b3 id nodes conns count)
 	   (set! res3 (grsp-ann-node-eval p_b3 id nodes conns count))
 
@@ -2359,7 +2358,7 @@
 	   (set! odata (grsp-matrix-row-subrepal odata m3 (list 0 0 0 0)))
 
 	   ;; Fill data.
-	   (array-set! odata (array-ref res2 i2 0) m3 0) ;; id
+	   (array-set! odata (array-ref res2 i2 0) m3 0) ;; id.
 	   (array-set! odata (array-ref res2 i2 3) m3 1) ;; layer.
 	   (array-set! odata (array-ref res2 i2 4) m3 2) ;; layer pos.
 	   (array-set! odata (array-ref res2 i2 6) m3 3) ;; output value col.
@@ -2556,7 +2555,7 @@
 ;; - See grsp-m2datai.
 ;;
 ;; Examples:
-;; - example3.scm
+;; - example3.scm.
 ;;
 ;; Output:
 ;; - p_l1 with an updated datai table.
@@ -2732,7 +2731,7 @@
 ;; - See grsp3.grsp-matrix-fdifm, grsp-ann-fdifm.
 ;;
 ;; Examples:
-;; - example3.scm
+;; - example3.scm.
 ;;
 ;; Output:
 ;; - A list containing difference maps (matrices) for each pair of ann matrices;
@@ -2951,7 +2950,7 @@
     (set! i2 lm2)
     (while (<= i1 hm1)
 
-	   ;; Add a row in res2
+	   ;; Add a row in res2.
 	   (set! res2 (grsp-matrix-subexp res2 1 0))
 	   (set! hm2 (grsp-matrix-esi 2 res2))
 
@@ -3414,7 +3413,7 @@
 ;; - p_l1: ann.
 ;;
 ;; Examples:
-;; - example3.scm
+;; - example3.scm.
 ;;
 (define (grsp-ann-devt p_b1 p_l1)
   (let ((l2 '()))
@@ -3626,10 +3625,10 @@
 ;;   - 2: describe only output connections.
 ;;
 ;; Notes:
-;; - See grsp-ann-devnc
+;; - See grsp-ann-devnc.
 ;;
 ;; Examples:
-;; - example3.scm
+;; - example3.scm.
 ;;
 (define (grsp-ann-devnca p_b1 p_b3 p_l1 p_n2)
   (let ((i1 0)
@@ -3669,7 +3668,7 @@
 ;; p_l1: ann.
 ;;
 ;; Examples:
-;; - example3.scm
+;; - example3.scm.
 ;;
 (define (grsp-ann-stats p_s1 p_l1)
   (let ((size 0)

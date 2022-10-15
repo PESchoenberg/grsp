@@ -105,7 +105,7 @@
 ;;;; grsp-geo-triangle - Area of a triangle.
 ;;
 ;; Keywords:
-;; - geometry.
+;; - geometry, polygons.
 ;;
 ;; Parameters:
 ;; - p_x1: base.
@@ -122,7 +122,7 @@
 ;;;; grsp-geo-rectangle - Area of a rectangle.
 ;;
 ;; Keywords:
-;; - geometry.
+;; - geometry, polygons.
 ;;
 ;; Parameters:
 ;; - p_x1: base.
@@ -348,7 +348,7 @@
 ;; - geometry, conoids.
 ;;
 ;; Parameters:
-;; - p_x1: x
+;; - p_x1: x.
 ;; - p_y1: y.
 ;;
 ;; Sources:
@@ -388,7 +388,7 @@
 ;; - geometry, saddle, surface, hyperbolic, paraboloid.
 ;;
 ;; Parameters:
-;; - p_x1: x
+;; - p_x1: x.
 ;; - p_y1: y.
 ;;
 ;; Sources:

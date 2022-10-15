@@ -106,7 +106,7 @@
 ;; Parameters:
 ;; - p_x1: x.
 ;; - p_j1: j.
-;; - p_a1: matrixwith data points.
+;; - p_a1: matrix with data points.
 ;;
 ;; Sources:
 ;; - [3][4].
