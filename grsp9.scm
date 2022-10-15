@@ -908,7 +908,7 @@
 ;;
 ;; Parameters:
 ;; - p_a1: 1 x n vector with n elements, representing an n-dimensinal problem.
-;;   [-5.0, +5.0]
+;;   [-5.0, +5.0].
 ;;
 ;; Sources:
 ;; - [1].
@@ -1185,8 +1185,8 @@
 
 ;;;; grsp-cop-rosenbrock1 - Rosenbrock test, constrained objective function
 ;; (cube, line). Returns +nan.0 for unconstraied arguments.
-;; - (p_x1 - 1)**3 - p_y1 + 1 <= 0
-;; - p_x1 = p_y1 - 2 <= 0
+;; - (p_x1 - 1)**3 - p_y1 + 1 <= 0.
+;; - p_x1 = p_y1 - 2 <= 0.
 ;;
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
@@ -1220,7 +1220,7 @@
 
 ;;;; grsp-cop-rosenbrock2 - Rosenbrock test, constrained objective function
 ;; (disk). Returns +nan.0 for unconstraied arguments.
-;; - p_x1**2 + p_y1**2 <= 2
+;; - p_x1**2 + p_y1**2 <= 2-
 ;;
 ;; Keywords:
 ;; - functions, test, optimization, artificial, landscape.
