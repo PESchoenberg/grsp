@@ -25,6 +25,7 @@
 
 
 ;;;; General notes:
+;;
 ;; - Read sources for limitations on function parameters.
 
 
@@ -42,9 +43,11 @@
 ;;;; grsp-date-is-m29 - See if february has 29 days the year of query.
 ;;
 ;; Keywords:
+;;
 ;; - date, time, calendar, chronology, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_y1: year.
 ;;
 (define (grsp-date-is-m29 p_y1)
@@ -62,9 +65,11 @@
 ;;;; grsp-date-is-m31 - Returns #t if month p_m1 has 31 days, #f otherwise.
 ;;
 ;; Keywords:
+;;
 ;; - date, time, calendar, chronology, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_y1: year.
 ;;
 (define (grsp-date-is-m31 p_m1)
@@ -84,9 +89,11 @@
 ;;;; grsp-date-dl - Calculates the number of days in month p_m1 of year p_y1.
 ;;
 ;; Keywords:
+;;
 ;; - date, time, calendar, chronology, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_m1: month.
 ;; - p_y1: year.
 ;;
@@ -109,13 +116,16 @@
 ;; next year, if applicable.
 ;;
 ;; Keywords:
+;;
 ;; - date, time, calendar, chronology, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_m1: month.
 ;; - p_y1: year.
 ;;
 ;; Output:
+;;
 ;; - A list containing the next month and its applicable year.
 ;;
 (define (grsp-date-nextm p_m1 p_y1)
@@ -138,11 +148,14 @@
 ;; month of the current trimester.
 ;;
 ;; Keywords:
+;;
 ;; - date, time, calendar, chronology, strings.
 ;;
 ;; Output:
+;;
 ;; - A list of three lists corresponding to the present month, the next one and
 ;;   the one following the next. Each one of hese lists contains:
+;;
 ;;   - The number representing the month.
 ;;   - The year to which the month belongs to.
 ;;   - The number of days of the month.
@@ -196,9 +209,11 @@
 ;; two next months
 ;;
 ;; Keywords:
+;;
 ;; - date, time, calendar, chronology, strings.
 ;;
 ;; Output:
+;;
 ;; - A list of three strings with dates for the present and two subsequent
 ;;   months.
 ;;

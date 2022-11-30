@@ -25,9 +25,11 @@
 
 
 ;;;; General notes:
+;;
 ;; - Read sources for limitations on function parameters.
 ;;
 ;; Sources:
+;;
 ;; - [1] En.wikipedia.org. 2021. Differential evolution - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Differential_evolution
 ;;   [Accessed 21 October 2021].
@@ -50,14 +52,18 @@
 ;; p_l1 of matrix p_a1. Differential evolution.
 ;;
 ;; Keywords:
+;;
 ;; - function, evolution, genetic, differential.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: base op.
+;;
 ;;   - "#+r": row sumation.
 ;;   - "#-r": row substraction.
 ;;   - "#*r": row product.
 ;;   - "#/r": row division.
+;;
 ;; - p_a1: population matrix.
 ;; - p_n1: column containing the goal.
 ;; - p_g1: goal value.
@@ -98,23 +104,29 @@
 
 ;;;; grsp-evo-mod1-pop-create - Creates a population matrix according to the
 ;; following structure:
+;;
 ;; - Col 0: id.
 ;; - Col 1: status.
+;;
 ;;   - 0: dead.
 ;;   - 1: inactive.
 ;;   - 2: active.
+;;
 ;; - Col 2: type.
 ;; - Col 3: fitness.
 ;; - Col 4: result.
 ;;
 ;; Keywords:
+;;
 ;; - function, evolution, genetic.
 ;;
 ;; Parameters:
+;;
 ;; - p_m1: total number of rows (individuals).
 ;; - p_n1: number of columns (+ 5 existing).
 ;;
 ;; Notes:
+;;
 ;; - The structure of the matrix is set to make it compatible with the
 ;;   requirements of other datas structures such as those of grsp8.
 ;;
@@ -149,9 +161,11 @@
 ;;;; grsp-evo-mod1-evolve - Evolve results.
 ;;
 ;; Keywords:
+;;
 ;; - function, evolution, genetic.
 ;;
 ;; Parameters.
+;;
 ;; - p_a1: population matrix.
 ;; - p_m1: Number of individuals per generation.
 ;; - p_n1: max number of generations.
@@ -159,7 +173,9 @@
 ;; - p_g1: goal value for fitness function.
 ;; - p_ft1: minimum desired fitness.
 ;; - p_s2: fitness function.
+;;
 ;;   - "#mod1-ff1": use grsp-evo-mod1-ff1.
+;;
 ;; - p_l2: list of arguments for p_s1.
 ;; - p_s1: base op (see grsp-evo-mod1-ff1).
 ;; - p_l1: list of columns of p_a1 on which p_s1 is performed.

@@ -25,6 +25,7 @@
 
 
 ;;;; General notes:
+;;
 ;; - Read sources for limitations on function parameters.
 
 
@@ -65,15 +66,19 @@
 ;; test and replace al elements of p_l1 with this method, use grsp-lal-rfl.
 ;;
 ;; Keywords:
+;;
 ;; - console, lists.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string.
+;;
 ;;   - "#!=": not equal.
 ;;   - "#>": greater.
 ;;   - "#>=": greater or equal.
 ;;   - "#<": less.
 ;;   - "#<=": less orequal.
+;;
 ;; - p_l1: list.
 ;; - p_j1: number.
 ;; - p_n1: number.
@@ -117,15 +122,18 @@
 ;; and replae a single element use grsp-lal-rel.
 ;;
 ;; Keywords:
+;;
 ;; - console, lists.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string.
 ;;   - "#!=": not equal.
 ;;   - "#>": greater.
 ;;   - "#>=": greater or equal.
 ;;   - "#<": less.
 ;;   - "#<=": less orequal.
+;;
 ;; - p_l1: list.
 ;; - p_n1: number.
 ;;
@@ -149,9 +157,11 @@
 ;; #f otherwise.
 ;;
 ;; Keywords:
+;;
 ;; - function, algebra, lists.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: list.
 ;; - p_l2: list.
 ;;
@@ -169,9 +179,11 @@
 ;; are equal.
 ;;
 ;; Keywords:
+;;
 ;; - function, algebra, lists.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: list.
 ;; - p_l2: list.
 ;;
@@ -197,17 +209,22 @@
 ;;;; grsp-lal-opio - Internal operations that produce a scalar result.
 ;;
 ;; Keywords:
+;;
 ;; - function, algebra, lists.
 ;;
 ;; Parameters;
+;;
 ;; - p_s1: string representing the desired operation.
+;;
 ;;   - "#+": sum of all elements.
 ;;   - "#-": substraction of all elements.
 ;;   - "#*": product of all elements.
 ;;   - "#/": division of all elements.
+;;
 ;; - p_l1: list.
 ;;
 ;; Output:
+;;
 ;; - Scalar value.
 ;;
 (define (grsp-lal-opio p_s1 p_l1)
@@ -224,10 +241,13 @@
 ;; scalar p_v1 or a discrete operation on p_l1.
 ;;
 ;; Keywords:
+;;
 ;; - function, algebra, lists.
 ;;
 ;; Parameters:
+;;
 ;; - p_s: scalar operation.
+;;
 ;;   - "#+": scalar sum.
 ;;   - "#-": scalar substraction.
 ;;   - "#*": scalar multiplication.
@@ -244,13 +264,16 @@
 ;;     (sign inversion of real element of complex number).
 ;;   - "#ii": applies (grsp-complex-inv "#ii" z1) to each element z1 of p_l1
 ;;     (sign inversion of both elements of a complex number).
+;;
 ;; - p_l1: list.
 ;; - p_v1: scalar value.
 ;;
 ;; Notes:
+;;
 ;; - You may need to use seed->random-state for pseudo random numbers.
 ;;
 ;; Sources:
+;;
 ;; - grsp3.[5], grsp3.[6].
 ;;
 (define (grsp-lal-opsc p_s1 p_l1 p_v1)
@@ -269,10 +292,13 @@
 ;; p_l1 and p_l2.
 ;;
 ;; Keywords:
+;;
 ;; - function, algebra, lists.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: operation described as a string:
+;;
 ;;   - "#+": sum.
 ;;   - "#-": substraction.
 ;;   - "#*": multiplication.
@@ -282,10 +308,12 @@
 ;;   - "#min": element wise min function.
 ;;   - "#=": copy if equal.
 ;;   - "#!=": copy if not equal.
+;;
 ;; - p_l1: first list.
 ;; - p_l2: second list.
 ;;
 ;; Notes:
+;;
 ;; - This function does not validate the dimensionality or boundaries of the 
 ;;   lists involved; the user or an additional shell function should take 
 ;;   care of that.
@@ -315,10 +343,13 @@
 ;; p_l1 and p_l2, multithreaded.
 ;;
 ;; Keywords:
+;;
 ;; - function, algebra, lists.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: operation described as a string:
+;;
 ;;   - "#+": sum.
 ;;   - "#-": substraction.
 ;;   - "#*": multiplication.
@@ -326,10 +357,12 @@
 ;;   - "#expt": (expt p_a1 p_a2).
 ;;   - "#max": max function.
 ;;   - "#min": min function.
+;;
 ;; - p_l1: first list.
 ;; - p_l2: second list.
 ;;
 ;; Notes:
+;;
 ;; - This function does not validate the dimensionality or boundaries of the 
 ;;   lists involved; the user or an additional shell function should take 
 ;;   care of that.
@@ -363,21 +396,27 @@
 ;; of list p_l1.
 ;;
 ;; Keywords:
+;;
 ;; - function, algebra, lists.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: list.
 ;; - p_n1: mutation rate, [0, 1].
 ;; - p_s1: type of distribution.
+;;
 ;;   - "#normal": normal.
 ;;   - "#exp": exponential.
 ;;   - "#uniform": uniform.
+;;
 ;; - p_u1: mean for mutation rate.
 ;; - p_v1: standard deviation for mutation rate.
 ;; - p_s2: type of distribution.
+;;
 ;;   - "#normal": normal.
 ;;   - "#exp": exponential.
 ;;   - "#uniform": uniform.
+;;
 ;; - p_u2: mean for element random value.
 ;; - p_v2: standard deviation for element random value.
 ;;
@@ -396,12 +435,16 @@
 ;; on a different line.
 ;;
 ;; Keywords:
+;;
 ;; - function, algebra, lists.
 ;;
 ;; Parameters:
+;;
 ;; - p_b1: boolean.
+;;
 ;;   - #t: shows element ordinals.
 ;;   - #f: does not show ordinals.
+;;
 ;; - p_l1: list.
 ;;
 (define (grsp-lal-dev p_b1 p_l1)
@@ -420,12 +463,16 @@
 ;; of list p_l1 vertically with titles from p_l2.
 ;;
 ;; Keywords:
+;;
 ;; - function, algebra, lists.
 ;;
 ;; Parameters:
+;;
 ;; - p_b1: boolean.
+;;
 ;;   - #t: shows element names.
 ;;   - #f: does not show names.
+;;
 ;; - p_l1: list.
 ;; - p_l2: list.
 ;;
@@ -452,9 +499,11 @@
 ;; parameters in relation to p_l1.
 ;;
 ;; Keywords:
+;;
 ;; - function, algebra, lists.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: list.
 ;; - p_ln1: lower n boundary (elem).
 ;; - p_hn1: higher n boundary (elem).
@@ -480,9 +529,11 @@
 ;; list p_l2.
 ;;
 ;; Keywords:
+;;
 ;; - function, algebra, lists.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: list.
 ;; - p_l2: list.
 ;; - p_n1: element number of p_l1 where to place the initial element of p_l2.
@@ -509,9 +560,11 @@
 ;;;; grsp-lal-is-nonnegative - Returns #t if p_l1 contains only values >= 0.
 ;;
 ;; Keywords:
+;;
 ;; - function, algebra, lists.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 (define (grsp-lal-is-nonnegative p_l1)
@@ -531,9 +584,11 @@
 ;;;; grsp-lal-is-positive - Returns #t if p_l1 contains only values > 0.
 ;;
 ;; Keywords:
+;;
 ;; - function, algebra, lists.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 (define (grsp-lal-is-positive p_l1)
@@ -553,9 +608,11 @@
 ;;;; grsp-list-density - Returns the density value of list p_l1.
 ;;
 ;; Keywords:
+;;
 ;; - function, algebra, lists.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: numeric list.
 ;;
 (define (grsp-lal-density p_l1)
@@ -571,9 +628,11 @@
 ;;;; grsp-lal-total-element - Counts the number of ocurrences of p_n1 in p_l1.
 ;;
 ;; Keywords:
+;;
 ;; - function, algebra, lists.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: list.
 ;; - p_n1: element.
 ;;
@@ -589,9 +648,11 @@
 ;; type for value p_n1; #f otherwise.
 ;;
 ;; Keywords:
+;;
 ;; - function, algebra, lists.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: list.
 ;; - p_n1: element.
 ;;
@@ -607,12 +668,16 @@
 ;; order.
 ;;
 ;; Keywords:
+;;
 ;; - function, algebra, lists.
 ;;
 ;; Parameters
+;;
 ;; - p_s1: sort type.
+;;
 ;;   - "#asc": ascending.
 ;;   - "#des": descending.
+;;
 ;; - p_l1: matrix.
 ;;
 (define (grsp-lal-sort p_s1 p_l1)
@@ -626,12 +691,15 @@
 ;;;; grsp-lal-minmax - Finds the maximum and minimum values in p_l1.
 ;;
 ;; Keywords:
+;;
 ;; - function, algebra, lists.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: list.
 ;;
 ;; Output:
+;;
 ;; - A list containing the min and max values, respectively.
 ;;
 (define (grsp-lal-minmax p_l1)
@@ -648,10 +716,12 @@
 ;; returns its domain subset.
 ;;
 ;; Keywords:
+;;
 ;; - function, algebra, lists.
 ;;
 ;; Parameters:
-;; p_l1: list.
+;;
+;; - p_l1: list.
 ;;
 (define (grsp-lal-supp p_l1)
   (let ((res1 '()))
@@ -665,13 +735,16 @@
 ;; elements.
 ;;
 ;; Keywords:
+;;
 ;; - function, algebra, lists.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: list.
 ;; - p_l2: list.
 ;;
 ;; Output:
+;;
 ;; - Returns #t if both lists have the same number of elements; #f otherwise.
 ;;
 (define (grsp-lal-same-dims p_l1 p_l2)
@@ -687,9 +760,11 @@
 ;; #f otherwise.
 ;;
 ;; Keywords:
+;;
 ;; - function, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: list.
 ;;
 (define (grsp-lal-is-multiset p_l1)

@@ -25,10 +25,12 @@
 
 
 ;;;; General notes:
+;;
 ;; - Read sources for limitations on function parameters.
 ;; - Always take into account the odd behavior of numeric sequences before using.
 ;;
 ;; Sources:
+;;
 ;; - [1] En.wikipedia.org. 2021. Collatz conjecture - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Collatz_conjecture
 ;;   [Accessed 1 August 2021].
@@ -69,20 +71,25 @@
 ;; sequence that starts at p_n1.
 ;;
 ;; Keywords:
+;;
 ;; - numbers, sequences, collatz, ulam, kakutani, thwaites, hasse, syracuse,
 ;;   erdos.
 ;;
 ;; Parameters:
+;;
 ;; - p_n1: integer > 0.
 ;; - p_m1: iterations, integer > 0.
 ;;
 ;; Notes:
+;;
 ;; - See grsp2.grsp-hailstone-number.
 ;; - Stopping time is defined as the number of iterations required to reach the
 ;;   value 1 (one) for the first time.
 ;;
 ;; Output:
+;;
 ;; - A list with the following format:
+;;
 ;;   - Elem 0: p_n1.
 ;;   - Elem 1: p_m1.
 ;;   - Elem 2: stopping time. Will return NaN if the function does not reach
@@ -90,6 +97,7 @@
 ;;   - Elem 3: a list containing the actual elements of the sequence.
 ;;
 ;; Sources:
+;;
 ;; - [1][grsp2.34].
 ;;
 (define (grsp-seq-hailstorm p_n1 p_m1)
@@ -129,12 +137,16 @@
 ;;;; grsp-seq-geometric - Calculates a geometric convergent series.
 ;;
 ;; Keywords:
+;;
 ;; - numbers, sequences, geometric, convergent.
 ;;
 ;; Parameters:
+;;
 ;; - p_b1:
+
 ;;   - #t: calculated terms of the series will be returned.
 ;;   - #f: calculated terms of the series will not be returned.
+
 ;; - p_n1: number > 0.
 ;; - p_m1: iterations, integer > 0.
 ;; - p_r1: common ratio. Number with (abs p_r1) < 1.
@@ -143,7 +155,9 @@
 ;; - Will generally converge to (= s (/ p_n1 (- 1 p_r1)))
 ;;
 ;; Output:
+;;
 ;; - A list with the following format:
+;;
 ;;   - Elem 0: p_n1.
 ;;   - Elem 1: p_m1.
 ;;   - Elem 2: Convergence goal.
@@ -198,22 +212,30 @@
 ;;;; grsp-seq-hyperarmonic - Calculates a hyperarmonic series.
 ;;
 ;; Keywords:
+;;
 ;; - numbers, sequences, harmonic, hyper, convergent.
 ;;
 ;; Parameters:
+;;
 ;; - p_b1:
+;;
 ;;   - #t: calculated terms of the series will be returned.
 ;;   - #f: calculated terms of the series will not be returned.
+;;
 ;; - p_s1: see grsp4.grsp-complex-riemann-zeta.
+;;
 ;;   - "#e": Euler.
 ;;   - "#w": Weierstrass.
+;;
 ;; - p_n1: number > 0 (generally 1).
 ;; - p_m1: iterations, integer > 0.
 ;; - p_m2: iterations, analytic. See grsp4.grsp-complex-riemann-zeta.
 ;; - p_p1: p factor. If p_p1 > 0, the series converges to Z(p_p1).
 ;;
 ;; Output:
+;;
 ;; - A list with the following format:
+;;
 ;;   - Elem 0: p_n1.
 ;;   - Elem 1: p_m1.
 ;;   - Elem 2: Convergence goal.
@@ -223,6 +245,7 @@
 ;;     series summation (shown only if p_b1 is passed #t).
 ;;
 ;; Sources:
+;;
 ;; - [2][5][grsp4.12].
 ;;    
 (define (grsp-seq-hyperarmonic p_b1 p_s1 p_n1 p_m1 p_m2 p_p1)
@@ -271,16 +294,22 @@
 ;; amount to the value of the Euler number.
 ;;
 ;; Keywords:
+;;
 ;; - numbers, sequences, euler.
 ;;
 ;; Parameters:
+;;
 ;; - p_b1:
+;;
 ;;   - #t: calculated terms of the series will be returned.
 ;;   - #f: calculated terms of the series will not be returned.
+;;
 ;; - p_m1: iterations > 0.
 ;;
 ;; Output:
+;;
 ;; - A list with the following format:
+;;
 ;;   - Elem 0: p_m1.
 ;;   - Elem 1: actual result of the summation (e).
 ;;   - Elem 2: list of series elements calculated to p_m1 iterations of the
@@ -314,22 +343,29 @@
 ;; developed by Bayley, Bourwen and Plouffe in 1997.
 ;;
 ;; Keywords:
+;;
 ;; - numbers, sequences, pi.
 ;;
 ;; Parameters:
+;;
 ;; - p_b1:
+;;
 ;;   - #t: calculated terms of the series will be returned.
 ;;   - #f: calculated terms of the series will not be returned.
+;;
 ;; - p_m1: iterations > 0.
 ;;
 ;; Output:
+;;
 ;; - A list with the following format:
+;;
 ;;   - Elem 0: p_m1.
 ;;   - Elem 1: actual result of the summation (Pi).
 ;;   - Elem 2: list of series elements calculated to p_m1 iterations of the
 ;;     series summation (shown only if p_b1 is passed #t).
 ;;
 ;; Sources:
+;;
 ;; - [grsp7.1]
 ;;
 (define (grsp-seq-pi p_b1 p_m1)
@@ -357,4 +393,5 @@
 	   (set! res4 (list p_m1 res3 res1)))
 	  (else (set! res4 (list p_m1 res3))))
     
-    res4))  
+    res4))
+

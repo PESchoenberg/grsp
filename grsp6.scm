@@ -25,9 +25,11 @@
 
 
 ;;;; General notes:
+;;
 ;; - Read sources for limitations on function parameters.
 ;;
 ;; Sources:
+;;
 ;; - [1] En.wikipedia.org. 2020. Standard Gravitational Parameter. [online]
 ;;   Available at:
 ;;   https://en.wikipedia.org/wiki/Standard_gravitational_parameter
@@ -130,9 +132,11 @@
 ;; (norm of a time-like vector).
 ;;
 ;; Keywords:
+;;
 ;; - relativity, metric.
 ;;
 ;; Parameters:
+;;
 ;; - p_t1: t1.
 ;; - p_t2: t2.
 ;; - p_x1: x1.
@@ -143,6 +147,7 @@
 ;; - p_z2: z2.
 ;;
 ;; Sources:
+;;
 ;; - [2].
 ;;
 (define (grsp-ds p_t1 p_t2 p_x1 p_x2 p_y1 p_y2 p_z1 p_z2)
@@ -187,9 +192,11 @@
 ;;;; grsp-ds-mth - Multithreaded variant of grsp-ds.
 ;;
 ;; Keywords:
+;;
 ;; - relativity, metric.
 ;;
 ;; Parameters:
+;;
 ;; - p_t1: t1.
 ;; - p_t2: t2.
 ;; - p_x1: x1.
@@ -200,6 +207,7 @@
 ;; - p_z2: z2.
 ;;
 ;; Sources:
+;;
 ;; - [2].
 ;;
 (define (grsp-ds-mth p_t1 p_t2 p_x1 p_x2 p_y1 p_y2 p_z1 p_z2)
@@ -233,12 +241,15 @@
 ;;;; grsp-lorentz-factor - Calculates gamma (Lorentz factor).
 ;;
 ;; Keywords:
+;;
 ;; - relativity, dilation.
 ;;
-;; Parameters: 
+;; Parameters:
+;; 
 ;; - p_v1: relative velocity between inertial frames (should be p_v1 < c).
 ;;
 ;; Sources:
+;;
 ;; - [3][4].
 ;;
 (define (grsp-lorentz-factor p_v1)
@@ -253,13 +264,16 @@
 ;; same inertial frame.
 ;;
 ;; Keywords:
+;;
 ;; - relativity, dilation.
 ;;
-;; Parameters: 
+;; Parameters:
+;; 
 ;; - p_v1: relative velocity.
 ;; - p_t1: proper time.
 ;;
 ;; Sources:
+;;
 ;; - [4].
 ;;
 (define (grsp-time-dilation p_v1 p_t1)
@@ -274,13 +288,16 @@
 ;; conditions.
 ;;
 ;; Keywords:
+;;
 ;; - relativity, contraction.
 ;;
-;; Parameters: 
+;; Parameters:
+;; 
 ;; - p_v1: relative velocity.
 ;; - p_d1: proper length.
 ;;
 ;; Sources:
+;;
 ;; - [4].
 ;;
 (define (grsp-length-contraction p_v1 p_d1)
@@ -294,9 +311,11 @@
 ;;;; grsp-lorentz-transf-x - Lorentz transformations (x).
 ;;
 ;; Keywords:
+;;
 ;; - relativity, transform.
 ;;
-;; Parameters: 
+;; Parameters:
+;; 
 ;; - p_v1: relative velocity.
 ;; - p_t1: proper time.
 ;; - p_x1: x rel. coord.
@@ -304,6 +323,7 @@
 ;; - p_z1: z rel. coord.
 ;;
 ;; Sources:
+;;
 ;; - [4].
 ;;
 (define (grsp-lorentz-transf-x p_v1 p_t1 p_x1 p_y1 p_z1)
@@ -329,9 +349,11 @@
 ;;;; grsp-lorentz-transf-x-mth - Multithreaded variant of grsp-lorentz-transf.
 ;;
 ;; Keywords:
+;;
 ;; - relativity, transform.
 ;;
-;; Parameters: 
+;; Parameters:
+;; 
 ;; - p_v1: relative velocity.
 ;; - p_t1: proper time.
 ;; - p_x1: x rel. coord.
@@ -339,6 +361,7 @@
 ;; - p_z1: z rel. coord.
 ;;
 ;; Sources:
+;;
 ;; - [4].
 ;;
 (define (grsp-lorentz-transf-x-mth p_v1 p_t1 p_x1 p_y1 p_z1)
@@ -364,12 +387,15 @@
 ;;;; grsp-beta - Calculates the beta term of the Lortentz factor.
 ;;
 ;; Keywords:
+;;
 ;; - relativity, frames, special.
 ;;
 ;; Parameters:
+;;
 ;; - p_v1: relative velocity between two inertial frames.
 ;;
 ;; Sources:
+;;
 ;; - [4].
 ;;
 (define (grsp-beta p_v1)
@@ -383,9 +409,11 @@
 ;;;; grsp-velocity - Calculates velocity, one axis.
 ;;
 ;; Keywords:
+;;
 ;; - dynamics, speed, velocity.
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: coord 1.
 ;; - p_x2: coord 2.
 ;; - p_t1: time 1.
@@ -402,9 +430,11 @@
 ;;;; grsp-acceleration - Calculates acceleration, one axis.
 ;;
 ;; Keywords:
+;;
 ;; - dynamics, acceleration, increment.
 ;;
 ;; Parameters:
+;;
 ;; - p_v1: velocity 1.
 ;; - p_v2: velocity 2.
 ;; - p_t1: time 1.
@@ -421,9 +451,11 @@
 ;;;; grsp-frequency-observed - Calculates the observed frequency.
 ;;
 ;; Keywords:
+;;
 ;; - waves, observable, frequency.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: see grsp-frequency-osrel.
 ;; - p_v1: see grsp-frequency-osrel.
 ;; - p_v2: see grsp-frequency-osrel.
@@ -431,6 +463,7 @@
 ;; - p_f1: emitted frequency
 ;;
 ;; Sources:
+;;
 ;; - [5].
 ;;
 (define (grsp-frequency-observed p_s1 p_v1 p_v2 p_v3 p_f1)
@@ -444,9 +477,11 @@
 ;;;; grsp-frequency-emitted - Calculates the emitted frequency.
 ;;
 ;; Keywords:
+;;
 ;; - waves, frequency.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: see grsp-frequency-osrel.
 ;; - p_v1: see grsp-frequency-osrel.
 ;; - p_v2: see grsp-frequency-osrel.
@@ -454,6 +489,7 @@
 ;; - p_f2: observed frequency.
 ;;
 ;; Sources:
+;;
 ;; - [5].
 ;;
 (define (grsp-frequency-emitted p_s1 p_v1 p_v2 p_v3 p_f2)
@@ -467,10 +503,13 @@
 ;;;; grsp-frequency-osrel - Observer - source relationship.
 ;;
 ;; Keywords:
+;;
 ;; - waves, sources.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string, relative movement between the source and the receiver.
+;;
 ;;   - "#++": p_v1 is added to p_v2 (receiver moves toward source), and p_v1 is
 ;;     added to p_v2 (source moves away from the receiver).
 ;;   - "$+-": p_v1 is added to p_v2 (receiver moves toward source), and p_v3 is
@@ -480,11 +519,13 @@
 ;;   - "$--": p_v2 is substracted from p_v1 (receiver moves away from source),
 ;;     and p_v3 is substracted from p_v1 (source is moving towards the
 ;;     receiver).
+;;
 ;; - p_v1: propagation speed in the medium.
 ;; - p_v2: speed of the receiver.
 ;; - p_v3: speed of the source.
 ;;
 ;; Sources:
+;;
 ;; - [5].
 ;;
 (define (grsp-frequency-osrel p_s1 p_v1 p_v2 p_v3)
@@ -509,16 +550,21 @@
 ;;;; grsp-redshift - Calculates redshift based on wavelength or frequency.
 ;;
 ;; Keywords:
+;;
 ;; - waves, wave, shift.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string. Defines if wl or fr is used.
+;;
 ;;   - "#wl": for wavelength.
 ;;   - "#fr": for frequency.
+;;
 ;; - p_n1: value that corresponds to the emitter (wl or fr).
 ;; - p_n2: value that corresponds to the observer (wl or fr).
 ;;
 ;; Sources:
+;;
 ;; - [6].
 ;;
 (define (grsp-redshift p_s1 p_n1 p_n2)
@@ -535,9 +581,11 @@
 ;;;; grsp-velocity-un - Calculates velocity as distance / time.
 ;;
 ;; Keywords:
+;;
 ;; - dynamics, distance, time.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: distance.
 ;; - p_t1: time.
 ;;
@@ -552,9 +600,11 @@
 ;;;; grsp-velocity-ac - Calculates velocity as acceleration * time.
 ;;
 ;; Keywords:
+;;
 ;; - dynamics, accelerate, time, speed, velocity.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: acceleration.
 ;; - p_t1: time.
 ;;
@@ -569,9 +619,11 @@
 ;;;; grsp-distance-parallax - Measures the distance (PC) to a star.
 ;;
 ;; Keywords:
+;;
 ;; - astro, celestial, body, measurement, distance.
 ;;
 ;; Parameters:
+;;
 ;; - p_g1: parallax (arcseconds).
 ;;
 (define (grsp-distance-parallax p_g1)
@@ -585,9 +637,11 @@
 ;;;; grsp-particle-mass - Energy of a particle.
 ;;
 ;; Keywords:
+;;
 ;; - relativity, particles, energy.
 ;;
 ;; Parameters:
+;;
 ;; - p_v1: speed of the particle.
 ;; - p_m1: rest mass of the particle.
 ;;
@@ -604,12 +658,15 @@
 ;; of mass m1.
 ;;
 ;; Keywords:
+;;
 ;; - relativity, astro, mass.
 ;;
 ;; Parameters:
+;;
 ;; - p_m1: mass of the body (kg).
 ;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sgp-mass p_m1)
@@ -624,13 +681,16 @@
 ;; at relative distance p_a1 and orbital period p_t1.
 ;;
 ;; Keywords:
+;;
 ;; - relativity, astro.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: relative distance between the main and secodary bodies.
 ;; - p_t1: orbital period of secondary arond main body.
 ;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sgp-ellip p_a1 p_t1)
@@ -644,12 +704,15 @@
 ;;;; grsp-effective-exhaust-velocity - Calculates eev.
 ;;
 ;; Keywords:
+;;
 ;; - dynamics, astro, impulse, acceleration.
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: specific impulse in dimension of time.
 ;;
 ;; Sources:
+;;
 ;; - [8][15].
 ;;
 (define (grsp-effective-exhaust-velocity p_x1)
@@ -663,14 +726,17 @@
 ;;;; grsp-ideal-rocket - Ideal rocket equation.
 ;;
 ;; Keywords:
+;;
 ;; - dynamics, astro, ideal, model.
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: specific impulse.
 ;; - p_m1: initial mass.
 ;; - p_m2: final mass.
 ;;
 ;; Sources:
+;;
 ;; - [8][9].
 ;;
 (define (grsp-ideal-rocket p_x1 p_m1 p_m2)
@@ -685,12 +751,15 @@
 ;;;; grsp-grav-earth-lat - Gravity on Earth as a function of latitude.
 ;;
 ;; Keywords:
+;;
 ;; - astro, gravity, planet, earth. latitude.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: latitude [-90, 90].
 ;;
 ;; Sources:
+;;
 ;; - [9].
 ;;
 (define (grsp-grav-earth-lat p_l1)
@@ -708,9 +777,11 @@
 ;;;; grsp-grav-earth-alt - Gravity on Earth as a function of altitude.
 ;;
 ;; Keywords:
+;;
 ;; - astro, planet, earth. latitude.
 ;;
 ;; Parameters:
+;;
 ;; - p_z1: altitude.
 ;;
 (define (grsp-grav-earth-alt p_z1)
@@ -727,9 +798,11 @@
 ;;;; grsp-grav-radius - Gravity on a body of radius p_pr1 and mass p_m1.
 ;;
 ;; Keywords:
+;;
 ;; - astro, radius, diameter.
 ;;
 ;; Parameters:
+;;
 ;; - p_r1: radius.
 ;; - p_m1: mass within p_r1.
 ;;
@@ -745,9 +818,11 @@
 ;;;; grsp-grav-ifor - International gravity formula.
 ;;
 ;; Keywords:
+;;
 ;; - astro, gravity.
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: latitude.
 ;; - p_x2: param A.
 ;; - p_x3: param B.
@@ -766,15 +841,18 @@
 ;;;; grsp-grav-iforh - International gravity formula + height.
 ;;
 ;; Keywords:
+;;
 ;; - astro, gravity.
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: latitude.
 ;; - p_x2: param A.
 ;; - p_x3: param B.
 ;; - p_y1: altitude.
 ;;
 ;; Sources:
+;;
 ;; - [15].
 ;;
 (define (grsp-grav-iforh p_x1 p_x2 p_x3 p_y1)
@@ -789,12 +867,15 @@
 ;;;; grsp-grav-somigliana - Somigliana equation.
 ;;
 ;; Keywords:
+;;
 ;; - astro.
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: latitude.
 ;;
 ;; Sources:
+;;
 ;; - [14].
 ;;
 (define (grsp-grav-somigliana p_x1)
@@ -821,12 +902,15 @@
 ;;;; grsp-grav-somigliana-mth - Multithreaded variant of grsp-grav-somigliana.
 ;;
 ;; Keywords:
+;;
 ;; - astro.
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: latitude.
 ;;
 ;; Sources:
+;;
 ;; - [14].
 ;;
 (define (grsp-grav-somigliana-mth p_x1)

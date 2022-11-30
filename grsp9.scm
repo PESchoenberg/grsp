@@ -25,9 +25,11 @@
 
 
 ;;;; General notes:
+;;
 ;; - Read sources for limitations on function parameters.
 ;;
 ;; Sources:
+;;
 ;; - [1] En.wikipedia.org. 2021. Test functions for optimization. [online]
 ;;   Available at:
 ;;   https://en.wikipedia.org/wiki/Test_functions_for_optimization
