@@ -25,6 +25,7 @@
 
 
 ;;;; General notes:
+;;
 ;; - Read sources for limitations on function parameters.
 ;;
 ;; - A grsp neural network is essentially a list of matrices that constitute a
@@ -33,15 +34,20 @@
 ;;
 ;;   - Elem 0: nodes. Matrix. Each row of this matrix contains data representing
 ;;     the properties and processes of a specific node of a neural network.
+;;
 ;;     - Col 0: id.
 ;;     - Col 1: status.
+;;
 ;;       - 0: dead.
 ;;       - 1: inactive.
 ;;       - 2: active.
+;;
 ;;     - Col 2: type.
+;;
 ;;       - 0: input.
 ;;       - 1: neuron.
 ;;       - 2: output.
+;;
 ;;     - Col 3: layer.
 ;;     - Col 4: layer pos.
 ;;     - Col 5: bias.
@@ -53,13 +59,18 @@
 ;;
 ;;   - Elem 1: conns. Matrix. Each row contains data representing the properties
 ;;     and processes of a specific connection between nodes.
+;;
 ;;     - Col 0: id.
 ;;     - Col 1: status.
+;;
 ;;       - 0: dead.
 ;;       - 1: inactive.
 ;;       - 2: active.
+;;
 ;;     - Col 2: type.
+;;
 ;;       - 1: normal.
+;;
 ;;     - Col 3: from.
 ;;     - Col 4: to.
 ;;     - Col 5: value.
@@ -70,6 +81,7 @@
 ;;
 ;;   - Elem 2: count. Matrix. Each element of this table is a counter related
 ;;     to a specific ann.
+;;
 ;;     - Col 0: nodes id counter.
 ;;     - Col 1: conns id counter.
 ;;     - Col 2: iteration counter.
@@ -81,14 +93,17 @@
 ;;     neural network is used. It is also possible to pass data interactively to
 ;;     the network that does not go directly to the input nodes but modifies the
 ;;     behavior of existing nodes.
+;;
 ;;     - Col 0: id of the receptive node.
 ;;     - Col 1: number that corresponds to the column in the nodes matrix in
 ;;       which for the row whose col 0 is equal to the id value passed in col 0
 ;;       of the idata matrix the input value will be stored.
 ;;     - Col 2: number.
 ;;     - Col 3: type, the kind of element that will receive this data.
+;;
 ;;       - 0: for node.
 ;;       - 1: for connection.
+;;
 ;;     - Col 4: control.
 ;;       - 0: default.
 ;;       - 1: iteration end.
@@ -97,63 +112,80 @@
 ;;   - Elem 4: odata. Matrix. Contains am instance of data originated in the
 ;;     output nodes of a neural network. I.e. this matrix contains the
 ;;     results of a network iteration.
+;;
 ;;     - Col 0: id of each output node.
 ;;     - Col 1: layer.
 ;;     - Col 2: layer pos.
 ;;     - Col 3: number (result).
 ;;     - Col 4: control.
+;;
 ;;       - 0: default.
 ;;       - 1: iteration end.
 ;;       - 2: delete.
 ;;
 ;;   - Elem 5: specs. Matrix. Each row contains specifications for a neural
 ;;     network layer. This is a recipe for ann construction.
+;;
 ;;     - Col 0: layer number.
 ;;     - Col 1: number of nodes for present layer.
 ;;     - Col 2: type of node.
+;;
 ;;       - 0: input.
 ;;       - 1: neuron.
 ;;       - 2: output.
+;;
 ;;     - Col 3: activation function.
 ;;
 ;;   - Elem 6: odtid. Matrix. Establishes a correlation between the data
 ;;     found on each iteration n on the output nodes of a neural network and
 ;;     the input data that will be found on the input nodes during iteration
 ;;     (+ n 1), in the case that the network works by means of a feedback loop.
+;;
 ;;     - Col 0: input idata layer pos (pos input).
 ;;     - Col 1: output odata layer pos (pos output).
 ;;
 ;;   - Elem 7: datai.
+;;
 ;;     - Col 0: id of the receptive node.
 ;;     - Col 1: number that corresponds to the column in the nodes matrix in
 ;;       which for the row whose col 0 is equal to the id value passed in col 0
 ;;       of the idata matrix the input value will be stored.
 ;;     - Col 2: number.
 ;;     - Col 3: type, the kind of element that will receive this data.
+;;
 ;;       - 0: for node.
 ;;       - 1: for connection.
+;;
 ;;     - Col 4: record control.
+;;
 ;;       - 0: default.
 ;;       - 1: iteration end.
+;;
 ;;     - Col 5: classifier.
+;;
 ;;       - 0: regular data.
 ;;       - 1: training data.
 ;;       - 2: control data.
 ;;
 ;;   - Elem 8: datao.
+;;
 ;;     - Col 0: id of each output node.
 ;;     - Col 1: layer.
 ;;     - Col 2: layer pos.
 ;;     - Col 3: number (result).
 ;;     - Col 4: record control.
+;;
 ;;       - 0: default.
 ;;       - 1: iteration end.
+;;
 ;;     - Col 5: classifier.
+;;
 ;;       - 0: regular data.
 ;;       - 1: training data.
 ;;       - 2: control data.
 ;;
 ;; Sources:
+;;
 ;; - [1] En.wikipedia.org. 2021. Artificial Neural Network. [online] Available
 ;;   at: https://en.wikipedia.org/wiki/Artificial_neural_network [Accessed 25
 ;;   January 2021].
@@ -276,15 +308,20 @@
 ;; data structure with basic, empty matrices.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_b1:
+;;
 ;;   - #t: to return lists with one element with zeros as values.
 ;;   - #f: for empty lists.
 ;;
 ;; Output:
+;;
 ;; - A list with seven elements, in this order.
+;;
 ;;   - nodes: a matrix for the definition of nodes.
 ;;   - conns: a matrix for the definition of connections between those
 ;;     nodes.
@@ -295,6 +332,7 @@
 ;;     of the ann.
 ;;   - specs: a matrix that contains the structural specifications of an ann.
 ;;   - odtid: a matrix that provides feedback structure from odata to idata.
+;;
 ;; - For more details on thse matrices, see "Format of matrices used in grsp8"
 ;;   above.
 ;;
@@ -334,15 +372,19 @@
 ;; layer.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_b1:
+;;
 ;;   - #t if you want to return only the base ann list composed of matrices
 ;;     nodes, conns, count, idata, odata and empty specs.
 ;;   - #f if you want to return also the associated matrix created during the
 ;;     process as the sixth of the ann list, meaning that this option returns
 ;;     full matrices:
+;;
 ;;     - nodes.
 ;;     - conns.
 ;;     - count.
@@ -351,6 +393,7 @@
 ;;     - specs.
 ;;     - datai.
 ;;     - datao.
+;;
 ;; - p_n2: number of mutation iterations desired.
 ;; - p_nl: number of nodes in layer 0.
 ;; - p_nm: number of intermediate layers.
@@ -359,6 +402,7 @@
 ;; - p_nh: number of nodes in final layer.
 ;;
 ;; Notes:
+;;
 ;; - See also grsp-ann-net-specs-ffn, grsp-ann-net-create-ffn and
 ;;   grsp-ann-net-mutate on how these functions operate.
 ;; - Mean and standard deviation for grsp-ann-net-mutate are 0.0 and 0.15
@@ -371,10 +415,13 @@
 ;;   weights, etc.
 ;;
 ;; Examples:
+;;
 ;; - example3.scm.
 ;;
 ;; Output:
+;;
 ;; - A list with elements combining the results provided by:
+;;
 ;;   - grsp-ann-net-specs-ffn.
 ;;   - grsp-ann-net-create-ffn.
 ;;   - grsp-ann-net-mutate.
@@ -433,15 +480,20 @@
 ;;;; grsp-ann-net-reconf - Reconfigure a neural network.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: reconfiguration method.
+;;
 ;;   - "#no": none.
 ;;   - "#bp": backpropagation.
+;;
 ;; - p_l1: ann (list).
 ;;
 ;; Output:
+;;
 ;; - p_l1 updated.
 ;;
 (define (grsp-ann-net-reconf p_s1 p_l1)
@@ -467,22 +519,28 @@
 ;;;; grsp-ann-net-miter-omth - Iterate evaluations of the network p_n1 times.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_b3: #t for verbosity.
 ;; - p_b1:
+;;
 ;;   - #t: use mutithreading.
 ;;   - #f: do not use multithreading.
+;;
 ;; - p_s1: reconfiguration method. See grsp-ann-net-reconf for details.
 ;; - p_l1: ann (list).
 ;; - p_n1: iterations.
 ;; - p_n2: mutations desired after each iteration.
 ;;
 ;; Examples:
+;;
 ;; - example3.scm.
 ;;
 ;; Output:
+;;
 ;; - p_l1 updated.
 ;;
 (define (grsp-ann-net-miter-omth p_b3 p_b1 p_s1 p_l1 p_n1 p_n2)
@@ -532,9 +590,11 @@
 ;; minimum possible size for efficiency reasons.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: nodes.
 ;; - p_a2: conns.
 ;; - p_a3: countx.
@@ -546,6 +606,7 @@
 ;; - p_a9: datao.
 ;;
 ;; Notes:
+;;
 ;; - In this case, matrices must be passed as separate parameters, not as a list
 ;;   of matrices like in most grsp8 functions.
 ;; - See "Format of matrices used in grsp8" on top of this file for details
@@ -569,21 +630,26 @@
 ;;;; grsp-ann-counter-upd - Updates the ann id and iteration counters.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_a3: count matrix.
 ;; - p_n1: matrix element to increment.
+;;
 ;;   - 0: updates nodes counter.
 ;;   - 1: updates conns counter.
 ;;   - 2: updates iteration counter.
 ;;   - 3: updates layer counter.
 ;;
 ;; Notes:
+;;
 ;; - See "Format of matrices used in grsp8" on top of this file for details
 ;;   on each matrix used.
 ;;
 ;; Output:
+;;
 ;; - Returns a new id number, either for nodes, conns, iteration or layer
 ;;   number.
 ;;
@@ -600,17 +666,21 @@
 ;; and updates the corresponding matrix element.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: nodes.
 ;; - p_a2: conns.
 ;; - p_a3: count.
 ;; - p_n1:
+;;
 ;;   - 0: new id for nodes.
 ;;   - 1: new id for conns.
 ;;
 ;; Notes:
+;;
 ;; - See "Format of matrices used in grsp8" on top of this file for details
 ;;   on each matrix used.
 ;;
@@ -630,18 +700,23 @@
 ;; parameter list p_l2.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: nodes matrix.
 ;; - p_a2: conns matrix.
 ;; - p_a3: count matrix.
 ;; - p_n1:
+;;
 ;;   - 0: for nodes.
 ;;   - 1: for conns.
+;;
 ;; - p_l2: list containing the values for the matrix row.
 ;;
 ;; Notes:
+;;
 ;; - See "Format of matrices used in grsp8" on top of this file for details
 ;;   on each matrix used.
 ;;
@@ -680,18 +755,22 @@
 ;; ann p_l1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: list, ann.
 ;; - p_l2: list, node definition.
 ;; - p_l3: list of connections for p_l1.
 ;;
 ;; Notes:
+;;
 ;; - See "Format of matrices used in grsp8" on top of this file for details
 ;;   on each matrix used.
 ;;
 ;; Output:
+;;
 ;; - Updated ann in list format.
 ;;
 (define (grsp-ann-nodes-create p_l1 p_l2 p_l3)
@@ -764,13 +843,16 @@
 ;;;; grsp-ann2dbc - Saves a neural network to a csv database.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_d1: database name.
 ;; - p_l1: ann.
 ;;
 ;; Output:
+;;
 ;; - The ann will be saved to csv files stored in a folder called p_d1.
 ;;
 (define (grsp-ann2dbc p_d1 p_l1)
@@ -814,13 +896,16 @@
 ;;;; grsp-dbc2ann - Retrieves an ann from a csv database.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_d1: database name.
 ;; - p_l1: ann.
 ;;
 ;; Output:
+;;
 ;; - The csv files from folder p_d1 will be extracted into a list.
 ;;
 (define (grsp-dbc2ann p_d1)
@@ -855,17 +940,21 @@
 ;; matrix should contain data for the creation of one layer of the ann.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: specs matrix:
 ;;
 ;; Notes:
+;;
 ;; - See "Format of matrices used in grsp8" on top of this file for details
 ;;   on each matrix used.
 ;; - See also grsp-ann-net-specs-ffn.
 ;;
 ;; Output:
+;;
 ;; - ann with its component matrices.
 ;;
 (define (grsp-ann-net-create-ffn p_a1)
@@ -1107,9 +1196,11 @@
 ;; create a forward feed neural network.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_nl: number of nodes in layer 0.
 ;; - p_nm: number of intermediate layers.
 ;; - p_nn: number of nodes in intermediate layers.
@@ -1117,11 +1208,13 @@
 ;; - p_nh: number of nodes in final layer.
 ;;
 ;; Notes:
+;;
 ;; - See "Format of matrices used in grsp8" on top of this file for details
 ;;   on each matrix used.
 ;; - See also grsp-ann-net-create-ffn.
 ;;
 ;; Output:
+;;
 ;; - specs matrix.
 ;;
 (define (grsp-ann-net-specs-ffn p_nl p_nm p_nn p_af p_nh)
@@ -1167,31 +1260,41 @@
 ;;;; grsp-ann-net-mutate - Mutates and randomizes ann p_l1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_l2: ann.
 ;; - p_n1: mutation rate, [0, 1].
 ;; - p_s1: type of distribution.
+;;
 ;;   - "#normal": normal.
 ;;   - "#exp": exponential.
 ;;   - "#uniform": uniform.
+;;
 ;; - p_u1: mean for mutation rate.
 ;; - p_v1: standard deviation for mutation rate.
 ;; - p_s2: type of distribution.
+;;
 ;;   - "#normal": normal.
 ;;   - "#exp": exponential.
 ;;   - "#uniform": uniform.
+;;
 ;; - p_u2: mean for element random value.
 ;; - p_v2: standard deviation for element random value.
 ;; - p_l1: list of elements (cols) of nodes to mutate. Usually values should be:
+;;
 ;;   - 5: bias.
 ;;   - 9: weight.
+;;
 ;; - p_l3: list of elements (cols) of conns to mutate. Usually values should be:
+;;
 ;;   - 5: value.
 ;;   - 7: weight.
 ;;
 ;; Notes:
+;;
 ;; - See grsp-matrix-col-lmutation.
 ;; - You can mutate any element that corresponds to the ann, passed via 
 ;;   parameters p_l1 and p_l3 but be careful, since modifying random elements
@@ -1200,6 +1303,7 @@
 ;;   on each matrix used.
 ;;
 ;; Sources:
+;;
 ;; - [16].
 ;;
 (define (grsp-ann-net-mutate p_l2 p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 p_l1 p_l3)
@@ -1264,31 +1368,41 @@
 ;; Mutate and randomize ann p_l1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_l2: ann.
 ;; - p_n1: mutation rate, [0, 1].
 ;; - p_s1: type of distribution.
+;;
 ;;   - "#normal": normal.
 ;;   - "#exp": exponential.
 ;;   - "#uniform": uniform.
+;;
 ;; - p_u1: mean for mutation rate.
 ;; - p_v1: standard deviation for mutation rate.
 ;; - p_s2: type of distribution.
+;;
 ;;   - "#normal": normal.
 ;;   - "#exp": exponential.
 ;;   - "#uniform": uniform.
+;;
 ;; - p_u2: mean for element random value.
 ;; - p_v2: standard deviation for element random value.
 ;; - p_l1: list of elements (cols) of nodes to mutate. Usually values should be:
+;;
 ;;   - 5: bias.
 ;;   - 9: weight.
+;;
 ;; - p_l3: list of elements (cols) of conns to mutate. Usually values should be:
+;;
 ;;   - 5: value.
 ;;   - 7: weight.
 ;;
 ;; Notes:
+;;
 ;; - See grsp-matrix-col-lmutation.
 ;; - You can mutate any element of a neural network passed via parameters p_l1
 ;;   and p_l3 but be careful, since modifying randomly elements other than
@@ -1299,6 +1413,7 @@
 ;;   on each matrix used.
 ;;
 ;; Sources:
+;;
 ;; - [16].
 ;;
 (define (grsp-ann-net-mutate-mth p_l2 p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 p_l1 p_l3)
@@ -1360,12 +1475,15 @@
 ;; equal to zero.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: list, ann.
 ;;
 ;; Notes:
+;;
 ;; - This function is agnostic regarding connections and how they depend from
 ;;   nodes, meaning that in ordenr not to leave orphaned connectins once
 ;;   dead nodes have been deleted, the status of the dependent nodes should
@@ -1410,9 +1528,11 @@
 ;; p_id of table p_a1 (nodes or conns).
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix (nodes or conns).
 ;; - p_id: id (col 0).
 ;; - p_j2: column.
@@ -1432,12 +1552,16 @@
 ;; aacording to p_s1 in p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: type of connection:
+;;
 ;;   - "#fr": those going out of node p_id.
 ;;   - "#to": those reaching node p_id.
+;;
 ;; - P_a1: matrix (conns).
 ;; - p_id: node id.
 ;;
@@ -1458,9 +1582,11 @@
 ;; exports the result to the output connections.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_b3: #t for verbosity.
 ;; - p_id: node id.
 ;; - p_a1: matrix (nodes).
@@ -1604,10 +1730,13 @@
 ;;;; grsp-ann-actifun - Selects function p_n1 passing parameter p_n2.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_n1: activation function [0,17].
+;;
 ;;   - 0: identity.
 ;;   - 1: binary step.
 ;;   - 2: sigmoid.
@@ -1626,6 +1755,7 @@
 ;;   - 15: srelu.
 ;;   - 16: gaussian.
 ;;   - 17: sqrbf.
+;;
 ;; - p_l1: list of applicable input values. See grsp10.scm.
 ;;
 (define (grsp-ann-actifun p_n1 p_l1)
@@ -1682,19 +1812,23 @@
 ;; in ann p_l1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_b3: #t for verbosity.
 ;; - p_l1: ann.
 ;;
 ;; Notes:
+;;
 ;; - See "Format of matrices used in grsp8" on top of this file for details
 ;;   on each matrix used.
 ;; - Use grsp-ann-idata-update before this function to pass actual data to the
 ;;   ann.
 ;;
 ;; Output:
+;;
 ;; - Updated ann.
 ;;
 (define (grsp-ann-nodes-eval p_b3 p_l1)
@@ -1791,10 +1925,13 @@
 ;; provide input for nodes and conns.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: matrix type or element that will fill it initially.
+;;
 ;;   - "#I": Identity matrix.
 ;;   - "#AI": Anti Identity matrix (anti diagonal).
 ;;   - "#Q": Quincunx matrix.
@@ -1813,10 +1950,13 @@
 ;;   - "#-IJ": matrix containing the quotient of i and j values.
 ;;   - "#US": upper shift matrix.
 ;;   - "#LS": lower shift matrix.
+;;
 ;;   - "#rprnd": pseduo random values, normal distribution, sd = 0.15.
+;;
 ;; - p_m1: number of rows.
 ;;
 ;; Notes:
+;;
 ;; - See grsp-matrix-create fo detals on paramter p_s1. Some configurations 
 ;;   might require a symmetric matrix (3 x 3) to work.
 ;; - Column 0 will be set to zero. You should set the values  of this col
@@ -1827,6 +1967,7 @@
 ;;   on each matrix used.
 ;;
 ;; Output:
+;;
 ;; - idata.
 ;;
 (define (grsp-ann-idata-create p_s1 p_m1)
@@ -1845,15 +1986,20 @@
 ;; standard normal distribution.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_b1: select threading mode.
+;;
 ;;   - #t: multi-threaded.
 ;;   - #f: single-threaded.
+;;
 ;; - p_l2: ann.
 ;;
 ;; Sources:
+;;
 ;; - [16].
 ;;
 (define (grsp-ann-net-nmutate-omth p_b1 p_l2)
@@ -1899,11 +2045,15 @@
 ;; of ann p_l1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: ann.
+;;
 ;; Notes:
+;;
 ;; - While normally idata would be used to pass data to input nodes, the matrix
 ;;   could be used to pass other values to the nodes matrix.
 ;; - Use this function before calling grsp-ann-nodes-eval in order to provide
@@ -1912,6 +2062,7 @@
 ;;   on each matrix used.
 ;;
 ;; Output:
+;;
 ;; - Updated ann p_l1.
 ;;
 (define (grsp-ann-idata-update p_l1)
@@ -1983,16 +2134,20 @@
 ;;;; grsp-ann-odata-update - Provides a current output data matrix for ann p_l1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: ann.
 ;;
 ;; Notes:
+;;
 ;; - See "Format of matrices used in grsp8" on top of this file for details
 ;;   on each matrix used.
 ;;
 ;; Output:
+;;
 ;; - odata. An m x 4 matrix containing the data from the output nodes of the
 ;;   neural network.
 ;;
@@ -2016,19 +2171,23 @@
 ;; the input layer of the same or a different network.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_a5: odata.
 ;; - p_a6: odtid; data conversion table.
 ;;
 ;; Notes:
+;;
 ;; - See "Format of matrices used in grsp8" on top of this file for details
 ;;   on each matrix used.
 ;; - The function delivers an idata table based on the odata pand conversion
 ;;   table provided.
 ;;
 ;; Output:
+;;
 ;; - A matrix in idata table that can take the place of that table or be
 ;;   appended to it.
 ;;
@@ -2095,10 +2254,13 @@
 ;;;; grsp-ann-get-matrix - Get matrix p_s1 from ann p_l1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: selected:
+;;
 ;;   - "nodes".
 ;;   - "conns".
 ;;   - "count".
@@ -2108,12 +2270,15 @@
 ;;   - "odtid".
 ;;   - "datai".
 ;;   - "datao".
+;;
 ;; - p_l1: ann.
 ;;
 ;; Examples:
+;;
 ;; - example3.scm
 ;;
 ;; Output:
+;;
 ;; - One of the elements (matrix) of ann p_l1, as specified by p_s1.
 ;;
 (define (grsp-ann-get-matrix p_s1 p_l1)
@@ -2156,10 +2321,13 @@
 ;; p_s1 (for anns) with p_m1 rows.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: matrix to create:
+;;
 ;;   - "nodes".
 ;;   - "conns".
 ;;   - "count".
@@ -2169,6 +2337,7 @@
 ;;   - "odtid".
 ;;   - "datai".
 ;;   - "datao".
+;;
 ;; - p_m1: number of rows.
 ;;
 (define (grsp-ann-matrix-create p_s1 p_m1)
@@ -2203,9 +2372,11 @@
 ;; idata table that contains at least one row per input node.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: ann.
 ;;
 (define (grsp-ann-idata-atlorpn p_l1)
@@ -2292,9 +2463,11 @@
 ;; odata table that contains at least one row per output node.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: ann.
 ;;
 (define (grsp-ann-odata-atlorpn p_l1)
@@ -2384,9 +2557,11 @@
 ;; relationship.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: ann.
 ;;
 (define (grsp-ann-odtid-atlorpn p_l1)
@@ -2448,18 +2623,22 @@
 ;;;; grsp-m2datai - Casts the data of a grsp3 matrix as datai format. 
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: data matrix.
 ;; - p_id: idata.
 ;; - p_di: datai.
 ;; - p_n1: classifier.
 ;;
 ;; Notes: 
+;;
 ;; - See grsp-ann-datai-update.
 ;;
 ;; Output:
+;;
 ;; - Updated grsp8 ann datai table.
 ;;
 (define (grsp-m2datai p_a1 p_id p_di p_n1)
@@ -2544,20 +2723,25 @@
 ;;;; grsp-ann-data-update - Black box update of datai table using grsp-m2datai.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: data matrix.
 ;; - p_l1: ann.
 ;; - p_n1: classifier.
 ;;
 ;; Notes:
+;;
 ;; - See grsp-m2datai.
 ;;
 ;; Examples:
+;;
 ;; - example3.scm.
 ;;
 ;; Output:
+;;
 ;; - p_l1 with an updated datai table.
 ;;
 (define (grsp-ann-datai-update p_a1 p_l1 p_n1)
@@ -2606,9 +2790,11 @@
 ;; nodes of the ann and then deletes the group.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: ann.
 ;;
 (define (grsp-datai2ann p_l1)
@@ -2688,10 +2874,13 @@
 ;; behaviour of your ann.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: selected:
+;;
 ;;   - "nodes".
 ;;   - "conns".
 ;;   - "count".
@@ -2701,10 +2890,12 @@
 ;;   - "odtid".
 ;;   - "datai".
 ;;   - "datao".
+;;
 ;; - p_l1: ann.
 ;; - p_l2: ann.
 ;;
 ;; Notes:
+;;
 ;; - See grsp3.grsp-matrix-fdif, grsp-ann-fdif.
 ;;
 (define (grsp-ann-fdifm p_s1 p_l1 p_l2)
@@ -2721,19 +2912,24 @@
 ;; This shows changes on all ann components (diff map).
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: ann, first state.
 ;; - p_l2: ann, second state.
 ;;
 ;; Notes:
+;;
 ;; - See grsp3.grsp-matrix-fdifm, grsp-ann-fdifm.
 ;;
 ;; Examples:
+;;
 ;; - example3.scm.
 ;;
 ;; Output:
+;;
 ;; - A list containing difference maps (matrices) for each pair of ann matrices;
 ;;   this list is a representation of the differences between two networks.
 ;;
@@ -2768,10 +2964,13 @@
 ;;;; grsp-ann-updatem - Updates ann p_l1 one matrix at a time.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: selected:
+;;
 ;;   - "nodes".
 ;;   - "conns".
 ;;   - "count".
@@ -2781,6 +2980,7 @@
 ;;   - "odtid".
 ;;   - "datai".
 ;;   - "datao".
+;;
 ;; - p_a1 matrix to replace the one selected by p_s1.
 ;; - p_l1: ann.
 ;;
@@ -2837,13 +3037,16 @@
 ;;;; grsp-nodes2odata - Casts the data contained in output nodes to odata table.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: nodes table.
 ;; - p_a2: odata table.
 ;;
 ;; Output:
+;;
 ;; - odata table with output data.
 ;;
 (define (grsp-nodes2odata p_a1 p_a2)
@@ -2906,13 +3109,16 @@
 ;; results of all evaluations performed so far.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: odata table.
 ;; - p_a2: datao table.
 ;;
 ;; Output:
+;;
 ;; - datao table with additional rows.
 ;;
 (define (grsp-odata2datao p_a1 p_a2)
@@ -2970,17 +3176,22 @@
 ;; grsp-ann-net-size - Calculates the size of a neural network.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: ann.
 ;;
 ;; Output:
+;;
 ;; - List:
+;;
 ;;   - Elem 0: number of nodes.
 ;;   - Elem 1: number of connections (edges).
 ;;
 ;; Sources:
+;;
 ;; - [11][13].
 ;;
 (define (grsp-ann-net-size p_l1)
@@ -3013,22 +3224,28 @@
 ;; said node.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: ann.
 ;;
 ;; Output:
+;;
 ;; - Matrix:
+;;
 ;;   - Col 0: node id.
 ;;   - Col 1: input degree.
 ;;   - Col 2: output degree.
 ;;   - Col 3: total degree (sum of input and output degrees).
 ;;
 ;; Notes:
+;;
 ;; - See grsp-ann-net-adegree.
 ;;
 ;; Sources:
+;;
 ;; - [11][13].
 ;;
 (define (grsp-ann-node-degree p_l1)
@@ -3089,20 +3306,26 @@
 ;; p_l1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: ann.
 ;;
 ;; Output:
+;;
 ;; - List:
+;;
 ;;   - Elem 0: undirected average.
 ;;   - Elem 1: directed average.
 ;;
 ;; Notes:
+;;
 ;; - See grsp-ann-node-degree.
 ;;
 ;; Sources:
+;;
 ;; - [11].
 ;;
 (define (grsp-ann-net-adegree p_l1)
@@ -3126,12 +3349,15 @@
 ;; grsp-ann-net-density - Density of network p_l1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: ann.
 ;;
 ;; Sources:
+;;
 ;; - [11].
 ;;
 (define (grsp-ann-net-density p_l1)
@@ -3157,12 +3383,15 @@
 ;; grsp-ann-net-density - Planar density of network p_l1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: ann.
 ;;
 ;; Sources:
+;;
 ;; - [11].
 ;;
 (define (grsp-ann-net-pdensity p_l1)
@@ -3187,14 +3416,18 @@
 ;; of network p_l1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: ann.
 ;; - p_n1: node id.
 ;;
 ;; Output:
+;;
 ;; - A two element list:
+;;
 ;;   - Elem 0: matrix of selected edges reaching node p_n1 (TO).
 ;;   - Elem 1: matrix of selected edges going out of node p_n1 (FROM).
 ;;
@@ -3223,12 +3456,15 @@
 ;; of ann p_l1
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: ann.
 ;;
 ;; Output:
+;;
 ;; - List of grsp-ann-node-conns results applied to each node of p_l1.
 ;;
 (define (grsp-ann-nodes-conns p_l1)
@@ -3275,17 +3511,22 @@
 ;; of network p_l1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: ann.
 ;; - p_n1: connection (edge) id.
 ;;
 ;; Notes:
+;;
 ;; -  See grsp-ann-conns-nodes.
 ;;
 ;; Output:
+;;
 ;; - A two element list:
+;;
 ;;   - Elem 0: TO node.
 ;;   - Elem 1: FROM node.
 ;;
@@ -3347,17 +3588,22 @@
 ;; (edges) of network p_l1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: ann.
 ;;
 ;; Notes:
+;;
 ;; - See grsp-ann-conn-nodes.
 ;;
 ;; Output:
+;;
 ;; - grsp-ann-conn-nodes results as a matrix for each and all nodes
 ;;   of p_l1. Note that connection ID is not providred in a separated column.
+;;
 ;;   - Col 0: TO nodes.
 ;;   - Col 1: FROM nodes.
 ;;
@@ -3404,15 +3650,20 @@
 ;;;; grsp-ann-devt - Displays all matrices of the ann with labels.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_b1: boolean.
+;;
 ;;   - #t: shows element names.
 ;;   - #f: does not show names.
+;;
 ;; - p_l1: ann.
 ;;
 ;; Examples:
+;;
 ;; - example3.scm.
 ;;
 (define (grsp-ann-devt p_b1 p_l1)
@@ -3425,12 +3676,16 @@
 ;;;; grsp-ann-devn - Describes node with id p_n1 from network p_l1.
 ;;
 ;; Keywords:
+;;
 ;; - function, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_b1: boolean.
+;;
 ;;   - #t: shows element names.
 ;;   - #f: does not show names.
+;;
 ;; - p_l1: ann.
 ;; - p_n1: node id.
 ;;
@@ -3456,12 +3711,16 @@
 ;;;; grsp-ann-devc - Describes connection with id p_n1 from network p_l1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_b1: boolean.
+;;
 ;;   - #t: shows element names.
 ;;   - #f: does not show names.
+;;
 ;; - p_l1: ann.
 ;; - p_n1: connection id.
 ;;
@@ -3485,12 +3744,16 @@
 ;;;; grsp-ann-devcl - Describes connections from conns matrix.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_b1: boolean.
+;;
 ;;   - #t: shows element names.
 ;;   - #f: does not show names.
+;;
 ;; - p_a2: conns.
 ;;
 (define (grsp-ann-devcl p_b1 p_a2)
@@ -3514,15 +3777,20 @@
 ;; connections.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_b1: boolean.
+;;
 ;;   - #t: shows element names.
 ;;   - #f: does not show names.
+;;
 ;; - p_l1: ann.
 ;; - p_n1: node id.
 ;; - p_n2: connection description mode.
+;;
 ;;   - 0: describe input and output connections.
 ;;   - 1: describe only input connections.
 ;;   - 2: describe only output connections.
@@ -3609,25 +3877,34 @@
 ;; connections by applying grsp-ann-devnc to each node.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_b1: boolean.
+;;
 ;;   - #t: shows element names.
 ;;   - #f: does not show names.
+;;
 ;; - p_b3: boolean.
+;;
 ;;   - #t: stops after analyzing each node and its connections.
 ;;   - #f: does not stop on each connection.
+;;
 ;; - p_l1: ann.
 ;; - p_n2: connection description mode.
+;;
 ;;   - 0: describe input and output connections.
 ;;   - 1: describe only input connections.
 ;;   - 2: describe only output connections.
 ;;
 ;; Notes:
+;;
 ;; - See grsp-ann-devnc.
 ;;
 ;; Examples:
+;;
 ;; - example3.scm.
 ;;
 (define (grsp-ann-devnca p_b1 p_b3 p_l1 p_n2)
@@ -3661,13 +3938,16 @@
 ;;;; grsp-ann-stats - Provides basic network info and statistics on ann p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
-;; p_s1: string, title or identifier.
-;; p_l1: ann.
+;;
+;; - p_s1: string, title or identifier.
+;; - p_l1: ann.
 ;;
 ;; Examples:
+;;
 ;; - example3.scm.
 ;;
 (define (grsp-ann-stats p_s1 p_l1)

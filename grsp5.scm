@@ -25,9 +25,11 @@
 
 
 ;;;; General notes:
+;;
 ;; - Read sources for limitations on function parameters.
 ;;
 ;; Sources:
+;;
 ;; - [1] En.wikipedia.org. 2020. Probability. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Probability [Accessed 23 July 2020].
 ;; - [2] En.wikipedia.org. 2020. Bayes' Theorem [online] Available at:
@@ -288,17 +290,21 @@
 ;;;; grsp-feature-scaling - Scales p_n to the interval [p_nmin, p_nmax].
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, scale, proportion.
 ;;
 ;; Parameters:
+;;
 ;; - p_n1: scalar, real.
 ;; - p_nmin: min value for p_n.
 ;; - p_max: max value for p_x.
 ;;
 ;; Sources:
+;;
 ;; - [3].
 ;;
 ;; Notes:
+;;
 ;; - If p_n1 lies outside the interval [p_nmin, p_nmax] the function will  
 ;;   truncate p_n1 to fit it within the interval.
 ;;
@@ -319,14 +325,17 @@
 ;;;; grsp-z-score - Calculates the z score for a sample data point.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, scoring, sampling.
 ;;
 ;; Parameters:
+;;
 ;; - p_n1: data point.
 ;; - p_m1: sample mean.
 ;; - p_s1: sample standard deviation.
 ;;
 ;; Sources:
+;;
 ;; - [3].
 ;;
 (define (grsp-z-score p_n1 p_m1 p_s1)
@@ -341,19 +350,24 @@
 ;; p_n3 power of that binomial operation.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string determining the operation.
+;;
 ;;   - "#+": sum.
 ;;   - "#-": substraction.
 ;;   - "#*": multiplication.
 ;;   - "#/": division.
+;;
 ;; - p_n1: real.
 ;; - p_n2: real.
 ;; - p_n3: real.
 ;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-binop p_s1 p_n1 p_n2 p_n3)
@@ -374,12 +388,15 @@
 ;;;; grsp-pnot - Calculates the complementary probability of p_n1.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, complements.
 ;;
 ;; Parameters:
+;;
 ;; - p_n1: real representing a probability in [0,1].
 ;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-pnot p_n1)
@@ -393,13 +410,16 @@
 ;;;; grsp-pand - Calculates the probability of p_n1 and p_n2, being independent.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, variables, independece.
 ;;
 ;; Parameters:
+;;
 ;; - p_n1: real repesenting a probability in [0,1].
 ;; - p_n2: real repesenting a probability in [0,1].
 ;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-pand p_n1 p_n2)
@@ -415,13 +435,16 @@
 ;; being p_n1 and p_n2 not independent.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, variables, dependence.
 ;;
 ;; Parameters:
+;;
 ;; - p_n1: real repesenting a probability in [0,1].
 ;; - p_n2: real repesenting a probability in [0,1].
 ;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-pnand p_n1 p_n2)
@@ -439,13 +462,16 @@
 ;;;; grsp-por - Calculates the probability of p_n1 or p_n2.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, variables.
 ;;
 ;; Parameters:
+;;
 ;; - p_n1: real repesenting a probability in [0,1].
 ;; - p_n2: real repesenting a probability in [0,1].
 ;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-por p_n1 p_n2)
@@ -464,13 +490,16 @@
 ;; beign p_n1 and p_n2 mutually exclusive.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, variables, exclusion.
 ;;
 ;; Parameters:
+;;
 ;; - p_n1: real repesenting a probability in [0,1].
 ;; - p_n2: real repesenting a probability in [0,1].
 ;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-pxor p_n1 p_n2)
@@ -490,13 +519,16 @@
 ;;;; grsp-pcond - Calculates the probability of p_n1 given p_n2.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, variables, causality.
 ;;
 ;; Parameters:
+;;
 ;; - p_n1: real repesenting a probability in [0,1].
 ;; - p_n2: real repesenting a probability in [0,1].
 ;;
 ;; Sources:
+;;
 ;; - [1][2].
 ;;
 (define (grsp-pcond p_n1 p_n2)
@@ -517,12 +549,15 @@
 ;; given p_n1 as a parameter, returns (abs n2).
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, absolute.
 ;;
 ;; Parameters:
+;;
 ;; - p_n1: real representing a probability in [0,1]
 ;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-pcomp p_n1)
@@ -538,19 +573,24 @@
 ;; difference between two numbers.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, exponential.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: operation.
+;;
 ;;   - "#+": addition.
 ;;   - "#-": substraction.
 ;;   - "#*": multiplication.
 ;;   - "#/": division.
+;;
 ;; - p_e1: exponent (power).
 ;; - p_n1: real number.
 ;; - p_n2: real number.
 ;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-osbv p_s1 p_e1 p_n1 p_n2)
@@ -571,18 +611,23 @@
 ;; then perfoms operation p_s1 between those values.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, exponential.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: operation.
+;;
 ;;   - "#+": addition.
 ;;   - "#-": substraction.
 ;;   - "#*": multiplication.
 ;;   - "#/": division.
+;;
 ;; - p_n1: real number.
 ;; - p_n2: real number.
 ;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-obsv p_s1 p_e1 p_n1 p_n2)
@@ -605,22 +650,29 @@
 ;; an m x n matix.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, entropic.
 ;;
 ;; Parameters:
+;;
 ;; - p_g1: logarithm base.
+;;
 ;;   - 2: base 2.
 ;;   - 2.71: natural base.
 ;;   - 10: base 10.
+;;
 ;; - p_a1: matrix of outcomes x(1)...(x(nxm) of drv X.
 ;;
 ;; Output:
+;;
 ;; - m x n matrix, with entropy values expressed in:
+;;
 ;;   - Bits, if p_g1 = 2.
 ;;   - Nats, if p_g1 = 2.71.
 ;;   - Dits, if p_g1 = 10.
 ;;
 ;; Sources:
+;;
 ;; - [8].
 ;;
 (define (grsp-entropy-dvar p_g1 p_a1)
@@ -640,15 +692,19 @@
 ;;;; grsp-mean1 - Expected value of a random variable X.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, randomness, aleatory.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: sample (matrix).
 ;;
 ;; Notes:
+;;
 ;; - See grsp-mean1.
 ;;
 ;; Sources:
+;;
 ;; - [35].
 ;;
 (define (grsp-mean1 p_a1)
@@ -663,12 +719,15 @@
 ;;;; grsp-mean1-mth - Mutithreaded version of grsp-mean1.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, mean, average, averaging.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: sample (matrix).
 ;;
 ;; Sources:
+;;
 ;; - [35].
 ;;
 (define (grsp-mean1-mth p_a1)
@@ -685,16 +744,20 @@
 ;; and the probability P for each outcome of X.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, randomness, aleatory.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix, instances of X.
 ;; - p_a2: matrix, probabilities corresponding to each instance of X in p_a1.
 ;;
 ;; Notes:
+;;
 ;; - p_a1 and p_a2 should be of the same shape and dimensions.
 ;;
 ;; Sources:
+;;
 ;; - [13][35].
 ;;
 (define (grsp-mean2 p_a1 p_a2)
@@ -713,15 +776,19 @@
 ;;;; grsp-mean3 - Expected value of elements of list p_l1.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, randomness, aleatory.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: sample (ist).
 ;;
 ;; Notes:
+;;
 ;; - See grsp-mean1.
 ;;
 ;; Sources:
+;;
 ;; - [35].
 ;;
 (define (grsp-mean3 p_l1)
@@ -735,12 +802,15 @@
 ;;;; grsp-mean-geometric - Geometric mean of elements of p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, mean, average.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: sample (matrix).
 ;;
 ;; Sources:
+;;
 ;; - [35].
 ;;
 (define (grsp-mean-geometric p_a1)
@@ -757,12 +827,15 @@
 ;;;; grsp-mean-geometric-mth - Multithreaded verson of grsp-mean-geometric.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, mean, average.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: sample (matrix).
 ;;
 ;; Sources:
+;;
 ;; - [35].
 ;;
 (define (grsp-mean-geometric-mth p_a1)
@@ -778,12 +851,15 @@
 ;;;; grsp-mean-interquartile - Interquartile mean of elements of p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, mean, average.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: sample (matrix).
 ;;
 ;; Sources:
+;;
 ;; - [33][35].
 ;;
 (define (grsp-mean-interquartile p_a1)
@@ -811,12 +887,15 @@
 ;; elements of p_a1 should be >= 0.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, mean, average.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: sample (matrix).
 ;;
 ;; Sources:
+;;
 ;; - [33][36].
 ;;
 (define (grsp-mean-quadratic p_a1)
@@ -842,12 +921,15 @@
 ;;;; grsp-mean-midrange - Calculates the midrange of p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, range, middle.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: sample (matrix).
 ;;
 ;; Sources:
+;;
 ;; - [33][37].
 ;;
 (define (grsp-midrange p_a1)
@@ -863,9 +945,11 @@
 ;;;; grsp-sd1 - Standard deviation based on variance.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, variance, deviation.
 ;;
 ;; Parameters:
+;;
 ;; - p_v1: variance.
 ;;
 (define (grsp-sd1 p_v1)
@@ -879,12 +963,15 @@
 ;;;; grsp-sd2 - Sample standard deviation.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, standard.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: sample (matrix).
 ;;
 ;; Sources:
+;;
 ;; - [10].
 ;;
 (define (grsp-sd2 p_a1)
@@ -926,9 +1013,11 @@
 ;;;; grsp-variance1 - Variance, as the square of standard deviation.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: standard deviation.
 ;;
 (define (grsp-variance1 p_x1)
@@ -943,16 +1032,21 @@
 ;; value of the squared difference of a random variable.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, randomness, aleatory.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1:
+;;
 ;;   - "#v": for variance.
 ;;   - "#s": for semivariance.
 ;;   - "#u": for supervariance.
+;;
 ;; - p_a1: matrix containing occurrences of the random variable.
 ;;
 ;; Sources:
+;;
 ;; - [14].
 ;;
 (define (grsp-variance2 p_s1 p_a1)
@@ -1008,18 +1102,22 @@
 ;;;; grsp-surprisal - Information content of a random variable.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, randomness, aleatory.
 ;;
 ;; Parameters:
+;;
 ;; - p_g1: logarithm base.
 ;; - p_x1: probability, [0, 1].
 ;;
 ;; Output:
+;;
 ;; - Bits, if p_g1 = 2.
 ;; - Nats, if p_g1 = (grsp-e) (e).
 ;; - Dits, if p_g1 = 10.
 ;;
 ;; Sources:
+;;
 ;; - [9].
 ;;
 (define (grsp-surprisal p_g1 p_x1)
@@ -1033,9 +1131,11 @@
 ;;;; grsp-median1 - Finds the median of the data in p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_v1: sorted, 1 x n matrix (vector).
 ;;
 (define (grsp-median1 p_a1)
@@ -1068,13 +1168,16 @@
 ;;;; grsp-cv - Coefficient of variation.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, coefficients.
 ;;
 ;; Parameters:
+;;
 ;; - p_n1: standard deviation.
 ;; - p_n2: mean.
 ;;
 ;; Sources:
+;;
 ;; - [15].
 ;;
 (define (grsp-cv p_n1 p_n2)
@@ -1088,13 +1191,16 @@
 ;;;; grsp-mean - Sample mean absolute deviation.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: sample (matrix).
 ;; - p_x1: measure of central tendency.
 ;;
 ;; Sources:
+;;
 ;; - [16].
 ;;
 (define (grsp-mad p_a1 p_x1)
@@ -1131,12 +1237,15 @@
 ;;;; grsp-bessel-corrector - Bessel corrector.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, correction.
 ;;
 ;; Parameters:
+;;
 ;; - p_n1: n.
 ;;
 ;; Sources:
+;;
 ;; - [12].
 ;;
 (define (grsp-bessel-corrector p_n1)
@@ -1150,6 +1259,7 @@
 ;;;; grsp-np-skew - Non parametric skew.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
@@ -1158,6 +1268,7 @@
 ;; - p_x3: standard deviation.
 ;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-np-skew p_x1 p_x2 p_x3)
@@ -1171,14 +1282,17 @@
 ;;;; grsp-pearson-mode-skewness - Pearson's first skewness coefficient.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: mean.
 ;; - p_x2: mode.
 ;; - p_x3: standard deviation.
 ;;
 ;; Sources:
+;;
 ;; - [20].
 ;;
 (define (grsp-pearson-mode-skewness p_x1 p_x2 p_x3)
@@ -1192,14 +1306,17 @@
 ;;;; grsp-pearson-median-skewness - Pearson's secnd skewness coefficient.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: mean.
 ;; - p_x2: median.
 ;; - p_x3: standard deviation.
 ;;
 ;; Sources:
+;;
 ;; - [20].
 ;;
 (define (grsp-pearson-median-skewness p_x1 p_x2 p_x3)
@@ -1213,13 +1330,16 @@
 ;;;; grsp-standardized-3cm - Standardized third central moment (skewness).
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: sample (matrix).
 ;; - p_x1: sample mean.
 ;;
 ;; Sources:
+;;
 ;; - [20][22].
 ;;
 (define (grsp-standardized-3cm p_a1 p_x1)
@@ -1242,14 +1362,17 @@
 ;;;; grsp-standardized-4cm - Standardized fourth central moment (kurtosis).
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: sample (matrix).
 ;; - p_x1: sample mean.
 ;; - p_x3: standard deviation.
 ;;
 ;; Sources:
+;;
 ;; - [22][23].
 ;;
 (define (grsp-standardized-4cm p_a1 p_x1 p_x3)
@@ -1271,12 +1394,15 @@
 ;;;; grsp-excess-kurtosis - Excess kurtosis.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_x4: kurtosis.
 ;;
 ;; Sources:
+;;
 ;; - [23].
 ;;
 (define (grsp-excess-kurtosis p_k4)
@@ -1290,13 +1416,16 @@
 ;; grsp-sample-skewness - Sample skewness.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: sample mean.
 ;; - p_x3: sample standard deviation.
 ;;
 ;; Sources:
+;;
 ;; - [20].
 ;;
 (define (grsp-sample-skewness p_a1 p_x1 p_x3)
@@ -1310,14 +1439,17 @@
 ;;;; grsp-yule-coefficient - Yule's coefficient, skewness.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, coefficients.
 ;;
 ;; Parameters:
+;;
 ;; - p_q1: quartile 1 (median of upper half).
 ;; - p_q2: quartile 2 (median of whole sample).
 ;; - p_q3: quartile 3 (median of lower half).
 ;;
 ;; Parameters:
+;;
 ;; - [23][24].
 ;;
 (define (grsp-yule-coefficient p_q1 p_q2 p_q3)
@@ -1331,13 +1463,16 @@
 ;;;; grsp-iqr - Inter quartile range.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_q1: quartile 1 (median of upper half).
 ;; - p_q3: quartile 3 (median of lower half).
 ;;
 ;; Sources:
+;;
 ;; - [25].
 ;;
 (define (grsp-iqr p_q1 p_q3)
@@ -1352,16 +1487,20 @@
 ;; a sample.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: sample (vector).
 ;;
 ;; Output:
+;;
 ;; - 1 x 5 matrix (vector) containg the values (in order) for min, Q1, Q2, Q3 
 ;;   and max.
 ;;
 ;; Sources:
+;;
 ;; - [26][27].
 ;;
 (define (grsp-5ns p_a1)
@@ -1431,12 +1570,15 @@
 ;;;; grsp-range - Sample range.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: sample (vector).
 ;;
 ;; Sources:
+;;
 ;; - [28].
 ;;
 (define (grsp-range p_a1)
@@ -1453,18 +1595,23 @@
 ;; Y, naive algorithm.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: 1 x n matrix (vector) containing instances of X.
 ;; - p_a2: 1 x n matrix (vector) containing instances of Y.
 ;;
 ;; Notes:
+;;
 ;; - p_a1 and p_a2 should be structurally the same:
+;;
 ;;   - same number of elements.
 ;;   - Same odrinality on indexes.
 ;;
 ;; Sources:
+;;
 ;; - [29].
 ;;
 (define (grsp-covariance1 p_a1 p_a2)

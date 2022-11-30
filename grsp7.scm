@@ -25,9 +25,11 @@
 
 
 ;;;; General notes:
+;;
 ;; - Read sources for limitations on function parameters.
 ;;
 ;; Sources:
+;;
 ;; - [1] En.wikipedia.org. 2021. Approximations of π - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Approximations_of_%CF%80
 ;;   [Accessed 6 September 2021].
@@ -73,9 +75,11 @@
 ;;;; grsp-geo-circle - Area of a circle.
 ;;
 ;; Keywords:
+;;
 ;; - geometry, curves.
 ;;
 ;; Parameters:
+;;
 ;; - p_r1: radius.
 ;;
 (define (grsp-geo-circle p_r1)
@@ -89,9 +93,11 @@
 ;;;; grsp-geo-spherev - Volume of a sphere.
 ;;
 ;; Keywords:
+;;
 ;; - geometry, curves, volume.
 ;;
 ;; Parameters:
+;;
 ;; - p_r1: radius.
 ;;
 (define (grsp-geo-spherev p_r1)
@@ -105,9 +111,11 @@
 ;;;; grsp-geo-triangle - Area of a triangle.
 ;;
 ;; Keywords:
+;;
 ;; - geometry, polygons.
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: base.
 ;; - p_y1: height.
 ;;
@@ -122,9 +130,11 @@
 ;;;; grsp-geo-rectangle - Area of a rectangle.
 ;;
 ;; Keywords:
+;;
 ;; - geometry, polygons.
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: base.
 ;; - p_y1: height.
 ;;
@@ -139,9 +149,11 @@
 ;;;; grsp-geo-line - Length of a segment (hypotenuse).
 ;;
 ;; Keywords:
+;;
 ;; - geometry.
 ;;
 ;; Parameters:
+;;
 ;; - p_x1.
 ;; - p_y1.
 ;; - p_x2.
@@ -158,15 +170,18 @@
 ;;;; grsp-geo-slope - Slope of a line. 
 ;;
 ;; Keywords:
+;;
 ;; - geometry.
 ;;
 ;; Parameters:
+;;
 ;; - p_x1.
 ;; - p_y1.
 ;; - p_x2.
 ;; - p_y2.
 ;;
 ;; Notes:
+;;
 ;; - If dx is zero, it returns +/- inf.
 ;;
 (define (grsp-geo-slope p_x1 p_y1 p_x2 p_y2)
@@ -190,9 +205,11 @@
 ;;;; grsp-geo-cylinder - Surface area of a cylinder.
 ;;
 ;; Keywords:
+;;
 ;; - geometry.
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: base radius.
 ;; - p_y1: height.
 ;;
@@ -207,9 +224,11 @@
 ;;;; grsp-geo-cylinderv - Volume of a cylinder.
 ;;
 ;; Keywords:
+;;
 ;; - geometry.
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: base radius.
 ;; - p_y1: height.
 ;;
@@ -224,9 +243,11 @@
 ;;;; grsp-geo-pyramid - Surface area of a pyramid.
 ;;
 ;; Keywords:
+;;
 ;; - geometry.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: base area.
 ;; - p_y1: height.
 ;;
@@ -241,9 +262,11 @@
 ;;;; grsp-geo-pyramidv - Volume of a pyramid.
 ;;
 ;; Keywords:
+;;
 ;; - geometry.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: base area.
 ;; - p_y1: height.
 ;;
@@ -259,9 +282,11 @@
 ;; formula.
 ;;
 ;; Keywords:
+;;
 ;; - geometry, pi.
 ;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-geo-pi-machin)
@@ -281,9 +306,11 @@
 ;;;; grsp-geo-pi-shanks1 - Approximates pi using the original Shanks' formula.
 ;;
 ;; Keywords:
+;;
 ;; - geometry, pi.
 ;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-geo-pi-shanks1)
@@ -305,9 +332,11 @@
 ;;;; grsp-geo-pi-shanks2 - Approximates pi using Shanks' control formula.
 ;;
 ;; Keywords:
+;;
 ;; - geometry, pi.
 ;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-geo-pi-shanks2)
@@ -329,9 +358,11 @@
 ;;;; grsp-geo-pi-atan - Approximates pi as a simple atan product.
 ;;
 ;; Keywords:
+;;
 ;; - geometry, pi.
 ;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-geo-pi-atan)
@@ -345,13 +376,16 @@
 ;;;; grsp-geo-pluecker-conoid - Pluecker's conoid function.
 ;;
 ;; Keywords:
+;;
 ;; - geometry, conoids.
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: x.
 ;; - p_y1: y.
 ;;
 ;; Sources:
+;;
 ;; - [2].
 ;;
 (define (grsp-geo-pluecker-conoid p_x1 p_y1)
@@ -365,13 +399,16 @@
 ;;;; grsp-geo-hyperbolic-paraboloid - Hyperbolic paraboloid function.
 ;;
 ;; Keywords:
+;;
 ;; - geometry, saddle, surface, hyperbolic, paraboloid.
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: x
 ;; - p_y1: y.
 ;;
 ;; Sources:
+;;
 ;; - [3][4].
 ;;
 (define (grsp-geo-hyperbolic-paraboloid p_x1 p_y1)
@@ -385,13 +422,16 @@
 ;;;; grsp-geo-monkey-saddle - Monkey saddle function.
 ;;
 ;; Keywords:
+;;
 ;; - geometry, saddle, surface, hyperbolic, paraboloid.
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: x.
 ;; - p_y1: y.
 ;;
 ;; Sources:
+;;
 ;; - [3][4].
 ;;
 (define (grsp-geo-monkey-saddle p_x1 p_y1)
@@ -405,9 +445,11 @@
 ;;;; grsp-geo-conev - Volume of a cone.
 ;;
 ;; Keywords:
+;;
 ;; - geometry, volume.
 ;;
 ;; Parameters:
+;;
 ;; - p_ab: base area.
 ;; - p_h1: height.
 ;;
@@ -423,9 +465,11 @@
 ;; cyclide.
 ;;
 ;; Keywords:
+;;
 ;; - geometry, topology.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: a. Axis.
 ;; - p_b1: b. Axis.
 ;; - p_c1: c. Linear eeccentricity.
@@ -434,12 +478,15 @@
 ;; - p_v1: v. [0, 2Pi).
 ;;
 ;; Notes:
+;;
 ;; - TODO: more testing.
 ;;
 ;; Output:
+;;
 ;; - A list containing x, y, z values.
 ;;
 ;; Sources:
+;;
 ;; - [5].
 ;;
 (define (grsp-ellyptic-cyclide p_a1 p_b1 p_c1 p_d1 p_u1 p_v1)

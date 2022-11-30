@@ -25,6 +25,7 @@
 
 
 ;;;; General notes:
+;;
 ;; - Read sources for limitations on function parameters.
 
 
@@ -61,13 +62,17 @@
 ;;;; grsp-identity - Identity function (type 0).
 ;;
 ;; Keywords:
+;;
 ;; - functions, activation, ann.
 ;;
 ;; Parameters:
+;;
 ;; - p_1: list containing the following parameters.
+;;
 ;;   - 1: number.
 ;;
 ;; Sources:
+;;
 ;; - grsp8.[5].
 ;;
 (define (grsp-identity p_l1)
@@ -81,13 +86,16 @@
 ;;;; grsp-binary-step - Binary step function (type 1).
 ;;
 ;; Keywords:
+;;
 ;; - functions, activation, ann.
 ;;
 ;; Parameters:
+;;
 ;; - p_1: list containing the following parameters.
 ;;   - 1: number.
 ;;
 ;; Sources:
+;;
 ;; - grsp8.[5].
 ;;
 (define (grsp-binary-step p_l1)
@@ -107,13 +115,17 @@
 ;;;; grsp-sigmoid - Sigmoid function (type 2).
 ;;
 ;; Keywords:
+;;
 ;; - functions, activation, ann.
 ;;
 ;; Parameters:
+;;
 ;; - p_1: list containing the following parameters.
+;;
 ;;   - 1: number.
 ;;
 ;; Sources:
+;;
 ;; - grsp8.[5]
 ;;
 (define (grsp-sigmoid p_l1)
@@ -132,13 +144,17 @@
 ;;;; grsp-tanh - Tanh function (type 3).
 ;;
 ;; Keywords:
+;;
 ;; - functions, activation, ann.
 ;;
 ;; Parameters:
+;;
 ;; - p_1: list containing the following parameters.
+;;
 ;;   - 1: number.
 ;;
 ;; Sources:
+;;
 ;; - grsp8.[5].
 ;;
 (define (grsp-tanh p_l1)
@@ -161,13 +177,17 @@
 ;;;; grsp-tanh-mth - Multithreaded variant of grsp-tanh.
 ;;
 ;; Keywords:
+;;
 ;; - functions, activation, ann.
 ;;
 ;; Parameters:
+;;
 ;; - p_1: list containing the following parameters.
+;;
 ;;   - 1: number.
 ;;
 ;; Sources:
+;;
 ;; - grsp8.[5].
 ;;
 (define (grsp-tanh-mth p_l1)
@@ -191,13 +211,16 @@
 ;;;; grsp-relu - Rectified linear unit function (type 4).
 ;;
 ;; Keywords:
+;;
 ;; - functions, activation, ann.
 ;;
 ;; Parameters:
+;;
 ;; - p_1: list containing the following parameters.
 ;;   - 1: number.
 ;;
 ;; Sources:
+;;
 ;; - grsp8.[5].
 ;;
 (define (grsp-relu p_l1)
@@ -217,13 +240,16 @@
 ;;;; grsp-softplus - Softplus function (type 5).
 ;;
 ;; Keywords:
+;;
 ;; - functions, activation, ann.
 ;;
 ;; Parameters:
+;;
 ;; - p_1: list containing the following parameters.
 ;;   - 1: number.
 ;;
 ;; Sources:
+;;
 ;; - grsp8.[5].
 ;;
 (define (grsp-softplus p_l1)
@@ -242,14 +268,18 @@
 ;;;; grsp-elu - Exponential linear unit function (type 6).
 ;;
 ;; Keywords:
+;;
 ;; - functions, activation, ann.
 ;;
 ;; Parameters:
+;;
 ;; - p_1: list containing the following parameters.
+;;
 ;;   - 1: number.
 ;;   - 2: alpha.
 ;;
 ;; Sources:
+;;
 ;; - grsp8.[5].
 ;;
 (define (grsp-elu p_l1)
@@ -273,13 +303,17 @@
 ;;;; grsp-lrelu - Leaky rectified linear unit function (type 7).
 ;;
 ;; Keywords:
+;;
 ;; - functions, activation, ann.
 ;;
 ;; Parameters:
+;;
 ;; - p_1: list containing the following parameters.
+;;
 ;;   - 1: number.
 ;;
 ;; Sources:
+;;
 ;; - grsp8.[5].
 ;;
 (define (grsp-lrelu p_l1)
@@ -301,15 +335,19 @@
 ;;;; grsp-selu - Scaled exponential linear unit function (type 8).
 ;;
 ;; Keywords:
+;;
 ;; - functions, activation, ann.
 ;;
 ;; Parameters:
+;;
 ;; - p_1: list containing the following parameters.
+;;
 ;;   - 1: number.
 ;;   - 2: alpha.
 ;;   - 3: lambda.
 ;;
 ;; Sources:
+;;
 ;; - grsp8.[5], grsp8.[6].
 ;;
 (define (grsp-selu p_l1)
@@ -335,14 +373,17 @@
 ;;;; grsp-gelu - Gaussian error linear unit function (type 9).
 ;;
 ;; Keywords:
+;;
 ;; - functions, activation, ann.
 ;;
 ;; Parameters:
+;;
 ;; - p_1: list containing the following parameters.
 ;;   - 1: number.
 ;;   - 2: alpha.
 ;;
 ;; Sources:
+;;
 ;; - grsp8.[5], grsp8.[6].
 ;;
 (define (grsp-gelu p_l1)
@@ -365,14 +406,18 @@
 ;;;; grsp-prelu - Parametric rectified linear unit function (type 10).
 ;;
 ;; Keywords:
+;;
 ;; - functions, activation, ann.
 ;;
 ;; Parameters:
+;;
 ;; - p_1: list containing the following parameters.
+;;
 ;;   - 1: number.
 ;;   - 2: alpha.
 ;;
 ;; Sources:
+;;
 ;; - grsp8.[5].
 ;;
 (define (grsp-prelu p_l1)
@@ -396,13 +441,17 @@
 ;;;; grsp-softsign - Softsign function (type 11).
 ;;
 ;; Keywords:
+;;
 ;; - functions, activation, ann.
 ;;
 ;; Parameters:
+;;
 ;; - p_1: list containing the following parameters.
+;;
 ;;   - 1: number.
 ;;
 ;; Sources:
+;;
 ;; - grsp8.[5].
 ;;
 (define (grsp-softsign p_l1)
@@ -421,13 +470,16 @@
 ;;;; grsp-sqnl - Square nonlinearity unit function (type 12).
 ;;
 ;; Keywords:
+;;
 ;; - functions, activation, ann.
 ;;
 ;; Parameters:
 ;; - p_1: list containing the following parameters.
+;;
 ;;   - 1: number.
 ;;
 ;; Sources:
+;;
 ;; - grsp8.[5].
 ;;
 (define (grsp-sqnl p_l1)
@@ -460,13 +512,17 @@
 ;;;; grsp-bent-identity - Bent identity activation function (type 13).
 ;;
 ;; Keywords:
+;;
 ;; - functions, activation, ann.
 ;;
 ;; Parameters:
+;;
 ;; - p_1: list containing the following parameters.
+;;
 ;;   - 1: number.
 ;;
 ;; Sources:
+;;
 ;; - grsp8.[5].
 ;;
 (define (grsp-bent-identity p_l1)
@@ -485,13 +541,17 @@
 ;;;; grsp-silu - Sigmoid linear function (type 14).
 ;;
 ;; Keywords:
+;;
 ;; - functions, activation, ann.
 ;;
 ;; Parameters:
+;;
 ;; - p_1: list containing the following parameters.
+;;
 ;;   - 1: number.
 ;;
 ;; Sources:
+;;
 ;; - grsp8.[5].
 ;;
 (define (grsp-silu p_l1)
@@ -510,10 +570,13 @@
 ;;;; grsp-srelu - S-shaped rectified linear function (type 15).
 ;;
 ;; Keywords:
+;;
 ;; - functions, activation, ann.
 ;;
 ;; Parameters:
+;;
 ;; - p_1: list containing the following parameters.
+;;
 ;;   - 1: number.
 ;;   - 2: tl.
 ;;   - 3: al.
@@ -521,6 +584,7 @@
 ;;   - 5: ar.
 ;;
 ;; Sources:
+;;
 ;; - grsp8.[5].
 ;;
 (define (grsp-srelu p_l1)
@@ -550,13 +614,17 @@
 ;;;; grsp-gaussian - Gaussian activation function (type 16).
 ;;
 ;; Keywords:
+;;
 ;; - functions, activation, ann.
 ;;
 ;; Parameters:
+;;
 ;; - p_1: list containing the following parameters.
+;;
 ;;   - 1: number.
 ;;
 ;; Sources:
+;;
 ;; - grsp8.[5].
 ;;
 (define (grsp-gaussian p_l1)
@@ -575,13 +643,17 @@
 ;;;; grsp-sqrbf - Sqrbf activation function (type 17).
 ;;
 ;; Keywords:
+;;
 ;; - functions, activation, ann.
 ;;
 ;; Parameters:
+;;
 ;; - p_11: list containing the following parameters.
+;;
 ;;   - 1: number.
 ;;
 ;; Sources:
+;;
 ;; - grsp8.[5].
 ;;
 (define (grsp-sqrbf p_l1)
@@ -612,14 +684,19 @@
 ;; 18).
 ;;
 ;; Keywords:
+;;
 ;; - functions, activation, ann.
 ;;
 ;; Parameters:
+;;
 ;; - p_11: list containing the following parameters.
+;;
 ;;   - 1: type of distribution.
+;;
 ;;     - "#normal": normal.
 ;;     - "#exp": exponential.
 ;;     - "#uniform": uniform.
+;;
 ;;   - 2: mean.
 ;;   - 3: standard deviation.
 ;;   - 4: number.
@@ -649,10 +726,13 @@
 ;; grsp-trcrnd - Simple truncation and rounding function (type 19).
 ;;
 ;; Keywords:
+;;
 ;; - functions, activation, ann.
 ;;
 ;; Parameters:
+;;
 ;; - p_11: list containing the following parameters.
+;;
 ;;   - Element 0: threshold.
 ;;   - Element 1: number.
 ;;   - Element 2: result if element1 < element 0.

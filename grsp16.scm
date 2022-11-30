@@ -25,6 +25,7 @@
 
 
 ;;;; General notes:
+;;
 ;; - Read sources for limitations on function parameters.
 ;; - These functions were developed to save some time when creating new code,
 ;;   but they might also be useful for automatic code creation and self-
@@ -58,6 +59,7 @@
 ;;;; grsp-guile-prg-head - GNU Guile program head writer.
 ;;
 ;; Keywords:
+;;
 ;; - lisp, guile, program, edition, programming. 
 ;;
 (define (grsp-scm-head)
@@ -70,9 +72,11 @@
 ;;;; grsp-scm-descript - GNU Guile program description writer.
 ;;
 ;; Keywords:
+;;
 ;; - lisp, guile, program, edition, programming, scheme. 
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string. Program name. 
 ;; - p_s2: string. Program description.
 ;;
@@ -88,9 +92,11 @@
 ;;;; grsp-scm-copyright - Displays a copyright notice.
 ;;
 ;; Keywords:
+;;
 ;; - lisp, guile, program, edition, programming, scheme. 
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string. License holder name.
 ;; - p_s2: string. License holder email.
 ;; . p_s3; string. Copyright interval years.
@@ -109,14 +115,17 @@
 ;;;; grsp-scm-license-gpl3 - GNU Guile text that corresponds to the GPL 3.
 ;;
 ;; Keywords:
+;;
 ;; - lisp, guile, program, edition, programming, scheme. 
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string. License holder name.
 ;; - p_s2: string. License holder email.
 ;; - p_s3: string. Copyright interval years.
 ;;
 ;; Notes:
+;;
 ;; - See the general notes section on top of this file regarding the use
 ;;   of licence texts and information.
 ;;
@@ -145,9 +154,11 @@
 ;;;; grsp-scm-reqmod - GNU Guile required modules section writer.
 ;;
 ;; Keywords:
+;;
 ;; - lisp, guile, program, edition, programming. 
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: list of the required modules as strings, i.e "(grsp grsp0)" "
 ;;   (grsp grsp1)"...
 ;;
@@ -163,9 +174,11 @@
 ;; writer.
 ;;
 ;; Keywords:
+;;
 ;; - lisp, guile, program, edition, programming, scheme. 
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string. Module definition.
 ;; - p_l1: list of the used modules as strings, i.e "(grsp grsp0)"
 ;;   "(grsp grsp1)"...
@@ -194,9 +207,11 @@
 ;; specifications with license info provided as a text file.
 ;;
 ;; Keywords:
+;;
 ;; - lisp, guile, program, edition, programming, scheme. 
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string. Program name, i.e. "program.scm".
 ;; - p_s2: string. Program description.
 ;; - p_f1: text file containing license info.
@@ -205,6 +220,7 @@
 ;; - p_l2: list of code lines , i.e. "(newline)" ";; Main program"...
 ;;
 ;; Notes:
+;;
 ;; - See grsp-scm-create-lib.
 ;;
 (define (grsp-scm-create-prg p_s1 p_s2 p_f1 p_l1 p_l2)
@@ -232,9 +248,11 @@
 ;; specifications under gpl3 license.
 ;;
 ;; Keywords:
+;;
 ;; - lisp, guile, program, edition, programming, scheme. 
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string. Program name, i.e. "program.scm".
 ;; - p_s2: string. Program description.
 ;; - p_s3: string. License holder name.
@@ -245,6 +263,7 @@
 ;; - p_l2: list of code lines, i.e. "(newline)" ";; Main program"...
 ;;
 ;; Notes:
+;;
 ;; - See grsp-scm-create-lib.
 ;;
 (define (grsp-scm-create-prg-gpl3 p_s1 p_s2 p_s3 p_s4 p_s5 p_l1 p_l2)
@@ -272,9 +291,11 @@
 ;; info provided as a text file.
 ;;
 ;; Keywords:
+;;
 ;; - lisp, guile, program, edition, programming, scheme. 
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string. Program name. 
 ;; - p_s2: string. Program description.
 ;; - p_s6: string. Module definition.
@@ -287,6 +308,7 @@
 ;;   (define grsp-fun1 p_s1 p_s2)...
 ;;
 ;; Notes:
+;;
 ;; - See grsp-scm-create-lib.
 ;;
 (define (grsp-scm-create-lib p_s1 p_s2 p_s6 p_f1 p_l1 p_l2 p_l3)
@@ -312,9 +334,11 @@
 ;; license.
 ;;
 ;; Keywords:
+;;
 ;; - lisp, guile, program, edition, programming, scheme. 
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string. Program name. 
 ;; - p_s2: string. Program description.
 ;; - p_s3: string. License holder name.
@@ -329,6 +353,7 @@
 ;;   (define grsp-fun1 p_s1 p_s2)...
 ;;
 ;; Notes:
+;;
 ;; - See grsp-scm-create-lib.
 ;;
 (define (grsp-scm-create-lib-gpl3 p_s1 p_s2 p_s3 p_s4 p_s5 p_s6 p_l1 p_l2 p_l3)
@@ -355,12 +380,14 @@
 ;; leads to " (clear)\n".
 ;;
 ;; Keywords:
+;;
 ;; - lisp, guile, program, edition, programming, scheme. 
 ;;
 ;; Parameters:
-;; p_s1: string.
-;; p_s2: string.
-;; p_s3: string-
+;;
+;; - p_s1: string.
+;; - p_s2: string.
+;; - p_s3: string-
 ;;
 (define (grsp-scm-pbp p_s1 p_s2 p_s3)
   (let ((res1 ""))

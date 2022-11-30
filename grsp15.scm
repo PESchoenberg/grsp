@@ -25,6 +25,7 @@
 
 
 ;;;; General notes:
+;;
 ;; - Read sources for limitations on function parameters.
 ;; - [1] En.wikipedia.org. 2022. Runge's phenomenon - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Runge%27s_phenomenon
@@ -54,12 +55,15 @@
 ;;;; grsp-runge - Runge function. 
 ;;
 ;; Keywords:
+;;
 ;; - functions, division, fractions, polynomials.
 ;;
 ;; Parameters:
+;;
 ;; - p_n1.
 ;;
 ;; Sources:
+;;
 ;; - [1][2].
 ;;
 (define (grsp-runge p_n1)
@@ -74,15 +78,18 @@
 ;; over the interval [p_a1, p_b1].
 ;;
 ;; Keywords:
+;;
 ;; - functions, interpolation, polynomials.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: a.
 ;; - p_b1: b.
 ;; - p_k1: k.
 ;; - p_n1: n.
 ;;
 ;; Sources:
+;;
 ;; - [1][2].
 ;;
 (define (grsp-chebyshev-node p_a1 p_b1 p_k1 p_n1)
@@ -101,14 +108,17 @@
 ;;;; grsp-lagrange-bpoly - Lagrange basis polynomial.
 ;;
 ;; Keywords:
+;;
 ;; - functions, interpolation, polynomials.
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: x.
 ;; - p_j1: j.
 ;; - p_a1: matrix with data points.
 ;;
 ;; Sources:
+;;
 ;; - [3][4].
 ;;
 (define (grsp-lagrange-bpoly p_x1 p_j1 p_a1)
@@ -136,13 +146,16 @@
 ;;;; grsp-lagrange-ipoly - Lagrange interpolation polynomial.
 ;;
 ;; Keywords:
+;;
 ;; - functions, interpolation, polynomials.
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: x.
 ;; - p_a1: matrix, data points.
 ;;
 ;; Sources:
+;;
 ;; - [3][4].
 ;;
 (define (grsp-lagrange-ipoly p_x1 p_a1)
