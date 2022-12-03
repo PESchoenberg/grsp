@@ -25,9 +25,11 @@
 
 
 ;;;; General notes:
+;;
 ;; - Read sources for limitations on function parameters.
 ;;
 ;; Sources:
+;;
 ;; - [1] Gnu.org. 2020. Complex (Guile Reference Manual). [online] Available at:
 ;;   https://www.gnu.org/software/guile/manual/html_node/Complex.html
 ;;   [Accessed 24 July 2020].
@@ -123,15 +125,19 @@
 ;; component of a complex number.
 ;;
 ;; Keywords:
+;;
 ;; - complex, inverse.
 ;;
 ;; Parameters:
+;;
 ;; - p_z1: complex number.
 ;;
 ;; Output:
+;;
 ;; - The conjugate of p_z1 (imaginary part negated).
 ;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-complex-inv-imag p_z1)
@@ -152,12 +158,15 @@
 ;; complex number.
 ;;
 ;; Keywords:
+;;
 ;; - complex, inverse.
 ;;
 ;; Parameters:
+;;
 ;; - p_z1: complex number.
 ;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-complex-inv-real p_z1)
@@ -177,16 +186,21 @@
 ;;;; grsp-complex-inv - Calculates various inverses of complex numbers.
 ;;
 ;; Keywords:
+;;
 ;; - complex, inverse.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: operation.
+;;
 ;;   - "#si": inverts the imaginary component only.
 ;;   - "#is": inverts the real component only.
 ;;   - "#ii": inverts both.
+;;
 ;; - p_z1: complex number.
 ;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-complex-inv p_s1 p_z1)
@@ -209,12 +223,15 @@
 ;; the signs of the real and imaginary parts of a complex number.
 ;;
 ;; Keywords:
+;;
 ;; - complex, signage.
 ;;
 ;; Parameters:
+;;
 ;; - p_z1: complex number.
 ;;
 ;; Output:
+;;
 ;; - (1 1) if both components are positive or real is positive and
 ;;   imaginary is zero.
 ;; - (-1 -1) if both components are negative.
@@ -223,6 +240,7 @@
 ;; - (1 -1) if the real component is positive and the imaginary is negative.
 ;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-complex-sign p_z1)
@@ -245,13 +263,16 @@
 ;; generator.
 ;;
 ;; Keywords:
+;;
 ;; - complex, aleatory, random.
 ;;
 ;; Parameters:
+;;
 ;; - p_r1: growth rate.
 ;; - p_x1: number, init.
 ;;
 ;; Sources:
+;;
 ;; - [2][3].
 ;;
 (define (grsp-complex-logistic p_r1 p_x1)
@@ -265,13 +286,16 @@
 ;;;; grsp-complex-mandelbrot - Quadratic map function for the Mandelbrot set.
 ;;
 ;; Keywords:
+;;
 ;; - complex, fractals.
 ;;
 ;; Parameters:
+;;
 ;; - p_z1.
 ;; - p_c1.
 ;;
 ;; Sources:
+;;
 ;; - [2][3].
 ;;
 (define (grsp-complex-mandelbrot p_z1 p_c1)
@@ -286,12 +310,15 @@
 ;; provides as a result the p_n1th value of the Fibonnaci series. 
 ;;
 ;; Keywords:
+;;
 ;; - complex, sequences.
 ;;
 ;; Parameters:
+;;
 ;; - p_z1: ordinal of the desired Fibonacci number.
 ;;
 ;; Sources:
+;;
 ;; - [6].
 ;;
 (define (grsp-complex-binet p_z1)
@@ -308,13 +335,16 @@
 ;;;; grsp-complex-dirichlet-eta - Dirichlet eta function.
 ;;
 ;; Keywords:
+;;
 ;; - complex.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: s.
 ;; - p_l1: iterations.
 ;;
 ;; Sources:
+;;
 ;; - [4].
 ;;
 (define (grsp-complex-dirichlet-eta p_s1 p_l1)
@@ -331,9 +361,11 @@
 ;;;; grsp-complex-f1 - Solves (p_a1 * (p_x1**p_n1)) / (1 + (p_a2 (p_x1**p_b2)))
 ;;
 ;; Keywords:
+;;
 ;; - complex.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1.
 ;; - p_a2.
 ;; - p_x1.
@@ -353,19 +385,25 @@
 ;; according to Euler's infinite product representation. 
 ;;
 ;; Keywords:
+;;
 ;; - complex, gamma.
 ;;
 ;; Parameters:
+;;
 ;; - p_b2: for integers.
+;;
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
+;;
 ;; - p_z1: complex.
 ;; - p_n1: desired product iterations.
 ;;
 ;; Output:
+;;
 ;; - For negative integers, the function returns +inf.0 (Riemann sphere).
 ;;
 ;; Sources:
+;;
 ;; - [5].
 ;;
 (define (grsp-complex-gamma-euler p_b2 p_z1 p_n1)
@@ -403,19 +441,25 @@
 ;; according to Weierstrass.
 ;;
 ;; Keywords:
+;;
 ;; - complex, gamma.
 ;;
 ;; Parameters:
+;;
 ;; - p_b2: for integers.
+;;
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
+;;
 ;; - p_z1: complex.
 ;; - p_n1: desired product iterations.
 ;;
 ;; Output:
+;;
 ;; - For negative integers, the function returns +inf.0 (Riemann sphere).
 ;;
 ;; Sources:
+;;
 ;; - [5].
 ;;
 (define (grsp-complex-gamma-weierstrass p_b2 p_z1 p_n1)
@@ -458,19 +502,26 @@
 ;;;; grsp-complex-gamma - Calculates gamma using different representations. 
 ;;
 ;; Keywords:
+;;
 ;; - complex, gamma.
 ;;
 ;; Parameters:
+;;
 ;; - p_b2: for integers.
+;;
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
+;;
 ;; - p_s1: desired gamma repesentation:
+;;
 ;;   - "#e": Euler.
 ;;   - "#w": Weierstrass.
+;;
 ;; - p_z1: complex.
 ;; - p_n1: desired product iterations.
 ;;
 ;; Sources:
+;;
 ;; - [5].
 ;;
 (define (grsp-complex-gamma p_b2 p_s1 p_z1 p_n1)
@@ -491,19 +542,26 @@
 ;;;; grsp-complex-pigamma - Pi Gauss function. Calculates gamma for p_z1 + 1.
 ;;
 ;; Keywords:
+;;
 ;; - complex, gamma.
 ;;
 ;; Parameters:
+;;
 ;; - p_b2: for integers.
+;;
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
+;;
 ;; - p_s1: desired gamma repesentation:
+;;
 ;;   - "#e": Euler.
 ;;   - "#w": Weierstrass.
+;;
 ;; - p_z1: complex.
 ;; - p_n1: desired product iterations.
 ;;
 ;; Sources:
+;;
 ;; - [5].
 ;;
 (define (grsp-complex-pigamma p_b2 p_s1 p_z1 p_n1)
@@ -518,16 +576,20 @@
 ;;;; grsp-complex-lngamma - Calculates the natural logarithm of gamma.
 ;;
 ;; Keywords:
+;;
 ;; - complex, gamma, log.
 ;;
 ;; Parameters:
+;;
 ;; - p_z1: complex.
 ;; - p_n1: desired product iterations.
 ;;
 ;; Notes:
+;;
 ;; - TODO: still needs some checking.
 ;;
 ;; Sources:
+;;
 ;; - [5].
 ;;
 (define (grsp-complex-lngamma p_z1 p_n1)
@@ -561,16 +623,21 @@
 ;;;; grsp-complex-digamma - Digamma function for p_z1 - 1.
 ;;
 ;; Keywords:
+;;
 ;; - complex, digamma.
 ;;
 ;; Parameters:
+;;
 ;; - p_b2: for integers.
+;;
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
+;;
 ;; - p_z1: complex.
 ;; - p_n1: Desired product iterations.
 ;;
 ;; Sources:
+;;
 ;; - [5].
 ;;
 (define (grsp-complex-digamma p_b2 p_z1 p_n1)
@@ -603,20 +670,27 @@
 ;;;; grsp-complex-ligamma - Lower incomplete gamma function.
 ;;
 ;; Keywords:
+;;
 ;; - complex, ligamma, gamma.
 ;;
 ;; Parameters:
+;;
 ;; - p_b2: for integers.
+;;
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
+;;
 ;; - p_s1: desired gamma repesentation:
+;;
 ;;   - "#e": Euler.
 ;;   - "#w": Weierstrass.
+;;
 ;; - p_z1: complex.
 ;; - p_z2: complex.
 ;; - p_n1: Desired product iterations.
 ;;
 ;; Sources:
+;;
 ;; - [5][7].
 ;;
 (define (grsp-complex-ligamma p_b2 p_s1 p_z1 p_z2 p_n1)
@@ -635,20 +709,27 @@
 ;;;; grsp-complex-llgamma - Lower incomplete limiting gamma function.
 ;;
 ;; Keywords:
+;;
 ;; - complex, ligamma.
 ;;
 ;; Parameters:
+;;
 ;; - p_b2: for integers.
+;;
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
+;;
 ;; - p_s1: desired gamma repesentation:
+;;
 ;;   - "#e": Euler.
 ;;   - "#w": Weierstrass.
+;;
 ;; - p_z1: complex.
 ;; - p_z2: complex.
 ;; - p_n1: Desired product iterations.
 ;;
 ;; Sources:
+;;
 ;; - [5][7].
 ;;  
 (define (grsp-complex-llgamma p_b2 p_s1 p_z1 p_z2 p_n1)
@@ -676,20 +757,27 @@
 ;;;; grsp-complex-uigamma - Upper incomplete gamma function.
 ;;
 ;; Keywords:
+;;
 ;; - complex, uigamma.
 ;;
 ;; Parameters:
+;;
 ;; - p_b2: for integers.
+;;
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
+;;
 ;; - p_s1: desired gamma repesentation:
+;;
 ;;   - "#e": Euler.
 ;;   - "#w": Weierstrass.
+;;
 ;; - p_z1: complex.
 ;; - p_z2: complex.
 ;; - p_n1: Desired product iterations.
 ;;
 ;; Sources:
+;;
 ;; - [5][7].
 ;; 
 (define (grsp-complex-uigamma p_b2 p_s1 p_z1 p_z2 p_n1)
@@ -704,20 +792,27 @@
 ;;;; grsp-complex-prgamma - Lower regularized gamma function P.
 ;;
 ;; Keywords:
+;;
 ;; - complex, prgamma.
 ;;
 ;; Parameters:
+;;
 ;; - p_b2: for integers.
+;;
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
+;;
 ;; - p_s1: desired gamma repesentation:
+;;
 ;;   - "#e": Euler.
 ;;   - "#w": Weierstrass.
+;;
 ;; - p_z1: complex.
 ;; - p_z2: complex.
 ;; - p_n1: Desired product iterations.
 ;;
 ;; Sources:
+;;
 ;; - [5][7].
 ;; 
 (define (grsp-complex-prgamma p_b2 p_s1 p_z1 p_z2 p_n1)
@@ -732,20 +827,27 @@
 ;;;; grsp-complex-qrgamma - Lower regularized gamma function Q.
 ;;
 ;; Keywords:
+;;
 ;; - complex, qrgamma.
 ;;
 ;; Parameters:
+;;
 ;; - p_b2: for integers.
+;;
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
+;;
 ;; - p_s1: desired gamma repesentation:
+;;
 ;;   - "#e": Euler.
 ;;   - "#w": Weierstrass.
+;;
 ;; - p_z1: complex.
 ;; - p_z2: complex.
 ;; - p_n1: Desired product iterations.
 ;;
 ;; Sources:
+;;
 ;; - [5][7].
 ;; 
 (define (grsp-complex-qrgamma p_b2 p_s1 p_z1 p_z2 p_n1)
@@ -759,15 +861,18 @@
 ;;;; grsp-complex-kummer-ch1 - Kummer's complex hypergeometric function (M).
 ;;
 ;; Keywords:
+;;
 ;; - complex, hypergeometric.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: a.
 ;; - p_b1: b.
 ;; - p_z1: z.
 ;; - p_n1: iterations.
 ;;
 ;; Sources:
+;;
 ;; - [10].
 ;;
 (define (grsp-complex-chm p_a1 p_b1 p_z1 p_n1)
@@ -788,9 +893,11 @@
 ;;;; grsp-complex-chu - Tricomi's complex hypergeometric function (U).
 ;;
 ;; Keywords:
+;;
 ;; - complex, hypergeometric.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: a.
 ;; - p_b1: b. Non-integer.
 ;; - p_z1: z.
@@ -800,6 +907,7 @@
 ;; - p_n2; see grsp4.grsp-complex-gamma.
 ;;
 ;; Sources:
+;;
 ;; - [10].
 ;;
 (define (grsp-complex-chu p_a1 p_b1 p_z1 p_n1 p_b2 p_s2 p_n2)
@@ -830,13 +938,16 @@
 ;;;; grsp-complex-erf - Gauss error function.
 ;;
 ;; Keywords:
+;;
 ;; - complex, gauss.
 ;;
 ;; Parameters:
+;;
 ;; - p_z1: complex.
 ;; - p_n1: iterations.
 ;;
 ;; Sources:
+;;
 ;; - [11].
 ;;
 (define (grsp-complex-erf p_z1 p_n1)
@@ -868,13 +979,16 @@
 ;;;; grsp-complex-erfi - Gauss imaginary error function.
 ;;
 ;; Keywords:
+;;
 ;; - complex, gauss.
 ;;
 ;; Parameters:
+;;
 ;; - p_z1: complex.
 ;; - p_n1: iterations.
 ;;
 ;; Sources:
+;;
 ;; - [11].
 ;;
 (define (grsp-complex-erfi p_z1 p_n1)
@@ -905,13 +1019,16 @@
 ;;;; grsp-complex-erfc - Gauss complementary error function.
 ;;
 ;; Keywords:
+;;
 ;; - complex, gauss.
 ;;
 ;; Parameters:
+;;
 ;; - p_z1: complex.
 ;; - p_n1: iterations.
 ;;
 ;; Sources:
+;;
 ;; - [11].
 ;;
 (define (grsp-complex-erfc p_z1 p_n1)
@@ -925,13 +1042,16 @@
 ;;;; grsp-complex-erfci - Gauss complementary imaginary error function.
 ;;
 ;; Keywords:
+;;
 ;; - complex, gauss.
 ;;
 ;; Parameters:
+;;
 ;; - p_z1: complex.
 ;; - p_n1: iterations.
 ;;
 ;; Sources:
+;;
 ;; - [11].
 ;;
 (define (grsp-complex-erfci p_z1 p_n1)
@@ -945,23 +1065,31 @@
 ;;;; grsp-complex-riemann-zeta - Riemann Zeta function.
 ;;
 ;; Keywords:
+;;
 ;; - complex.
 ;;
 ;; Parameters:
+;;
 ;; - p_b2: for integers.
+;;
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
+;;
 ;; - p_s1: desired gamma repesentation:
+;;
 ;;   - "#e": Euler.
 ;;   - "#w": Weierstrass.
+;;
 ;; - p_z1: complex.
 ;; - p_m1: iterations, converging.
 ;; - p_m2: iterations, analytic.
 ;;
 ;; Notes:
+;;
 ;; - Output might require rounding.
 ;;
 ;; Sources:
+;;
 ;; - [12][13][14][15].
 ;;
 (define (grsp-complex-riemann-zeta p_b2 p_s1 p_z1 p_m1 p_m2)
@@ -993,23 +1121,31 @@
 ;; (for z1 in (-inf.0, 0).
 ;;
 ;; Keywords:
+;;
 ;; - complex.
 ;;
 ;; Parameters:
+;;
 ;; - p_b2: for integers.
+;;
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
+;;
 ;; - p_s1: desired gamma repesentation:
+;;
 ;;   - "#e": Euler.
 ;;   - "#w": Weierstrass.
+;;
 ;; - p_z1: complex, real component must be < 0.
 ;; - p_m1: iterations, converging.
 ;; - p_m2: iterations, analytic.
 ;;
 ;; Notes:
+;;
 ;; - Use grsp-complex-riemann-zeta to operate on the whole Z domain.
 ;;
 ;; Sources:
+;;
 ;; - [12][13][14][15].
 ;;
 (define (grsp-complex-riemann-fezeta p_b2 p_s1 p_z1 p_m1 p_m2)
@@ -1040,16 +1176,20 @@
 ;;;; grsp-complex-riemann-euzeta - Riemann Zeta, for z1 in (1, +inf.0).
 ;;
 ;; Keywords:
+;;
 ;; - complex, riemann, zeta.
 ;;
 ;; Parameters:
+;;
 ;; - p_z1: complex, real component must be > 1.
 ;; - p_m1: iterations.
 ;;
 ;; Notes:
+;;
 ;; - Use grsp-complex-riemann-zeta to operate on the whole Z domain.
 ;;
 ;; Sources:
+;;
 ;; - [12][13][14][15].
 ;;
 (define (grsp-complex-riemann-euzeta p_z1 p_m1)
@@ -1066,16 +1206,20 @@
 ;;;; grsp-complex-riemann-cszeta - Riemann Zeta, for z1 in (0, 1).
 ;;
 ;; Keywords:
+;;
 ;; - complex, riemann, zeta.
 ;;
 ;; Parameters:
+;;
 ;; - p_z1: complex, real component must be > 1.
 ;; - p_m1: iterations.
 ;;
 ;; Notes:
+;;
 ;; - Use grsp-complex-riemann-zeta to operate on the whole Z domain.
 ;;
 ;; Sources:
+;;
 ;; - [12][13][14][15].
 ;;
 (define (grsp-complex-riemann-cszeta p_z1 p_m1)
@@ -1098,23 +1242,31 @@
 ;; Riemann's Zeta function.
 ;;
 ;; Keywords:
+;;
 ;; - complex, riemann, zeta.
 ;;
 ;; Parameters:
+;;
 ;; - p_b2: for integers.
+;;
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
+;;
 ;; - p_s1: desired gamma repesentation:
+;;
 ;;   - "#e": Euler.
 ;;   - "#w": Weierstrass.
+;;
 ;; - p_n2: number, integer [0, +inf.0).
 ;; - p_m1: iterations, converging.
 ;; - p_m2: iterations, analytic.
 ;;
 ;; Notes:
+;;
 ;; - See info on grsp-complex-riemann-zeta before using this function.
 ;;
 ;; Sources:
+;;
 ;; - [16].
 ;;
 (define (grsp-complex-bernoulli-number p_b2 p_s1 p_n2 p_m1 p_m2)
@@ -1150,9 +1302,11 @@
 ;;;; grsp-complex-eif - Phase shift.
 ;;
 ;; Keywords:
+;;
 ;; - complex.
 ;;
 ;; Parameters:
+;;
 ;; - p_f1: shift value.
 ;;
 (define (grsp-complex-eif p_f1)
@@ -1167,9 +1321,11 @@
 ;; function but with a shorter syntax.
 ;;
 ;; Keywords:
+;;
 ;; - complex.
 ;;
 ;; Parameters:
+;;
 ;; - p_n1: number.
 ;; - p_n2: number.
 ;;

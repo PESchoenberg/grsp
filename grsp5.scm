@@ -1634,17 +1634,21 @@
 ;;;; grsp-frequency-absolute - Absolute frequency of a value in sample p_a1.
 ;;
 ;; Keywords:
+;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;
 ;; - p_a1: sample.
 ;;
 ;; Output:
+;
 ;; - Unsorted matrix containing the values of sample p_a1 and their
 ;;   frequencies. The sample mode(s) are represented by the higest-valued
 ;;   elements of the matrix, since a sample can be uni or multi-modal.
 ;;
 ;; Sources:
+;
 ;; - [30][31][32].
 ;;
 (define (grsp-frequency-absolute p_a1)
@@ -1726,16 +1730,20 @@
 ;;;; grsp-mode - Mode.
 ;;
 ;; Keywords:
+;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;
 ;; - p_a1: sample (matrix).
 ;;
 ;; Output:
+;
 ;; - A matrix containing the value that corresponds to the mode and the mode
 ;;   itself.
 ;;
 ;; Sources:
+;
 ;; - [30][31][32].
 ;;
 (define (grsp-mode p_a1)
@@ -1808,13 +1816,16 @@
 ;;;; grsp-poisson-pmf-mth - Multithreaded variant of grsp-poisson-pmf.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: mean, expected value. Lambda, [0, +inf).
 ;; - p_k1: number oc. Int, [0, +inf).
 ;;
 ;; Sources:
+;;
 ;; - [4][5].
 ;;
 (define (grsp-poisson-pmf-mth p_l1 p_k1)
@@ -1830,12 +1841,15 @@
 ;;;; grsp-poisson-kurtosis - Kurtosis, Poisson distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: mean, expected value. Lambda, [0, +inf).
 ;;
 ;; Sources:
+;;
 ;; - [4].
 ;;
 (define (grsp-poisson-kurtosis p_l1)
@@ -1849,12 +1863,15 @@
 ;;;; grsp-poisson-skewness - Skwness, Poisson distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: mean, expected value. Lambda, [0, +inf).
 ;;
 ;; Sources:
+;;
 ;; - [4].
 ;;
 (define (grsp-poisson-skewness p_l1)
@@ -1868,12 +1885,15 @@
 ;;;; grsp-poisson-fisher - Fisher information, Poisson distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: mean, expected value. Lambda, [0, +inf).
 ;;
 ;; Sources:
+;;
 ;; - [4].
 ;;
 (define (grsp-poisson-fisher p_l1)
@@ -1887,13 +1907,16 @@
 ;;;; grsp-gamma-mean1 - Mean, gamma distribution, parametrization k-t.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_k1: k. Shape, (0, +inf).
 ;; - p_t1: theta. Scale, (0, +inf).
 ;;
 ;; Sources:
+;;
 ;; - [6].
 ;;
 (define (grsp-gamma-mean1 p_k1 p_t1)
@@ -1907,13 +1930,16 @@
 ;;;; grsp-gamma-mean2 - Mean, gamma distribution, parametrization a-b.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: alpha. Shape, (0, +inf).
 ;; - p_b1: beta. Scale, (0, +inf).
 ;;
 ;; Sources:
+;;
 ;; - [6].
 ;;
 (define (grsp-gamma-mean2 p_a1 p_b1)
@@ -1927,13 +1953,16 @@
 ;;;; grsp-gamma-variance1 - Variance, gamma distribution, parametrization k-t.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_k1: k. Shape, (0, +inf).
 ;; - p_t1: theta, (0, +inf).
 ;;
 ;; Sources:
+;;
 ;; - [6].
 ;;
 (define (grsp-gamma-variance1 p_k1 p_t1)
@@ -1947,13 +1976,16 @@
 ;; grsp-gamma-variance2 - Variance, gamma distribution, parametrization a-b.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: alpha. Shape, (0, +inf).
 ;; - p_b1: beta. Scale, (0, +inf).
 ;;
 ;; Sources:
+;;
 ;; - [6].
 ;;
 (define (grsp-gamma-variance2 p_a1 p_b1)
@@ -1968,14 +2000,18 @@
 ;; and a-b.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_n1:
+;;
 ;;   - k: for parametrization k-t.
 ;;   - alpha: for parametrization a-b.
 ;;
 ;; Sources:
+;;
 ;; - [6].
 ;;
 (define (grsp-gamma-kurtosis p_n1)
@@ -1990,14 +2026,17 @@
 ;; and a-b.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_n1:
 ;;   - k: for parametrization k-t.
 ;;   - alpha: for parametrization a-b.
 ;;
 ;; Sources:
+;;
 ;; - [6].
 ;;
 (define (grsp-gamma-skewness p_n1)
@@ -2011,13 +2050,16 @@
 ;;;; grsp-gamma-mode1 - Mode, gamma distribution, parametrization k-t.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_k1: k. Shape. Mode requires [0, +inf).
 ;; - p_t1: theta. Scale, (0, +inf).
 ;;
 ;; Sources:
+;;
 ;; - [6].
 ;;
 (define (grsp-gamma-mode1 p_k1 p_t1)
@@ -2031,13 +2073,16 @@
 ;;;; grsp-gamma-mode2 - Mode, gamma distribution, parametrization a-b.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: alpha. Shape. Mode requires [1, +inf).
 ;; - p_b1: beta. Scale, (0, +inf).
 ;;
 ;; Sources:
+;;
 ;; - [6].
 ;;
 (define (grsp-gamma-mode2 p_a1 p_b1)
@@ -2052,21 +2097,28 @@
 ;; parametrization k-t.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_b2: for integers.
+;;
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
+;;
 ;; - p_s1: desired gamma repesentation:
+;;
 ;;   - "#e": Euler.
 ;;   - "#w": Weierstrass.
+;;
 ;; - p_k1: k. Shape.
 ;; - p_t1: theta.
 ;; - p_x1: sample, (0, +inf)
 ;; - p_n1: desired product iterations.
 ;;
 ;; Sources:
+;;
 ;; - [6].
 ;;
 (define (grsp-gamma-pdf1 p_b2 p_s1 p_k1 p_t1 p_x1 p_n1)
@@ -2095,21 +2147,28 @@
 ;; parametrization k-t.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_b2: for integers.
+;;
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
+;;
 ;; - p_s1: desired gamma repesentation:
+;;
 ;;   - "#e": Euler.
 ;;   - "#w": Weierstrass.
+;;
 ;; - p_k1: k. Shape.
 ;; - p_t1: theta.
 ;; - p_x1: sample, (0, +inf)
 ;; - p_n1: desired product iterations.
 ;;
 ;; Sources:
+;;
 ;; - [6].
 ;;
 (define (grsp-gamma-pdf1-mth p_b2 p_s1 p_k1 p_t1 p_x1 p_n1)
@@ -2127,21 +2186,28 @@
 ;; parametrization a-b.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_b2: for integers.
+;;
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
+;;
 ;; - p_s1: desired gamma repesentation:
+;;
 ;;   - "#e": Euler.
 ;;   - "#w": Weierstrass.
+;;
 ;; - p_a1: alpha. 
 ;; - p_b1: beta.
 ;; - p_x1: sample, (0, +inf).
 ;; - p_n1: desired product iterations.
 ;;
 ;; Sources:
+;;
 ;; - [6].
 ;;
 (define (grsp-gamma-pdf2 p_b2 p_s1 p_a1 p_b1 p_x1 p_n1)
@@ -2169,21 +2235,28 @@
 ;;;; grsp-gamma-pdf2-mth - Multithreaded version of grsp-gamma-pdf2.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_b2: for integers.
+;;
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
+;;
 ;; - p_s1: desired gamma repesentation:
+;;
 ;;   - "#e": Euler.
 ;;   - "#w": Weierstrass.
+;;
 ;; - p_a1: alpha. 
 ;; - p_b1: beta.
 ;; - p_x1: sample, (0, +inf).
 ;; - p_n1: desired product iterations.
 ;;
 ;; Sources:
+;;
 ;; - [6].
 ;;
 (define (grsp-gamma-pdf2-mth p_b2 p_s1 p_a1 p_b1 p_x1 p_n1)
@@ -2201,21 +2274,28 @@
 ;; parametrization k-t.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_b2: for integers.
+;;
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
+;;
 ;; - p_s1: desired gamma repesentation:
+;;
 ;;   - "#e": Euler.
 ;;   - "#w": Weierstrass.
+;;
 ;; - p_a1: alpha. 
 ;; - p_b1: beta.
 ;; - p_x1: sample, (0, +inf).
 ;; - p_n1: desired product iterations.
 ;;
 ;; Sources:
+;;
 ;; - [6].
 ;;
 (define (grsp-gamma-cdf1 p_b2 p_s1 p_k1 p_t1 p_x1 p_n1)
@@ -2238,21 +2318,28 @@
 ;;;; grsp-gamma-cdf1-mth - Multithreaded variant of grsp-gamma-cdf1.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_b2: for integers.
+;;
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
+;;
 ;; - p_s1: desired gamma repesentation:
+;;
 ;;   - "#e": Euler.
 ;;   - "#w": Weierstrass.
+;;
 ;; - p_a1: alpha. 
 ;; - p_b1: beta.
 ;; - p_x1: sample, (0, +inf).
 ;; - p_n1: desired product iterations.
 ;;
 ;; Sources:
+;;
 ;; - [6].
 ;;
 (define (grsp-gamma-cdf1-mth p_b2 p_s1 p_k1 p_t1 p_x1 p_n1)
@@ -2269,21 +2356,28 @@
 ;; parametrization a-b.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_b2: for integers.
+;;
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
+;;
 ;; - p_s1: desired gamma repesentation:
+;;
 ;;   - "#e": Euler.
 ;;   - "#w": Weierstrass.
+;;
 ;; - p_a1: alpha. 
 ;; - p_b1: beta.
 ;; - p_x1: sample, (0, +inf).
 ;; - p_n1: desired product iterations.
 ;;
 ;; Sources:
+;;
 ;; - [6].
 ;;
 (define (grsp-gamma-cdf2 p_b2 p_s1 p_a1 p_b1 p_x1 p_n1)
@@ -2306,21 +2400,28 @@
 ;;;; grsp-gamma-cdf2-mth - Multithreaded variant of grsp-gamma-cdf2.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_b2: for integers.
+;;
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
+;;
 ;; - p_s1: desired gamma repesentation:
+;;
 ;;   - "#e": Euler.
 ;;   - "#w": Weierstrass.
+;;
 ;; - p_a1: alpha. 
 ;; - p_b1: beta.
 ;; - p_x1: sample, (0, +inf).
 ;; - p_n1: desired product iterations.
 ;;
 ;; Sources:
+;;
 ;; - [6].
 ;;
 (define (grsp-gamma-cdf2-mth p_b2 p_s1 p_a1 p_b1 p_x1 p_n1)
@@ -2337,14 +2438,17 @@
 ;; parametrization k-t.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_k1: k. Shape, (0, +inf).
 ;; - p_t1: theta. Scale, (0, +inf).
 ;; - p_t2: for (-inf, p_b1).
 ;;
 ;; Sources:
+;;
 ;; - [6][11].
 ;;
 (define (grsp-gamma-mgf1 p_k1 p_t1 p_t2)
@@ -2359,14 +2463,17 @@
 ;; parametrization a-b.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: alpha. 
 ;; - p_b1: beta.
 ;; - p_t2: for (-inf, p_b1).
 ;;
 ;; Sources:
+;;
 ;; - [6][11].
 ;;
 (define (grsp-gamma-mgf2 p_a1 p_b1 p_t2)
@@ -2380,13 +2487,16 @@
 ;;;; grsp-erlang-mean - Mean, Erlang distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_k1: k. Shape, [1, +inf). 
 ;; - p_l1: lambda. Rate, (0, +inf).
 ;;
 ;; Sources:
+;;
 ;; - [7].
 ;;
 (define (grsp-erlang-mean p_k1 p_l1)
@@ -2400,13 +2510,16 @@
 ;;;; grsp-erlang-mode - Mode, Erlang distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_k1: k. Shape, [1, +inf). 
 ;; - p_l1: lambda. Rate, (0, +inf).
 ;;
 ;; Sources:
+;;
 ;; - [7].
 ;;
 (define (grsp-erlang-mode p_k1 p_l1)
@@ -2421,13 +2534,16 @@
 ;;;; grsp-erlang-variance - Variance, Erlang distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_k1: k. Shape, [1, +inf). 
 ;; - p_l1: lambda. Rate, (0, +inf).
 ;;
 ;; Sources:
+;;
 ;; - [7].
 ;;
 (define (grsp-erlang-variance p_k1 p_l1)
@@ -2441,12 +2557,15 @@
 ;;;; grsp-erlang-kurtosis - Kurtosis, Erlang distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_k1: k. Shape, [1, +inf). 
 ;;
 ;; Sources:
+;;
 ;; - [7].
 ;;
 (define (grsp-erlang-kurtosis p_k1)
@@ -2460,12 +2579,15 @@
 ;;;; grsp-erlang-skewness - Variance, Erlang distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_k1: k. Shape, [1, +inf). 
 ;;
 ;; Sources:
+;;
 ;; - [7].
 ;;
 (define (grsp-erlang-skewness p_k1)
@@ -2479,18 +2601,22 @@
 ;;;; grsp-erlang-pdf - Probability density function, Erlang distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_k1: k. Shape parameter, [1, +inf). 
 ;; - p_l1: lambda, (0, +inf).
 ;; - p_x1: [0, +inf).
 ;;
 ;; Notes:
+;;
 ;; - See desription of grsp4.grsp-complex-gamma for details about parameters
 ;;   above.
 ;;
 ;; Sources:
+;;
 ;; - [5][7].
 ;;
 (define (grsp-erlang-pdf p_k1 p_l1 p_x1)
@@ -2509,25 +2635,33 @@
 ;;;; grsp-erlang-cdf - Cumulative distribution function, Erlang distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_b2: for integers.
+;;
 ;;   - #t: if rounding is desired.
 ;;   - #f: if rounding is not desired.
+;;
 ;; - p_s1: desired gamma repesentation:
+;;
 ;;   - "#e": Euler.
 ;;   - "#w": Weierstrass.
+;;
 ;; - p_k1: k. Shape parameter, [1, +inf). 
 ;; - p_l1: lambda, (0, +inf).
 ;; - p_x1: [0, +inf).
 ;; - p_n1: Desired product iterations.
 ;;
 ;; Notes:
+;;
 ;; - See desription of grsp4.grsp-complex-gamma for details about parameters
 ;;   above.
 ;;
 ;; Sources:
+;;
 ;; - [5][7].
 ;; 
 (define (grsp-erlang-cdf p_b2 p_s1 p_k1 p_l1 p_x1 p_n1)
@@ -2541,14 +2675,17 @@
 ;;;; grsp-erlang-variance - Moment generating function, Erlang distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_k1: k. Shape, [1, +inf). 
 ;; - p_l1: lambda. Rate, (0, +inf).
 ;; - p_t1: p_t1 < p_l1.
 ;;
 ;; Sources:
+;;
 ;; - [7].
 ;;
 (define (grsp-erlang-mgf p_k1 p_l1 p_t1)
@@ -2562,12 +2699,15 @@
 ;;;; grsp-erlang-scale - Scale, Erlang distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters: 
+;;
 ;; - p_l1: lambda. Rate, (0, +inf).
 ;;
 ;; Sources:
+;;
 ;; - [7].
 ;;
 (define (grsp-erlang-scale p_l1)
@@ -2581,14 +2721,17 @@
 ;;;; grsp-normal-pdf - Probability density function, normal distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters: 
+;;
 ;; - p_x1: x.
 ;; - p_x2: mean.
 ;; - p_x3: standard deviation.
 ;;
 ;; Sources:
+;;
 ;; - [11].
 ;;
 (define (grsp-normal-pdf p_x1 p_x2 p_x3)
@@ -2615,14 +2758,17 @@
 ;;;; grsp-normal-pdf-mth - Multithreaded variant of grsp-normal-pdf.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters: 
+;;
 ;; - p_x1: x.
 ;; - p_x2: mean.
 ;; - p_x3: standard deviation.
 ;;
 ;; Sources:
+;;
 ;; - [11].
 ;;
 (define (grsp-normal-pdf-mth p_x1 p_x2 p_x3)
@@ -2638,16 +2784,21 @@
 ;;;; grsp-normal-entropy - Entropy, normal distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_g1: logarithm base.
+;;
 ;;   - 2: base 2.
 ;;   - 2.71: natural base.
 ;;   - 10: base 10.
+;;
 ;; - p_x3: standard deviation.
 ;;
 ;; Sources:
+;;
 ;; - [11].
 ;;
 (define (grsp-normal-entropy p_g1 p_x3)
@@ -2662,15 +2813,18 @@
 ;; divergence (DKL), normal distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: mean 1.
 ;; - p_x2; mean 2.
 ;; - p_x3: standard deviation 1.
 ;; - p_x4: standard deviation 2.
 ;;
 ;; Sources:
+;;
 ;; - [11][17].
 ;;
 (define (grsp-normal-entropy-relative p_x1 p_x2 p_x3 p_x4)
@@ -2698,15 +2852,18 @@
 ;; grsp-normal-entropy-relative.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: mean 1.
 ;; - p_x2; mean 2.
 ;; - p_x3: standard deviation 1.
 ;; - p_x4: standard deviation 2.
 ;;
 ;; Sources:
+;;
 ;; - [11][17].
 ;;
 (define (grsp-normal-entropy-relative-mth p_x1 p_x2 p_x3 p_x4)
@@ -2723,13 +2880,16 @@
 ;;;; grsp-normal-fisher - Fisher infromation matrix, normal distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: mean 1.
 ;; - p_x2: standard deviation.
 ;;
 ;; Sources:
+;;
 ;; - [11][19].
 ;;
 (define (grsp-normal-fisher p_x1 p_x2)
@@ -2745,13 +2905,16 @@
 ;;;; grsp-normal-fisher-mth - Multithreaded varant of grsp-normal-fisher.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: mean 1.
 ;; - p_x2: standard deviation.
 ;;
 ;; Sources:
+;;
 ;; - [11][19].
 ;;
 (define (grsp-normal-fisher-mth p_x1 p_x2)
@@ -2767,13 +2930,16 @@
 ;;;; grsp-weibull-median - Median, Weibull distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_k1: shape, [0.0, +inf.0). 
 ;; - p_l1: scale, [0.0, +inf.0).
 ;;
 ;; Sources:
+;;
 ;; - [38][39].
 ;;
 (define (grsp-weibull-median p_k1 p_l1)
@@ -2787,9 +2953,11 @@
 ;;;; grsp-weibull-meam - Mean, Weibull distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_k1: shape, [0.0, +inf.0). 
 ;; - p_l1: scale, [0.0, +inf.0).
 ;; - p_b2: see grsp4.grsp-complex-gamma.
@@ -2797,6 +2965,7 @@
 ;; - p_n1: see grsp4.grsp-complex-gamma.
 ;;
 ;; Sources:
+;;
 ;; - [38][39].
 ;;
 (define (grsp-weibull-mean p_k1 p_l1 p_b2 p_s1 p_n1)
@@ -2810,13 +2979,16 @@
 ;;;; grsp-weibull-mode - Mode, Weibull distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_k1: shape, [0.0, +inf.0). 
 ;; - p_l1: scale, [0.0, +inf.0).
 ;;
 ;; Sources:
+;;
 ;; - [38][39].
 ;;
 (define (grsp-weibull-mode p_k1 p_l1)
@@ -2831,14 +3003,17 @@
 ;;;; grsp-weibull-cdf - CDF, Weibull distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_k1: shape, [0.0, +inf.0). 
 ;; - p_l1: scale, [0.0, +inf.0).
 ;; - p_n1: number, [0.0, +inf.0).
 ;;
 ;; Sources:
+;;
 ;; - [38][39].
 ;;
 (define (grsp-weibull-cdf p_k1 p_l1 p_n1)
@@ -2855,14 +3030,17 @@
 ;;;; grsp-weibull-pdf - PDF, Weibull distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_k1: shape, [0.0, +inf.0). 
 ;; - p_l1: scale, [0.0, +inf.0).
 ;; - p_n1: number, [0.0, +inf.0).
 ;;
 ;; Sources:
+;;
 ;; - [38][39].
 ;;
 (define (grsp-weibull-pdf p_k1 p_l1 p_n1)
@@ -2883,13 +3061,16 @@
 ;;;; grsp-weibull-entropy - Entropy, Weibull distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_k1: shape, [0.0, +inf.0). 
 ;; - p_l1: scale, [0.0, +inf.0).
 ;;
 ;; Sources:
+;;
 ;; - [38][39].
 ;;
 (define (grsp-weibull-entropy p_k1 p_l1)
@@ -2905,13 +3086,16 @@
 ;;;; grsp-weibull-entropy-mth - Multithreaded variant of grsp-weibull-entropy.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_k1: shape, [0.0, +inf.0). 
 ;; - p_l1: scale, [0.0, +inf.0).
 ;;
 ;; Sources:
+;;
 ;; - [38][39].
 ;;
 (define (grsp-weibull-entropy-mth p_k1 p_l1)
@@ -2927,9 +3111,11 @@
 ;;;; grsp-weibull-variance - Variance, Weibull distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_k1: shape, [0.0, +inf.0).
 ;; - p_l1: scale, [0.0, +inf.0).
 ;; - p_b2: see grsp4.grsp-complex-gamma.
@@ -2937,6 +3123,7 @@
 ;; - p_n1: see grsp4.grsp-complex-gamma.
 ;;
 ;; Sources:
+;;
 ;; - [38][39].
 ;;
 (define (grsp-weibull-variance p_k1 p_l1 p_b2 p_s1 p_n1)
@@ -2960,9 +3147,11 @@
 ;;;; grsp-weibull-skewness - Skewness, Weibull distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_k1: shape, [0.0, +inf.0).
 ;; - p_l1: scale, [0.0, +inf.0).
 ;; - p_b2: see grsp4.grsp-complex-gamma.
@@ -2970,6 +3159,7 @@
 ;; - p_n1: see grsp4.grsp-complex-gamma.
 ;;
 ;; Sources:
+;;
 ;; - [38][39].
 ;;
 (define (grsp-weibull-skewness p_k1 p_l1 p_b2 p_s1 p_n1)
@@ -3002,9 +3192,11 @@
 ;;;; grsp-weibull-skewness-mth - Multithreaded variant of grsp-weibull-skewness.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_k1: shape, [0.0, +inf.0).
 ;; - p_l1: scale, [0.0, +inf.0).
 ;; - p_b2: see grsp4.grsp-complex-gamma.
@@ -3012,6 +3204,7 @@
 ;; - p_n1: see grsp4.grsp-complex-gamma.
 ;;
 ;; Sources:
+;;
 ;; - [38][39].
 ;;
 (define (grsp-weibull-skewness-mth p_k1 p_l1 p_b2 p_s1 p_n1)
@@ -3034,9 +3227,11 @@
 ;;;; grsp-weibull-mgf - Moment generating function, Weibull distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_k1: shape, [0.0, +inf.0).
 ;; - p_l1: scale, [0.0, +inf.0).
 ;; - p_b2: see grsp4.grsp-complex-gamma.
@@ -3046,6 +3241,7 @@
 ;; - p_t1: t.
 ;;
 ;; Sources:
+;;
 ;; - [38][39].
 ;;
 (define (grsp-weibull-mgf p_k1 p_l1 p_b2 p_s1 p_n1 p_n2 p_t1)
@@ -3071,9 +3267,11 @@
 ;;;; grsp-weibull-cf - Characteristic function, Weibull distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_k1: shape, [0.0, +inf.0).
 ;; - p_l1: scale, [0.0, +inf.0).
 ;; - p_b2: see grsp4.grsp-complex-gamma.
@@ -3084,6 +3282,7 @@
 ;; - p_i2: i.
 ;;
 ;; Sources:
+;;
 ;; - [38][39].
 ;;
 (define (grsp-weibull-cf p_k1 p_l1 p_b2 p_s1 p_n1 p_n2 p_t1 p_i2)
@@ -3109,16 +3308,20 @@
 ;;;; grsp-theil-sen-estimator - Slope estimator, line fitting.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, line, fitting, estimator, linear, regression.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
+;;
 ;;   - 0: x1.
 ;;   - 1: x2.
 ;;   - 2: y1.
 ;;   - 3: y2.
 ;;
 ;; Sources:
+;;
 ;; - [41].
 ;;
 (define (grsp-theil-sen-estimator p_a1)
@@ -3176,16 +3379,20 @@
 ;; grsp-theil-sen-estimator.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability, line, fitting, estimator, linear, regression.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
+;;
 ;;   - 0: x1.
 ;;   - 1: x2.
 ;;   - 2: y1.
 ;;   - 3: y2.
 ;;
 ;; Sources:
+;;
 ;; - [41].
 ;;
 (define (grsp-theil-sen-estimator-mth p_a1)
@@ -3262,14 +3469,17 @@
 ;;;; grsp-triangular-mean - Mean of a triangular distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: a, (-inf.0, +inf.0).
 ;; - p_b1: b, b >= a.
 ;; - p_c1: c, mode.
 ;;
 ;; Sources:
+;;
 ;; - [42].
 ;;
 (define (grsp-triangular-mean p_a1 p_b1 p_c1)
@@ -3286,17 +3496,21 @@
 ;;;; grsp-triangular-variance - Variance of a triangular distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: a.
 ;; - p_b1: b.
 ;; - p_c1: c.
 ;;
 ;; Notes:
+;;
 ;; - See grsp-triangular-mean for parametric properties.
 ;;
 ;; Sources:
+;;
 ;; - [42].
 ;;
 (define (grsp-triangular-variance p_a1 p_b1 p_c1)
@@ -3326,17 +3540,21 @@
 ;;;; grsp-triangular-median - Median of a triangular distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: a.
 ;; - p_b1: b.
 ;; - p_c1: c.
 ;;
 ;; Notes:
+;;
 ;; - See grsp-triangular-mean for parametric properties.
 ;;
 ;; Sources:
+;;
 ;; - [42].
 ;;
 (define (grsp-triangular-median p_a1 p_b1 p_c1)
@@ -3368,18 +3586,22 @@
 ;; distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: a.
 ;; - p_b1: b.
 ;; - p_c1: c.
 ;; - p_x1; x.
 ;;
 ;; Notes:
+;;
 ;; - See grsp-triangular-mean for parametric properties.
 ;;
 ;; Sources:
+;;
 ;; - [42].
 ;;
 (define (grsp-triangular-pdf p_a1 p_b1 p_c1 p_x1)
@@ -3412,16 +3634,20 @@
 ;;;; grsp-triangular-entropy - Entropy of a triangular distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: a.
 ;; - p_b1: b, b > a.
 ;;
 ;; Notes:
+;;
 ;; - See grsp-triangular-mean for additional parametric properties.
 ;;
 ;; Sources:
+;;
 ;; - [42].
 ;;
 (define (grsp-triangular-entropy p_a1 p_b1)
@@ -3443,18 +3669,22 @@
 ;; distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: a.
 ;; - p_b1: b.
 ;; - p_c1: c.
 ;; - p_x1; x.
 ;;
 ;; Notes:
+;;
 ;; - See grsp-triangular-mean for parametric properties.
 ;;
 ;; Sources:
+;;
 ;; - [42].
 ;;
 (define (grsp-triangular-cdf p_a1 p_b1 p_c1 p_x1)
@@ -3487,17 +3717,21 @@
 ;;;; grsp-triangular-skewness - Skewness of a triangular distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: a.
 ;; - p_b1: b.
 ;; - p_c1: c.
 ;;
 ;; Notes:
+;;
 ;; - See grsp-triangular-mean for parametric properties.
 ;;
 ;; Sources:
+;;
 ;; - [42].
 ;;
 (define (grsp-triangular-skewness p_a1 p_b1 p_c1)
@@ -3534,13 +3768,16 @@
 ;;;; grsp-cuniform-mean - Mean of a continuous uniform distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: a.
 ;; - p_b1: b.
 ;;
 ;; Sources:
+;;
 ;; - [43].
 ;;
 (define (grsp-cuniform-mean p_a1 p_b1)
@@ -3554,13 +3791,16 @@
 ;;;; grsp-cuniform-median - Median of a continuous uniform distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: a.
 ;; - p_b1: b.
 ;;
 ;; Sources:
+;;
 ;; - [43].
 ;;
 (define (grsp-cuniform-median p_a1 p_b1)
@@ -3575,14 +3815,17 @@
 ;; in a continuous uniform distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: a, for interval [-inf.0, +inf.0].
 ;; - p_b1: b, for interval [-inf.0, +inf.0].
 ;; - P_x1: x.
 ;;
 ;; Sources:
+;;
 ;; - [43].
 ;;
 (define (grsp-cuniform-support p_a1 p_b1 p_x1)
@@ -3597,14 +3840,17 @@
 ;;;; grsp-cuniform-pdf - PDF, continuous uniform distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: a, for interval [-inf.0, +inf.0].
 ;; - p_b1: b, for interval [-inf.0, +inf.0].
 ;; - P_x1: x.
 ;;
 ;; Sources:
+;;
 ;; - [43].
 ;;
 (define (grsp-cuniform-pdf p_a1 p_b1 p_x1)
@@ -3620,9 +3866,11 @@
 ;; distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_n1: n.
 ;; - p_b2.
 ;; - p_s1.
@@ -3631,9 +3879,11 @@
 ;; - p_m2.
 ;;
 ;; Notes:
+;;
 ;; - For specs on all parameters except p_n1, see grsp-complex-bernoulli-number.
 ;;
 ;; Sources:
+;;
 ;; - [43].
 ;;
 (define (grsp-cuniform-cgf p_n1 p_b2 p_s1 p_n2 p_m1 p_m2)
@@ -3647,14 +3897,17 @@
 ;;;; grsp-cuniform-cdf - CDF, continuous uniform distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: a, for interval [-inf.0, +inf.0].
 ;; - p_b1: b, for interval [-inf.0, +inf.0].
 ;; - P_x1: x.
 ;;
 ;; Sources:
+;;
 ;; - [43].
 ;;
 (define (grsp-cuniform-cdf p_a1 p_b1 p_x1)
@@ -3672,13 +3925,16 @@
 ;;;; grsp-cuniform-variance - Variance, continuous uniform distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: a, for interval [-inf.0, +inf.0].
 ;; - p_b1: b, for interval [-inf.0, +inf.0].
 ;;
 ;; Sources:
+;;
 ;; - [43].
 ;;
 (define (grsp-cuniform-variance p_a1 p_b1)
@@ -3692,13 +3948,16 @@
 ;;;; grsp-cuniform-entropy - Entropy, continuous uniform distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: a, for interval [-inf.0, +inf.0].
 ;; - p_b1: b, for interval [-inf.0, +inf.0].
 ;;
 ;; Sources:
+;;
 ;; - [43].
 ;;
 (define (grsp-cuniform-entropy p_a1 p_b1)
@@ -3712,9 +3971,11 @@
 ;;;; grsp-cuniform-kurtosis - Excess kurtosis, continuous uniform distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Sources:
+;;
 ;; - [43].
 ;;
 (define (grsp-cuniform-kurtosis)
@@ -3728,9 +3989,11 @@
 ;;;; grsp-cuniform-skewness - Skewness, continuous uniform distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Sources:
+;;
 ;; - [43].
 ;;
 (define (grsp-cuniform-skewness)
@@ -3743,12 +4006,15 @@
 ;; if p_x1 is supported, #f otherwise.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number.
 ;;
 ;; Sources:
+;;
 ;; - [44].
 ;;
 (define (grsp-gumbel-support p_x1)
@@ -3762,9 +4028,11 @@
 ;;;; grsp-gumbel-kurtosis - Excess kurtosis, Gumbel distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Sources:
+;;
 ;; - [44].
 ;;
 (define (grsp-gumbel-kurtosis)
@@ -3778,13 +4046,16 @@
 ;;;; grsp-gumbel-median - Median, Gumbel distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_b1: scale, real, (0, +inf.0).
 ;; - p_u1: location (real).
 ;;
 ;; Sources:
+;;
 ;; - [44].
 ;;
 (define (grsp-gumbel-median p_b1 p_u1)
@@ -3798,9 +4069,11 @@
 ;;;; grsp-gumbel-skewness - Skewness, Gumbel distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Sources:
+;;
 ;; - [44].
 ;;
 (define (grsp-gumbel-skewness)
@@ -3812,14 +4085,17 @@
 ;;;; grsp-gumbel-pdf - PDF, Gumbel distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_b1: scale, real, (0, +inf.0).
 ;; - p_u1: location (real).
 ;; - p_x1: number.
 ;;
 ;; Sources:
+;;
 ;; - [44].
 ;;
 (define (grsp-gumbel-pdf p_b1 p_u1 p_x1)
@@ -3837,14 +4113,17 @@
 ;;;; grsp-gumbel-cdf - CDF, Gumbel distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_b1: scale, real, (0, +inf.0).
 ;; - p_u1: location (real).
 ;; - p_x1: number.
 ;;
 ;; Sources:
+;;
 ;; - [44].
 ;;
 (define (grsp-gumbel-cdf p_b1 p_u1 p_x1)
@@ -3858,13 +4137,16 @@
 ;;;; grsp-gumbel-mean - Mean, Gumbel distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_b1: scale, real, (0, +inf.0).
 ;; - p_u1: location (real).
 ;;
 ;; Sources:
+;;
 ;; - [44].
 ;;
 (define (grsp-gumbel-mean p_b1 p_u1)
@@ -3878,12 +4160,15 @@
 ;;;; grsp-gumbel-variance - Variance, Gumbel distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_b1: scale, real, (0, +inf.0).
 ;;
 ;; Sources:
+;;
 ;; - [44].
 ;;
 (define (grsp-gumbel-variance p_b1)
@@ -3897,12 +4182,15 @@
 ;;;; grsp-gumbel-entropy - Entropy, Gumbel distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability.
 ;;
 ;; Parameters:
+;;
 ;; - p_b1: scale, real, (0, +inf.0).
 ;;
 ;; Sources:
+;;
 ;; - [44].
 ;;
 (define (grsp-gumbel-entropy p_b1)
