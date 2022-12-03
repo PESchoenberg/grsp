@@ -27,6 +27,7 @@
 
 
 ;;;; General notes:
+;;
 ;; - Read sources for limitations on function parameters.
 ;; - grsp3 provides some level of matrix algebra functionality for Guile, but in
 ;;   its current version it is not intended to be particulary fast. It does not 
@@ -36,6 +37,7 @@
 ;;   stated.
 ;;
 ;; Sources:
+;;
 ;; - [1] Hep.by. (2020). Array Procedures - Guile Reference Manual. [online]
 ;;   Available at:
 ;;   http://www.hep.by/gnu/guile/Array-Procedures.html#Array-Procedures
@@ -392,15 +394,19 @@
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 ;; Notes:
+;;
 ;; - See grsp-matrix-esi.
 ;;
 ;; Output:
+;;
 ;; - lm value.
 ;;
 (define (grsp-lm p_a1)
@@ -414,15 +420,19 @@
 ;;;; grsp-hm - Short form of (grsp-matrix-esi 2 p_a1).
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 ;; Notes:
+;;
 ;; - See grsp-matrix-esi.
 ;;
 ;; Output:
+;;
 ;; - hm value.
 ;;
 (define (grsp-hm p_a1)
@@ -436,15 +446,19 @@
 ;;;; grsp-ln - Short form of (grsp-matrix-esi 3 p_a1).
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 ;; Notes:
+;;
 ;; - See grsp-matrix-esi.
 ;;
 ;; Output:
+;;
 ;; - ln value.
 ;;  
 (define (grsp-ln p_a1)  
@@ -458,15 +472,19 @@
 ;;;; grsp-hn - Short form of (grsp-matrix-esi 4 p_a1).
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 ;; Notes:
+;;
 ;; - See grsp-matrix-esi.
 ;;
 ;; Output:
+;;
 ;; - hn value.
 ;;  
 (define (grsp-hn p_a1)  
@@ -481,15 +499,19 @@
 ;; p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 ;; Notes:
+;;
 ;; - See grsp-matrix-te2.
 ;;
 ;; Output:
+;;
 ;; - (+ (- hm lm)) value.
 ;; 
 (define (grsp-tm p_a1)
@@ -506,15 +528,19 @@
 ;; p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 ;; Notes:
+;;
 ;; - See grsp-matrix-te2.
 ;;
 ;; Output:
+;;
 ;; - (+ (- hn ln)) value.
 ;; 
 (define (grsp-tn p_a1)
@@ -530,20 +556,26 @@
 ;;;; grsp-matrix-esi - Extracts shape information from an m x n matrix.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_e1: number indicating the element value desired.
+;;
 ;;   - 1: lm. low boundary for m (rows).
 ;;   - 2: hm. high boundary for m (rows).
 ;;   - 3: ln. low boundary for n (cols).
 ;;   - 4: hn. high boundary for n (cols).
+;;
 ;; - p_m1: m.
 ;;
 ;; Sources:
+;;
 ;; - [1][2][3][4].
 ;;
 ;; Output:
+;;
 ;; - A number corresponding to the shape element value desired. Returns zero  
 ;;   if p_e1 is incorrect.
 ;;
@@ -569,10 +601,13 @@
 ;; element value p_s1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: matrix type.
+;;
 ;;   - "#I": Identity matrix.
 ;;   - "#AI": Anti Identity matrix (anti diagonal).
 ;;   - "#Q": Quincunx matrix.
@@ -596,16 +631,20 @@
 ;;   - "#zcol": zebra col.
 ;;   - "#n0[-m:+m]": matrix of (2m +1 ) rows and n cols, with first column
 ;;     element -m and last row, first col element reaching m.
+;;
 ;; - p_m1: rows, positive integer.
 ;; - p_n1: cols, positive integer.
 ;;
 ;; Examples:
+;;
 ;; - example3.scm, example5.scm.
 ;;
 ;; Notes:
+;;
 ;; - See grsp0.grsp-s2dbc, grsp0.grsp-dbc2s.
 ;;
 ;; Sources:
+;;
 ;; - [1][2][18][31].
 ;;
 (define (grsp-matrix-create p_s1 p_m1 p_n1)
@@ -971,17 +1010,21 @@
 ;; matrix's element equals p_v1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix to operate on.
 ;; - p_v1: value to be replaced within p_a1.
 ;; - p_v2: value to replace p_v1 with.
 ;;
 ;; Sources:
+;;
 ;; - [1][2][3][4].
 ;;
 ;; Output:
+;;
 ;; - A modified matrix p_a in which all p_v1 values would have been replaced by
 ;;   p_v2.
 ;;
@@ -1012,22 +1055,27 @@
 ;; of a list.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: matrix type.
+;;
 ;;   - "#UD": User defined.
 ;;   - "#SBC": standard basis, cartesian.
 ;;   - "#Gell-Mann": Gell-Mann matrices.
 ;;   - "#Pauli": Pauli matrices.
 ;;   - "#Dirac": Dirac gamma matrices.
 ;;   - "#srdd": Ax = b with A strictly diagonal.
+;;
 ;; - p_n2: number of matrices to create.
 ;; - p_n3: default value for said matrices.
 ;; - p_m1: rows, positive integer.
 ;; - p_n1: cols, positive integer.
 ;;
 ;; Notes:
+;;
 ;; - Parameters p_n1, p_n2, p_m1 and/or p_n1 might not be relevant in the case
 ;;   of some sets (for example, in the case of Pauli matrices, which are all of
 ;;   2 x 2). In such cases, these two parameters will not be taken into
@@ -1043,9 +1091,11 @@
 ;;
 ;;
 ;; Output:
+;;
 ;; - A list containing the matrices created as its elements.
 ;;
 ;; Sources:
+;;
 ;; - [1][2][18][27][28][29][30][45].
 ;;
 (define (grsp-matrix-create-set p_s1 p_n2 p_n3 p_m1 p_n1)
@@ -1268,10 +1318,13 @@
 ;; and values.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: matrix type.
+;;
 ;;   - "#X": Qubit quantum gate. Pauli X. NOT.
 ;;   - "#Y": Qubit quantum gate. Pauli Y.
 ;;   - "#Z": Qubit quantum gate. Pauli Z.
@@ -1304,15 +1357,19 @@
 ;;   - "#RYY": Qubit quantum gate. Ising coupling gate, Y, requires also p_z1.
 ;;   - "#RZZ": Qubit quantum gate. Ising coupling gate, Z, requires also p_z1.
 ;;   - "#Wilson", Wilson matrix.
+;;
 ;; - p_z1: complex, matrix scalar multiplier.
 ;;
 ;; Examples:
+;;
 ;; - example7.scm.
 ;;
 ;; Notes:
+;;
 ;; - See grsp0.grsp-s2dbc, grsp0.grsp-dbc2s.
 ;;
 ;; Sources:
+;;
 ;; - [31][32][33][34][35][52].
 ;;
 (define (grsp-matrix-create-fix p_s1 p_z1)
@@ -1503,9 +1560,11 @@
 ;; size specifically.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; . p_s1: see grsp-matrix-create.
 ;; - p_a2: matrix.
 ;;
@@ -1525,23 +1584,29 @@
 ;; statisfy condition p_s1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: search criteria.
+;;
 ;;   - "#=": searches for all elements equal to p_v1.
 ;;   - "#>": searches for all elements greather than p_v1.
 ;;   - "#<": searches for all elements smaller than p_v1.
 ;;   - "#>=": searches for all elements greather or equal than p_v1.
 ;;   - "#<=": searches for all elements smaller or equal than p_v1.
 ;;   - "#!=": searches for all elements not equal to p_v1.
+;;
 ;; - p_a1: matrix.
 ;; - P_v1: reference value for searching.
 ;;
 ;; Sources:
+;;
 ;; - [1][2][3][4].
 ;;
 ;; Output:
+;;
 ;; - A matrix of m x 2 elements, being m the number of ocurrences that statisfy
 ;;   the search criteria. On row 0 goes the row coordinate of each element
 ;;   found, and on row 1 goes the corresponding col coordinate. Thus, this
@@ -1687,9 +1752,11 @@
 ;;;; grsp-matrix-conjugate - Calculates the conjugate matrix of p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-conjugate p_a1)
@@ -1705,13 +1772,16 @@
 ;; of p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, hermitian conjugate, adjoint,
 ;;   transjugate.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 ;; Sources:
+;;
 ;; - [40][41].
 ;;
 (define (grsp-matrix-conjugate-transpose p_a1)
@@ -1726,10 +1796,13 @@
 ;;;; grsp-matrix-opio - Internal operations that produce a scalar result.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters;
+;;
 ;; - p_s1: string representing the desired operation.
+;;
 ;;   - "#+": sum of all elements.
 ;;   - "#-": substraction of all elements.
 ;;   - "#*": product of all elements.
@@ -1750,13 +1823,16 @@
 ;;   - "#-ad": substraction of the anti diagonal elements.
 ;;   - "#*ad": product of the anti diagonal elements.
 ;;   - "#/ad": division of the anti diagonal elements.
+;;
 ;; - p_a1: matrix. 
 ;; - p_l1: column or row number.
 ;;
 ;; Sources:
+;;
 ;; - [1][2][3][4].
 ;;
 ;; Notes:
+;;
 ;; - Value for argument p_l1 should be passed as 0 if not used. It is only
 ;;   needed for row and column operations.
 ;;
@@ -1886,10 +1962,13 @@
 ;; scalar p_v1 or a discrete operation on p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_s: scalar operation.
+;;
 ;;   - "#+": scalar sum.
 ;;   - "#-": scalar substraction.
 ;;   - "#*": scalar multiplication.
@@ -1906,16 +1985,19 @@
 ;;     (sign inversion of real element of complex number).
 ;;   - "#ii": applies (grsp-complex-inv "#ii" z1) to each element z1 of p_a1
 ;;     (sign inversion of both elements of a complex number).
+;;
 ;; - p_a1: matrix.
 ;; - p_v1: scalar value.
 ;;
 ;; Notes:
+;;
 ;; - You may need to use seed->random-state for pseudo random numbers.
 ;; - This function does not validate the dimensionality or boundaries of the 
 ;;   matrices involved; the user or an additional shell function should take
 ;;   care of that.
 ;;
 ;; Sources:
+;;
 ;; - [5][6].
 ;;
 (define (grsp-matrix-opsc p_s1 p_a1 p_v1)
@@ -2004,10 +2086,12 @@
 ;; p_a1 and p_a2.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, hadamard, direct, schur.
 ;;
 ;; Parameters:
 ;; - p_s1: operation described as a string:
+;;
 ;;   - "#+": sum.
 ;;   - "#-": substraction.
 ;;   - "#*": multiplication.
@@ -2017,16 +2101,19 @@
 ;;   - "#min": element wise min function.
 ;;   - "#=": copy if equal.
 ;;   - "#!=": copy if not equal.
+;;
 ;; - p_a1: first matrix.
 ;; - p_a2: second matrix.
 ;;
 ;; Notes:
+;;
 ;; - This function does not validate the dimensionality or boundaries of the 
 ;;   matrices involved; the user or an additional shell function should take 
 ;;   care of that.
 ;; - See grsp-matrix-opewc.
 ;;
 ;; Examples:
+;;
 ;; - example3.scm
 ;;
 (define (grsp-matrix-opew p_s1 p_a1 p_a2)
@@ -2125,10 +2212,13 @@
 ;;;; grsp-matrix-opfn - Applies function p_s to all elements of p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: function as per sources, described as a string:
+;;
 ;;   - "#abs".
 ;;   - "#truncate".
 ;;   - "#round".
@@ -2153,9 +2243,11 @@
 ;;   - "#xlog2x": x * log(2) x.
 ;;   - "#xlognx": x * log(2.71) x.
 ;;   - "#xlog10x": x * log(10) x.
+;;
 ;; - p_a1: matrix.
 ;;
 ;; Sources:
+;;
 ;; - [7].
 ;;
 (define (grsp-matrix-opfn p_s1 p_a1)
@@ -2247,28 +2339,35 @@
 ;; producing a matrix as a result.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: operation described as a string:
+;;
 ;;   - "#+": matrix to matrix sum.
 ;;   - "#-": matrix to matrix substraction.
 ;;   - "#*": matrix to matrix multiplication.
 ;;   - "#/": matrix to matrix pseudo-division.
 ;;   - "#(+): Kronecker sum."
 ;;   - "#(*): Kronecker product."
+;;
 ;; - p_a1: first matrix.
 ;; - p_a2: second matrix.
 ;;
 ;; Notes:
+;;
 ;; - This function does not validate the dimensionality or boundaries of the 
 ;;   matrices involved; the user or an additional shell function should take
 ;;   care of that.
 ;;
 ;; Examples:
+;;
 ;; - example5.scm.
 ;;
 ;; Sources:
+;;
 ;; - [36][37][38].
 ;;
 (define (grsp-matrix-opmm p_s1 p_a1 p_a2)
@@ -2414,18 +2513,23 @@
 ;; result.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: operation described as a string:
+;;
 ;;   - "#.R": dot product (real numbers).
 ;;   - "#.C": dot product (complex numbers).
 ;;
 ;; Notes:
+;;
 ;; - Real matrices should have the same dimensions.
 ;; - For complex matrices take into account transposition of p_a2.
 ;;
 ;; Sources:
+;;
 ;; - [45][46][47].
 ;;
 (define (grsp-matrix-opmsc p_s1 p_a1 p_a2)
@@ -2455,15 +2559,19 @@
 ;;;; grsp-matrix-cpy - Copies matrix p_a1, element wise.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; p_a1: matrix to be copied.
 ;;
 ;; Examples:
+;;
 ;; - example5.scm.
 ;;
 ;; Output:
+;;
 ;; - A copy of p_a1.
 ;;
 (define (grsp-matrix-cpy p_a1)
@@ -2484,9 +2592,11 @@
 ;; parameters in relation to p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix to be partitioned.
 ;; - p_lm1: lower m boundary (rows).
 ;; - p_hm1: higher m boundary (rows).
@@ -2525,9 +2635,11 @@
 ;; matrix p_a2.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;; 
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
 ;; - p_m1: row coordinate of p_a1 where to place the upper left corner of p_a2.
@@ -2562,21 +2674,26 @@
 ;; p_s2 for column p_j1 with regards to value p_n2.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_s2 query:
+;;
 ;;   - "#=": equal.
 ;;   - "#>": greater.
 ;;   - "#<": less.
 ;;   - "#>=": greater or equal.
 ;;   - "#<=": less or equal.
 ;;   - "#!=": not equal.
+;;
 ;; - p_a1: matrix.
 ;; - p_j1: col number to query.
 ;; - p_n2: element value to query according to p_s1 and p_j1.
 ;;
 ;; Notes:
+;;
 ;; - Obsolete. Use grsp-matrix-row-delete p_s1 instead.
 ;;
 (define (grsp-matrix-subdcn p_s2 p_a1 p_j1 p_n2)
@@ -2658,12 +2775,16 @@
 ;;;; grsp-matrix-subdel - Deletes column or row p_n1 from matrix p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string describing the required operation.
+;;
 ;;   - "#Delc": delete column.
 ;;   - "#Delr": delete row. 
+;;
 ;; - p_a1: matrix.
 ;; - p_n1: row or col number to delete.
 ;;
@@ -2739,9 +2860,11 @@
 ;; increasing its size.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix to expand.
 ;; - p_am1: rows to add.
 ;; - p_an1: cols to add.
@@ -2785,13 +2908,16 @@
 ;; (same dimensionality and same elements).
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;; 
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
 ;;
 ;; Examples:
+;;
 ;; - example5.scm
 ;;
 (define (grsp-matrix-is-equal p_a1 p_a2)
@@ -2839,9 +2965,11 @@
 ;;;; grsp-matrix-is-square - Returns #t if matrix p_a1 is square (i.e. m x m).
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-square p_a1)
@@ -2859,12 +2987,15 @@
 ;; otherwise.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 ;; Notes:
+;;
 ;; - For non-complex numbers.
 ;;
 (define (grsp-matrix-is-symmetric p_a1)
@@ -2880,9 +3011,11 @@
 ;; #f otherise.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-diagonal p_a1)
@@ -2918,12 +3051,15 @@
 ;; transpose.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 ;; Sources:
+;;
 ;; - [40].
 ;;
 (define (grsp-matrix-is-hermitian p_a1)
@@ -2940,9 +3076,11 @@
 ;;;; grsp-matrix-is-binary - Returns #t if p_a1 contains only values 0 or 1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-binary p_a1)
@@ -2959,9 +3097,11 @@
 ;;;; grsp-matrix-is-nonnegative - Returns #t if p_a1 contains only values >= 0.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-nonnegative p_a1)
@@ -2976,9 +3116,11 @@
 ;;;; grsp-matrix-is-positive - Returns #t if p_a1 contains only values > 0.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-positive p_a1)
@@ -3006,9 +3148,11 @@
 ;; replaces p_a2[p_m2, p_n2] with res1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix 1.
 ;; - p_a2: matrix 2.
 ;; - p_m1: m coord of upper row element.
@@ -3017,10 +3161,12 @@
 ;; - p_n2: n coord of lower row element.
 ;;
 ;; Output:
+;;
 ;; - Note that the function does not return a value but modifies the values of
 ;;   elements in two matrices directly.
 ;;
 ;; Sources:
+;;
 ;; - [8].
 ;;
 (define (grsp-matrix-row-opar p_a1 p_a2 p_m1 p_n1 p_m2 p_n2)
@@ -3038,9 +3184,11 @@
 ;; ( p_a1[p_m1, p_n1] * p_a2[p_m2, p_n2] ).
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix 1.
 ;; - p_a2: matrix 2.
 ;; - p_m1: m coord of p_a1 element.
@@ -3049,10 +3197,12 @@
 ;; - p_n2: n coord of p_a2 element.
 ;;
 ;; Output:
+;;
 ;; - Note that the function does not return a value but modifies the values of
 ;;   elements in one matrix.
 ;;
 ;; Sources:
+;;
 ;; - [8].
 ;;
 (define (grsp-matrix-row-opmm p_a1 p_a2 p_m1 p_n1 p_m2 p_n2)  
@@ -3064,20 +3214,25 @@
 ;; belonging to row p_m1 of matrix p_a1 and scalar p_v1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: operation described as a string:
+;;
 ;;   - "#+": sum.
 ;;   - "#-": substraction.
 ;;   - "#*": multiplication.
 ;;   - "#/": division.
 ;;
 ;; Output:
+;;
 ;; - Note that the function does not return a value but modifies the values of
 ;;   elements in row p_m1 of matrix p_a1.
 ;;
 ;; Sources:
+;;
 ;; - [8].
 ;;
 (define (grsp-matrix-row-opsc p_s1 p_a1 p_m1 p_v1)
@@ -3101,18 +3256,22 @@
 ;;;; grsp-matrix-row-opsw - Swaps rows p_m1 and p_m2 in matrix p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_m1: row of p_a1.
 ;; - p_m2: row of p_a1.
 ;;
 ;; Output:
+;;
 ;; - Note that the function does not return a value but modifies the values of
 ;;   elements in matrix p_a1.
 ;;
 ;; Sources:
+;;
 ;; - [8].
 ;;
 (define (grsp-matrix-row-opsw p_a1 p_m1 p_m2)
@@ -3142,22 +3301,28 @@
 ;;;; grsp-matrix-decompose - Applies decomposition p_s1 to matrix p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: decomposition type.
+;;
 ;;   - "#LUD": LU decomposition, Doolitle.
 ;;   - "#QRMG: QR decomposition, modified Gram-Schmidt.
 ;;   - "#LL": LL decomposition, Cholesky-Banachiewicz.
+;;
 ;; - p_a1: matrix to be decomposed.
 ;; - This function does not perform viability checks on p_a1 for the 
 ;;   required operation; the user or an additional shell function should take 
 ;;   care of that.
 ;;
 ;; Examples:
+;;
 ;; - example5.scm.
 ;;
 ;; Sources:
+;;
 ;; - [6][43][49][50][51].
 ;;
 (define (grsp-matrix-decompose p_s1 p_a1)
@@ -3343,9 +3508,11 @@
 ;;;; grsp-matrix-density - Returns the density value of matrix p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-density p_a1)
@@ -3376,9 +3543,11 @@
 ;; #f otherwise.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-sparse p_a1)
@@ -3394,9 +3563,11 @@
 ;; its main diagonal; #f otherwise.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-symmetric-md p_a1)
@@ -3432,9 +3603,11 @@
 ;; p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-total-elements p_a1)
@@ -3449,9 +3622,11 @@
 ;;;; grsp-matrix-total-element - Counts the number of ocurrences of p_v1 in p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_v1: element value.
 ;;
@@ -3481,9 +3656,11 @@
 ;; otherwise.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-hadamard p_a1)
@@ -3507,9 +3684,11 @@
 ;; otherwise.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-markov p_a1)
@@ -3554,9 +3733,11 @@
 ;; type; #f otherwise.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-signature p_a1)
@@ -3595,9 +3776,11 @@
 ;; ine to any value).
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_v1: value.
 ;;
@@ -3619,10 +3802,13 @@
 ;; single interface.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: matrix type.
+;;
 ;;   - "#I": identity.
 ;;   - "#AI": anti-identity.
 ;;   - "#Square".
@@ -3644,6 +3830,7 @@
 ;;   - "#Pascal".
 ;;   - "#Idempotent".
 ;;   - "#Metzler".
+;;
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-identify p_s1 p_a1)
@@ -3714,9 +3901,11 @@
 ;; otherwise.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-metzler p_a1)
@@ -3751,9 +3940,11 @@
 ;;;; grsp-l2m - Casts a list p_l1 of n elements as a 1 x n matrix.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: list.
 ;;
 (define (grsp-l2m p_l1)
@@ -3772,9 +3963,11 @@
 ;;;; grsp-m2l - Casts a 1 x n matrix p_a1 as a list of n elements.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 (define (grsp-m2l p_a1)
@@ -3797,9 +3990,11 @@
 ;;;; grsp-m2v - Casts a matrix p_a1 of m x n elements as a 1 x (m x n) vector.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 (define (grsp-m2v p_a1)
@@ -3831,6 +4026,7 @@
 ;; numbers.
 ;;
 ;; Parameters:
+;;
 ;; - p_db1: database name.
 ;; - p_q1: database query.
 ;;
@@ -3845,6 +4041,7 @@
 ;; complex-subset numbers.
 ;;
 ;; Parameters:
+;;
 ;; - p_d1: database name.
 ;; - p_t1: table name.
 ;;
@@ -3939,17 +4136,22 @@
 ;; numbers. 
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_d1: database name. If the name contains:
+;;
 ;;   - ".db": creates an Sqlite database.
 ;;   - ".csv": creates a csv database (folder).
 ;    - ".h5": creates an HDF5 database. 
+;;
 ;; - p_a1: matrix.
 ;; - p_t1: table name.
 ;;
 ;; Notes:
+;;
 ;; - The database name must contain the strings ".db", ".h5" or ".csv" in its
 ;;   name for this function to work.
 ;;
@@ -3968,9 +4170,11 @@
 ;; subset numbers. 
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, databases.
 ;;
 ;; Parameters:
+;;
 ;; - p_d1: database name.
 ;; - p_a1: matrix.
 ;; - p_t1: table name.
@@ -4033,9 +4237,11 @@
 ;; numbers. 
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, databases.
 ;;
 ;; Parameters:
+;;
 ;; - p_d1: database name.
 ;; - p_a1: matrix.
 ;; - p_t1: table name.
@@ -4098,9 +4304,11 @@
 ;; numbers. 
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, databases.
 ;;
 ;; Parameters:
+;;
 ;; - p_d1: database name.
 ;; - p_a1: matrix.
 ;; - p_t1: table name.
@@ -4176,14 +4384,17 @@
 ;; commas are replaced by spaces.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, databases.
 ;;
 ;; Parameters:
+;;
 ;; - p_d1: database name.
 ;; - p_a1: matrix.
 ;; - p_t1: gnuplot data file name.
 ;;
 ;; Sources:
+;;
 ;; - [25].
 ;;
 (define (grsp-mc2dbc-gnuplot1 p_d1 p_a1 p_t1)
@@ -4257,14 +4468,17 @@
 ;; with spaces.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, databases.
 ;;
 ;; Parameters:
+;;
 ;; - p_d1: database name.
 ;; - p_a1: matrix.
 ;; - p_t1: gnuplot data file name.
 ;;
 ;; Sources:
+;;
 ;; - [25].
 ;;
 (define (grsp-mc2dbc-gnuplot2 p_d1 p_a1 p_t1)
@@ -4327,17 +4541,22 @@
 
 ;;;; grsp-matrix-interval-mean - Creates a 3 x 1 matrix containing the following
 ;; values:
+;;
 ;; - (- p_n1 p_min).
 ;; - (p_min + p_max) / 2.
 ;; - (+ p_n1 p_max).
+;;
 ;; thus creating an interval [p_min, p_max] in which:
+;;
 ;; - p_min <= p_n1 <= p_max.
 ;; - p_min <= m <= p_max, being m the mean value of l1 and h1 (see var def).
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_n1: reference value.
 ;; - p_min: what needs to be substracted to p_n1 to define the lower boundary of
 ;;   the interval.
@@ -4345,7 +4564,9 @@
 ;;   the interval.
 ;;
 ;; Output:
+;;
 ;; - A 3 x1 matrix in which:
+;;
 ;;   - The first element is l1.
 ;;   - The second is ((h1 + l1)/2).
 ;;   - The third element is h1.
@@ -4366,12 +4587,15 @@
 ;; LU decompostion (Doolitle).  
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 ;; Sources:
+;;
 ;; - [9][10][11][12][13].
 ;;
 (define (grsp-matrix-determinant-lu p_a1)
@@ -4403,12 +4627,15 @@
 ;; QR decompostion.  
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 ;; Sources:
+;;
 ;; - [9][10][11][12][13].
 ;;
 (define (grsp-matrix-determinant-qr p_a1)
@@ -4433,9 +4660,11 @@
 ;; determinant is != 0; #f otherwise.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-invertible p_a1)
@@ -4450,18 +4679,24 @@
 ;;;; grsp-eigenval-opio - Eigenvalue operations that return a scalar. 
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string.
+;;
 ;;   - "#*": product of all eigenvalues.
 ;;   - "#+": sum of all eigenvalues.
+;;
 ;; - p_a1: matrix.
 ;;
 ;; Output:
+;;
 ;; - Returns a scalar (zero if no proper string p_s1 is passed).
 ;;
 ;; Sources:
+;;
 ;; - [14][15].
 ;;
 (define (grsp-eigenval-opio p_s1 p_a1)
@@ -4479,12 +4714,16 @@
 ;; order.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: sort type.
+;;
 ;;   - "#asc": ascending.
 ;;   - "#des": descending.
+;;
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-sort p_s1 p_a1)
@@ -4589,12 +4828,15 @@
 ;;;; grsp-matrix-minmax - Finds the maximum and minimum values in p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 ;; Output:
+;;
 ;; - A 1 x 2 matrix containing the min and max values, respectively.
 ;;
 (define (grsp-matrix-minmax p_a1)
@@ -4615,20 +4857,25 @@
 ;; fulfill condition p_s1 regarding p_n1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: type of operation.
+;;
 ;;   - "#=".
 ;;   - "#>".
 ;;   - "#<".
 ;;   - "#>=".
 ;;   - "#<=".
 ;;   - "!=".
+;;
 ;; - p_a1: matrix
 ;; - p_n1: number.
 ;;
 ;; Output:
+;;
 ;; - Trimmed data as a 1 x n vector.
 ;;
 (define (grsp-matrix-trim p_s1 p_a1 p_n1)
@@ -4732,12 +4979,15 @@
 ;; p_n1. 
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
 ;; - p_n1:
+;;
 ;;   - 0.
 ;;   - 1.
 ;;
@@ -4757,16 +5007,21 @@
 ;; value is found.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string.
+;;
 ;;   - "#min".
 ;;   - "#max".
+;;
 ;; - p_a1: matrix.
 ;; - p_j1: column number.
 ;;
 ;; Sources:
+;;
 ;; - [16].
 ;;
 (define (grsp-matrix-row-minmax p_s1 p_a1 p_j1)
@@ -4833,21 +5088,26 @@
 ;; p_s1 is met with regards to value p_n1 in column p_j1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string.
+;;
 ;;   - "#<".
 ;;   - "#>".
 ;;   - "#>=".
 ;;   - "#<=".
 ;;   - "#!=".
 ;;   - "#=".
+;;
 ;; - p_a1: matrix.
 ;; - p_j1: column number.
 ;; - p_n1: number.
 ;;
 ;; Sources:
+;;
 ;; - [16].
 ;;
 (define (grsp-matrix-row-select p_s1 p_a1 p_j1 p_n1)
@@ -4937,9 +5197,11 @@
 ;; p_s1 is met with regards to value p_n1 in column p_j1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string.
 ;;   - "#<".
 ;;   - "#>".
@@ -4947,11 +5209,13 @@
 ;;   - "#<=".
 ;;   - "#!=".
 ;;   - "#=".
+;;
 ;; - p_a1: matrix.
 ;; - p_j1: column number.
 ;; - p_n1: number.
 ;;
 ;; Sources:
+;;
 ;; - [16].
 ;;
 (define (grsp-matrix-row-delete p_s1 p_a1 p_j1 p_n1)
@@ -4982,16 +5246,21 @@
 ;; p_s1 is met with regards to column p_j1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string.
+;;
 ;;   - "#asc".
 ;;   - "#des".
+;;
 ;; - p_a1: matrix.
 ;; - p_j1: column number.
 ;;
 ;; Sources:
+;;
 ;; - [16].
 ;;
 (define (grsp-matrix-row-sort p_s1 p_a1 p_j1)
@@ -5074,12 +5343,15 @@
 ;; and row m becomes row 0.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 ;; Sources:
+;;
 ;; - [16].
 ;;
 (define (grsp-matrix-row-invert p_a1)
@@ -5127,14 +5399,17 @@
 ;; this function copies the data of p_a2 to p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
 ;; - p_j1: column number that corresponds to the shared primary key.
 ;;
 ;; Notes:
+;;
 ;; - p_a1 and p_a2 should share a common id or primary key contained in a
 ;;   column that will be used to identify each row of p_a1 that would be
 ;;   updated with the data of p_a2.
@@ -5142,6 +5417,7 @@
 ;;   the width (number of columns) has been changed.
 ;;
 ;; Sources:
+;;
 ;; - [16].
 ;;
 (define (grsp-matrix-commit p_a1 p_a2 p_j1)
@@ -5209,13 +5485,16 @@
 ;; p_l1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_l1: list containing row numbers.
 ;;
 ;; Sources:
+;;
 ;; - [16].
 ;;
 (define (grsp-matrix-row-selectn p_a1 p_l1)
@@ -5289,13 +5568,16 @@
 ;; list p_l1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_l1: list containing col numbers.
 ;;
 ;; Sources:
+;;
 ;; - [16].
 ;;
 (define (grsp-matrix-col-selectn p_a1 p_l1)
@@ -5319,21 +5601,26 @@
 ;; condition p_s1 is met with regards to value p_n1 in col p_j1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string.
+;;
 ;;   - "#<".
 ;;   - "#>".
 ;;   - "#>=".
 ;;   - "#<=".
 ;;   - "#!=".
 ;;   - "#=".
+;;
 ;; - p_a1: matrix.
 ;; - p_j1: column number.
 ;; - p_n1: number.
 ;;
 ;; Sources:
+;;
 ;; - [16].
 ;;
 (define (grsp-matrix-col-select p_s1 p_a1 p_j1 p_n1)
@@ -5356,15 +5643,18 @@
 ;; p_n2.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_n1: column number, key of p_a1.
 ;; - p_a2: matrix.
 ;; - p_a2: column number, key of p_a2.
 ;;
 ;; Sources:
+;;
 ;; - [16].
 ;;
 (define (grsp-matrix-njoin p_a1 p_n1 p_a2 p_n2)
@@ -5478,15 +5768,18 @@
 ;; p_n2.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
 ;; Parameters:
-;; p_a1: matrix.
-;; p_n1: column number, key of p_a1.
-;; p_a2: matrix.
-;; p_a2: column number, key of p_a2.
+;;
+;; - p_a1: matrix.
+;; - p_n1: column number, key of p_a1.
+;; - p_a2: matrix.
+;; - p_a2: column number, key of p_a2.
 ;;
 ;; Sources:
+;;
 ;; - [16].
 ;;
 (define (grsp-matrix-sjoin p_a1 p_n1 p_a2 p_n2)
@@ -5520,15 +5813,18 @@
 ;; cannot be njoined to p_a2 given p_n1 and p_n2.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_n1: column number, key of p_a1.
 ;; - p_a2: matrix.
 ;; - p_n2: column number, key of p_a2.
 ;;
 ;; Sources:
+;;
 ;; - [16].
 ;;
 (define (grsp-matrix-ajoin p_a1 p_n1 p_a2 p_n2)
@@ -5611,12 +5907,15 @@
 ;; returns its domain subset.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix ( 1 x n), (-inf.0, +inf.0).
 ;;
 ;; Sources:
+;;
 ;; - [17].
 ;;
 (define (grsp-matrix-supp p_a1)
@@ -5667,18 +5966,22 @@
 ;;;; grsp-matrix-row-div - Relational division.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_n1: column number, key of p_a1.
 ;; - p_a2: matrix.
 ;; - p_n2: column number, key of p_a2.
 ;;
 ;; Sources:
+;;
 ;; - [16].
 ;;
 ;; Notes:
+;;
 ;; - Still needs some checking of the results.
 ;;
 (define (grsp-matrix-row-div p_a1 p_n1 p_a2 p_n2)
@@ -5754,16 +6057,20 @@
 ;; from p_a1 where column p_j1 has a p_s1 relationship with p_n1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string.
+;;
 ;;   - "#<".
 ;;   - "#>".
 ;;   - "#>=".
 ;;   - "#<=".
 ;;   - "#!=".
 ;;   - "#=".
+;;
 ;; - p_a1: matrix.
 ;; - p_j1: column number.
 ;; - p_n1: number.
@@ -5771,6 +6078,7 @@
 ;; - p_n2: number.
 ;;
 ;; Notes:
+;;
 ;; - You cannot make changes to the primary key column using this update
 ;;   function.
 ;;
@@ -5803,9 +6111,11 @@
 ;; higher coordinate values.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
 ;; Parameters:
+;;
 ;; - p_lo: lower (lm or ln).
 ;; - p_hi: higher (hm or hn).
 ;;  
@@ -5821,9 +6131,11 @@
 ;; a 2 x 1 matrix containing the number of rows and columns of p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;  
 (define (grsp-matrix-te2 p_a1)
@@ -5839,9 +6151,11 @@
 ;; grsp-matrix-append - Appends all the rows of p_a2 below the rows of p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
 ;;  
@@ -5881,15 +6195,18 @@
 ;;;; grsp-matrix-lojoin - Left outer join.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_j1: column number, key of p_a1.
 ;; - p_a2: matrix.
 ;; - p_j2: column number, key of p_a2.
 ;;
 ;; Sources:
+;;
 ;; - [16].
 ;;
 (define (grsp-matrix-lojoin p_a1 p_j1 p_a2 p_j2)
@@ -5961,9 +6278,11 @@
 ;; defined  by coordinates (p_m1, p_n1) and (p_m2, p_n2) with value p_v1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;; 
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_v1: value.
 ;; - p_m1: row coordinate of p_a1.
@@ -5999,9 +6318,11 @@
 ;; (p_m3, p_n3) and the same size and shape as the first submatrix.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;; 
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_m1: row pos 1.
 ;; - p_n1: col pos 1.
@@ -6041,16 +6362,20 @@
 ;; regards to p_n1. 
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string.
+;;
 ;;   - "#<".
 ;;   - "#>".
 ;;   - "#>=".
 ;;   - "#<=".
 ;;   - "#!=".
 ;;   - "#=".
+;;
 ;; - p_a1: matrix.
 ;; - p_j1: column number.
 ;; - p_n1: number.
@@ -6113,9 +6438,11 @@
 ;; column.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_n1: number.
 ;;
@@ -6162,9 +6489,11 @@
 ;; values contained in list p_l1 is found at any column.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_l1: number.
 ;;
@@ -6190,6 +6519,7 @@
 ;; values contained in list defined by (grsp-naninf) is found at any column.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-clearni p_a1)
@@ -6205,9 +6535,11 @@
 ;; another matrix, and not every element with every other element.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
 ;;
@@ -6302,9 +6634,11 @@
 ;; p_a1 row by row.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
 ;;  
@@ -6361,17 +6695,22 @@
 ;; column p_j1 in matrix p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string.
+;;
 ;;   - "#asc": ascending order.
 ;;   - "#des": descending order.
+;;
 ;; - p_a1: matrix.
 ;; - p_j1: column number.
 ;; - p_n1: element ordinal.
 ;;
 ;; Sources:
+;;
 ;; - [16].
 ;;
 (define (grsp-matrix-col-find-nth p_s1 p_a1 p_j1 p_n1)
@@ -6411,12 +6750,15 @@
 ;; themselves lists of n elements each.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 ;; Output:
+;;
 ;; - A list of lists.
 ;;
 (define (grsp-mn2ll p_a1)
@@ -6459,25 +6801,32 @@
 ;; of matrix p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, genetic.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_n1: mutation rate, [0, 1].
 ;; - p_s1: type of distribution.
+;;
 ;;   - "#normal": normal.
 ;;   - "#exp": exponential.
 ;;   - "#uniform": uniform.
+;;
 ;; - p_u1: mean for mutation rate.
 ;; - p_v1: standard deviation for mutation rate.
 ;; - p_s2: type of distribution.
+;;
 ;;   - "#normal": normal.
 ;;   - "#exp": exponential.
 ;;   - "#uniform": uniform.
+;;
 ;; - p_u2: mean for element random value.
 ;; - p_v2: standard deviation for element random value.
 ;;
 ;; Sources:
+;;
 ;; - [19][21].
 ;;
 (define (grsp-matrix-mutation p_a1 p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2)
@@ -6515,26 +6864,33 @@
 ;; selected column instead of the whole matrix.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, genetic.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_n1: mutation rate, [0, 1].
 ;; - p_s1: type of distribution.
+;;
 ;;   - "#normal": normal.
 ;;   - "#exp": exponential.
 ;;   - "#uniform": uniform.
+;;
 ;; - p_u1: mean for mutation rate.
 ;; - p_v1: standard deviation for mutation rate.
 ;; - p_s2: type of distribution.
+;;
 ;;   - "#normal": normal.
 ;;   - "#exp": exponential.
 ;;   - "#uniform": uniform.
+;;
 ;; - p_u2: mean for element random value.
 ;; - p_v2: standard deviation for element random value.
 ;; - p_n2: column to mutate.
 ;;
 ;; Sources:
+;;
 ;; - [19][21].
 ;;
 (define (grsp-matrix-col-mutation p_a1 p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 p_n2)
@@ -6565,26 +6921,33 @@
 ;; to the selected columns instead of the whole matrix.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, genetic.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_n1: mutation rate, [0, 1].
 ;; - p_s1: type of distribution.
+;;
 ;;   - "#normal": normal.
 ;;   - "#exp": exponential.
 ;;   - "#uniform": uniform.
+;;
 ;; - p_u1: mean for mutation rate.
 ;; - p_v1: standard deviation for mutation rate.
 ;; - p_s2: type of distribution.
+;;
 ;;   - "#normal": normal.
 ;;   - "#exp": exponential.
 ;;   - "#uniform": uniform.
+;;
 ;; - p_u2: mean for element random value.
 ;; - p_v2: standard deviation for element random value.
 ;; - p_l1: list of columns to mutate.
 ;;
 ;; Sources:
+;;
 ;; - [19][21].
 ;;
 (define (grsp-matrix-col-lmutation p_a1 p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 p_l1)
@@ -6621,9 +6984,11 @@
 ;; intervals [p_ln1, p_hn1] and [p_ln2, p_hn2] between matrices p_a1 and p_a2.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, genetic.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_ln1: lower column number of the interval to swap (p_a1).
 ;; - p_hn1: higher column number of the interval to swap (p_a1).
@@ -6632,14 +6997,17 @@
 ;; - p_hn2: higher column number of the interval to swap (p_a1).
 ;;
 ;; Sources:
+;;
 ;; - [19][20].
 ;;
 ;; Notes:
+;;
 ;; - Matrices should have the same number of rows and columns.
 ;; - Intervals [p_ln1, p_hn1] and [p_ln2, p_hn2] may not have the same ordinals
 ;;   (indexes or col numbers) but must have the same number of columns.
 ;;
 ;; Output
+;;
 ;; - A matrix containing the children obtained as a result of the swap.
 ;;
 (define (grsp-matrix-crossover p_a1 p_ln1 p_hn1 p_a2 p_ln2 p_hn2)
@@ -6710,9 +7078,11 @@
 ;; crossover function in an aleatory fashion, while in others it might not.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, genetic.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_ln1: lower column number of the interval to swap (p_a1).
 ;; - p_hn1: higher column number of the interval to swap (p_a1).
@@ -6721,16 +7091,20 @@
 ;; - p_hn2: higher column number of the interval to swap (p_a1).
 ;; - p_n1: crossover rate, [0, 1].
 ;; - p_s1: type of distribution.
+;;
 ;;   - "#normal": normal.
 ;;   - "#exp": exponential.
 ;;   - "#uniform": uniform.
+;;
 ;; - p_u1: mean for crossover rate.
 ;; - p_v1: standard deviation for crossover rate.
 ;;
 ;; Sources:
+;;
 ;; - [19][20].
 ;;
 ;; Notes:
+;;
 ;; - See grsp-matrix-crossover for further details.
 ;;
 (define (grsp-matrix-crossover-rprnd p_a1 p_ln1 p_hn1 p_a2 p_ln2 p_hn2 p_n1 p_s1 p_u1 p_v1)
@@ -6751,13 +7125,16 @@
 ;; rows and columns.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
 ;;
 ;; Output:
+;;
 ;; - Returns #t if both matrices have the same number of rows and columns; #f
 ;;   otherwise.
 ;;
@@ -6776,21 +7153,26 @@
 ;; numbers.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, genetic.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_m1: row.
 ;; - p_n1: col.
 ;; - p_n2: fitness rate, [0, 1].
 ;; - p_s1: type of distribution.
+;;
 ;;   - "#normal": normal.
 ;;   - "#exp": exponential.
 ;;   - "#uniform": uniform.
+;;
 ;; - p_u1: mean for fitness rate.
 ;; - p_v1: standard deviation for fitness rate.
 ;;
 ;; Notes:
+;;
 ;; - This is just a convenience fitness function. You may want to create your
 ;;   own for your specific task.
 ;;
@@ -6806,14 +7188,18 @@
 ;;;; grsp-matrix-selectg - Genetic selection.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, genetic.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_s2: type of distribution for individual selection.
+;;
 ;;   - "#normal": normal.
 ;;   - "#exp": exponential.
 ;;   - "#uniform": uniform.
+;;
 ;; - p_u2: mean for individual selection.
 ;; - p_v2: standard deviation for individual selection.
 ;; - p_j1: column representing the fitness value.
@@ -6821,13 +7207,16 @@
 ;; - p_j3: column representing the accumulated normalized fitness value.
 ;;
 ;; Notes:
+;;
 ;; - You should perform operations such as mutation and fitness calculation on
 ;;   your dataset before using this function.
 ;;
 ;; Output:
+;;
 ;; - A subset of selected individuals (rows) from p_a1.
 ;;
 ;; Sources:
+;;
 ;; - [22].
 ;;
 (define (grsp-matrix-selectg p_a1 p_s2 p_u2 p_v2 p_j1 p_j2 p_j3)
@@ -6862,18 +7251,23 @@
 ;; incremental step p_n3.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string
+;;
 ;;   - "#row" will use row p_n1 as index.
 ;;   - "#col" will use column _n1 as index.
+;;
 ;; - p_a1: matrix.
 ;; - p_n1: number, will represent a row or column depending on p_s1.
 ;; - p_n2: initial value for key.
 ;; - p_n3: incremental step.
 ;;
 ;; Notes:
+;;
 ;; - This function will overwrite anything on row or column p_n1.
 ;; - Do not use with set!
 ;; - Interstingly, you can use these keys to unequivocally identify anything;
@@ -6922,9 +7316,11 @@
 ;; p_a1, setting value p_n2 in them.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_n1: column number.
 ;; - p_n2: value to set on p_n1.
@@ -6950,21 +7346,26 @@
 ;; matrices.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, relational.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string.
+;;
 ;;   - "#<".
 ;;   - "#>".
 ;;   - "#>=".
 ;;   - "#<=".
 ;;   - "#!=".
 ;;   - "#=".
+;;
 ;; - p_a1: matrix.
 ;; - p_j1: column number.
 ;; - p_n1: number.
 ;;
 ;; Sources:
+;;
 ;; - [16].
 ;;
 (define (grsp-matrix-row-selectc p_s1 p_a1 p_j1 p_n1)
@@ -7003,9 +7404,11 @@
 ;; otherwise.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-empty p_a1)
@@ -7021,12 +7424,15 @@
 ;; #f otherwise.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 ;; Sources:
+;;
 ;; - [24].
 ;;
 (define (grsp-matrix-is-multiset p_a1)
@@ -7068,14 +7474,18 @@
 ;;;; grsp-matrix-argtype - Finds the type of each element of matrix p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 ;; Output:
-;; - A matrix of the same dimensions and shape as p_a1 but containing the type of
-;;   each one of its elements according to the following representation:
+;;
+;; - A matrix of the same dimensions and shape as p_a1 but containing the type
+;;   of each one of its elements according to the following representation:
+;;
 ;;   - 0: undefined.
 ;;   - 1: list.
 ;;   - 2: string.
@@ -7089,6 +7499,7 @@
 ;;   - 10: nan.
 ;;
 ;; Sources:
+;;
 ;; - [grsp0.4][grsp0.5].
 ;;
 (define (grsp-matrix-argtype p_a1)
@@ -7145,14 +7556,18 @@
 ;; grsp-matrix-argstru - Finds the data types of each column of an n x m matrix.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 ;; Output:
+;;
 ;; - For an m x n matrix, returns a 1 x n matrix containing the codes that
 ;;   correspond to the type of each column according to:
+;;
 ;;   - 0: undefined.
 ;;   - 1: list.
 ;;   - 2: string.
@@ -7204,14 +7619,17 @@
 ;; place the values of p_l1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, ann, neural network.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_m1: rown number.
 ;; - p_l2: list of values to update in row p_m1 of matrix p_a1.
 ;;
 ;; Notes:
+;;
 ;; - Make sure that p_l1 has as many elements as p_a1's rows.
 ;;
 (define (grsp-matrix-row-subrepal p_a1 p_m1 p_l2)
@@ -7264,9 +7682,11 @@
 ;; elements are respetively equal, in the same order, to those in list p_l1. 
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_m1: row number.
 ;; - p_l1: list.
@@ -7300,13 +7720,16 @@
 ;; and matrix p_a2 is the same, but not necessarily have the same elements.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;; 
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
 ;;
 ;; Output:
+;;
 ;; - Returns #t if both matrices have the same number of rows and columns; #f
 ;;   otherwise.
 ;;
@@ -7326,9 +7749,11 @@
 ;;;; grsp-matrix-fill - Fills all elements of matrix p_a1 with value p_n1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;; 
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-fill p_a1 p_n1)
@@ -7361,13 +7786,16 @@
 ;; of different size.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;; 
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
 ;;
 ;; Output:
+;;
 ;; - A matrix of the same dimensions as p_a1 and p_a2 if they have the same
 ;;   size, containing elements with value 1 wherever the elements
 ;;   of the same coordinates in p_a1 and p_a2 are different, or 0 otherwise.
@@ -7421,10 +7849,13 @@
 ;; matrix or various matrices.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1:
+;;
 ;;   - "#+": sum.
 ;;   - "#-": substraction.
 ;;   - "#*": product.
@@ -7436,6 +7867,7 @@
 ;;     to p_j3.
 ;;   - "#!=": if p_j1 is not equal to p_j2, copy p_j1
 ;;     to p_j3.
+;;
 ;; - p_a1: matrix 1.
 ;; - p_j1: col number, matrix 1.
 ;; - p_a2: matrix 2.
@@ -7444,6 +7876,7 @@
 ;; - p_j3: colnumber, matrix 3.
 ;;
 ;; Notes:
+;;
 ;; - p_a1, p_a2 and p_a3 must have the same number of rows. They can be
 ;;   the same matrix as well.
 ;; - See grsp-matrix-opew.
@@ -7506,10 +7939,13 @@
 ;; function.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, multithreaded.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: operation described as a string:
+;;
 ;;   - "#+": sum.
 ;;   - "#-": substraction.
 ;;   - "#*": multiplication.
@@ -7517,12 +7953,14 @@
 ;;   - "#expt": (expt p_a1 p_a2).
 ;;   - "#max": max function.
 ;;   - "#min": min function.
+;;
 ;; - p_a1: first matrix.
 ;; - p_a2: second matrix.
 ;; - p_m1: row of p_a1.
 ;; - p_m2: row of p_a2.
 ;;
 ;; Notes:
+;;
 ;; - This function does not validate the dimensionality or boundaries of the 
 ;;   matrices involved; the user or an additional shell function should take 
 ;;   care of that.
@@ -7566,9 +8004,11 @@
 ;;;; grsp-mr2l - Casts row p_m1 of matrix p_a1 as a list.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_m1: row number.
 ;;
@@ -7586,15 +8026,18 @@
 ;; the contents of list p_l1 as matrix elements.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_l2: list.
 ;; - p_m1: row number.
 ;; - p_n1: col number.
 ;;
 ;; Examples:
+;;
 ;; - example9.scm.
 ;;
 (define (grsp-l2mr p_a1 p_l2 p_m1 p_n1)
@@ -7612,10 +8055,13 @@
 ;; and p_a2 in parallel.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, multithreaded.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: operation described as a string:
+;;
 ;;   - "#+": sum.
 ;;   - "#-": substraction.
 ;;   - "#*": multiplication.
@@ -7623,10 +8069,12 @@
 ;;   - "#expt": (expt p_a1 p_a2).
 ;;   - "#max": max function.
 ;;   - "#min": min function.
+;;
 ;; - p_a1: first matrix.
 ;; - p_a2: second matrix.
 ;;
 ;; Notes:
+;;
 ;; - This function does not validate the dimensionality or boundaries of the 
 ;;   matrices involved; the user or an additional shell function should take 
 ;;   care of that.
@@ -7634,6 +8082,7 @@
 ;; - See grsp-matrix-opew, grsp-matrix-row-opew-mth.
 ;;
 ;; Sources:
+;;
 ;; - [26].
 ;;
 (define (grsp-matrix-opew-mth p_s1 p_a1 p_a2)
@@ -7663,9 +8112,11 @@
 ;; sum of its main diagonal elements equals zero; false otherwise.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-is-traceless p_a1)
@@ -7685,9 +8136,11 @@
 ;; matrices.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, moving.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
 ;; - p_m1: row ordinal of p_a1.
@@ -7696,9 +8149,11 @@
 ;; - p_n2: col ordinal of p_a2.
 ;;
 ;; Notes:
+;;
 ;; - This function does not check the dimensions of the matrices involved.
 ;;
 ;; Output:
+;;
 ;; - Matrix with the value in question changed.
 ;;
 (define (grsp-matrix-movemm p_a1 p_a2 p_m1 p_n1 p_m2 p_n2)
@@ -7714,9 +8169,11 @@
 ;; matrix p_a1 with element located at p_a2 (p_m2, p_n2).
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, swapping.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
 ;; - p_m1: row ordinal of p_a1.
@@ -7725,9 +8182,11 @@
 ;; - p_n2: col ordinal of p_a2.
 ;;
 ;; Notes:
+;;
 ;; - This function does not check the dimensions of the matrices involved.
 ;;
 ;; Output:
+;;
 ;; - List containing matrices p_a1 and p_a2 with elements in question swapped.
 ;;
 (define (grsp-matrix-movsmm p_a1 p_a2 p_m1 p_n1 p_m2 p_n2)
@@ -7759,17 +8218,22 @@
 ;; elements from left to right, or lower col number to higher col number.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, circulation.
 ;;
 ;; Parameters:
+;;
 ;; - p_b1: boolean.
+;;
 ;;   - #t: circulate from left to right.
 ;;   - #f: circulate from right to left.
+;;
 ;; - p_a1: matrix.
 ;; - p_m1: row number.
 ;; - p_j2: number of cols to circulate.
 ;;
 ;; Notes:
+;;
 ;; - This function does not vaildate if row p_m1 actually exists on
 ;;   matrix p_a1.
 ;;
@@ -7858,9 +8322,11 @@
 ;; reaches n = m.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, swapping.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 (define (grsp-matrix-movtrm p_b1 p_a1)
@@ -7885,9 +8351,11 @@
 ;; p_n1 except those on the main diagonal.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, diagonal, replacement, replacing, change.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_n1: number.
 ;;
@@ -7920,6 +8388,7 @@
 ;;;; grsp-matrix-minor - Find the (p_m1, p_n1) minor of p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
@@ -7928,6 +8397,7 @@
 ;; - p_n1: col cordinate.
 ;;
 ;; Sources:
+;;
 ;; - [42].
 ;;
 (define (grsp-matrix-minor p_a1 p_m1 p_n1)
@@ -7953,14 +8423,17 @@
 ;; on its (p_m1, p_n1) minor.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_m1: row coordinate.
 ;; - p_n1: col cordinate.
 ;;
 ;; Sources:
+;;
 ;; - [42].
 ;;
 (define (grsp-matrix-minor-cofactor p_a1 p_m1 p_n1)
@@ -7979,12 +8452,15 @@
 ;;;; grsp-matrix-cofactor - Calculates the cofactor matrix of matrix p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 ;; Sources:
+;;
 ;; - [42].
 ;;
 (define (grsp-matrix-cofactor p_a1)
@@ -8013,12 +8489,15 @@
 ;;;; grsp-matrix-inverse - Calculates the inverse of matrix p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, inversion.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 ;; Sources:
+;;
 ;; - [42].
 ;;
 (define (grsp-matrix-inverse p_a1)
@@ -8048,12 +8527,15 @@
 ;; cofactor of p_a1).
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 ;; Sources:
+;;
 ;; - [42].
 ;;
 (define (grsp-matrix-adjugate p_a1)
@@ -8067,9 +8549,11 @@
 ;;;; grsp-mn2ms - Casts numeric matrix p_a1 into a string matrix.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 (define (grsp-mn2ms p_a1)
@@ -8101,13 +8585,17 @@
 ;; lustified according to p_s1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, strings, padding.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string. Mode.
+;;
 ;;   - "#l": p_s2 to the left.
 ;;   - "#r": p_s2 to the right.
 ;;   - "#b": center p_s2.
+;;
 ;; - p_a1: matrix of strings.
 ;; - p_s3: string for padding (one char length).
 ;; - p_n1: numeric. Length of padded and justified string.
@@ -8140,9 +8628,11 @@
 ;; longest string of string matrix p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, strings, length.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix. String.
 ;;
 (define (grsp-matrix-slongest p_a1)
@@ -8175,9 +8665,11 @@
 ;; function transforms all elements of a string matrix into a unified string-
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix. String.
 ;;
 (define (grsp-ms2s p_a1)
@@ -8215,12 +8707,15 @@
 ;; format.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix. Numeric.
 ;;
 ;; Examples:
+;;
 ;; - example5.scm.
 ;;
 (define (grsp-matrix-display p_a1)
@@ -8236,12 +8731,15 @@
 ;;;; grsp-ms2mn - Casts string matrix p_a1 into a numeric matrix.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix. String.
 ;;
 ;; Notes:
+;;
 ;; - The strings corresponding to each element must correspond
 ;;   to numbers, for example "42" or "666".
 ;;
@@ -8274,15 +8772,19 @@
 ;; limits or p_n2 otherwise.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, strings, replacement,
 ;;   substitution.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string. Interval mode (inclusive or exclusive).
+;;
 ;;   - "#[]" l inclusive, h inclusive.
 ;;   - "#[)" l inclusive, h exclusive.
 ;;   - "#(]" l exclusive, h inclusive.
 ;;   - "#()" l exclusive, h exclusive.
+;;
 ;; - p_a1: matrix.
 ;; - p_n1: value to set if condition is met.
 ;; - p_n2: value to set otherwise.
@@ -8350,10 +8852,12 @@
 ;; diagonal of a square matrix p_a1 with value p_n1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, strings, replacement,
 ;;   substitution.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix (should be square).
 ;; - p_n1: number. New value for diagonal elements.
 ;;
@@ -8387,9 +8891,11 @@
 ;; elements of the diagonal of matrix p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, strings, diagonal.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix (should be square).
 ;;
 (define (grsp-matrix-diagonal-vector p_a1)
@@ -8414,10 +8920,12 @@
 ;;;; grsp-matrix-row-proj - Orthogonal projection of p_a1 over p_a2.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, strings,
 ;;   orthogonality, perpendicularity.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: row vector.
 ;; - p_a1: row vector.
 ;;
@@ -8440,16 +8948,20 @@
 ;; rule.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, entry wise.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_p1: p.
 ;;
 ;; Notes:
+;;
 ;; . Not defined for p_p1 = 0.
 ;;
 ;; Sources:
+;;
 ;; - [54].
 ;;
 (define (grsp-matrix-normp p_a1 p_p1)
@@ -8468,12 +8980,15 @@
 ;;;; grsp-matrix-normf - Calculates the matrix Frobenius norm.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, entry wise.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 ;; Sources:
+;;
 ;; - [54].
 ;;
 (define (grsp-matrix-normf p_a1)
@@ -8487,12 +9002,15 @@
 ;;;; grsp-matrix-normm - Calculates the matrix Manhattan norm.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, entry wise.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;;
 ;; Sources:
+;;
 ;; - [54].
 ;;
 (define (grsp-matrix-normm p_a1)
@@ -8507,20 +9025,25 @@
 ;; decomposition.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, entry wise, eigenvalue.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: decomposition method (QR).
 ;; - p_a1: matrix.
 ;; - p_n1: max number of iterations.
 ;;
 ;; Notes:
+;;
 ;; - See grsp-matrix-decompose for suitable decomposition methods.
 ;;
 ;; Output:
+;;
 ;; - A one-row matrix containing the eigenvalues of p_a1.
 ;;
 ;; Sources:
+;;
 ;; - [55][56].
 ;;
 (define (grsp-eigenval-qr p_s1 p_a1 p_n1)
@@ -8567,13 +9090,16 @@
 ;;;; grsp-eigenvec- Calculates eigenvectors based on p_a1 and p_a2.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, eigenvector.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: square matrix.
 ;; - p_a2: vector containing the eigenvalues of p_a1.
 ;;
 ;; Notes:
+;;
 ;; - See grsp-eigenval-qr.
 ;; - TODO: still needs working.
 ;;
@@ -8606,12 +9132,15 @@
 ;; row diagonally dominant; #f otherwise.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, dominance, diagonal.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix, square.
 ;;
 ;; Sources:
+;;
 ;; - [59].
 ;;
 (define (grsp-matrix-is-srddominant p_a1)
@@ -8658,9 +9187,11 @@
 ;; Ax = b.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, jacobian.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: decomposition method (QR).
 ;; - p_a1: matrix A.
 ;; - p_b1: matrix b.
@@ -8668,9 +9199,11 @@
 ;; - p_n1: max number of iterations.
 ;;
 ;; Notes:
+;;
 ;; - See grsp-matrix-sradius.
 ;;
 ;; Sources:
+;;
 ;; - [57][59][60].
 ;;
 (define (grsp-matrix-jacobim p_s1 p_a1 p_x1 p_b1 p_n1)
@@ -8732,19 +9265,23 @@
 ;;;; grsp-matrix-sradius - Calculates the spectral radius of matrix p_a1- 
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, decomposition,
 ;;   factorization.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: decomposition method (QR).
 ;; - p_a1: matrix (square).
 ;; - p_n1: max number of iterations.
 ;;
 ;; Notes:
+;;
 ;; - See grsp-matrix-decompose for suitable decomposition methods for eigenvalue
 ;;   calculation.
 ;;
 ;; Sources:
+;;
 ;; - [60].
 ;;
 (define (grsp-matrix-sradius p_s1 p_a1 p_n1)
@@ -8761,9 +9298,11 @@
 ;; contained at (array-ref p_a1 p_m1 p_n1).
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, strings, text, pointers.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_m1: row.
 ;; - p_n1: col
@@ -8784,9 +9323,11 @@
 ;; p_a1 as a list of strings.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, strings, lists.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_m1: row.
 ;;
@@ -8805,15 +9346,18 @@
 ;; - Elem 1: text of the file as a single string.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, strings, lists, pointers,
 ;;   links, lists.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_m1: row.
 ;; . p_n1: col.
 ;;
 ;; Notes:
+;;
 ;; - See grsp0.grsp-s2dbc, grsp0.grsp-dbc2s.
 ;;
 (define (grsp-dbc2lls p_a1 p_m1 p_n1)
@@ -8831,14 +9375,17 @@
 ;; numbers are also unique.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors, strings, lists.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_m1: row.
 ;; - p_j1: col.
 ;;
 ;; Note:
+;;
 ;; - This function should be used with care to avoid messing-up primarey keys.
 ;; - The function gives the choice to start at any row number in order to
 ;;   save time when assigning primary key values to new rows.
@@ -8881,20 +9428,25 @@
 ;; x, y or z axis.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: rotation axis (facing the obsever).
 ;;   - "#x". 
 ;;   - "#y".
 ;;   - "#z".
+;;
 ;; - p_v2: three element vector, representig its x,y,z values.
 ;; - p_t1: angle of rotation, counterclockwise facing the observer.
 ;;
 ;; Notes:
+;;
 ;; - See grsp-matrix-create-set, "#SBC".
 ;;
 ;; Sources:
+;;
 ;; - [61].
 ;;
 (define (grsp-matrix-strot p_s1 p_v1 p_t1)

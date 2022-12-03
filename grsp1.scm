@@ -25,6 +25,7 @@
 
 
 ;;;; General notes:
+;;
 ;; - Read sources for limitations on function parameters.
 ;;
 
@@ -37,9 +38,11 @@
 ;;;; gconst - Various constants.
 ;;
 ;; Parameters:
+;;
 ;; - p_n1: constant name, string.
 ;;
 ;; Sources:
+;;
 ;; - [1] En.wikipedia.org. (2020). List of mathematical constants. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/List_of_mathematical_constants
 ;;   [Accessed 1 Jan. 2020].
@@ -122,9 +125,11 @@
 ;;;; gconst - Constants.
 ;;
 ;; Keywords:
+;;
 ;; - constants.
 ;;
 ;; Parameters:
+;;
 ;; - p_n1: constant identifier.
 ;;
 (define (gconst p_n1)

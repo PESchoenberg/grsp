@@ -26,14 +26,17 @@
 
 
 ;;;; General notes:
+;;
 ;; - Read sources for limitations on function parameters.
 ;; - Read at least the general notes of all scm files in this library before
 ;;   use.
 ;;
 ;; - Compilation:
+;;
 ;;   - (use-modules (grsp grsp0)(grsp grsp1)(grsp grsp2)(grsp grsp3)(grsp grsp4)(grsp grsp5)(grsp grsp6)(grsp grsp7)(grsp grsp8)(grsp grsp9)(grsp grsp10)(grsp grsp11)(grsp grsp12)(grsp grsp13)(grsp grsp14)(grsp grsp15)(grsp grsp16))
 ;;
 ;; Sources:
+;;
 ;; - [1] Shido.info. (2019). 9. IO. [online] Available at:
 ;;   http://www.shido.info/lisp/scheme9_e.html [Accessed 15 Sep. 2019].
 ;; - [2] Gnu.org. (2019). File Ports (Guile Reference Manual). [online]
@@ -133,13 +136,16 @@
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: line character to display.
 ;; - p_l1: line length.
 ;;
 ;; Examples:
+;;
 ;; - example1.scm, example3.scm.
 ;;
 (define (pline p_s1 p_l1)
@@ -158,15 +164,18 @@
 ;;;; ptit - Displays a console title with one or two lines.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: line string to display.
 ;; - p_l1: line length.
 ;; - p_n1: number of lines (1 or 2, defaults to 1 line above title).
 ;; - p_t1: title to display.
 ;;
 ;; Examples:
+;;
 ;; - example1.scm, example3.scm.
 ;;
 (define (ptit p_s1 p_l1 p_n1 p_t1)
@@ -187,9 +196,11 @@
 ;;;; newlines - Repeats function newline p_n1 times.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_n: number of iterations.
 ;;
 (define (newlines p_n1)
@@ -202,9 +213,11 @@
 ;;;; clear - Clears the shell by inserting 100 blank lines.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Examples:
+;;
 ;; - example3.scm.
 ;;
 (define (clear)
@@ -215,16 +228,20 @@
 ;; preceeding the results string.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: reference, string.
 ;; - p_s2: result, string.
 ;;
-;; Notes: 
+;; Notes:
+;;
 ;; -  See pres2.
 ;;
-;; Examples: 
+;; Examples:
+;;
 ;; - example1.scm. 
 ;;
 (define (pres p_s1 p_s2)
@@ -238,13 +255,16 @@
 ;;;; pres2 - Display results. Does not require p_s2 to be a string.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: reference, string.
 ;; - p_s2: result.
 ;;
-;; Notes: 
+;; Notes:
+;;
 ;; -  See pres.
 ;;
 (define (pres2 p_s1 p_s2)
@@ -258,16 +278,20 @@
 ;;;; newspaces - Adds p_n blank spaces to string p_l1.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_n1: number of blanks to add.
 ;; - p_l1: string to display.
 ;; - p_s1: side where to add spaces,
+;;
 ;;   - 0 for left side.
 ;;   - 1 for right side.
 ;;
-;; Examples: 
+;; Examples:
+;;
 ;; - example1.scm.
 ;;
 (define (newspaces p_n1 p_l1 p_s1)
@@ -296,15 +320,19 @@
 ;; several strings into one.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: list of strings.
 ;; - p_s1: add a blank space after each list element.
+;;
 ;;   - 0 for no spaces.
 ;;   - 1 to add one blank space.
 ;;
 ;; Examples:
+;;
 ;; - example1.scm, example3.scm.
 ;;
 (define (strings-append p_l1 p_s1)
@@ -336,12 +364,15 @@
 ;; file and return it as one single string. 
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_f1: file name.
 ;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (read-file-as-string p_f1)
@@ -360,19 +391,25 @@
 ;; argument.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: enter the one of the following strings.
+;;
 ;;   - "lt" less than.
 ;;   - "eq" equal to.
 ;;   - "ht" higher than.
+;;
 ;; - p_v1: version number to check against.
 ;;
-;; Examples: 
+;; Examples:
+;;
 ;; - example1.scm.
 ;;
 ;; Output:
+;;
 ;; - Boolean. Defaults to #f if p_s1 is entered incorrectly.
 ;;
 (define (grsp-lang-effective-version p_s1 p_v1)
@@ -394,6 +431,7 @@
 ;;;; grsp-test - A simple test function.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 (define (grsp-test)
@@ -403,16 +441,20 @@
 ;;;; grsp-save-to-file - Saves a string to file p_f1.   
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
-;; Parameters: 
+;; Parameters:
+;;
 ;; - p_s1: string to save.
 ;; - p_f1: file.
 ;; - p_m1: save mode.
+;;
 ;;  - "w": open for input. Rewrite if exists.
 ;;  - "a": open for append. Create if does not exist.
 ;;
 ;; Sources;
+;;
 ;; - [2].
 ;;
 (define (grsp-save-to-file p_s1 p_f1 p_m1)
@@ -426,12 +468,16 @@
 ;;;; grsp-delete-file - Deletes file p_f1.   
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: mode:
+;;
 ;;   - "#f": equivalent to rm -f, without confirmation.
 ;;   - "#c": eqivalent to rm, with confirmation.
+;;
 ;; - p_f1: file name.
 ;;
 (define (grsp-delete-file p_s1 p_f1)
@@ -449,9 +495,11 @@
 ;; performs the same function. That is, to convert a number to a string.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_n1: number to convert.
 ;;
 (define (grsp-n2s p_n1)
@@ -466,10 +514,12 @@
 ;; that performs the same function. That is, to convert a string to a number.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
-;; p_s1: string to convert.
+;;
+;; - p_s1: string to convert.
 ;;
 (define (grsp-s2n p_s1)
   (let ((res1 0.0))
@@ -483,15 +533,18 @@
 ;; Guile program. Requires sqlp to be installed.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_p1: path to the sqlp executable.
 ;; - p_d1: database file, with path.
 ;; - p_s1: SQL or HDFQL snippet or file, with path.
 ;; - p_a1: sqlp macro (see sqlp's documentation for more on this).
 ;;
-;; Sources: 
+;; Sources:
+;;
 ;; - [3].
 ;;
 (define (grsp-sqlp p_p1 p_d1 p_s1 p_a1)
@@ -501,12 +554,15 @@
 ;;;; grsp-ld - Line and display. Displays a string after a newline.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string.
 ;;
 ;; Examples:
+;;
 ;; - example3.scm.
 ;;
 (define (grsp-ld p_s1)
@@ -517,9 +573,11 @@
 ;;;; grsp-dl - Display and line. Displays a newline after a string.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string.
 ;;
 (define (grsp-dl p_s1)
@@ -531,14 +589,17 @@
 ;; string p_s1 and p_n2 blank lines after p_s1.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string.
 ;; - p_n1: number of new lines preceeding the string.
 ;; - p_n2: number of new lines after the string.
 ;;
 ;; Examples:
+;;
 ;; - example3.scm.
 ;;
 (define (grsp-ldl p_s1 p_n1 p_n2)
@@ -558,9 +619,11 @@
 ;; that it clears the screen or console instead of just adding a line break.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string.
 ;;
 (define (grsp-cd p_s1)
@@ -571,15 +634,19 @@
 ;;;; grsp-ask - Input query, string.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
-;; p_s1: string representing the question to ask.
+;;
+;; - p_s1: string representing the question to ask.
 ;;
 ;; Examples:
+;;
 ;; - example3.scm.
 ;;
 ;; Output:
+;;
 ;; - Returns data from the user's input. You may need to use symbol->[type] in
 ;;   order to return the proper type variable for your needs.
 ;;
@@ -596,12 +663,15 @@
 ;;;; grsp-askn - Input query for numbers.
 ;;
 ;; Keywords:
+;;
 ;; - console, numbers.
 ;;
 ;; Parameters:
-;; p_s1: string representing the question to ask.
+;;
+;; - p_s1: string representing the question to ask.
 ;;
 ;; Output:
+;;
 ;; - Returns data from the user's input as a number.
 ;;
 (define (grsp-askn p_s1)
@@ -617,12 +687,15 @@
 ;;;; grsp-ask-etc - Asks top press <ENT> to continue.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Examples:
+;;
 ;; - example3.scm
 ;;
 ;; Output:
+;;
 ;; - A question asking to press <ENT> to continue.
 ;;
 (define (grsp-ask-etc)
@@ -636,12 +709,15 @@
 ;;;; grsp-placebo - This function is a placebo.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
-;; p_s1: string or number.
+;;
+;; - p_s1: string or number.
 ;;
 ;; Output:
+;;
 ;; - Returns p_s1.
 ;;
 (define (grsp-placebo p_s1)
@@ -655,9 +731,11 @@
 ;; in - Increments p_n1 by one.
 ;;
 ;; Keywords:
+;;
 ;; - console, numbers.
 ;;
 ;; Parameters:
+;;
 ;; - p_n1: number.
 ;;
 (define (in p_n1)
@@ -671,9 +749,11 @@
 ;; de - Decrements p_n1 by one.
 ;;
 ;; Keywords:
+;;
 ;; - console, numbers.
 ;;
 ;; Parameters:
+;;
 ;; - p_n1: number.
 ;;
 (define (de p_n1)
@@ -688,12 +768,15 @@
 ;; argument.
 ;;
 ;; Keywords:
+;;
 ;; - console, numbers.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: argument (any type).
 ;;
 ;; Output:
+;;
 ;; - String "nc2s" (not convertible to string) if the argument cannot be cast
 ;;   as a string.
 ;; - A string representing the argument, otherwise.
@@ -724,12 +807,15 @@
 ;;;; grsp-argtype - Finds the type of p_a1.
 ;;
 ;; Keywords:
+;;
 ;; - console, arguments, types.
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: argument.
 ;;
 ;; Output:
+;;
 ;; - 0: undefined.
 ;; - 1: list.
 ;; - 2: string.
@@ -743,6 +829,7 @@
 ;; - 10: nan.
 ;;
 ;; Sources:
+;;
 ;; - [4][5].
 ;;
 (define (grsp-argtype p_a1)
@@ -781,9 +868,11 @@
 ;; if from p_s1 is obtained p_s1+p_s1.
 ;;
 ;; Keywords:
+;;
 ;; - console, arguments, types.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string.
 ;;
 (define (grsp-dstr p_s1)
@@ -799,9 +888,11 @@
 ;; left and p_s2 to the right.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string.
 ;; - p_s2: string.
 ;; - p_s3: string (one element in length).
@@ -835,6 +926,7 @@
 ;;;; grsp-hw - Salutes the world. Sometimes this is all what is needed.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 (define (grsp-hw)
@@ -844,6 +936,7 @@
 ;;;; grsp-gb - Says goodbye.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 (define (grsp-gb)
@@ -853,14 +946,18 @@
 ;;;; grsp-string-tlength - Returns the length of trimmed string p_s2.
 ;;
 ;; Keywords:
+;;
 ;; - console, trim, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: sitring. Mode.
+;;
 ;;   - "#l": trim left.
 ;;   - "#r": trim right.
 ;;   - "#b": trim left and right.
 ;;   - "#n": do not trim.
+;;
 ;; - p_s2: string.
 ;;
 (define (grsp-string-tlength p_s1 p_s2)
@@ -882,17 +979,22 @@
 ;;;; grsp-string-ltlength - Find the length of each string in a string list.
 ;;
 ;; Keywords:
+;;
 ;; - console, trim, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: sitring. Mode.
+;;
 ;;   - "#l": trim left.
 ;;   - "#r": trim right.
 ;;   - "#b": trim left and right.
 ;;   - "#n": do not trim.
+;;
 ;; - p_l1: list of strings.
 ;;
 ;; Notes:
+;;
 ;; - See grsp-string-tlength, grsp-string-ltrim.
 ;;
 (define (grsp-string-ltlength p_s1 p_l1)
@@ -923,17 +1025,22 @@
 ;; p_s1.
 ;;
 ;; Keywords:
+;;
 ;; - console, trim, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: sitring. Mode.
+;;
 ;;   - "#l": trim left.
 ;;   - "#r": trim right.
 ;;   - "#b": trim left and right.
 ;;   - "#n": do not trim.
+;;
 ;; - p_l1: list of strings.
 ;;
 ;; Notes:
+;;
 ;; - See grsp-string-tlength.
 ;;
 (define (grsp-string-ltrim p_s1 p_l1)
@@ -956,13 +1063,17 @@
 ;; into a string of total length p_n1.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string. Mode.
+;;
 ;;   - "#l": p_s2 to the left.
 ;;   - "#r": p_s2 to the right.
 ;;   - "#b": center p_s2.
+;;
 ;; - p_s2: string.
 ;; - p_s3: string for padding (one char length).
 ;; - p_n1: numeric. Length of padded and justified string.
@@ -1014,9 +1125,11 @@
 ;;;; grsp-string-repeat - Concatenate p_n1 copies of string p_s1
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string.
 ;; - p_n1: number. How many times should p_s1 be repeated.
 ;;
@@ -1036,13 +1149,17 @@
 ;; lustified according to p_s1.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string. Mode.
+;;
 ;;   - "#l": p_s2 to the left.
 ;;   - "#r": p_s2 to the right.
 ;;   - "#b": center p_s2.
+;;
 ;; - p_l1: list of strings.
 ;; - p_s3: string for padding (one char length).
 ;; - p_n1: numeric. Length of padded and justified string.
@@ -1069,9 +1186,11 @@
 ;; numbers.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: list of numbers to convert to strings.
 ;;
 (define (grsp-ln2ls p_l1)
@@ -1086,9 +1205,11 @@
 ;; numbers.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings, utf, database.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: list of strings to convert to numbers.
 ;;
 (define (grsp-ls2ln p_l1)
@@ -1102,9 +1223,11 @@
 ;;;; grsp-ls2s - Casts a list of strings as single string.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: list of strings to convert to a single string. 
 ;;
 (define (grsp-ls2s p_l1)
@@ -1122,9 +1245,11 @@
 ;; each character in the original string.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string.
 ;;
 (define (grsp-s2ln p_s1)
@@ -1141,12 +1266,15 @@
 ;; represent Unicode characters.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings, unicode, utf.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: list.
 ;;
 ;; Notes: 
+;;
 ;; - grsp-ln2s casts unicode number sets to alphanumeric characters, while
 ;;   grsp-ln2ss casts unicode number sets as a numeric string.
 ;;
@@ -1166,9 +1294,11 @@
 ;; instances.
 ;;
 ;; Keywords:
+;;
 ;; - functions, random, string, files, name, naming.
 ;;
 ;; Parameters:
+;;
 ;; - p_b1: boolean.
 ;;   - #t: if p_s1 and a separator are to be used.
 ;;   - #f: otherwise.
@@ -1176,6 +1306,7 @@
 ;; - p_s2: string, file type descriptor (example "txt").
 ;;
 ;; Notes:
+;;
 ;; - See grsp-list-fname.
 ;;
 (define (grsp-generate-file-name p_b1 p_s1 p_s2)
@@ -1192,12 +1323,15 @@
 ;; into a three-element list.
 ;;
 ;; Keywords:
+;;
 ;; - functions, random, string.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string.
 ;;
 ;; Notes:
+;;
 ;; - The user should provide a valid string for this function. See
 ;;   grsp-generate-fname.
 ;;
@@ -1221,6 +1355,7 @@
 ;; distribution).
 ;;
 ;; Keywords:
+;;
 ;; - functions, random, string.
 ;;
 (define (grsp-trprnd)
@@ -1237,10 +1372,13 @@
 ;; p_s3 according to mode p_s1.
 ;;
 ;; Keywords:
+;;
 ;; - functions, random, string.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string.
+;;
 ;;   - "#l": place p_s2 only at the beginning.
 ;;   - "#h": place p_s2 only at the end
 ;;   - "#m": place p_s2 between characters bun neither at the beginning nor the
@@ -1252,6 +1390,7 @@
 ;;   - "#lh": place p_s2 at the beginning and at the end of the string, but not
 ;;     between characters.
 ;;   - "#lmh": place p_s2 at the beginning, between characters and at the end.
+;;
 ;; - p_s2: string to place between characters.
 ;; - p_s3: string to be modified.
 ;;
@@ -1316,12 +1455,15 @@
 ;; to a number apt to be stored in a grsp relational matrix.
 ;;
 ;; Keywords:
+;;
 ;; - functions, random, string.
 ;;
 ;; Parameters
+;;
 ;; - p_s1: string.
 ;;
 ;; Notes:
+;;
 ;; - See grsp-dbc2s, grsp3.grsp-matrix-create.
 ;; - String "|" is used to clearly separate each character string and hence the
 ;;   unicode number of each one of them.
@@ -1345,12 +1487,15 @@
 ;; human readable form.
 ;;
 ;; Keywords:
+;;
 ;; - functions, random, string.
 ;;
 ;; Parameters:
+;;
 ;; - p_n1: number. Should have been composed as described in grsp-s2dbc.
 ;;
 ;; Notes:
+;;
 ;; - See grsp-s2dbc, grsp3.grsp-matrix-create, grsp3.grsp-dbc2lls.
 ;;
 (define (grsp-dbc2s p_n1)
@@ -1382,12 +1527,15 @@
 ;; should represent Unicode characters.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: list.
 ;;
-;; Notes: 
+;; Notes:
+;;
 ;; - grsp-ln2s casts unicode number sets to alphanumeric characters, while
 ;;   grsp-ln2ss casts unicode number sets as a numeric string.
 ;;
@@ -1408,11 +1556,13 @@
 
 ;;;; grsp-lns2ln - Casts a list of numeric strings representing Unicode
 ;; characters into numbers representing those Unicode characters.
-5;;
+;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: list.
 ;;
 (define (grsp-lns2ln p_l1)
@@ -1432,6 +1582,7 @@
 ;;;; grsp-dsc - Displays double semicolon for comments.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 (define (grsp-dsc)
@@ -1441,6 +1592,7 @@
 ;;;; grsp-dscn - Displays double semicolon and a free line.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 (define (grsp-dscn)
@@ -1451,6 +1603,7 @@
 ;;;; grsp-dline - Displays a double line.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 (define (grsp-dline)
@@ -1462,9 +1615,11 @@
 ;;;; grsp-dtext - Displays a commented line.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: list.
 ;;
 (define (grsp-dtext p_s1)
@@ -1476,9 +1631,11 @@
 ;; by string p_s1.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: string.
 ;; - p_l1: list.
 ;;
@@ -1493,9 +1650,11 @@
 ;;;; displayf - Displays the contents of a plain text file.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings, engrams.
 ;;
 ;; Parameters:
+;;
 ;; - p_f1: string. File name.
 ;;
 (define (displayf p_f1)
@@ -1506,9 +1665,11 @@
 ;; p_l1 to each element of string list p_l2 separated by string p_s1.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: list of string elements.
 ;; - p_l2: list of string elements.
 ;; - p_s1: string.
@@ -1527,6 +1688,7 @@
 ;; library.
 ;;
 ;; Keywords:
+;;
 ;; - console, strings.
 ;;
 (define (grsp-lam)
