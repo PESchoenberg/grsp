@@ -309,7 +309,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -373,7 +373,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -481,7 +481,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -520,7 +520,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -591,7 +591,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -631,7 +631,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -667,7 +667,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -701,7 +701,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -756,7 +756,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -844,7 +844,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -897,7 +897,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -941,7 +941,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -1197,7 +1197,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -1261,7 +1261,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -1369,7 +1369,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -1476,7 +1476,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -1529,7 +1529,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -1553,7 +1553,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -1583,7 +1583,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -1731,7 +1731,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -1813,7 +1813,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -1926,7 +1926,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -1987,7 +1987,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -2046,7 +2046,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -2135,7 +2135,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -2172,7 +2172,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -2255,7 +2255,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -2322,7 +2322,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -2373,7 +2373,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -2464,7 +2464,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -2558,7 +2558,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -2624,7 +2624,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -2724,7 +2724,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -2791,7 +2791,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -2875,7 +2875,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -2913,7 +2913,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -2965,7 +2965,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -3038,7 +3038,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -3110,7 +3110,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -3177,7 +3177,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -3225,7 +3225,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -3307,7 +3307,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -3350,7 +3350,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -3384,7 +3384,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -3417,7 +3417,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -3457,7 +3457,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -3512,7 +3512,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -3589,7 +3589,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -3651,7 +3651,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -3677,7 +3677,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, ann, neural network.
+;; - function, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -3712,7 +3712,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -3745,7 +3745,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -3778,7 +3778,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -3878,7 +3878,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -3939,7 +3939,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;

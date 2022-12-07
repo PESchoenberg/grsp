@@ -76,7 +76,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - geometry, curves.
+;; - geometry, curves
 ;;
 ;; Parameters:
 ;;
@@ -94,7 +94,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - geometry, curves, volume.
+;; - geometry, curves, volume
 ;;
 ;; Parameters:
 ;;
@@ -112,7 +112,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - geometry, polygons.
+;; - geometry, polygons
 ;;
 ;; Parameters:
 ;;
@@ -131,7 +131,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - geometry, polygons.
+;; - geometry, polygons
 ;;
 ;; Parameters:
 ;;
@@ -150,7 +150,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - geometry.
+;; - geometry
 ;;
 ;; Parameters:
 ;;
@@ -171,7 +171,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - geometry.
+;; - geometry
 ;;
 ;; Parameters:
 ;;
@@ -206,7 +206,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - geometry.
+;; - geometry
 ;;
 ;; Parameters:
 ;;
@@ -225,7 +225,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - geometry.
+;; - geometry
 ;;
 ;; Parameters:
 ;;
@@ -244,7 +244,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - geometry.
+;; - geometry
 ;;
 ;; Parameters:
 ;;
@@ -263,7 +263,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - geometry.
+;; - geometry
 ;;
 ;; Parameters:
 ;;
@@ -283,7 +283,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - geometry, pi.
+;; - geometry, pi
 ;;
 ;; Sources:
 ;;
@@ -307,7 +307,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - geometry, pi.
+;; - geometry, pi
 ;;
 ;; Sources:
 ;;
@@ -333,7 +333,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - geometry, pi.
+;; - geometry, pi
 ;;
 ;; Sources:
 ;;
@@ -359,7 +359,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - geometry, pi.
+;; - geometry, pi
 ;;
 ;; Sources:
 ;;
@@ -377,7 +377,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - geometry, conoids.
+;; - geometry, conoids
 ;;
 ;; Parameters:
 ;;
@@ -400,7 +400,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - geometry, saddle, surface, hyperbolic, paraboloid.
+;; - geometry, saddle, surface, hyperbolic, paraboloid
 ;;
 ;; Parameters:
 ;;
@@ -423,7 +423,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - geometry, saddle, surface, hyperbolic, paraboloid.
+;; - geometry, saddle, surface, hyperbolic, paraboloid
 ;;
 ;; Parameters:
 ;;
@@ -446,7 +446,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - geometry, volume.
+;; - geometry, volume
 ;;
 ;; Parameters:
 ;;
@@ -466,7 +466,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - geometry, topology.
+;; - geometry, topology
 ;;
 ;; Parameters:
 ;;

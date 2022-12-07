@@ -137,7 +137,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -165,7 +165,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -197,7 +197,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -214,7 +214,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Examples:
 ;;
@@ -229,7 +229,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -256,7 +256,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -279,7 +279,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -321,7 +321,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -365,7 +365,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -392,7 +392,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -432,7 +432,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 (define (grsp-test)
   (grsp-ld "grsp-test"))
@@ -442,7 +442,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -469,7 +469,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -496,7 +496,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -515,7 +515,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -534,7 +534,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -555,7 +555,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -574,7 +574,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -590,7 +590,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -620,7 +620,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -635,7 +635,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -664,7 +664,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, numbers.
+;; - console, numbers
 ;;
 ;; Parameters:
 ;;
@@ -688,7 +688,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Examples:
 ;;
@@ -710,7 +710,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -732,7 +732,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, numbers.
+;; - console, numbers
 ;;
 ;; Parameters:
 ;;
@@ -750,7 +750,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, numbers.
+;; - console, numbers
 ;;
 ;; Parameters:
 ;;
@@ -769,7 +769,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, numbers.
+;; - console, numbers
 ;;
 ;; Parameters:
 ;;
@@ -808,7 +808,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, arguments, types.
+;; - console, arguments, types
 ;;
 ;; Parameters:
 ;;
@@ -869,7 +869,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, arguments, types.
+;; - console, arguments, types
 ;;
 ;; Parameters:
 ;;
@@ -927,7 +927,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 (define (grsp-hw)
   (grsp-ldl "Hello world!" 1 1))
@@ -937,7 +937,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 (define (grsp-gb)
   (grsp-ldl "Good bye!" 1 1))
@@ -947,7 +947,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, trim, strings.
+;; - console, trim, strings
 ;;
 ;; Parameters:
 ;;
@@ -980,7 +980,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, trim, strings.
+;; - console, trim, strings
 ;;
 ;; Parameters:
 ;;
@@ -1026,7 +1026,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, trim, strings.
+;; - console, trim, strings
 ;;
 ;; Parameters:
 ;;
@@ -1064,7 +1064,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -1126,7 +1126,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -1150,7 +1150,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -1187,7 +1187,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -1206,7 +1206,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings, utf, database.
+;; - console, strings, utf, database
 ;;
 ;; Parameters:
 ;;
@@ -1224,7 +1224,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -1246,7 +1246,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -1267,7 +1267,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings, unicode, utf.
+;; - console, strings, unicode, utf
 ;;
 ;; Parameters:
 ;;
@@ -1295,13 +1295,15 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, random, string, files, name, naming.
+;; - functions, random, string, files, name, naming
 ;;
 ;; Parameters:
 ;;
 ;; - p_b1: boolean.
+;;
 ;;   - #t: if p_s1 and a separator are to be used.
 ;;   - #f: otherwise.
+;;
 ;; - p_s1: string.
 ;; - p_s2: string, file type descriptor (example "txt").
 ;;
@@ -1324,7 +1326,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, random, string.
+;; - functions, random, string
 ;;
 ;; Parameters:
 ;;
@@ -1356,7 +1358,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, random, string.
+;; - functions, random, string
 ;;
 (define (grsp-trprnd)
   (let ((res1 0))
@@ -1373,7 +1375,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, random, string.
+;; - functions, random, string
 ;;
 ;; Parameters:
 ;;
@@ -1456,7 +1458,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, random, string.
+;; - functions, random, string
 ;;
 ;; Parameters
 ;;
@@ -1488,7 +1490,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, random, string.
+;; - functions, random, string
 ;;
 ;; Parameters:
 ;;
@@ -1528,7 +1530,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -1559,7 +1561,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -1583,7 +1585,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 (define (grsp-dsc)
   (display ";; "))
@@ -1593,7 +1595,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 (define (grsp-dscn)
   (grsp-dsc)
@@ -1604,7 +1606,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 (define (grsp-dline)
   (grsp-dsc)
@@ -1616,7 +1618,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -1632,7 +1634,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -1651,7 +1653,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings, engrams.
+;; - console, strings, engrams
 ;;
 ;; Parameters:
 ;;
@@ -1666,7 +1668,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 ;; Parameters:
 ;;
@@ -1689,7 +1691,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings.
+;; - console, strings
 ;;
 (define (grsp-lam)
   (let ((res1 '()))

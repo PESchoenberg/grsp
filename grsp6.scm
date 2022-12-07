@@ -133,7 +133,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - relativity, metric.
+;; - relativity, metric
 ;;
 ;; Parameters:
 ;;
@@ -193,7 +193,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - relativity, metric.
+;; - relativity, metric
 ;;
 ;; Parameters:
 ;;
@@ -242,7 +242,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - relativity, dilation.
+;; - relativity, dilation
 ;;
 ;; Parameters:
 ;; 
@@ -265,7 +265,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - relativity, dilation.
+;; - relativity, dilation
 ;;
 ;; Parameters:
 ;; 
@@ -289,7 +289,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - relativity, contraction.
+;; - relativity, contraction
 ;;
 ;; Parameters:
 ;; 
@@ -312,7 +312,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - relativity, transform.
+;; - relativity, transform
 ;;
 ;; Parameters:
 ;; 
@@ -350,7 +350,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - relativity, transform.
+;; - relativity, transform
 ;;
 ;; Parameters:
 ;; 
@@ -388,7 +388,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - relativity, frames, special.
+;; - relativity, frames, special
 ;;
 ;; Parameters:
 ;;
@@ -410,7 +410,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - dynamics, speed, velocity.
+;; - dynamics, speed, velocity
 ;;
 ;; Parameters:
 ;;
@@ -431,7 +431,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - dynamics, acceleration, increment.
+;; - dynamics, acceleration, increment
 ;;
 ;; Parameters:
 ;;
@@ -452,7 +452,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - waves, observable, frequency.
+;; - waves, observable, frequency
 ;;
 ;; Parameters:
 ;;
@@ -478,7 +478,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - waves, frequency.
+;; - waves, frequency
 ;;
 ;; Parameters:
 ;;
@@ -504,7 +504,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - waves, sources.
+;; - waves, sources
 ;;
 ;; Parameters:
 ;;
@@ -551,7 +551,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - waves, wave, shift.
+;; - waves, wave, shift
 ;;
 ;; Parameters:
 ;;
@@ -582,7 +582,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - dynamics, distance, time.
+;; - dynamics, distance, time
 ;;
 ;; Parameters:
 ;;
@@ -601,7 +601,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - dynamics, accelerate, time, speed, velocity.
+;; - dynamics, accelerate, time, speed, velocity
 ;;
 ;; Parameters:
 ;;
@@ -620,7 +620,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - astro, celestial, body, measurement, distance.
+;; - astro, celestial, body, measurement, distance
 ;;
 ;; Parameters:
 ;;
@@ -638,7 +638,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - relativity, particles, energy.
+;; - relativity, particles, energy
 ;;
 ;; Parameters:
 ;;
@@ -659,7 +659,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - relativity, astro, mass.
+;; - relativity, astro, mass
 ;;
 ;; Parameters:
 ;;
@@ -682,7 +682,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - relativity, astro.
+;; - relativity, astro
 ;;
 ;; Parameters:
 ;;
@@ -705,7 +705,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - dynamics, astro, impulse, acceleration.
+;; - dynamics, astro, impulse, acceleration
 ;;
 ;; Parameters:
 ;;
@@ -727,7 +727,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - dynamics, astro, ideal, model.
+;; - dynamics, astro, ideal, model
 ;;
 ;; Parameters:
 ;;
@@ -752,7 +752,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - astro, gravity, planet, earth. latitude.
+;; - astro, gravity, planet, earth. latitude
 ;;
 ;; Parameters:
 ;;
@@ -778,7 +778,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - astro, planet, earth. latitude.
+;; - astro, planet, earth. latitude
 ;;
 ;; Parameters:
 ;;
@@ -799,7 +799,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - astro, radius, diameter.
+;; - astro, radius, diameter
 ;;
 ;; Parameters:
 ;;
@@ -819,7 +819,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - astro, gravity.
+;; - astro, gravity
 ;;
 ;; Parameters:
 ;;
@@ -842,7 +842,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - astro, gravity.
+;; - astro, gravity
 ;;
 ;; Parameters:
 ;;
@@ -868,7 +868,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - astro.
+;; - astro
 ;;
 ;; Parameters:
 ;;
@@ -903,7 +903,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - astro.
+;; - astro
 ;;
 ;; Parameters:
 ;;

@@ -56,7 +56,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, division, fractions, polynomials.
+;; - functions, division, fractions, polynomials
 ;;
 ;; Parameters:
 ;;
@@ -79,7 +79,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, interpolation, polynomials.
+;; - functions, interpolation, polynomials
 ;;
 ;; Parameters:
 ;;
@@ -109,7 +109,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, interpolation, polynomials.
+;; - functions, interpolation, polynomials
 ;;
 ;; Parameters:
 ;;
@@ -147,7 +147,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, interpolation, polynomials.
+;; - functions, interpolation, polynomials
 ;;
 ;; Parameters:
 ;;

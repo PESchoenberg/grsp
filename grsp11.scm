@@ -67,7 +67,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, lists.
+;; - console, lists
 ;;
 ;; Parameters:
 ;;
@@ -123,7 +123,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, lists.
+;; - console, lists
 ;;
 ;; Parameters:
 ;;
@@ -158,7 +158,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists.
+;; - function, algebra, lists
 ;;
 ;; Parameters:
 ;;
@@ -180,7 +180,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists.
+;; - function, algebra, lists
 ;;
 ;; Parameters:
 ;;
@@ -210,7 +210,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists.
+;; - function, algebra, lists
 ;;
 ;; Parameters;
 ;;
@@ -242,7 +242,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists.
+;; - function, algebra, lists
 ;;
 ;; Parameters:
 ;;
@@ -293,7 +293,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists.
+;; - function, algebra, lists
 ;;
 ;; Parameters:
 ;;
@@ -344,7 +344,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists.
+;; - function, algebra, lists
 ;;
 ;; Parameters:
 ;;
@@ -397,7 +397,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists.
+;; - function, algebra, lists
 ;;
 ;; Parameters:
 ;;
@@ -436,7 +436,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists.
+;; - function, algebra, lists
 ;;
 ;; Parameters:
 ;;
@@ -464,7 +464,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists.
+;; - function, algebra, lists
 ;;
 ;; Parameters:
 ;;
@@ -500,7 +500,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists.
+;; - function, algebra, lists
 ;;
 ;; Parameters:
 ;;
@@ -530,7 +530,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists.
+;; - function, algebra, lists
 ;;
 ;; Parameters:
 ;;
@@ -561,7 +561,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists.
+;; - function, algebra, lists
 ;;
 ;; Parameters:
 ;;
@@ -585,7 +585,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists.
+;; - function, algebra, lists
 ;;
 ;; Parameters:
 ;;
@@ -609,7 +609,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists.
+;; - function, algebra, lists
 ;;
 ;; Parameters:
 ;;
@@ -629,7 +629,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists.
+;; - function, algebra, lists
 ;;
 ;; Parameters:
 ;;
@@ -649,7 +649,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists.
+;; - function, algebra, lists
 ;;
 ;; Parameters:
 ;;
@@ -669,7 +669,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists.
+;; - function, algebra, lists
 ;;
 ;; Parameters
 ;;
@@ -692,7 +692,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists.
+;; - function, algebra, lists
 ;;
 ;; Parameters:
 ;;
@@ -717,7 +717,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists.
+;; - function, algebra, lists
 ;;
 ;; Parameters:
 ;;
@@ -736,7 +736,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists.
+;; - function, algebra, lists
 ;;
 ;; Parameters:
 ;;
@@ -761,7 +761,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, matrix, matrices, vectors.
+;; - function, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;

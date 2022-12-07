@@ -44,7 +44,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - date, time, calendar, chronology, strings.
+;; - date, time, calendar, chronology, strings
 ;;
 ;; Parameters:
 ;;
@@ -66,7 +66,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - date, time, calendar, chronology, strings.
+;; - date, time, calendar, chronology, strings
 ;;
 ;; Parameters:
 ;;
@@ -90,7 +90,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - date, time, calendar, chronology, strings.
+;; - date, time, calendar, chronology, strings
 ;;
 ;; Parameters:
 ;;
@@ -117,7 +117,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - date, time, calendar, chronology, strings.
+;; - date, time, calendar, chronology, strings
 ;;
 ;; Parameters:
 ;;
@@ -149,7 +149,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - date, time, calendar, chronology, strings.
+;; - date, time, calendar, chronology, strings
 ;;
 ;; Output:
 ;;
@@ -210,7 +210,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - date, time, calendar, chronology, strings.
+;; - date, time, calendar, chronology, strings
 ;;
 ;; Output:
 ;;

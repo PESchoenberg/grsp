@@ -53,7 +53,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, evolution, genetic, differential.
+;; - function, evolution, genetic, differential
 ;;
 ;; Parameters:
 ;;
@@ -118,7 +118,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, evolution, genetic.
+;; - function, evolution, genetic
 ;;
 ;; Parameters:
 ;;
@@ -162,7 +162,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, evolution, genetic.
+;; - function, evolution, genetic
 ;;
 ;; Parameters.
 ;;
@@ -242,6 +242,4 @@
     (set! res1 (grsp-matrix-row-selectn res1 '(0)))  
     
     res1))
-
-
 

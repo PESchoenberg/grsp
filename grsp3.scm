@@ -348,6 +348,7 @@
 	    grsp-matrix-row-subrepal
 	    grsp-matrix-subdell
 	    grsp-matrix-is-samedim
+	    grsp-matrix-is-samediml
 	    grsp-matrix-fill
 	    grsp-matrix-fdif
 	    grsp-matrix-opewc
@@ -388,14 +389,15 @@
 	    grsp-mr2ls
 	    grsp-dbc2lls
 	    grsp-matrix-row-prkey
-	    grsp-matrix-strot))
+	    grsp-matrix-strot
+	    grsp-matrix-row-corr))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices.
+;; - functions, algebra, matrix, matrices
 ;;
 ;; Parameters:
 ;;
@@ -421,7 +423,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices.
+;; - functions, algebra, matrix, matrices
 ;;
 ;; Parameters:
 ;;
@@ -447,7 +449,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices.
+;; - functions, algebra, matrix, matrices
 ;;
 ;; Parameters:
 ;;
@@ -473,7 +475,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices.
+;; - functions, algebra, matrix, matrices
 ;;
 ;; Parameters:
 ;;
@@ -500,7 +502,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices.
+;; - functions, algebra, matrix, matrices
 ;;
 ;; Parameters:
 ;;
@@ -529,7 +531,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices.
+;; - functions, algebra, matrix, matrices
 ;;
 ;; Parameters:
 ;;
@@ -557,7 +559,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -602,7 +604,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -1011,7 +1013,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -1056,7 +1058,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -1319,7 +1321,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -1356,7 +1358,14 @@
 ;;   - "#RXX": Qubit quantum gate. Ising coupling gate, X, requires also p_z1.
 ;;   - "#RYY": Qubit quantum gate. Ising coupling gate, Y, requires also p_z1.
 ;;   - "#RZZ": Qubit quantum gate. Ising coupling gate, Z, requires also p_z1.
-;;   - "#Wilson", Wilson matrix.
+;;   - "#Wilson": Wilson matrix.
+;;   - "#corr": element wise correlation matrix (1 x 6), according to:
+;;     - [0,0]: row, element of first matrix.
+;;     - [0,1]: col, element of first matrix.
+;;     - [0,2]: value of element, first matrix.
+;;     - [0,3]: row, element of second matrix.
+;;     - [0,4]: col, element of second matrix.
+;;     - [0,5]: value of element, second matrix.
 ;;
 ;; - p_z1: complex, matrix scalar multiplier.
 ;;
@@ -1544,6 +1553,8 @@
 	   (array-set! res1 z2 1 1)
 	   (array-set! res1 z2 2 2)
 	   (array-set! res1 z3 3 3))
+	  ((equal? p_s1 "#corr")
+	   (set! res1 (grsp-matrix-create 0 1 6)))
 	  ((equal? p_s1 "#Wilson")
 	   (set! res1 (grsp-matrix-create 0 4 4))
 	   (set! res1 (grsp-l2mr res1 (list 5 7 6 5) 0 0))
@@ -1561,7 +1572,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -1585,7 +1596,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -1691,7 +1702,7 @@
 ;; with shape n x m.
 ;;
 ;; Keywords:
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;; - p_a1: matrix to be transposed.
@@ -1727,7 +1738,7 @@
 ;;;; grsp-matrix-transposer - Transposes p_a1 p_n1 times.
 ;;
 ;; Keywords:
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;; - p_a1: matrix.
@@ -1753,7 +1764,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -1774,7 +1785,7 @@
 ;; Keywords:
 ;;
 ;; - functions, algebra, matrix, matrices, vectors, hermitian conjugate, adjoint,
-;;   transjugate.
+;;   transjugate
 ;;
 ;; Parameters:
 ;;
@@ -1797,7 +1808,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters;
 ;;
@@ -1963,7 +1974,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -2087,7 +2098,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, hadamard, direct, schur.
+;; - functions, algebra, matrix, matrices, vectors, hadamard, direct, schur
 ;;
 ;; Parameters:
 ;; - p_s1: operation described as a string:
@@ -2213,7 +2224,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -2340,7 +2351,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -2475,8 +2486,7 @@
 	   
 	   ;; This requires a definition of the results matrix since the
 	   ;; Kronecker product generates a matrix M of (m1*m2)*(n1*n2)
-	   ;; size.
-	   
+	   ;; size.	   
 	   (set! res3 (grsp-matrix-create 0
 					  (* (grsp-tm p_a1) (grsp-tm p_a2))
 					  (* (grsp-tn p_a1) (grsp-tn p_a2))))
@@ -2514,7 +2524,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -2560,7 +2570,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -2593,7 +2603,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -2636,7 +2646,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;; 
 ;; Parameters:
 ;;
@@ -2675,7 +2685,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -2776,7 +2786,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -2861,7 +2871,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -2909,7 +2919,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;; 
 ;; Parameters:
 ;;
@@ -2966,7 +2976,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -2988,7 +2998,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -3012,7 +3022,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -3052,7 +3062,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -3077,7 +3087,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -3098,7 +3108,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -3117,7 +3127,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -3149,7 +3159,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -3185,7 +3195,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -3215,7 +3225,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -3257,7 +3267,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -3302,7 +3312,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -3509,7 +3519,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -3544,7 +3554,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -3564,7 +3574,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -3604,7 +3614,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -3623,7 +3633,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -3657,7 +3667,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -3685,7 +3695,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -3734,7 +3744,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -3777,7 +3787,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -3803,7 +3813,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -3902,7 +3912,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -3941,7 +3951,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -3964,7 +3974,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -3991,7 +4001,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -4025,6 +4035,10 @@
 ;; contents of a database containing serialized complex or complex-subset
 ;; numbers.
 ;;
+;; Keywords:
+;;
+;; - functions, algebra, matrix, matrices, vectors, database, serial
+;;
 ;; Parameters:
 ;;
 ;; - p_db1: database name.
@@ -4039,6 +4053,10 @@
 ;;;; grsp-dbc2mc-csv - Fills a matrix of complex or complex-subset numbers with
 ;; the contents of a csv format database file containing serialized complex or
 ;; complex-subset numbers.
+;;
+;; Keywords:
+;;
+;; - functions, algebra, matrix, matrices, vectors, database, serial
 ;;
 ;; Parameters:
 ;;
@@ -4137,7 +4155,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -4171,7 +4189,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, databases.
+;; - functions, algebra, matrix, matrices, vectors, databases
 ;;
 ;; Parameters:
 ;;
@@ -4238,7 +4256,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, databases.
+;; - functions, algebra, matrix, matrices, vectors, databases
 ;;
 ;; Parameters:
 ;;
@@ -4305,7 +4323,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, databases.
+;; - functions, algebra, matrix, matrices, vectors, databases
 ;;
 ;; Parameters:
 ;;
@@ -4385,7 +4403,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, databases.
+;; - functions, algebra, matrix, matrices, vectors, databases
 ;;
 ;; Parameters:
 ;;
@@ -4469,7 +4487,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, databases.
+;; - functions, algebra, matrix, matrices, vectors, databases
 ;;
 ;; Parameters:
 ;;
@@ -4553,7 +4571,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -4588,7 +4606,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -4628,7 +4646,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -4661,7 +4679,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -4680,7 +4698,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -4715,7 +4733,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -4829,7 +4847,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -4858,7 +4876,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -4980,7 +4998,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -5008,7 +5026,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, relational.
+;; - functions, algebra, matrix, matrices, vectors, relational
 ;;
 ;; Parameters:
 ;;
@@ -5089,7 +5107,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, relational.
+;; - functions, algebra, matrix, matrices, vectors, relational
 ;;
 ;; Parameters:
 ;;
@@ -5198,7 +5216,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, relational.
+;; - functions, algebra, matrix, matrices, vectors, relational
 ;;
 ;; Parameters:
 ;;
@@ -5247,7 +5265,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, relational.
+;; - functions, algebra, matrix, matrices, vectors, relational
 ;;
 ;; Parameters:
 ;;
@@ -5344,7 +5362,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, relational.
+;; - functions, algebra, matrix, matrices, vectors, relational
 ;;
 ;; Parameters:
 ;;
@@ -5400,7 +5418,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, relational.
+;; - functions, algebra, matrix, matrices, vectors, relational
 ;;
 ;; Parameters:
 ;;
@@ -5486,7 +5504,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, relational.
+;; - functions, algebra, matrix, matrices, vectors, relational
 ;;
 ;; Parameters:
 ;;
@@ -5569,7 +5587,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, relational.
+;; - functions, algebra, matrix, matrices, vectors, relational
 ;;
 ;; Parameters:
 ;;
@@ -5602,7 +5620,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, relational.
+;; - functions, algebra, matrix, matrices, vectors, relational
 ;;
 ;; Parameters:
 ;;
@@ -5644,7 +5662,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, relational.
+;; - functions, algebra, matrix, matrices, vectors, relational
 ;;
 ;; Parameters:
 ;;
@@ -5769,7 +5787,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, relational.
+;; - functions, algebra, matrix, matrices, vectors, relational
 ;;
 ;; Parameters:
 ;;
@@ -5814,7 +5832,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, relational.
+;; - functions, algebra, matrix, matrices, vectors, relational
 ;;
 ;; Parameters:
 ;;
@@ -5908,7 +5926,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -5967,7 +5985,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, relational.
+;; - functions, algebra, matrix, matrices, vectors, relational
 ;;
 ;; Parameters:
 ;;
@@ -6058,7 +6076,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, relational.
+;; - functions, algebra, matrix, matrices, vectors, relational
 ;;
 ;; Parameters:
 ;;
@@ -6112,7 +6130,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, relational.
+;; - functions, algebra, matrix, matrices, vectors, relational
 ;;
 ;; Parameters:
 ;;
@@ -6132,7 +6150,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, relational.
+;; - functions, algebra, matrix, matrices, vectors, relational
 ;;
 ;; Parameters:
 ;;
@@ -6152,7 +6170,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, relational.
+;; - functions, algebra, matrix, matrices, vectors, relational
 ;;
 ;; Parameters:
 ;;
@@ -6196,7 +6214,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, relational.
+;; - functions, algebra, matrix, matrices, vectors, relational
 ;;
 ;; Parameters:
 ;;
@@ -6279,7 +6297,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;; 
 ;; Parameters:
 ;;
@@ -6319,7 +6337,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;; 
 ;; Parameters:
 ;;
@@ -6363,7 +6381,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, relational.
+;; - functions, algebra, matrix, matrices, vectors, relational
 ;;
 ;; Parameters:
 ;;
@@ -6439,7 +6457,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, relational.
+;; - functions, algebra, matrix, matrices, vectors, relational
 ;;
 ;; Parameters:
 ;;
@@ -6490,7 +6508,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, relational.
+;; - functions, algebra, matrix, matrices, vectors, relational
 ;;
 ;; Parameters:
 ;;
@@ -6518,6 +6536,10 @@
 ;;;; grsp-matrix-clearni - Deletes all rows from matrix p_a1 where any of the
 ;; values contained in list defined by (grsp-naninf) is found at any column.
 ;;
+;; Keywords:
+;;
+;; - functions, algebra, matrix, matrices, vectors, deletion
+;;
 ;; Parameters:
 ;;
 ;; - p_a1: matrix.
@@ -6536,7 +6558,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, relational.
+;; - functions, algebra, matrix, matrices, vectors, relational
 ;;
 ;; Parameters:
 ;;
@@ -6635,7 +6657,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, relational.
+;; - functions, algebra, matrix, matrices, vectors, relational
 ;;
 ;; Parameters:
 ;;
@@ -6696,7 +6718,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, relational.
+;; - functions, algebra, matrix, matrices, vectors, relational
 ;;
 ;; Parameters:
 ;;
@@ -6751,7 +6773,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, relational.
+;; - functions, algebra, matrix, matrices, vectors, relational
 ;;
 ;; Parameters:
 ;;
@@ -6802,7 +6824,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, genetic.
+;; - functions, algebra, matrix, matrices, vectors, genetic
 ;;
 ;; Parameters:
 ;;
@@ -6865,7 +6887,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, genetic.
+;; - functions, algebra, matrix, matrices, vectors, genetic
 ;;
 ;; Parameters:
 ;;
@@ -6922,7 +6944,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, genetic.
+;; - functions, algebra, matrix, matrices, vectors, genetic
 ;;
 ;; Parameters:
 ;;
@@ -6985,7 +7007,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, genetic.
+;; - functions, algebra, matrix, matrices, vectors, genetic
 ;;
 ;; Parameters:
 ;;
@@ -7079,7 +7101,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, genetic.
+;; - functions, algebra, matrix, matrices, vectors, genetic
 ;;
 ;; Parameters:
 ;;
@@ -7126,7 +7148,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -7154,7 +7176,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, genetic.
+;; - functions, algebra, matrix, matrices, vectors, genetic
 ;;
 ;; Parameters:
 ;;
@@ -7189,7 +7211,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, genetic.
+;; - functions, algebra, matrix, matrices, vectors, genetic
 ;;
 ;; Parameters:
 ;;
@@ -7252,7 +7274,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -7317,7 +7339,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -7347,7 +7369,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, relational.
+;; - functions, algebra, matrix, matrices, vectors, relational
 ;;
 ;; Parameters:
 ;;
@@ -7405,7 +7427,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -7425,7 +7447,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -7475,7 +7497,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -7557,7 +7579,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -7620,7 +7642,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network.
+;; - functions, ann, neural network
 ;;
 ;; Parameters:
 ;;
@@ -7683,7 +7705,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -7721,7 +7743,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;; 
 ;; Parameters:
 ;;
@@ -7746,11 +7768,52 @@
     res1))
 
 
+;;;; grsp-matrix-is-samediml - Applies grsp-matrix-is-samedim to all elements
+;; of list p_l1
+;;
+;; Keywords:
+;;
+;; - functions, algebra, matrix, matrices, vectors
+;; 
+;; Parameters:
+;;
+;; p_l1: list of matrices.
+;;
+;; Output:
+;;
+;; - Returns #t if all matrices have the same number of rows and columns; #f
+;;   otherwise.
+;;
+(define (grsp-matrix-is-samediml p_l1)
+  (let ((res1 #t)
+	(a0 0)
+	(a1 0)
+	(j1 1)
+	(b1 #f))
+
+    ;; All matrices will be compared to the first one.
+    (set! a0 (list-ref p_l1 0))
+
+    (while (< j1 (length p_l1))
+	  (set! a1 (list-ref p_l1 j1))
+	  (set! b1 (grsp-matrix-is-samedim a0 a1))
+
+	  ;; If one anomalous matrix is found is enough to stop
+	  ;; the process and return #f.
+	  (cond ((equal? b1 #f)
+		 (set! res1 #f)
+		 (set! j1 (length p_l1))))
+
+	  (set! j1 (in j1)))
+    
+    res1))
+
+
 ;;;; grsp-matrix-fill - Fills all elements of matrix p_a1 with value p_n1.
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;; 
 ;; Parameters:
 ;;
@@ -7787,7 +7850,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;; 
 ;; Parameters:
 ;;
@@ -7850,7 +7913,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices.
+;; - functions, algebra, matrix, matrices
 ;;
 ;; Parameters:
 ;;
@@ -7940,7 +8003,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, multithreaded.
+;; - functions, algebra, matrix, matrices, vectors, multithreaded
 ;;
 ;; Parameters:
 ;;
@@ -8005,7 +8068,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -8027,7 +8090,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -8056,7 +8119,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, multithreaded.
+;; - functions, algebra, matrix, matrices, vectors, multithreaded
 ;;
 ;; Parameters:
 ;;
@@ -8113,7 +8176,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -8137,7 +8200,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, moving.
+;; - functions, algebra, matrix, matrices, vectors, moving
 ;;
 ;; Parameters:
 ;;
@@ -8170,7 +8233,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, swapping.
+;; - functions, algebra, matrix, matrices, vectors, swapping
 ;;
 ;; Parameters:
 ;;
@@ -8219,7 +8282,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, circulation.
+;; - functions, algebra, matrix, matrices, vectors, circulation
 ;;
 ;; Parameters:
 ;;
@@ -8323,7 +8386,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, swapping.
+;; - functions, algebra, matrix, matrices, vectors, swapping
 ;;
 ;; Parameters:
 ;;
@@ -8352,7 +8415,8 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, diagonal, replacement, replacing, change.
+;; - functions, algebra, matrix, matrices, vectors, diagonal, replacement,
+;;   replacing, change
 ;;
 ;; Parameters:
 ;;
@@ -8389,7 +8453,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;; - p_a1: matrix.
@@ -8424,7 +8488,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -8453,7 +8517,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -8490,7 +8554,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, inversion.
+;; - functions, algebra, matrix, matrices, vectors, inversion
 ;;
 ;; Parameters:
 ;;
@@ -8528,7 +8592,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -8550,7 +8614,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, strings.
+;; - functions, algebra, matrix, matrices, vectors, strings
 ;;
 ;; Parameters:
 ;;
@@ -8586,7 +8650,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, strings, padding.
+;; - functions, algebra, matrix, matrices, vectors, strings, padding
 ;;
 ;; Parameters:
 ;;
@@ -8629,7 +8693,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, strings, length.
+;; - functions, algebra, matrix, matrices, vectors, strings, length
 ;;
 ;; Parameters:
 ;;
@@ -8666,7 +8730,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, strings.
+;; - functions, algebra, matrix, matrices, vectors, strings
 ;;
 ;; Parameters:
 ;;
@@ -8708,7 +8772,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, strings.
+;; - functions, algebra, matrix, matrices, vectors, strings
 ;;
 ;; Parameters:
 ;;
@@ -8732,7 +8796,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, strings.
+;; - functions, algebra, matrix, matrices, vectors, strings
 ;;
 ;; Parameters:
 ;;
@@ -8774,7 +8838,7 @@
 ;; Keywords:
 ;;
 ;; - functions, algebra, matrix, matrices, vectors, strings, replacement,
-;;   substitution.
+;;   substitution
 ;;
 ;; Parameters:
 ;;
@@ -8854,7 +8918,7 @@
 ;; Keywords:
 ;;
 ;; - functions, algebra, matrix, matrices, vectors, strings, replacement,
-;;   substitution.
+;;   substitution
 ;;
 ;; Parameters:
 ;;
@@ -8892,7 +8956,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, strings, diagonal.
+;; - functions, algebra, matrix, matrices, vectors, strings, diagonal
 ;;
 ;; Parameters:
 ;;
@@ -8922,7 +8986,7 @@
 ;; Keywords:
 ;;
 ;; - functions, algebra, matrix, matrices, vectors, strings,
-;;   orthogonality, perpendicularity.
+;;   orthogonality, perpendicularity
 ;;
 ;; Parameters:
 ;;
@@ -8949,7 +9013,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, entry wise.
+;; - functions, algebra, matrix, matrices, vectors, entry wise
 ;;
 ;; Parameters:
 ;;
@@ -8981,7 +9045,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, entry wise.
+;; - functions, algebra, matrix, matrices, vectors, entry wise
 ;;
 ;; Parameters:
 ;;
@@ -9003,7 +9067,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, entry wise.
+;; - functions, algebra, matrix, matrices, vectors, entry wise
 ;;
 ;; Parameters:
 ;;
@@ -9026,7 +9090,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, entry wise, eigenvalue.
+;; - functions, algebra, matrix, matrices, vectors, entry wise, eigenvalue
 ;;
 ;; Parameters:
 ;;
@@ -9091,7 +9155,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, eigenvector.
+;; - functions, algebra, matrix, matrices, vectors, eigenvector
 ;;
 ;; Parameters:
 ;;
@@ -9133,7 +9197,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, dominance, diagonal.
+;; - functions, algebra, matrix, matrices, vectors, dominance, diagonal
 ;;
 ;; Parameters:
 ;;
@@ -9188,7 +9252,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, jacobian.
+;; - functions, algebra, matrix, matrices, vectors, jacobian
 ;;
 ;; Parameters:
 ;;
@@ -9267,7 +9331,7 @@
 ;; Keywords:
 ;;
 ;; - functions, algebra, matrix, matrices, vectors, decomposition,
-;;   factorization.
+;;   factorization
 ;;
 ;; Parameters:
 ;;
@@ -9299,7 +9363,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, strings, text, pointers.
+;; - functions, algebra, matrix, matrices, vectors, strings, text, pointers
 ;;
 ;; Parameters:
 ;;
@@ -9324,7 +9388,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, strings, lists.
+;; - functions, algebra, matrix, matrices, vectors, strings, lists
 ;;
 ;; Parameters:
 ;;
@@ -9348,7 +9412,7 @@
 ;; Keywords:
 ;;
 ;; - functions, algebra, matrix, matrices, vectors, strings, lists, pointers,
-;;   links, lists.
+;;   links, lists
 ;;
 ;; Parameters:
 ;;
@@ -9376,7 +9440,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, strings, lists.
+;; - functions, algebra, matrix, matrices, vectors, strings, lists
 ;;
 ;; Parameters:
 ;;
@@ -9429,7 +9493,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors.
+;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
 ;;
@@ -9480,6 +9544,37 @@
 
     ;; Multiply rotation matrix by argument vector.
     (set! res1 (grsp-matrix-opmm "#*" R p_v1))
+    
+    res1))
+
+
+;;;; grsp-matrix-row-corr - Correlate elements p_a1[p_m1,p_n2] and p_a2[p_m2,p_n2]
+;; place the data in a correlation matrix (1 x 6) returned as result.
+;;
+;; Keywords:
+;; - matrix, element, correlation, matrices
+;;
+;; Parameters:
+;; - p_a1: matrix 1.
+;; - p_m1: row coordinate of matrix p_a1 element.
+;; - p_n1: col coordinate of matrix p_a1 element.
+;; - p_a2: matrix 2.
+;; - p_m2: row coordinate of matrix p_a2 element.
+;; - p_m2: row coordinate of matrix p_a2 element.
+;;
+;; Output:
+;; - Correlation matrix row. See grsp-matrix-create-fix.#corr.
+;;
+(define (grsp-matrix-row-corr p_a1 p_m1 p_n1 p_a2 p_m2 p_n2)
+  (let ((res1 0))
+
+    (set! res1 (grsp-matrix-create-fix "#corr" 0.0+0.0i))
+    (array-set! res1 p_m1 0 0)
+    (array-set! res1 p_n1 0 1)
+    (array-set! res1 (array-ref p_a1 p_m1 p_n1) 0 2)
+    (array-set! res1 p_m2 0 3)    
+    (array-set! res1 p_n2 0 4)
+    (array-set! res1 (array-ref p_a2 p_m2 p_n2) 0 5)
     
     res1))
 
