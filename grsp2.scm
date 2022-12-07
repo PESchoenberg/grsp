@@ -259,7 +259,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, comparison.
+;; - functions, comparison
 ;;
 ;; Parameters:
 ;;
@@ -287,7 +287,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, comparison.
+;; - functions, comparison
 ;;
 ;; Parameters:
 ;;
@@ -309,7 +309,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, comparison.
+;; - functions, comparison
 ;;
 ;; Parameters:
 ;;
@@ -338,7 +338,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, primes, prime number.
+;; - functions, primes, prime number
 ;;
 ;; Parameters:
 ;;
@@ -375,7 +375,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, factorial.
+;; - functions, factorial
 ;;
 ;; Parameters:
 ;;
@@ -398,7 +398,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, summation.
+;; - functions, summation
 ;;
 ;; Parameters:
 ;;
@@ -427,7 +427,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, combinatorics.
+;; - functions, combinatorics
 ;;
 ;; Parameters:
 ;;
@@ -458,7 +458,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, combinatorics.
+;; - functions, combinatorics
 ;;
 ;; Parameters:
 ;;
@@ -482,7 +482,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, comparison.
+;; - functions, comparison
 ;;
 ;; Parameters:
 ;;
@@ -511,7 +511,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, comparison.
+;; - functions, comparison
 ;;
 ;; Parameters:
 ;;
@@ -539,7 +539,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions.
+;; - functions
 ;;
 ;; Parameters:
 ;;
@@ -560,7 +560,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions.
+;; - functions
 ;;
 ;; Parameters:
 ;;
@@ -595,7 +595,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, exp, expt.
+;; - functions, exp, expt
 ;;
 ;; Parameters;
 ;;
@@ -633,7 +633,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, logarithm.
+;; - functions, logarithm
 ;;
 ;; Parameters:
 ;;
@@ -658,7 +658,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, number.
+;; - functions, number
 ;;
 ;; Parameters:
 ;;
@@ -686,7 +686,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, number.
+;; - functions, number
 ;;
 ;; Parameters:
 ;;
@@ -717,7 +717,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, numbers.
+;; - functions, numbers
 ;;
 ;; Parameters:
 ;;
@@ -753,7 +753,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, numbers.
+;; - functions, numbers
 ;;
 ;; Parameters:
 ;;
@@ -782,7 +782,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, numbers.
+;; - functions, numbers
 ;;
 ;; Parameters:
 ;;
@@ -817,7 +817,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, numbers.
+;; - functions, numbers
 ;;
 ;; Parameters:
 ;;
@@ -848,7 +848,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, numbers.
+;; - functions, numbers
 ;;
 ;; Parameters:
 ;;
@@ -879,7 +879,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, numbers.
+;; - functions, numbers
 ;;
 ;; Parameters:
 ;;
@@ -903,7 +903,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, numbers.
+;; - functions, numbers
 ;;
 ;; Parameters:
 ;;
@@ -927,7 +927,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, numbers.
+;; - functions, numbers
 ;;
 ;; Parameters:
 ;;
@@ -955,7 +955,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, primes, prime number.
+;; - functions, primes, prime number
 ;;
 ;; Parameters:
 ;;
@@ -984,7 +984,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, dobinski.
+;; - functions, dobinski
 ;;
 ;; Parameters:
 ;;
@@ -1022,7 +1022,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, newton, numerical.
+;; - functions, newton, numerical
 ;;
 ;; Parameters:
 ;;
@@ -1050,7 +1050,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, euler, numerical.
+;; - functions, euler, numerical
 ;;
 ;; Parameters:
 ;;
@@ -1079,7 +1079,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, interpolation.
+;; - functions, interpolation
 ;;
 ;; Parameters:
 ;;
@@ -1112,7 +1112,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, givens.
+;; - functions, givens
 ;;
 ;; Parameters:
 ;;
@@ -1178,7 +1178,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, trim, truncation.
+;; - functions, trim, truncation
 ;;
 ;; Parameters:
 ;;
@@ -1207,7 +1207,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, trim, truncation.
+;; - functions, trim, truncation
 ;;
 ;; Parameters:
 ;;
@@ -1222,7 +1222,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, curves, sphere, spheroid.
+;; - functions, curves, sphere, spheroid
 ;;
 ;; Parameters:
 ;;
@@ -1250,7 +1250,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, curves, ellipsoid.
+;; - functions, curves, ellipsoid
 ;;
 ;; Parameters:
 ;;
@@ -1281,7 +1281,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, curves, ellipsoid, volume.
+;; - functions, curves, ellipsoid, volume
 ;;
 ;; Parameters:
 ;;
@@ -1304,7 +1304,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, curves, ellipsoid.
+;; - functions, curves, ellipsoid
 ;;
 ;; Parameters:
 ;;
@@ -1328,7 +1328,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, curves, ellipsoid.
+;; - functions, curves, ellipsoid
 ;;
 ;; Parameters:
 ;;
@@ -1352,7 +1352,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, curves, ellipsoid.
+;; - functions, curves, ellipsoid
 ;;
 ;; Parameters:
 ;;
@@ -1374,7 +1374,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, curves, ellipsoid.
+;; - functions, curves, ellipsoid
 ;;
 ;; Parameters:
 ;;
@@ -1400,7 +1400,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, curves, ellipsoid.
+;; - functions, curves, ellipsoid
 ;;
 ;; Parameters:
 ;;
@@ -1429,7 +1429,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, curves, ellipsoid.
+;; - functions, curves, ellipsoid
 ;;
 ;; Parameters:
 ;;
@@ -1458,7 +1458,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, curves.
+;; - functions, curves
 ;;
 ;; Parameters:
 ;;
@@ -1486,7 +1486,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, curves.
+;; - functions, curves
 ;;
 ;; Parameters:
 ;;
@@ -1509,7 +1509,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, curves.
+;; - functions, curves
 ;;
 ;; Parameters:
 ;;
@@ -1544,7 +1544,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, volume.
+;; - functions, volume
 ;;
 ;; Parameters:
 ;;
@@ -1567,7 +1567,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, curves.
+;; - functions, curves
 ;;
 ;; Parameters:
 ;;
@@ -1593,7 +1593,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, torus.
+;; - functions, torus
 ;;
 ;; Parameters:
 ;;
@@ -1623,7 +1623,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, factorial, stirling.
+;; - functions, factorial, stirling
 ;;
 ;; Parameters:
 ;;
@@ -1646,7 +1646,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, airy.
+;; - functions, airy
 ;;
 ;; Parameters:
 ;;
@@ -1669,7 +1669,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, factorial.
+;; - functions, factorial
 ;;
 ;; Parameters:
 ;;
@@ -1698,7 +1698,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, factorial.
+;; - function, factorial
 ;;
 ;; Parameters:
 ;;
@@ -1728,7 +1728,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, factorial.
+;; - functions, factorial
 ;;
 ;; Parameters:
 ;;
@@ -1758,7 +1758,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, factorial.
+;; - functions, factorial
 ;;
 ;; Parameters:
 ;;
@@ -1782,7 +1782,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, factorial.
+;; - functions, factorial
 ;;
 ;; Parameters:
 ;;
@@ -1811,7 +1811,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, factorial.
+;; - functions, factorial
 ;;
 ;; Parameters:
 ;;
@@ -1839,7 +1839,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, factorial, falling, descending, sequential.
+;; - functions, factorial, falling, descending, sequential
 ;;
 ;; Parameters:
 ;;
@@ -1867,7 +1867,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, factorial, upper, pochhammer, ascending, rising.
+;; - functions, factorial, upper, pochhammer, ascending, rising
 ;;
 ;; Parameters:
 ;;
@@ -1898,7 +1898,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ratio.
+;; - functions, ratio
 ;;
 ;; Parameters:
 ;;
@@ -1921,7 +1921,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ratio.
+;; - functions, ratio
 ;;
 ;; Parameters:
 ;;
@@ -1947,7 +1947,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, cast, rounding.
+;; - functions, cast, rounding
 ;;
 ;; Parameters:
 ;;
@@ -1979,7 +1979,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions.
+;; - functions
 ;;
 ;; Parameters:
 ;;
@@ -1999,7 +1999,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions.
+;; - functions
 ;;
 ;; Parameters:
 ;;
@@ -2030,7 +2030,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, classification, sorting.
+;; - functions, classification, sorting
 ;;
 ;; Parameters:
 ;;
@@ -2082,7 +2082,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, cast.
+;; - functions, cast
 ;;
 ;; Parameters:
 ;;
@@ -2100,7 +2100,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, exp.
+;; - functions, exp
 ;;
 ;; Parameters:
 ;;
@@ -2118,7 +2118,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, exp.
+;; - functions, exp
 ;;
 (define (grsp-e)
   (let ((res1 0))
@@ -2132,7 +2132,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, exp.
+;; - functions, exp
 ;;
 (define (grsp-pi)
   (let ((res1 0))
@@ -2146,7 +2146,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, exp.
+;; - functions, exp
 ;;
 (define (grsp-em)
   (let ((res1 0))
@@ -2160,7 +2160,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, exp.
+;; - functions, exp
 ;;
 (define (grsp-phi)
   (let ((res1 0))
@@ -2174,7 +2174,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, exp.
+;; - functions, exp
 ;;
 (define (grsp-nan)
   (let ((res1 0))
@@ -2188,7 +2188,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, exp.
+;; - functions, exp
 ;;
 (define (grsp-naninf)
   (let ((res1 '()))
@@ -2202,7 +2202,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, absolute.
+;; - functions, absolute
 ;;
 ;; Parameters:
 ;;
@@ -2240,7 +2240,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, random, pseudo, aleatory.
+;; - functions, random, pseudo, aleatory
 ;;
 ;; Parameters:
 ;;
@@ -2276,7 +2276,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, random, pseudo, aleatory.
+;; - functions, random, pseudo, aleatory
 ;;
 ;; Parameters:
 ;;
@@ -2307,7 +2307,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, absolute, negative.
+;; - functions, absolute, negative
 ;;
 ;; Parameters:
 ;;
@@ -2331,7 +2331,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, absolute.
+;; - functions, absolute
 ;;
 ;; Parameters:
 ;;
@@ -2365,7 +2365,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, absolute.
+;; - functions, absolute
 ;;
 ;; Parameters:
 ;;
@@ -2395,7 +2395,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, absolute, collatz.
+;; - functions, absolute, collatz
 ;;
 ;; Parameters:
 ;;
@@ -2419,7 +2419,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, integral, calculus, summation, series, integration.
+;; - functions, integral, calculus, summation, series, integration
 ;;
 ;; Parameters:
 ;;
@@ -2457,7 +2457,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, binary.
+;; - functions, binary
 ;;
 ;; Parameters:
 ;;
@@ -2481,7 +2481,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, binary.
+;; - functions, binary
 ;;
 ;; Parameters:
 ;;
@@ -2512,7 +2512,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions.
+;; - functions
 ;;
 ;; Parameters:
 ;;
@@ -2566,7 +2566,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions.
+;; - functions
 ;;
 ;; Parameters:
 ;;
@@ -2612,7 +2612,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, euler, summations.
+;; - functions, euler, summations
 ;;
 ;; Parameters:
 ;;
@@ -2633,7 +2633,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, gate, pulse, pi, unit, normalized, boxcar.
+;; - functions, gate, pulse, pi, unit, normalized, boxcar
 ;;
 ;; Parameters:
 ;;
@@ -2660,7 +2660,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, gate, pulse, pi, unit, normalized, boxcar.
+;; - functions, gate, pulse, pi, unit, normalized, boxcar
 ;;
 ;; Parameters:
 ;;
@@ -2684,7 +2684,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, exponent.
+;; - functions, exponent
 ;;
 ;; Parameters:
 ;;
@@ -2702,7 +2702,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, division, fractions.
+;; - functions, division, fractions
 ;;
 ;; Parameters:
 ;;
@@ -2720,7 +2720,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, division, fractions.
+;; - functions, division, fractions
 ;;
 ;; Parameters:
 ;;
@@ -2741,7 +2741,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, difference, substraction.
+;; - functions, difference, substraction
 ;;
 ;; Parameters:
 ;;
@@ -2770,7 +2770,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, difference, substraction.
+;; - functions, difference, substraction
 ;;
 ;; Parameters:
 ;;
@@ -2802,7 +2802,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, random, pseudo, aleatory.
+;; - functions, random, pseudo, aleatory
 ;;
 ;; Parameters:
 ;;
@@ -2847,7 +2847,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, arithmetic, operations, equations.
+;; - functions, arithmetic, operations, equations
 ;;
 ;; Parameters:
 ;;
@@ -2880,7 +2880,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, arithmetic, operations, equations.
+;; - functions, arithmetic, operations, equations
 ;;
 ;; Parameters:
 ;;
@@ -2903,7 +2903,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, arithmetic, operations, equations.
+;; - functions, arithmetic, operations, equations
 ;;
 ;; Parameters:
 ;;
@@ -2923,7 +2923,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, arithmetic, operations, equations.
+;; - functions, arithmetic, operations, equations
 ;;
 ;; Parameters:
 ;;

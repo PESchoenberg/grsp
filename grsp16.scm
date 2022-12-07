@@ -60,7 +60,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - lisp, guile, program, edition, programming. 
+;; - lisp, guile, program, edition, programming
 ;;
 (define (grsp-scm-head)
   (display "#! /usr/local/bin/guile -s")
@@ -73,7 +73,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - lisp, guile, program, edition, programming, scheme. 
+;; - lisp, guile, program, edition, programming, scheme
 ;;
 ;; Parameters:
 ;;
@@ -93,7 +93,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - lisp, guile, program, edition, programming, scheme. 
+;; - lisp, guile, program, edition, programming, scheme
 ;;
 ;; Parameters:
 ;;
@@ -116,7 +116,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - lisp, guile, program, edition, programming, scheme. 
+;; - lisp, guile, program, edition, programming, scheme
 ;;
 ;; Parameters:
 ;;
@@ -155,7 +155,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - lisp, guile, program, edition, programming. 
+;; - lisp, guile, program, edition, programming
 ;;
 ;; Parameters:
 ;;
@@ -175,7 +175,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - lisp, guile, program, edition, programming, scheme. 
+;; - lisp, guile, program, edition, programming, scheme
 ;;
 ;; Parameters:
 ;;
@@ -208,7 +208,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - lisp, guile, program, edition, programming, scheme. 
+;; - lisp, guile, program, edition, programming, scheme
 ;;
 ;; Parameters:
 ;;
@@ -249,7 +249,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - lisp, guile, program, edition, programming, scheme. 
+;; - lisp, guile, program, edition, programming, scheme
 ;;
 ;; Parameters:
 ;;
@@ -292,7 +292,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - lisp, guile, program, edition, programming, scheme. 
+;; - lisp, guile, program, edition, programming, scheme
 ;;
 ;; Parameters:
 ;;
@@ -335,7 +335,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - lisp, guile, program, edition, programming, scheme. 
+;; - lisp, guile, program, edition, programming, scheme
 ;;
 ;; Parameters:
 ;;
@@ -381,7 +381,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - lisp, guile, program, edition, programming, scheme. 
+;; - lisp, guile, program, edition, programming, scheme
 ;;
 ;; Parameters:
 ;;

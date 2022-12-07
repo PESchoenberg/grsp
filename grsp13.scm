@@ -73,7 +73,7 @@
 ;; Keywords:
 ;;
 ;; - numbers, sequences, collatz, ulam, kakutani, thwaites, hasse, syracuse,
-;;   erdos.
+;;   erdos
 ;;
 ;; Parameters:
 ;;
@@ -138,20 +138,21 @@
 ;;
 ;; Keywords:
 ;;
-;; - numbers, sequences, geometric, convergent.
+;; - numbers, sequences, geometric, convergent
 ;;
 ;; Parameters:
 ;;
 ;; - p_b1:
-
+;;
 ;;   - #t: calculated terms of the series will be returned.
 ;;   - #f: calculated terms of the series will not be returned.
-
+;;
 ;; - p_n1: number > 0.
 ;; - p_m1: iterations, integer > 0.
 ;; - p_r1: common ratio. Number with (abs p_r1) < 1.
 ;;
 ;; Notes:
+;;
 ;; - Will generally converge to (= s (/ p_n1 (- 1 p_r1)))
 ;;
 ;; Output:
@@ -167,6 +168,7 @@
 ;;     series summation (shown only if p_b1 is passed #t).
 ;;
 ;; Sources:
+;;
 ;; - [2].
 ;;
 (define (grsp-seq-geometric p_b1 p_n1 p_m1 p_r1)
@@ -213,7 +215,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - numbers, sequences, harmonic, hyper, convergent.
+;; - numbers, sequences, harmonic, hyper, convergent
 ;;
 ;; Parameters:
 ;;
@@ -295,7 +297,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - numbers, sequences, euler.
+;; - numbers, sequences, euler
 ;;
 ;; Parameters:
 ;;
@@ -344,7 +346,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - numbers, sequences, pi.
+;; - numbers, sequences, pi
 ;;
 ;; Parameters:
 ;;

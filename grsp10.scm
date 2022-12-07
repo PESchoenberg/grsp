@@ -63,7 +63,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, activation, ann.
+;; - functions, activation, ann
 ;;
 ;; Parameters:
 ;;
@@ -87,7 +87,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, activation, ann.
+;; - functions, activation, ann
 ;;
 ;; Parameters:
 ;;
@@ -116,7 +116,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, activation, ann.
+;; - functions, activation, ann
 ;;
 ;; Parameters:
 ;;
@@ -145,7 +145,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, activation, ann.
+;; - functions, activation, ann
 ;;
 ;; Parameters:
 ;;
@@ -178,7 +178,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, activation, ann.
+;; - functions, activation, ann
 ;;
 ;; Parameters:
 ;;
@@ -212,7 +212,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, activation, ann.
+;; - functions, activation, ann
 ;;
 ;; Parameters:
 ;;
@@ -241,7 +241,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, activation, ann.
+;; - functions, activation, ann
 ;;
 ;; Parameters:
 ;;
@@ -269,7 +269,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, activation, ann.
+;; - functions, activation, ann
 ;;
 ;; Parameters:
 ;;
@@ -304,7 +304,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, activation, ann.
+;; - functions, activation, ann
 ;;
 ;; Parameters:
 ;;
@@ -336,7 +336,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, activation, ann.
+;; - functions, activation, ann
 ;;
 ;; Parameters:
 ;;
@@ -374,7 +374,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, activation, ann.
+;; - functions, activation, ann
 ;;
 ;; Parameters:
 ;;
@@ -407,7 +407,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, activation, ann.
+;; - functions, activation, ann
 ;;
 ;; Parameters:
 ;;
@@ -442,7 +442,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, activation, ann.
+;; - functions, activation, ann
 ;;
 ;; Parameters:
 ;;
@@ -471,7 +471,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, activation, ann.
+;; - functions, activation, ann
 ;;
 ;; Parameters:
 ;; - p_1: list containing the following parameters.
@@ -513,7 +513,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, activation, ann.
+;; - functions, activation, ann
 ;;
 ;; Parameters:
 ;;
@@ -542,7 +542,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, activation, ann.
+;; - functions, activation, ann
 ;;
 ;; Parameters:
 ;;
@@ -571,7 +571,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, activation, ann.
+;; - functions, activation, ann
 ;;
 ;; Parameters:
 ;;
@@ -644,7 +644,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, activation, ann.
+;; - functions, activation, ann
 ;;
 ;; Parameters:
 ;;
@@ -685,7 +685,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, activation, ann.
+;; - functions, activation, ann
 ;;
 ;; Parameters:
 ;;
@@ -727,7 +727,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, activation, ann.
+;; - functions, activation, ann
 ;;
 ;; Parameters:
 ;;

@@ -291,7 +291,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, scale, proportion.
+;; - statistics, probability, scale, proportion
 ;;
 ;; Parameters:
 ;;
@@ -326,7 +326,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, scoring, sampling.
+;; - statistics, probability, scoring, sampling
 ;;
 ;; Parameters:
 ;;
@@ -351,7 +351,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -389,7 +389,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, complements.
+;; - statistics, probability, complements
 ;;
 ;; Parameters:
 ;;
@@ -411,7 +411,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, variables, independece.
+;; - statistics, probability, variables, independece
 ;;
 ;; Parameters:
 ;;
@@ -436,7 +436,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, variables, dependence.
+;; - statistics, probability, variables, dependence
 ;;
 ;; Parameters:
 ;;
@@ -463,7 +463,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, variables.
+;; - statistics, probability, variables
 ;;
 ;; Parameters:
 ;;
@@ -491,7 +491,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, variables, exclusion.
+;; - statistics, probability, variables, exclusion
 ;;
 ;; Parameters:
 ;;
@@ -520,7 +520,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, variables, causality.
+;; - statistics, probability, variables, causality
 ;;
 ;; Parameters:
 ;;
@@ -550,7 +550,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, absolute.
+;; - statistics, probability, absolute
 ;;
 ;; Parameters:
 ;;
@@ -574,7 +574,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, exponential.
+;; - statistics, probability, exponential
 ;;
 ;; Parameters:
 ;;
@@ -612,7 +612,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, exponential.
+;; - statistics, probability, exponential
 ;;
 ;; Parameters:
 ;;
@@ -651,7 +651,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, entropic.
+;; - statistics, probability, entropic
 ;;
 ;; Parameters:
 ;;
@@ -693,7 +693,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, randomness, aleatory.
+;; - statistics, probability, randomness, aleatory
 ;;
 ;; Parameters:
 ;;
@@ -720,7 +720,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, mean, average, averaging.
+;; - statistics, probability, mean, average, averaging
 ;;
 ;; Parameters:
 ;;
@@ -745,7 +745,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, randomness, aleatory.
+;; - statistics, probability, randomness, aleatory
 ;;
 ;; Parameters:
 ;;
@@ -777,7 +777,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, randomness, aleatory.
+;; - statistics, probability, randomness, aleatory
 ;;
 ;; Parameters:
 ;;
@@ -803,7 +803,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, mean, average.
+;; - statistics, probability, mean, average
 ;;
 ;; Parameters:
 ;;
@@ -828,7 +828,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, mean, average.
+;; - statistics, probability, mean, average
 ;;
 ;; Parameters:
 ;;
@@ -852,7 +852,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, mean, average.
+;; - statistics, probability, mean, average
 ;;
 ;; Parameters:
 ;;
@@ -888,7 +888,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, mean, average.
+;; - statistics, probability, mean, average
 ;;
 ;; Parameters:
 ;;
@@ -922,7 +922,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, range, middle.
+;; - statistics, probability, range, middle
 ;;
 ;; Parameters:
 ;;
@@ -946,7 +946,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, variance, deviation.
+;; - statistics, probability, variance, deviation
 ;;
 ;; Parameters:
 ;;
@@ -964,7 +964,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, standard.
+;; - statistics, probability, standard
 ;;
 ;; Parameters:
 ;;
@@ -1014,7 +1014,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -1033,7 +1033,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, randomness, aleatory.
+;; - statistics, probability, randomness, aleatory
 ;;
 ;; Parameters:
 ;;
@@ -1103,7 +1103,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, randomness, aleatory.
+;; - statistics, probability, randomness, aleatory
 ;;
 ;; Parameters:
 ;;
@@ -1132,7 +1132,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -1169,7 +1169,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, coefficients.
+;; - statistics, probability, coefficients
 ;;
 ;; Parameters:
 ;;
@@ -1192,7 +1192,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -1238,7 +1238,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, correction.
+;; - statistics, probability, correction
 ;;
 ;; Parameters:
 ;;
@@ -1260,7 +1260,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;; - p_x1: mean.
@@ -1283,7 +1283,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -1307,7 +1307,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -1331,7 +1331,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -1363,7 +1363,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -1395,7 +1395,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -1417,7 +1417,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -1440,7 +1440,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, coefficients.
+;; - statistics, probability, coefficients
 ;;
 ;; Parameters:
 ;;
@@ -1464,7 +1464,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -1488,7 +1488,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -1571,7 +1571,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -1596,7 +1596,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -1635,7 +1635,7 @@
 ;;
 ;; Keywords:
 ;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;
@@ -1731,7 +1731,7 @@
 ;;
 ;; Keywords:
 ;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;
@@ -1794,7 +1794,7 @@
 ;;;; grsp-poisson-pmf - Probability mass function, Poisson distribution.
 ;;
 ;; Keywords:
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;; - p_l1: mean, expected value. Lambda, [0, +inf).
@@ -1817,7 +1817,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -1842,7 +1842,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -1864,7 +1864,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -1886,7 +1886,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -1908,7 +1908,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -1931,7 +1931,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -1954,7 +1954,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -1977,7 +1977,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2001,7 +2001,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2027,7 +2027,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2051,7 +2051,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2074,7 +2074,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2098,7 +2098,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2148,7 +2148,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2187,7 +2187,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2236,7 +2236,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2275,7 +2275,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2319,7 +2319,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2357,7 +2357,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2401,7 +2401,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2439,7 +2439,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2464,7 +2464,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2488,7 +2488,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2511,7 +2511,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2535,7 +2535,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2558,7 +2558,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2580,7 +2580,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2602,7 +2602,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2636,7 +2636,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2676,7 +2676,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2700,7 +2700,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters: 
 ;;
@@ -2722,7 +2722,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters: 
 ;;
@@ -2759,7 +2759,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters: 
 ;;
@@ -2785,7 +2785,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2814,7 +2814,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2853,7 +2853,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2881,7 +2881,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2906,7 +2906,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2931,7 +2931,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2954,7 +2954,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -2980,7 +2980,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -3004,7 +3004,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -3031,7 +3031,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -3062,7 +3062,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -3087,7 +3087,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -3112,7 +3112,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -3148,7 +3148,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -3193,7 +3193,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -3228,7 +3228,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -3268,7 +3268,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -3309,7 +3309,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, line, fitting, estimator, linear, regression.
+;; - statistics, probability, line, fitting, estimator, linear, regression
 ;;
 ;; Parameters:
 ;;
@@ -3380,7 +3380,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, line, fitting, estimator, linear, regression.
+;; - statistics, probability, line, fitting, estimator, linear, regression
 ;;
 ;; Parameters:
 ;;
@@ -3450,7 +3450,7 @@
 ;;;; grsp-triangular-kurtosis - Excess kurtosis of a triangular distribution.
 ;;
 ;; Keywords:
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Sources:
 ;; - [42].
@@ -3470,7 +3470,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -3497,7 +3497,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -3541,7 +3541,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -3587,7 +3587,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -3635,7 +3635,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -3670,7 +3670,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -3718,7 +3718,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -3769,7 +3769,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -3792,7 +3792,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -3841,7 +3841,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -3867,7 +3867,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -3898,7 +3898,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -3926,7 +3926,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -3949,7 +3949,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -3972,7 +3972,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Sources:
 ;;
@@ -3990,7 +3990,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Sources:
 ;;
@@ -4007,7 +4007,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -4029,7 +4029,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Sources:
 ;;
@@ -4047,7 +4047,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -4070,7 +4070,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Sources:
 ;;
@@ -4086,7 +4086,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -4114,7 +4114,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -4138,7 +4138,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -4161,7 +4161,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;
@@ -4183,7 +4183,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability.
+;; - statistics, probability
 ;;
 ;; Parameters:
 ;;

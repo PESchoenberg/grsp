@@ -37,6 +37,10 @@
 
 ;;;; gconst - Various constants.
 ;;
+;; Keywords:
+;;
+;; - constants, invariants
+;;
 ;; Parameters:
 ;;
 ;; - p_n1: constant name, string.

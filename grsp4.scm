@@ -126,7 +126,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex, inverse.
+;; - complex, inverse
 ;;
 ;; Parameters:
 ;;
@@ -159,7 +159,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex, inverse.
+;; - complex, inverse
 ;;
 ;; Parameters:
 ;;
@@ -187,7 +187,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex, inverse.
+;; - complex, inverse
 ;;
 ;; Parameters:
 ;;
@@ -224,7 +224,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex, signage.
+;; - complex, signage
 ;;
 ;; Parameters:
 ;;
@@ -264,7 +264,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex, aleatory, random.
+;; - complex, aleatory, random
 ;;
 ;; Parameters:
 ;;
@@ -287,7 +287,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex, fractals.
+;; - complex, fractals
 ;;
 ;; Parameters:
 ;;
@@ -311,7 +311,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex, sequences.
+;; - complex, sequences
 ;;
 ;; Parameters:
 ;;
@@ -336,7 +336,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex.
+;; - complex
 ;;
 ;; Parameters:
 ;;
@@ -362,7 +362,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex.
+;; - complex
 ;;
 ;; Parameters:
 ;;
@@ -386,7 +386,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex, gamma.
+;; - complex, gamma
 ;;
 ;; Parameters:
 ;;
@@ -442,7 +442,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex, gamma.
+;; - complex, gamma
 ;;
 ;; Parameters:
 ;;
@@ -503,7 +503,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex, gamma.
+;; - complex, gamma
 ;;
 ;; Parameters:
 ;;
@@ -543,7 +543,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex, gamma.
+;; - complex, gamma
 ;;
 ;; Parameters:
 ;;
@@ -577,7 +577,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex, gamma, log.
+;; - complex, gamma, log
 ;;
 ;; Parameters:
 ;;
@@ -624,7 +624,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex, digamma.
+;; - complex, digamma
 ;;
 ;; Parameters:
 ;;
@@ -671,7 +671,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex, ligamma, gamma.
+;; - complex, ligamma, gamma
 ;;
 ;; Parameters:
 ;;
@@ -710,7 +710,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex, ligamma.
+;; - complex, ligamma
 ;;
 ;; Parameters:
 ;;
@@ -758,7 +758,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex, uigamma.
+;; - complex, uigamma
 ;;
 ;; Parameters:
 ;;
@@ -793,7 +793,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex, prgamma.
+;; - complex, prgamma
 ;;
 ;; Parameters:
 ;;
@@ -828,7 +828,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex, qrgamma.
+;; - complex, qrgamma
 ;;
 ;; Parameters:
 ;;
@@ -862,7 +862,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex, hypergeometric.
+;; - complex, hypergeometric
 ;;
 ;; Parameters:
 ;;
@@ -894,7 +894,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex, hypergeometric.
+;; - complex, hypergeometric
 ;;
 ;; Parameters:
 ;;
@@ -939,7 +939,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex, gauss.
+;; - complex, gauss
 ;;
 ;; Parameters:
 ;;
@@ -980,7 +980,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex, gauss.
+;; - complex, gauss
 ;;
 ;; Parameters:
 ;;
@@ -1020,7 +1020,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex, gauss.
+;; - complex, gauss
 ;;
 ;; Parameters:
 ;;
@@ -1043,7 +1043,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex, gauss.
+;; - complex, gauss
 ;;
 ;; Parameters:
 ;;
@@ -1066,7 +1066,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex.
+;; - complex
 ;;
 ;; Parameters:
 ;;
@@ -1122,7 +1122,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex.
+;; - complex
 ;;
 ;; Parameters:
 ;;
@@ -1177,7 +1177,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex, riemann, zeta.
+;; - complex, riemann, zeta
 ;;
 ;; Parameters:
 ;;
@@ -1207,7 +1207,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex, riemann, zeta.
+;; - complex, riemann, zeta
 ;;
 ;; Parameters:
 ;;
@@ -1243,7 +1243,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex, riemann, zeta.
+;; - complex, riemann, zeta
 ;;
 ;; Parameters:
 ;;
@@ -1303,7 +1303,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex.
+;; - complex
 ;;
 ;; Parameters:
 ;;
@@ -1322,7 +1322,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex.
+;; - complex
 ;;
 ;; Parameters:
 ;;
