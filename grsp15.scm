@@ -27,6 +27,9 @@
 ;;;; General notes:
 ;;
 ;; - Read sources for limitations on function parameters.
+;;
+;; Sources:
+;;
 ;; - [1] En.wikipedia.org. 2022. Runge's phenomenon - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Runge%27s_phenomenon
 ;;   [Accessed 3 January 2022].

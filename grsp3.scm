@@ -26,7 +26,7 @@
 ;; =============================================================================
 
 
-;;;; General notes:
+;;;; General  notes:
 ;;
 ;; - Read sources for limitations on function parameters.
 ;; - grsp3 provides some level of matrix algebra functionality for Guile, but in
@@ -390,7 +390,8 @@
 	    grsp-dbc2lls
 	    grsp-matrix-row-prkey
 	    grsp-matrix-strot
-	    grsp-matrix-row-corr))
+	    grsp-matrix-row-corr
+	    grsp-matrix-correwl))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -1070,6 +1071,7 @@
 ;;   - "#Pauli": Pauli matrices.
 ;;   - "#Dirac": Dirac gamma matrices.
 ;;   - "#srdd": Ax = b with A strictly diagonal.
+;;   - "#rprnd": pseduo random values, normal distribution, sd = 0.15.
 ;;
 ;; - p_n2: number of matrices to create.
 ;; - p_n3: default value for said matrices.
@@ -1144,9 +1146,7 @@
 		  (set! a0 (grsp-matrix-create p_n3 p_m1 p_n1))
 		  (list-set! res1 i1 a0)		  
 		  (set! i1 (in i1))))
-
-
-	  
+	   
 	  ((equal? p_s1 "#SBC")
 
 	   ;; Define rows and cols. This creates three different column
@@ -1272,7 +1272,7 @@
 
 	   ;; Compose results.
 	   (set! res1 (list a0 a1 a2)))
-
+	  
 	  ((equal? p_s1 "#Dirac")
 
 	   ;; Define rows and cols.
@@ -1311,7 +1311,7 @@
 	   (array-set! a3 z1p0p 3 1)
 	   
 	   ;; Compose results for "#Dirac".
-	   (set! res1 (list a0 a1 a2 a3))))
+	   (set! res1 (list a0 a1 a2 a3)))) 
     
     res1))
 
@@ -9548,21 +9548,27 @@
     res1))
 
 
-;;;; grsp-matrix-row-corr - Correlate elements p_a1[p_m1,p_n2] and p_a2[p_m2,p_n2]
-;; place the data in a correlation matrix (1 x 6) returned as result.
+;;;; grsp-matrix-row-corr - Correlates elements p_a1[p_m1,p_n2] and
+;; p_a2[p_m2,p_n2], and places the data in a correlation matrix.
 ;;
 ;; Keywords:
+;;
 ;; - matrix, element, correlation, matrices
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix 1.
 ;; - p_m1: row coordinate of matrix p_a1 element.
 ;; - p_n1: col coordinate of matrix p_a1 element.
 ;; - p_a2: matrix 2.
 ;; - p_m2: row coordinate of matrix p_a2 element.
-;; - p_m2: row coordinate of matrix p_a2 element.
+;; - p_n2: col coordinate of matrix p_a2 element.
+;;
+;; Notes:
+;; - See grsp-matrix-correwl.
 ;;
 ;; Output:
+;;
 ;; - Correlation matrix row. See grsp-matrix-create-fix.#corr.
 ;;
 (define (grsp-matrix-row-corr p_a1 p_m1 p_n1 p_a2 p_m2 p_n2)
@@ -9576,5 +9582,95 @@
     (array-set! res1 p_n2 0 4)
     (array-set! res1 (array-ref p_a2 p_m2 p_n2) 0 5)
     
+    res1))
+
+
+;;;; grsp-matrix-correwl - Correlate element wise all matrices contained in
+;; list p_l1.
+;;
+;; Keywords:
+;;
+;; - matrix, element, correlation, matrices
+;;
+;; Parameters:
+;;
+;; - p_l1: list of matrices.
+;;
+;; Notes:
+;;
+;; - All matrices of list p_l1 should have the rows and columns of the same
+;;   size.
+;; - See grsp-matrix-row-corr.
+;;
+;; Output:
+;;
+;; - Returns a list of two elements:
+;;
+;;   - Elem 0:
+;;
+;;     - #t: if the correlation was possible.
+;;     - #f: otherwise.
+;;
+;;   - Elem 1:
+;;
+;;     - 0: if Elem 1 is #f.
+;;     - Correlation matrix, otherwise.
+;;
+(define (grsp-matrix-correwl p_l1)
+  (let ((res1 '())
+	(a0 0)
+	(a1 0)
+	(a2 0)
+	(b1 #f)
+	(b2 #f)
+	(j1 1)
+	(i2 0)
+	(j2 0))
+
+    ;; This function requires that all matrices in the list have the same number
+    ;; of rows and cols.
+    (set! b1 (grsp-matrix-is-samediml p_l1))
+
+    (cond ((equal? b1 #t)
+
+	   ;; Using first matrix as reference.
+	   (set! a0 (list-ref p_l1 0))
+
+	   (set! j1 1)
+	   (while (< j1 (length p_l1))
+
+		  ;; a1 is the matrix a0 will be correlated to in this instance.
+		  (set! a1 (list-ref p_l1 j1))
+
+		  (set! i2 (grsp-lm a0))
+		  (while (<= i2 (grsp-hm a0))
+
+			 (set! j2 (grsp-ln a0))
+			 (while (<= j2 (grsp-hn a0))
+				
+				;; Correlate element wise a0 and a1.
+				(set! a2 (grsp-matrix-row-corr a0
+							       i2
+							       j2
+							       a1
+							       i2
+							       j2))
+				
+				;; Add row to correlation matrix.
+				(cond ((equal? b2 #f)
+				       (set! res1 a2)
+				       (set! b2 #t))
+				      (else (begin (set! res1 (grsp-matrix-row-append res1 a2)))))
+			 
+				(set! j2 (in j2)))
+				
+			 (set! i2 (in i2)))
+
+		  (set! j1 (in j1)))
+
+	   (set! res1 (list #t res1)))
+	  
+	  (else (set! res1 (list #f 0))))
+        
     res1))
 
