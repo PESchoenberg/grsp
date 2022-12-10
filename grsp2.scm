@@ -150,6 +150,7 @@
 ;;   September 2021].
 ;; - [44] En.wikipedia.org. 2020. Givens Rotation. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Givens_rotation [Accessed 25 March 2020].
+;; - [45] https://en.wikipedia.org/wiki/Crenel_function
 
 
 (define-module (grsp grsp2)
@@ -251,7 +252,8 @@
 	    grsp-fn
 	    grsp-fn3
 	    grsp-eq
-	    grsp-n12n2))
+	    grsp-n12n2
+	    grsp-crenel))
 
 
 ;;;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -2919,7 +2921,7 @@
     res1))
 
 
-;;;; grsp-n12n2 - How much does represent p_n1 in terms of p_n2.
+;;;; grsp-n12n2 - How much does p_n1 represent in terms of p_n2.
 ;;
 ;; Keywords:
 ;;
@@ -2935,4 +2937,35 @@
  
     (set! res1 (* 1.0 (/ p_n1 p_n2)))
 
+    res1))
+
+
+;;;; grsp-crenel - Crenel function.
+;;
+;; Keywords:
+;;
+;; - functions, arithmetic, operations, equations
+;;
+;; Parameters:
+;;
+;; - p_n1: number
+;; - p_n2: interval.
+;;
+;; Output:
+;; - 1: if p_n2 is in the interval [-p_n2/2, p_n2/2]
+;; - 0: otherwise.
+;;
+;; Sources:
+;;
+;; - [45].
+;;
+(define (grsp-crenel p_n1 p_n2)
+  (let ((res1 0)
+	(n3 (/ p_n2 2)))
+    
+    (cond ((equal? (and (equal? (>= p_n1 (* -1 n3)) #t)
+			(equal? (<= p_n1 n3) #t))
+		   #t)
+	   (set! res1 1)))
+    
     res1))
