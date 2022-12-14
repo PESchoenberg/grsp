@@ -30,17 +30,38 @@
 ;;
 ;; Sources:
 ;;
-;; - [1] https://en.wikipedia.org/wiki/Quantum_computing
-;; - [2] https://en.wikipedia.org/wiki/Quantum_volume
+;; - [1] Quantum computing (2022) Wikipedia. Wikimedia Foundation. Available
+;;   at: https://en.wikipedia.org/wiki/Quantum_computing
+;;   (Accessed: December 11, 2022). 
+;; - [2] Quantum Volume (2022) Wikipedia. Wikimedia Foundation. Available
+;;   at: https://en.wikipedia.org/wiki/Quantum_volume
+;;   (Accessed: December 11, 2022). 
+;; - [3] Bra–Ket Notation (2022) Wikipedia. Wikimedia Foundation. Available
+;;   at: https://en.wikipedia.org/wiki/Bra%E2%80%93ket_notation
+;;   (Accessed: December 12, 2022). 
+;; - [4] W State (2022) Wikipedia. Wikimedia Foundation. Available at:
+;;   https://en.wikipedia.org/wiki/W_state (Accessed: December 13, 2022). 
+;; - [5] Greenberger–Horne–zeilinger state (2022) Wikipedia. Wikimedia
+;;   Foundation. Available at:
+;;   https://en.wikipedia.org/wiki/Greenberger%E2%80%93Horne%E2%80%93Zeilinger_state
+;;   (Accessed: December 13, 2022). 
 
 
 (define-module (grsp grsp17)
   #:use-module (grsp grsp0)
   #:use-module (grsp grsp1)
-  #:export (grsp-qit-depth))
+  #:use-module (grsp grsp2)
+  #:use-module (grsp grsp3)
+  #:use-module (grsp grsp5) 
+  #:export (grsp-qit-depth
+	    grsp-qit-volume
+	    grsp-qit-eeff1
+	    grsp-qit-bra
+	    grsp-qit-ket))
 
 
-;;;; grsp-qit-depth - Circuit depth.
+;;;; grsp-qit-depth - Circuit depth. Number of operations possible before
+;; decoherence.
 ;;
 ;; Keywords:
 ;;
@@ -63,5 +84,95 @@
   (let ((res1 0))
 
     (set! res1 (/ 1 (* p_n1 p_n2)))
+    
+    res1))
+
+
+;;;; grsp-qit-volume - Quantum volume.
+;;
+;; Keywords:
+;;
+;; - quantum, circuit, volume, performance
+;;
+;; Parameters:
+;;
+;; - p_n1: number of qubits.
+;; - p_n2: depth.
+;;
+;; Sources:
+;;
+;; - [2].
+;;
+(define (grsp-qit-volume p_n1 p_n2)
+  (let ((res1 0))
+
+    (set! res1 (* p_n1 p_n2))
+
+    res1))
+
+
+;;;; grsp-qit-eeff1 - Effective error rate; average mean error rate of a
+;; two - qubit gate.
+;;
+;; Keywords:
+;;
+;; - quantum, circuit, volume, performance
+;;
+;; Parameters:
+;;
+;; - p_a1: sample matrix.
+;;
+;; Sources:
+;;
+;; - [2].
+;;
+(define (grsp-qit-eeff1 p_a1)
+  (let ((res1 0))
+
+    (set! res1 (grsp-mean1 p_a1))
+
+    res1))
+
+
+;;;; grsp-qit-bra - Expresses p_a1 as a bra (row vector) following Dirac
+;; notation.
+;;
+;; Keywords:
+;;
+;; - quantum, matrices, dirac, bra, ket
+;;
+;; Parameters:
+;;
+;; - p_a1: row vector (bra).
+;;
+(define (grsp-quit-bra p_a1)
+  (let ((res1 0))
+
+    (set! res1 (grsp-matrix-cpy p_a1))
+     
+    (cond ((> (grsp-matrix-wlongest p_a1) 0)
+	   (set! res1 (grsp-matrix-transpose p_a1))))
+	       
+    res1))
+
+
+;;;; grsp-qit-ket - Expresses p_a1 as a ket (column vector) following Dirac
+;; notation.
+;;
+;; Keywords:
+;;
+;; - quantum, matrices, dirac, bra, ket
+;;
+;; Parameters:
+;;
+;; - p_a1: col vector (bra).
+;;
+(define (grsp-quit-ket p_a1)
+  (let ((res1 0))
+
+    (set! res1 (grsp-matrix-cpy p_a1))
+     
+    (cond ((< (grsp-matrix-wlongest p_a1) 0)
+	   (set! res1 (grsp-matrix-transpose p_a1))))
     
     res1))

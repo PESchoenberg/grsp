@@ -391,7 +391,8 @@
 	    grsp-matrix-row-prkey
 	    grsp-matrix-strot
 	    grsp-matrix-row-corr
-	    grsp-matrix-correwl))
+	    grsp-matrix-correwl
+	    grsp-matrix-wlongest))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -9672,5 +9673,35 @@
 	  
 	  (else (set! res1 (list #f 0))))
         
+    res1))
+
+
+;;;; grsp-matrix-wlongest - Finds if matrix p_a1 has more rows than columns or
+;; vice-versa.
+;;
+;; Keywords:
+;;
+;; - matrix, size
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix.
+;;
+;; Output:
+;;
+;; - -1 if rows > cols.
+;; - 0 if rows = cols-
+;; - 1 of rows < cols.
+;;
+(define (grsp-matrix-wlongest p_a1)
+  (let ((res1 0)
+	(tm (grsp-tm p_a1))
+	(tn (grsp-tn p_a1)))
+
+    (cond ((> tm tn)
+	   (set! res1 -1))
+	  ((< tm tn)
+	   (set! res1 1)))
+    
     res1))
 
