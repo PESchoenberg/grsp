@@ -44,7 +44,14 @@
 ;; - [5] Greenberger–Horne–zeilinger state (2022) Wikipedia. Wikimedia
 ;;   Foundation. Available at:
 ;;   https://en.wikipedia.org/wiki/Greenberger%E2%80%93Horne%E2%80%93Zeilinger_state
-;;   (Accessed: December 13, 2022). 
+;;   (Accessed: December 13, 2022).
+;; - [6] List of mathematical symbols by subject (2022) Wikipedia. Wikimedia
+;;   Foundation. Available at:
+;;   https://en.wikipedia.org/wiki/List_of_mathematical_symbols_by_subject
+;;   (Accessed: December 15, 2022). 
+;; - [7] Multipartite entanglement (2022) Wikipedia. Wikimedia Foundation.
+;;   Available at: https://en.wikipedia.org/wiki/Multipartite_entanglement
+;;   (Accessed: December 16, 2022). 
 
 
 (define-module (grsp grsp17)
@@ -57,7 +64,9 @@
 	    grsp-qit-volume
 	    grsp-qit-eeff1
 	    grsp-qit-bra
-	    grsp-qit-ket))
+	    grsp-qit-ket
+	    grsp-qit-ghz
+	    grsp-qit-w))
 
 
 ;;;; grsp-qit-depth - Circuit depth. Number of operations possible before
@@ -175,4 +184,57 @@
     (cond ((< (grsp-matrix-wlongest p_a1) 0)
 	   (set! res1 (grsp-matrix-transpose p_a1))))
     
+    res1))
+
+
+;;;; grsp-qit-ghz - Generalized GHZ state.
+;;
+;; Keywords:
+;;
+;; - quantum, matrices, dirac, bra, ket, state
+;;
+;; Parameters:
+;;
+;; - p_l1: list of ket subsystems.
+;;
+;; Sources:
+;;
+;; - [5].
+;;
+(define (grsp-qit-ghz p_l1)
+  (let ((res1 0)
+	(n1 (/ 1 (sqrt 2))))
+
+    ;; Kronecker product.
+    (set! res1 (grsp-matrix-opmml "#(*)" p_l1))
+    
+    ;; Scalar product.
+    (set! res1 (grsp-matrix-opsc "#*" res1 n1))
+	  
+    res1))
+
+
+;;;; grsp-qit-w - Generalized W state.
+;;
+;; Keywords:
+;;
+;; - quantum, matrices, dirac, bra, ket, state
+;;
+;; Parameters:
+;;
+;; - p_l1: list of ket subsystems.
+;; Sources:
+;;
+;; - [5].
+;;
+(define (grsp-qit-w p_l1)
+  (let ((res1 0)
+	(n1 (/ 1 (length p_l1))))
+
+    ;; Kronecker product.
+    (set! res1 (grsp-matrix-opmml "#(*)" p_l1))
+    
+    ;; Scalar product.
+    (set! res1 (grsp-matrix-opsc "#*" res1 n1))
+	  
     res1))
