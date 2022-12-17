@@ -248,8 +248,10 @@
 	    grsp-matrix-opio
 	    grsp-matrix-opsc
 	    grsp-matrix-opew
+	    grsp-matrix-opewl
 	    grsp-matrix-opfn
 	    grsp-matrix-opmm
+	    grsp-matrix-opmml
 	    grsp-matrix-opmsc
 	    grsp-matrix-cpy
 	    grsp-matrix-subcpy
@@ -2106,8 +2108,8 @@
 ;;
 ;;   - "#+": sum.
 ;;   - "#-": substraction.
-;;   - "#*": multiplication.
-;;   - "#/": division.
+;;   - "#*": multiplication (Hadamard product).
+;;   - "#/": division (Hadamard division).
 ;;   - "#expt": element wise (expt p_a1 p_a2).
 ;;   - "#max": element wise max function.
 ;;   - "#min": element wise min function.
@@ -2122,7 +2124,7 @@
 ;; - This function does not validate the dimensionality or boundaries of the 
 ;;   matrices involved; the user or an additional shell function should take 
 ;;   care of that.
-;; - See grsp-matrix-opewc.
+;; - See grsp-matrix-opewc, grsp-matrix-opewl.
 ;;
 ;; Examples:
 ;;
@@ -2219,6 +2221,42 @@
 	   (set! i1 (+ i1 1)))
 
     res3))
+
+
+;;;; grsp-matrix-opewl - Applies function grsp-matrix-opew succesively to all
+;; elements of list p_l1.
+;;
+;; Keywords:
+;;
+;; - functions, algebra, matrix, matrices, vectors, hadamard, direct, schur
+;;
+;; Parameters:
+;;
+;; - p_s1: operation described as a string (see grsp-matrix-opew).
+;; - p_l1; list of m x n matrices.
+;;
+;; Notes: 
+;;
+;; - See grsp-matrix-opew.
+;;
+(define (grsp-matrix-opewl p_s1 p_l1)
+  (let ((res1 0)
+	(a2 0)
+	(l1 '())
+	(ln 0))
+
+    (set! res1 (list-ref p_l1 0))
+    (set! l1 p_l1)
+    (set! ln (length l1))
+    
+    ;; Cycle.
+    (let loop ((j1 1))
+      (if (< j1 ln)
+	  (begin (set! a2 (list-ref p_l1 j1))
+		 (set! res1 (grsp-matrix-opew p_s1 res1 a2))
+		 (loop (+ j1 1)))))
+    
+    res1))
 
 
 ;;;; grsp-matrix-opfn - Applies function p_s to all elements of p_a1.
@@ -2373,6 +2411,7 @@
 ;; - This function does not validate the dimensionality or boundaries of the 
 ;;   matrices involved; the user or an additional shell function should take
 ;;   care of that.
+;; - See grsp-matrix-opmml
 ;;
 ;; Examples:
 ;;
@@ -2518,6 +2557,42 @@
 		  (set! i1 (in i1)))))
     
     res3))
+
+
+;;;; grsp-matrix-opmml - Applies function grsp-matrix-opmm succesively to all
+;; elements of list p_l1.
+;;
+;; Keywords:
+;;
+;; - functions, algebra, matrix, matrices, vectors, hadamard, direct, schur
+;;
+;; Parameters:
+;;
+;; - p_s1: operation described as a string (see grsp-matrix-opmm).
+;; - p_l1; list of m x n matrices.
+;;
+;; Notes: 
+;;
+;; - See grsp-matrix-opmm.
+;;
+(define (grsp-matrix-opmml p_s1 p_l1)
+  (let ((res1 0)
+	(a2 0)
+	(l1 '())
+	(ln 0))
+
+    (set! res1 (list-ref p_l1 0))
+    (set! l1 p_l1)
+    (set! ln (length l1))
+    
+    ;; Cycle.
+    (let loop ((j1 1))
+      (if (< j1 ln)
+	  (begin (set! a2 (list-ref p_l1 j1))
+		 (set! res1 (grsp-matrix-opmm p_s1 res1 a2))
+		 (loop (+ j1 1)))))
+    
+    res1))
 
 
 ;;;; grsp-matrix-opmsc - Operations between two matrices that produce a scalar
