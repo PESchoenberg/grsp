@@ -3397,6 +3397,7 @@
 ;;   - "#LUD": LU decomposition, Doolitle.
 ;;   - "#QRMG: QR decomposition, modified Gram-Schmidt.
 ;;   - "#LL": LL decomposition, Cholesky-Banachiewicz.
+;;   - "#SVD": SVD decomposition.
 ;;
 ;; - p_a1: matrix to be decomposed.
 ;; - This function does not perform viability checks on p_a1 for the 
@@ -3420,6 +3421,7 @@
 	(AtA 0)
 	(L 0)
 	(Lct 0)
+	(M 0)
 	(U 0)
 	(D 0)
 	(Q 0)
@@ -3498,12 +3500,31 @@
 
 	  ((equal? p_s1 "#SVD")
 	   ;; https://web.mit.edu/be.400/www/SVD/Singular_Value_Decomposition.htm
-	   (set! At (grsp-matrix-transpose A))
-	   (set! AAt (grsp-matrix-opmm "#*" A At))
-	   (set! AtA (grsp-matrix-opmm "#*" At A))
+	   ;;(set! At (grsp-matrix-transpose A))
+	   ;;(set! AAt (grsp-matrix-opmm "#*" A At))
+	   ;;(set! AtA (grsp-matrix-opmm "#*" At A))
 
+	   (while (equal? b1 #t)
+	   
+		  ;; Get A = Q R	   
+		  (set! res1 (grsp-matrix-decompose "#QRMG" A))
+		  (set! Q (list-ref res1 0))
+		  (set! R (list-ref res1 1))
+
+		  ;; Get R = L U
+		  (set! res1 (grsp-matrix-decompose "#LUD" R))
+		  (set! L (list-ref res1 0))
+		  (set! U (list-ref res1 1))		  
+
+		  ;; Now is A = Q * L * U		  
+		  
+		  ;; b1
+		  (set! b1 #f))
+	   
+	   
 	   ;; Compose results for SVD.
-	   (set! res1 (list S V D)))
+	   ;;(set! res1 (list S V D)))
+	   (set! res1 (list Q L U)))
 	   
 	  ((equal? p_s1 "#LL")
 

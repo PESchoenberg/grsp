@@ -74,7 +74,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - quantum, circuit, depth, errors
+;; - quantum, circuit, depth, errors, tolerance
 ;;
 ;; Parameters:
 ;;
@@ -101,7 +101,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - quantum, circuit, volume, performance
+;; - quantum, circuit, volume, performance, capacity, power
 ;;
 ;; Parameters:
 ;;
@@ -125,7 +125,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - quantum, circuit, volume, performance
+;; - quantum, circuit, volume, performance, errors
 ;;
 ;; Parameters:
 ;;

@@ -150,7 +150,12 @@
 ;;   September 2021].
 ;; - [44] En.wikipedia.org. 2020. Givens Rotation. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Givens_rotation [Accessed 25 March 2020].
-;; - [45] https://en.wikipedia.org/wiki/Crenel_function
+;; - [45] Crenel function (2017) Wikipedia. Wikimedia Foundation. Available at:
+;;   https://en.wikipedia.org/wiki/Crenel_function
+;;   (Accessed: December 19, 2022). 
+;; - [46] Racional Diádico (2022) Wikipedia. Wikimedia Foundation. Available at:
+;;   https://es.wikipedia.org/wiki/Racional_di%C3%A1dico
+;;   (Accessed: December 19, 2022). 
 
 
 (define-module (grsp grsp2)
@@ -253,7 +258,8 @@
 	    grsp-fn3
 	    grsp-eq
 	    grsp-n12n2
-	    grsp-crenel))
+	    grsp-crenel
+	    grsp-padic))
 
 
 ;;;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -2967,5 +2973,29 @@
 			(equal? (<= p_n1 n3) #t))
 		   #t)
 	   (set! res1 1)))
+    
+    res1))
+
+
+;;;; grsp-padic - p-adic fraction.
+;;
+;; Keywords:
+;;
+;; - functions, arithmetic, operations, equations, p-adic, diadic
+;;
+;; Parameters:
+;;
+;; - p_n1: number
+;; - p_n2: number.
+;; - p_n3: number.
+;;
+;; Sources:
+;;
+;; - [46].
+;;
+(define (grsp-padic p_n1 p_n2 p_n3)
+  (let ((res1 0))
+
+    (set! res1 (/ p_n1 (expt p_n2 p_n3)))
     
     res1))
