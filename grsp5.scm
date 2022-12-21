@@ -287,11 +287,13 @@
 	    grsp-gumbel-entropy))
 
 
-;;;; grsp-feature-scaling - Scales p_n to the interval [p_nmin, p_nmax].
+;;;; grsp-feature-scaling - Scales item with value p_n1 to the interval
+;; [p_nmin, p_nmax].
 ;;
 ;; Keywords:
 ;;
-;; - statistics, probability, scale, proportion
+;; - statistics, probability, scale, proportion, rescaling, min-max,
+;;   normalization
 ;;
 ;; Parameters:
 ;;
@@ -1099,7 +1101,7 @@
     res1))
 
 
-;;;; grsp-surprisal - Information content of a random variable.
+;;;; grsp-surprisal - Information content or surprisal of an event.
 ;;
 ;; Keywords:
 ;;
@@ -1108,7 +1110,7 @@
 ;; Parameters:
 ;;
 ;; - p_g1: logarithm base.
-;; - p_x1: probability, [0, 1].
+;; - p_x1: probability of the event, [0, 1].
 ;;
 ;; Output:
 ;;
