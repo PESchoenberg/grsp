@@ -3419,16 +3419,20 @@
 	(At 0)
 	(AAt 0)
 	(AtA 0)
+	(AAtv 0)
+	(AAtl 0)
+	(AtAv 0)
+	(AtAl 0)
 	(L 0)
 	(Lct 0)
 	(M 0)
-	(U 0)
 	(D 0)
 	(Q 0)
 	(R 0)
 	(H 0)
 	(S 0)
 	(V 0)
+	(U 0)
 	(i1 0)
 	(j1 0)
 	(k1 0)
@@ -3500,31 +3504,22 @@
 
 	  ((equal? p_s1 "#SVD")
 	   ;; https://web.mit.edu/be.400/www/SVD/Singular_Value_Decomposition.htm
-	   ;;(set! At (grsp-matrix-transpose A))
-	   ;;(set! AAt (grsp-matrix-opmm "#*" A At))
-	   ;;(set! AtA (grsp-matrix-opmm "#*" At A))
+	   ;; Construct working matrices.
+	   (set! At (grsp-matrix-transpose A))
+	   (set! AAt (grsp-matrix-opmm "#*" A At))
+	   (set! AtA (grsp-matrix-opmm "#*" At A))
 
-	   (while (equal? b1 #t)
+	   ;; Calculate eigenvalues and eigenvectors.
+	   (set! AAtv (grsp-eigenval-qr "#QRMG" AAt 100))
+	   (set! AAtl (grsp-eigenvec AAt AAtv))
+	   (set! AtAv (grsp-eigenval-qr "#QRMG" AtA 100))
+	   (set! AtAl (grsp-eigenvec AtA AtAv))
 	   
-		  ;; Get A = Q R	   
-		  (set! res1 (grsp-matrix-decompose "#QRMG" A))
-		  (set! Q (list-ref res1 0))
-		  (set! R (list-ref res1 1))
-
-		  ;; Get R = L U
-		  (set! res1 (grsp-matrix-decompose "#LUD" R))
-		  (set! L (list-ref res1 0))
-		  (set! U (list-ref res1 1))		  
-
-		  ;; Now is A = Q * L * U		  
-		  
-		  ;; b1
-		  (set! b1 #f))
-	   
-	   
-	   ;; Compose results for SVD.
-	   ;;(set! res1 (list S V D)))
-	   (set! res1 (list Q L U)))
+	   ;; Compose results for SVD (matrices U, V, S).
+	   (set! U AAtl)
+	   (set! V AtAl) ;; ***
+	   (set! S (grsp-matrix-opsc "#expt" AAtv 0))
+	   (set! res1 (list U S V)))
 	   
 	  ((equal? p_s1 "#LL")
 
