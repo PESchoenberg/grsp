@@ -33,6 +33,7 @@
   #:use-module (grsp grsp0)
   #:use-module (grsp grsp1)
   #:use-module (grsp grsp3)
+  #:use-module (grsp grsp5)
   #:use-module (ice-9 threads)
   #:export (grsp-lal-rel
 	    grsp-lal-rfl
@@ -132,7 +133,7 @@
 ;;   - "#>": greater.
 ;;   - "#>=": greater or equal.
 ;;   - "#<": less.
-;;   - "#<=": less orequal.
+;;   - "#<=": less or equal.
 ;;
 ;; - p_l1: list.
 ;; - p_n1: number.
