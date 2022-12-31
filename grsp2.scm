@@ -259,7 +259,8 @@
 	    grsp-eq
 	    grsp-n12n2
 	    grsp-crenel
-	    grsp-padic))
+	    grsp-padic
+	    grsp-n2c))
 
 
 ;;;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -267,7 +268,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, comparison
+;; - functions, comparison, conditional
 ;;
 ;; Parameters:
 ;;
@@ -295,7 +296,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, comparison
+;; - functions, comparison, conditional
 ;;
 ;; Parameters:
 ;;
@@ -435,7 +436,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, combinatorics
+;; - functions, combinatorics, conditional
 ;;
 ;; Parameters:
 ;;
@@ -2958,6 +2959,7 @@
 ;; - p_n2: interval.
 ;;
 ;; Output:
+;;
 ;; - 1: if p_n2 is in the interval [-p_n2/2, p_n2/2]
 ;; - 0: otherwise.
 ;;
@@ -3000,3 +3002,20 @@
     
     res1))
 
+
+;;;; grsp-n2c - Convenience function to cast a real or integer number in
+;; complex form.
+;;
+;; Keywords:
+;; - cast, real, natural, integer, complex
+;;
+;; Parameters:
+;;
+;; - p_n1: number
+;;
+(define (grsp-n2c p_n1)
+  (let ((res1 1.0+0.0i))
+
+    (set! res1 (* p_n1 res1))
+    
+    res1))
