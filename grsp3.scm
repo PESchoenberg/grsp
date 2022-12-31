@@ -2424,104 +2424,75 @@
 ;; - [36][37][38].
 ;;
 (define (grsp-matrix-opmm p_s1 p_a1 p_a2)
-  (let ((res1 p_a1)
-	(res2 p_a2)
-	(res4 0)
+  (let ((res1 0)
 	(res3 0)
 	(res5 0)
 	(res6 0)
-	;;(res7 0)
-	;;(res8 0)
+	(sum 0)
 	(I1 0)
 	(I2 0)
-	(lm1 0)
-	(hm1 0)
-	(ln1 0)
-	(hn1 0)
 	(i1 0)
 	(j1 0)
-	(lm2 0)
-	(hm2 0)
-	(ln2 0)
-	(hn2 0)
+	(k1 0)
 	(i2 0)
 	(j2 0)
-	(lm3 0)
-	(hm3 0)
-	(ln3 0)
-	(hn3 0)
 	(i3 0)
-	(j3 0))
-
-    ;; Extract the boundaries of the first matrix.
-    (set! lm1 (grsp-matrix-esi 1 res1))
-    (set! hm1 (grsp-matrix-esi 2 res1))
-    (set! ln1 (grsp-matrix-esi 3 res1))
-    (set! hn1 (grsp-matrix-esi 4 res1))
-
-    ;; Extract the boundaries of the second matrix. ;; --
-    (set! lm2 (grsp-matrix-esi 1 res2))
-    (set! hm2 (grsp-matrix-esi 2 res2))
-    (set! ln2 (grsp-matrix-esi 3 res2))
-    (set! hn2 (grsp-matrix-esi 4 res2))    
-
-    ;; Define the size of the results matrix.
-    (set! lm3 lm1)
-    (set! hm3 hm1)
-    (set! ln3 ln2)
-    (set! hn3 hn2)
+	(j3 0))  
 		   
-    ;; Create holding matrix.
-    (set! res3 (grsp-matrix-create res3 (+ (- hm3 lm3) 1) (+ (- hn3 ln3) 1)))
-    ;;(set! res7 (grsp-matrix-te2 res1))
-    ;;(set! res8 (grsp-matrix-te2 res2))
-    ;;(set! res3 (grsp-matrix-create 0 (array-ref res7 0 0) (array-ref res8 0 1)))    
+    ;; Create a default results matrix.
+    (set! res3 (grsp-matrix-create res3
+				   (+ (- (grsp-hm p_a1) (grsp-lm p_a1)) 1)
+				   (+ (- (grsp-hn p_a2) (grsp-ln p_a2)) 1)))
     
     ;; Apply mm operation.
     (cond ((equal? p_s1 "#*")
 
-	   (set! i1 lm3)
-	   (while (<= i1 hm3)
+	   (set! i1 (grsp-lm p_a1))
+	   (while (<= i1 (grsp-hm p_a1))
+
+		  (set! j1 (grsp-ln p_a2))
+		  (while (<= j1 (grsp-hn p_a2))
+			
+			 (set! sum 0)
+			 (set! k1 (grsp-ln p_a1))
+			 (while (<= k1 (grsp-hn p_a1))
+
+				(set! sum (+ sum (* (array-ref p_a1 i1 k1) (array-ref p_a2 k1 j1))))
+				
+				(set! k1 (in k1)))
+
+			 (array-set! res3 sum i1 j1)
+			 
+			 (set! j1 (in j1)))
 		  
-		  (set! j1 ln3)
-		  (while (<= j1 hn3)
+		  (set! i1 (in i1))))
+	   
+	  ((equal? p_s1 "#/")	   
+	   
+	   (set! i1 (grsp-lm p_a1))
+	   (while (<= i1 (grsp-hm p_a1))
+
+		  (set! j1 (grsp-ln p_a2))
+		  (while (<= j1 (grsp-hn p_a2))
+			
+			 (set! sum 0)
+			 (set! k1 (grsp-ln p_a1))
+			 (while (<= k1 (grsp-hn p_a1))
+
+				(set! sum (+ sum (/ (array-ref p_a1 i1 k1) (array-ref p_a2 k1 j1))))
+				
+				(set! k1 (in k1)))
+
+			 (array-set! res3 sum i1 j1)
 			 
-			 (set! res4 0)
-			 (set! i2 lm3)
-			 (while (<= i2 hm3)				
-				(set! res4 (+ res4 (* (array-ref res1 i1 i2)
-						      (array-ref res2 i2 j1))))				
-				(set! i2 (in i2)))
-			 
-			 (array-set! res3 res4 i1 j1)			 
 			 (set! j1 (in j1)))
 		  
 		  (set! i1 (in i1))))
 	  
-	  ((equal? p_s1 "#/")
-	   
-	   (set! i1 lm3)
-	   (while (<= i1 hm3)
-		  
-		  (set! j1 ln3)
-		  (while (<= j1 hn3)
-			 
-			 (set! res4 0)
-			 (set! i2 0)
-			 (while (<= i2 hm3)				
-				(set! res4 (+ res4 (/ (array-ref res1 i1 i2)
-						      (array-ref res2 i2 j1))))				
-				(set! i2 (+ i2 1)))
-			 
-			 (array-set! res3 res4 i1 j1)			 
-			 (set! j1 (+ j1 1)))
-		  
-		  (set! i1 (+ i1 1))))
-	  
 	  ((equal? p_s1 "#+")	   
-	   (set! res3 (grsp-matrix-opew p_s1 res1 res2)))	  
+	   (set! res3 (grsp-matrix-opew p_s1 p_a1 p_a2)))	  
 	  ((equal? p_s1 "#-")	   
-	   (set! res3 (grsp-matrix-opew p_s1 res1 res2)))	  
+	   (set! res3 (grsp-matrix-opew p_s1 p_a1 p_a2)))	  
 	  ((equal? p_s1 "#(+)")
 	   (set! I1 (grsp-matrix-create "#I" (grsp-tm p_a2) (grsp-tm p_a2)))
 	   (set! I2 (grsp-matrix-create "#I" (grsp-tm p_a1) (grsp-tm p_a1)))
@@ -3512,21 +3483,20 @@
 	  ((equal? p_s1 "#SVD")
 	   ;; https://web.mit.edu/be.400/www/SVD/Singular_Value_Decomposition.htm
 	   ;; Construct working matrices.
-	   ;;(set! AAt (grsp-matrix-mmt A))
+	   (set! AAt (grsp-matrix-mmt A))
 	   (set! AtA (grsp-matrix-mtm A))
 
 	   ;; Calculate eigenvalues and eigenvectors.
-	   ;;(set! AAtv (grsp-eigenval-qr "#QRMG" AAt 100))
-	   ;;(set! AAtl (grsp-eigenvec AAt AAtv))
-	   ;;(set! AtAv (grsp-eigenval-qr "#QRMG" AtA 100))
-	   ;;(set! AtAl (grsp-eigenvec AtA AtAv))
+	   (set! AAtv (grsp-eigenval-qr "#QRMG" AAt 100))
+	   (set! AAtl (grsp-eigenvec AAt AAtv))
+	   (set! AtAv (grsp-eigenval-qr "#QRMG" AtA 100))
+	   (set! AtAl (grsp-eigenvec AtA AtAv))
 	   
 	   ;; Compose results for SVD (matrices U, V, S).
-	   ;;(set! U AAtl)
-	   ;;(set! V AtAl) ;; ***
-	   ;;(set! S (grsp-matrix-opsc "#expt" AAtv 0))
+	   (set! U AAtl)
+	   (set! V AtAl) ;; ***
+	   (set! S (grsp-matrix-opsc "#expt" AAtv 0))
 	   (set! res1 (list U S V)))
-	   ;;(set! res1 (list 0 0 0)))
 	   
 	  ((equal? p_s1 "#LL")
 
@@ -9232,7 +9202,7 @@
 		  (set! A (grsp-matrix-opmm "#*" R Q))))
 
 	   ;; Apply decomposition.
-	   (set! res1 (grsp-matrix-decompose p_s1 A))	   
+	   (set! res1 (grsp-matrix-decompose p_s1 A))
 	   
 	   (set! i1 (in i1))
 

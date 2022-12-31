@@ -1317,7 +1317,7 @@
     res1))
 
 ;;;; grsp-mr - Returns a complex number in rectangular form with real p_n1 and
-;; imaginary component p_n2). This is a wrapper for Guile's make-rectangular
+;; imaginary component p_n2. This is a wrapper for Guile's make-rectangular
 ;; function but with a shorter syntax.
 ;;
 ;; Keywords:
