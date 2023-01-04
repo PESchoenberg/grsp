@@ -8,7 +8,7 @@
 ;;
 ;; =============================================================================
 ;;
-;; Copyright (C) 2018 - 2022 Pablo Edronkin (pablo.edronkin at yahoo.com)
+;; Copyright (C) 2018 - 2023 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
 ;;   it under the terms of the GNU Lesser General Public License as published by
@@ -260,7 +260,8 @@
 	    grsp-n12n2
 	    grsp-crenel
 	    grsp-padic
-	    grsp-n2c))
+	    grsp-n2c
+	    grsp-bop1))
 
 
 ;;;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -3007,15 +3008,62 @@
 ;; complex form.
 ;;
 ;; Keywords:
+;;
 ;; - cast, real, natural, integer, complex
 ;;
 ;; Parameters:
 ;;
-;; - p_n1: number
+;; - p_n1: number.
 ;;
 (define (grsp-n2c p_n1)
   (let ((res1 1.0+0.0i))
 
     (set! res1 (* p_n1 res1))
+    
+    res1))
+
+
+;;;; grsp-bop1 - Perfomrs both operations between p_n1 and p_n2.
+;;
+;; Keywords:
+;;
+;; - cast, real, natural, integer, complex
+;;
+;; Parameters:
+;;
+;; - p_s1: string:
+;;
+;;   - "#+-": sum and substraction.
+;;   - "#*/": multiplication and division.
+;;   - "#**//": exponent and root.
+;;   - "#<>"; prior to p_n1 and posterior to p_n2.
+;;
+;; - p_n1: number.
+;; - p_n2: number.
+;;
+;; Output:
+;;
+;; - A list of two elements containing the results for both operations.
+;;
+(define (grsp-bop1 p_s1 p_n1 p_n2)
+  (let ((res1 (list 0 0))
+	(n1 0)
+	(n2 0))
+
+    (cond ((equal? p_s1 "#+-")
+	   (set! n1 (+ p_n1 p_n2))
+	   (set! n2 (- p_n1 p_n2)))
+	  ((equal? p_s1 "#*/")
+	   (set! n1 (* p_n1 p_n2))
+	   (set! n2 (/ p_n1 p_n2)))
+	  ((equal? p_s1 "#<>")
+	   (set! n1 (- p_n1 1))
+	   (set! n2 (+ p_n2 1)))	  
+	  ((equal? p_s1 "#**//")
+	   (set! n1 (expt p_n1 p_n2))
+	   (set! n2 (expt p_n1 (/ 1 p_n2)))))
+
+    ;; COmpose results.
+    (set! res1 (list n1 n2))
     
     res1))

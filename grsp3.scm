@@ -8,7 +8,7 @@
 ;;
 ;; =============================================================================
 ;;
-;; Copyright (C) 2020 - 2022 Pablo Edronkin (pablo.edronkin at yahoo.com)
+;; Copyright (C) 2020 - 2023 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
 ;;   it under the terms of the GNU Lesser General Public License as published by
@@ -9178,7 +9178,7 @@
 ;; Sources:
 ;;
 ;; - [55][56].
-;;
+;; ***
 (define (grsp-eigenval-qr p_s1 p_a1 p_n1)
   (let ((res1 0)
 	(res2 0)
