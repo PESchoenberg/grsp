@@ -38,6 +38,9 @@
 ;;
 ;; Sources:
 ;;
+;; See code of functions used and their respective source files for more
+;; credits and references.
+;;
 ;; - [1] Hep.by. (2020). Array Procedures - Guile Reference Manual. [online]
 ;;   Available at:
 ;;   http://www.hep.by/gnu/guile/Array-Procedures.html#Array-Procedures
@@ -220,6 +223,7 @@
 ;; - [61] En.wikipedia.org. 2022. Rotation matrix - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Rotation_matrix
 ;;   [Accessed 5 October 2022].
+;; - [46] https://www.mathsisfun.com/algebra/eigenvalue.html
 
 
 (define-module (grsp grsp3)
@@ -1076,7 +1080,8 @@
 ;;   - "#Pauli": Pauli matrices.
 ;;   - "#Dirac": Dirac gamma matrices.
 ;;   - "#srdd": Ax = b with A strictly diagonal.
-;;   - "#rprnd": pseduo random values, normal distribution, sd = 0.15.
+;;   - "#rprnd": pseudo random values, normal distribution, sd = 0.15.
+;;   - "#mee1": contains original example1 matrix, eigenvectors and eigenvalue.
 ;;
 ;; - p_n2: number of matrices to create.
 ;; - p_n3: default value for said matrices.
@@ -1105,7 +1110,7 @@
 ;;
 ;; Sources:
 ;;
-;; - [1][2][18][27][28][29][30][45].
+;; - [1][2][18][27][28][29][30][45][46].
 ;;
 (define (grsp-matrix-create-set p_s1 p_n2 p_n3 p_m1 p_n1)
   (let ((res1 '())
@@ -1276,6 +1281,26 @@
 	   (set! a2 (grsp-matrix-opmm "#*" a0 a1))
 
 	   ;; Compose results.
+	   (set! res1 (list a0 a1 a2)))
+
+	  ((equal? p_s1 "#mee1")
+
+	   ;; Create a0.
+	   (set! a0 (grsp-matrix-create 0 2 2))
+	   (array-set! a0 -6 0 0)
+	   (array-set! a0 3 0 1)
+	   (array-set! a0 4 1 0)
+	   (array-set! a0 5 1 1)
+
+	   ;; Create a1.
+	   (set! a1 (grsp-matrix-create 0 2 1))
+	   (array-set! a1 1 0 0)
+	   (array-set! a1 4 1 0)
+
+	   ;; Create a2.
+	   (set! a2 (grsp-matrix-create 6 1 1))
+	   
+	   ;; Compose results for "#mee1".
 	   (set! res1 (list a0 a1 a2)))
 	  
 	  ((equal? p_s1 "#Dirac")
@@ -9237,24 +9262,25 @@
 ;; - TODO: still needs working.
 ;;
 ;; Sources:
+;;
 ;; - [55][56].
 ;;
 (define (grsp-eigenvec p_a1 p_a2)
   (let ((res1 0)
 	(A 0)
 	(I 0)
-	(V 0)
+	(At 0)
 	(i1 0)
 	(j2 0))
 
     ;; Create matrices.
     (set! A (grsp-matrix-cpy p_a1))
     (set! I (grsp-matrix-create-dim "#I" A))
-    (set! V (grsp-matrix-transpose p_a2))
+    (set! At (grsp-matrix-transpose p_a2))
 
     ;; Solve for each eigenvalue.
-    (set! j2 (grsp-lm V))
-    (while (<= j2 (grsp-hm V))
+    (set! j2 (grsp-lm At))
+    (while (<= j2 (grsp-hm At))
 
 	   (set! j2 (in j2)))
     

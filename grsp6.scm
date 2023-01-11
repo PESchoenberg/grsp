@@ -30,6 +30,9 @@
 ;;
 ;; Sources:
 ;;
+;; See code of functions used and their respective source files for more
+;; credits and references.
+;;
 ;; - [1] En.wikipedia.org. 2020. Standard Gravitational Parameter. [online]
 ;;   Available at:
 ;;   https://en.wikipedia.org/wiki/Standard_gravitational_parameter

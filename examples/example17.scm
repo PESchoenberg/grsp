@@ -4,10 +4,9 @@
 
 ;; =============================================================================
 ;;
-;; example16.scm
+;; example17.scm
 ;;
-;; A sample of grsp functions. Creates a matrix that has numerical strings as
-;; pinters to text files, then it creates those files and then reads them.
+;; A sample of grsp functions. SVD decomposition.
 ;;
 ;; Compilation:
 ;;
@@ -15,7 +14,7 @@
 ;;
 ;; - Enter the following:
 ;;
-;;   guile example16.scm 
+;;   guile example17.scm 
 ;;
 ;; =============================================================================
 ;;
@@ -54,57 +53,53 @@
 	     (grsp grsp13)
 	     (grsp grsp14)
 	     (grsp grsp15)
-	     (grsp grsp16))
+	     (grsp grsp16)
+	     (grsp grsp17))
 
  
 ;; Vars.
-(define A (grsp-matrix-create 0 2 2))
-(define fa "A_example16.txt")
-(define fb "B_example16.txt")
-(define db "database.csv/")
-(define fpa "")
-(define fpb "")
-(define sa "Arthur Dent is a friend of Ford Prefect.")
-(define sb "Ford Prefect has a white towel.")
-(define i1 0)
-(define hm 0)
-(define s1 "")
-(define la '())
-(define lb '())
+;; (define n1 0.0-0.0i)
+(define n1 0)
+;;(define A (grsp-matrix-create n1 4 5))
+(define A (grsp-matrix-create n1 4 2))
+(define M 0)
+(define S 0)
+(define V 0)
+(define U 0)
+(define L '())
 
 
 ;; Main program.
 (clear)
-(grsp-ld "Creating files...")
-(set! fpa (string-append db fa))
-(set! fpb (string-append db fb))
-(array-set! A 0 0 0)
+
+;; Define specific matrix elements.
+(array-set! A 2 0 0)
+(array-set! A 4 0 1)
 (array-set! A 1 1 0)
-(array-set! A (grsp-s2dbc fpa) 0 1)
-(array-set! A (grsp-s2dbc fpb) 1 1)
-(grsp-save-to-file sa fpa "w")
-(grsp-save-to-file sb fpb "w")
+(array-set! A 3 1 1)
 
-
-;; Display matrix
-(grsp-ld "Matrix A: first col shows a primary key. Second column shows an utc-numeric pointer to a file.")
+;; Calculate and show.
+(grsp-ldl "Matrix A" 1 1)
 (grsp-matrix-display A)
-(newlines 1)
+(grsp-ldl "1---" 1 1)
 
+(set! L (grsp-matrix-decompose "#SVD" A))
 
-;; Read files.
-(set! la (grsp-dbc2lls A (grsp-lm A) 1))
-(set! lb (grsp-dbc2lls A (grsp-hm A) 1))
+(grsp-ldl "List L" 1 1)
+(display L)
 
+(grsp-ldl "2---" 1 1)
 
-;; Display the contents of the text files associated to matrix A.
-(grsp-ld "Text of first file:")
-(grsp-ld (list-ref la 1))
-(grsp-ld "Found at: ")
-(grsp-ldl (list-ref la 0) 0 2)
+(set! U (list-ref L 0))
+(grsp-ldl "Matrix U" 1 1)
+(display U)
 
-(grsp-ld "Text of second file:")
-(grsp-ld (list-ref lb 1))
-(grsp-ld "Found at: ")
-(grsp-ldl (list-ref lb 0 ) 0 2)
+(set! V (list-ref L 1))
+(grsp-ldl "Matrix V" 1 1)
+(display V)
 
+(set! S (list-ref L 2))
+(grsp-ldl "Matrix S" 1 1)
+(display S)
+
+(grsp-ldl "EOT---" 1 1)

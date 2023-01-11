@@ -30,6 +30,9 @@
 ;;
 ;; Sources:
 ;;
+;; See code of functions used and their respective source files for more
+;; credits and references.
+;;
 ;; - [1] En.wikipedia.org. 2021. Approximations of π - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Approximations_of_%CF%80
 ;;   [Accessed 6 September 2021].

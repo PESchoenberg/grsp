@@ -30,6 +30,9 @@
 ;;
 ;; Sources:
 ;;
+;; See code of functions used and their respective source files for more
+;; credits and references.
+;;
 ;; - [1] En.wikipedia.org. 2022. Runge's phenomenon - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Runge%27s_phenomenon
 ;;   [Accessed 3 January 2022].

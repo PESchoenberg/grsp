@@ -4,10 +4,9 @@
 
 ;; =============================================================================
 ;;
-;; example16.scm
+;; example19.scm
 ;;
-;; A sample of grsp functions. Creates a matrix that has numerical strings as
-;; pinters to text files, then it creates those files and then reads them.
+;; A sample of grsp functions. Eigenvalues and eigenvectors.
 ;;
 ;; Compilation:
 ;;
@@ -15,7 +14,7 @@
 ;;
 ;; - Enter the following:
 ;;
-;;   guile example16.scm 
+;;   guile example19.scm 
 ;;
 ;; =============================================================================
 ;;
@@ -37,6 +36,16 @@
 ;; =============================================================================
 
 
+;; Sources:
+;;
+;; See code of functions used and their respective source files for more
+;; credits and references.
+;;
+;; - [1] Eigenvalues and eigenvectors (2022) Wikipedia. Wikimedia Foundation.
+;;   Available at: https://en.wikipedia.org/wiki/Eigenvalues_and_eigenvectors
+;;   (Accessed: January 4, 2023).
+
+
 ;; Required modules.
 (use-modules (grsp grsp0)
 	     (grsp grsp1)
@@ -54,57 +63,54 @@
 	     (grsp grsp13)
 	     (grsp grsp14)
 	     (grsp grsp15)
-	     (grsp grsp16))
+	     (grsp grsp16)
+	     (grsp grsp17))
 
  
 ;; Vars.
-(define A (grsp-matrix-create 0 2 2))
-(define fa "A_example16.txt")
-(define fb "B_example16.txt")
-(define db "database.csv/")
-(define fpa "")
-(define fpb "")
-(define sa "Arthur Dent is a friend of Ford Prefect.")
-(define sb "Ford Prefect has a white towel.")
-(define i1 0)
-(define hm 0)
-(define s1 "")
-(define la '())
-(define lb '())
+(define n1 1000)
+(define A (grsp-matrix-create 1 3 3)) ;; [1].
+(define res1 0)
+(define res2 (grsp-matrix-create 0 1 3)) ;; [1].
+(define res3 0)
 
 
 ;; Main program.
 (clear)
-(grsp-ld "Creating files...")
-(set! fpa (string-append db fa))
-(set! fpb (string-append db fb))
-(array-set! A 0 0 0)
-(array-set! A 1 1 0)
-(array-set! A (grsp-s2dbc fpa) 0 1)
-(array-set! A (grsp-s2dbc fpb) 1 1)
-(grsp-save-to-file sa fpa "w")
-(grsp-save-to-file sb fpb "w")
 
+;; Define specific matrix elements.
+(array-set! A 2 0 0)
+(array-set! A 3 1 1)
+(array-set! A 4 1 2)
+(array-set! A 4 2 1)
+(array-set! A 9 2 2)
 
-;; Display matrix
-(grsp-ld "Matrix A: first col shows a primary key. Second column shows an utc-numeric pointer to a file.")
+;; Load predicted results.
+(array-set! res2 2.0 0 0)
+(array-set! res2 1.0 0 1)
+(array-set! res2 11.0 0 2)
+
+;; Calculate and show.
+(grsp-ldl "Matrix A" 1 1)
 (grsp-matrix-display A)
-(newlines 1)
+(grsp-ldl "1---" 1 1)
 
+;; Calculate the eigenvalues using QR decomposition iterated n1 times.
+(set! res1 (grsp-eigenval-qr "#QRMG" A n1))
 
-;; Read files.
-(set! la (grsp-dbc2lls A (grsp-lm A) 1))
-(set! lb (grsp-dbc2lls A (grsp-hm A) 1))
+;; Show results.
+(grsp-ldl "Matrix res1 (calculate eigenvalues of A): " 1 1)
+(grsp-matrix-display res1)
 
+(grsp-ldl "Matrix res2 (predicted eigenvalues A): " 1 1)
+(grsp-matrix-display res2)
 
-;; Display the contents of the text files associated to matrix A.
-(grsp-ld "Text of first file:")
-(grsp-ld (list-ref la 1))
-(grsp-ld "Found at: ")
-(grsp-ldl (list-ref la 0) 0 2)
+;; Calculate eigenvectors.
+(set! res3 (grsp-eigenvec A res1))
 
-(grsp-ld "Text of second file:")
-(grsp-ld (list-ref lb 1))
-(grsp-ld "Found at: ")
-(grsp-ldl (list-ref lb 0 ) 0 2)
+;; Show results
+(grsp-ldl "Matrix res3 (calculated eigenvectors of A): " 1 1)
+;;(grsp-matrix-display res3)
+(display res3)
 
+(grsp-ldl "EOF --- " 1 1)
