@@ -9,7 +9,7 @@
 ;; This program file has been created using example14.scm.
 ;; 
 ;; ==============================================================================
-;;  Copyright (C) 2018 - 2022 Pablo Edronkin (pablo.edronkin at yahoo.com)
+;;  Copyright (C) 2018 - 2023 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;; 
 ;;  This program is free software: you can redistribute it and/or modify
 ;;  it under the terms of the GNU Lesser General Public License as published by

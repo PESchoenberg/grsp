@@ -19,7 +19,7 @@
 ;;
 ;; ==============================================================================
 ;;
-;; Copyright (C) 2018 - 2022 Pablo Edronkin (pablo.edronkin at yahoo.com)
+;; Copyright (C) 2018 - 2023 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
 ;;   it under the terms of the GNU Lesser General Public License as published by
@@ -59,6 +59,10 @@
 ;; Main program
 ;;
 ;; Sources:
+;;
+;; See code of functions used and their respective source files for more
+;; credits and references.
+;;
 ;; - [1] This example is based on #linearalgebra, 2019. LU decomposition - An
 ;;   Example. [video] Available at:
 ;;   https://www.youtube.com/watch?v=BFYFkn-eOQk&list=TLPQMDkwNjIwMjJXvv49HK93tw&index=3

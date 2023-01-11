@@ -186,6 +186,9 @@
 ;;
 ;; Sources:
 ;;
+;; See code of functions used and their respective source files for more
+;; credits and references.
+;;
 ;; - [1] En.wikipedia.org. 2021. Artificial Neural Network. [online] Available
 ;;   at: https://en.wikipedia.org/wiki/Artificial_neural_network [Accessed 25
 ;;   January 2021].

@@ -37,6 +37,9 @@
 ;;
 ;; Sources:
 ;;
+;; See code of functions used and their respective source files for more
+;; credits and references.
+;;
 ;; - [1] Shido.info. (2019). 9. IO. [online] Available at:
 ;;   http://www.shido.info/lisp/scheme9_e.html [Accessed 15 Sep. 2019].
 ;; - [2] Gnu.org. (2019). File Ports (Guile Reference Manual). [online]

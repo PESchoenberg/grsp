@@ -30,6 +30,9 @@
 ;;
 ;; Sources:
 ;;
+;; See code of functions used and their respective source files for more
+;; credits and references.
+;;
 ;; - [1] En.wikipedia.org. 2021. Differential evolution - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Differential_evolution
 ;;   [Accessed 21 October 2021].

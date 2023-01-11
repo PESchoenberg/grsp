@@ -30,6 +30,9 @@
 ;;
 ;; Sources:
 ;;
+;; See code of functions used and their respective source files for more
+;; credits and references.
+;;
 ;; - [1] En.wikipedia.org. 2021. Test functions for optimization. [online]
 ;;   Available at:
 ;;   https://en.wikipedia.org/wiki/Test_functions_for_optimization

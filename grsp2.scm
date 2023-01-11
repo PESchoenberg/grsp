@@ -34,6 +34,9 @@
 ;;
 ;; Sources:
 ;;
+;; See code of functions used and their respective source files for more
+;; credits and references.
+;;
 ;; - [1] https://en.wikipedia.org/wiki/Falling_and_rising_factorials
 ;; - [2] En.wikipedia.org. 2020. Triangular Number. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Triangular_number [Accessed 20 November
