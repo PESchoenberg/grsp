@@ -57,8 +57,7 @@
 	    grsp-lal-minmax
 	    grsp-lal-supp
 	    grsp-lal-same-dims
-	    grsp-lal-is-multiset
-	    grsp-lal-display))
+	    grsp-lal-is-multiset))
 
 
 ;;;; grsp-lal-rel - Replace element in list. Replace element p_j1 of list p_l1

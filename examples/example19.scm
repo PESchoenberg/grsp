@@ -70,8 +70,9 @@
 ;; Vars.
 (define n1 1000)
 (define A (grsp-matrix-create 1 3 3)) ;; [1].
-(define res1 0)
-(define res2 (grsp-matrix-create 0 1 3)) ;; [1].
+(define lambda 0) ;; eigenvalues.
+(define lambdap (grsp-matrix-create 0 1 3)) ;; [1], predicted eigenvalues.
+(define lambdat 0) ;; transposed lambda.
 (define res3 0)
 
 
@@ -86,9 +87,9 @@
 (array-set! A 9 2 2)
 
 ;; Load predicted results.
-(array-set! res2 2.0 0 0)
-(array-set! res2 1.0 0 1)
-(array-set! res2 11.0 0 2)
+(array-set! lambdap 2.0 0 0)
+(array-set! lambdap 1.0 0 1)
+(array-set! lambdap 11.0 0 2)
 
 ;; Calculate and show.
 (grsp-ldl "Matrix A" 1 1)
@@ -96,21 +97,22 @@
 (grsp-ldl "1---" 1 1)
 
 ;; Calculate the eigenvalues using QR decomposition iterated n1 times.
-(set! res1 (grsp-eigenval-qr "#QRMG" A n1))
+(set! lambda (grsp-eigenval-qr "#QRMG" A n1))
+(set! lambdat (grsp-matrix-transpose lambda))
 
 ;; Show results.
-(grsp-ldl "Matrix res1 (calculate eigenvalues of A): " 1 1)
-(grsp-matrix-display res1)
+(grsp-ldl "Matrix lambdap (predicted eigenvalues): " 1 1)
+(grsp-matrix-display lambdap)
 
-(grsp-ldl "Matrix res2 (predicted eigenvalues A): " 1 1)
-(grsp-matrix-display res2)
+(grsp-ldl "Matrix lambda (calculated eigenvalues): " 1 1)
+(grsp-matrix-display lambda)
 
 ;; Calculate eigenvectors.
-(set! res3 (grsp-eigenvec A res1))
+(set! res3 (grsp-eigenvec A lambdat))
 
 ;; Show results
-(grsp-ldl "Matrix res3 (calculated eigenvectors of A): " 1 1)
+(grsp-ldl "Matrix res3 (calculated eigenvectors): " 1 1)
 ;;(grsp-matrix-display res3)
-(display res3)
+;;(display res3)
+(displayl "\n" res3)
 
-(grsp-ldl "EOF --- " 1 1)

@@ -9245,7 +9245,7 @@
     res2))
 
 
-;;;; grsp-eigenvec- Calculates eigenvectors based on p_a1 and p_a2.
+;;;; grsp-eigenvec- Calculates right eigenvectors based on p_a1 and p_a2.
 ;;
 ;; Keywords:
 ;;
@@ -9254,7 +9254,7 @@
 ;; Parameters:
 ;;
 ;; - p_a1: square matrix.
-;; - p_a2: vector containing the eigenvalues of p_a1.
+;; - p_a2: column vector containing the eigenvalues of p_a1.
 ;;
 ;; Notes:
 ;;
@@ -9267,21 +9267,36 @@
 ;;
 (define (grsp-eigenvec p_a1 p_a2)
   (let ((res1 0)
+	(res2 0)
+	(res3 0)
 	(A 0)
 	(I 0)
-	(At 0)
+	(v 0)
+	(tm 0)
 	(i1 0)
 	(j2 0))
 
-    ;; Create matrices.
+    ;; Safety copies.
     (set! A (grsp-matrix-cpy p_a1))
+    (set! v (grsp-matrix-cpy p_a2))
+
+    ;; Create identity matrix.
     (set! I (grsp-matrix-create-dim "#I" A))
-    (set! At (grsp-matrix-transpose p_a2))
 
+    ;; Create results list.
+    (set! tm (grsp-tm v))
+    (set! res1 (make-list tm 0))
+    
     ;; Solve for each eigenvalue.
-    (set! j2 (grsp-lm At))
-    (while (<= j2 (grsp-hm At))
+    (set! j2 (grsp-lm v))
+    (while (<= j2 (grsp-hm v))
 
+	   (set! res2 (grsp-matrix-opmm "#-" A I))
+	   (set! res3 (grsp-matrix-opmm "#*" res2 v))
+
+	   ;; Place eigenvector in list.
+	   (list-set! res1 j2 res3)
+	   
 	   (set! j2 (in j2)))
     
     res1))
