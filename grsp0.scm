@@ -74,6 +74,7 @@
 
 
 (define-module (grsp grsp0)
+  #:use-module (grsp grsp3)
   #:use-module (ice-9 string-fun)
   #:export (pline
 	    ptit
@@ -1645,11 +1646,19 @@
 ;; - p_l1: list.
 ;;
 (define (displayl p_s1 p_l1)
-  (let loop ((j1 0))
-    (if (< j1 (length p_l1))
-	(begin (display p_s1)
-	       (display (list-ref p_l1 j1))	       
-	       (loop (+ j1 1))))))
+  (let ((b1 #f))
+    
+    (let loop ((j1 0))
+      (if (< j1 (length p_l1))
+	  (begin (display p_s1)
+		 (set! b1 (array? (list-ref p_l1 j1)))
+		 
+		 (cond ((equal? b1 #t)
+			(grsp-matrix-display (list-ref p_l1 j1)))
+		       ((equal? b1 #f)
+			(display (list-ref p_l1 j1))))
+		 
+		 (loop (+ j1 1)))))))
 
 
 ;;;; displayf - Displays the contents of a plain text file.
