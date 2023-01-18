@@ -1646,17 +1646,27 @@
 ;; - p_l1: list.
 ;;
 (define (displayl p_s1 p_l1)
-  (let ((b1 #f))
+  (let ((b1 #f)
+	(b2 #f))
     
     (let loop ((j1 0))
       (if (< j1 (length p_l1))
 	  (begin (display p_s1)
-		 (set! b1 (array? (list-ref p_l1 j1)))
-		 
-		 (cond ((equal? b1 #t)
-			(grsp-matrix-display (list-ref p_l1 j1)))
-		       ((equal? b1 #f)
-			(display (list-ref p_l1 j1))))
+
+		 ;; Find out if special display arrangements are to
+		 ;; be used in a few cases.
+		 (set! b2 (array? (list-ref p_l1 j1)))		 
+
+		 ;; Special display arrangements.
+		 (cond ((equal? b2 #t)
+			(grsp-matrix-display (list-ref p_l1 j1))
+			(set! b1 #t)))
+
+		 ;; Default display option.
+		 (cond ((equal? b1 #f)
+			(display (list-ref p_l1 j1)))
+		       ((equal? b1 #t)
+			(set! b1 #f)))
 		 
 		 (loop (+ j1 1)))))))
 
