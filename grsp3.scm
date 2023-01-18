@@ -224,6 +224,7 @@
 ;;   Available at: https://en.wikipedia.org/wiki/Rotation_matrix
 ;;   [Accessed 5 October 2022].
 ;; - [46] https://www.mathsisfun.com/algebra/eigenvalue.html
+;; - [47] https://www.andreinc.net/2021/01/20/writing-your-own-linear-algebra-matrix-library-in-c#solving-linear-systems-of-equations
 
 
 (define-module (grsp grsp3)
@@ -400,7 +401,8 @@
 	    grsp-matrix-correwl
 	    grsp-matrix-wlongest
 	    grsp-matrix-mmt
-	    grsp-matrix-mtm))
+	    grsp-matrix-mtm
+	    grsp-matrix-fsubst))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -638,6 +640,8 @@
 ;;   - "#-IJ": matrix containing the quotient of i and j values.
 ;;   - "#US": upper shift matrix.
 ;;   - "#LS": lower shift matrix.
+;;   - "#UD": upper diagonal matrix, with value 1 in non-zero elements.
+;;   - "#LD": lower diagonal matrix, with value 1 in non-zero elements.
 ;;   - "#rprnd": pseduo random values, normal distribution, sd = 0.15.
 ;;   - "#zrow": zebra row.
 ;;   - "#zcol": zebra col.
@@ -976,7 +980,39 @@
 			
 			((equal? p_s1 "#LS")			 
 			 (set! res1 (grsp-matrix-create "#US" m1 n1))
-			 (set! res1 (grsp-matrix-transpose res1)))			
+			 (set! res1 (grsp-matrix-transpose res1)))
+			((equal? p_s1 "#UD")
+			 (set! res1 (grsp-matrix-create 0 m1 m1))
+
+			 (set! i1 0)
+			 (while (< i1 m1)
+				
+				(set! j1 0)
+				(while (< j1 m1)
+				       
+				       (cond ((<= i1 j1)
+					      (array-set! res1 1 i1 j1)))
+				       
+				       (set! j1 (in j1)))
+				
+				(set! i1 (in i1))))
+			
+			((equal? p_s1 "#LD")
+			 (set! res1 (grsp-matrix-create 0 m1 m1))
+
+			 (set! i1 0)
+			 (while (< i1 m1)
+				
+				(set! j1 0)
+				(while (< j1 m1)
+				       
+				       (cond ((>= i1 j1)
+					      (array-set! res1 1 i1 j1)))
+				       
+				       (set! j1 (in j1)))
+				
+				(set! i1 (in i1))))
+			
 			((equal? p_s1 "#rprnd")			 
 			 (set! res1 (grsp-matrix-create 1 m1 n1))
 			 (set! res1 (grsp-matrix-opsc "#rprnd" res1 0.15)))			
@@ -9274,7 +9310,7 @@
 	(v 0)
 	(tm 0)
 	(i1 0)
-	(j2 0))
+	(i2 0))
 
     ;; Safety copies.
     (set! A (grsp-matrix-cpy p_a1))
@@ -9287,17 +9323,22 @@
     (set! tm (grsp-tm v))
     (set! res1 (make-list tm 0))
     
-    ;; Solve for each eigenvalue.
-    (set! j2 (grsp-lm v))
-    (while (<= j2 (grsp-hm v))
+    ;; Solve for each eigenvalue and obtain eigenvectors.
+    (set! i2 (grsp-lm v))
+    (while (<= i2 (grsp-hm v))
 
-	   (set! res2 (grsp-matrix-opmm "#-" A I))
-	   (set! res3 (grsp-matrix-opmm "#*" res2 v))
+	   (set! res2 (grsp-matrix-opsc "#*" I (array-ref v i2 0))) ;; ***
+	   (set! res3 (grsp-matrix-opmm "#-" A res2))
+	   ;; https://www.youtube.com/watch?v=WTLl03D4TNA&list=TLPQMTUwMTIwMjOXmOL4FUM0fQ&index=3
+	   ;; https://www.youtube.com/watch?v=TQvxWaQnrqI&list=TLPQMTUwMTIwMjOXmOL4FUM0fQ&index=3
+	   ;; forward substitution, linear syst of eq.
+	   ;; https://www.andreinc.net/2021/01/20/writing-your-own-linear-algebra-matrix-library-in-c#solving-linear-systems-of-equations
 
-	   ;; Place eigenvector in list.
-	   (list-set! res1 j2 res3)
 	   
-	   (set! j2 (in j2)))
+	   ;; Place eigenvector in list.
+	   (list-set! res1 i2 res3)
+	   
+	   (set! i2 (in i2)))
     
     res1))
 
@@ -9857,5 +9898,59 @@
     
     (set! a1t (grsp-matrix-transpose a1))
     (set! res1 (grsp-matrix-opmm "#*" a1t a1))
+    
+    res1))
+
+
+;;;; grsp-matrix-mtm - Performs a forwards substitution on linear system
+;; of equations p_a1 * x = p_a2, solving for coulmn vector x
+;;
+;; Keywords:
+;;
+;; - matrix, product, transpose, linear, algebra, equations, system
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix, lower diagonal, m x m.
+;; - p_a2: matrix, column matrix (vector), m x 1.
+;;
+;; Output:
+;;
+;; - Column m x 1 matrix 
+;;
+;; Sources
+;;
+;; - [47].
+;;
+(define (grsp-matrix-fsubst p_a1 p_a2)
+  (let ((res1 0)
+	(x1 0)
+	(sum 0)
+	(i1 0)
+	(i2 0)
+	(i3 0))
+
+    ;; Prepare working matrices.
+    (set! res1 (grsp-matrix-cpy p_a2))
+    (array-set! res1 (/ (array-ref p_a2 0 0) (array-ref p_a1 0 0)) 0 0)
+
+    ;; Cycle.
+    (set! i1 (grsp-lm p_a1))
+    (while (<= i1 (grsp-hm p_a1))
+
+	   (set! i2 1)
+	   (set! sum 0)
+	   (set! i3 (- i1 1))
+	   (while (<= i2 i3)
+
+		  (set! sum (+ sum (* (array-ref p_a1 i1 i2) (array-ref res1 i2 0))))
+		  
+		  (set! i2 (in i2)))
+	   
+	   (set! x1 (/ (- (array-ref p_a2 i1 0) sum)
+		       (array-ref p_a1 i1 i1)))	   
+	   (array-set! res1 x1 i1 0)
+
+	   (set! i1 (in i1)))
     
     res1))
