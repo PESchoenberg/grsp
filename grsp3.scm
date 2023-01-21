@@ -402,7 +402,8 @@
 	    grsp-matrix-wlongest
 	    grsp-matrix-mmt
 	    grsp-matrix-mtm
-	    grsp-matrix-fsubst))
+	    grsp-matrix-fsubst
+	    grsp-matrix-fsubst2))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -9924,33 +9925,58 @@
 ;;
 (define (grsp-matrix-fsubst p_a1 p_a2)
   (let ((res1 0)
-	(x1 0)
-	(sum 0)
 	(i1 0)
-	(i2 0)
-	(i3 0))
+	(j1 0))
 
     ;; Prepare working matrices.
-    (set! res1 (grsp-matrix-cpy p_a2))
-    (array-set! res1 (/ (array-ref p_a2 0 0) (array-ref p_a1 0 0)) 0 0)
+    (set! res1 (grsp-matrix-create-dim 0 p_a2))
+    (array-set! res1 (array-ref p_a2 0 0) 0 0)
 
-    ;; Cycle.
-    (set! i1 (grsp-lm p_a1))
-    (while (<= i1 (grsp-hm p_a1))
+    (set! i1 1)
+    (while (<= i1 (- (grsp-hm res1) 1))
 
-	   (set! i2 1)
-	   (set! sum 0)
-	   (set! i3 (- i1 1))
-	   (while (<= i2 i3)
+	   (set! j1 0)
+	   (while (<= j1 (- i1 1))
 
-		  (set! sum (+ sum (* (array-ref p_a1 i1 i2) (array-ref res1 i2 0))))
-		  
-		  (set! i2 (in i2)))
+		  (array-set! res1 (- (array-ref res1 i1 0) (* (array-ref p_a1 i1 j1) (array-ref res1 j1 0))) i1 0)
+
+		  (set! j1 (in j1)))
 	   
-	   (set! x1 (/ (- (array-ref p_a2 i1 0) sum)
-		       (array-ref p_a1 i1 i1)))	   
-	   (array-set! res1 x1 i1 0)
+	   (array-set! res1 (/ (array-ref p_a1 i1 i1) ) i1 0)
 
 	   (set! i1 (in i1)))
     
+    res1))
+
+
+(define (grsp-matrix-fsubst2 p_a1 p_a2)
+  (let ((res1 0)
+	(sum 0)
+	(x1 0)
+	(i1 1)
+	(hi 0)
+	(hj 0)
+	(j1 0))
+
+    ;; Prepare working matrices.
+    (set! res1 (grsp-matrix-create-dim 0 p_a2)) 
+    (array-set! res1 (array-ref p_a2 0 0) 0 0) ;; y1 = b1
+
+    (set! i1 1)
+    (set! hi (- (grsp-tm res1) 1)) ;;
+    (while (<= i1 hi)
+
+	   (set! sum (array-ref p_a2 i1 0))
+	   (set! j1 0)
+	   (set! hj (- i1 1)) ;;
+	   (while (<= j1 hj)
+
+		  (set! sum (- sum (* (array-ref p_a1 i1 j1) (array-ref p_a2 j1 0))))
+		  
+		  (set! j1 (in j1)))
+
+	   (array-set! res1 sum i1 0)
+	   
+	   (set! i1 (in i1)))
+
     res1))
