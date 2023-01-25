@@ -225,6 +225,8 @@
 ;;   [Accessed 5 October 2022].
 ;; - [46] https://www.mathsisfun.com/algebra/eigenvalue.html
 ;; - [47] https://www.andreinc.net/2021/01/20/writing-your-own-linear-algebra-matrix-library-in-c#solving-linear-systems-of-equations
+;; - [48] https://algowiki-project.org/en/Forward_substitution
+;; - [49] https://algowiki-project.org/en/Backward_substitution
 
 
 (define-module (grsp grsp3)
@@ -403,7 +405,7 @@
 	    grsp-matrix-mmt
 	    grsp-matrix-mtm
 	    grsp-matrix-fsubst
-	    grsp-matrix-fsubst2))
+	    grsp-matrix-bsubst))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -641,8 +643,8 @@
 ;;   - "#-IJ": matrix containing the quotient of i and j values.
 ;;   - "#US": upper shift matrix.
 ;;   - "#LS": lower shift matrix.
-;;   - "#UD": upper diagonal matrix, with value 1 in non-zero elements.
-;;   - "#LD": lower diagonal matrix, with value 1 in non-zero elements.
+;;   - "#UT": upper triangular matrix, with value 1 in non-zero elements.
+;;   - "#LT": lower triangular matrix, with value 1 in non-zero elements.
 ;;   - "#rprnd": pseduo random values, normal distribution, sd = 0.15.
 ;;   - "#zrow": zebra row.
 ;;   - "#zcol": zebra col.
@@ -982,7 +984,7 @@
 			((equal? p_s1 "#LS")			 
 			 (set! res1 (grsp-matrix-create "#US" m1 n1))
 			 (set! res1 (grsp-matrix-transpose res1)))
-			((equal? p_s1 "#UD")
+			((equal? p_s1 "#UT")
 			 (set! res1 (grsp-matrix-create 0 m1 m1))
 
 			 (set! i1 0)
@@ -998,7 +1000,7 @@
 				
 				(set! i1 (in i1))))
 			
-			((equal? p_s1 "#LD")
+			((equal? p_s1 "#LT")
 			 (set! res1 (grsp-matrix-create 0 m1 m1))
 
 			 (set! i1 0)
@@ -3460,9 +3462,9 @@
 	(AAt 0)
 	(AtA 0)
 	(AAtv 0)
-	(AAtl 0)
+	(AAtb 0)
 	(AtAv 0)
-	(AtAl 0)
+	(AtAb 0)
 	(L 0)
 	(Lct 0)
 	(M 0)
@@ -3548,16 +3550,24 @@
 	   (set! AAt (grsp-matrix-mmt A))
 	   (set! AtA (grsp-matrix-mtm A))
 
-	   ;; Calculate eigenvalues and eigenvectors.
+	   ;; Eigenvalues.
 	   (set! AAtv (grsp-eigenval-qr "#QRMG" AAt 100))
-	   (set! AAtl (grsp-eigenvec AAt AAtv))
 	   (set! AtAv (grsp-eigenval-qr "#QRMG" AtA 100))
-	   (set! AtAl (grsp-eigenvec AtA AtAv))
+
+	   ;; Eigenvectors.
+	   (set! AAtb (grsp-eigenvec AAt AAtv))
+	   (set! AtAb (grsp-eigenvec AtA AtAv))
+
+	   ;; U, V and S.
+	   (set! U (grsp-eigenvec AAt AAtv))
 	   
-	   ;; Compose results for SVD (matrices U, V, S).
-	   (set! U AAtl)
-	   (set! V AtAl) ;; ***
+	   (set! V (grsp-eigenvec AtA AtAv))
+	   
 	   (set! S (grsp-matrix-opsc "#expt" AAtv 0))
+
+	   ;; Extract relevant structures.
+	   
+	   ;; Compose results for SVD (matrices U, S, V).	   
 	   (set! res1 (list U S V)))
 	   
 	  ((equal? p_s1 "#LL")
@@ -3575,12 +3585,14 @@
 			 (set! sum 0)
 			 (set! k1 (grsp-lm A))
 			 (while (< k1 j1)
-				(set! sum (+ sum (* (array-ref L i1 k1) (array-ref L j1 k1))))
+				(set! sum (+ sum (* (array-ref L i1 k1)
+						    (array-ref L j1 k1))))
 				(set! k1 (in k1)))
 
 			 (cond ((equal? i1 j1)
 				(array-set! L (sqrt (- (array-ref A i1 i1) sum)) i1 j1))			       
-			       (else (array-set! L (* (/ 1.0 (array-ref L j1 j1)) (- (array-ref A i1 j1) sum)) i1 j1)))
+			       (else (array-set! L (* (/ 1.0 (array-ref L j1 j1))
+						      (- (array-ref A i1 j1) sum)) i1 j1)))
 				
 			 (set! j1 (in j1)))
 
@@ -9903,7 +9915,7 @@
     res1))
 
 
-;;;; grsp-matrix-mtm - Performs a forwards substitution on linear system
+;;;; grsp-matrix-fsubst - Performs a forward substitution on linear system
 ;; of equations p_a1 * x = p_a2, solving for coulmn vector x
 ;;
 ;; Keywords:
@@ -9912,7 +9924,7 @@
 ;;
 ;; Parameters:
 ;;
-;; - p_a1: matrix, lower diagonal, m x m.
+;; - p_a1: matrix, lower triangular, m x m.
 ;; - p_a2: matrix, column matrix (vector), m x 1.
 ;;
 ;; Output:
@@ -9921,62 +9933,93 @@
 ;;
 ;; Sources
 ;;
-;; - [47].
+;; - [47][48].
 ;;
 (define (grsp-matrix-fsubst p_a1 p_a2)
   (let ((res1 0)
-	(i1 0)
-	(j1 0))
-
-    ;; Prepare working matrices.
-    (set! res1 (grsp-matrix-create-dim 0 p_a2))
-    (array-set! res1 (array-ref p_a2 0 0) 0 0)
-
-    (set! i1 1)
-    (while (<= i1 (- (grsp-hm res1) 1))
-
-	   (set! j1 0)
-	   (while (<= j1 (- i1 1))
-
-		  (array-set! res1 (- (array-ref res1 i1 0) (* (array-ref p_a1 i1 j1) (array-ref res1 j1 0))) i1 0)
-
-		  (set! j1 (in j1)))
-	   
-	   (array-set! res1 (/ (array-ref p_a1 i1 i1) ) i1 0)
-
-	   (set! i1 (in i1)))
-    
-    res1))
-
-
-(define (grsp-matrix-fsubst2 p_a1 p_a2)
-  (let ((res1 0)
 	(sum 0)
-	(x1 0)
-	(i1 1)
-	(hi 0)
 	(hj 0)
-	(j1 0))
+	(b1 0)
+	(i1 1)
+	(j1 0)
+	(y1 0))
 
     ;; Prepare working matrices.
     (set! res1 (grsp-matrix-create-dim 0 p_a2)) 
-    (array-set! res1 (array-ref p_a2 0 0) 0 0) ;; y1 = b1
+    (array-set! res1 (array-ref p_a2 0 0) 0 0) ;; y0 = b0
 
-    (set! i1 1)
-    (set! hi (- (grsp-tm res1) 1)) ;;
-    (while (<= i1 hi)
+    ;;(set! i1 (in i1))
+    (while (<= i1 (grsp-hm res1))
 
-	   (set! sum (array-ref p_a2 i1 0))
+	   ;; Summation.
+	   (set! sum 0)
 	   (set! j1 0)
-	   (set! hj (- i1 1)) ;;
+	   (set! hj (- i1 1))
 	   (while (<= j1 hj)
 
-		  (set! sum (- sum (* (array-ref p_a1 i1 j1) (array-ref p_a2 j1 0))))
+		  (set! sum (+ sum (* (array-ref p_a1 i1 j1) (array-ref res1 j1 0))))
+
+		  (set! j1 (in j1)))
+
+	   ;; Find matrix var.
+	   (set! y1 (- (array-ref p_a2 i1 0) sum))
+	   (array-set! res1 y1 i1 0)
+    
+	   (set! i1 (in i1)))
+
+    res1))
+
+
+;;;; grsp-matrix-bsubst - Performs a backward substitution on linear system
+;; of equations p_a1 * x = p_a2, solving for coulmn vector x
+;;
+;; Keywords:
+;;
+;; - matrix, product, transpose, linear, algebra, equations, system
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix, upper triangular, m x m.
+;; - p_a2: matrix, column matrix (vector), m x 1.
+;;
+;; Output:
+;;
+;; - Column m x 1 matrix 
+;;
+;; Sources
+;;
+;; - [49].
+;;
+(define (grsp-matrix-bsubst p_a1 p_a2)
+  (let ((res1 0)
+	(sum 0)
+	(hj (grsp-hn p_a1))
+	(b1 0)
+	(i1 1)
+	(j1 0)
+	(y1 0))
+
+    ;; Prepare working matrices.
+    (set! res1 (grsp-matrix-create-dim 0 p_a2)) 
+    (array-set! res1 (/ (array-ref p_a2 hj 0) (array-ref p_a1 hj hj)) hj 0) ;; y[n] = B[n] / U[n,n]
+
+    ;; Dec cycle.
+    (set! i1 (- hj 1))
+    (while (>= i1 0)
+
+	   ;; Summation.
+	   (set! sum 0)
+	   (set! j1 (+ i1 1))
+	   (while (<= j1 hj)
+
+		  (set! sum (+ sum (* (array-ref p_a1 i1 j1) (array-ref res1 j1 0))))
 		  
 		  (set! j1 (in j1)))
 
-	   (array-set! res1 sum i1 0)
-	   
-	   (set! i1 (in i1)))
+	   ;; Find matrix var.
+	   (set! y1 (/ (- (array-ref p_a2 i1 0) sum) (array-ref p_a1 i1 i1)))
+	   (array-set! res1 y1 i1 0)	   
 
+	   (set! i1 (de i1)))
+	   
     res1))

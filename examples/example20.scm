@@ -65,7 +65,7 @@
 
  
 ;; Vars.
-(define L (grsp-matrix-create "#LD" 4 4))
+(define L (grsp-matrix-create "#LT" 4 4))
 (define B (grsp-matrix-create "#Ladder" 4 1))
 (define res1 0)
 
