@@ -4,9 +4,9 @@
 
 ;; =============================================================================
 ;;
-;; example17.scm
+;; example21.scm
 ;;
-;; A sample of grsp functions. SVD decomposition.
+;; A sample of grsp functions. Backward substitution.
 ;;
 ;; Compilation:
 ;;
@@ -14,7 +14,7 @@
 ;;
 ;; - Enter the following:
 ;;
-;;   guile example17.scm 
+;;   guile example21.scm 
 ;;
 ;; =============================================================================
 ;;
@@ -34,6 +34,13 @@
 ;;   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ;;
 ;; =============================================================================
+
+
+;; Sources:
+;;
+;; See code of functions used and their respective source files for more
+;; credits and references.
+;;
 
 
 ;; Required modules.
@@ -58,44 +65,27 @@
 
  
 ;; Vars.
-(define A (grsp-matrix-create 0 4 2))
-(define S 0)
-(define V 0)
-(define U 0)
-(define L '())
-
+(define U (grsp-matrix-create "#UT" 4 4))
+(define B (grsp-matrix-create 0 4 1))
+(define res1 0)
 
 ;; Main program.
 (clear)
 
-;; Define specific matrix elements.
-(array-set! A 2 0 0)
-(array-set! A 4 0 1)
-(array-set! A 1 1 0)
-(array-set! A 3 1 1)
+;; Define some specific matrix elements.
+(array-set! B 8 0 0)
+(array-set! B 5 1 0)
+(array-set! B 4 2 0)
+(array-set! B 2 3 0)
 
-;; Calculate and show.
-(grsp-ldl "Matrix A" 2 1)
-(grsp-matrix-display A)
-(grsp-ldl "1 ---" 2 1)
+;; Calculate.
+(set! res1 (grsp-matrix-bsubst U B))
 
-(set! L (grsp-matrix-decompose "#SVD" A))
+;; Show results.
+(grsp-ldl "Matrix U" 1 2)
+(grsp-matrix-display U)
+(grsp-ldl "Matrix B" 1 2)
+(grsp-matrix-display B)
+(grsp-ldl "Results" 1 2)
+(grsp-matrix-display res1)
 
-(grsp-ldl "List L" 2 1)
-(displayl " " L)
-
-(grsp-ldl "2 ---" 2 1)
-
-(set! U (list-ref L 0))
-(grsp-ldl "Matrix U" 2 1)
-(displayl " " U)
-
-(set! S (list-ref L 2))
-(grsp-ldl "Matrix S" 2 1)
-(displayl " " S)
-
-(set! V (list-ref L 1))
-(grsp-ldl "Matrix V" 2 1)
-(grsp-matrix-display V)
-
-(grsp-ldl " " 2 1)
