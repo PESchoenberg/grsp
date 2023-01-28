@@ -223,10 +223,19 @@
 ;; - [61] En.wikipedia.org. 2022. Rotation matrix - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Rotation_matrix
 ;;   [Accessed 5 October 2022].
-;; - [46] https://www.mathsisfun.com/algebra/eigenvalue.html
-;; - [47] https://www.andreinc.net/2021/01/20/writing-your-own-linear-algebra-matrix-library-in-c#solving-linear-systems-of-equations
-;; - [48] https://algowiki-project.org/en/Forward_substitution
-;; - [49] https://algowiki-project.org/en/Backward_substitution
+;; - [46] Eigenvector and eigenvalue (no date) Math is Fun Advanced. Available
+;;   at: https://www.mathsisfun.com/algebra/eigenvalue.html
+;;   (Accessed: January 26, 2023). 
+;; - [47] Ciobanu, A. (2021) Writing your own Linear Algebra Matrix Library in
+;;   C, andreinc. Available at:
+;;   https://www.andreinc.net/2021/01/20/writing-your-own-linear-algebra-matrix-library-in-c#solving-linear-systems-of-equations
+;;   (Accessed: January 26, 2023). 
+;; - [48] Forward substitution (no date) Algowiki. Available at:
+;;   https://algowiki-project.org/en/Forward_substitution
+;;   (Accessed: January 26, 2023). 
+;; - [49] Backward substitution (no date) Algowiki. Available at:
+;;   https://algowiki-project.org/en/Backward_substitution
+;;   (Accessed: January 26, 2023). 
 
 
 (define-module (grsp grsp3)
@@ -304,6 +313,7 @@
 	    grsp-matrix-interval-mean
 	    grsp-matrix-determinant-lu
 	    grsp-matrix-determinant-qr
+	    grsp-matrix-determinant-pe
 	    grsp-matrix-is-invertible
 	    grsp-eigenval-opio
 	    grsp-matrix-sort
@@ -405,7 +415,8 @@
 	    grsp-matrix-mmt
 	    grsp-matrix-mtm
 	    grsp-matrix-fsubst
-	    grsp-matrix-bsubst))
+	    grsp-matrix-bsubst
+	    grsp-matrix-trace-se))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -3474,6 +3485,7 @@
 	(H 0)
 	(S 0)
 	(V 0)
+	(Vt 0)
 	(U 0)
 	(i1 0)
 	(j1 0)
@@ -3538,6 +3550,8 @@
 	   ;; https://journals.aps.org/prresearch/pdf/10.1103/PhysRevResearch.4.013144
 	   ;; https://www.maths.manchester.ac.uk/~higham/papers/hisc90.pdf
 	   ;; https://www.cs.ucdavis.edu/~bai/Winter09/nakatsukasabaigygi09.pdf
+
+	   ;; Sitll need to be built.
 	   (set! U (grsp-matrix-cpy A))
 	   (set! H (grsp-matrix-cpy A))
 	   
@@ -3558,17 +3572,21 @@
 	   (set! AAtb (grsp-eigenvec AAt AAtv))
 	   (set! AtAb (grsp-eigenvec AtA AtAv))
 
+	   ;; ***i
 	   ;; U, V and S.
-	   (set! U (grsp-eigenvec AAt AAtv))
-	   
-	   (set! V (grsp-eigenvec AtA AtAv))
-	   
+	   (set! U (grsp-eigenvec AAt AAtv))	   
+	   (set! V (grsp-eigenvec AtA AtAv))	   
 	   (set! S (grsp-matrix-opsc "#expt" AAtv 0))
-
-	   ;; Extract relevant structures.
 	   
-	   ;; Compose results for SVD (matrices U, S, V).	   
-	   (set! res1 (list U S V)))
+	   
+	   ;; Extract relevant structures.
+
+
+	   ;; ***
+	   (set! Vt (grsp-matrix-transpose V))
+	   	   
+	   ;; Compose results for SVD (matrices U, S, Vt).	   
+	   (set! res1 (list U S Vt)))
 	   
 	  ((equal? p_s1 "#LL")
 
@@ -4813,6 +4831,36 @@
     (set! R (cadr a1))
     
     (set! res1 (abs (grsp-matrix-opio "#*md" R 0)))
+    
+    res1))
+
+
+;;;; grsp-matrix-determinant-pe - Finds the determinant of matrix p_a1 using 
+;; its eigenvalues (product).  
+;;
+;; Keywords:
+;;
+;; - functions, algebra, matrix, matrices, vectors
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix.
+;;
+;; Notes:
+;;
+;; - For details on eigenvalue calculation for this function,
+;;   see grsp-eigenval-qr.
+;;
+;; Sources:
+;;
+;; - [14].
+;;
+(define (grsp-matrix-determinant-pe p_a1)
+  (let ((res1 0)
+	(res2 0))
+
+    (set! res2 (grsp-eigenval-qr "#QRMG" p_a1 100))
+    (set! res1 (grsp-matrix-opio "#*" res2 0))
     
     res1))
 
@@ -10022,4 +10070,34 @@
 
 	   (set! i1 (de i1)))
 	   
+    res1))
+
+
+;;;; grsp-matrix-trace-se - Finds the trace of matrix p_a1 using 
+;; its eigenvalues (summation).  
+;;
+;; Keywords:
+;;
+;; - functions, algebra, matrix, matrices, vectors
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix.
+;;
+;; Notes:
+;;
+;; - For details on eigenvalue calculation for this function,
+;;   see grsp-eigenval-qr.
+;;
+;; Sources:
+;;
+;; - [14].
+;;
+(define (grsp-matrix-trace-se p_a1)
+  (let ((res1 0)
+	(res2 0))
+
+    (set! res2 (grsp-eigenval-qr "#QRMG" p_a1 100))
+    (set! res1 (grsp-matrix-opio "#+" res2 0))
+    
     res1))
