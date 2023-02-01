@@ -45,6 +45,9 @@
 ;; - [4] En.wikipedia.org. 2022. Lagrange polynomial - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Lagrange_polynomial
 ;;   [Accessed 6 January 2022].
+;; - [5] Horners method (no date) Algowiki. Available at:
+;;   https://algowiki-project.org/en/Horners_method
+;;   (Accessed: January 28, 2023). 
 
 
 (define-module (grsp grsp15)
@@ -55,7 +58,8 @@
   #:export (grsp-runge
 	    grsp-chebyshev-node
 	    grsp-lagrange-bpoly
-	    grsp-lagrange-ipoly))
+	    grsp-lagrange-ipoly
+	    grsp-horner))
 
 
 ;;;; grsp-runge - Runge function. 
@@ -182,3 +186,39 @@
     
     res1))
 
+
+;;;; grsp-horner - Horner division method gor poly div.
+;;
+;; Keywords:
+;;
+;; - functions, interpolation, polynomials
+;;
+;; Parameters:
+;;
+;; - p_a1: row vector (1 x n matrix).                         
+;; - p_n1: scalar.                                                    
+;;
+;; Output:
+;;
+;; - Row vector (1 x n matrix).
+;;
+;; Sources:   
+;;
+;; - [5].
+;;
+(define (grsp-horner p_a1 p_n1)
+  (let ((res1 (grsp-matrix-create-dim 0 p_a1))
+	(j1 0))
+
+    ;; Set value of first element.
+    (array-set! res1 (array-ref p_a1 0 j1) 0 j1)
+
+    ;; Cycle over and calculate other elements.
+    (let loop ((j1 1))
+      (if (<= j1 (grsp-hn res1))
+	  (begin (array-set! res1 (+ (array-ref p_a1 0 j1)
+				     (* (array-ref res1 0 (- j1 1)) p_n1))
+			     0 j1)
+		 (loop (+ j1 1)))))
+    
+    res1))

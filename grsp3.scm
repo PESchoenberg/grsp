@@ -250,6 +250,7 @@
 	    grsp-hn
 	    grsp-tm
 	    grsp-tn
+	    grsp-matrix-order
 	    grsp-matrix-esi
 	    grsp-matrix-create
 	    grsp-matrix-create-set
@@ -313,7 +314,6 @@
 	    grsp-matrix-interval-mean
 	    grsp-matrix-determinant-lu
 	    grsp-matrix-determinant-qr
-	    grsp-matrix-determinant-pe
 	    grsp-matrix-is-invertible
 	    grsp-eigenval-opio
 	    grsp-matrix-sort
@@ -415,8 +415,7 @@
 	    grsp-matrix-mmt
 	    grsp-matrix-mtm
 	    grsp-matrix-fsubst
-	    grsp-matrix-bsubst
-	    grsp-matrix-trace-se))
+	    grsp-matrix-bsubst))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -435,7 +434,7 @@
 ;;
 ;; Output:
 ;;
-;; - lm value.
+;; - Numeric, lm value.
 ;;
 (define (grsp-lm p_a1)
   (let ((res1 0))
@@ -461,7 +460,7 @@
 ;;
 ;; Output:
 ;;
-;; - hm value.
+;; - Numeric, hm value.
 ;;
 (define (grsp-hm p_a1)
   (let ((res1 0))
@@ -487,7 +486,7 @@
 ;;
 ;; Output:
 ;;
-;; - ln value.
+;; - Numeric, ln value.
 ;;  
 (define (grsp-ln p_a1)  
   (let ((res1 0))
@@ -513,7 +512,7 @@
 ;;
 ;; Output:
 ;;
-;; - hn value.
+;; - Numeric, hn value.
 ;;  
 (define (grsp-hn p_a1)  
   (let ((res1 0))
@@ -540,7 +539,7 @@
 ;;
 ;; Output:
 ;;
-;; - (+ (- hm lm)) value.
+;; - Numeric, (+ (- hm lm)) value.
 ;; 
 (define (grsp-tm p_a1)
   (let ((res1 0)
@@ -569,7 +568,7 @@
 ;;
 ;; Output:
 ;;
-;; - (+ (- hn ln)) value.
+;; - Numeric, (+ (- hn ln)) value.
 ;; 
 (define (grsp-tn p_a1)
   (let ((res1 0)
@@ -577,6 +576,26 @@
 
     (set! res2 (grsp-matrix-te2 p_a1))
     (set! res1 (array-ref res2 0 1))
+
+    res1))
+
+
+;;;; grsp-matrix-order - Returns the order (* tm tn) of a matrix.
+;;
+;; Keywords:
+;;
+;; - functions, algebra, matrix, matrices, vectors
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix.
+;;
+;; Output:
+;;
+;; - Numeric.
+;;
+(define (grsp-matrix-order p_a1)
+  (let ((res1 (* (grsp-tm p_a1) (grsp-tn p_a1))))
 
     res1))
 
@@ -672,6 +691,10 @@
 ;; Notes:
 ;;
 ;; - See grsp0.grsp-s2dbc, grsp0.grsp-dbc2s.
+;;
+;; Output:
+;;
+;; - Matrix.
 ;;
 ;; Sources:
 ;;
@@ -1457,6 +1480,10 @@
 ;;
 ;; - See grsp0.grsp-s2dbc, grsp0.grsp-dbc2s.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 ;; Sources:
 ;;
 ;; - [31][32][33][34][35][52].
@@ -1652,12 +1679,17 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors
+;; - functions, algebra, matrix, matrices, vectors, structure, dimensionality,
+;;   size
 ;;
 ;; Parameters:
 ;;
 ;; . p_s1: see grsp-matrix-create.
 ;; - p_a2: matrix.
+;;
+;; Output:
+;;
+;; - A matrix of the same dimensions of p_a1 filled with value p_s1.
 ;;
 (define (grsp-matrix-create-dim p_s1 p_a1)
   (let ((res1 0)
@@ -1768,7 +1800,7 @@
 
 			 ;; Fill a new row of res1 with data.
 			 (array-set! res1 i1 (grsp-hm res1) 0)
-			 (array-set! res1 j1 (grsp-hm res1) 1)			 
+			 (array-set! res1 j1 (grsp-hm res1) 1)
 			 (set! c1 #f)))
 		  
 		  (set! j1 (+ j1 1)))
@@ -1786,6 +1818,10 @@
 ;;
 ;; Parameters:
 ;; - p_a1: matrix to be transposed.
+;;
+;; Output:
+;;
+;; - Matrix.
 ;;
 ;; Sources:
 ;; - [1][2][3][4].
@@ -1824,6 +1860,10 @@
 ;; - p_a1: matrix.
 ;; - p_n1: number, [0, 4].
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 (define (grsp-matrix-transposer p_a1 p_n1)
   (let ((res1 p_a1)
 	(i1 0))
@@ -1850,6 +1890,10 @@
 ;;
 ;; - p_a1: matrix.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 (define (grsp-matrix-conjugate p_a1)
   (let ((res1 p_a1)
 	(res2 0))
@@ -1870,6 +1914,10 @@
 ;; Parameters:
 ;;
 ;; - p_a1: matrix.
+;;
+;; Output:
+;;
+;; - Matrix.
 ;;
 ;; Sources:
 ;;
@@ -1918,14 +1966,18 @@
 ;; - p_a1: matrix. 
 ;; - p_l1: column or row number.
 ;;
-;; Sources:
-;;
-;; - [1][2][3][4].
-;;
 ;; Notes:
 ;;
 ;; - Value for argument p_l1 should be passed as 0 if not used. It is only
 ;;   needed for row and column operations.
+;;
+;; Output:
+;;
+;; - Numberic, scalar.
+;;
+;; Sources:
+;;
+;; - [1][2][3][4].
 ;;
 (define (grsp-matrix-opio p_s1 p_a1 p_l1)
   (let ((res1 p_a1)
@@ -2087,6 +2139,10 @@
 ;;   matrices involved; the user or an additional shell function should take
 ;;   care of that.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 ;; Sources:
 ;;
 ;; - [5][6].
@@ -2206,6 +2262,10 @@
 ;; Examples:
 ;;
 ;; - example3.scm
+;;
+;; Output:
+;;
+;; - Matrix.
 ;;
 (define (grsp-matrix-opew p_s1 p_a1 p_a2)
   (let ((res1 p_a1)
@@ -2373,6 +2433,10 @@
 ;;
 ;; - p_a1: matrix.
 ;;
+;; Output;
+;;
+;; - Matrix.
+;;
 ;; Sources:
 ;;
 ;; - [7].
@@ -2493,6 +2557,10 @@
 ;; Examples:
 ;;
 ;; - example5.scm.
+;;
+;; Output:
+;;
+;; - Matrix.
 ;;
 ;; Sources:
 ;;
@@ -2667,6 +2735,10 @@
 ;; - Real matrices should have the same dimensions.
 ;; - For complex matrices take into account transposition of p_a2.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [45][46][47].
@@ -2711,7 +2783,7 @@
 ;;
 ;; Output:
 ;;
-;; - A copy of p_a1.
+;; - Matrix. A copy of p_a1.
 ;;
 (define (grsp-matrix-cpy p_a1)
   (let ((res1 0))
@@ -2741,6 +2813,10 @@
 ;; - p_hm1: higher m boundary (rows).
 ;; - p_ln1: lower n boundary (cols).
 ;; - p_hn1: higher n boundary (cols).
+;;
+;; Output:
+;;
+;; - Matrix.
 ;;
 (define (grsp-matrix-subcpy p_a1 p_lm1 p_hm1 p_ln1 p_hn1)
   (let ((res1 p_a1)
@@ -2783,6 +2859,10 @@
 ;; - p_a2: matrix.
 ;; - p_m1: row coordinate of p_a1 where to place the upper left corner of p_a2.
 ;; - p_n1: col coordinate of p_a1 where to place the upper left corner of p_a2.
+;;
+;; Output:
+;;
+;; - Matrix.
 ;;
 (define (grsp-matrix-subrep p_a1 p_a2 p_m1 p_n1)
   (let ((res1 p_a1)
@@ -2834,6 +2914,10 @@
 ;; Notes:
 ;;
 ;; - Obsolete. Use grsp-matrix-row-delete p_s1 instead.
+;;
+;; Output:
+;;
+;; - Matrix.
 ;;
 (define (grsp-matrix-subdcn p_s2 p_a1 p_j1 p_n2)
   (let ((res1 p_a1)
@@ -2927,6 +3011,10 @@
 ;; - p_a1: matrix.
 ;; - p_n1: row or col number to delete.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 (define (grsp-matrix-subdel p_s1 p_a1 p_n1)
   (let ((res1 p_a1)
 	(res2 0)
@@ -3008,6 +3096,10 @@
 ;; - p_am1: rows to add.
 ;; - p_an1: cols to add.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 (define (grsp-matrix-subexp p_a1 p_am1 p_an1)
   (let ((res1 p_a1)
 	(res2 0)
@@ -3058,6 +3150,10 @@
 ;; Examples:
 ;;
 ;; - example5.scm
+;;
+;; Output:
+;;
+;; - Boolean.
 ;;
 (define (grsp-matrix-is-equal p_a1 p_a2)
   (let ((res1 p_a1)
@@ -3111,6 +3207,10 @@
 ;;
 ;; - p_a1: matrix.
 ;;
+;; Output:
+;;
+;; - Boolean.
+;;
 (define (grsp-matrix-is-square p_a1)
   (let ((res1 p_a1)
 	(res2 #f))
@@ -3137,6 +3237,10 @@
 ;;
 ;; - For non-complex numbers.
 ;;
+;; Output:
+;;
+;; - Boolean.
+;;
 (define (grsp-matrix-is-symmetric p_a1)
   (let ((res1 #f))
 
@@ -3156,6 +3260,10 @@
 ;; Parameters:
 ;;
 ;; - p_a1: matrix.
+;;
+;; Output:
+;;
+;; - Boolean.
 ;;
 (define (grsp-matrix-is-diagonal p_a1)
   (let ((res1 #f)
@@ -3197,6 +3305,10 @@
 ;;
 ;; - p_a1: matrix.
 ;;
+;; Output:
+;;
+;; - Boolean.
+;;
 ;; Sources:
 ;;
 ;; - [40].
@@ -3222,6 +3334,10 @@
 ;;
 ;; - p_a1: matrix.
 ;;
+;; Output:
+;;
+;; - Boolean.
+;;
 (define (grsp-matrix-is-binary p_a1)
   (let ((res1 #f))
 
@@ -3243,6 +3359,10 @@
 ;;
 ;; - p_a1: matrix.
 ;;
+;; Output:
+;;
+;; - Boolean.
+;;
 (define (grsp-matrix-is-nonnegative p_a1)
   (let ((res1 #f))
 
@@ -3261,6 +3381,10 @@
 ;; Parameters:
 ;;
 ;; - p_a1: matrix.
+;;
+;; Output:
+;;
+;; - Boolean.
 ;;
 (define (grsp-matrix-is-positive p_a1)
   (let ((res1 #f))
@@ -3461,6 +3585,10 @@
 ;;
 ;; - example5.scm.
 ;;
+;; Output:
+;;
+;; - List of matrices.
+;;
 ;; Sources:
 ;;
 ;; - [6][43][49][50][51].
@@ -3587,7 +3715,7 @@
 	   	   
 	   ;; Compose results for SVD (matrices U, S, Vt).	   
 	   (set! res1 (list U S Vt)))
-	   
+
 	  ((equal? p_s1 "#LL")
 
 	   ;; Create matrix L based on the dimensions of A.
@@ -3686,6 +3814,10 @@
 ;;
 ;; - p_a1: matrix.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-matrix-density p_a1)
   (let ((res1 0)
 	(res2 0)
@@ -3721,6 +3853,10 @@
 ;;
 ;; - p_a1: matrix.
 ;;
+;; Output:
+;;
+;; - Boolean.
+;;
 (define (grsp-matrix-is-sparse p_a1)
   (let ((res1 #f))
 
@@ -3740,6 +3876,10 @@
 ;; Parameters:
 ;;
 ;; - p_a1: matrix.
+;;
+;; Output:
+;;
+;; - Boolean.
 ;;
 (define (grsp-matrix-is-symmetric-md p_a1)
   (let ((res1 #f)
@@ -3781,6 +3921,10 @@
 ;;
 ;; - p_a1: matrix.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-matrix-total-elements p_a1)
   (let ((res1 0))
 
@@ -3800,6 +3944,10 @@
 ;;
 ;; - p_a1: matrix.
 ;; - p_v1: element value.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 (define (grsp-matrix-total-element p_a1 p_v1)
   (let ((res1 0)
@@ -3834,6 +3982,10 @@
 ;;
 ;; - p_a1: matrix.
 ;;
+;; Output:
+;;
+;; - Boolean.
+;;
 (define (grsp-matrix-is-hadamard p_a1)
   (let ((res1 #f)
 	(t1 0)
@@ -3861,6 +4013,10 @@
 ;; Parameters:
 ;;
 ;; - p_a1: matrix.
+;;
+;; Output:
+;;
+;; - Boolean.
 ;;
 (define (grsp-matrix-is-markov p_a1)
   (let ((res1 #f)
@@ -3911,6 +4067,10 @@
 ;;
 ;; - p_a1: matrix.
 ;;
+;; Output:
+;;
+;; - Boolean.
+;;
 (define (grsp-matrix-is-signature p_a1)
   (let ((res1 #f)
 	(i1 0)
@@ -3954,6 +4114,10 @@
 ;;
 ;; - p_a1: matrix.
 ;; - p_v1: value.
+;;
+;; Output:
+;;
+;; - Boolean.
 ;;
 (define (grsp-matrix-is-single-entry p_a1 p_v1)
   (let ((res1 #f))
@@ -4003,6 +4167,10 @@
 ;;   - "#Metzler".
 ;;
 ;; - p_a1: matrix.
+;;
+;; Output:
+;;
+;; - Boolean.
 ;;
 (define (grsp-matrix-identify p_s1 p_a1)
   (let ((res1 #f)
@@ -4079,6 +4247,10 @@
 ;;
 ;; - p_a1: matrix.
 ;;
+;; Output:
+;;
+;; - Boolean.
+;;
 (define (grsp-matrix-is-metzler p_a1)
   (let ((res1 #f)
 	(i1 0)
@@ -4118,6 +4290,10 @@
 ;;
 ;; - p_l1: list.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 (define (grsp-l2m p_l1)
   (let ((res1 (grsp-matrix-create 0 1 (length p_l1)))
 	(i1 0)
@@ -4140,6 +4316,10 @@
 ;; Parameters:
 ;;
 ;; - p_a1: matrix.
+;;
+;; Output:
+;;
+;; - List.
 ;;
 (define (grsp-m2l p_a1)
   (let ((res1 '())
@@ -4167,6 +4347,10 @@
 ;; Parameters:
 ;;
 ;; - p_a1: matrix.
+;;
+;; Output:
+;;
+;; - Row vector ((1 x (m x n)) matrix).
 ;;
 (define (grsp-m2v p_a1)
   (let ((res1 0)
@@ -4205,6 +4389,10 @@
 ;; - p_db1: database name.
 ;; - p_q1: database query.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 (define (grsp-dbc2mc p_db1 p_q1)
   (let ((res1 0))
 
@@ -4223,6 +4411,11 @@
 ;;
 ;; - p_d1: database name.
 ;; - p_t1: table name.
+
+;;
+;; Output:
+;;
+;; - Matrix.
 ;;
 (define (grsp-dbc2mc-csv p_d1 p_t1)
   (let ((res1 0)
@@ -4531,9 +4724,11 @@
 		  (set! ve (array-ref p_a1 i1 j1))
 
 		  ;; Create the string record.
+		  ;;
 		  ;; - 0: row number.
 		  ;; - 1: col number.
 		  ;; - 2: value.
+		  ;;
 		  ;; If this is the last element of the matrix, do not add the
 		  ;; new line character at the end of the string.
 		  (cond ((equal? (and (>= j1 hn1) (>= i1 hm1)) #t)			 
@@ -4615,9 +4810,11 @@
 		  (set! ve (array-ref p_a1 i1 j1))
 
 		  ;; Create the string record.
+		  ;;
 		  ;; - 0: row number.
 		  ;; - 1: col number.
 		  ;; - 2: value.
+		  ;;
 		  ;; If this is the last element of the matrix, do not add the
 		  ;; new line character at the end of the string.
 		  (cond ((equal? (and (>= j1 hn1) (>= i1 hm1)) #t)			 
@@ -4773,6 +4970,10 @@
 ;;
 ;; - p_a1: matrix.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [9][10][11][12][13].
@@ -4813,6 +5014,10 @@
 ;;
 ;; - p_a1: matrix.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [9][10][11][12][13].
@@ -4835,36 +5040,6 @@
     res1))
 
 
-;;;; grsp-matrix-determinant-pe - Finds the determinant of matrix p_a1 using 
-;; its eigenvalues (product).  
-;;
-;; Keywords:
-;;
-;; - functions, algebra, matrix, matrices, vectors
-;;
-;; Parameters:
-;;
-;; - p_a1: matrix.
-;;
-;; Notes:
-;;
-;; - For details on eigenvalue calculation for this function,
-;;   see grsp-eigenval-qr.
-;;
-;; Sources:
-;;
-;; - [14].
-;;
-(define (grsp-matrix-determinant-pe p_a1)
-  (let ((res1 0)
-	(res2 0))
-
-    (set! res2 (grsp-eigenval-qr "#QRMG" p_a1 100))
-    (set! res1 (grsp-matrix-opio "#*" res2 0))
-    
-    res1))
-
-
 ;;;; grsp-matrix-is-invertible - Returns #t if matrix si invertible if its
 ;; determinant is != 0; #f otherwise.
 ;;
@@ -4875,6 +5050,10 @@
 ;; Parameters:
 ;;
 ;; - p_a1: matrix.
+;;
+;; Output:
+;;
+;; - Boolean.
 ;;
 (define (grsp-matrix-is-invertible p_a1)
   (let ((res1 #t))
@@ -4934,6 +5113,10 @@
 ;;   - "#des": descending.
 ;;
 ;; - p_a1: matrix.
+;;
+;; Output:
+;;
+;; - Matrix.
 ;;
 (define (grsp-matrix-sort p_s1 p_a1)
   (let ((res1 0)
@@ -5085,7 +5268,7 @@
 ;;
 ;; Output:
 ;;
-;; - Trimmed data as a 1 x n vector.
+;; - Trimmed data as a row vector (1 x n matrix).
 ;;
 (define (grsp-matrix-trim p_s1 p_a1 p_n1)
   (let ((res1 0)
@@ -5200,6 +5383,10 @@
 ;;   - 0.
 ;;   - 1.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 (define (grsp-matrix-select p_a1 p_a2 p_n1)
   (let ((res1 0))
 
@@ -5228,6 +5415,10 @@
 ;;
 ;; - p_a1: matrix.
 ;; - p_j1: column number.
+;;
+;; Output:
+;;
+;; - Matrix.
 ;;
 ;; Sources:
 ;;
@@ -5314,6 +5505,10 @@
 ;; - p_a1: matrix.
 ;; - p_j1: column number.
 ;; - p_n1: number.
+;;
+;; Output:
+;;
+;; - Matrix.
 ;;
 ;; Sources:
 ;;
@@ -5423,6 +5618,10 @@
 ;; - p_j1: column number.
 ;; - p_n1: number.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 ;; Sources:
 ;;
 ;; - [16].
@@ -5467,6 +5666,10 @@
 ;;
 ;; - p_a1: matrix.
 ;; - p_j1: column number.
+;;
+;; Output:
+;;
+;; - Matrix.
 ;;
 ;; Sources:
 ;;
@@ -5559,6 +5762,10 @@
 ;;
 ;; - p_a1: matrix.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 ;; Sources:
 ;;
 ;; - [16].
@@ -5624,6 +5831,10 @@
 ;;   updated with the data of p_a2.
 ;; - This function might not work well if during the processing of p_a2
 ;;   the width (number of columns) has been changed.
+;;
+;; Output:
+;;
+;; - Matrix.
 ;;
 ;; Sources:
 ;;
@@ -5701,6 +5912,10 @@
 ;;
 ;; - p_a1: matrix.
 ;; - p_l1: list containing row numbers.
+;;
+;; Output:
+;;
+;; - Matrix.
 ;;
 ;; Sources:
 ;;
@@ -5785,6 +6000,10 @@
 ;; - p_a1: matrix.
 ;; - p_l1: list containing col numbers.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 ;; Sources:
 ;;
 ;; - [16].
@@ -5828,6 +6047,10 @@
 ;; - p_j1: column number.
 ;; - p_n1: number.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 ;; Sources:
 ;;
 ;; - [16].
@@ -5861,6 +6084,10 @@
 ;; - p_n1: column number, key of p_a1.
 ;; - p_a2: matrix.
 ;; - p_a2: column number, key of p_a2.
+;;
+;; Output:
+;;
+;; - Matrix.
 ;;
 ;; Sources:
 ;;
@@ -5987,6 +6214,10 @@
 ;; - p_a2: matrix.
 ;; - p_a2: column number, key of p_a2.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 ;; Sources:
 ;;
 ;; - [16].
@@ -6031,6 +6262,10 @@
 ;; - p_n1: column number, key of p_a1.
 ;; - p_a2: matrix.
 ;; - p_n2: column number, key of p_a2.
+;;
+;; Output:
+;;
+;; - Matrix.
 ;;
 ;; Sources:
 ;;
@@ -6123,6 +6358,10 @@
 ;;
 ;; - p_a1: matrix ( 1 x n), (-inf.0, +inf.0).
 ;;
+;; Output:
+;;
+;; - Row vector (1 x (n - p) matrix).
+;;
 ;; Sources:
 ;;
 ;; - [17].
@@ -6185,13 +6424,17 @@
 ;; - p_a2: matrix.
 ;; - p_n2: column number, key of p_a2.
 ;;
-;; Sources:
-;;
-;; - [16].
-;;
 ;; Notes:
 ;;
 ;; - Still needs some checking of the results.
+;;
+;; Output:
+;;
+;; - Matrix.
+;;
+;; Sources:
+;;
+;; - [16].
 ;;
 (define (grsp-matrix-row-div p_a1 p_n1 p_a2 p_n2)
   (let ((res1 0)
@@ -6291,6 +6534,10 @@
 ;; - You cannot make changes to the primary key column using this update
 ;;   function.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 (define (grsp-matrix-row-update p_s1 p_a1 p_j1 p_n1 p_j2 p_n2)
   (let ((res1 0)
 	(res2 0)
@@ -6346,6 +6593,10 @@
 ;; Parameters:
 ;;
 ;; - p_a1: matrix.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;  
 (define (grsp-matrix-te2 p_a1)
   (let ((res1 0))
@@ -6367,6 +6618,10 @@
 ;;
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
+;;
+;; Output:
+;;
+;; - Matrix.
 ;;  
 (define (grsp-matrix-row-append p_a1 p_a2)
   (let ((res1 0)
@@ -6413,6 +6668,10 @@
 ;; - p_j1: column number, key of p_a1.
 ;; - p_a2: matrix.
 ;; - p_j2: column number, key of p_a2.
+;;
+;; Output:
+;;
+;; - Matrix.
 ;;
 ;; Sources:
 ;;
@@ -6499,6 +6758,10 @@
 ;; - p_n1: col coordinate of p_a1.
 ;; - p_n1: col coordinate of p_a1.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 (define (grsp-matrix-subrepv p_a1 p_v1 p_m1 p_m2 p_n1 p_n2)
   (let ((res1 0)	
 	(i1 0)
@@ -6539,6 +6802,10 @@
 ;; - p_n2: col pos 2.
 ;; - p_m3: row pos 3.
 ;; - p_n3: col pos 3.
+;;
+;; Output:
+;;
+;; - Matrix.
 ;;
 (define (grsp-matrix-subswp p_a1 p_m1 p_n1 p_m2 p_n2 p_m3 p_n3)
   (let ((res1 0)
@@ -6588,6 +6855,10 @@
 ;; - p_a1: matrix.
 ;; - p_j1: column number.
 ;; - p_n1: number.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 (define (grsp-matrix-col-total-element p_s1 p_a1 p_j1 p_n1)
   (let ((res1 0)
@@ -6655,6 +6926,10 @@
 ;; - p_a1: matrix.
 ;; - p_n1: number.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 (define (grsp-matrix-row-deletev p_a1 p_n1)
   (let ((res1 0)
 	(lm1 0)
@@ -6706,6 +6981,10 @@
 ;; - p_a1: matrix.
 ;; - p_l1: number.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 (define (grsp-matrix-clear p_a1 p_l1)
   (let ((res1 0)
 	(res2 0)
@@ -6735,6 +7014,10 @@
 ;;
 ;; - p_a1: matrix.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 (define (grsp-matrix-clearni p_a1)
   (let ((res1 0))
 
@@ -6755,6 +7038,10 @@
 ;;
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
+;;
+;; Output:
+;;
+;; - Matrix.
 ;;
 (define (grsp-matrix-row-cartesian p_a1 p_a2)
   (let ((res1 0)
@@ -6819,7 +7106,7 @@
 	   ;; Combine the current res1 row with all rows from res2.
 	   (while (<= i2 hm2)
 
-		  ;, Get a row from res2.
+		  ;; Get a row from res2.
 		  (set! res4 (grsp-matrix-subcpy res2 i2 i2 ln2 hn2))
 
 		  ;; Col append rows from res3 and res4.
@@ -6854,6 +7141,10 @@
 ;;
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
+;;
+;; Output:
+;;
+;; - Matrix.
 ;;  
 (define (grsp-matrix-col-append p_a1 p_a2)
   (let ((res1 0)
@@ -6921,6 +7212,10 @@
 ;; - p_a1: matrix.
 ;; - p_j1: column number.
 ;; - p_n1: element ordinal.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -7038,6 +7333,10 @@
 ;; - p_u2: mean for element random value.
 ;; - p_v2: standard deviation for element random value.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 ;; Sources:
 ;;
 ;; - [19][21].
@@ -7102,6 +7401,10 @@
 ;; - p_v2: standard deviation for element random value.
 ;; - p_n2: column to mutate.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 ;; Sources:
 ;;
 ;; - [19][21].
@@ -7159,6 +7462,10 @@
 ;; - p_v2: standard deviation for element random value.
 ;; - p_l1: list of columns to mutate.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 ;; Sources:
 ;;
 ;; - [19][21].
@@ -7209,10 +7516,6 @@
 ;; - p_ln2: lower column number of the interval to swap (p_a1).
 ;; - p_hn2: higher column number of the interval to swap (p_a1).
 ;;
-;; Sources:
-;;
-;; - [19][20].
-;;
 ;; Notes:
 ;;
 ;; - Matrices should have the same number of rows and columns.
@@ -7222,6 +7525,10 @@
 ;; Output
 ;;
 ;; - A matrix containing the children obtained as a result of the swap.
+;;
+;; Sources:
+;;
+;; - [19][20].
 ;;
 (define (grsp-matrix-crossover p_a1 p_ln1 p_hn1 p_a2 p_ln2 p_hn2)
   (let ((res1 0)
@@ -7312,13 +7619,17 @@
 ;; - p_u1: mean for crossover rate.
 ;; - p_v1: standard deviation for crossover rate.
 ;;
-;; Sources:
-;;
-;; - [19][20].
-;;
 ;; Notes:
 ;;
 ;; - See grsp-matrix-crossover for further details.
+;;
+;; Output
+;;
+;; - Matrix.
+;;
+;; Sources:
+;;
+;; - [19][20].
 ;;
 (define (grsp-matrix-crossover-rprnd p_a1 p_ln1 p_hn1 p_a2 p_ln2 p_hn2 p_n1 p_s1 p_u1 p_v1)
   (let ((res1 0))
@@ -7389,6 +7700,10 @@
 ;; - This is just a convenience fitness function. You may want to create your
 ;;   own for your specific task.
 ;;
+;; Output
+;;
+;; - Matrix.
+;;
 (define (grsp-matrix-fitness-rprnd p_a1 p_m1 p_n1 p_n2 p_s1 p_u1 p_v1)
   (let ((res1 0))
 
@@ -7426,7 +7741,7 @@
 ;;
 ;; Output:
 ;;
-;; - A subset of selected individuals (rows) from p_a1.
+;; - Matrix. A subset of selected individuals (rows) from p_a1.
 ;;
 ;; Sources:
 ;;
@@ -7489,6 +7804,10 @@
 ;;   containing keys, each key can identify a txt or pdf file, for example,
 ;;   which is pointed from the matrix.
 ;;
+;; Output
+;;
+;; - Matrix.
+;;
 (define (grsp-matrix-keyon p_s1 p_a1 p_n1 p_n2 p_n3)
   (let ((res1 0)
 	(i1 0)
@@ -7538,6 +7857,10 @@
 ;; - p_n1: column number.
 ;; - p_n2: value to set on p_n1.
 ;;
+;; Output
+;;
+;; - Matrix.
+;;
 (define (grsp-matrix-col-aupdate p_a1 p_n1 p_n2)
   (let ((res1 0)
 	(i1 0))
@@ -7576,6 +7899,10 @@
 ;; - p_a1: matrix.
 ;; - p_j1: column number.
 ;; - p_n1: number.
+;;
+;; Output
+;;
+;; - List.
 ;;
 ;; Sources:
 ;;
@@ -7624,6 +7951,10 @@
 ;;
 ;; - p_a1: matrix.
 ;;
+;; Output
+;;
+;; - Boolean.
+;;
 (define (grsp-matrix-is-empty p_a1)
   (let ((res1 #t))
 
@@ -7643,6 +7974,10 @@
 ;; Parameters:
 ;;
 ;; - p_a1: matrix.
+;;
+;; Output
+;;
+;; - Boolean.
 ;;
 ;; Sources:
 ;;
@@ -7845,6 +8180,10 @@
 ;;
 ;; - Make sure that p_l1 has as many elements as p_a1's rows.
 ;;
+;; Output
+;;
+;; - Matrix.
+;;
 (define (grsp-matrix-row-subrepal p_a1 p_m1 p_l2)
   (let ((res1 0)
 	(res2 0)
@@ -7869,6 +8208,7 @@
     (set! res2 (grsp-l2m p_l2))
     
     ;; Evaluate if the function will:
+    ;;
     ;; - Edit an existing row.
     ;; - Add a row at the bottom of the matrix.
     (cond ((< m1 lm1)	   
@@ -7903,6 +8243,10 @@
 ;; - p_a1: matrix.
 ;; - p_m1: row number.
 ;; - p_l1: list.
+;;
+;; Output
+;;
+;; - Matrix.
 ;;
 (define (grsp-matrix-subdell p_a1 p_m1 p_l1)
   (let ((res1 0)
@@ -8009,6 +8353,10 @@
 ;; Parameters:
 ;;
 ;; - p_a1: matrix.
+;;
+;; Output
+;;
+;; - Matrix.
 ;;
 (define (grsp-matrix-fill p_a1 p_n1)
   (let ((res1 0)
@@ -8135,6 +8483,10 @@
 ;;   the same matrix as well.
 ;; - See grsp-matrix-opew.
 ;;
+;; Output
+;;
+;; - Matrix.
+;;
 (define (grsp-matrix-opewc p_s1 p_a1 p_j1 p_a2 p_j2 p_a3 p_j3)
   (let ((res1 0)
 	(res2 0)
@@ -8221,6 +8573,10 @@
 ;; - Both matrices should be of equal dimensions.
 ;; - See grsp-matrix-opewc.
 ;;
+;; Output
+;;
+;; - Matrix.
+;;
 (define (grsp-matrix-row-opew-mth p_s1 p_a1 p_a2 p_m1 p_m2)
   (let ((res1 0)
 	(a1 0)
@@ -8266,6 +8622,10 @@
 ;; - p_a1: matrix.
 ;; - p_m1: row number.
 ;;
+;; Output
+;;
+;; - List.
+;;
 (define (grsp-mr2l p_a1 p_m1)
   (let ((res1 '())
 	(a1 0))
@@ -8293,6 +8653,10 @@
 ;; Examples:
 ;;
 ;; - example9.scm.
+;;
+;; Output
+;;
+;; - Matrix.
 ;;
 (define (grsp-l2mr p_a1 p_l2 p_m1 p_n1)
   (let ((res1 0)
@@ -8335,6 +8699,10 @@
 ;; - Both matrices should be of equal dimensions.
 ;; - See grsp-matrix-opew, grsp-matrix-row-opew-mth.
 ;;
+;; Output
+;;
+;; - Matrix.
+;;
 ;; Sources:
 ;;
 ;; - [26].
@@ -8372,6 +8740,10 @@
 ;; Parameters:
 ;;
 ;; - p_a1: matrix.
+;;
+;; Output
+;;
+;; - Boolean.
 ;;
 (define (grsp-matrix-is-traceless p_a1)
   (let ((res1 #f))
@@ -8491,6 +8863,10 @@
 ;; - This function does not vaildate if row p_m1 actually exists on
 ;;   matrix p_a1.
 ;;
+;; Output
+;;
+;; - Matrix.
+;;
 (define (grsp-matrix-movcrm p_b1 p_a1 p_m1 p_j2)
   (let ((res1 0)
 	(nl (grsp-ln p_a1))
@@ -8583,6 +8959,10 @@
 ;;
 ;; - p_a1: matrix.
 ;;
+;; Output
+;;
+;; - Matrix.
+;;
 (define (grsp-matrix-movtrm p_b1 p_a1)
   (let ((res1 0)
 	(j1 (grsp-ln p_a1)))
@@ -8614,12 +8994,16 @@
 ;; - p_a1: matrix.
 ;; - p_n1: number.
 ;;
+;; Output
+;;
+;; - Matrix.
+;;
 (define (grsp-matrix-ldiagonal p_a1 p_n1)
   (let ((res1 0)
 	(i1 (grsp-lm p_a1))
 	(j1 (grsp-ln p_a1)))
 
-    ;; Mace safety copy.
+    ;; Make safety copy.
     (set! res1 (grsp-matrix-cpy p_a1))
 
     ;; Cycle and replace all elements of the matrix except in the case
@@ -8647,9 +9031,15 @@
 ;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_m1: row coordinate.
 ;; - p_n1: col cordinate.
+
+;;
+;; Output
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -8687,6 +9077,10 @@
 ;; - p_m1: row coordinate.
 ;; - p_n1: col cordinate.
 ;;
+;; Output
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [42].
@@ -8713,6 +9107,10 @@
 ;; Parameters:
 ;;
 ;; - p_a1: matrix.
+;;
+;; Output
+;;
+;; - Matrix.
 ;;
 ;; Sources:
 ;;
@@ -8750,6 +9148,10 @@
 ;; Parameters:
 ;;
 ;; - p_a1: matrix.
+;;
+;; Output
+;;
+;; - Matrix.
 ;;
 ;; Sources:
 ;;
@@ -8789,6 +9191,10 @@
 ;;
 ;; - p_a1: matrix.
 ;;
+;; Output
+;;
+;; - Matrix.
+;;
 ;; Sources:
 ;;
 ;; - [42].
@@ -8810,6 +9216,10 @@
 ;; Parameters:
 ;;
 ;; - p_a1: matrix.
+;;
+;; Output
+;;
+;; - Matrix.
 ;;
 (define (grsp-mn2ms p_a1)
   (let ((res1 "")	
@@ -8855,6 +9265,10 @@
 ;; - p_s3: string for padding (one char length).
 ;; - p_n1: numeric. Length of padded and justified string.
 ;;
+;; Output
+;;
+;; - Matrix.
+;;
 (define (grsp-matrix-spjustify p_s1 p_a1 p_s3 p_n1)
   (let ((res1 "")
 	(s2 "")
@@ -8890,6 +9304,10 @@
 ;;
 ;; - p_a1: matrix. String.
 ;;
+;; Output
+;;
+;; - Matrix.
+;;
 (define (grsp-matrix-slongest p_a1)
   (let ((res1 0)
 	(n1 0)
@@ -8917,7 +9335,7 @@
 
 
 ;;;; grsp-mn2s - Creates a formatted long string from p_a1 for display. This
-;; function transforms all elements of a string matrix into a unified string-
+;; function transforms all elements of a string matrix into a unified string.
 ;;
 ;; Keywords:
 ;;
@@ -8926,6 +9344,10 @@
 ;; Parameters:
 ;;
 ;; - p_a1: matrix. String.
+;;
+;; Output
+;;
+;; - String.
 ;;
 (define (grsp-ms2s p_a1)
   (let ((res1 "")
@@ -8973,6 +9395,10 @@
 ;;
 ;; - example5.scm.
 ;;
+;; Output
+;;
+;; - String.
+;;
 (define (grsp-matrix-display p_a1)
   (let ((res1 "")
 	(a1 ""))
@@ -8997,6 +9423,10 @@
 ;;
 ;; - The strings corresponding to each element must correspond
 ;;   to numbers, for example "42" or "666".
+;;
+;; Output
+;;
+;; - Matrix.
 ;;
 (define (grsp-ms2mn p_a1)
   (let ((res1 0)	
@@ -9045,6 +9475,10 @@
 ;; - p_n2: value to set otherwise.
 ;; - p_min: number. Lower limit.
 ;; - p_max: higher limit.
+;;
+;; Output
+;;
+;; - Matrix.
 ;;
 (define (grsp-matrix-tio p_s1 p_a1 p_n1 p_n2 p_min p_max)
   (let ((res1 0)
@@ -9116,6 +9550,10 @@
 ;; - p_a1: matrix (should be square).
 ;; - p_n1: number. New value for diagonal elements.
 ;;
+;; Output
+;;
+;; - Matrix.
+;;
 (define (grsp-matrix-diagonal-update p_a1 p_n1)
   (let ((res1 0)
 	(i1 0)
@@ -9142,7 +9580,7 @@
     res1))
 
 
-;;;; grsp-matrix-diagonal-vector - Creates a vector (horizontal) with the
+;;;; grsp-matrix-diagonal-vector - Creates a vector (row) with the
 ;; elements of the diagonal of matrix p_a1.
 ;;
 ;; Keywords:
@@ -9152,6 +9590,10 @@
 ;; Parameters:
 ;;
 ;; - p_a1: matrix (should be square).
+;;
+;; Output
+;;
+;; - Row vector (1 x n matrix).
 ;;
 (define (grsp-matrix-diagonal-vector p_a1)
   (let ((res1 0)
@@ -9183,6 +9625,10 @@
 ;;
 ;; - p_a1: row vector.
 ;; - p_a1: row vector.
+;;
+;; Output
+;;
+;; - Matrix.
 ;;
 (define (grsp-matrix-row-proj p_a1 p_a2)
   (let ((res1 0)
@@ -9357,6 +9803,11 @@
 ;;
 ;; - See grsp-eigenval-qr.
 ;; - TODO: still needs working.
+
+;;
+;; Output
+;;
+;; - List.
 ;;
 ;; Sources:
 ;;
@@ -9414,6 +9865,10 @@
 ;; Parameters:
 ;;
 ;; - p_a1: matrix, square.
+;;
+;; Output
+;;
+;; - Boolean.
 ;;
 ;; Sources:
 ;;
@@ -9556,6 +10011,10 @@
 ;; - See grsp-matrix-decompose for suitable decomposition methods for eigenvalue
 ;;   calculation.
 ;;
+;; Output
+;;
+;; - Numerix.
+;;
 ;; Sources:
 ;;
 ;; - [60].
@@ -9581,7 +10040,11 @@
 ;;
 ;; - p_a1: matrix.
 ;; - p_m1: row.
-;; - p_n1: col
+;; - p_n1: col.
+;;
+;; Output:
+;;
+;; - String.
 ;;
 (define (grsp-ms2ts p_a1 p_m1 p_n1)
   (let ((res1 "")
@@ -9607,6 +10070,10 @@
 ;; - p_a1: matrix.
 ;; - p_m1: row.
 ;;
+;; Output:
+;;
+;; - List.
+;;
 (define (grsp-mr2ls p_a1 p_m1)
   (let ((res1 '()))
 
@@ -9618,6 +10085,7 @@
 ;;;; grsp-dbc2lls - For database table (matrix) element p_a1(p_m1, p_n1)
 ;; representing a link to a file with a numeric string, this function returns
 ;; a two element string list containing:
+;;
 ;; - Elem 0: the path to the plain text file as codified in the table.
 ;; - Elem 1: text of the file as a single string.
 ;;
@@ -9635,6 +10103,10 @@
 ;; Notes:
 ;;
 ;; - See grsp0.grsp-s2dbc, grsp0.grsp-dbc2s.
+;;
+;; Output
+;;
+;; - List.
 ;;
 (define (grsp-dbc2lls p_a1 p_m1 p_n1)
   (let ((res1 '()))
@@ -9660,13 +10132,17 @@
 ;; - p_m1: row.
 ;; - p_j1: col.
 ;;
-;; Note:
+;; Notes:
 ;;
 ;; - This function should be used with care to avoid messing-up primarey keys.
 ;; - The function gives the choice to start at any row number in order to
 ;;   save time when assigning primary key values to new rows.
 ;; - Take into account that key numbers may not coincide with row numbers.
 ;; - Elements on p_j1 should be zero before applying this function.
+;;
+;; Output
+;;
+;; - Matrix.
 ;;
 (define (grsp-matrix-row-prkey p_a1 p_m1 p_j1)
   (let ((res1 0)
@@ -9720,6 +10196,10 @@
 ;; Notes:
 ;;
 ;; - See grsp-matrix-create-set, "#SBC".
+;;
+;; Output
+;;
+;; - Matrix.
 ;;
 ;; Sources:
 ;;
@@ -9777,6 +10257,7 @@
 ;; - p_n2: col coordinate of matrix p_a2 element.
 ;;
 ;; Notes:
+;;
 ;; - See grsp-matrix-correwl.
 ;;
 ;; Output:
@@ -9927,6 +10408,10 @@
 ;;
 ;; - p_a1: matrix.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 (define (grsp-matrix-mmt p_a1)
   (let ((res1 0)
 	(a1 0)
@@ -9949,6 +10434,10 @@
 ;; Parameters:
 ;;
 ;; - p_a1: matrix.
+;;
+;; Output:
+;;
+;; - Matrix.
 ;;
 (define (grsp-matrix-mtm p_a1)
   (let ((res1 0)
@@ -9977,7 +10466,7 @@
 ;;
 ;; Output:
 ;;
-;; - Column m x 1 matrix 
+;; - Column vector (m x 1 matrix).
 ;;
 ;; Sources
 ;;
@@ -10019,7 +10508,7 @@
 
 
 ;;;; grsp-matrix-bsubst - Performs a backward substitution on linear system
-;; of equations p_a1 * x = p_a2, solving for coulmn vector x
+;; of equations p_a1 * x = p_a2, solving for coulmn vector x.
 ;;
 ;; Keywords:
 ;;
@@ -10032,7 +10521,7 @@
 ;;
 ;; Output:
 ;;
-;; - Column m x 1 matrix 
+;; - Column vector (m x 1 matrix).
 ;;
 ;; Sources
 ;;
@@ -10072,32 +10561,3 @@
 	   
     res1))
 
-
-;;;; grsp-matrix-trace-se - Finds the trace of matrix p_a1 using 
-;; its eigenvalues (summation).  
-;;
-;; Keywords:
-;;
-;; - functions, algebra, matrix, matrices, vectors
-;;
-;; Parameters:
-;;
-;; - p_a1: matrix.
-;;
-;; Notes:
-;;
-;; - For details on eigenvalue calculation for this function,
-;;   see grsp-eigenval-qr.
-;;
-;; Sources:
-;;
-;; - [14].
-;;
-(define (grsp-matrix-trace-se p_a1)
-  (let ((res1 0)
-	(res2 0))
-
-    (set! res2 (grsp-eigenval-qr "#QRMG" p_a1 100))
-    (set! res1 (grsp-matrix-opio "#+" res2 0))
-    
-    res1))

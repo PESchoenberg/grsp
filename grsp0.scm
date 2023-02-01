@@ -298,6 +298,10 @@
 ;;
 ;; - example1.scm.
 ;;
+;; Output:
+;;
+;; - String.
+;;
 (define (newspaces p_n1 p_l1 p_s1)
   (let ((res1 " ")
 	(s1 ""))
@@ -339,6 +343,10 @@
 ;;
 ;; - example1.scm, example3.scm.
 ;;
+;; Output:
+;;
+;; - String.
+;;
 (define (strings-append p_l1 p_s1)
   (let ((res1 "")
 	(elem #f))
@@ -378,6 +386,10 @@
 ;; Sources:
 ;;
 ;; - [1].
+;;
+;; Output:
+;;
+;; - String.
 ;;
 (define (read-file-as-string p_f1)
   (call-with-input-file p_f1
@@ -438,6 +450,10 @@
 ;;
 ;; - console, strings
 ;;
+;; Output:
+;;
+;; - String.
+;;
 (define (grsp-test)
   (grsp-ld "grsp-test"))
 	      
@@ -456,6 +472,10 @@
 ;;
 ;;  - "w": open for input. Rewrite if exists.
 ;;  - "a": open for append. Create if does not exist.
+;;
+;; Output:
+;;
+;; - File.
 ;;
 ;; Sources;
 ;;
@@ -506,6 +526,10 @@
 ;;
 ;; - p_n1: number to convert.
 ;;
+;; Output:
+;;
+;; - String.
+;;
 (define (grsp-n2s p_n1)
   (let ((res1 ""))
 
@@ -524,6 +548,11 @@
 ;; Parameters:
 ;;
 ;; - p_s1: string to convert.
+;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;;
 (define (grsp-s2n p_s1)
   (let ((res1 0.0))
@@ -584,6 +613,10 @@
 ;;
 ;; - p_s1: string.
 ;;
+;; Output:
+;;
+;; - String.
+;;
 (define (grsp-dl p_s1)
   (display p_s1)
   (newline))
@@ -605,6 +638,10 @@
 ;; Examples:
 ;;
 ;; - example3.scm.
+;;
+;; Output:
+;;
+;; - String.
 ;;
 (define (grsp-ldl p_s1 p_n1 p_n2)
   (let ((n1 0))
@@ -629,6 +666,10 @@
 ;; Parameters:
 ;;
 ;; - p_s1: string.
+;;
+;; Output:
+;;
+;; - String.
 ;;
 (define (grsp-cd p_s1)
   (clear)
@@ -742,6 +783,10 @@
 ;;
 ;; - p_n1: number.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (in p_n1)
   (let ((res1 0))
 
@@ -759,6 +804,10 @@
 ;; Parameters:
 ;;
 ;; - p_n1: number.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 (define (de p_n1)
   (let ((res1 0))
@@ -879,6 +928,10 @@
 ;;
 ;; - p_s1: string.
 ;;
+;; Output:
+;;
+;; - String.
+;;
 (define (grsp-dstr p_s1)
   (let ((res1 p_s1))
 
@@ -902,6 +955,10 @@
 ;; - p_s3: string (one element in length).
 ;; - p_n1: number. Should be greater than the length of p_s1, p_s2 and p_s3
 ;;   put together.
+;;
+;; Output:
+;;
+;; - String.
 ;;
 (define (grsp-jstr p_s1 p_s2 p_s3 p_n1)
   (let ((res1 " ")
@@ -933,6 +990,10 @@
 ;;
 ;; - console, strings
 ;;
+;; Output:
+;;
+;; - String.
+;;
 (define (grsp-hw)
   (grsp-ldl "Hello world!" 1 1))
 
@@ -942,6 +1003,10 @@
 ;; Keywords:
 ;;
 ;; - console, strings
+;;
+;; Output:
+;;
+;; - String.
 ;;
 (define (grsp-gb)
   (grsp-ldl "Good bye!" 1 1))
@@ -963,6 +1028,10 @@
 ;;   - "#n": do not trim.
 ;;
 ;; - p_s2: string.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 (define (grsp-string-tlength p_s1 p_s2)
   (let ((res1 0)
@@ -1000,6 +1069,10 @@
 ;; Notes:
 ;;
 ;; - See grsp-string-tlength, grsp-string-ltrim.
+;;
+;; Output:
+;;
+;; - List, numeric.
 ;;
 (define (grsp-string-ltlength p_s1 p_l1)
   (let ((res1 '())
@@ -1047,6 +1120,10 @@
 ;;
 ;; - See grsp-string-tlength.
 ;;
+;; Output:
+;;
+;; - List, string.
+;;
 (define (grsp-string-ltrim p_s1 p_l1)
   (let ((res1 '()))  
 
@@ -1081,6 +1158,10 @@
 ;; - p_s2: string.
 ;; - p_s3: string for padding (one char length).
 ;; - p_n1: numeric. Length of padded and justified string.
+;;
+;; Output:
+;;
+;; - String.
 ;;
 (define (grsp-string-pjustify p_s1 p_s2 p_s3 p_n1)
   (let ((res1 p_s2)
@@ -1137,6 +1218,10 @@
 ;; - p_s1: string.
 ;; - p_n1: number. How many times should p_s1 be repeated.
 ;;
+;; Output:
+;;
+;; - String.
+;;
 (define (grsp-string-repeat p_s1 p_n1)
   (let ((res1 ""))
 
@@ -1168,6 +1253,10 @@
 ;; - p_s3: string for padding (one char length).
 ;; - p_n1: numeric. Length of padded and justified string.
 ;;
+;; Output:
+;;
+;; - List.
+;;
 (define (grsp-string-lpjustify p_s1 p_l1 p_s3 p_n1)
   (let ((res1 '())
 	(s2 "")
@@ -1197,6 +1286,10 @@
 ;;
 ;; - p_l1: list of numbers to convert to strings.
 ;;
+;; Output:
+;;
+;; - List, string.
+;;
 (define (grsp-ln2ls p_l1)
   (let ((res1 '()))
 
@@ -1216,6 +1309,10 @@
 ;;
 ;; - p_l1: list of strings to convert to numbers.
 ;;
+;; Output:
+;;
+;; - List, numeric.
+;;
 (define (grsp-ls2ln p_l1)
   (let ((res1 '()))
 
@@ -1232,7 +1329,11 @@
 ;;
 ;; Parameters:
 ;;
-;; - p_l1: list of strings to convert to a single string. 
+;; - p_l1: list of strings to convert to a single string.
+;;
+;; Output:
+;;
+;; - String. 
 ;;
 (define (grsp-ls2s p_l1)
   (let ((res1 ""))
@@ -1255,6 +1356,10 @@
 ;; Parameters:
 ;;
 ;; - p_s1: string.
+;;
+;; Output:
+;;
+;; - List, numeric.
 ;;
 (define (grsp-s2ln p_s1)
   (let ((res1 '())
@@ -1281,6 +1386,10 @@
 ;;
 ;; - grsp-ln2s casts unicode number sets to alphanumeric characters, while
 ;;   grsp-ln2ss casts unicode number sets as a numeric string.
+;;
+;; Output:
+;;
+;; - String.
 ;;
 (define (grsp-ln2s p_l1)
   (let ((res1 "")
@@ -1315,6 +1424,10 @@
 ;;
 ;; - See grsp-list-fname.
 ;;
+;; Output:
+;;
+;; - String.
+;;
 (define (grsp-generate-file-name p_b1 p_s1 p_s2)
   (let ((res1 ""))
 
@@ -1341,6 +1454,10 @@
 ;; - The user should provide a valid string for this function. See
 ;;   grsp-generate-fname.
 ;;
+;; Output:
+;;
+;; - List.
+;;
 (define (grsp-list-file-name p_s1)
   (let ((res1 '())
 	(l1 '())
@@ -1363,6 +1480,10 @@
 ;; Keywords:
 ;;
 ;; - functions, random, string
+;;
+;; Output:
+;;
+;; - String.
 ;;
 (define (grsp-trprnd)
   (let ((res1 0))
@@ -1399,6 +1520,10 @@
 ;;
 ;; - p_s2: string to place between characters.
 ;; - p_s3: string to be modified.
+;;
+;; Output:
+;;
+;; - String.
 ;;
 (define (grsp-intercal p_s1 p_s2 p_s3)
   (let ((res1 "")
@@ -1474,6 +1599,10 @@
 ;; - String "|" is used to clearly separate each character string and hence the
 ;;   unicode number of each one of them.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-s2dbc p_s1)
   (let ((res1 0)
 	(l1 '())
@@ -1503,6 +1632,10 @@
 ;; Notes:
 ;;
 ;; - See grsp-s2dbc, grsp3.grsp-matrix-create, grsp3.grsp-dbc2lls.
+;;
+;; Output:
+;;
+;; - String.
 ;;
 (define (grsp-dbc2s p_n1)
   (let ((res1 "")
@@ -1545,6 +1678,10 @@
 ;; - grsp-ln2s casts unicode number sets to alphanumeric characters, while
 ;;   grsp-ln2ss casts unicode number sets as a numeric string.
 ;;
+;; Output:
+;;
+;; - String.
+;;
 (define (grsp-ln2ns p_l1)
   (let ((res1 "")
 	(s1 0))
@@ -1571,6 +1708,10 @@
 ;;
 ;; - p_l1: list.
 ;;
+;; Output:
+;;
+;; - List.
+;;
 (define (grsp-lns2ln p_l1)
   (let ((res1 '())
 	(l1 '())
@@ -1591,6 +1732,10 @@
 ;;
 ;; - console, strings
 ;;
+;; Output:
+;;
+;; - String.
+;;
 (define (grsp-dsc)
   (display ";; "))
 
@@ -1600,6 +1745,10 @@
 ;; Keywords:
 ;;
 ;; - console, strings
+;;
+;; Output:
+;;
+;; - String.
 ;;
 (define (grsp-dscn)
   (grsp-dsc)
@@ -1611,6 +1760,10 @@
 ;; Keywords:
 ;;
 ;; - console, strings
+;;
+;; Output:
+;;
+;; - String.
 ;;
 (define (grsp-dline)
   (grsp-dsc)
@@ -1626,7 +1779,11 @@
 ;;
 ;; Parameters:
 ;;
-;; - p_l1: list.
+;; - p_s1: string.
+;;
+;; Output:
+;;
+;; - String.
 ;;
 (define (grsp-dtext p_s1)
   (grsp-dsc)
@@ -1644,6 +1801,10 @@
 ;;
 ;; - p_s1: string.
 ;; - p_l1: list.
+;;
+;; Output:
+;;
+;; - String.
 ;;
 (define (displayl p_s1 p_l1)
   (let ((b1 #f)
@@ -1681,6 +1842,10 @@
 ;;
 ;; - p_f1: string. File name.
 ;;
+;; Output:
+;;
+;; - String.
+;;
 (define (displayf p_f1)
   (display (read-file-as-string p_f1)))
 
@@ -1714,6 +1879,10 @@
 ;; Keywords:
 ;;
 ;; - console, strings
+;;
+;; Output:
+;;
+;; - String.
 ;;
 (define (grsp-lam)
   (let ((res1 '()))
