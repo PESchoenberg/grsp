@@ -304,7 +304,11 @@
 ;;
 ;; Parameters:
 ;;
-;; - p_n1: real number.
+;; - p_n1: number.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 (define (grsp-sign p_n1)
   (let ((res1 0))
@@ -447,6 +451,10 @@
 ;; - p_n1: integer >= 0
 ;; - p_k1: integer between [0, p_n1].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [3].
@@ -477,6 +485,10 @@
 ;;
 ;; - p_n1: integer >= 0.
 ;; - p_k1: integer >= 0 and <= p_n1.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -560,6 +572,10 @@
 ;; - p_r1: number.
 ;; - p_n1: number.
 ;; - p_b1: number.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;; 
 (define (grsp-krnb p_k1 p_r1 p_n1 p_b1)
   (let ((res1 0))
@@ -581,6 +597,10 @@
 ;; - p_b1: integer base.
 ;; - p_pf: polynomial with integer coef.
 ;; - p_qf: polynomial with integer coef.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -610,12 +630,16 @@
 ;;
 ;; - functions, exp, expt
 ;;
-;; Parameters;
+;; Parameters:
 ;;
 ;; - p_x1: base.
 ;; - p_n1: rank or height of the power tower.
 ;;
-;; Note:
+;; Output:
+;;
+;; - Numeric.
+;;
+;; Notes:
 ;;
 ;; - This operation might have a significant impact on the performance of your 
 ;;   computer due to its very fast function growth. Use with care.
@@ -654,7 +678,11 @@
 ;; - p_n1: rank or height of the power tower of the super exponentiation for
 ;;   which grsp-slog is inverse.
 ;;
-;; Note:
+;; Output:
+;;
+;; - Numeric.
+;;
+;; Notes:
 ;;
 ;; - This operation might have a significant impact on the performance of your 
 ;;   computer due to its very fast function growth. Use with care.
@@ -703,7 +731,7 @@
 ;;
 ;; Parameters:
 ;;
-;; - p_n1: any natural number.
+;; - p_n1: natural number.
 ;;
 ;; Output:
 ;;
@@ -724,6 +752,7 @@
 
 
 ;;;; grsp-proth-number - Returns the value of a Proth number if:
+;;
 ;; - Both p_n1 and p_k1 are positive integers.
 ;; - p_k1 s odd.
 ;; - 2**p_n1 > p_k1.
@@ -801,6 +830,10 @@
 ;;
 ;; - p_n1: natural number between [1,9].
 ;; - p_d1: natural number.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -1132,13 +1165,13 @@
 ;; - p_v1; number, a.
 ;; - p_v2; number, b.
 ;;
-;; Sources:
-;;
-;; - [44].
-;;
 ;; Output:
 ;;
 ;; - A list containing the values for c, s, and r, in that order.
+;;
+;; Sources:
+;;
+;; - [44].
 ;;
 (define (grsp-givens-rotation p_v1 p_v2)
   (let ((res1 '())
@@ -1226,6 +1259,10 @@
 ;;
 ;; - p_n1: real.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-fitin-0-1 p_n1)
 
   (grsp-fitin p_n1 0.0 1.0))
@@ -1241,6 +1278,10 @@
 ;;
 ;; - p_x1: semi major axis.
 ;; - p_y1: semi minor axis.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -1275,6 +1316,10 @@
 ;; - p_x1: semi major axis.
 ;; - p_y1: semi minor axis.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - See grsp1 [19][21].
@@ -1301,6 +1346,10 @@
 ;; - p_x1: semi major axis.
 ;; - p_y1: semi minor axis.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - See grsp1 [19].
@@ -1323,6 +1372,10 @@
 ;;
 ;; - p_x1: semi major axis.
 ;; - p_y1: semi minor axis.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -1348,6 +1401,10 @@
 ;; - p_x1: semi major axis.
 ;; - p_y1: semi minor axis.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - See grsp1 [21].
@@ -1370,6 +1427,10 @@
 ;; Parameters:
 ;;
 ;; - p_f1: flattening.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;

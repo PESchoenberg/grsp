@@ -45,6 +45,10 @@
 ;;
 ;; - p_n1: constant name, string.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [1] En.wikipedia.org. (2020). List of mathematical constants. [online]
