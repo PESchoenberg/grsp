@@ -85,6 +85,10 @@
 ;;
 ;; - p_r1: radius.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-geo-circle p_r1)
   (let ((res1 0))
 
@@ -102,6 +106,10 @@
 ;; Parameters:
 ;;
 ;; - p_r1: radius.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 (define (grsp-geo-spherev p_r1)
   (let ((res1 0))
@@ -122,6 +130,10 @@
 ;; - p_x1: base.
 ;; - p_y1: height.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-geo-triangle p_x1 p_y1)
   (let ((res1 0))
 
@@ -140,6 +152,10 @@
 ;;
 ;; - p_x1: base.
 ;; - p_y1: height.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 (define (grsp-geo-rectangle p_x1 p_y1)
   (let ((res1 0))
@@ -161,6 +177,10 @@
 ;; - p_y1.
 ;; - p_x2.
 ;; - p_y2.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 (define (grsp-geo-line p_x1 p_y1 p_x2 p_y2)
   (let ((res1 0))
@@ -186,6 +206,10 @@
 ;; Notes:
 ;;
 ;; - If dx is zero, it returns +/- inf.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 (define (grsp-geo-slope p_x1 p_y1 p_x2 p_y2)
   (let ((res1 0)
@@ -216,6 +240,10 @@
 ;; - p_x1: base radius.
 ;; - p_y1: height.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-geo-cylinder p_x1 p_y1)
   (let ((res1 0))
 
@@ -234,6 +262,10 @@
 ;;
 ;; - p_x1: base radius.
 ;; - p_y1: height.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 (define (grsp-geo-cylinderv p_x1 p_y1)
   (let ((res1 0))
@@ -254,6 +286,10 @@
 ;; - p_a1: base area.
 ;; - p_y1: height.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-geo-pyramid p_a1 p_y1)
   (let ((res1 0))
 
@@ -273,6 +309,10 @@
 ;; - p_a1: base area.
 ;; - p_y1: height.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-geo-pyramidv p_a1 p_y1)
   (let ((res1 0))
 
@@ -287,6 +327,10 @@
 ;; Keywords:
 ;;
 ;; - geometry, pi
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -311,6 +355,10 @@
 ;; Keywords:
 ;;
 ;; - geometry, pi
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -338,6 +386,10 @@
 ;;
 ;; - geometry, pi
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [1].
@@ -364,6 +416,10 @@
 ;;
 ;; - geometry, pi
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [1].
@@ -386,6 +442,10 @@
 ;;
 ;; - p_x1: x.
 ;; - p_y1: y.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -410,6 +470,10 @@
 ;; - p_x1: x
 ;; - p_y1: y.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [3][4].
@@ -433,6 +497,10 @@
 ;; - p_x1: x.
 ;; - p_y1: y.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [3][4].
@@ -450,6 +518,10 @@
 ;; Keywords:
 ;;
 ;; - geometry, volume
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Parameters:
 ;;

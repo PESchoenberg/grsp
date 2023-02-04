@@ -1456,6 +1456,10 @@
 ;; - p_e1: eccenticity.
 ;; - p_l1: longitude.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - See grsp1 [21].
@@ -1481,6 +1485,10 @@
 ;; - p_x1: semi major axis.
 ;; - p_y1: semi minor axis.
 ;; - p_l1: geodetic latitude.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -1512,6 +1520,10 @@
 ;; - p_l1: geodetic latitude.
 ;; - p_a1: azimuth.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - See grsp1 [21].
@@ -1541,6 +1553,10 @@
 ;; - p_l1: geodetic latitude.
 ;; - p_a1: azimuth.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - See grsp1 [21].
@@ -1567,6 +1583,10 @@
 ;; - p_x1: semi major axis.
 ;; - p_y1: semi minor axis.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - See grsp1 [22].
@@ -1589,6 +1609,10 @@
 ;;
 ;; - p_x1: semi major axis.
 ;; - p_y1: semi minor axis.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -1625,6 +1649,10 @@
 ;; - p_x1: semi major axis.
 ;; - p_y1: semi minor axis.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - See grsp1 [22].
@@ -1647,6 +1675,10 @@
 ;;
 ;; - p_x1: semi major axis.
 ;; - p_e1: eccentricity.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -1677,6 +1709,10 @@
 ;; - p_y1: y.
 ;; - p_z1: z.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [22].
@@ -1703,6 +1739,10 @@
 ;;
 ;; - p_n1: number for which its factorial is to be approximated.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [23][24].
@@ -1726,6 +1766,10 @@
 ;;
 ;; - p_x1.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [23][25].
@@ -1748,6 +1792,10 @@
 ;; Parameters:
 ;;
 ;; - p_n1: positive integer.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Notes:
 ;;
@@ -1777,6 +1825,10 @@
 ;; Parameters:
 ;;
 ;; - p_n1: positive integer.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Notes:
 ;;
@@ -1808,6 +1860,10 @@
 ;;
 ;; - p_n1: positive integer.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Notes:
 ;;
 ;; - This operation might have a significant impact on the performance of your 
@@ -1838,6 +1894,10 @@
 ;;
 ;; - p_n1: positive integer.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [27].
@@ -1867,6 +1927,10 @@
 ;; - This operation might have a significant impact on the performance of your 
 ;;   computer due to its very fast function growth. Use with care.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [28].
@@ -1890,6 +1954,10 @@
 ;; Parameters:
 ;;
 ;; - p_n1: positive integer.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -1920,6 +1988,10 @@
 ;; - p_x1: positive integer.
 ;; - p_n1: iterations, positive integer.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [1].
@@ -1947,6 +2019,10 @@
 ;;
 ;; - p_x1: positive integer.
 ;; - p_n1: iterations, positive integer.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -1978,6 +2054,10 @@
 ;;
 ;; - p_n1: positive integer.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [29].
@@ -2000,6 +2080,10 @@
 ;; Parameters:
 ;;
 ;; - p_n1: positive integer.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -2033,6 +2117,10 @@
 ;; - p_z1: complex.
 ;; - p_z2: complex.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [30].
@@ -2060,6 +2148,10 @@
 ;; - p_g1: base.
 ;; - p_x1: exponent.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-log p_g1 p_x1)
   (let ((res1 0))
 
@@ -2083,6 +2175,10 @@
 ;; Notes:
 ;;
 ;; - See grsp-log.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -2162,6 +2258,10 @@
 ;;
 ;; - p_n1: number.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-opz p_n1)
   (let ((res1 0))
 
@@ -2179,6 +2279,10 @@
 ;; Parameters:
 ;;
 ;; - p_n1: number.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 (define (grsp-eex p_n1)
   (let ((res1 0))
@@ -2208,6 +2312,10 @@
 ;;
 ;; - functions, exp
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-pi)
   (let ((res1 0))
 
@@ -2221,6 +2329,10 @@
 ;; Keywords:
 ;;
 ;; - functions, exp
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 (define (grsp-em)
   (let ((res1 0))
@@ -2236,6 +2348,10 @@
 ;;
 ;; - functions, exp
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-phi)
   (let ((res1 0))
 
@@ -2250,6 +2366,10 @@
 ;;
 ;; - functions, exp
 ;;
+;; Output:
+;;
+;; - NaN.
+;;
 (define (grsp-nan)
   (let ((res1 0))
 
@@ -2263,6 +2383,10 @@
 ;; Keywords:
 ;;
 ;; - functions, exp
+;;
+;; Output:
+;;
+;; - List.
 ;;
 (define (grsp-naninf)
   (let ((res1 '()))
@@ -2289,6 +2413,10 @@
 ;;
 ;; - p_n1: number.
 ;; - p_n2: number.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 (define (grsp-absop p_s1 p_n1 p_n2)
   (let ((res1 0)
@@ -2332,6 +2460,10 @@
 ;; - See [32] for further details on how GNU Guile deals with random number
 ;;   generation.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-rprnd p_s1 p_u1 p_v1)
   (let ((res1 0))
 
@@ -2367,6 +2499,10 @@
 ;; Notes:
 ;;
 ;; - See grsp-coinflip.
+;;
+;; Output:
+;;
+;; - Boolean.
 ;;
 (define (grsp-ifrprnd p_s1 p_u1 p_v1 p_n1)
   (let ((res1 #f))
@@ -2416,6 +2552,10 @@
 ;;   - "#*": multiplication.
 ;;   - "#/": division.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-onhn p_s1 p_n1)
   (let ((res1 0)
 	(n2 0))
@@ -2451,6 +2591,10 @@
 ;; - p_g1: base.
 ;; - p_n1: iterations.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-salbm-omth p_b1 p_g1 p_n1)
   (let ((res1 0))
 
@@ -2475,6 +2619,10 @@
 ;;
 ;; - p_n1: integer > 0.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [34].
@@ -2498,6 +2646,10 @@
 ;; Parameters:
 ;;
 ;; - p_l1: list containing the values for f(x) from f(0) to f(n).
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -2538,6 +2690,10 @@
 ;; - p_n1: number.
 ;; - p_n2: number.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [37].
@@ -2560,6 +2716,10 @@
 ;; Parameters:
 ;;
 ;; - p_n1: number.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -2595,6 +2755,10 @@
 ;; - p_n2; numeric.
 ;; - p_n3; numeric.
 ;; - p_n4: numeric.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -2649,6 +2813,10 @@
 ;; - p_n2: numeric.
 ;; - p_n3: numeric.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [40].
@@ -2692,6 +2860,10 @@
 ;;
 ;; - p_n1: number, iterations.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-euler-number p_n1)
   (let ((res1 0.0))
 
@@ -2712,6 +2884,10 @@
 ;; Parameters:
 ;;
 ;; - p_n1: number.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -2740,6 +2916,10 @@
 ;;
 ;; - p_n1: number.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [41][42][43].
@@ -2764,6 +2944,10 @@
 ;;
 ;; - p_n1: number.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-2ex p_n1)
   (let ((res1 0.0))
 
@@ -2781,6 +2965,10 @@
 ;; Parameters:
 ;;
 ;; - p_n1: number.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 (define (grsp-1n p_n1)
   (let ((res1 0.0))
@@ -2802,6 +2990,10 @@
 ;; - p_n2: number.
 ;; - p_n3: number.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-pn123n p_n1 p_n2 p_n3)
   (let ((res1 0.0))
 
@@ -2822,6 +3014,10 @@
 ;; - p_n1: number.
 ;; - p_n2: number.
 ;; - p_n3: number.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 (define (grsp-closestn p_n1 p_n2 p_n3)
   (let ((res1 0.0)
@@ -2851,6 +3047,10 @@
 ;; - p_n1: number.
 ;; - p_n2: number.
 ;; - p_n3: number.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 (define (grsp-closestd p_n1 p_n2 p_n3)
   (let ((res1 0.0)
@@ -2896,6 +3096,10 @@
 ;;
 ;; - See grsp-ifrprnd.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-coinflip p_s1 p_u1 p_v1 p_n1 p_n2 p_n3)
   (let ((res1 0)
 	(b1 #t))
@@ -2935,6 +3139,10 @@
 ;; - p_n1: number. Operand.
 ;; - p_n2: number. Result.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-fn p_s1 p_n1 p_n2)
   (let ((res1 0))
 
@@ -2966,6 +3174,10 @@
 ;;
 ;; - p_n1 should not equal zero.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-fn3 p_n1 p_n2 p_n3)
   (let ((res1 0.0+0.0i))
 
@@ -2983,6 +3195,10 @@
 ;;
 ;; - p_n1: number.
 ;; - p_n2: number.
+;;
+;; Output:
+;;
+;; - Boolean.
 ;;
 (define (grsp-eq p_n1 p_n2)
   (let ((res1 #f))
@@ -3003,6 +3219,10 @@
 ;;
 ;; - p_n1: number to convert.
 ;; - p_n2: number. Scale. How much p_n2 is worth in terms of p_n1.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 (define (grsp-n12n2 p_n1 p_n2)
   (let ((res1 0.0))
@@ -3056,6 +3276,10 @@
 ;; - p_n2: number.
 ;; - p_n3: number.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [46].
@@ -3078,6 +3302,10 @@
 ;; Parameters:
 ;;
 ;; - p_n1: number.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 (define (grsp-n2c p_n1)
   (let ((res1 1.0+0.0i))

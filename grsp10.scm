@@ -71,6 +71,10 @@
 ;;
 ;;   - 1: number.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - grsp8.[5].
@@ -93,6 +97,10 @@
 ;;
 ;; - p_1: list containing the following parameters.
 ;;   - 1: number.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -124,6 +132,10 @@
 ;;
 ;;   - 1: number.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - grsp8.[5]
@@ -152,6 +164,10 @@
 ;; - p_1: list containing the following parameters.
 ;;
 ;;   - 1: number.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -186,6 +202,10 @@
 ;;
 ;;   - 1: number.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - grsp8.[5].
@@ -219,6 +239,10 @@
 ;; - p_1: list containing the following parameters.
 ;;   - 1: number.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - grsp8.[5].
@@ -247,6 +271,10 @@
 ;;
 ;; - p_1: list containing the following parameters.
 ;;   - 1: number.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -277,6 +305,10 @@
 ;;
 ;;   - 1: number.
 ;;   - 2: alpha.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -312,6 +344,10 @@
 ;;
 ;;   - 1: number.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - grsp8.[5].
@@ -345,6 +381,10 @@
 ;;   - 1: number.
 ;;   - 2: alpha.
 ;;   - 3: lambda.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -382,6 +422,10 @@
 ;;   - 1: number.
 ;;   - 2: alpha.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - grsp8.[5], grsp8.[6].
@@ -415,6 +459,10 @@
 ;;
 ;;   - 1: number.
 ;;   - 2: alpha.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -450,6 +498,10 @@
 ;;
 ;;   - 1: number.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - grsp8.[5].
@@ -477,6 +529,10 @@
 ;; - p_1: list containing the following parameters.
 ;;
 ;;   - 1: number.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -521,6 +577,10 @@
 ;;
 ;;   - 1: number.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - grsp8.[5].
@@ -549,6 +609,10 @@
 ;; - p_1: list containing the following parameters.
 ;;
 ;;   - 1: number.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -582,6 +646,10 @@
 ;;   - 3: al.
 ;;   - 4: tr.
 ;;   - 5: ar.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -623,6 +691,10 @@
 ;;
 ;;   - 1: number.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - grsp8.[5].
@@ -651,6 +723,10 @@
 ;; - p_11: list containing the following parameters.
 ;;
 ;;   - 1: number.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -701,6 +777,10 @@
 ;;   - 3: standard deviation.
 ;;   - 4: number.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-ifrprnd-num p_l1)
   (let ((res1 0)
 	(l1 '())
@@ -737,6 +817,10 @@
 ;;   - Element 1: number.
 ;;   - Element 2: result if element1 < element 0.
 ;;   - Element 3: result if element >= element 0.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 (define (grsp-trcrnd p_l1)
   (let ((res1 0)
