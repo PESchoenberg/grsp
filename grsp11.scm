@@ -83,6 +83,10 @@
 ;; - p_j1: number.
 ;; - p_n1: number.
 ;;
+;; Output:
+;;
+;; - List.
+;;
 (define (grsp-lal-rel p_s1 p_n1 p_l1 p_j1)
   (let ((res1 '()))
 
@@ -137,6 +141,10 @@
 ;; - p_l1: list.
 ;; - p_n1: number.
 ;;
+;; Output:
+;;
+;; - List.
+;;
 (define (grsp-lal-rfl p_s1 p_n1 p_l1)
   (let ((res1 '())
 	(hn 0))
@@ -165,6 +173,10 @@
 ;; - p_l1: list.
 ;; - p_l2: list.
 ;;
+;; Output:
+;;
+;; - Boolean.
+;;
 (define (grsp-lal-leql p_l1 p_l2)
   (let ((res1 #f))
 
@@ -186,6 +198,10 @@
 ;;
 ;; - p_l1: list.
 ;; - p_l2: list.
+;;
+;; Output:
+;;
+;; - Boolean.
 ;;
 (define (grsp-lal-leqe p_l1 p_l2)
   (let ((res1 #f)
@@ -225,7 +241,7 @@
 ;;
 ;; Output:
 ;;
-;; - Scalar value.
+;; - Numeric.
 ;;
 (define (grsp-lal-opio p_s1 p_l1)
   (let ((res1 0)
@@ -276,6 +292,10 @@
 ;;
 ;; - grsp3.[5], grsp3.[6].
 ;;
+;; Output:
+;;
+;; - List.
+;;
 (define (grsp-lal-opsc p_s1 p_l1 p_v1)
   (let ((res1 0)
 	(res2 0)
@@ -319,6 +339,10 @@
 ;;   care of that.
 ;; - Both lists should contain numeric elements.
 ;; - See grsp-matrix-opew.
+;;
+;; Output:
+;;
+;; - List.
 ;;
 (define (grsp-lal-opew p_s1 p_l1 p_l2)
   (let ((res1 '())
@@ -371,6 +395,10 @@
 ;; - This function works as a convenience wrapper for par-map; it is not
 ;;   necessarily more efficient than par-map itself.
 ;;
+;; Output:
+;;
+;; - List.
+;;
 (define (grsp-lal-opew-mth p_s1 p_l1 p_l2)
   (let ((res1 '()))
 
@@ -420,6 +448,10 @@
 ;; - p_u2: mean for element random value.
 ;; - p_v2: standard deviation for element random value.
 ;;
+;; Output:
+;;
+;; - List.
+;;
 (define (grsp-lal-mutation p_l1 p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2)
   (let ((res1 '())
 	(res2 0))
@@ -446,6 +478,10 @@
 ;;   - #f: does not show ordinals.
 ;;
 ;; - p_l1: list.
+;;
+;; Output:
+;;
+;; - String.
 ;;
 (define (grsp-lal-dev p_b1 p_l1)
   (let ((nh 0))
@@ -475,6 +511,10 @@
 ;;
 ;; - p_l1: list.
 ;; - p_l2: list.
+;;
+;; Output:
+;;
+;; - String.
 ;;
 (define (grsp-lal-devt p_b1 p_l1 p_l2)
   (let ((nh 0)
@@ -508,6 +548,10 @@
 ;; - p_ln1: lower n boundary (elem).
 ;; - p_hn1: higher n boundary (elem).
 ;;
+;; Output:
+;;
+;; - List.
+;;
 (define (grsp-lal-subcpy p_l1 p_ln1 p_hn1)
   (let ((res1 '())
 	(a1 0)
@@ -538,6 +582,10 @@
 ;; - p_l2: list.
 ;; - p_n1: element number of p_l1 where to place the initial element of p_l2.
 ;;
+;; Output:
+;;
+;; - List.
+;;
 (define (grsp-lal-subrep p_l1 p_l2 p_n1)
   (let ((res1 '())
 	(a1 0)
@@ -567,6 +615,10 @@
 ;;
 ;; - p_a1: matrix.
 ;;
+;; Output:
+;;
+;; - Boolean.
+;;
 (define (grsp-lal-is-nonnegative p_l1)
   (let ((res1 #f)
 	(a1 0))
@@ -590,6 +642,10 @@
 ;; Parameters:
 ;;
 ;; - p_a1: matrix.
+;;
+;; Output:
+;;
+;; - Boolean.
 ;;
 (define (grsp-lal-is-positive p_l1)
   (let ((res1 #f)
@@ -615,6 +671,10 @@
 ;;
 ;; - p_l1: numeric list.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-lal-density p_l1)
   (let ((res1 0)
 	(a1 0))
@@ -636,6 +696,10 @@
 ;; - p_l1: list.
 ;; - p_n1: element.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-lal-total-element p_l1 p_n1)
   (let ((res1 0))
 
@@ -655,6 +719,10 @@
 ;;
 ;; - p_l1: list.
 ;; - p_n1: element.
+;;
+;; Output:
+;;
+;; - Boolean.
 ;;
 (define (grsp-lal-is-single-entry p_l1 p_n1)
   (let ((res1 #f))
@@ -680,6 +748,10 @@
 ;;
 ;; - p_l1: matrix.
 ;;
+;; Output:
+;;
+;; - List.
+;;
 (define (grsp-lal-sort p_s1 p_l1)
   (let ((res1 '()))
 
@@ -702,6 +774,10 @@
 ;;
 ;; - A list containing the min and max values, respectively.
 ;;
+;; Output:
+;;
+;; - List.
+;;
 (define (grsp-lal-minmax p_l1)
   (let ((res1 '()))
 
@@ -722,6 +798,10 @@
 ;; Parameters:
 ;;
 ;; - p_l1: list.
+;;
+;; Output:
+;;
+;; - List.
 ;;
 (define (grsp-lal-supp p_l1)
   (let ((res1 '()))
@@ -766,6 +846,10 @@
 ;; Parameters:
 ;;
 ;; - p_l1: list.
+;;
+;; Output:
+;;
+;; - Boolean.
 ;;
 (define (grsp-lal-is-multiset p_l1)
   (let ((res1 #f))

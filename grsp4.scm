@@ -168,6 +168,10 @@
 ;;
 ;; - p_z1: complex number.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [1].
@@ -201,6 +205,10 @@
 ;;   - "#ii": inverts both.
 ;;
 ;; - p_z1: complex number.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -274,6 +282,10 @@
 ;; - p_r1: growth rate.
 ;; - p_x1: number, init.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [2][3].
@@ -297,6 +309,10 @@
 ;; - p_z1.
 ;; - p_c1.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [2][3].
@@ -319,6 +335,10 @@
 ;; Parameters:
 ;;
 ;; - p_z1: ordinal of the desired Fibonacci number.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -345,6 +365,10 @@
 ;;
 ;; - p_s1: s.
 ;; - p_l1: iterations.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -374,6 +398,10 @@
 ;; - p_x1.
 ;; - p_n1.
 ;; - p_n2.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 (define (grsp-complex-f1 p_a1 p_a2 p_x1 p_n1 p_n2)
   (let ((res1 0))
@@ -523,6 +551,10 @@
 ;; - p_z1: complex.
 ;; - p_n1: desired product iterations.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [5].
@@ -563,6 +595,10 @@
 ;; - p_z1: complex.
 ;; - p_n1: desired product iterations.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [5].
@@ -590,6 +626,10 @@
 ;; Notes:
 ;;
 ;; - TODO: still needs some checking.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -638,6 +678,10 @@
 ;;
 ;; - p_z1: complex.
 ;; - p_n1: Desired product iterations.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -692,6 +736,10 @@
 ;; - p_z2: complex.
 ;; - p_n1: Desired product iterations.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [5][7].
@@ -730,6 +778,10 @@
 ;; - p_z1: complex.
 ;; - p_z2: complex.
 ;; - p_n1: Desired product iterations.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -779,6 +831,10 @@
 ;; - p_z2: complex.
 ;; - p_n1: Desired product iterations.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [5][7].
@@ -813,6 +869,10 @@
 ;; - p_z1: complex.
 ;; - p_z2: complex.
 ;; - p_n1: Desired product iterations.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -849,6 +909,10 @@
 ;; - p_z2: complex.
 ;; - p_n1: Desired product iterations.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [5][7].
@@ -873,6 +937,10 @@
 ;; - p_b1: b.
 ;; - p_z1: z.
 ;; - p_n1: iterations.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -908,6 +976,10 @@
 ;; - p_b2: see grsp4.grsp-complex-gamma.
 ;; - p_s2: see grsp4.grsp-complex-gamma.
 ;; - p_n2; see grsp4.grsp-complex-gamma.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -948,6 +1020,10 @@
 ;;
 ;; - p_z1: complex.
 ;; - p_n1: iterations.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -990,6 +1066,10 @@
 ;; - p_z1: complex.
 ;; - p_n1: iterations.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [11].
@@ -1030,6 +1110,10 @@
 ;; - p_z1: complex.
 ;; - p_n1: iterations.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [11].
@@ -1052,6 +1136,10 @@
 ;;
 ;; - p_z1: complex.
 ;; - p_n1: iterations.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -1090,6 +1178,10 @@
 ;; Notes:
 ;;
 ;; - Output might require rounding.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -1147,6 +1239,10 @@
 ;;
 ;; - Use grsp-complex-riemann-zeta to operate on the whole Z domain.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [12][13][14][15].
@@ -1191,6 +1287,10 @@
 ;;
 ;; - Use grsp-complex-riemann-zeta to operate on the whole Z domain.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [12][13][14][15].
@@ -1220,6 +1320,10 @@
 ;; Notes:
 ;;
 ;; - Use grsp-complex-riemann-zeta to operate on the whole Z domain.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -1268,6 +1372,10 @@
 ;;
 ;; - See info on grsp-complex-riemann-zeta before using this function.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [16].
@@ -1312,6 +1420,10 @@
 ;;
 ;; - p_f1: shift value.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-complex-eif p_f1)
   (let ((res1 0))
 
@@ -1331,6 +1443,10 @@
 ;;
 ;; - p_n1: number.
 ;; - p_n2: number.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 (define (grsp-mr p_n1 p_n2)
   (let ((res1 (make-rectangular p_n1 p_n2)))

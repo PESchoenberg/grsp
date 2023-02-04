@@ -100,7 +100,12 @@
 ;; - p_x1: number, [-10.0, 10.0].
 ;; - p_y1: number, [-10.0, 10.0].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-booth p_x1 p_y1)
@@ -115,13 +120,20 @@
 ;;;; grsp-sop-bukin6 - Bukin 6 test, single objective function.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number, [-15.0, -5.0].
 ;; - p_y1: number, [-3.0, 3.0].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-bukin6 p_x1 p_y1)
@@ -136,13 +148,20 @@
 ;;;; grsp-sop-beale - Beale single objective function.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number, [-4.5, 4.5].
 ;; - p_y1: number, [-4.5, 4.5].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-beale p_x1 p_y1)
@@ -175,13 +194,20 @@
 ;;;; grsp-sop-beale-mth - Multithreaded variant of grsp-sop-beale-mth.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number, [-4.5, 4.5].
 ;; - p_y1: number, [-4.5, 4.5].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-beale-mth p_x1 p_y1)
@@ -208,13 +234,20 @@
 ;;;; grsp-sop-matyas - Matyas test, single objective function.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number, [-10.0, 10.0].
 ;; - p_y1: number, [-10.0, 10.0].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-matyas p_x1 p_y1)
@@ -237,13 +270,20 @@
 ;;;; grsp-sop-matyas-mth - Multithreaded variant of grsp-sop-matyas.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number, [-10.0, 10.0].
 ;; - p_y1: number, [-10.0, 10.0].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-matyas-mth p_x1 p_y1)
@@ -259,15 +299,23 @@
 ;;;; grsp-sop-rastrigin - Rastrigin test, single objective function.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: 1 x n vector with n elements, representing an n-dimensinal problem.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Notes:
+;;
 ;; - Each element of p_a1 should belong to the interval [-5.12, 5.12].
 ;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-rastrigin p_a1)
@@ -309,15 +357,23 @@
 ;;;; grsp-sop-rastrigin-mth - Multithreaded version of grsp-sop-rastrigin.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: 1 x n vector with n elements, representing an n-dimensinal problem.
 ;;
 ;; Notes:
+;;
 ;; - Each element of p_a1 should belong to the interval [-5.12, 5.12].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-rastrigin-mth p_a1)
@@ -352,13 +408,20 @@
 ;;;; grsp-sop-goldstein-price - Goldstein-Price test, single objective function.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number, [-2.0, 2.0].
 ;; - p_y1: number, [-2.0, 2.0].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-goldstein-price p_x1 p_y1)
@@ -402,13 +465,20 @@
 ;; grsp-sop-goldstein-price.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number, [-2.0, 2.0].
 ;; - p_y1: number, [-2.0, 2.0].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-goldstein-price-mth p_x1 p_y1)
@@ -451,13 +521,20 @@
 ;;;; grsp-sop-levi13 - Levi test, single objective function.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number, [-10.0, 10.0].
 ;; - p_y1: number, [-10.0, 10.0].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-levi13 p_x1 p_y1)
@@ -494,13 +571,20 @@
 ;;;; grsp-sop-levi13-mth - Multithreaded variant of grsp-sop-levi13.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number, [-10.0, 10.0].
 ;; - p_y1: number, [-10.0, 10.0].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-levi13-mth p_x1 p_y1)
@@ -530,13 +614,20 @@
 ;;;; grsp-sop-himmelblau - Himmelblau test, single objective function.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number, [-5.0, 5.0].
 ;; - p_y1: number, [-5.0, 5.0].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-himmelblau p_x1 p_y1)
@@ -566,13 +657,20 @@
 ;;;; grsp-sop-himmelblau-mth - Multithreaded variant of grsp-sop-himmelblau.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number, [-5.0, 5.0].
 ;; - p_y1: number, [-5.0, 5.0].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-himmelblau-mth p_x1 p_y1)
@@ -595,13 +693,20 @@
 ;;;; grsp-sop-3camel - Three hump camel test, single objective function.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number, [-5.0, 5.0].
 ;; - p_y1: number, [-5.0, 5.0].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-3camel p_x1 p_y1)
@@ -619,13 +724,20 @@
 ;;;; grsp-sop-mccormick - McCormick test, single objective function.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number, [-1.5, 4.0].
 ;; - p_y1: number, [-3.0, 4.0].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-mccormick p_x1 p_y1)
@@ -643,13 +755,20 @@
 ;;;; grsp-sop-schaffer2 - Schaffer 2 test, single objective function.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number, [-100.0, 100.0].
 ;; - p_y1: number, [-100.0, 100.0].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-schaffer2 p_x1 p_y1)
@@ -678,13 +797,20 @@
 ;;;; grsp-sop-schaffer2-mth - Multithreaded variant of grsp-sop-schaffer2.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number, [-100.0, 100.0].
 ;; - p_y1: number, [-100.0, 100.0].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-schaffer2-mth p_x1 p_y1)
@@ -709,13 +835,20 @@
 ;;;; grsp-sop-schaffer4 - Schaffer 4 test, single objective function.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number, [-100.0, 100.0].
 ;; - p_y1: number, [-100.0, 100.0].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-schaffer4 p_x1 p_y1)
@@ -744,13 +877,20 @@
 ;;;; grsp-sop-schaffer4-mth - Multithreaded variant of grsp-sop-schaffer4.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number, [-100.0, 100.0].
 ;; - p_y1: number, [-100.0, 100.0].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-schaffer4-mth p_x1 p_y1)
@@ -776,13 +916,20 @@
 ;;;; grsp-sop-spheret - Sphere test, single objective function.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: 1 x n vector with n elements, representing an n-dimensinal problem.
 ;;   [-inf.0, +inf.0]
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-spheret p_a1)
@@ -805,13 +952,20 @@
 ;;;; grsp-sop-rosenbrock - Rosenbrock test, single objective function.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: 1 x n vector with n elements, representing an n-dimensional problem.
 ;;   [-inf.0, +inf.0]
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-rosenbrock p_a1)
@@ -843,13 +997,20 @@
 ;;;; grsp-sop-eggholder - Eggholder test, single objective function.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number, [-512.0, 512.0].
 ;; - p_y1: number, [-512.0, 512.0].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-eggholder p_x1 p_y1)
@@ -878,13 +1039,20 @@
 ;;;; grsp-sop-eggholder-mth - Multithreaded variant of grsp-sop-eggholder
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number, [-512.0, 512.0].
 ;; - p_y1: number, [-512.0, 512.0].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-eggholder-mth p_x1 p_y1)
@@ -909,13 +1077,20 @@
 ;;;; grsp-sop-styblinski-tang - S & T test, single objective function.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: 1 x n vector with n elements, representing an n-dimensinal problem.
 ;;   [-5.0, +5.0].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-styblinski-tang p_a1)
@@ -943,13 +1118,20 @@
 ;;;; grsp-sop-ackley - Ackley test, single objective function.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number, [-5.0, +5.0].
 ;; - p_y1: number, [-5.0, +5.0].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-ackley p_x1 p_y1)
@@ -984,13 +1166,20 @@
 ;;;; grsp-sop-ackley-mth - Multithreaded variant of grsp-sop-ackley
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number, [-5.0, +5.0].
 ;; - p_y1: number, [-5.0, +5.0].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-ackley-mth p_x1 p_y1)
@@ -1018,13 +1207,20 @@
 ;;;; grsp-sop-easom - Easom test, single objective function.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number, [-10.0, 10.0].
 ;; - p_y1: number, [-10.0, 10.0].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-easom p_x1 p_y1)
@@ -1048,13 +1244,20 @@
 ;;;; grsp-sop-easom-mth - Multithreaded variant of grsp-sop-easom.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number, [-10.0, 10.0].
 ;; - p_y1: number, [-10.0, 10.0].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-easom-mth p_x1 p_y1)
@@ -1075,13 +1278,20 @@
 ;;;; grsp-sop-cit - Cross-in-tray test, single objective function.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number, [-10.0, 10.0].
 ;; - p_y1: number, [-10.0, 10.0].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-cit p_x1 p_y1)
@@ -1104,13 +1314,20 @@
 ;;;; grsp-sop-cit-mth - Multithreaded variant of grsp-sop-cit.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number, [-10.0, 10.0].
 ;; - p_y1: number, [-10.0, 10.0].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-cit-mth p_x1 p_y1)
@@ -1132,13 +1349,20 @@
 ;;;; grsp-sop-hoelder - Hoelder test, single objective function.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number, [-10.0, 10.0].
 ;; - p_y1: number, [-10.0, 10.0].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-hoelder p_x1 p_y1)
@@ -1163,13 +1387,20 @@
 ;;;; grsp-sop-hoelder-mth - Multithreaded variant of grsp-sop-hoelder.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number, [-10.0, 10.0].
 ;; - p_y1: number, [-10.0, 10.0].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-sop-hoelder-mth p_x1 p_y1)
@@ -1194,13 +1425,16 @@
 ;; - p_x1 = p_y1 - 2 <= 0.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number [-1.5, 1.5].
 ;; - p_y1: number [-0.5, 2.5].
 ;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-cop-rosenbrock1 p_x1 p_y1)
@@ -1228,13 +1462,16 @@
 ;; - p_x1**2 + p_y1**2 <= 2-
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number [-1.5, 1.5].
 ;; - p_y1: number [-1.5, 1.5].
 ;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-cop-rosenbrock2 p_x1 p_y1)
@@ -1258,13 +1495,20 @@
 ;; (disk). Returns +nan.0 for unconstraied arguments.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number.
 ;; - p_y1: number.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-cop-mbird p_x1 p_y1)
@@ -1304,13 +1548,20 @@
 ;;;; grsp-cop-mbird-mth - Multithreaded variant of grsp-cop-mbird.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number.
 ;; - p_y1: number.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-cop-mbird-mth p_x1 p_y1)
@@ -1342,13 +1593,20 @@
 ;; (disk). Returns +nan.0 for unconstraied arguments.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: number [-1.25, 1.25].
 ;; - p_y1: number [-1.25, 1.25] != 0.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [1].
 ;;
 (define (grsp-cop-simionescu p_x1 p_y1)

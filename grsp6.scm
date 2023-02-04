@@ -149,6 +149,10 @@
 ;; - p_z1: z1.
 ;; - p_z2: z2.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [2].
@@ -209,6 +213,10 @@
 ;; - p_z1: z1.
 ;; - p_z2: z2.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [2].
@@ -251,6 +259,10 @@
 ;; 
 ;; - p_v1: relative velocity between inertial frames (should be p_v1 < c).
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [3][4].
@@ -275,6 +287,10 @@
 ;; - p_v1: relative velocity.
 ;; - p_t1: proper time.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [4].
@@ -298,6 +314,10 @@
 ;; 
 ;; - p_v1: relative velocity.
 ;; - p_d1: proper length.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -324,6 +344,10 @@
 ;; - p_x1: x rel. coord.
 ;; - p_y2: y rel. coord.
 ;; - p_z1: z rel. coord.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -363,6 +387,10 @@
 ;; - p_y2: y rel. coord.
 ;; - p_z1: z rel. coord.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [4].
@@ -397,6 +425,10 @@
 ;;
 ;; - p_v1: relative velocity between two inertial frames.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [4].
@@ -422,6 +454,10 @@
 ;; - p_t1: time 1.
 ;; - p_t2: time 2.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-velocity p_x1 p_x2 p_t1 p_t2)
   (let ((res1 0))
 
@@ -442,6 +478,10 @@
 ;; - p_v2: velocity 2.
 ;; - p_t1: time 1.
 ;; - p_t2: time 2.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 (define (grsp-acceleration p_v1 p_v2 p_t1 p_t2)
   (let ((res1 0))
@@ -464,6 +504,10 @@
 ;; - p_v2: see grsp-frequency-osrel.
 ;; - p_v3: see grsp-frequency-osrel.
 ;; - p_f1: emitted frequency
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -490,6 +534,10 @@
 ;; - p_v2: see grsp-frequency-osrel.
 ;; - p_v3: see grsp-frequency-osrel.
 ;; - p_f2: observed frequency.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -526,6 +574,10 @@
 ;; - p_v1: propagation speed in the medium.
 ;; - p_v2: speed of the receiver.
 ;; - p_v3: speed of the source.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -566,6 +618,10 @@
 ;; - p_n1: value that corresponds to the emitter (wl or fr).
 ;; - p_n2: value that corresponds to the observer (wl or fr).
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [6].
@@ -592,6 +648,10 @@
 ;; - p_l1: distance.
 ;; - p_t1: time.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-velocity-un p_l1 p_t1)
   (let ((res1 0))
 
@@ -611,6 +671,10 @@
 ;; - p_a1: acceleration.
 ;; - p_t1: time.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-velocity-ac p_a1 p_t1)
   (let ((res1 0))
 
@@ -628,6 +692,10 @@
 ;; Parameters:
 ;;
 ;; - p_g1: parallax (arcseconds).
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 (define (grsp-distance-parallax p_g1)
   (let ((res1 0))
@@ -648,6 +716,10 @@
 ;; - p_v1: speed of the particle.
 ;; - p_m1: rest mass of the particle.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-particle-mass p_v1 p_m1)
   (let ((res1 0))
 
@@ -667,6 +739,10 @@
 ;; Parameters:
 ;;
 ;; - p_m1: mass of the body (kg).
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -692,6 +768,10 @@
 ;; - p_a1: relative distance between the main and secodary bodies.
 ;; - p_t1: orbital period of secondary arond main body.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [1].
@@ -713,6 +793,10 @@
 ;; Parameters:
 ;;
 ;; - p_x1: specific impulse in dimension of time.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -738,6 +822,10 @@
 ;; - p_m1: initial mass.
 ;; - p_m2: final mass.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [8][9].
@@ -760,6 +848,10 @@
 ;; Parameters:
 ;;
 ;; - p_l1: latitude [-90, 90].
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -787,6 +879,10 @@
 ;;
 ;; - p_z1: altitude.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-grav-earth-alt p_z1)
   (let ((res1 0))
 
@@ -809,6 +905,10 @@
 ;; - p_r1: radius.
 ;; - p_m1: mass within p_r1.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-grav-radius p_m1 p_r1)
   (let ((res1 0))
 
@@ -829,6 +929,10 @@
 ;; - p_x1: latitude.
 ;; - p_x2: param A.
 ;; - p_x3: param B.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 (define (grsp-grav-ifor p_x1 p_x2 p_x3)
   (let ((res1 0))
@@ -854,6 +958,10 @@
 ;; - p_x3: param B.
 ;; - p_y1: altitude.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [15].
@@ -876,6 +984,10 @@
 ;; Parameters:
 ;;
 ;; - p_x1: latitude.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -911,6 +1023,10 @@
 ;; Parameters:
 ;;
 ;; - p_x1: latitude.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;

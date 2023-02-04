@@ -304,14 +304,18 @@
 ;; - p_nmin: min value for p_n.
 ;; - p_max: max value for p_x.
 ;;
-;; Sources:
-;;
-;; - [3].
-;;
 ;; Notes:
 ;;
 ;; - If p_n1 lies outside the interval [p_nmin, p_nmax] the function will  
 ;;   truncate p_n1 to fit it within the interval.
+;;
+;; Output:
+;;
+;; - Numeric.
+;;
+;; Sources:
+;;
+;; - [3].
 ;;
 (define (grsp-feature-scaling p_n1 p_nmin p_nmax)
   (let ((res1 0.0))
@@ -338,6 +342,10 @@
 ;; - p_n1: data point.
 ;; - p_m1: sample mean.
 ;; - p_s1: sample standard deviation.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -371,6 +379,10 @@
 ;; - p_n2: real.
 ;; - p_n3: real.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [1].
@@ -400,6 +412,10 @@
 ;;
 ;; - p_n1: real representing a probability in [0,1].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [1].
@@ -422,6 +438,10 @@
 ;;
 ;; - p_n1: real repesenting a probability in [0,1].
 ;; - p_n2: real repesenting a probability in [0,1].
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -447,6 +467,10 @@
 ;;
 ;; - p_n1: real repesenting a probability in [0,1].
 ;; - p_n2: real repesenting a probability in [0,1].
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -475,6 +499,10 @@
 ;; - p_n1: real repesenting a probability in [0,1].
 ;; - p_n2: real repesenting a probability in [0,1].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [1].
@@ -502,6 +530,10 @@
 ;;
 ;; - p_n1: real repesenting a probability in [0,1].
 ;; - p_n2: real repesenting a probability in [0,1].
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -532,6 +564,10 @@
 ;; - p_n1: real repesenting a probability in [0,1].
 ;; - p_n2: real repesenting a probability in [0,1].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [1][2].
@@ -560,6 +596,10 @@
 ;; Parameters:
 ;;
 ;; - p_n1: real representing a probability in [0,1]
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -593,6 +633,10 @@
 ;; - p_e1: exponent (power).
 ;; - p_n1: real number.
 ;; - p_n2: real number.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -630,6 +674,10 @@
 ;;
 ;; - p_n1: real number.
 ;; - p_n2: real number.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -708,6 +756,10 @@
 ;;
 ;; - See grsp-mean1.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [35].
@@ -730,6 +782,10 @@
 ;; Parameters:
 ;;
 ;; - p_a1: sample (matrix).
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -760,6 +816,10 @@
 ;; Notes:
 ;;
 ;; - p_a1 and p_a2 should be of the same shape and dimensions.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -792,6 +852,10 @@
 ;;
 ;; - See grsp-mean1.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [35].
@@ -813,6 +877,10 @@
 ;; Parameters:
 ;;
 ;; - p_a1: sample (matrix).
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -839,6 +907,10 @@
 ;;
 ;; - p_a1: sample (matrix).
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [35].
@@ -862,6 +934,10 @@
 ;; Parameters:
 ;;
 ;; - p_a1: sample (matrix).
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -899,6 +975,10 @@
 ;;
 ;; - p_a1: sample (matrix).
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [33][36].
@@ -933,6 +1013,10 @@
 ;;
 ;; - p_a1: sample (matrix).
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [33][37].
@@ -957,6 +1041,10 @@
 ;;
 ;; - p_v1: variance.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-sd1 p_v1)
   (let ((res1 0))
 
@@ -974,6 +1062,10 @@
 ;; Parameters:
 ;;
 ;; - p_a1: sample (matrix).
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -1025,6 +1117,10 @@
 ;;
 ;; - p_x1: standard deviation.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-variance1 p_x1)
   (let ((res1 0))
 
@@ -1049,6 +1145,10 @@
 ;;   - "#u": for supervariance.
 ;;
 ;; - p_a1: matrix containing occurrences of the random variable.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -1143,6 +1243,10 @@
 ;;
 ;; - p_v1: sorted, 1 x n matrix (vector).
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-median1 p_a1)
   (let ((res1 0)
 	(n1 0)
@@ -1181,6 +1285,10 @@
 ;; - p_n1: standard deviation.
 ;; - p_n2: mean.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [15].
@@ -1203,6 +1311,10 @@
 ;;
 ;; - p_a1: sample (matrix).
 ;; - p_x1: measure of central tendency.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -1249,6 +1361,10 @@
 ;;
 ;; - p_n1: n.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [12].
@@ -1268,9 +1384,14 @@
 ;; - statistics, probability
 ;;
 ;; Parameters:
+;;
 ;; - p_x1: mean.
 ;; - p_x2: median.
 ;; - p_x3: standard deviation.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -1296,6 +1417,10 @@
 ;; - p_x2: mode.
 ;; - p_x3: standard deviation.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [20].
@@ -1320,6 +1445,10 @@
 ;; - p_x2: median.
 ;; - p_x3: standard deviation.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [20].
@@ -1342,6 +1471,10 @@
 ;;
 ;; - p_a1: sample (matrix).
 ;; - p_x1: sample mean.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -1376,6 +1509,10 @@
 ;; - p_x1: sample mean.
 ;; - p_x3: standard deviation.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [22][23].
@@ -1406,6 +1543,10 @@
 ;;
 ;; - p_x4: kurtosis.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [23].
@@ -1428,6 +1569,10 @@
 ;;
 ;; - p_x1: sample mean.
 ;; - p_x3: sample standard deviation.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -1453,7 +1598,11 @@
 ;; - p_q2: quartile 2 (median of whole sample).
 ;; - p_q3: quartile 3 (median of lower half).
 ;;
-;; Parameters:
+;; Output:
+;;
+;; - Numeric.
+;;
+;; Sources:
 ;;
 ;; - [23][24].
 ;;
@@ -1475,6 +1624,10 @@
 ;;
 ;; - p_q1: quartile 1 (median of upper half).
 ;; - p_q3: quartile 3 (median of lower half).
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -1582,6 +1735,10 @@
 ;;
 ;; - p_a1: sample (vector).
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [28].
@@ -1614,6 +1771,10 @@
 ;;
 ;;   - same number of elements.
 ;;   - Same odrinality on indexes.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -1799,13 +1960,20 @@
 ;;;; grsp-poisson-pmf - Probability mass function, Poisson distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability
 ;;
 ;; Parameters:
+;;
 ;; - p_l1: mean, expected value. Lambda, [0, +inf).
 ;; - p_k1: number oc. Int, [0, +inf).
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [4][5].
 ;;
 (define (grsp-poisson-pmf p_l1 p_k1)
@@ -1828,6 +1996,10 @@
 ;;
 ;; - p_l1: mean, expected value. Lambda, [0, +inf).
 ;; - p_k1: number oc. Int, [0, +inf).
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -1853,6 +2025,10 @@
 ;;
 ;; - p_l1: mean, expected value. Lambda, [0, +inf).
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [4].
@@ -1875,6 +2051,10 @@
 ;;
 ;; - p_l1: mean, expected value. Lambda, [0, +inf).
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [4].
@@ -1896,6 +2076,10 @@
 ;; Parameters:
 ;;
 ;; - p_l1: mean, expected value. Lambda, [0, +inf).
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -1920,6 +2104,10 @@
 ;; - p_k1: k. Shape, (0, +inf).
 ;; - p_t1: theta. Scale, (0, +inf).
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [6].
@@ -1942,6 +2130,10 @@
 ;;
 ;; - p_a1: alpha. Shape, (0, +inf).
 ;; - p_b1: beta. Scale, (0, +inf).
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -1966,6 +2158,10 @@
 ;; - p_k1: k. Shape, (0, +inf).
 ;; - p_t1: theta, (0, +inf).
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [6].
@@ -1988,6 +2184,10 @@
 ;;
 ;; - p_a1: alpha. Shape, (0, +inf).
 ;; - p_b1: beta. Scale, (0, +inf).
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -2015,6 +2215,10 @@
 ;;   - k: for parametrization k-t.
 ;;   - alpha: for parametrization a-b.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [6].
@@ -2040,6 +2244,10 @@
 ;;   - k: for parametrization k-t.
 ;;   - alpha: for parametrization a-b.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [6].
@@ -2063,6 +2271,10 @@
 ;; - p_k1: k. Shape. Mode requires [0, +inf).
 ;; - p_t1: theta. Scale, (0, +inf).
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [6].
@@ -2085,6 +2297,10 @@
 ;;
 ;; - p_a1: alpha. Shape. Mode requires [1, +inf).
 ;; - p_b1: beta. Scale, (0, +inf).
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -2121,6 +2337,10 @@
 ;; - p_t1: theta.
 ;; - p_x1: sample, (0, +inf)
 ;; - p_n1: desired product iterations.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -2172,6 +2392,10 @@
 ;; - p_x1: sample, (0, +inf)
 ;; - p_n1: desired product iterations.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [6].
@@ -2210,6 +2434,10 @@
 ;; - p_b1: beta.
 ;; - p_x1: sample, (0, +inf).
 ;; - p_n1: desired product iterations.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -2260,6 +2488,10 @@
 ;; - p_x1: sample, (0, +inf).
 ;; - p_n1: desired product iterations.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [6].
@@ -2298,6 +2530,10 @@
 ;; - p_b1: beta.
 ;; - p_x1: sample, (0, +inf).
 ;; - p_n1: desired product iterations.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -2343,6 +2579,10 @@
 ;; - p_x1: sample, (0, +inf).
 ;; - p_n1: desired product iterations.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [6].
@@ -2380,6 +2620,10 @@
 ;; - p_b1: beta.
 ;; - p_x1: sample, (0, +inf).
 ;; - p_n1: desired product iterations.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -2425,6 +2669,10 @@
 ;; - p_x1: sample, (0, +inf).
 ;; - p_n1: desired product iterations.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [6].
@@ -2452,6 +2700,10 @@
 ;; - p_t1: theta. Scale, (0, +inf).
 ;; - p_t2: for (-inf, p_b1).
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [6][11].
@@ -2477,6 +2729,10 @@
 ;; - p_b1: beta.
 ;; - p_t2: for (-inf, p_b1).
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [6][11].
@@ -2500,6 +2756,10 @@
 ;; - p_k1: k. Shape, [1, +inf). 
 ;; - p_l1: lambda. Rate, (0, +inf).
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [7].
@@ -2522,6 +2782,10 @@
 ;;
 ;; - p_k1: k. Shape, [1, +inf). 
 ;; - p_l1: lambda. Rate, (0, +inf).
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -2547,6 +2811,10 @@
 ;; - p_k1: k. Shape, [1, +inf). 
 ;; - p_l1: lambda. Rate, (0, +inf).
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [7].
@@ -2569,6 +2837,10 @@
 ;;
 ;; - p_k1: k. Shape, [1, +inf). 
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [7].
@@ -2590,6 +2862,10 @@
 ;; Parameters:
 ;;
 ;; - p_k1: k. Shape, [1, +inf). 
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -2619,6 +2895,10 @@
 ;;
 ;; - See desription of grsp4.grsp-complex-gamma for details about parameters
 ;;   above.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -2665,6 +2945,10 @@
 ;; - See desription of grsp4.grsp-complex-gamma for details about parameters
 ;;   above.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [5][7].
@@ -2689,6 +2973,10 @@
 ;; - p_l1: lambda. Rate, (0, +inf).
 ;; - p_t1: p_t1 < p_l1.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [7].
@@ -2710,6 +2998,10 @@
 ;; Parameters: 
 ;;
 ;; - p_l1: lambda. Rate, (0, +inf).
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -2734,6 +3026,10 @@
 ;; - p_x1: x.
 ;; - p_x2: mean.
 ;; - p_x3: standard deviation.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -2772,6 +3068,10 @@
 ;; - p_x2: mean.
 ;; - p_x3: standard deviation.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [11].
@@ -2802,6 +3102,10 @@
 ;;
 ;; - p_x3: standard deviation.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [11].
@@ -2827,6 +3131,10 @@
 ;; - p_x2; mean 2.
 ;; - p_x3: standard deviation 1.
 ;; - p_x4: standard deviation 2.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -2867,6 +3175,10 @@
 ;; - p_x3: standard deviation 1.
 ;; - p_x4: standard deviation 2.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [11][17].
@@ -2893,6 +3205,10 @@
 ;; - p_x1: mean 1.
 ;; - p_x2: standard deviation.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [11][19].
@@ -2918,6 +3234,10 @@
 ;; - p_x1: mean 1.
 ;; - p_x2: standard deviation.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [11][19].
@@ -2942,6 +3262,10 @@
 ;;
 ;; - p_k1: shape, [0.0, +inf.0). 
 ;; - p_l1: scale, [0.0, +inf.0).
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -2969,6 +3293,10 @@
 ;; - p_s1: see grsp4.grsp-complex-gamma.
 ;; - p_n1: see grsp4.grsp-complex-gamma.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [38][39].
@@ -2991,6 +3319,10 @@
 ;;
 ;; - p_k1: shape, [0.0, +inf.0). 
 ;; - p_l1: scale, [0.0, +inf.0).
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -3016,6 +3348,10 @@
 ;; - p_k1: shape, [0.0, +inf.0). 
 ;; - p_l1: scale, [0.0, +inf.0).
 ;; - p_n1: number, [0.0, +inf.0).
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -3043,6 +3379,10 @@
 ;; - p_k1: shape, [0.0, +inf.0). 
 ;; - p_l1: scale, [0.0, +inf.0).
 ;; - p_n1: number, [0.0, +inf.0).
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -3074,6 +3414,10 @@
 ;; - p_k1: shape, [0.0, +inf.0). 
 ;; - p_l1: scale, [0.0, +inf.0).
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [38][39].
@@ -3098,6 +3442,10 @@
 ;;
 ;; - p_k1: shape, [0.0, +inf.0). 
 ;; - p_l1: scale, [0.0, +inf.0).
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -3126,6 +3474,10 @@
 ;; - p_b2: see grsp4.grsp-complex-gamma.
 ;; - p_s1: see grsp4.grsp-complex-gamma.
 ;; - p_n1: see grsp4.grsp-complex-gamma.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -3162,6 +3514,10 @@
 ;; - p_b2: see grsp4.grsp-complex-gamma.
 ;; - p_s1: see grsp4.grsp-complex-gamma.
 ;; - p_n1: see grsp4.grsp-complex-gamma.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -3208,6 +3564,10 @@
 ;; - p_s1: see grsp4.grsp-complex-gamma.
 ;; - p_n1: see grsp4.grsp-complex-gamma.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [38][39].
@@ -3244,6 +3604,10 @@
 ;; - p_n1: see grsp4.grsp-complex-gamma.
 ;; - p_n2: summation iterations.
 ;; - p_t1: t.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -3286,6 +3650,10 @@
 ;; - p_t1: t.
 ;; - p_i2: i.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [38][39].
@@ -3324,6 +3692,10 @@
 ;;   - 1: x2.
 ;;   - 2: y1.
 ;;   - 3: y2.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -3396,6 +3768,10 @@
 ;;   - 2: y1.
 ;;   - 3: y2.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [41].
@@ -3455,9 +3831,15 @@
 ;;;; grsp-triangular-kurtosis - Excess kurtosis of a triangular distribution.
 ;;
 ;; Keywords:
+;;
 ;; - statistics, probability
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
+;;
 ;; - [42].
 ;;
 (define (grsp-triangular-kurtosis)
@@ -3482,6 +3864,10 @@
 ;; - p_a1: a, (-inf.0, +inf.0).
 ;; - p_b1: b, b >= a.
 ;; - p_c1: c, mode.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -3513,6 +3899,10 @@
 ;; Notes:
 ;;
 ;; - See grsp-triangular-mean for parametric properties.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -3557,6 +3947,10 @@
 ;; Notes:
 ;;
 ;; - See grsp-triangular-mean for parametric properties.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -3605,6 +3999,10 @@
 ;;
 ;; - See grsp-triangular-mean for parametric properties.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [42].
@@ -3651,6 +4049,10 @@
 ;;
 ;; - See grsp-triangular-mean for additional parametric properties.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [42].
@@ -3687,6 +4089,10 @@
 ;; Notes:
 ;;
 ;; - See grsp-triangular-mean for parametric properties.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -3735,6 +4141,10 @@
 ;;
 ;; - See grsp-triangular-mean for parametric properties.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [42].
@@ -3781,6 +4191,10 @@
 ;; - p_a1: a.
 ;; - p_b1: b.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [43].
@@ -3803,6 +4217,10 @@
 ;;
 ;; - p_a1: a.
 ;; - p_b1: b.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -3829,6 +4247,10 @@
 ;; - p_b1: b, for interval [-inf.0, +inf.0].
 ;; - P_x1: x.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [43].
@@ -3853,6 +4275,10 @@
 ;; - p_a1: a, for interval [-inf.0, +inf.0].
 ;; - p_b1: b, for interval [-inf.0, +inf.0].
 ;; - P_x1: x.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -3887,6 +4313,10 @@
 ;;
 ;; - For specs on all parameters except p_n1, see grsp-complex-bernoulli-number.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [43].
@@ -3910,6 +4340,10 @@
 ;; - p_a1: a, for interval [-inf.0, +inf.0].
 ;; - p_b1: b, for interval [-inf.0, +inf.0].
 ;; - P_x1: x.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -3938,6 +4372,10 @@
 ;; - p_a1: a, for interval [-inf.0, +inf.0].
 ;; - p_b1: b, for interval [-inf.0, +inf.0].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [43].
@@ -3961,6 +4399,10 @@
 ;; - p_a1: a, for interval [-inf.0, +inf.0].
 ;; - p_b1: b, for interval [-inf.0, +inf.0].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [43].
@@ -3979,6 +4421,10 @@
 ;;
 ;; - statistics, probability
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [43].
@@ -3996,6 +4442,10 @@
 ;; Keywords:
 ;;
 ;; - statistics, probability
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -4018,6 +4468,10 @@
 ;;
 ;; - p_x1: number.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [44].
@@ -4035,6 +4489,10 @@
 ;; Keywords:
 ;;
 ;; - statistics, probability
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -4059,6 +4517,10 @@
 ;; - p_b1: scale, real, (0, +inf.0).
 ;; - p_u1: location (real).
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [44].
@@ -4076,6 +4538,10 @@
 ;; Keywords:
 ;;
 ;; - statistics, probability
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -4098,6 +4564,10 @@
 ;; - p_b1: scale, real, (0, +inf.0).
 ;; - p_u1: location (real).
 ;; - p_x1: number.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -4127,6 +4597,10 @@
 ;; - p_u1: location (real).
 ;; - p_x1: number.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [44].
@@ -4150,6 +4624,10 @@
 ;; - p_b1: scale, real, (0, +inf.0).
 ;; - p_u1: location (real).
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [44].
@@ -4172,6 +4650,10 @@
 ;;
 ;; - p_b1: scale, real, (0, +inf.0).
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [44].
@@ -4193,6 +4675,10 @@
 ;; Parameters:
 ;;
 ;; - p_b1: scale, real, (0, +inf.0).
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;

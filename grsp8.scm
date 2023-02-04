@@ -615,6 +615,10 @@
 ;; - See "Format of matrices used in grsp8" on top of this file for details
 ;;   on each matrix used.
 ;;
+;; Output:
+;;
+;; - List.
+;;
 (define (grsp-ann-net-preb p_a1 p_a2 p_a3 p_a4 p_a5 p_a6 p_a7 p_a8 p_a9)
   (let ((res1 '())
 	(s1 "#="))
@@ -687,6 +691,10 @@
 ;; - See "Format of matrices used in grsp8" on top of this file for details
 ;;   on each matrix used.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 (define (grsp-ann-id-create p_a1 p_a3 p_n1)
   (let ((res1 p_a1)
 	(hm1 1))
@@ -722,6 +730,10 @@
 ;;
 ;; - See "Format of matrices used in grsp8" on top of this file for details
 ;;   on each matrix used.
+;;
+;; Output:
+;;
+;; - Matrix.
 ;;
 (define (grsp-ann-item-create p_a1 p_a2 p_a3 p_n1 p_l2) 
   (let ((res1 0)
@@ -958,7 +970,7 @@
 ;;
 ;; Output:
 ;;
-;; - ann with its component matrices.
+;; - List, ann with its component matrices.
 ;;
 (define (grsp-ann-net-create-ffn p_a1)
   (let ((res1 '())
@@ -1305,6 +1317,10 @@
 ;; - See "Format of matrices used in grsp8" on top of this file for details
 ;;   on each matrix used.
 ;;
+;; Output:
+;;
+;; - List.
+;;
 ;; Sources:
 ;;
 ;; - [16].
@@ -1415,6 +1431,10 @@
 ;; - See "Format of matrices used in grsp8" on top of this file for details
 ;;   on each matrix used.
 ;;
+;; Output:
+;;
+;; - List.
+;;
 ;; Sources:
 ;;
 ;; - [16].
@@ -1495,6 +1515,10 @@
 ;;   essentially delete any component of a neural network, following any
 ;;   schedule.
 ;;
+;; Output:
+;;
+;; - List.
+;;
 (define (grsp-ann-deletes p_l1)
   (let ((res1 '())
 	(nodes 0)
@@ -1541,6 +1565,10 @@
 ;; - p_j2: column.
 ;; - p_n2: value.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 (define (grsp-ann-row-updatei p_a1 p_id p_j2 p_n2)
   (let ((res1 0))
 
@@ -1567,6 +1595,10 @@
 ;;
 ;; - P_a1: matrix (conns).
 ;; - p_id: node id.
+;;
+;; Output:
+;;
+;; - Matrix.
 ;;
 (define (grsp-ann-conns-of-node p_s1 p_a1 p_id)
   (let ((res1 0)
@@ -1597,7 +1629,12 @@
 ;; - p_a3: matrix (count).
 ;;
 ;; Notes:
+;;
 ;; -  Keep in mind TL0 and TL1 while using this function.
+;;
+;; Output:
+;;
+;; - List.
 ;;
 (define (grsp-ann-node-eval p_b3 p_id p_a1 p_a2 p_a3)
   (let ((res1 0)
@@ -1761,6 +1798,10 @@
 ;;
 ;; - p_l1: list of applicable input values. See grsp10.scm.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-ann-actifun p_n1 p_l1)
   (let ((res1 0)
 	(l1 '()))
@@ -1832,7 +1873,7 @@
 ;;
 ;; Output:
 ;;
-;; - Updated ann.
+;; - List. Updated ann.
 ;;
 (define (grsp-ann-nodes-eval p_b3 p_l1)
   (let ((res1 '())
@@ -1971,7 +2012,7 @@
 ;;
 ;; Output:
 ;;
-;; - idata.
+;; - Matrix. idata.
 ;;
 (define (grsp-ann-idata-create p_s1 p_m1)
   (let ((res1 0))
@@ -2000,6 +2041,10 @@
 ;;   - #f: single-threaded.
 ;;
 ;; - p_l2: ann.
+;;
+;; Output:
+;;
+;; - List.
 ;;
 ;; Sources:
 ;;
@@ -2066,7 +2111,7 @@
 ;;
 ;; Output:
 ;;
-;; - Updated ann p_l1.
+;; - List. Updated ann p_l1.
 ;;
 (define (grsp-ann-idata-update p_l1)
   (let ((res1 '())
@@ -2343,6 +2388,10 @@
 ;;
 ;; - p_m1: number of rows.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 (define (grsp-ann-matrix-create p_s1 p_m1)
   (let ((res1 '())
 	(n1 1))
@@ -2381,6 +2430,10 @@
 ;; Parameters:
 ;;
 ;; - p_l1: ann.
+;;
+;; Output:
+;;
+;; - List.
 ;;
 (define (grsp-ann-idata-atlorpn p_l1)
   (let ((res1 '())
@@ -2472,6 +2525,10 @@
 ;; Parameters:
 ;;
 ;; - p_l1: ann.
+;;
+;; Output:
+;;
+;; - List.
 ;;
 (define (grsp-ann-odata-atlorpn p_l1)
   (let ((res1 '())
@@ -2567,6 +2624,10 @@
 ;;
 ;; - p_l1: ann.
 ;;
+;; Output:
+;;
+;; - List.
+;;
 (define (grsp-ann-odtid-atlorpn p_l1)
   (let ((res1 '())
 	(res2 0)
@@ -2643,6 +2704,10 @@
 ;; Output:
 ;;
 ;; - Updated grsp8 ann datai table.
+;;
+;; Output:
+;;
+;; - Matrix.
 ;;
 (define (grsp-m2datai p_a1 p_id p_di p_n1)
   (let ((res1 0)
@@ -2800,6 +2865,10 @@
 ;;
 ;; - p_l1: ann.
 ;;
+;; Output:
+;;
+;; - List.
+;;
 (define (grsp-datai2ann p_l1)
   (let ((res1 '())
 	(res2 0)
@@ -2901,6 +2970,10 @@
 ;;
 ;; - See grsp3.grsp-matrix-fdif, grsp-ann-fdif.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 (define (grsp-ann-fdifm p_s1 p_l1 p_l2)
   (let ((res1 0))
   
@@ -2935,6 +3008,10 @@
 ;;
 ;; - A list containing difference maps (matrices) for each pair of ann matrices;
 ;;   this list is a representation of the differences between two networks.
+;;
+;; Output:
+;;
+;; - List.
 ;;
 (define (grsp-ann-fdif p_l1 p_l2)
   (let ((res1 '())
@@ -2986,6 +3063,10 @@
 ;;
 ;; - p_a1 matrix to replace the one selected by p_s1.
 ;; - p_l1: ann.
+;;
+;; Output:
+;;
+;; - List.
 ;;
 (define (grsp-ann-updatem p_s1 p_a1 p_l1)
   (let ((res1 '())
@@ -3247,6 +3328,10 @@
 ;;
 ;; - See grsp-ann-net-adegree.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 ;; Sources:
 ;;
 ;; - [11][13].
@@ -3359,6 +3444,10 @@
 ;;
 ;; - p_l1: ann.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [11].
@@ -3392,6 +3481,10 @@
 ;; Parameters:
 ;;
 ;; - p_l1: ann.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -3669,6 +3762,10 @@
 ;;
 ;; - example3.scm.
 ;;
+;; Output:
+;;
+;; - String.
+;;
 (define (grsp-ann-devt p_b1 p_l1)
   (let ((l2 '()))
     
@@ -3691,6 +3788,10 @@
 ;;
 ;; - p_l1: ann.
 ;; - p_n1: node id.
+;;
+;; Output:
+;;
+;; - String.
 ;;
 (define (grsp-ann-devn p_b1 p_l1 p_n1)
   (let ((l2 '())
@@ -3727,6 +3828,10 @@
 ;; - p_l1: ann.
 ;; - p_n1: connection id.
 ;;
+;; Output:
+;;
+;; - String.
+;;
 (define (grsp-ann-devc p_b1 p_l1 p_n1)
   (let ((l2 '())
 	(l3 '())
@@ -3758,6 +3863,10 @@
 ;;   - #f: does not show names.
 ;;
 ;; - p_a2: conns.
+;;
+;; Output:
+;;
+;; - String.
 ;;
 (define (grsp-ann-devcl p_b1 p_a2)
   (let ((l2 '())
@@ -3797,6 +3906,10 @@
 ;;   - 0: describe input and output connections.
 ;;   - 1: describe only input connections.
 ;;   - 2: describe only output connections.
+;;
+;; Output:
+;;
+;; - String.
 ;;
 (define (grsp-ann-devnc p_b1 p_l1 p_n1 p_n2)
   (let ((n2 0)
@@ -3910,6 +4023,10 @@
 ;;
 ;; - example3.scm.
 ;;
+;; Output:
+;;
+;; - String.
+;;
 (define (grsp-ann-devnca p_b1 p_b3 p_l1 p_n2)
   (let ((i1 0)
 	(nodes 0)
@@ -3952,6 +4069,10 @@
 ;; Examples:
 ;;
 ;; - example3.scm.
+;;
+;; Output:
+;;
+;; - String.
 ;;
 (define (grsp-ann-stats p_s1 p_l1)
   (let ((size 0)
