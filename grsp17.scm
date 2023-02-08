@@ -57,7 +57,8 @@
 ;;   (Accessed: December 16, 2022).
 ;; - [8] Many-worlds interpretation (2022) Wikipedia. Wikimedia Foundation.
 ;;   Available at: https://en.wikipedia.org/wiki/Many-worlds_interpretation
-;;   (Accessed: January 6, 2023). 
+;;   (Accessed: January 6, 2023).
+;; - [9] https://en.wikipedia.org/wiki/Mathematical_universe_hypothesis
 
 
 (define-module (grsp grsp17)
@@ -91,6 +92,10 @@
 ;;
 ;; - Results are in this case approximate.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [2].
@@ -113,6 +118,10 @@
 ;;
 ;; - p_n1: number of qubits.
 ;; - p_n2: depth.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -137,6 +146,10 @@
 ;;
 ;; - p_a1: sample matrix.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [2].
@@ -160,6 +173,10 @@
 ;;
 ;; - p_a1: row vector (bra).
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 (define (grsp-quit-bra p_a1)
   (let ((res1 0))
 
@@ -182,6 +199,10 @@
 ;;
 ;; - p_a1: col vector (bra).
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 (define (grsp-quit-ket p_a1)
   (let ((res1 0))
 
@@ -202,6 +223,10 @@
 ;; Parameters:
 ;;
 ;; - p_l1: list of ket subsystems.
+;;
+;; Output:
+;;
+;; - numeric.
 ;;
 ;; Sources:
 ;;
@@ -229,6 +254,11 @@
 ;; Parameters:
 ;;
 ;; - p_l1: list of ket subsystems.
+;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [5].

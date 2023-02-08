@@ -96,6 +96,10 @@
 ;;     value 1 (one) in p_m1 iterations.
 ;;   - Elem 3: a list containing the actual elements of the sequence.
 ;;
+;; Output:
+;;
+;; - List.
+;;
 ;; Sources:
 ;;
 ;; - [1][grsp2.34].
