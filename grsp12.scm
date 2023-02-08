@@ -72,6 +72,10 @@
 ;; - p_g1: goal value.
 ;; - p_l1: list of columns of p_a1 on which p_s1 is performed.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 (define (grsp-evo-mod1-ff1 p_s1 p_a1 p_n1 p_g1 p_l1)
   (let ((res1 p_a1)
 	(res2 0)
@@ -133,6 +137,10 @@
 ;; - The structure of the matrix is set to make it compatible with the
 ;;   requirements of other datas structures such as those of grsp8.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;
 (define (grsp-evo-mod1-pop-create p_m1 p_n1)
   (let ((res1 0)
 	(n1 0))
@@ -182,6 +190,10 @@
 ;; - p_l2: list of arguments for p_s1.
 ;; - p_s1: base op (see grsp-evo-mod1-ff1).
 ;; - p_l1: list of columns of p_a1 on which p_s1 is performed.
+;;
+;; Output:
+;;
+;; - Matrix.
 ;;
 (define (grsp-evo-mod1-evolve p_a1 p_m1 p_n1 p_n2 p_g1 p_s2 p_l2 p_ft1 p_s1 p_l1)
   (let ((res1 0)

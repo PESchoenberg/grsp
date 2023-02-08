@@ -62,6 +62,10 @@
 ;;
 ;; - lisp, guile, program, edition, programming
 ;;
+;; Output:
+;;
+;; - String.
+;;
 (define (grsp-scm-head)
   (display "#! /usr/local/bin/guile -s")
   (newline)
@@ -79,6 +83,10 @@
 ;;
 ;; - p_s1: string. Program name. 
 ;; - p_s2: string. Program description.
+;;
+;; Output:
+;;
+;; - String.
 ;;
 (define (grsp-scm-descript p_s1 p_s2)
   (grsp-dline)
@@ -100,6 +108,10 @@
 ;; - p_s1: string. License holder name.
 ;; - p_s2: string. License holder email.
 ;; . p_s3; string. Copyright interval years.
+;;
+;; Output:
+;;
+;; - String.
 ;;
 (define (grsp-scm-copyright p_s1 p_s2 p_s3)
   (display (strings-append (list " Copyright (C) "
@@ -128,6 +140,10 @@
 ;;
 ;; - See the general notes section on top of this file regarding the use
 ;;   of licence texts and information.
+;;
+;; Output:
+;;
+;; - String.
 ;;
 (define (grsp-scm-license-gpl3 p_s1 p_s2 p_s3)
   (grsp-dline)
@@ -162,6 +178,10 @@
 ;; - p_l1: list of the required modules as strings, i.e "(grsp grsp0)" "
 ;;   (grsp grsp1)"...
 ;;
+;; Output:
+;;
+;; - String.
+;;
 (define (grsp-scm-reqmod p_l1)
   (grsp-dtext "Required modules.")
   (display "(use-modules")
@@ -184,6 +204,10 @@
 ;;   "(grsp grsp1)"...
 ;; - p_l2: list of the exported functions as strings, i.e "grsp-reqmod"
 ;;   "grsp-defmod"...
+;;
+;; Output:
+;;
+;; - String.
 ;;
 (define (grsp-scm-defmod p_s1 p_l1 p_l2)  
   (display "(define-module ")
@@ -222,6 +246,10 @@
 ;; Notes:
 ;;
 ;; - See grsp-scm-create-lib.
+;;
+;; Output:
+;;
+;; - File.
 ;;
 (define (grsp-scm-create-prg p_s1 p_s2 p_f1 p_l1 p_l2)
   (let ((port1 (current-output-port))
@@ -265,6 +293,10 @@
 ;; Notes:
 ;;
 ;; - See grsp-scm-create-lib.
+;;
+;; Output:
+;;
+;; - File.
 ;;
 (define (grsp-scm-create-prg-gpl3 p_s1 p_s2 p_s3 p_s4 p_s5 p_l1 p_l2)
   (let ((port1 (current-output-port))
@@ -311,6 +343,10 @@
 ;;
 ;; - See grsp-scm-create-lib.
 ;;
+;; Output:
+;;
+;; - File.
+;;
 (define (grsp-scm-create-lib p_s1 p_s2 p_s6 p_f1 p_l1 p_l2 p_l3)
   (let ((port1 (current-output-port))
 	(port2 (open-output-file p_s1)))
@@ -356,6 +392,10 @@
 ;;
 ;; - See grsp-scm-create-lib.
 ;;
+;; Output:
+;;
+;; - File.
+;;
 (define (grsp-scm-create-lib-gpl3 p_s1 p_s2 p_s3 p_s4 p_s5 p_s6 p_l1 p_l2 p_l3)
   (let ((port1 (current-output-port))
 	(port2 (open-output-file p_s1)))
@@ -388,6 +428,10 @@
 ;; - p_s1: string.
 ;; - p_s2: string.
 ;; - p_s3: string-
+;;
+;; Output:
+;;
+;; - String.
 ;;
 (define (grsp-scm-pbp p_s1 p_s2 p_s3)
   (let ((res1 ""))

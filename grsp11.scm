@@ -27,6 +27,18 @@
 ;;;; General notes:
 ;;
 ;; - Read sources for limitations on function parameters.
+;;
+;; Sources:
+;;
+;; See code of functions used and their respective source files for more
+;; credits and references.
+;;
+;; - [1] The simplest sorting algorithm (you've never heard of) (2022) YouTube.
+;;   YouTube. Available at:
+;;   https://www.youtube.com/watch?v=_W0yUJlscRA (Accessed: February 6, 2023). 
+;; - [2] ArXiv:2110.01111v1 [cs.DS] 3 Oct 2021 (no date). Available at:
+;;   https://arxiv.org/pdf/2110.01111.pdf (Accessed: February 6, 2023). 
+;; - [3] https://en.wikipedia.org/wiki/Double-ended_queue
 
 
 (define-module (grsp grsp11)
@@ -57,7 +69,10 @@
 	    grsp-lal-minmax
 	    grsp-lal-supp
 	    grsp-lal-same-dims
-	    grsp-lal-is-multiset))
+	    grsp-lal-is-multiset
+	    grsp-lal-sorts
+	    grsp-lal-swap
+	    grsp-lal-deque))
 
 
 ;;;; grsp-lal-rel - Replace element in list. Replace element p_j1 of list p_l1
@@ -858,3 +873,149 @@
     
     res1))
 
+
+;;;; grsp-lal-sorts
+;;
+;; Keywords:
+;;
+;; - list, sort
+;;
+;; Parameters:
+;;
+;; - p_s1: string.
+;;
+;;   - "#asc": sort on ascending order.
+;;   - "#des": sort on descending order.
+;;
+;; - p_l1: list, numeric.
+;;
+;; Output:
+;;
+;; - List, numeric.
+;;
+(define (grsp-lal-sorts p_s1 p_l1)
+  (let ((res1 '())
+	(n1 (length p_l1))
+	(ai 0)
+	(aj 0)
+	(as 0)
+	(i1 0)
+	(j1 0))
+
+    (set! res1 p_l1)
+    
+    (while (< i1 n1)
+
+	   (set! j1 0)
+	   (while (< j1 n1)
+
+		  ;; Read elements from list.
+		  (set! aj (list-ref res1 j1))
+		  (set! ai (list-ref res1 i1))
+		  
+		  ;; Swap if required.
+		  (cond ((equal? p_s1 "#asc")
+		  
+			 (cond ((< ai aj)
+				(set! as ai)
+				(list-set! res1 i1 aj)
+				(list-set! res1 j1 as))))
+			
+			((equal? p_s1 "#des")
+
+			 (cond ((> ai aj)
+				(set! as ai)
+				(list-set! res1 i1 aj)
+				(list-set! res1 j1 as)))))
+		  
+		  (set! j1 (in j1)))
+
+	   (set! i1 (in i1)))
+    
+    res1))
+
+
+;;;; grsp-lal-swap - Swaps elements p_n1 and p_n2 of list p_l1.
+;;
+;; Keywords:
+;;
+;; - function, lists, swap. change, move
+;;
+;; Parameters:
+;;
+;; - p_l1: list.
+;; - p_n1; numeric, Element number within p_l1.
+;; - p_n2; numeric, Element number within p_l1.
+;;
+;; Output:
+;;
+;; - List with:
+;;
+;;   - Element p_n1 of list p_l1 in position p_n2.
+;;   - Element p_n2 of list p_l1 in position p_n1.
+;;
+(define (grsp-lal-swap p_l1 p_n1 p_n2)
+  (let ((res1 '())
+	(n3 0))
+
+    (set! res1 p_l1)
+    
+    (set! n3 (list-ref res1 p_n1))
+    (list-set! res1 p_n1 (list-ref res1 p_n2))
+    (list-set! res1 p_n2 n3)
+
+    res1))
+
+
+;;;; grsp-lal-deque - Uses list p-l1 as a double ended queue.
+;; Keywords:
+;;
+;; - function, lists, swap. change, move
+;;
+;; Parameters:
+;;
+;; - p_s1: string. Operation.
+;;
+;;   - "#en". Enqueue.
+;;   - "#de". Dequeue.
+;;
+;; - p_b1:
+;;  
+;;   - #t: beginning of the queue.
+;;   - #f: end of the queue.
+;;
+;; - p_l1: list.
+;; - p_v1: value to enqueue (leave to zero or equivalent void value for #de). 
+;;
+;; Output:
+;;
+;; - List.
+;;
+;; Sources:
+;;
+;; - [3].
+;;
+(define (grsp-lal-deque p_s1 p_b1 p_l1 p_v1)
+  (let ((res1 '())
+	(res2 '())
+	(ln 0)
+	(hn (- (length p_l1) 1)))
+
+    (set! res1 p_l1)
+    (set! res2 (list p_v1))
+    
+    (cond ((equal? p_b1 #t)
+
+	   (cond ((equal? p_s1 "#en")
+		  (set! res1 (append res2 res1)))
+		 ((equal? p_s1 "#de")
+		  (set! res1 (list-tail p_l1 1)))))
+	  
+	  ((equal? p_b1 #f)
+
+	   (cond ((equal? p_s1 "#en")
+		  (set! res1 (append res1 res2)))
+		 ((equal? p_s1 "#de")
+		  (set! res1 (list-head p_l1 (- (length p_l1) 1)))))))
+    
+    res1))

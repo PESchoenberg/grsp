@@ -50,6 +50,10 @@
 ;;
 ;; - p_y1: year.
 ;;
+;; Output:
+;;
+;; - Boolean.
+;;
 (define (grsp-date-is-m29 p_y1)
   (let ((res1 #f)
 	(bis 2020)
@@ -71,6 +75,10 @@
 ;; Parameters:
 ;;
 ;; - p_y1: year.
+;;
+;; Output:
+;;
+;; - Boolean.
 ;;
 (define (grsp-date-is-m31 p_m1)
   (let ((res1 #f))
@@ -96,6 +104,10 @@
 ;;
 ;; - p_m1: month.
 ;; - p_y1: year.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 (define (grsp-date-dl p_m1 p_y1)
   (let ((res1 30))
@@ -159,6 +171,10 @@
 ;;   - The number representing the month.
 ;;   - The year to which the month belongs to.
 ;;   - The number of days of the month.
+;;
+;; Output:
+;;
+;; - List.
 ;;
 (define (grsp-date-eot-calc)
   (let ((res1 '())

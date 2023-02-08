@@ -72,6 +72,10 @@
 ;;
 ;; - p_n1.
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [1][2].
@@ -97,6 +101,10 @@
 ;; - p_b1: b.
 ;; - p_k1: k.
 ;; - p_n1: n.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -126,6 +134,10 @@
 ;; - p_x1: x.
 ;; - p_j1: j.
 ;; - p_a1: matrix with data points.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -163,6 +175,10 @@
 ;;
 ;; - p_x1: x.
 ;; - p_a1: matrix, data points.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;

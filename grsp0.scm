@@ -71,6 +71,8 @@
 ;;   Wikipedia. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/ACM_Computing_Classification_System
 ;;   [Accessed 16 June 2022].
+;; - [9] https://en.wikipedia.org/wiki/List_of_terms_relating_to_algorithms_and_data_structures
+;; - [10] https://www.nist.gov/dads/
 
 
 (define-module (grsp grsp0)

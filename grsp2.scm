@@ -3355,7 +3355,7 @@
 	   (set! n1 (expt p_n1 p_n2))
 	   (set! n2 (expt p_n1 (/ 1 p_n2)))))
 
-    ;; COmpose results.
+    ;; Compose results.
     (set! res1 (list n1 n2))
     
     res1))
