@@ -138,7 +138,10 @@
 ;;
 ;; Output:
 ;;
-;; - A list containing the next month and its applicable year.
+;; - A list containing the next month and its applicable year
+;;
+;;   - Elem 0: month.
+;;   - Elem 1: year.
 ;;
 (define (grsp-date-nextm p_m1 p_y1)
   (let ((res1 '())
@@ -168,9 +171,9 @@
 ;; - A list of three lists corresponding to the present month, the next one and
 ;;   the one following the next. Each one of hese lists contains:
 ;;
-;;   - The number representing the month.
-;;   - The year to which the month belongs to.
-;;   - The number of days of the month.
+;;   - Elem 0: The number representing the month.
+;;   - Elem 1: The year to which the month belongs to.
+;;   - Elem 2: The number of days of the month.
 ;;
 ;; Output:
 ;;
@@ -232,6 +235,10 @@
 ;;
 ;; - A list of three strings with dates for the present and two subsequent
 ;;   months.
+;;
+;;   - Elem 0: first trimestral date.
+;;   - Elem 1: second trimestral date.
+;;   - Elem 2: third trimestral date.
 ;;
 (define (grsp-date-ldm3m)
   (let ((eot '())

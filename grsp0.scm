@@ -71,8 +71,12 @@
 ;;   Wikipedia. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/ACM_Computing_Classification_System
 ;;   [Accessed 16 June 2022].
-;; - [9] https://en.wikipedia.org/wiki/List_of_terms_relating_to_algorithms_and_data_structures
-;; - [10] https://www.nist.gov/dads/
+;; - [9] List of terms relating to algorithms and data structures (2023)
+;;   Wikipedia. Wikimedia Foundation. Available at:
+;;   https://en.wikipedia.org/wiki/List_of_terms_relating_to_algorithms_and_data_structures
+;;   (Accessed: February 8, 2023). 
+;; - [10] Dictionary of algorithms and Data Structures (no date) NIST.
+;;   Available at: https://www.nist.gov/dads/ (Accessed: February 8, 2023). 
 
 
 (define-module (grsp grsp0)
@@ -154,6 +158,10 @@
 ;;
 ;; - example1.scm, example3.scm.
 ;;
+;; Output:
+;; 
+;; - String.
+;;
 (define (pline p_s1 p_l1)
   (let ((s1 ""))
 
@@ -183,6 +191,10 @@
 ;; Examples:
 ;;
 ;; - example1.scm, example3.scm.
+;;
+;; Output:
+;; 
+;; - String.
 ;;
 (define (ptit p_s1 p_l1 p_n1 p_t1)
   (if (<= p_n1 1)
@@ -250,6 +262,10 @@
 ;;
 ;; - example1.scm. 
 ;;
+;; Output:
+;; 
+;; - String.
+;;
 (define (pres p_s1 p_s2)
   (let ((res1 " "))
 
@@ -272,6 +288,10 @@
 ;; Notes:
 ;;
 ;; -  See pres.
+;;
+;; Output:
+;; 
+;; - String.
 ;;
 (define (pres2 p_s1 p_s2)
   (newline)
@@ -600,6 +620,10 @@
 ;;
 ;; - example3.scm.
 ;;
+;; Output:
+;; 
+;; - String.
+;;
 (define (grsp-ld p_s1)
   (newline)
   (display p_s1))
@@ -719,7 +743,7 @@
 ;;
 ;; Output:
 ;;
-;; - Returns data from the user's input as a number.
+;; - Numeric. Returns data from the user's input as a number.
 ;;
 (define (grsp-askn p_s1)
   (let ((res1 0))
@@ -832,9 +856,11 @@
 ;;
 ;; Output:
 ;;
-;; - String "nc2s" (not convertible to string) if the argument cannot be cast
-;;   as a string.
-;; - A string representing the argument, otherwise.
+;; - String.
+;;
+;;   - String "nc2s" (not convertible to string) if the argument cannot be cast
+;;     as a string.
+;;   - A string representing the argument, otherwise.
 ;;
 (define (grsp-bcn2s p_a1)
   (let ((res1 "nc2s")
@@ -871,17 +897,19 @@
 ;;
 ;; Output:
 ;;
-;; - 0: undefined.
-;; - 1: list.
-;; - 2: string.
-;; - 3: array.
-;; - 4: boolean.
-;; - 5: char.
-;; - 6: integer.
-;; - 7: real.
-;; - 8: complex.
-;; - 9: inf.
-;; - 10: nan.
+;; - Numeric.
+;;
+;;   - 0: undefined.
+;;   - 1: list.
+;;   - 2: string.
+;;   - 3: array.
+;;   - 4: boolean.
+;;   - 5: char.
+;;   - 6: integer.
+;;   - 7: real.
+;;   - 8: complex.
+;;   - 9: inf.
+;;   - 10: nan.
 ;;
 ;; Sources:
 ;;
@@ -1864,6 +1892,10 @@
 ;; - p_l1: list of string elements.
 ;; - p_l2: list of string elements.
 ;; - p_s1: string.
+;;
+;; Output::
+;;
+;; - List of strings.
 ;;
 (define (grsp-slists-append p_l1 p_l2 p_s1)
   (let ((res1 '())

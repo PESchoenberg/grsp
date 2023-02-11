@@ -335,8 +335,10 @@
 ;;
 ;; Output:
 ;;
-;; - Returns #t if p_n1 is an integer and equal or greater than p_n2. Returns #f
-;;   otherwise.
+;; - Boolean.
+;;
+;;   - Returns #t if p_n1 is an integer and equal or greater than p_n2.
+;;   - Returns #f otherwise.
 ;;
 (define (grsp-eiget p_n1 p_n2)
   (let ((res1 #f))
@@ -363,7 +365,10 @@
 ;;
 ;; Output: 
 ;;
-;; - Returns #f of p_n is prime, #f otherwise.
+;; - Boolean.
+;;
+;;   - Returns #t of p_n is prime.
+;;   - #f otherwise.
 ;;
 (define (grsp-is-prime p_n1)
   (let ((res1 #t)
@@ -400,7 +405,10 @@
 ;; 
 ;; Output:
 ;;
-;; - Returns 1 if p_n1 is not a natural number. Factorial of p_n1 otherwise.
+;; - Numeric.
+;;
+;;   - Returns 1 if p_n1 is not a natural number.
+;;   - Returns the factorial of p_n1 otherwise.
 ;;
 (define (grsp-fact p_n1)
   (let ((res1 1))
@@ -423,8 +431,10 @@
 ;; 
 ;; Output:
 ;;
-;; - Returns 0 if p_n1 is not a natural number. Summation value of p_n1
-;;   otherwise.
+;; - Numeric.
+;;
+;;   - Returns 0 if p_n1 is not a natural number.
+;;   - Summation value of p_n1 otherwise.
 ;;
 ;; Sources:
 ;;
@@ -517,7 +527,10 @@
 ;; 
 ;; Output:
 ;;
-;; - Returns #t if the condition holds. #f otherwise.
+;; - Boolean.
+;;
+;;   - Returns #t if the condition holds.
+;;   - #f otherwise.
 ;;
 (define (grsp-gtls p_n1 p_n2 p_n3)
   (let ((res #f))
@@ -546,7 +559,10 @@
 ;; 
 ;; Output:
 ;;
-;; - Returns #t if the condition holds. #f otherwise.
+;; - Boolean.
+;;
+;;   - Returns #t if the condition holds.
+;;   - #f otherwise.
 ;;
 (define (grsp-getles p_n1 p_n2 p_n3)
   (let ((res #f))
@@ -707,8 +723,10 @@
 ;;
 ;; Output:
 ;;
-;; - If p_n1 is not a natural number, the function returns 1. Otherwise, it
-;;   returns the Woodall number of p_n1.
+;; - Numeric.
+;;
+;;   - If p_n1 is not a natural number, the function returns 1.
+;;   - Otherwise, it returns the Woodall number of p_n1.
 ;;
 ;; Sources:
 ;;
@@ -735,8 +753,10 @@
 ;;
 ;; Output:
 ;;
-;; - If p_n1 is not a natural number, the function returns 1. Otherwise, it
-;;   returns the Cullen number of p_n1.
+;; - Numeric.
+;;
+;;   - If p_n1 is not a natural number, the function returns 1.
+;;   - Otherwise, it returns the Cullen number of p_n1.
 ;;
 ;; Sources:
 ;;
@@ -768,8 +788,11 @@
 ;;
 ;; Output:
 ;;
-;; - 0 if p_n1 and p_k1 do not fill the requisites to calculate a Proth number.
-;; - The Proth number if both p_n1 and p_k1 satisfy the conditions mentioned.
+;; - Numeric.
+;;
+;;   - 0 if p_n1 and p_k1 do not fill the requisites to calculate a Proth
+;;     number.
+;;   - The Proth number if both p_n1 and p_k1 satisfy the conditions mentioned.
 ;;
 ;; Sources:
 ;;
@@ -803,8 +826,10 @@
 ;;
 ;; Output:
 ;;
-;; - 0 if p_n1 is not a positive integer.
-;; - Mn if p_n1 is a positive integer.
+;; - Numeric.
+;;
+;;   - 0 if p_n1 is not a positive integer.
+;;   - Mn if p_n1 is a positive integer.
 ;;
 ;; Sources:
 ;;
@@ -872,8 +897,10 @@
 ;;
 ;; Output:
 ;;
-;; - If conditions for arguments are met, the result is a Wagstaff number.
-;;   Otherwise the function returns zero.
+;; - Numeric.
+;;
+;;   - If conditions for arguments are met, the result is a Wagstaff number.
+;;   - Otherwise the function returns zero.
 ;;
 ;; Sources:
 ;;
@@ -903,8 +930,10 @@
 ;;
 ;; Output:
 ;;
-;; - If conditions for arguments are met, the result is a Williams number.
-;;   Otherwise the function returns zero.
+;; - Numeric.
+;;
+;;   - If conditions for arguments are met, the result is a Williams number.
+;;   - Otherwise the function returns zero.
 ;;
 ;; Sources:
 ;;
@@ -933,8 +962,10 @@
 ;;
 ;; Output:
 ;;
-;; - If conditions for arguments are met, the result is a Thabit number.
-;;   Otherwise the function returns zero.
+;; - Numeric.
+;;
+;;   - If conditions for arguments are met, the result is a Thabit number.
+;;   - Otherwise the function returns zero.
 ;;
 (define (grsp-thabit-number p_n1)
   (let ((res1 0))
@@ -957,8 +988,10 @@
 ;;
 ;; Output:
 ;;
-;; - If conditions for arguments are met, the result is a Fermat number.
-;;   Otherwise the function returns zero.
+;; - Numeric.
+;;
+;;   - If conditions for arguments are met, the result is a Fermat number.
+;;   - Otherwise the function returns zero.
 ;;
 (define (grsp-fermat-number p_n1)
   (let ((res1 0))
@@ -981,7 +1014,10 @@
 ;;
 ;; Output:
 ;;
-;; - Returns 0 if conditions for p_n1 are not met.
+;; - Numeric.
+;;
+;;   - If conditions are met, returns a Catalan number.
+;;   - Returns 0 if conditions for p_n1 are not met.
 ;;
 ;; Sources:
 ;;
@@ -1009,7 +1045,10 @@
 ;;
 ;; Output:
 ;;
-;; - A Wagstaff prime if p_n1 is prime, zero otherwise.
+;; - Numeric.
+;;
+;;   - A Wagstaff prime if p_n1 is prime.
+;;   - Returns zero otherwise.
 ;;
 ;; Sources:
 ;;
@@ -1039,7 +1078,10 @@
 ;;
 ;; Output:
 ;;
-;; - Zero if conditions for p_n1 and p_k1 are not met. p_n1(th) Bell number. 
+;; - Numeric.
+;;
+;;   - Zero if conditions for p_n1 and p_k1 are not met.
+;;   - Otherwise, returns p_n1(th) Bell number. 
 ;;
 ;; Sources:
 ;;
@@ -1078,7 +1120,9 @@
 ;;
 ;; Output:
 ;;
-;; - x1(n1+1)
+;; - Numeric.
+;;
+;;   - x1(n1+1)
 ;;
 ;; Sources:
 ;;
@@ -1106,7 +1150,9 @@
 ;;
 ;; Output:
 ;;
-;; - x1(n1+1).
+;; - Numeric.
+;;
+;;   - x1(n1+1).
 ;;
 ;; Sources:
 ;;
@@ -1137,7 +1183,9 @@
 ;; 
 ;; Output:
 ;;
-;; - y3.
+;; - Numeric.
+;;
+;;   - y3.
 ;;
 ;; Sources:
 ;;
@@ -1167,7 +1215,9 @@
 ;;
 ;; Output:
 ;;
-;; - A list containing the values for c, s, and r, in that order.
+;; - List, numeric.
+;;
+;;   - A list containing the values for c, s, and r, in that order.
 ;;
 ;; Sources:
 ;;
@@ -1234,9 +1284,11 @@
 ;;
 ;; Output:
 ;;
-;; - p_n1 if it is in [p_nmin,p:nmax].
-;; - p_nmin if p_n1 < p_nmin.
-;; - p_nmax if p_n1 > p_nmax.
+;; - Numeric.
+;;
+;;   - p_n1 if it is in [p_nmin, p:nmax].
+;;   - p_nmin if p_n1 < p_nmin.
+;;   - p_nmax if p_n1 > p_nmax.
 ;;
 (define (grsp-fitin p_n1 p_nmin p_nmax)
   (let ((res1 p_n1))
@@ -1860,14 +1912,14 @@
 ;;
 ;; - p_n1: positive integer.
 ;;
-;; Output:
-;;
-;; - Numeric.
-;;
 ;; Notes:
 ;;
 ;; - This operation might have a significant impact on the performance of your 
 ;;   computer due to its very fast function growth. Use with care.
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;
@@ -2212,9 +2264,11 @@
 ;;
 ;; Output:
 ;;
-;; - As an example, for p_n1 = 4, will return 2,2 regardless of p_s1.
-;; - Or if, for example  p_n1 = 5, will return 3,2 if p_s1 = "#rt" or 2,3 if
-;;   p_s1 = "#tr". 
+;; - Numeric.
+;;
+;;   - As an example, for p_n1 = 4, will return 2,2 regardless of p_s1.
+;;   - Or if, for example  p_n1 = 5, will return 3,2 if p_s1 = "#rt" or 2,3 if
+;;     p_s1 = "#tr". 
 ;;
 (define (grsp-dtr p_s1 p_n1)
   (let ((res1 '())
@@ -2525,8 +2579,10 @@
 ;;
 ;; Output:
 ;;
-;; - If p_n1 > 0, returns -p_n1.
-;; - if p_n1 < 0, returns p_n1.
+;; - Numeric.
+;;
+;;   - If p_n1 > 0, returns -p_n1.
+;;   - if p_n1 < 0, returns p_n1.
 ;;
 (define (grsp-nabs p_n1)
   (let ((res1 0))

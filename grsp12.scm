@@ -101,8 +101,8 @@
     (if (<= i1 hm1)
 	(begin (set! r1 (grsp-matrix-opio p_s1 p_a1 i1))
 	       (array-set! res1 r1 i1 p_n1)
-	       ;; Evaluate fitness as the inverse of absolute "distance" to the goal
-	       ;; (col 3 has fitness).
+	       ;; Evaluate fitness as the inverse of absolute "distance" to the
+	       ;; goal (col 3 has fitness).
 	       (array-set! res1 (abs (/ 1 (- p_g1 (array-ref res1 i1 p_n1)))) i1 3)
 	       (loop (+ i1 1)))))
   

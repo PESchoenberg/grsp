@@ -27,7 +27,8 @@
 ;;;; General notes:
 ;;
 ;; - Read sources for limitations on function parameters.
-;; - Always take into account the odd behavior of numeric sequences before using.
+;; - Always take into account the odd behavior of numeric sequences before
+;;   using.
 ;;
 ;; Sources:
 ;;
@@ -88,17 +89,13 @@
 ;;
 ;; Output:
 ;;
-;; - A list with the following format:
+;; - List.
 ;;
 ;;   - Elem 0: p_n1.
 ;;   - Elem 1: p_m1.
 ;;   - Elem 2: stopping time. Will return NaN if the function does not reach
 ;;     value 1 (one) in p_m1 iterations.
 ;;   - Elem 3: a list containing the actual elements of the sequence.
-;;
-;; Output:
-;;
-;; - List.
 ;;
 ;; Sources:
 ;;
@@ -161,7 +158,7 @@
 ;;
 ;; Output:
 ;;
-;; - A list with the following format:
+;; - List.
 ;;
 ;;   - Elem 0: p_n1.
 ;;   - Elem 1: p_m1.
@@ -240,7 +237,7 @@
 ;;
 ;; Output:
 ;;
-;; - A list with the following format:
+;; - List.
 ;;
 ;;   - Elem 0: p_n1.
 ;;   - Elem 1: p_m1.
@@ -314,7 +311,7 @@
 ;;
 ;; Output:
 ;;
-;; - A list with the following format:
+;; - List.
 ;;
 ;;   - Elem 0: p_m1.
 ;;   - Elem 1: actual result of the summation (e).
@@ -363,7 +360,7 @@
 ;;
 ;; Output:
 ;;
-;; - A list with the following format:
+;; - List.
 ;;
 ;;   - Elem 0: p_m1.
 ;;   - Elem 1: actual result of the summation (Pi).
