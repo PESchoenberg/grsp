@@ -2241,6 +2241,7 @@
 ;; Parameters:
 ;;
 ;; - p_n1:
+;;
 ;;   - k: for parametrization k-t.
 ;;   - alpha: for parametrization a-b.
 ;;

@@ -38,7 +38,9 @@
 ;;   https://www.youtube.com/watch?v=_W0yUJlscRA (Accessed: February 6, 2023). 
 ;; - [2] ArXiv:2110.01111v1 [cs.DS] 3 Oct 2021 (no date). Available at:
 ;;   https://arxiv.org/pdf/2110.01111.pdf (Accessed: February 6, 2023). 
-;; - [3] https://en.wikipedia.org/wiki/Double-ended_queue
+;; - [3] Double-ended queue (2022) Wikipedia. Wikimedia Foundation. Available
+;;   at: https://en.wikipedia.org/wiki/Double-ended_queue
+;;   (Accessed: February 8, 2023). 
 
 
 (define-module (grsp grsp11)
@@ -985,7 +987,8 @@
 ;;   - #f: end of the queue.
 ;;
 ;; - p_l1: list.
-;; - p_v1: value to enqueue (leave to zero or equivalent void value for #de). 
+;; - p_v1: value to enqueue (leave to zero or equivalent void type
+;;   value for #de). 
 ;;
 ;; Output:
 ;;

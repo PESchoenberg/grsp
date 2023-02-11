@@ -1433,6 +1433,10 @@
 ;; - p_x1: number [-1.5, 1.5].
 ;; - p_y1: number [-0.5, 2.5].
 ;;
+;; Output:
+;;
+;; - Numeric.
+;;
 ;; Sources:
 ;;
 ;; - [1].
@@ -1469,6 +1473,10 @@
 ;;
 ;; - p_x1: number [-1.5, 1.5].
 ;; - p_y1: number [-1.5, 1.5].
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;
 ;; Sources:
 ;;

@@ -497,7 +497,7 @@
 ;;
 ;; Output:
 ;;
-;; - p_l1 updated.
+;; - List p_l1 updated.
 ;;
 (define (grsp-ann-net-reconf p_s1 p_l1)
   (let ((res1 '())
@@ -544,7 +544,7 @@
 ;;
 ;; Output:
 ;;
-;; - p_l1 updated.
+;; - List p_l1 updated.
 ;;
 (define (grsp-ann-net-miter-omth p_b3 p_b1 p_s1 p_l1 p_n1 p_n2)
   (let ((res1 '())
@@ -657,8 +657,8 @@
 ;;
 ;; Output:
 ;;
-;; - Returns a new id number, either for nodes, conns, iteration or layer
-;;   number.
+;; - Numeric. Returns a new id number, either for nodes, conns, iteration or
+;;   layer number.
 ;;
 (define (grsp-ann-counter-upd p_a3 p_n1)
   (let ((res1 0))
@@ -786,7 +786,7 @@
 ;;
 ;; Output:
 ;;
-;; - Updated ann in list format.
+;; - List. Updated ann.
 ;;
 (define (grsp-ann-nodes-create p_l1 p_l2 p_l3)
   (let ((res1 '())
@@ -868,7 +868,8 @@
 ;;
 ;; Output:
 ;;
-;; - The ann will be saved to csv files stored in a folder called p_d1.
+;; - Gatabase. The ann will be saved to csv files stored in a folder called
+;;   p_d1.
 ;;
 (define (grsp-ann2dbc p_d1 p_l1)
   (let ((res1 0)
@@ -970,7 +971,7 @@
 ;;
 ;; Output:
 ;;
-;; - List, ann with its component matrices.
+;; - List; ann with its component matrices.
 ;;
 (define (grsp-ann-net-create-ffn p_a1)
   (let ((res1 '())
@@ -3522,7 +3523,7 @@
 ;;
 ;; Output:
 ;;
-;; - A two element list:
+;; - List.
 ;;
 ;;   - Elem 0: matrix of selected edges reaching node p_n1 (TO).
 ;;   - Elem 1: matrix of selected edges going out of node p_n1 (FROM).
@@ -3621,7 +3622,7 @@
 ;;
 ;; Output:
 ;;
-;; - A two element list:
+;; - List.
 ;;
 ;;   - Elem 0: TO node.
 ;;   - Elem 1: FROM node.

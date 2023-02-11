@@ -1814,9 +1814,11 @@
 ;; with shape n x m.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix to be transposed.
 ;;
 ;; Output:
@@ -1824,6 +1826,7 @@
 ;; - Matrix.
 ;;
 ;; Sources:
+;;
 ;; - [1][2][3][4].
 ;;
 (define (grsp-matrix-transpose p_a1)
@@ -1854,9 +1857,11 @@
 ;;;; grsp-matrix-transposer - Transposes p_a1 p_n1 times.
 ;;
 ;; Keywords:
+;;
 ;; - functions, algebra, matrix, matrices, vectors
 ;;
 ;; Parameters:
+;;
 ;; - p_a1: matrix.
 ;; - p_n1: number, [0, 4].
 ;;
@@ -2237,6 +2242,7 @@
 ;; - functions, algebra, matrix, matrices, vectors, hadamard, direct, schur
 ;;
 ;; Parameters:
+;;
 ;; - p_s1: operation described as a string:
 ;;
 ;;   - "#+": sum.
@@ -2775,7 +2781,7 @@
 ;;
 ;; Parameters:
 ;;
-;; p_a1: matrix to be copied.
+;; - p_a1: matrix to be copied.
 ;;
 ;; Examples:
 ;;
@@ -6574,6 +6580,10 @@
 ;;
 ;; - p_lo: lower (lm or ln).
 ;; - p_hi: higher (hm or hn).
+;;
+;; Output:
+;;
+;; - Numeric.
 ;;  
 (define (grsp-matrix-te1 p_lo p_hi)
   (let ((res1 0))
@@ -7095,7 +7105,8 @@
     (set! ln6 (grsp-matrix-esi 3 res6))
     (set! hn6 (grsp-matrix-esi 4 res6))     
 
-    ;; cycle over res1 and combine each row of it with each rown of res2 in res3.
+    ;; cycle over res1 and combine each row of it with each rown of res2 in
+    ;; res3.
     (set! i1 lm1)
     (while (<= i1 hm1)
 
@@ -7659,8 +7670,10 @@
 ;;
 ;; Output:
 ;;
-;; - Returns #t if both matrices have the same number of rows and columns; #f
-;;   otherwise.
+;; - Boolean.
+;;
+;;   - Returns #t if both matrices have the same number of rows and columns.
+;;   - #f otherwise.
 ;;
 (define (grsp-matrix-same-dims p_a1 p_a2)
   (let ((res1 #f))
@@ -8312,7 +8325,7 @@
 ;; 
 ;; Parameters:
 ;;
-;; p_l1: list of matrices.
+;; - p_l1: list of matrices.
 ;;
 ;; Output:
 ;;
@@ -9035,7 +9048,6 @@
 ;; - p_a1: matrix.
 ;; - p_m1: row coordinate.
 ;; - p_n1: col cordinate.
-
 ;;
 ;; Output
 ;;
@@ -9746,7 +9758,7 @@
 ;; Sources:
 ;;
 ;; - [55][56].
-;; ***
+;;
 (define (grsp-eigenval-qr p_s1 p_a1 p_n1)
   (let ((res1 0)
 	(res2 0)
@@ -9803,7 +9815,6 @@
 ;;
 ;; - See grsp-eigenval-qr.
 ;; - TODO: still needs working.
-
 ;;
 ;; Output
 ;;
@@ -9845,7 +9856,6 @@
 	   ;; https://www.youtube.com/watch?v=TQvxWaQnrqI&list=TLPQMTUwMTIwMjOXmOL4FUM0fQ&index=3
 	   ;; forward substitution, linear syst of eq.
 	   ;; https://www.andreinc.net/2021/01/20/writing-your-own-linear-algebra-matrix-library-in-c#solving-linear-systems-of-equations
-
 	   
 	   ;; Place eigenvector in list.
 	   (list-set! res1 i2 res3)
@@ -9933,6 +9943,10 @@
 ;;
 ;; - See grsp-matrix-sradius.
 ;;
+;; Output:
+;;
+;; - Matrix.
+;;  
 ;; Sources:
 ;;
 ;; - [57][59][60].
