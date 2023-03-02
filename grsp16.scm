@@ -324,7 +324,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - lisp, guile, program, edition, programming, scheme
+;; - lisp, guile, edition, programming, scheme, library, libraires
 ;;
 ;; Parameters:
 ;;
@@ -371,7 +371,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - lisp, guile, program, edition, programming, scheme
+;; - lisp, guile, library, edition, programming, scheme
 ;;
 ;; Parameters:
 ;;

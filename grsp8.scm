@@ -80,7 +80,7 @@
 ;;     - Col 9: to layer pos.
 ;;
 ;;   - Elem 2: count. Matrix. Each element of this table is a counter related
-;;     to a specific ann.
+;;     to a specific ann aspect.
 ;;
 ;;     - Col 0: nodes id counter.
 ;;     - Col 1: conns id counter.
@@ -308,11 +308,11 @@
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network as a list data
-;; data structure with basic, empty matrices.
+;; structure with basic, empty matrices as its elements.
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network
+;; - functions, ann, neural network, matrices, matrix, element, list
 ;;
 ;; Parameters:
 ;;
@@ -335,6 +335,13 @@
 ;;     of the ann.
 ;;   - specs: a matrix that contains the structural specifications of an ann.
 ;;   - odtid: a matrix that provides feedback structure from odata to idata.
+;;
+;; - In the case of active networs, these matrices will be filled with non-
+;;   trivial data. In this case, only trivial data will be placed inside those
+;;   matrices. This means that this fouction actually produces the structure
+;;   of a neural network, but not a network per se.
+;; - See grsp-ann-net-create-ffv in order tocreate a non-trivial or empty
+;;   network.
 ;;
 ;; - For more details on thse matrices, see "Format of matrices used in grsp8"
 ;;   above.
@@ -406,6 +413,8 @@
 ;;
 ;; Notes:
 ;;
+;; - This functions creates a network with all its associated values as
+;;   defined by the arguments passed to it.
 ;; - See also grsp-ann-net-specs-ffn, grsp-ann-net-create-ffn and
 ;;   grsp-ann-net-mutate on how these functions operate.
 ;; - Mean and standard deviation for grsp-ann-net-mutate are 0.0 and 0.15
@@ -416,6 +425,9 @@
 ;; - Further configuration of the ann might have to be done after using
 ;;   this function to change parameters such as activation functions per node,
 ;;   weights, etc.
+;; - A network created by this function might be used as si or it could be
+;;   modified later by adding or deleting nodes, connections, etc.
+;; - See grsp-ann-net-create-000 to create a trivial network.
 ;;
 ;; Examples:
 ;;
