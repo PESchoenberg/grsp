@@ -3589,7 +3589,7 @@
 ;;
 ;; Examples:
 ;;
-;; - example5.scm.
+;; - example5.scm, example17.scm.
 ;;
 ;; Output:
 ;;
@@ -3679,19 +3679,6 @@
 	   ;; Compose results for QRMG.
 	   (set! res1 (list Q R)))
 
-	  ((equal? p_s1 "#UH")
-	   ;; https://downloads.hindawi.com/journals/ddns/2015/649423.pdf
-	   ;; https://journals.aps.org/prresearch/pdf/10.1103/PhysRevResearch.4.013144
-	   ;; https://www.maths.manchester.ac.uk/~higham/papers/hisc90.pdf
-	   ;; https://www.cs.ucdavis.edu/~bai/Winter09/nakatsukasabaigygi09.pdf
-
-	   ;; Sitll need to be built.
-	   (set! U (grsp-matrix-cpy A))
-	   (set! H (grsp-matrix-cpy A))
-	   
-	   ;; Compose results for UH.
-	   (set! res1 (list U H)))
-
 	  ((equal? p_s1 "#SVD")
 	   ;; https://web.mit.edu/be.400/www/SVD/Singular_Value_Decomposition.htm
 	   ;; Construct working matrices.
@@ -3706,7 +3693,7 @@
 	   (set! AAtb (grsp-eigenvec AAt AAtv))
 	   (set! AtAb (grsp-eigenvec AtA AtAv))
 
-	   ;; ***i
+	   ;; ***
 	   ;; U, V and S.
 	   (set! U (grsp-eigenvec AAt AAtv))	   
 	   (set! V (grsp-eigenvec AtA AtAv))	   

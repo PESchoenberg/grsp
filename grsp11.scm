@@ -74,7 +74,8 @@
 	    grsp-lal-is-multiset
 	    grsp-lal-sorts
 	    grsp-lal-swap
-	    grsp-lal-deque))
+	    grsp-lal-deque
+	    grsp-lal-ll2l))
 
 
 ;;;; grsp-lal-rel - Replace element in list. Replace element p_j1 of list p_l1
@@ -1022,3 +1023,31 @@
 		  (set! res1 (list-head p_l1 (- (length p_l1) 1)))))))
     
     res1))
+
+
+;;;; grsp-lal-ll2l - Returns a list containing lists p_l1 and p_l2,
+;;
+;; Keywords:
+;;
+;; - lists, growth, duplication, accretion
+;;
+;; Parameters:
+;;
+;; - p_l1: list.
+;; - p_l2: list.
+;;
+;; Output:
+;;
+;; - List containing two elements:
+;;
+;;   - Elem 0: p_l1.
+;;   - Elem 1: p_l2.
+;;
+(define (grsp-lal-ll2l p_l1 p_l2)
+  (let ((res1 '()))
+    
+    ;; Compose results.
+    (set! res1 (list p_l1 p_l2))
+    
+    res1))
+

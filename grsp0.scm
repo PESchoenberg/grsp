@@ -1885,7 +1885,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings
+;; - console, strings, appending, lists
 ;;
 ;; Parameters:
 ;;
@@ -1893,7 +1893,7 @@
 ;; - p_l2: list of string elements.
 ;; - p_s1: string.
 ;;
-;; Output::
+;; Output:
 ;;
 ;; - List of strings.
 ;;
