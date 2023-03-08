@@ -158,7 +158,7 @@
 ;;   (Accessed: December 19, 2022). 
 ;; - [46] Racional Diádico (2022) Wikipedia. Wikimedia Foundation. Available at:
 ;;   https://es.wikipedia.org/wiki/Racional_di%C3%A1dico
-;;   (Accessed: December 19, 2022). 
+;;   (Accessed: December 19, 2022).
 
 
 (define-module (grsp grsp2)
@@ -3415,3 +3415,4 @@
     (set! res1 (list n1 n2))
     
     res1))
+
