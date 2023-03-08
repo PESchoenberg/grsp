@@ -2,7 +2,8 @@
 ;;
 ;; grsp9.scm
 ;;
-;; Test functions and artificial landscapes for single-objective optimization.
+;; Test functions and artificial landscapes for single-objective optimization,
+;; interpolation functions.
 ;;
 ;; =============================================================================
 ;;
@@ -42,6 +43,14 @@
 ;;   [Accessed 9 March 2021].
 ;; - [3] En.wikipedia.org. 2021. List of algorithms. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/List_of_algorithms [Accessed 9 March 2021].
+;; - [4] Algoritmo de Recocido Simulado (2023) Wikipedia. Wikimedia Foundation.
+;;   Available at: https://es.wikipedia.org/wiki/Algoritmo_de_recocido_simulado
+;;   (Accessed: March 6, 2023). 
+;; - [5] Simulated annealing algorithm (no date) Simulated Annealing Algorithm -
+;;   an overview | ScienceDirect Topics. Available at:
+;;   https://www.sciencedirect.com/topics/engineering/simulated-annealing-algorithm
+;;   (Accessed: March 6, 2023).
+;; - [6] https://en.wikipedia.org/wiki/Interpolation
 
 
 (define-module (grsp grsp9)
@@ -88,7 +97,8 @@
 	    grsp-cop-rosenbrock2
 	    grsp-cop-mbird
 	    grsp-cop-mbird-mth
-	    grsp-cop-simionescu))
+	    grsp-cop-simionescu
+	    grsp-ipol-lerp))
 
 
 ;;;; grsp-sop-booth - Booth test, single objective function.
@@ -1637,3 +1647,34 @@
     
     res1))
     
+
+;;;; grsp-ipol-lerp - Linear interpolation. Returns value at point (x, y) given
+;; points (p_x1, p_y1) and (p_x2, p_y2).
+;;
+;; Keywords:
+;;
+;; - linear, simple, interpolatio
+;;
+;; Keywords:
+;;
+;; - p_x1-
+;; - p_y1.
+;; - p_x2.
+;; - p_y2.
+;; - p_x3.
+;;
+;; Output.
+;;
+;; - Numeric, y3 value for new datapint (p_x3, y3)
+;;
+;; Sources:
+;;
+;; - [6].
+;;
+(define (grsp-ipol-lerp p_x1 p_y1 p_x2 p_y2 p_x3)
+  (let ((res1 0))
+
+    (set! res1 (+ p_y1 (* (- p_y2 p_y1)(/ (- p_x3 p_x1) (- p_x2 p_x1)))))
+    
+    res1))
+

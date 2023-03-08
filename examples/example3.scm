@@ -70,6 +70,8 @@
 (define L3 '())
 (define res1 0)
 (define s1 "--------------------------------------------")
+(define s2 "\n xxxxxxxxxxxxxxx \n")
+;;efine s2 (grsp-ldl " xxxxxxxxxxxxxxx "))
 (define mc -1)
 (define opt "? ")
 (define pdf " ")
@@ -138,14 +140,17 @@
 ;;
 (define (example3-dadbp)
   (grsp-ldl (strings-append (list s1 "A)- Configuring ANN.") 1) 2 1)
-  (display "\n Initial state of ann (L1):\n")
+  ;;(grsp-ldl (strings-append (list s1 "A)- Configuring ANN.") 1))
+  (grsp-ldl " Initial state of ann (L1):" 1 1)
   (grsp-lal-dev #t L1)
-  (display "\n xxxxxxxxxxxxxxx \n")
+  (display s2)
   (display L1)
-  (display "\n xxxxxxxxxxxxxxx \n")
+  (display s2)
+  
   ;; Update ann with new datai matrix created from matrix data.
   (set! L1 (grsp-ann-datai-update data L1 0))
-  (display "\n xxxxxxxxxxxxxxx \n")
+  (display s2)
+  
   ;; Show data table.
   (display "\n")
   (display "\n Data matrix data (Will be used to update matrix datai).\n")
@@ -163,7 +168,7 @@
   (display "\n")
 
   ;; Make a copy of the original list L1 so that it will be possible to compare
-  ;; th initial and final states.
+  ;; the initial and final states.
   (set! L2 (list-copy L1)))
 
 
@@ -220,10 +225,12 @@
 ;;;; example3-menu-present - This is a presentation for the program and what it
 ;; intends to do.
 ;;
-;; Arguments:
+;; Parameters:
+;;
 ;; - p_ti: title.
 ;; - p_te: text.
 ;; - p_en: if you want an <ENT> message to appear.
+;;
 ;;  - "s" for yes.
 ;;  - "n" for no.
 ;;
@@ -238,6 +245,7 @@
 ;;;; example3-menu-set - Menu of the set option of the main menu.
 ;;
 ;; Output:
+;;
 ;; - Returns an integer corresponding to the menu option selected.
 ;;
 (define (example3-menu-set)
@@ -255,6 +263,7 @@
 ;;;; example3-menu-main - Main menu of the program.
 ;;
 ;; Output:
+;;
 ;; - Returns an integer corresponding to the menu option selected.
 ;;
 (define (example3-menu-main)

@@ -95,7 +95,7 @@
 (displayl " " S)
 
 (set! V (list-ref L 1))
-(grsp-ldl "Matrix V" 2 1)
+(grsp-ldl "Matrix Vt" 2 1)
 (grsp-matrix-display V)
 
 (grsp-ldl " " 2 1)

@@ -3694,16 +3694,11 @@
 	   (set! AtAb (grsp-eigenvec AtA AtAv))
 
 	   ;; ***
-	   ;; U, V and S.
+	   ;; U, Vt and S.
 	   (set! U (grsp-eigenvec AAt AAtv))	   
-	   (set! V (grsp-eigenvec AtA AtAv))	   
-	   (set! S (grsp-matrix-opsc "#expt" AAtv 0))
-	   
-	   
-	   ;; Extract relevant structures.
-
-
-	   ;; ***
+	   (set! V (grsp-eigenvec AtA AtAv))
+	   ;;(display V)
+	   (set! S (grsp-matrix-opsc "#expt" AAtv 0.5)) ;; 0
 	   (set! Vt (grsp-matrix-transpose V))
 	   	   
 	   ;; Compose results for SVD (matrices U, S, Vt).	   
