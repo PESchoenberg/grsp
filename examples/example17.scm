@@ -61,6 +61,7 @@
 (define A (grsp-matrix-create 0 4 2))
 (define S 0)
 (define V 0)
+(define Vt 0)
 (define U 0)
 (define L '())
 
@@ -88,14 +89,14 @@
 
 (set! U (list-ref L 0))
 (grsp-ldl "Matrix U" 2 1)
-(displayl " " U)
+(grsp-matrix-display U)
 
-(set! S (list-ref L 2))
+(set! S (list-ref L 1))
 (grsp-ldl "Matrix S" 2 1)
-(displayl " " S)
+(grsp-matrix-display S)
 
-(set! V (list-ref L 1))
+(set! Vt (list-ref L 2))
 (grsp-ldl "Matrix Vt" 2 1)
-(grsp-matrix-display V)
+(grsp-matrix-display Vt)
 
 (grsp-ldl " " 2 1)

@@ -3619,8 +3619,10 @@
 	(H 0)
 	(S 0)
 	(V 0)
+	(Ve 0)
 	(Vt 0)
 	(U 0)
+	(Ul 0)
 	(i1 0)
 	(j1 0)
 	(k1 0)
@@ -3693,13 +3695,13 @@
 	   (set! AAtb (grsp-eigenvec AAt AAtv))
 	   (set! AtAb (grsp-eigenvec AtA AtAv))
 
-	   ;; ***
 	   ;; U, Vt and S.
-	   (set! U (grsp-eigenvec AAt AAtv))	   
+	   (set! Ul (grsp-eigenvec AAt AAtv))
+	   (set! U (list-ref Ul 0))
 	   (set! V (grsp-eigenvec AtA AtAv))
-	   ;;(display V)
-	   (set! S (grsp-matrix-opsc "#expt" AAtv 0.5)) ;; 0
-	   (set! Vt (grsp-matrix-transpose V))
+	   (set! S (grsp-matrix-opsc "#expt" AAtv 0.5))
+	   (set! Ve (list-ref V 0))
+	   (set! Vt (grsp-matrix-transpose Ve))
 	   	   
 	   ;; Compose results for SVD (matrices U, S, Vt).	   
 	   (set! res1 (list U S Vt)))

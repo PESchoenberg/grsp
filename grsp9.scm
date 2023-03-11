@@ -50,7 +50,8 @@
 ;;   an overview | ScienceDirect Topics. Available at:
 ;;   https://www.sciencedirect.com/topics/engineering/simulated-annealing-algorithm
 ;;   (Accessed: March 6, 2023).
-;; - [6] https://en.wikipedia.org/wiki/Interpolation
+;; - [6] Interpolation (2023) Wikipedia. Wikimedia Foundation. Available at:
+;;   https://en.wikipedia.org/wiki/Interpolation (Accessed: March 8, 2023). 
 
 
 (define-module (grsp grsp9)
@@ -1653,7 +1654,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - linear, simple, interpolatio
+;; - linear, simple, interpolation
 ;;
 ;; Keywords:
 ;;

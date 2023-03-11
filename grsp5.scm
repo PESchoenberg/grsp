@@ -152,6 +152,7 @@
 ;; - [44] En.wikipedia.org. 2021. Gumbel distribution - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Gumbel_distribution
 ;;   [Accessed 14 October 2021].
+;; - [45] https://en.wikipedia.org/wiki/Principal_component_analysis
 
 
 (define-module (grsp grsp5)
@@ -287,7 +288,8 @@
 	    grsp-gumbel-cdf
 	    grsp-gumbel-mean
 	    grsp-gumbel-variance
-	    grsp-gumbel-entropy))
+	    grsp-gumbel-entropy
+	    grsp-pca))
 
 
 ;;;; grsp-feature-scaling - Scales item with value p_n1 to the interval
@@ -4692,3 +4694,35 @@
     
     res1))
 
+
+;;;; grsp-pca - Principal component analysis.
+;;
+;; Keywords:
+;;
+;; - statistics, probability, dimensionaity, reduction
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix.
+;;
+;; Output:
+;;
+;; - Matrix.
+;;
+;; Sources:
+;;
+;; - [45].
+;;
+(define (grsp-pca p_a1)
+  (let ((res1 0)
+	(U 0)
+	(E 0)
+	(l1 '()))
+
+    
+    (set! l1 (grsp-matrix-decompose "#SVD" p_a1))
+    (set! U (list-ref l1 0))
+    (set! E (list-ref l1 1))
+    (set! res1 (grsp-matrix-opmm "#*" U E))
+    
+    res1))
