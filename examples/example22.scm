@@ -4,9 +4,9 @@
 
 ;; =============================================================================
 ;;
-;; example17.scm
+;; example22.scm
 ;;
-;; A sample of grsp functions. SVD decomposition.
+;; A sample of grsp functions. Principa componetn analisys.
 ;;
 ;; Compilation:
 ;;
@@ -14,7 +14,7 @@
 ;;
 ;; - Enter the following:
 ;;
-;;   guile example17.scm 
+;;   guile example22.scm 
 ;;
 ;; =============================================================================
 ;;
@@ -38,7 +38,7 @@
 
 ;;;; General notes:
 ;;
-;; - See example22.scm.
+;; - See example17.scm.
 ;;
 
 
@@ -64,15 +64,9 @@
 
  
 ;; Vars.
-(define A (grsp-matrix-create "#Ex2SVD" 4 2)) ;; Change this to test another matrix.
-;;(define A (grsp-matrix-create "#Ex1SVD" 4 5))
-(define B 0)
-(define C)
-(define S 0)
-(define V 0)
-(define Vt 0)
-(define U 0)
-(define L '())
+;;(define A (grsp-matrix-create "#Ex2SVD" 4 2)) ;; Change this to test another matrix.
+(define A (grsp-matrix-create "#Ex1SVD" 4 5))
+(define P 0)
 
 
 ;; Main program.
@@ -81,24 +75,8 @@
 ;; Calculate and show.
 (grsp-ldl "Matrix A" 2 1)
 (grsp-matrix-display A)
-
-(set! L (grsp-matrix-decompose "#SVD" A))
-
-(set! U (list-ref L 0))
-(grsp-ldl "Matrix U" 2 1)
-(grsp-matrix-display U)
-
-(set! S (list-ref L 1))
-(grsp-ldl "Matrix S" 2 1)
-(grsp-matrix-display S)
-
-(set! Vt (list-ref L 2))
-(grsp-ldl "Matrix Vt" 2 1)
-(grsp-matrix-display Vt)
-
-(grsp-ldl "Reconstructing natrix A as C" 2 1)
-(set! B (grsp-matrix-opmm "#*" U S))
-(set! C (grsp-matrix-opmm "#*" B Vt))
-(grsp-matrix-display C)
+(grsp-ldl "Score matrix" 2 1)
+(set! P (grsp-pca A))
+(grsp-matrix-display P)
 
 (grsp-ldl " " 2 1)
