@@ -223,19 +223,25 @@
 ;; - [61] En.wikipedia.org. 2022. Rotation matrix - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Rotation_matrix
 ;;   [Accessed 5 October 2022].
-;; - [46] Eigenvector and eigenvalue (no date) Math is Fun Advanced. Available
+;; - [62] Eigenvector and eigenvalue (no date) Math is Fun Advanced. Available
 ;;   at: https://www.mathsisfun.com/algebra/eigenvalue.html
 ;;   (Accessed: January 26, 2023). 
-;; - [47] Ciobanu, A. (2021) Writing your own Linear Algebra Matrix Library in
+;; - [63] Ciobanu, A. (2021) Writing your own Linear Algebra Matrix Library in
 ;;   C, andreinc. Available at:
 ;;   https://www.andreinc.net/2021/01/20/writing-your-own-linear-algebra-matrix-library-in-c#solving-linear-systems-of-equations
 ;;   (Accessed: January 26, 2023). 
-;; - [48] Forward substitution (no date) Algowiki. Available at:
+;; - [64] Forward substitution (no date) Algowiki. Available at:
 ;;   https://algowiki-project.org/en/Forward_substitution
 ;;   (Accessed: January 26, 2023). 
-;; - [49] Backward substitution (no date) Algowiki. Available at:
+;; - [65] Backward substitution (no date) Algowiki. Available at:
 ;;   https://algowiki-project.org/en/Backward_substitution
-;;   (Accessed: January 26, 2023). 
+;;   (Accessed: January 26, 2023).
+;; - [66] Singular Value Decomposition (SVD) tutorial  BE.400 / 7.548 (no date)
+;;   Singular value decomposition (SVD) tutorial. Available at:
+;;   https://web.mit.edu/be.400/www/SVD/Singular_Value_Decomposition.htm
+;;   (Accessed: March 13, 2023). 
+;; - [67] https://en.wikipedia.org/wiki/Singular_value_decomposition
+;; - [68] https://en.wikipedia.org/wiki/Frobenius_inner_product
 
 
 (define-module (grsp grsp3)
@@ -415,7 +421,8 @@
 	    grsp-matrix-mmt
 	    grsp-matrix-mtm
 	    grsp-matrix-fsubst
-	    grsp-matrix-bsubst))
+	    grsp-matrix-bsubst
+	    grsp-matrix-compatibility))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -665,6 +672,8 @@
 ;;   - "#Hilbert": Hilbert matrix.
 ;;   - "#Lehmer": Lehmer matrix.
 ;;   - "#Pascal": Pascal matrix.
+;;   - "#Ex2SVD": 4 x 2 matrix example for SVD, see [66].
+;;   - "#Ex1SVD": 4 X 5 matrix example for SVD, see [67].
 ;;   - "#CH": 0-1 checkerboard pattern matrix.
 ;;   - "#CHR": 0-1 checkerboard pattern matrix, randomized.
 ;;   - "#+IJ": matrix containing the sum of i and j values.
@@ -745,9 +754,13 @@
 			((equal? p_s1 "#Lehmer")			 
 			 (set! s1 0)
 			 (set! n1 m1))			
-			((equal? p_s1 "#Pascal")			 
+			((equal? p_s1 "#Pascal")
 			 (set! s1 0)
-			 (set! n1 m1))			
+			 (set! n1 m1))
+			((equal? p_s1 "#Ex2SVD")
+			 (set! s1 0))
+			((equal? p_s1 "#Ex1SVD")
+			 (set! s1 0))				
 			((equal? p_s1 "#Fibonacci")			 
 			 (set! s1 0)
 			 (set! n1 m1))			
@@ -884,6 +897,21 @@
 			((equal? p_s1 "#Pfsum")
 			 ;; https://en.wikipedia.org/wiki/Prefix_sum
 			 )
+
+			((equal? p_s1 "#Ex2SVD")			 
+			 (set! res1 (grsp-matrix-create 0 4 2))
+			 (array-set! res1 2 0 0)
+			 (array-set! res1 4 0 1)
+			 (array-set! res1 1 1 0)
+			 (array-set! res1 3 1 1))
+
+			((equal? p_s1 "#Ex1SVD")			 
+			 (set! res1 (grsp-matrix-create 0 4 5))
+			 (array-set! res1 1 0 0)
+			 (array-set! res1 2 0 4)
+			 (array-set! res1 3 1 2)			 
+			 (array-set! res1 2 3 1))
+			
 			((equal? p_s1 "#Fibonacci")			 
 			 (set! p0 0)
 			 (set! p1 1)
@@ -2735,6 +2763,7 @@
 ;;
 ;;   - "#.R": dot product (real numbers).
 ;;   - "#.C": dot product (complex numbers).
+;;   - "#*f": Frobenius inner product.
 ;;
 ;; Notes:
 ;;
@@ -2747,7 +2776,7 @@
 ;;
 ;; Sources:
 ;;
-;; - [45][46][47].
+;; - [45][46][47][68].
 ;;
 (define (grsp-matrix-opmsc p_s1 p_a1 p_a2)
   (let ((res1 0)
@@ -2768,8 +2797,12 @@
 	   (set! res1 (grsp-matrix-opio "#+" res2 0)))
 	  ((equal? p_s1 "#.C")
 	   (set! res3 (grsp-matrix-conjugate-transpose p_a2))
-	   (set! res1 (grsp-matrix-opmsc "#.R" res3 p_a1))))
-
+	   (set! res1 (grsp-matrix-opmsc "#.R" res3 p_a1)))    
+	  ((equal? p_s1 "#*f")
+	   (set! res2 (grsp-matrix-conjugate-transpose p_a1))
+	   (set! res3 (grsp-matrix-opmm "#*" res2 p_a2))
+	   (set! res1 (grsp-matrix-opio "#+md" res3 0))))
+	  
     res1))
 
 
@@ -3583,6 +3616,9 @@
 ;;   - "#SVD": SVD decomposition.
 ;;
 ;; - p_a1: matrix to be decomposed.
+;;
+;; Notes:
+;;
 ;; - This function does not perform viability checks on p_a1 for the 
 ;;   required operation; the user or an additional shell function should take 
 ;;   care of that.
@@ -3597,7 +3633,7 @@
 ;;
 ;; Sources:
 ;;
-;; - [6][43][49][50][51].
+;; - [6][43][49][50][51][64][65][66].
 ;;
 (define (grsp-matrix-decompose p_s1 p_a1)
   (let ((res1 '())
@@ -3654,7 +3690,14 @@
 		  ;; Q
 		  (set! j1 (grsp-lm A))
 		  (while (<= j1 (grsp-hm A))
-			 (array-set! Q (/ (array-ref A j1 k1) (array-ref R k1 k1)) j1 k1)
+
+			 ;; ***
+			 ;; To avoid div by zero errors.
+			 (cond ((equal? (equal? (array-ref R k1 k1) 0) #f)
+				(array-set! Q (/ (array-ref A j1 k1) (array-ref R k1 k1)) j1 k1)) ;; B
+			       ((equal? (equal? (array-ref R k1 k1) 0) #t)
+				(array-set! Q 0 j1 k1)))
+			 
 			 (set! j1 (in j1)))
 		  
 		  ;; A
@@ -3696,10 +3739,12 @@
 	   (set! AtAb (grsp-eigenvec AtA AtAv))
 
 	   ;; U, Vt and S.
+	   ;; ***
 	   (set! Ul (grsp-eigenvec AAt AAtv))
 	   (set! U (list-ref Ul 0))
 	   (set! V (grsp-eigenvec AtA AtAv))
-	   (set! S (grsp-matrix-opsc "#expt" AAtv 0.5))
+	   ;;(set! S (grsp-matrix-opsc "#expt" AAtv 0.5))
+	   (set! S (grsp-matrix-opsc "#expt" AAt 0.5))
 	   (set! Ve (list-ref V 0))
 	   (set! Vt (grsp-matrix-transpose Ve))
 	   	   
@@ -10468,7 +10513,7 @@
 ;;
 ;; Sources
 ;;
-;; - [47][48].
+;; - [61][62][63][64][65].
 ;;
 (define (grsp-matrix-fsubst p_a1 p_a2)
   (let ((res1 0)
@@ -10523,7 +10568,7 @@
 ;;
 ;; Sources
 ;;
-;; - [49].
+;; - [61][62][63][64][65].
 ;;
 (define (grsp-matrix-bsubst p_a1 p_a2)
   (let ((res1 0)
@@ -10559,3 +10604,56 @@
 	   
     res1))
 
+
+;;;; grsp-matrix-compatibility - Returns #t if the two matrices are compatible
+;; for operation p_s1, and returns #f otherwise.
+;;
+;; Keywords:
+;;
+;; - matrix, product, sum, compatibility
+;;
+;; Parameters:
+;;
+;; - p_s1: string.
+;;
+;;   - "#+": matrix sum.
+;;   - "#*": matrix multplication (Binet).
+;;   - "#*f" matrix inner product (Frobenius) See [68].
+;;
+;; - p_a1: matrix.
+;; - p_a2: matrix.
+;;
+;; Output:
+;;
+;; - Boolean.
+;;
+;; Sources:
+;;
+;; - [68].
+;;
+(define (grsp-matrix-compatibility p_s1 p_a1 p_a2)
+  (let ((res1 #f)
+	(m1 0)
+	(n1 0)
+	(m2 0)
+	(n2 0))
+
+    (set! m1 (grsp-tm p_a1))
+    (set! n1 (grsp-tn p_a1))
+    (set! m2 (grsp-tm p_a2))
+    (set! n2 (grsp-tn p_a2))
+    
+    (cond ((equal? p_s1 "#+")
+
+	   (cond ((equal? (and (equal? m1 m2) (equal? n1 n2)) #t)
+		  (set! res1 #t))))
+
+	  ((equal? p_s1 "#*f")
+	   (set! res1 (grsp-matrix-compatibility "#+" p_a1 p_a2)))
+	  
+	  ((equal? p_s1 "#*")
+
+	   (cond ((equal? n1 n2)
+		  (set! res1 #t)))))
+		      
+    res1))

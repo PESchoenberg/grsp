@@ -152,7 +152,9 @@
 ;; - [44] En.wikipedia.org. 2021. Gumbel distribution - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Gumbel_distribution
 ;;   [Accessed 14 October 2021].
-;; - [45] https://en.wikipedia.org/wiki/Principal_component_analysis
+;; - [45] Principal component analysis (2023) Wikipedia. Wikimedia Foundation.
+;;   Available at: https://en.wikipedia.org/wiki/Principal_component_analysis
+;;   (Accessed: March 13, 2023). 
 
 
 (define-module (grsp grsp5)
@@ -4707,7 +4709,7 @@
 ;;
 ;; Output:
 ;;
-;; - Matrix.
+;; - Score matrix.
 ;;
 ;; Sources:
 ;;
@@ -4719,7 +4721,6 @@
 	(E 0)
 	(l1 '()))
 
-    
     (set! l1 (grsp-matrix-decompose "#SVD" p_a1))
     (set! U (list-ref l1 0))
     (set! E (list-ref l1 1))
