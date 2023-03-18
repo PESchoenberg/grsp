@@ -240,8 +240,15 @@
 ;;   Singular value decomposition (SVD) tutorial. Available at:
 ;;   https://web.mit.edu/be.400/www/SVD/Singular_Value_Decomposition.htm
 ;;   (Accessed: March 13, 2023). 
-;; - [67] https://en.wikipedia.org/wiki/Singular_value_decomposition
-;; - [68] https://en.wikipedia.org/wiki/Frobenius_inner_product
+;; - [67] Singular value decomposition (2023) Wikipedia. Wikimedia Foundation.
+;;   Available at: https://en.wikipedia.org/wiki/Singular_value_decomposition
+;;   (Accessed: March 16, 2023). 
+;; - [68] Frobenius inner product (2022) Wikipedia. Wikimedia Foundation.
+;;   Available at: https://en.wikipedia.org/wiki/Frobenius_inner_product
+;;   (Accessed: March 16, 2023). 
+;; - [69] Khatri–rao product (2023) Wikipedia. Wikimedia Foundation. Available
+;;   at: https://en.wikipedia.org/wiki/Khatri%E2%80%93Rao_product
+;;   (Accessed: March 17, 2023). 
 
 
 (define-module (grsp grsp3)
@@ -422,7 +429,8 @@
 	    grsp-matrix-mtm
 	    grsp-matrix-fsubst
 	    grsp-matrix-bsubst
-	    grsp-matrix-compatibility))
+	    grsp-matrix-compatibility
+	    grsp-matrix-opmmp))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -1491,12 +1499,23 @@
 ;;   - "#RZZ": Qubit quantum gate. Ising coupling gate, Z, requires also p_z1.
 ;;   - "#Wilson": Wilson matrix.
 ;;   - "#corr": element wise correlation matrix (1 x 6), according to:
+;;
 ;;     - [0,0]: row, element of first matrix.
 ;;     - [0,1]: col, element of first matrix.
 ;;     - [0,2]: value of element, first matrix.
 ;;     - [0,3]: row, element of second matrix.
 ;;     - [0,4]: col, element of second matrix.
 ;;     - [0,5]: value of element, second matrix.
+;;
+;;   - "#part": partition matrix. Used to partition a given matrix in several
+;;     submatrices. Creates a 1 x 4 matrix.
+;;
+;;     - Col0: lower m boundary (rows) in partitioned matrix.
+;;     - Col1: higher m boundary (rows) in partitioned matrix.
+;;     - Col2: lower n boundary (cols) in partitioned matrix.
+;;     - Col3: higher n boundary (cols) in partitioned matrix.
+;;     - Col4: row of submatrix in partition. 
+;;     - Col5: row of submatrix in partition.
 ;;
 ;; - p_z1: complex, matrix scalar multiplier.
 ;;
@@ -1690,6 +1709,8 @@
 	   (array-set! res1 z3 3 3))
 	  ((equal? p_s1 "#corr")
 	   (set! res1 (grsp-matrix-create 0 1 6)))
+	  ((equal? p_s1 "#part")
+	   (set! res1 (grsp-matrix-create 0 1 6)))	  
 	  ((equal? p_s1 "#Wilson")
 	   (set! res1 (grsp-matrix-create 0 4 4))
 	   (set! res1 (grsp-l2mr res1 (list 5 7 6 5) 0 0))
@@ -10656,4 +10677,106 @@
 	   (cond ((equal? n1 n2)
 		  (set! res1 #t)))))
 		      
+    res1))
+
+
+;;;; grsp-matrix-opmmp - Perform operation p_s1 on blocks of matrix p_a1 as
+;; defined in partition matrix p_a2.
+;;
+;; Keywords:
+;;
+;; - matrix, product, sum, compatibility
+;;
+;; Parameters:
+;;
+;; - p_s1: string.
+;;
+;;   - "#*kr": Kathri-Rao product.
+;;
+;; - p_a1: matrix.
+;; - p_a2: partition matrix for p_a1
+;; - p_a3: matrix.
+;; - p_a4; partition matrix for p_a3.
+;;
+;; Notes:
+;;
+;; - See grsp-matrix-create-fix for details concerning partition matrices.
+;; - Partition matrices should have the same number of rows, meaning that
+;;   matrices p_a1 and p_a3 should have the same number of partitions.
+;;
+;; Output
+;;
+;; - Matrix.
+;;
+;; Sources:
+;; 
+;; - [37][69].
+;;
+(define (grsp-matrix-opmmp p_s1 p_a1 p_a2 p_a3 p_a4)
+  (let ((res1 0)
+	(res2 0)
+	(a1 0)
+	(a3 0)	
+	(i1 0)
+	(lma 0)
+	(lna 0)
+	(lml 0)
+	(lnl 0)
+	(lmr 0)
+	(lnr 0)
+	(tm1 0)	
+	(tm2 0)
+	(tm3 0)
+	(tn1 0)
+	(tn3 0)
+	(hm2 0))
+
+    ;; Establish loop limits.
+    (set! tm2 (grsp-tm p_a2))
+    (set! i1 (grsp-lm p_a2))
+    (set! hm2 (grsp-hm p_a2))
+
+    ;; Determine the size of res1 based on the size of a block matrix
+    ;; resulting from a the Kronecker product of p_a1 and p_a3 [37].
+    (set! res1 (grsp-matrix-create 0 (* tm1 tm3) (* tn1 tn3)))
+
+    ;; Main loop.
+    (while (<= i1 hm2)
+
+	   ;; Get actual partition coordinates from p_a2.
+	   (set! lma (array-ref p_a2 4 0))
+	   (set! lna (array-ref p_a2 5 0))	   
+	   
+	   ;; Get current partitions.
+	   (set! a1 (grsp-matrix-subcpy p_a1
+					(array-ref p_a2 i1 0)
+					(array-ref p_a2 i1 1)
+					(array-ref p_a2 i1 2)
+					(array-ref p_a2 i1 3)))
+	   (set! a3 (grsp-matrix-subcpy p_a3
+					(array-ref p_a3 i1 0)
+					(array-ref p_a3 i1 1)
+					(array-ref p_a3 i1 2)
+					(array-ref p_a3 i1 3)))	   
+
+	   ;; Kronecker product of current partitions.
+	   (set! res2 (grsp-matrix-opmm "#(*)" a1 a3))
+	   
+	   ;; Calculate coordinates to place res2 in res1.
+	   (cond ((= lml lma)
+		  (set! lmr lma)
+		  (set! lnr (+ lnr lna)))
+		 ((< lml lma)
+		  (set! lnr 0)
+		  (set! lmr (+ lmr lma))))
+
+ 	   ;; Place partition in results matrix,
+	   (set! res1 (grsp-matrix-subrep res1 res2 lmr lnr))
+
+	   ;; Update last coord.
+	   (set! lml lma)
+	   (set! lnl lna)
+		 
+	   (set! i1 (in i1)))
+    
     res1))

@@ -4,9 +4,9 @@
 
 ;; =============================================================================
 ;;
-;; example22.scm
+;; example23.scm
 ;;
-;; A sample of grsp functions. Principal component analisys.
+;; A sample of grsp functions. Frobenius inner product (real matrices).
 ;;
 ;; Compilation:
 ;;
@@ -14,7 +14,7 @@
 ;;
 ;; - Enter the following:
 ;;
-;;   guile example22.scm 
+;;   guile example23.scm 
 ;;
 ;; =============================================================================
 ;;
@@ -38,8 +38,14 @@
 
 ;;;; General notes:
 ;;
-;; - See example17.scm.
+;; - Read sources for limitations on function parameters.
 ;;
+;; See code of functions used and their respective source files for more
+;; credits and references.
+;;
+;; Sources:
+;;
+;; - [grsp3.68]
 
 
 ;; Required modules.
@@ -64,9 +70,24 @@
 
  
 ;; Vars.
-;;(define A (grsp-matrix-create "#Ex2SVD" 4 2)) ;; Change this to test another matrix.
-(define A (grsp-matrix-create "#Ex1SVD" 4 5))
-(define P 0)
+(define A (grsp-matrix-create 0 2 3))
+(define B (grsp-matrix-create 0 2 3))
+(define res1 0)
+
+;; Fill matrices.
+(array-set! A 2 0 0)
+(array-set! A 0 0 1)
+(array-set! A 6 0 2)
+(array-set! A 1 1 0)
+(array-set! A -1 1 1)
+(array-set! A 2 1 2)
+
+(array-set! B 8 0 0)
+(array-set! B -3 0 1)
+(array-set! B 2 0 2)
+(array-set! B 4 1 0)
+(array-set! B 1 1 1)
+(array-set! B -5 1 2)
 
 
 ;; Main program.
@@ -75,8 +96,12 @@
 ;; Calculate and show.
 (grsp-ldl "Matrix A" 2 1)
 (grsp-matrix-display A)
-(grsp-ldl "Score matrix" 2 1)
-(set! P (grsp-pca A))
-(grsp-matrix-display P)
+
+(grsp-ldl "Matrix B" 2 1)
+(grsp-matrix-display A)
+
+(grsp-ldl "Result" 2 1)
+(set! res1 (grsp-matrix-opmsc "#*f" A B))
+(grsp-ld res1)
 
 (grsp-ldl " " 2 1)

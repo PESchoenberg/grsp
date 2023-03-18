@@ -4,9 +4,9 @@
 
 ;; =============================================================================
 ;;
-;; example22.scm
+;; example25.scm
 ;;
-;; A sample of grsp functions. Principal component analisys.
+;; A sample of grsp functions. Khatri-Rao product.
 ;;
 ;; Compilation:
 ;;
@@ -14,7 +14,7 @@
 ;;
 ;; - Enter the following:
 ;;
-;;   guile example22.scm 
+;;   guile example25.scm 
 ;;
 ;; =============================================================================
 ;;
@@ -38,8 +38,14 @@
 
 ;;;; General notes:
 ;;
-;; - See example17.scm.
+;; - Read sources for limitations on function parameters.
 ;;
+;; See code of functions used and their respective source files for more
+;; credits and references.
+;;
+;; Sources:
+;;
+;; - [grsp3.37][grsp3.69].
 
 
 ;; Required modules.
@@ -64,9 +70,11 @@
 
  
 ;; Vars.
-;;(define A (grsp-matrix-create "#Ex2SVD" 4 2)) ;; Change this to test another matrix.
-(define A (grsp-matrix-create "#Ex1SVD" 4 5))
-(define P 0)
+(define A (grsp-matrix-create "#Ladder" 3 3))
+(define B (grsp-matrix-transpose A))
+(define Am (grsp-matrix-create 0 3 6))
+(define Bm (grsp-matrix-create 0 3 6))
+(define res1 0)
 
 
 ;; Main program.
@@ -75,8 +83,12 @@
 ;; Calculate and show.
 (grsp-ldl "Matrix A" 2 1)
 (grsp-matrix-display A)
-(grsp-ldl "Score matrix" 2 1)
-(set! P (grsp-pca A))
-(grsp-matrix-display P)
+
+(grsp-ldl "Matrix B" 2 1)
+(grsp-matrix-display B)
+
+(grsp-ldl "Result" 2 1)
+(set! res1 (grsp-matrix-opmmp "#*kr" A B Am Bm))
+(grsp-dl res1)
 
 (grsp-ldl " " 2 1)
