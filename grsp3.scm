@@ -430,7 +430,9 @@
 	    grsp-matrix-fsubst
 	    grsp-matrix-bsubst
 	    grsp-matrix-compatibility
-	    grsp-matrix-opmmp))
+	    grsp-matrix-opmmp
+	    grsp-matrix-part-add
+	    grsp-matrix-create-part))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -1508,14 +1510,14 @@
 ;;     - [0,5]: value of element, second matrix.
 ;;
 ;;   - "#part": partition matrix. Used to partition a given matrix in several
-;;     submatrices. Creates a 1 x 4 matrix.
+;;     submatrices. Creates a 1 x 6 matrix (requires p_z1 for mu,ner of rows).
 ;;
 ;;     - Col0: lower m boundary (rows) in partitioned matrix.
 ;;     - Col1: higher m boundary (rows) in partitioned matrix.
 ;;     - Col2: lower n boundary (cols) in partitioned matrix.
 ;;     - Col3: higher n boundary (cols) in partitioned matrix.
 ;;     - Col4: row of submatrix in partition. 
-;;     - Col5: row of submatrix in partition.
+;;     - Col5: col of submatrix in partition.
 ;;
 ;; - p_z1: complex, matrix scalar multiplier.
 ;;
@@ -1710,7 +1712,7 @@
 	  ((equal? p_s1 "#corr")
 	   (set! res1 (grsp-matrix-create 0 1 6)))
 	  ((equal? p_s1 "#part")
-	   (set! res1 (grsp-matrix-create 0 1 6)))	  
+	   (set! res1 (grsp-matrix-create 0 p_z1 6)))	  
 	  ((equal? p_s1 "#Wilson")
 	   (set! res1 (grsp-matrix-create 0 4 4))
 	   (set! res1 (grsp-l2mr res1 (list 5 7 6 5) 0 0))
@@ -10691,6 +10693,7 @@
 ;;
 ;; - p_s1: string.
 ;;
+;;   - "#*ts": Tracy-Singh product.
 ;;   - "#*kr": Kathri-Rao product.
 ;;
 ;; - p_a1: matrix.
@@ -10706,15 +10709,20 @@
 ;;
 ;; Output
 ;;
-;; - Matrix.
+;; - List:
+;;
+;;   - Elem 0: results matrix.
+;;   - Elem 1: partition matrix corresponding to the results matrix.
 ;;
 ;; Sources:
 ;; 
 ;; - [37][69].
 ;;
 (define (grsp-matrix-opmmp p_s1 p_a1 p_a2 p_a3 p_a4)
-  (let ((res1 0)
+  (let ((res1 '())
 	(res2 0)
+	(res3 0)
+	(res4 0)
 	(a1 0)
 	(a3 0)	
 	(i1 0)
@@ -10723,60 +10731,214 @@
 	(lml 0)
 	(lnl 0)
 	(lmr 0)
-	(lnr 0)
-	(tm1 0)	
+	(lnr 0))
+
+    (cond ((equal? p_s1 "#*ts")
+	   
+	   ;; Determine the size of res3 based on the size of a block matrix
+	   ;; resulting from a the Kronecker product of p_a1 and p_a3 [37].
+	   (set! res3 (grsp-matrix-create 0
+					  (* (grsp-tm p_a1) (grsp-tm p_a3))
+					  (* (grsp-tn p_a1) (grsp-tn p_a3))))
+
+	   ;; Determine size and create artition matrix for results.
+	   (set! res4 (grsp-matrix-create-part p_a2 p_a4))
+	   
+	   ;; Main loop.	   
+	   (set! i1 (grsp-lm p_a2))
+	   (while (<= i1 (grsp-hm p_a2))
+
+		  ;; Get actual partition coordinates from p_a2.
+		  (set! lma (array-ref p_a2 i1 4))
+		  (set! lna (array-ref p_a2 i1 5))	   
+		  
+		  ;; Get current partitions.
+		  (set! a1 (grsp-matrix-subcpy p_a1
+					       (array-ref p_a2 i1 0)
+					       (array-ref p_a2 i1 1)
+					       (array-ref p_a2 i1 2)
+					       (array-ref p_a2 i1 3)))
+		  (set! a3 (grsp-matrix-subcpy p_a3
+					       (array-ref p_a4 i1 0)
+					       (array-ref p_a4 i1 1)
+					       (array-ref p_a4 i1 2)
+					       (array-ref p_a4 i1 3)))	   
+
+		  ;; Kronecker product of current partitions.
+		  (set! res2 (grsp-matrix-opmm "#(*)" a1 a3))
+		  
+		  ;; Calculate coordinates to place res2 in res1.
+		  (cond ((equal? (and (= lml lma) (> lma 0)) #t)
+			 (set! lmr lma)
+			 (set! lnr lna))
+			((equal? (and (= lml lma) (= lma 0)) #t)
+			 (set! lmr lma)
+			 (set! lnr (+ lnr lna)))		 
+			((< lml lma)
+			 (set! lnr 0)
+			 (set! lmr (+ lmr lma))))
+
+		  ;; Place partition in results matrix,
+		  (set! res3 (grsp-matrix-subrep res3 res2 lmr lnr))
+
+		  ;; Update partition table of res3.
+		  (set! res4 (grsp-matrix-part-add p_a2 p_a4 res4))
+		  		  			      
+		  ;; Update last coord.
+		  (set! lml lma)
+		  (set! lnl lna)
+		  
+		  (set! i1 (in i1))))
+
+	  ((equal? p_s1 "#*kr")
+	   ;;
+	   ))
+
+    ;; Compose results.
+    (set! res1 (list res3 res4))
+    
+    res1))
+
+
+;; grsp-matrix-part-add - Add row data to partition map a3 derived from the 
+;; operation tables of p_a1 and p_a2.
+;;
+;; Keywords:
+;;
+;; - matrix, product, sum, compatibility
+;;
+;; Parameters:
+;;
+;; - p_a1: partition matrix.
+;; - p_a2: partition matrix.
+;; - p_a3: partition matrix for results.
+;;
+;; Notes:
+;;
+;; - See grsp-matrix-create-fix for details concerning partition matrices.
+;; - Partition matrices should have the same number of rows, meaning that
+;;   matrices p_a1 and p_a3 should have the same number of partitions.
+;; - See also grsp-matrix-opmmp, grsp-matrix-opmm.
+;;
+;; Output
+;;
+;; - Partition matrix resulting from a grsp-matrix-opmmp operation on two
+;;   matrices for which p_a1 and o:a2 are the respective partition maps.
+;;
+;; Sources:
+;; 
+;; - [37][69].
+;;
+(define (grsp-matrix-part-add p_a1 p_a2 p_a3)
+  (let ((res1 0)
+	(tm1 0)
 	(tm2 0)
-	(tm3 0)
 	(tn1 0)
-	(tn3 0)
-	(hm2 0))
+	(tn2 0)
+	(lm1 0)
+	(lm2 0)
+	(ln1 0)
+	(ln2 0)
+	(lm3 0)
+	(ln3 0)
+	(pm 0)
+	(pn 0)
+	(i1 0)
+	(i2 0)
+	(i3 0))
 
-    ;; Establish loop limits.
-    (set! tm2 (grsp-tm p_a2))
-    (set! i1 (grsp-lm p_a2))
-    (set! hm2 (grsp-hm p_a2))
+    ;; Safety copy.
+    (set! res1 (grsp-matrix-cpy p_a3))
+    
+    ;;     - Col0: lower m boundary (rows) in partitioned matrix.
+    ;;     - Col1: higher m boundary (rows) in partitioned matrix.
+    ;;     - Col2: lower n boundary (cols) in partitioned matrix.
+    ;;     - Col3: higher n boundary (cols) in partitioned matrix.
+    ;;     - Col4: row of submatrix in partition. 
+    ;;     - Col5: col of submatrix in partition.
 
-    ;; Determine the size of res1 based on the size of a block matrix
-    ;; resulting from a the Kronecker product of p_a1 and p_a3 [37].
-    (set! res1 (grsp-matrix-create 0 (* tm1 tm3) (* tn1 tn3)))
+    ;; Loop over p_a1.
+    (set! i1 (grsp-lm p_a1))
+    (while (<= i1 (grsp-hm p_a1))
 
-    ;; Main loop.
-    (while (<= i1 hm2)
+	   ;; Get submatrix size.
+	   (set! tm1 (- (array-ref p_a1 i1 1) (array-ref p_a1 i1 0)))
+	   (set! tn1 (- (array-ref p_a1 i1 3) (array-ref p_a1 i1 2)))
 
-	   ;; Get actual partition coordinates from p_a2.
-	   (set! lma (array-ref p_a2 4 0))
-	   (set! lna (array-ref p_a2 5 0))	   
-	   
-	   ;; Get current partitions.
-	   (set! a1 (grsp-matrix-subcpy p_a1
-					(array-ref p_a2 i1 0)
-					(array-ref p_a2 i1 1)
-					(array-ref p_a2 i1 2)
-					(array-ref p_a2 i1 3)))
-	   (set! a3 (grsp-matrix-subcpy p_a3
-					(array-ref p_a3 i1 0)
-					(array-ref p_a3 i1 1)
-					(array-ref p_a3 i1 2)
-					(array-ref p_a3 i1 3)))	   
+	   ;; Reset lm1 and ln1.
+	   (cond ((= i1 (grsp-lm p_a1))
+		  (set! lm1 tm1)
+		  (set! ln1 tn1)))
 
-	   ;; Kronecker product of current partitions.
-	   (set! res2 (grsp-matrix-opmm "#(*)" a1 a3))
-	   
-	   ;; Calculate coordinates to place res2 in res1.
-	   (cond ((= lml lma)
-		  (set! lmr lma)
-		  (set! lnr (+ lnr lna)))
-		 ((< lml lma)
-		  (set! lnr 0)
-		  (set! lmr (+ lmr lma))))
+	   ;; Loop over p_a2.
+	   (set! i2 (grsp-lm p_a2))
+	   (while (<= i2 (grsp-hm p_a2))
 
- 	   ;; Place partition in results matrix,
-	   (set! res1 (grsp-matrix-subrep res1 res2 lmr lnr))
+		  ;; Get submatrix size.
+		  (set! tm2 (- (array-ref p_a2 i2 1) (array-ref p_a2 i2 0)))
+		  (set! tn2 (- (array-ref p_a2 i2 3) (array-ref p_a2 i2 2)))
 
-	   ;; Update last coord.
-	   (set! lml lma)
-	   (set! lnl lna)
-		 
-	   (set! i1 (in i1)))
+		  ;; Reset lm2 and ln2.
+		  (cond ((= i2 (grsp-lm p_a2))
+			 (set! lm2 tm2)
+			 (set! ln2 tn2)))
+		  
+		  ;; Get the size of the resulting partition.
+		  (set! pm (* tm1 tm2))
+		  (set! pn (* tn1 tn2))
+
+		  ;; Calculate position of partition in results matrix.
+		  
+		  ;; Write partition size to results matrix.	  
+		  (array-set! res1 lm1 i3 0)
+		  (array-set! res1 ln1 i3 1)
+		  (array-set! res1 lm2 i3 2)
+		  (array-set! res1 ln2 i3 3)		  
+		  (array-set! res1 pm i3 4)
+		  (array-set! res1 pn i3 5)		  
+		  (set! i3 (in i3))
+		  
+		  (set! i2 (in i2)))
+
+	   (set! i1 (in i1)))    
+    
+    res1))
+
+
+;; grsp-matrix-create-part - Creates a partition table for p_a1 and p_a2.
+;;
+;; Keywords:
+;;
+;; - matrix, product, sum, compatibility
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix.
+;; - p_a2; matrix.
+;;
+;; Notes:
+;;
+;; - Note that this function differs from grsp-matrix-fix with p_s1 "#part"
+;;   in the sense that the latter creates partition matrices of arbitrary rows,
+;;   this one while creates partition matrices for specifi results of
+;;   operations between p_a1 and p_a2 using grsp-matrix-opmmp -
+;; - See also grsp-matrix-opmmp, grsp-matrix-opmm.
+;;
+;; Output
+;;
+;; - Empty (zero filled) partition matrix resulting from a grsp-matrix-opmmp
+;;   operation on two matrices for which p_a1 and o:a2 are the respective
+;;   partition maps.
+;;
+;; Sources:
+;; 
+;; - [37][69].
+;;
+(define (grsp-matrix-create-part p_a1 p_a2)
+  (let ((res1 0))
+
+    ;; Determine size and create partition matrix.
+    (set! res1 (grsp-matrix-create-fix "#part" (* (grsp-tm p_a1)
+						  (grsp-tm p_a2))))
     
     res1))
