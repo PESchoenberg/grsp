@@ -10823,7 +10823,7 @@
 ;; Output
 ;;
 ;; - Partition matrix resulting from a grsp-matrix-opmmp operation on two
-;;   matrices for which p_a1 and o:a2 are the respective partition maps.
+;;   matrices for which p_a1 and p_a2 are the respective partition maps.
 ;;
 ;; Sources:
 ;; 
@@ -10840,9 +10840,15 @@
 	(ln1 0)
 	(ln2 0)
 	(lm3 0)
+	(hm3 0)
 	(ln3 0)
+	(hn3 0)
 	(pm 0)
 	(pn 0)
+	(lms 0)
+	(lns 0)
+	(lma 0)
+	(lna 0)
 	(i1 0)
 	(i2 0)
 	(i3 0))
@@ -10853,7 +10859,7 @@
     ;;     - Col0: lower m boundary (rows) in partitioned matrix.
     ;;     - Col1: higher m boundary (rows) in partitioned matrix.
     ;;     - Col2: lower n boundary (cols) in partitioned matrix.
-    ;;     - Col3: higher n boundary (cols) in partitioned matrix.
+    ;;     - Col3: higher n boundary (cols) in partitioned matrix.    
     ;;     - Col4: row of submatrix in partition. 
     ;;     - Col5: col of submatrix in partition.
 
@@ -10861,24 +10867,27 @@
     (set! i1 (grsp-lm p_a1))
     (while (<= i1 (grsp-hm p_a1))
 
-	   ;; Get submatrix size.
+	   ;; Get submatrix size (lenght in rows and cols).
 	   (set! tm1 (- (array-ref p_a1 i1 1) (array-ref p_a1 i1 0)))
 	   (set! tn1 (- (array-ref p_a1 i1 3) (array-ref p_a1 i1 2)))
-
-	   ;; Reset lm1 and ln1.
+	   
+	   ;; Reset lm1 and ln1 if row is lm in p_a1.
 	   (cond ((= i1 (grsp-lm p_a1))
-		  (set! lm1 tm1)
+		  (set! lm1 (grsp-lm p_a1))
 		  (set! ln1 tn1)))
+	   
+	   ;; Reset col number for submatrix in partition.
+	   (set! lns (grsp-ln res1))
 
 	   ;; Loop over p_a2.
 	   (set! i2 (grsp-lm p_a2))
 	   (while (<= i2 (grsp-hm p_a2))
 
-		  ;; Get submatrix size.
+		  ;; Get submatrix size (rows and cols).
 		  (set! tm2 (- (array-ref p_a2 i2 1) (array-ref p_a2 i2 0)))
 		  (set! tn2 (- (array-ref p_a2 i2 3) (array-ref p_a2 i2 2)))
 
-		  ;; Reset lm2 and ln2.
+		  ;; Reset lm2 and ln2 if row is lm in p_a2.
 		  (cond ((= i2 (grsp-lm p_a2))
 			 (set! lm2 tm2)
 			 (set! ln2 tn2)))
@@ -10888,17 +10897,37 @@
 		  (set! pn (* tn1 tn2))
 
 		  ;; Calculate position of partition in results matrix.
+		  (set! lm3 lma)
+		  (set! hm3 (+ lma tm1))
+		  (set! ln3 lna)
+		  ;;(set! hn3 (+ lna tn1))
+		  (set! hn3 (+ lna tn2))		  
 		  
-		  ;; Write partition size to results matrix.	  
-		  (array-set! res1 lm1 i3 0)
-		  (array-set! res1 ln1 i3 1)
-		  (array-set! res1 lm2 i3 2)
-		  (array-set! res1 ln2 i3 3)		  
-		  (array-set! res1 pm i3 4)
-		  (array-set! res1 pn i3 5)		  
+		  ;; Write partition data to results matrix.	  
+		  (array-set! res1 lm3 i3 0)
+		  (array-set! res1 hm3 i3 1)
+		  (array-set! res1 ln3 i3 2)
+		  (array-set! res1 hn3 i3 3)		  
+		  (array-set! res1 lms i3 4)
+		  (array-set! res1 lns i3 5)
+
+		  ;; Update results matrix row.
 		  (set! i3 (in i3))
+
+		  ;; Update submatrix col of partitions.
+		  (set! lns (in lns))
+
+		  ;; Update partition matrix col pointer.
+		  (set! lna (+ hn3 1)) ;; ***
 		  
 		  (set! i2 (in i2)))
+
+	   ;; Update submatrix row of partitions.
+	   (set! lms (in lms))
+
+	   ;; Update partition matrix pointers.
+	   (set! lma (+ hm3 1)) ;; ***
+	   (set! lna (grsp-lm p_a1))
 
 	   (set! i1 (in i1)))    
     
