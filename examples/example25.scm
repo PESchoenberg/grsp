@@ -6,7 +6,7 @@
 ;;
 ;; example25.scm
 ;;
-;; A sample of grsp functions. Tracy-Singh product.
+;; A sample of grsp functions. Samples of matrix partition functions.
 ;;
 ;; Compilation:
 ;;
@@ -70,36 +70,9 @@
 
  
 ;; Vars.
-(define A (grsp-matrix-create "#Ladder" 3 3))
-(define B (grsp-matrix-transpose A))
-(define Am (grsp-matrix-create-fix "#part" 3))
-(define Bm (grsp-matrix-create-fix "#part" 3))
+(define A (grsp-matrix-create "#Ladder" 7 7))
 (define res1 0)
 
-;; Partition matrix for A (columnar).
-(array-set! Am (grsp-lm A) 0 0)
-(array-set! Am (grsp-hm A) 0 1)
-(array-set! Am (grsp-ln A) 0 2)
-(array-set! Am (grsp-hn A) 0 3)
-(array-set! Am 0 0 4)
-(array-set! Am 0 0 5)
-
-(array-set! Am (grsp-lm A) 1 0)
-(array-set! Am (grsp-hm A) 1 1)
-(array-set! Am (+ (grsp-ln A) 1) 1 2)
-(array-set! Am (grsp-hn A) 1 3)
-(array-set! Am 0 1 4)
-(array-set! Am 1 1 5)
-
-(array-set! Am (grsp-lm A) 2 0)
-(array-set! Am (grsp-hm A) 2 1)
-(array-set! Am (+ (grsp-ln A) 2) 2 2)
-(array-set! Am (grsp-hn A) 2 3)
-(array-set! Am 0 2 4)
-(array-set! Am 2 2 5)
-
-;; Partition matrix for B.
-(set! Bm (grsp-matrix-cpy Am))
 
 ;; Main program.
 (clear)
@@ -108,20 +81,17 @@
 (grsp-ldl "Matrix A" 2 1)
 (grsp-matrix-display A)
 
-(grsp-ldl "Matrix Am" 2 1)
-(grsp-matrix-display Am)
+(grsp-ldl "Results of #row (column partitions)" 2 1)
+(set! res1 (grsp-matrix-part-create "#col" A 0 0))
+(grsp-matrix-display res1)
 
-(grsp-ldl "Matrix B" 2 1)
-(grsp-matrix-display B)
+(grsp-ldl "Results of #col (column partitions)" 2 1)
+(set! res1 (grsp-matrix-part-create "#row" A 0 0))
+(grsp-matrix-display res1)
 
-(grsp-ldl "Matrix Bm" 2 1)
-(grsp-matrix-display Bm)
+(grsp-ldl "Results of #mat 2 2" 2 1)
+(set! res1 (grsp-matrix-part-create "#mat" A 2 2))
+(grsp-matrix-display res1)
 
-(grsp-ldl "Results" 2 1)
-(set! res1 (grsp-matrix-opmmp "#*ts" A Am B Bm))
-(grsp-matrix-display (list-ref res1 0))
-
-(grsp-ldl "Partition" 2 1)
-(grsp-matrix-display (list-ref res1 1))
 
 (grsp-ldl " " 2 1)
