@@ -307,7 +307,10 @@
 	    grsp-ann-devcl
 	    grsp-ann-devnc
 	    grsp-ann-devnca
-	    grsp-ann-stats))
+	    grsp-ann-stats
+	    grsp-ann-display
+	    grsp-ann-updater
+	    grsp-ann-element-number))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network as a list data
@@ -569,7 +572,7 @@
 	(i2 0))
 
     (set! res1 p_l1)
-    
+
     ;; Eval loop.
     (while (< i1 p_n1)
 
@@ -1680,7 +1683,7 @@
     ;; If verbosity is on present node data.
     (cond ((equal? p_b3 #t)
 	   (display "\n +++ 1.1.1 Node row\n")
-	   (display res1)
+	   (grsp-matrix-display res1)
 	   (display "\n")))
 
     ;; If node does not exist and verbosity is on, tell that the node
@@ -1689,7 +1692,7 @@
 	   
 	   (cond ((equal? p_b3 #t)
 		  (display "\n +++ 1.1.2 Node does not exist\n")
-		  (display res1)
+		  (grsp-matrix-display res1)
 		  (display "\n")))))
 
     ;; If node exists, evaluate.
@@ -1698,7 +1701,7 @@
 	   ;; If verbosity is on tell that the node will be evaluated.
 	   (cond ((equal? p_b3 #t)
 		  (display "\n +++ 1.1.3 Evaluating node\n")
-		  (display res1)
+		  (grsp-matrix-display res1)
 		  (display "\n")))
 	   
 	   ;; If the node has incoming connections then we need to process them.
@@ -1706,8 +1709,8 @@
 	   (set! b2 (grsp-matrix-is-empty res2))
 	   
 	   (cond ((equal? p_b3 #t)
-		  (display "\n +++ 1.1.4 Inbound connections\n")
-		  (display res2)
+		  (display "\n +++ 1.1.4 Inbound connections\n")		  
+		  (grsp-matrix-display res2)
 		  (display "\n")))	   
 
 	   (cond ((equal? b2 #f)
@@ -1720,7 +1723,7 @@
 
 	   (cond ((equal? p_b3 #t)
 		  (display "\n +++ 1.1.5 res1 (2)\n")
-		  (display res1)
+		  (grsp-matrix-display res1)
 		  (display "\n")))
 
 	   ;; Prepare data for activation function.
@@ -1751,12 +1754,12 @@
 		  (display "\n +++ 1.1.6.1 Activation function value passed to conn ")
 		  (display p_id)
 		  (display "\n")
-		  (display p_a2)
+		  (grsp-matrix-display p_a2)
 		  (display "\n")))
 	   
 	   (cond ((equal? p_b3 #t)
 		  (display "\n +++ 1.1.7 Outbound connections and resulting values\n")
-		  (display res5)
+		  (grsp-matrix-display res5)
 		  (display "\n"))))
 	   
 	   ;; Reset element 5 of the input nodes going to node p_id to zero once
@@ -1774,7 +1777,7 @@
 
 	  (cond ((equal? p_b3 #t)
 		 (display "\n +++ 1.1.8 Value of p_a2 after eval\n")
-		 (display p_a2)
+		 (grsp-matrix-display p_a2)
 		 (display "\n")))
 
 	   ;; Compose results.
@@ -1957,11 +1960,11 @@
 	   
 	   (cond ((equal? p_b3 #t)
 		  (display "\n 1.2 Nodes, conns and count after node eval\n")
-		  (display nodes)
+		  (grsp-matrix-display nodes)
 		  (display "\n\n")
-		  (display conns)
+		  (grsp-matrix-display conns)
 		  (display "\n\n")
-		  (display count)		  
+		  (grsp-matrix-display count)
 		  (display "\n")))
 	   
 	   (set! i1 (in i1)))
@@ -1974,6 +1977,7 @@
 
     ;; Add newest odata to datao.
     (set! datao (grsp-odata2datao odata datao))
+    ;; ***
     
     ;; Compose results.
     (set! res1 (list nodes conns count idata odata specs odtid datai datao))
@@ -3225,6 +3229,7 @@
   (let ((res1 0)
 	(res2 0)
 	(res3 0)
+	(res4 0)
 	(lm1 0)
 	(hm1 0)
 	(ln1 0)
@@ -3256,9 +3261,20 @@
     (set! i2 lm2)
     (while (<= i1 hm1)
 
-	   ;; Add a row in res2.
-	   (set! res2 (grsp-matrix-subexp res2 1 0))
-	   (set! hm2 (grsp-matrix-esi 2 res2))
+	   ;; See if the last row of res2 (datao) is filled with zeros:
+	   ;;
+	   ;; - If it is, then do not add a new row.
+	   ;; - If it is not filled with zeros, add a new row.
+	   ;;
+	   (set! res4 (grsp-matrix-subcpy res2
+					  (grsp-hm res2)
+					  (grsp-hm res2)
+					  (grsp-ln res2)
+					  (grsp-hn res2)))
+
+	   (cond ((equal? (grsp-matrix-is-filled-with res2 0) #f)
+		  (set! res2 (grsp-matrix-subexp res2 1 0))
+		  (set! hm2 (grsp-matrix-esi 2 res2))))
 
 	   ;; Copy data from res1.
 	   (array-set! res2 (array-ref res1 i1 0) i2 0)
@@ -4127,3 +4143,137 @@
     (set! nconn (grsp-ann-conns-nodes p_l1))
     (grsp-ldl "Nodes per connection " 2 0)
     (grsp-lal-dev #t nconn)))
+
+
+;;;; grsp-ann-display - SHows each matrix of an ANN.
+;;
+;; Keywords:
+;;
+;; - functions, ann, neural, network
+;;
+;; Parameters:
+;;
+;; - p_l1: ann.
+;;
+;; Output:
+;;
+;; - String.
+;;
+(define (grsp-ann-display p_l1)
+  (let ((res1 0))
+
+    ;; Extract matrices and lists.
+    (grsp-ldl "nodes" 2 1)
+    (grsp-matrix-display (grsp-ann-get-matrix "nodes" p_l1))
+
+    (grsp-ldl "cons" 2 1)
+    (grsp-matrix-display (grsp-ann-get-matrix "cons" p_l1))
+
+    (grsp-ldl "count" 2 1)
+    (grsp-matrix-display (grsp-ann-get-matrix "count" p_l1))
+
+    (grsp-ldl "idata" 2 1)
+    (grsp-matrix-display (grsp-ann-get-matrix "idata" p_l1))
+    
+    (grsp-ldl "odata" 2 1)
+    (grsp-matrix-display (grsp-ann-get-matrix "odata" p_l1))    
+   
+    (grsp-ldl "specs" 2 1)
+    (grsp-matrix-display (grsp-ann-get-matrix "specs" p_l1))
+    
+    (grsp-ldl "odtid" 2 1)
+    (grsp-matrix-display (grsp-ann-get-matrix "odtid" p_l1))
+    
+    (grsp-ldl "datai" 2 1)
+    (grsp-matrix-display (grsp-ann-get-matrix "datai" p_l1))
+    
+    (grsp-ldl "datao" 2 1)
+    (grsp-matrix-display (grsp-ann-get-matrix "datao" p_l1))    
+    
+    res1))
+
+       
+;;;; grsp-ann-updater - Update row p_n1 of matrix p_s1 of ann p_l1 with the
+;; values contained in p_l2
+;;
+;; Keywords:
+;;
+;; - functions, ann, neural, network
+;;
+;; Parameters:
+;;
+;; - p_s1: string, matrix name.
+;;
+;;   - nodes.
+;;   - conns.
+;;   - count.
+;;   - idata.
+;;   - odata.
+;;   - specs.
+;;   - datai.
+;;   - datao.
+;;
+;; - p_l1: ann.
+;; - p_n1: row number.
+;; - p_l2: list of values.
+;;
+;; Output:
+;;
+;; - ann (list).
+;;
+(define (grsp-ann-updater p_s1 p_l1 p_m1 p_l2)
+  (let ((res1 '())
+	(a2 0)
+	(a3 0)
+	(i2 0)
+	(j1 0)
+	(j2 0)
+	(m1 0))
+
+    ;; Extract matrices and lists.
+    (set! a2 (grsp-ann-get-matrix p_s1 p_l1))
+    (set! a3 (grsp-l2m p_l1))
+    (set! m1 p_n1)
+    
+    ;; Get list element number that corresponds to the matrix to modify.
+    (set! j1 (grsp-ann-element-number p_s1 p_l1))
+
+    (cond ((> m1 (grsp-hm a2))
+	   ;; If the number of rows of matrix a2 is lesser than n1
+	   ;; then a new row will be added and values from p_l1 will
+	   ;; be placed there.
+	   (set! a2 (grsp-matrix-subexp a2 1 0))
+	   (set! m1 (grsp-hm a2))))
+
+    ;; Update matrix with new values.
+    (set! a2 (grsp-matrix-subrep a2 a3 m1 (grsp-ln a2)))
+    
+    ;; Compose results.
+    (set! res1 (list-set! p_l1 j1 a2))
+    
+    res1))
+
+
+(define (grsp-ann-element-number p_s1 p_l1)
+  (let ((res1 0))
+
+    (cond ((equal? p_s1 "nodes")
+	   (set! res1 0))
+	  ((equal? p_s1 "conns")
+	   (set! res1 1))	  
+	  ((equal? p_s1 "count")
+	   (set! res1 2)) 
+	  ((equal? p_s1 "idata")
+	   (set! res1 3))
+	  ((equal? p_s1 "odata")
+	   (set! res1 4))
+	  ((equal? p_s1 "specs")
+	   (set! res1 5))
+	  ((equal? p_s1 "odtid")
+	   (set! res1 6))
+	  ((equal? p_s1 "datai")
+	   (set! res1 7))
+	  ((equal? p_s1 "datao")
+	   (set! res1 8)))
+    
+    res1))

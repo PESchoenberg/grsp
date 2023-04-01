@@ -4,9 +4,9 @@
 
 ;; =============================================================================
 ;;
-;; example25.scm
+;; example26.scm
 ;;
-;; A sample of grsp functions. Samples of matrix partition functions.
+;; A sample of grsp functions. ANN examples.
 ;;
 ;; Compilation:
 ;;
@@ -14,7 +14,7 @@
 ;;
 ;; - Enter the following:
 ;;
-;;   guile example25.scm 
+;;   guile example26.scm 
 ;;
 ;; =============================================================================
 ;;
@@ -42,10 +42,6 @@
 ;;
 ;; See code of functions used and their respective source files for more
 ;; credits and references.
-;;
-;; Sources:
-;;
-;; - [grsp3.37][grsp3.69].
 
 
 ;; Required modules.
@@ -69,24 +65,40 @@
 	     (grsp grsp17))
 
  
+;;;; Init.
+
 ;; Vars.
-(define A (grsp-matrix-create "#Ladder" 7 7))
+(define L1 (grsp-ann-net-create-ffv #f 0 2 1 2 2 1))
+(define L2 '())
 (define res1 0)
 
+;; Put some sensible data in matrix idata.
+;;(set! nodes (grsp-ann-get-matrix "nodes" L1))
+;;(set! conns (grsp-ann-get-matrix "conns" L1))
+;;(set! count (grsp-ann-get-matrix "count" L1))
+;;(set! idata (grsp-ann-get-matrix "idata" L1))
+;;(set! odata (grsp-ann-get-matrix "odata" L1))
+;;(set! specs (grsp-ann-get-matrix "specs" L1))
+;;(set! odtid (grsp-ann-get-matrix "odtid" L1))
+;;(set! datai (grsp-ann-get-matrix "datai" L1))
+;;(set! datao (grsp-ann-get-matrix "datao" L1))
 
-;; Main program.
+;;;; Main program.
+
+;; We will process a copy of L1 in order to be able to compare both neural
+;; networks after processiong.
 (clear)
+(set! L2 (grsp-ann-net-miter-omth #t #f "#no" L1 1 0))
 
-;; Calculate and show.
-(grsp-ldl "Matrix A" 2 1)
-(grsp-matrix-display A)
-
-(grsp-ldl "Results of #row (column partitions)" 2 1)
-(set! res1 (grsp-matrix-part-create "#col" A))
-(grsp-matrix-display res1)
-
-(grsp-ldl "Results of #col (column partitions)" 2 1)
-(set! res1 (grsp-matrix-part-create "#row" A))
-(grsp-matrix-display res1)
-
+;; Show.
+(grsp-ldl "ANN L1" 2 1)
+(grsp-ann-display L1)
 (grsp-ldl " " 2 1)
+
+(grsp-ldl "ANN L2" 2 1)
+(grsp-ann-display L2)
+(grsp-ldl " " 2 1)
+
+
+
+
