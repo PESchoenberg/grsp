@@ -433,7 +433,7 @@
 	    grsp-matrix-bsubst
 	    grsp-matrix-compatibility
 	    grsp-matrix-part-create
-	    grsp-matrix-part-split))
+	    grsp-matrix-is-filled-with))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -10696,16 +10696,8 @@
 ;;
 ;;   - "#col": columnar.
 ;;   - "#row": row.
-;;   - "#mat": matrix pattern.
 ;;
 ;; - p_a1: matrix.
-;; - p_m1: partitions per total number of rows.
-;; - p_n1: partitions per total number of cols.
-;;
-;; Notes:
-;;
-;; - Parameters p_m1 and p_n1 are used only with "#mat", pass 0 as
-;;   arguments in other cases.
 ;;
 ;; Output:
 ;;
@@ -10715,120 +10707,17 @@
 ;;
 ;; - [70].
 ;;
-(define (grsp-matrix-part-create p_s1 p_a1 p_m1 p_n1)
+(define (grsp-matrix-part-create p_s1 p_a1)
   (let ((res1 0)
-	(pm 0)
-	(pn 0)
-	(am 0)
-	(an 0)
 	(tm 0)
 	(tn 0)
-	(tp 0)
-	(nm 0)
-	(dm 0)
-	(dn 0)
-	(fm 0)
-	(fn 0)
-	(sm 0)
-	(sn 0)
-	(lmp 0)
-	(hmp 0)
-	(lnp 0)
-	(hnp 0)
-	(lpp 0)
-	(hpp 0)
 	(i1 0)
 	(j1 0))
 
     (set! tm (grsp-tm p_a1))
     (set! tn (grsp-tn p_a1))    
     
-    (cond ((equal? p_s1 "#mat")
-	   ;; Calculating the number of rows and cols that will be used for each
-	   ;; partition and the number of cols and rows for any additional
-	   ;; partition in the event that the division does not prudce integer
-	   ;; values, meaning that additional partitions with a different number
-	   ;; of cols or rows will be necessary.
-	   (set! am (modulo tm p_m1))
-	   (set! an (modulo tn p_n1))
-	   (set! pm (/ (- tm am) p_m1))
-	   (set! pn (/ (- tn an) p_n1))
-
-	   ;; Calculate the total number of partitions.
-	   (cond ((equal? (and (equal? am 0) (equal? an 0)) #t)
-		  (set! tp (* p_m1 p_n1)))
-		 ((equal? (and (equal? am 0) (equal? an 0)) #f)
-
-		  ;; Each modulo oeration that is greater than zero indicates
-		  ;; that uneven partitions should be added. Only if both
-		  ;; modulo ops return zero it means that there will be the
-		  ;; same number of equally sized, square partitions.
-
-		  ;; If modulo on m is greater than zero an odd partition will
-		  ;; be added to the bottom.
-		  (cond ((> am 0)
-			 (set! dm 1)))
-
-		  ;; If modulo on m is greater than zero an odd partition will
-		  ;; be added to the right.		  
-		  (cond ((> an 0)
-			 (set! dn 1)))
-		  
-		  ;; If both modulo ops are greater than zero it means that
-		  ;; uneven partitions will be added to the bottom or right
-		  ;; side of the matrix, of varying widht and height. It also
-		  ;; means that an additional partition will have to be defined
-		  ;; at the right and bottom of the matrix.		  
-		  (cond ((equal? (and (> am 0) (> an 0)) #t)
-			 (set! nm 1)))
-
-		  ;; Calculate number of partitions.
-		  (set! tp (+ (* p_m1 p_n1) dn dm nm))))
-	   
-	   ;; Create partition matrix.
-	   (set! res1 (grsp-matrix-create-fix "#part" tp))
-
-	   ;; Cycle and update partition matrix that until now is filled only
-	   ;; with zeros. We need to input the data that corresponds to each
-	   ;; partition.
-
-	   ;;     - Col0: lower m boundary (rows) in partitioned matrix.
-	   ;;     - Col1: higher m boundary (rows) in partitioned matrix.
-	   ;;     - Col2: lower n boundary (cols) in partitioned matrix.
-	   ;;     - Col3: higher n boundary (cols) in partitioned matrix.
-	   ;;     - Col4: row of submatrix in partition. 
-	   ;;     - Col5: col of submatrix in partition.
-
-	   (set! fm (grsp-lm p_a1))
-	   (set! fn (grsp-ln p_a1))
-	   (set! lmp (grsp-lm p_a1))
-	   
-	   (let loop ((i1 (grsp-ln p_a1)))
-	     (if (<= i1 (grsp-hn p_a1))
-		 (begin (set! hmp (+ hmp pm))		   
-
-			;; Pre updates.
-			(cond ((> hmp (grsp-hm p_a1))			      
-			       (set! hmp (grsp-lm p_a1))))
-			
-			;; Place m values.
-			(array-set! res1 lmp i1 0)
-			(array-set! res1 hmp i1 1)
-			
-			;; Place n values.
-			(array-set! res1 lnp i1 2)
-			(array-set! res1 hnp i1 3)
-			
-			;; Place partition row and col values.
-			(array-set! res1 lpp i1 4)
-			(array-set! res1 hpp i1 5)
-
-			;; Post updates.
-			(set! lmp hmp)
-			
-			(loop (+ i1 1))))))
-	  
-	  ((equal? p_s1 "#col")
+    (cond ((equal? p_s1 "#col")
 	   ;; Create partition matrix.
 	   (set! res1 (grsp-matrix-create-fix "#part" tn))
 
@@ -10861,31 +10750,43 @@
     res1))
 
 
-;;;; grsp-matrix-part-create - Splits matrix into partitions or submatrices
-;; as specified in partition matrix p_a2.
+;;;; grsp-matrix-is-filled-with - Returns true if all elements of matrix p_a1
+;; are equal to value p_n1.
 ;;
 ;; Keywords:
 ;;
-;; - matrix, partition
+;; - matrix, values
 ;;
 ;; Parameters:
 ;;
 ;; - p_a1: matrix.
-;; - p_a2: partition matrix of p_a1. 
-;;
-;; Notes:
-;;
-;; - See grsp-matrix-part-create.
+;; - p_n1: value.
 ;;
 ;; Output:
 ;;
-;; - List.
+;; - Boolean.
 ;;
-;; Sources:
-;;
-;; - [70].
-;;
-(define (grsp-matrix-part-split p_a1 p_a2)
-  (let ((res1 '()))
+(define (grsp-matrix-is-filled-with p_a1 p_n1)
+  (let ((res1 #t)
+	(i1 0)
+	(j1 0))
+
+    ;; Cycle rows.
+    (let loop ((i1 (grsp-lm p_a1)))
+      (if (<= i1 (grsp-hm p_a1))
+
+	  ;; Cycle cols.
+	  (let loop ((j1 (grsp-ln p_a1)))
+	    (if (<= j1 (grsp-hn p_a1))
+
+		(cond ((equal? (equal? (array-ref p_a1 i1 j1) p_n1) #f)
+		       (set! res1 #f)
+		       (set! i1 (grsp-hm p_a1))
+		       (set! j1 (grsp-hn p_a1))))
+		       
+		(loop (+ j1 1))))
+      
+      (loop (+ i1 1))))    
 
     res1))
+
