@@ -30,7 +30,8 @@
 ;;
 ;; - A grsp neural network is essentially a list of matrices that constitute a
 ;;   database in itself according to the developments of file grsp3. The format
-;;   and structure of the matrices used in grsp8 is as follows:
+;;   and structure of the matrices used in grsp8 (contained in the list
+;;   data structure just mentioned ) is as follows:
 ;;
 ;;   - Elem 0: nodes. Matrix. Each row of this matrix contains data representing
 ;;     the properties and processes of a specific node of a neural network.
@@ -95,9 +96,9 @@
 ;;     behavior of existing nodes.
 ;;
 ;;     - Col 0: id of the receptive node.
-;;     - Col 1: number that corresponds to the column in the nodes matrix in
-;;       which for the row whose col 0 is equal to the id value passed in col 0
-;;       of the idata matrix the input value will be stored.
+;;     - Col 1: number that corresponds to the column in the nodes or conns
+;;       matrix in which for the row whose col 0 is equal to the id value
+;;       passed in col 0 of the idata matrix the input value will be stored.
 ;;     - Col 2: number.
 ;;     - Col 3: type, the kind of element that will receive this data.
 ;;
@@ -1641,7 +1642,11 @@
 ;;
 ;; Parameters:
 ;;
-;; - p_b3: #t for verbosity.
+;; - p_b3:
+;;
+;;   - #t for verbosity.
+;;   - #f otherwise.
+;;
 ;; - p_id: node id.
 ;; - p_a1: matrix (nodes).
 ;; - p_a2: matrix (conns).
@@ -1673,11 +1678,12 @@
 	(m5 0))
 
     ;; First check if the node exists.
+    ;;
     ;; - If it does exist, then evaluate.
     ;; - If it does not exist then kill any leftover connection (set status
     ;;   to zero).
-    (set! res1 (grsp-matrix-row-select "#=" p_a1 0 p_id))
-  
+    ;;
+    (set! res1 (grsp-matrix-row-select "#=" p_a1 0 p_id))  
     (set! b1 (grsp-matrix-is-empty res1))
 
     ;; If verbosity is on present node data.
@@ -1709,7 +1715,7 @@
 	   (set! b2 (grsp-matrix-is-empty res2))
 	   
 	   (cond ((equal? p_b3 #t)
-		  (display "\n +++ 1.1.4 Inbound connections\n")		  
+		  (display "\n +++ 1.1.4 Inbound connections\n")
 		  (grsp-matrix-display res2)
 		  (display "\n")))	   
 
@@ -1760,15 +1766,15 @@
 	   (cond ((equal? p_b3 #t)
 		  (display "\n +++ 1.1.7 Outbound connections and resulting values\n")
 		  (grsp-matrix-display res5)
-		  (display "\n"))))
+		  (display "\n"))) ;; ***
 	   
 	   ;; Reset element 5 of the input nodes going to node p_id to zero once
 	   ;; the data has been passed to the output connections.
-	   ;;(set! p_a2 (grsp-matrix-row-update "#=" p_a2 4 p_id 5 0))
+	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 4 p_id 5 0)) ;; ***
 	   
 	   ;; Reset element 6 of the corresponding node to zero once the data
 	   ;; has been passed to the output connections.
-	   ;;(set! p_a1 (grsp-matrix-row-update "#=" p_a1 0 p_id 6 0)))
+	   (set! p_a1 (grsp-matrix-row-update "#=" p_a1 0 p_id 6 0))) ;; ***
 	  
 	  ;; Commit.
 	  ((equal? b1 #t) ;; If node does not exist.
@@ -1876,11 +1882,15 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural, network
+;; - functions, ann, neural, network, eval, evaluation, iteration, iterate
 ;;
 ;; Parameters:
 ;;
-;; - p_b3: #t for verbosity.
+;; - p_b3:
+;;
+;;   - #t for verbosity.
+;;   - #f otherwise.
+;;
 ;; - p_l1: ann.
 ;;
 ;; Notes:
@@ -1949,8 +1959,8 @@
 		  (display "\n ++ 1.1 Node number ")
 		  (display id)
 		  (display "\n")))
-
-	   (grsp-ann-node-eval p_b3 id nodes conns count)
+	   ;; ***
+	   ;;(grsp-ann-node-eval p_b3 id nodes conns count)
 	   (set! res3 (grsp-ann-node-eval p_b3 id nodes conns count))
 
 	   ;; Extract matrices and lists.
@@ -4193,7 +4203,7 @@
     res1))
 
        
-;;;; grsp-ann-updater - Update row p_n1 of matrix p_s1 of ann p_l1 with the
+;;;; grsp-ann-updater - Update row p_m1 of matrix p_s1 of ann p_l1 with the
 ;; values contained in p_l2
 ;;
 ;; Keywords:
@@ -4214,7 +4224,7 @@
 ;;   - datao.
 ;;
 ;; - p_l1: ann.
-;; - p_n1: row number.
+;; - p_m1: row number.
 ;; - p_l2: list of values.
 ;;
 ;; Output:
@@ -4223,37 +4233,81 @@
 ;;
 (define (grsp-ann-updater p_s1 p_l1 p_m1 p_l2)
   (let ((res1 '())
-	(a2 0)
-	(a3 0)
-	(i2 0)
 	(j1 0)
-	(j2 0)
-	(m1 0))
-
+	(ln 0)
+	(nodes 0)
+	(conns 0)
+	(count 0)
+	(idata 0)
+	(odata 0)
+	(specs 0)
+	(odtid 0)
+	(datai 0)
+	(datao 0))
+   
     ;; Extract matrices and lists.
-    (set! a2 (grsp-ann-get-matrix p_s1 p_l1))
-    (set! a3 (grsp-l2m p_l1))
-    (set! m1 p_n1)
-    
-    ;; Get list element number that corresponds to the matrix to modify.
-    (set! j1 (grsp-ann-element-number p_s1 p_l1))
+    (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
+    (set! conns (grsp-ann-get-matrix "conns" p_l1))
+    (set! count (grsp-ann-get-matrix "count" p_l1))    
+    (set! idata (grsp-ann-get-matrix "idata" p_l1))
+    (set! odata (grsp-ann-get-matrix "odata" p_l1))
+    (set! specs (grsp-ann-get-matrix "specs" p_l1))
+    (set! odtid (grsp-ann-get-matrix "odtid" p_l1))
+    (set! datai (grsp-ann-get-matrix "datai" p_l1))
+    (set! datao (grsp-ann-get-matrix "datao" p_l1))
 
-    (cond ((> m1 (grsp-hm a2))
-	   ;; If the number of rows of matrix a2 is lesser than n1
-	   ;; then a new row will be added and values from p_l1 will
-	   ;; be placed there.
-	   (set! a2 (grsp-matrix-subexp a2 1 0))
-	   (set! m1 (grsp-hm a2))))
-
-    ;; Update matrix with new values.
-    (set! a2 (grsp-matrix-subrep a2 a3 m1 (grsp-ln a2)))
+    ;; Update row of selected matrix.
+    (cond ((equal? p_s1 "nodes")
+	   (set! nodes (grsp-l2mr nodes p_l2 p_m1 (grsp-ln nodes))))
+	  ((equal? p_s1 "conns")
+	   (set! conns (grsp-l2mr conns p_l2 p_m1 (grsp-ln conns))))
+	  ((equal? p_s1 "count")
+	   (set! count (grsp-l2mr count p_l2 p_m1 (grsp-ln count))))
+	  ((equal? p_s1 "idata")
+	   (set! idata (grsp-l2mr idata p_l2 p_m1 (grsp-ln idata))))
+	  ((equal? p_s1 "odata")
+	   (set! odata (grsp-l2mr odata p_l2 p_m1 (grsp-ln odata))))
+	  ((equal? p_s1 "specs")
+	   (set! specs (grsp-l2mr specs p_l2 p_m1 (grsp-ln specs))))
+	  ((equal? p_s1 "odtid")
+	   (set! odtid (grsp-l2mr odtid p_l2 p_m1 (grsp-ln odtid))))
+	  ((equal? p_s1 "datai")
+	   (set! datai (grsp-l2mr datai p_l2 p_m1 (grsp-ln datai))))
+	  ((equal? p_s1 "datao")
+	   (set! datao (grsp-l2mr datao p_l2 p_m1 (grsp-ln datao)))))
     
     ;; Compose results.
-    (set! res1 (list-set! p_l1 j1 a2))
+    (set! res1 (list nodes conns count idata odata specs odtid datai datao))
     
     res1))
 
 
+;;;; grsp-ann-element-number - Returns the element number of matrix p_s1 in ann
+;; list p_l1.
+;;
+;; Keywords:
+;;
+;; - functions, ann, neural, network
+;;
+;; Parameters:
+;;
+;; - p_s1: string, matrix name.
+;;
+;;   - nodes.
+;;   - conns.
+;;   - count.
+;;   - idata.
+;;   - odata.
+;;   - specs.
+;;   - datai.
+;;   - datao.
+;;
+;; - p_l1: ann.
+;;
+;; Output:
+;;
+;; - Numeric.
+;;
 (define (grsp-ann-element-number p_s1 p_l1)
   (let ((res1 0))
 

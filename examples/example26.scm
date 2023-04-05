@@ -72,16 +72,14 @@
 (define L2 '())
 (define res1 0)
 
-;; Put some sensible data in matrix idata.
-;;(set! nodes (grsp-ann-get-matrix "nodes" L1))
-;;(set! conns (grsp-ann-get-matrix "conns" L1))
-;;(set! count (grsp-ann-get-matrix "count" L1))
-;;(set! idata (grsp-ann-get-matrix "idata" L1))
-;;(set! odata (grsp-ann-get-matrix "odata" L1))
-;;(set! specs (grsp-ann-get-matrix "specs" L1))
-;;(set! odtid (grsp-ann-get-matrix "odtid" L1))
-;;(set! datai (grsp-ann-get-matrix "datai" L1))
-;;(set! datao (grsp-ann-get-matrix "datao" L1))
+;; Configure idata.
+(set! L1 (grsp-ann-updater "idata" L1 0 (list 0 6 1 0 0)))
+(set! L1 (grsp-ann-updater "idata" L1 1 (list 1 6 1 0 0)))
+(set! L1 (grsp-ann-updater "idata" L1 2 (list 0 5 1 0 0)))
+;;(set! L1 (grsp-ann-updater "idata" L1 3 (list 0 9 1 0 0)))
+;;(set! L1 (grsp-ann-updater "idata" L1 2 (list 1 5 1 0 0)))
+;;(set! L1 (grsp-ann-updater "idata" L1 4 (list 1 9 1 0 0)))
+
 
 ;;;; Main program.
 
