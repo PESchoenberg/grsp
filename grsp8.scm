@@ -95,7 +95,7 @@
 ;;     the network that does not go directly to the input nodes but modifies the
 ;;     behavior of existing nodes.
 ;;
-;;     - Col 0: id of the receptive node.
+;;     - Col 0: id of the receptive node or connection.
 ;;     - Col 1: number that corresponds to the column in the nodes or conns
 ;;       matrix in which for the row whose col 0 is equal to the id value
 ;;       passed in col 0 of the idata matrix the input value will be stored.
@@ -311,7 +311,8 @@
 	    grsp-ann-stats
 	    grsp-ann-display
 	    grsp-ann-updater
-	    grsp-ann-element-number))
+	    grsp-ann-element-number
+	    grsp-ann-get-element))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network as a list data
@@ -554,12 +555,12 @@
 ;;
 ;; - p_s1: reconfiguration method. See grsp-ann-net-reconf for details.
 ;; - p_l1: ann (list).
-;; - p_n1: iterations.
-;; - p_n2: mutations desired after each iteration.
+;; - p_n1: desired iterations.
+;; - p_n2: mutation cycles desired after each iteration.
 ;;
 ;; Examples:
 ;;
-;; - example3.scm.
+;; - example3.scm, example26.scm.
 ;;
 ;; Output:
 ;;
@@ -574,7 +575,7 @@
 
     (set! res1 p_l1)
 
-    ;; Eval loop.
+    ;; Eval loop, iterate p_n1 times.
     (while (< i1 p_n1)
 
 	   ;; If verbosity is on, present iteration data.
@@ -586,7 +587,7 @@
 	   ;; Evaluate nodes.
 	   (set! res1 (grsp-ann-nodes-eval p_b3 res1))
 	   
-	   ;; Mutate ann.
+	   ;; Mutate ann if required.
 	   (set! i2 0)
 	   (while (< i2 p_n2)
 
@@ -1877,8 +1878,7 @@
     res1))
 
 
-;;;; grsp-ann-nodes-eval - Performs one iteration of evaluation of all nodes
-;; in ann p_l1.
+;;;; grsp-ann-nodes-eval -Evaluates all nodes in ann p_l1.
 ;;
 ;; Keywords:
 ;;
@@ -1907,11 +1907,7 @@
 (define (grsp-ann-nodes-eval p_b3 p_l1)
   (let ((res1 '())
 	(res2 0)
-	(res3 '())
-	(lm1 0)
-	(hm1 0)
-	(ln1 0)
-	(hn1 0)	
+	(res3 '())	
 	(id 0)
 	(i1 0)
 	(nodes 0)
@@ -1939,20 +1935,14 @@
     
     ;; Sort nodes by layer number.
     (set! nodes (grsp-matrix-row-sort "#asc" nodes 3))
-
-    ;; Extract boundaries of nodes.
-    (set! lm1 (grsp-matrix-esi 1 nodes))
-    (set! hm1 (grsp-matrix-esi 2 nodes))
-    (set! ln1 (grsp-matrix-esi 3 nodes))
-    (set! hn1 (grsp-matrix-esi 4 nodes)) 
     
     ;; Evaluate nodes and their input and output connections.
     (cond ((equal? p_b3 #t)
 	   (display "\n + 1.0 Evaluating nodes: \n")
 	   (display "\n")))
     
-    (set! i1 lm1)
-    (while (<= i1 hm1)
+    (set! i1 (grsp-lm nodes))
+    (while (<= i1 (grsp-hm nodes))
 	   (set! id (array-ref nodes i1 0))
 	   
 	   (cond ((equal? p_b3 #t)
@@ -1960,7 +1950,6 @@
 		  (display id)
 		  (display "\n")))
 	   ;; ***
-	   ;;(grsp-ann-node-eval p_b3 id nodes conns count)
 	   (set! res3 (grsp-ann-node-eval p_b3 id nodes conns count))
 
 	   ;; Extract matrices and lists.
@@ -1982,12 +1971,12 @@
     ;; Update iteration counter.
     (grsp-ann-counter-upd count 2)   
 
+    ;; ***
     ;; Pass output to odata.
     (set! odata (grsp-nodes2odata nodes odata))
 
     ;; Add newest odata to datao.
     (set! datao (grsp-odata2datao odata datao))
-    ;; ***
     
     ;; Compose results.
     (set! res1 (list nodes conns count idata odata specs odtid datai datao))
@@ -2354,6 +2343,10 @@
 ;; Examples:
 ;;
 ;; - example3.scm
+;;
+;; Notes:
+;;
+;; - See grsp-ann-get-element.
 ;;
 ;; Output:
 ;;
@@ -4233,8 +4226,6 @@
 ;;
 (define (grsp-ann-updater p_s1 p_l1 p_m1 p_l2)
   (let ((res1 '())
-	(j1 0)
-	(ln 0)
 	(nodes 0)
 	(conns 0)
 	(count 0)
@@ -4329,5 +4320,31 @@
 	   (set! res1 7))
 	  ((equal? p_s1 "datao")
 	   (set! res1 8)))
+    
+    res1))
+
+;;;; grsp-ann-get-element - Get element number p_n1 from ann p_l1, which is a
+;; list of matrices.
+;; Keywords:
+;;
+;; - functions, ann, neural, network
+;;
+;; Parameters:
+;;
+;; - p_n1: element number.
+;; - p_l1; ann, list.
+;;
+;; Notes:
+;;
+;; - See grsp-ann-get-matrix.
+;;
+;; Output:
+;;
+;; - One of the elements (matrix) of ann p_l1, as specified by p_n1.
+;;
+(define (grsp-ann-get-element p_n1 p_l1)
+  (let ((res1 0))
+
+    (set! res1 (list-ref p_l1 p_n1))
     
     res1))
