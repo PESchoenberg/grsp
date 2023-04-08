@@ -76,9 +76,9 @@
 (set! L1 (grsp-ann-updater "idata" L1 0 (list 0 6 1 0 0)))
 (set! L1 (grsp-ann-updater "idata" L1 1 (list 1 6 1 0 0)))
 (set! L1 (grsp-ann-updater "idata" L1 2 (list 0 5 1 0 0)))
-;;(set! L1 (grsp-ann-updater "idata" L1 3 (list 0 9 1 0 0)))
-;;(set! L1 (grsp-ann-updater "idata" L1 2 (list 1 5 1 0 0)))
-;;(set! L1 (grsp-ann-updater "idata" L1 4 (list 1 9 1 0 0)))
+(set! L1 (grsp-ann-updater "idata" L1 3 (list 0 9 1 0 0)))
+(set! L1 (grsp-ann-updater "idata" L1 4 (list 1 5 1 0 0)))
+(set! L1 (grsp-ann-updater "idata" L1 5 (list 1 9 1 0 0)))
 
 
 ;;;; Main program.
@@ -89,11 +89,11 @@
 (set! L2 (grsp-ann-net-miter-omth #t #f "#no" L1 1 0))
 
 ;; Show.
-(grsp-ldl "ANN L1" 2 1)
+(grsp-ldl "ANN L1 (pre-processing state)" 2 1)
 (grsp-ann-display L1)
 (grsp-ldl " " 2 1)
 
-(grsp-ldl "ANN L2" 2 1)
+(grsp-ldl "ANN L2 (psot-processing state)" 2 1)
 (grsp-ann-display L2)
 (grsp-ldl " " 2 1)
 

@@ -8711,10 +8711,10 @@
 ;;
 ;; Parameters:
 ;;
-;; - p_a1: matrix.
+;; - p_a1: matrix, target.
 ;; - p_l2: list.
-;; - p_m1: row number.
-;; - p_n1: col number.
+;; - p_m1: row number where to place the beginning of the list.
+;; - p_n1: col number where to place the beginning of the list.
 ;;
 ;; Examples:
 ;;
@@ -8727,26 +8727,30 @@
 (define (grsp-l2mr p_a1 p_l2 p_m1 p_n1)
   (let ((res1 0)
 	(res2 0)
-	(tm 0)
-	(tn 0)
-	(pn 0)
+	(m1 0)
+	(n1 0)
 	(pl 0))
 
     (set! res1 (grsp-matrix-cpy p_a1))
     (set! res2 (grsp-l2m p_l2))
 
-    ;; Add rows if p_m1 surpasses the maximum number of rows.
+    ;; If p_m1 surpasses the maximum number of rows, calculate
+    ;; the number of rows that will be added (m1).
     (cond ((> p_m1 (grsp-hm res1))
-	   (set! tm (- p_m1 (grsp-hm res1)))
-	   (set! res1 (grsp-matrix-subexp res1 tm 0))))
+	   (set! m1 (- p_m1 (grsp-hm res1)))))
 
-    ;; Add cols if p_n1 surpasses the maximum number of cols.
+    ;; If p_n1 surpasses the maximum number of cols, calculate
+    ;; the number of cols that will be added (n1).
     (set! pl (+ (- (length p_l2) 1) p_n1))
     
     (cond ((> pl (grsp-hn res1))
-	   (set! tn (- pl (grsp-hn res1)))
-	   (set! res1 (grsp-matrix-subexp res1 0 tn))))
-    
+	   (set! n1 (- pl (grsp-hn res1)))))
+
+    ;; Add the required rows and cols.
+    (set! res1 (grsp-matrix-subexp res1 m1 n1))
+
+    ;; Paste the contents of the list on the required coordinates
+    ;; on the - possibly expanded - target matrix.
     (set! res1 (grsp-matrix-subrep res1 res2 p_m1 p_n1))
     
     res1))
