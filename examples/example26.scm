@@ -80,11 +80,20 @@
 (set! L1 (grsp-ann-updater "idata" L1 4 (list 1 5 1 0 0)))
 (set! L1 (grsp-ann-updater "idata" L1 5 (list 1 9 1 0 0)))
 
+;; We will set some values to 1 in nodes and conns.
+(set! L1 (grsp-ann-idata-bvw "nodes" "#bias" L1 1))
+(set! L1 (grsp-ann-idata-bvw "nodes" "#value" L1 1))
+(set! L1 (grsp-ann-idata-bvw "nodes" "#weight" L1 1))
+(set! L1 (grsp-ann-idata-bvw "conns" "#value" L1 1))
+(set! L1 (grsp-ann-idata-bvw "conns" "#weight" L1 1))
+
+;; Input idata into ann.
+(set! L1 (grsp-ann-idata-update #t L1))
 
 ;;;; Main program.
 
 ;; We will process a copy of L1 in order to be able to compare both neural
-;; networks after processiong.
+;; networks after processing.
 (clear)
 (set! L2 (grsp-ann-net-miter-omth #t #f "#no" L1 1 0))
 
