@@ -6599,25 +6599,55 @@
 ;;
 (define (grsp-matrix-row-update p_s1 p_a1 p_j1 p_n1 p_j2 p_n2)
   (let ((res1 0)
-	(res2 0)
-	(res3 0)	
-	(i2 0))
+	(b1 #f)
+	(i1 0)
+	(n1 0))
 
-    ;; Create matrices. 
+    ;; Safety copy.
     (set! res1 (grsp-matrix-cpy p_a1))
     
-    ;; First select those rows where conditions are met.
-    (set! res2 (grsp-matrix-row-select p_s1 res1 p_j1 p_n1))
+     ;; Cycle and update.
+    (set! i1 (grsp-lm res1))
+    (while (<= i1 (grsp-hm res1))
 
-    ;; Cycle and update.
-    (set! i2 (grsp-lm res2))
-    (while (<= i2 (grsp-hm res2))	   
-	   (array-set! res2 p_n2 i2 p_j2)	   
-	   (set! i2 (+ i2 1)))
-    
-    ;; Compose results.
-    (set! res3 (grsp-matrix-cpy res2))
-    (set! res1 (grsp-matrix-commit res1 res3 p_j1))
+	   (set! n1 (array-ref res1 i1 p_j1))
+	   
+	   (cond ((equal? p_s1 "#<")
+
+		  (cond ((< n1 p_n1)
+			 (set! b1 #t))))
+		  
+		 ((equal? p_s1 "#>")
+
+		  (cond ((> n1 p_n1)
+			 (set! b1 #t))))
+		  
+		 ((equal? p_s1 "#<=")
+
+		  (cond ((<= n1 p_n1)
+			 (set! b1 #t))))
+		  
+		 ((equal? p_s1 "#>=")
+
+		  (cond ((>= n1 p_n1)
+			 (set! b1 #t))))		  
+
+		 ((equal? p_s1 "#=")
+
+		  (cond ((= n1 p_n1)
+			 (set! b1 #t))))
+
+		 ((equal? p_s1 "#!=")
+
+		  (cond ((equal? (= n1 p_n1) #f)
+			 (set! b1 #t)))))		 
+
+	   ;; Update element.
+	   (cond ((equal? b1 #t)
+		  (set! b1 #f)
+		  (array-set! res1 p_n2 i1 p_j2)))
+	   
+	   (set! i1 (in i1)))
     
     res1))
 
