@@ -433,7 +433,9 @@
 	    grsp-matrix-bsubst
 	    grsp-matrix-compatibility
 	    grsp-matrix-part-create
-	    grsp-matrix-is-filled-with))
+	    grsp-matrix-is-filled-with
+	    grsp-matrix-row-selectrn
+	    grsp-matrix-col-selectcn))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -10841,3 +10843,48 @@
 
     res1))
 
+
+;;;; grsp-matrix-row-selectrn - Selects row p_m1 from matrix p_a1.
+;;
+;; Keywords:
+;;
+;; - matrix, selection, row
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix.
+;; - p_m1: row number.
+;;
+;; Output:
+;;
+;; - Matrix (row vector).
+;;
+(define (grsp-matrix-row-selectrn p_a1 p_m1)
+  (let ((res1 0))
+
+    (set! res1 (grsp-matrix-subcpy p_a1 p_m1 p_m1 (grsp-ln p_a1) (grsp-hn p_a1)))
+    
+    res1))
+
+
+;;;; grsp-matrix-row-selectcn - Selects col p_n1 from matrix p_a1.
+;;
+;; Keywords:
+;;
+;; - matrix, selection, col
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix.
+;; - p_m1: col number.
+;;
+;; Output:
+;;
+;; - Matrix (col vector).
+;;
+(define (grsp-matrix-col-selectcn p_a1 p_n1)
+  (let ((res1 0))
+
+    (set! res1 (grsp-matrix-subcpy p_a1 (grsp-lm p_a1) (grsp-hm p_a1) p_n1 p_n1))
+    
+    res1))
