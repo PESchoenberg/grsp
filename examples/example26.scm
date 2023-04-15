@@ -87,22 +87,19 @@
 (set! L1 (grsp-ann-idata-bvw "conns" "#value" L1 1))
 (set! L1 (grsp-ann-idata-bvw "conns" "#weight" L1 1))
 
-;; Input idata into ann.
-(set! L1 (grsp-ann-idata-update #t L1))
-
 ;;;; Main program.
 
 ;; We will process a copy of L1 in order to be able to compare both neural
 ;; networks after processing.
 (clear)
-(set! L2 (grsp-ann-net-miter-omth #t #f "#no" L1 1 0))
+(set! L2 (grsp-ann-net-miter-omth #t #t #t #f "#no" L1 1 0))
 
 ;; Show.
 (grsp-ldl "ANN L1 (pre-processing state)" 2 1)
 (grsp-ann-display L1)
 (grsp-ldl " " 2 1)
 
-(grsp-ldl "ANN L2 (psot-processing state)" 2 1)
+(grsp-ldl "ANN L2 (post-processing state)" 2 1)
 (grsp-ann-display L2)
 (grsp-ldl " " 2 1)
 

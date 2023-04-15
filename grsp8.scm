@@ -551,7 +551,9 @@
 ;;
 ;; Parameters:
 ;;
-;; - p_b3: #t for verbosity.
+;; - p_b3: #t for verbosity (iterator level).
+;; - p_b2: #t for verbosity (nodes eval level).
+;; - p_b4: #t for verbosity (node eval level).
 ;; - p_b1:
 ;;
 ;;   - #t: use mutithreading.
@@ -570,12 +572,13 @@
 ;;
 ;; - List p_l1 updated.
 ;;
-(define (grsp-ann-net-miter-omth p_b3 p_b1 p_s1 p_l1 p_n1 p_n2)
+(define (grsp-ann-net-miter-omth p_b3 p_b2 p_b4 p_b1 p_s1 p_l1 p_n1 p_n2)
   (let ((res1 '())
 	(b1 #f)
 	(idata 0)
 	(s1 "\n ------------------------------------------ Iteration number: ")
 	(s2 "\n Mutation iteration ")
+	(s3 "\n Idata status on iteration (before loading into ann): ")
 	(i1 0)
 	(i2 0))
 
@@ -590,17 +593,6 @@
 		  (display i1)
 		  (display "\n")))
 
-	   ;; Pass idata info. This means that new idata rows might be added to
-	   ;; the said matrix and eventually passed to the neural network on
-	   ;; each new iteration.
-	   (set! idata (grsp-ann-get-matrix "idata" res1))
-	   (set! b1 (grsp-matrix-is-empty idata))
-	   (cond ((equal? b1 #f)
-		  (set! res1 (grsp-ann-idata-update #t res1))))
-	   
-	   ;; Evaluate nodes.
-	   (set! res1 (grsp-ann-nodes-eval p_b3 res1))
-	   
 	   ;; Mutate ann if required.
 	   (set! i2 0)
 	   (while (< i2 p_n2)
@@ -613,9 +605,29 @@
 		  
 		  (set! res1 (grsp-ann-net-nmutate-omth p_b1 res1))
 		  (set! i2 (in i2)))
+	   
+	   ;; Pass idata info. This means that new idata rows might be added to
+	   ;; the said matrix and eventually passed to the neural network on
+	   ;; each new iteration.
+	   (set! idata (grsp-ann-get-matrix "idata" res1))
 
+	   ;; If verbosity is on, present iteration data.
+	   (cond ((equal? p_b3 #t)
+		  (display s3)
+		  (display "\n\n")
+		  (grsp-matrix-display idata)
+		  (display "\n")))
+	   
+	   (set! b1 (grsp-matrix-is-empty idata))
+	   (cond ((equal? b1 #f)
+		  (set! res1 (grsp-ann-idata-update #t res1))))
+	   
+	   ;; Evaluate nodes.
+	   (set! res1 (grsp-ann-nodes-eval p_b2 p_b4 res1))
+	   
 	   ;; Reconfigure ann.
-	   (set! res1 (grsp-ann-net-reconf p_s1 res1))	   
+	   (set! res1 (grsp-ann-net-reconf p_s1 res1))
+	   
 	   (set! i1 (in i1)))
 
     res1))
@@ -1136,7 +1148,7 @@
 		   (set! i2 (in i2)))
 	   
 	   (set! i1 (in i1)))
-
+    ;; ***
     ;; Purge nodes table; this is necessary since on creation a single row is
     ;; added with all elements set on zero. Normally this would not mean trouble
     ;; and such tables can be purged later, but in this case we need to do so
@@ -1151,9 +1163,9 @@
     (while (equal? b1 #t)
 
 	   (set! y1 (array-ref res4 0 3))
-	   
+	   ;; ***
 	   ;; If the layer number is zero, it means that we are dealing with the
-	   ;; initial one and hence, no connections gong to this layer will be
+	   ;; initial one and hence, no connections going to this layer will be
 	   ;; created. Othewise, every node of the layer will be connected to
 	   ;; every node of the prior layer.
 	   (cond ((> y1 0)
@@ -1736,7 +1748,7 @@
 		  (grsp-matrix-display res2)
 		  (display "\n")))	   
 
-	   (cond ((equal? b2 #f) ;; *** opio
+	   (cond ((equal? b2 #f) ;; ***
 		  (set! res1 (grsp-ann-conns-opmm "#+*" res1 res2))))
 	   
 	   (cond ((equal? p_b3 #t)
@@ -1778,7 +1790,7 @@
 	   (cond ((equal? p_b3 #t)
 		  (display "\n +++ 1.1.7 Outbound connections and resulting values\n")
 		  (grsp-matrix-display res5)
-		  (display "\n"))) ;; ***
+		  (display "\n")))
 	   
 	   ;; Reset element 5 of the input nodes going to node p_id to zero once
 	   ;; the data has been passed to the output connections.
@@ -1798,6 +1810,10 @@
 		 (grsp-matrix-display p_a2)
 		 (display "\n")))
 
+	  (cond ((equal? p_b3 #t)
+		 (display "\n End of node evaluation \n")
+		 (display "\n")))
+	  
 	   ;; Compose results.
 	   (set! res4 (list p_a1 p_a2 p_a3))
 	   
@@ -1897,10 +1913,8 @@
 ;;
 ;; Parameters:
 ;;
-;; - p_b3:
-;;
-;;   - #t for verbosity.
-;;   - #f otherwise.
+;; - p_b3: #t for verbosity (nodes eval level).
+;; - p_b2: #t for verbosity (node eval level).
 ;;
 ;; - p_l1: ann.
 ;;
@@ -1915,10 +1929,10 @@
 ;;
 ;; - List. Updated ann.
 ;;
-(define (grsp-ann-nodes-eval p_b3 p_l1)
+(define (grsp-ann-nodes-eval p_b3 p_b2 p_l1)
   (let ((res1 '())
 	(res2 0)
-	(res3 '())	
+	(res3 '())
 	(id 0)
 	(i1 0)
 	(nodes 0)
@@ -1955,43 +1969,72 @@
     (set! i1 (grsp-lm nodes))
     (while (<= i1 (grsp-hm nodes))
 	   (set! id (array-ref nodes i1 0))
-	   
+
+	   ;; nodes table comparison.
 	   (cond ((equal? p_b3 #t)
 		  (display "\n ++ 1.1 Node number ")
 		  (display id)
+		  (display "\n")
+		  (display "\n +++ 1.1.1 Node before evaluation ")
+		  (display "\n")
+		  (grsp-matrix-display (grsp-matrix-row-selectrn nodes i1))
 		  (display "\n")))
-	   ;; ***
-	   (set! res3 (grsp-ann-node-eval p_b3 id nodes conns count))
 
-	   ;; Extract matrices and lists.
-	   (set! nodes (grsp-ann-get-matrix "nodes" res3))
-	   (set! conns (grsp-ann-get-matrix "conns" res3))
-	   (set! count (grsp-ann-get-matrix "count" res3))	   
+	   ;; Actual eval call.
+	   (set! res3 (grsp-ann-node-eval p_b2 id nodes conns count))
+
+	   ;; Update nodes.
+	   (set! nodes (list-ref res3 0))
 	   
 	   (cond ((equal? p_b3 #t)
-		  (display "\n 1.2 Nodes, conns and count after node eval\n")
-		  (grsp-matrix-display nodes)
-		  (display "\n\n")
-		  (grsp-matrix-display conns)
-		  (display "\n\n")
-		  (grsp-matrix-display count)
+		  (display "\n +++ 1.1.2 Node after evaluation ")
+		  (display "\n")
+		  (grsp-matrix-display (grsp-matrix-row-selectrn nodes i1))
 		  (display "\n")))
+
 	   
+	   ;; Eval of connections related to the node being processed.
+	   (cond ((equal? p_b3 #t)
+		  (display "\n +++ 1.1.3 Related TO (this node) connections before evaluation ")
+		  (display "\n")
+		  (grsp-matrix-display (grsp-matrix-row-select "#=" conns 4 id))
+		  (display "\n")
+		  (display "\n +++ 1.1.4 Related FROM (this node) connections before evaluation ")
+		  (display "\n")
+		  (grsp-matrix-display (grsp-matrix-row-select "#=" conns 3 id))
+		  (display "\n")))
+
+	   ;; Update conns.
+	   (set! conns (list-ref res3 1))
+	   
+	   (cond ((equal? p_b3 #t)
+		  (display "\n +++ 1.1.5 Related TO (this node) connections after evaluation ")
+		  (display "\n")
+		  (grsp-matrix-display (grsp-matrix-row-select "#=" conns 4 id))
+		  (display "\n")
+		  (display "\n +++ 1.1.6 Related FROM (this node) connections after evaluation ")
+		  (display "\n")
+		  (grsp-matrix-display (grsp-matrix-row-select "#=" conns 3 id))
+		  (display "\n")))
+	   	   
 	   (set! i1 (in i1)))
 	   
     ;; Update iteration counter.
     (grsp-ann-counter-upd count 2)   
 
-    ;; ***
     ;; Pass output to odata.
     (set! odata (grsp-nodes2odata nodes odata))
 
     ;; Add newest odata to datao.
     (set! datao (grsp-odata2datao odata datao))
+
+    (cond ((equal? p_b3 #t)
+	   (display "\n End of nodes eval \n")
+	   (display "\n")))
     
     ;; Compose results.
     (set! res1 (list nodes conns count idata odata specs odtid datai datao))
-
+    
     res1))    
 
     
