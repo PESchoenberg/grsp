@@ -1696,12 +1696,14 @@
 	(l1 '())
 	(b1 #f)
 	(b2 #f)
+	(i1 0)
 	(n1 0)
 	(n2 0)
 	(n5 0)
 	(n6 0)
 	(n7 0)
 	(n9 0)
+	(m1 0)
 	(m5 0))
 
     ;; First check if the node exists.
@@ -1715,7 +1717,7 @@
 
     ;; If verbosity is on present node data.
     (cond ((equal? p_b3 #t)
-	   (display "\n +++ 1.1.1 Node row\n")
+	   (display "\n +++ 1.1.1.1 Node row\n")
 	   (grsp-matrix-display res1)
 	   (display "\n")))
 
@@ -1724,7 +1726,7 @@
     (cond ((equal? b1 #t)
 	   
 	   (cond ((equal? p_b3 #t)
-		  (display "\n +++ 1.1.2 Node does not exist\n")
+		  (display "\n +++ 1.1.1.2 Node does not exist\n")
 		  (grsp-matrix-display res1)
 		  (display "\n")))))
 
@@ -1733,7 +1735,7 @@
 
 	   ;; If verbosity is on tell that the node will be evaluated.
 	   (cond ((equal? p_b3 #t)
-		  (display "\n +++ 1.1.3 Evaluating node\n")
+		  (display "\n +++ 1.1.1.3 Evaluating node\n")
 		  (grsp-matrix-display res1)
 		  (display "\n")))
 	   
@@ -1744,16 +1746,23 @@
 
 	   ;; Show if verbosity is on.
 	   (cond ((equal? p_b3 #t)
-		  (display "\n +++ 1.1.4 Inbound connections\n")
+		  (display "\n +++ 1.1.1.4 Inbound connections\n")
+		  (grsp-matrix-display res2)
+		  (display "\n")
+		  (display "\n +++ 1.1.1.5 res1, res2 pre proc.\n")
+		  (grsp-matrix-display res1)
+		  (display "\n")
 		  (grsp-matrix-display res2)
 		  (display "\n")))	   
 
-	   (cond ((equal? b2 #f) ;; ***
+	   (cond ((equal? b2 #f)
 		  (set! res1 (grsp-ann-conns-opmm "#+*" res1 res2))))
 	   
 	   (cond ((equal? p_b3 #t)
-		  (display "\n +++ 1.1.5 res1 (2)\n")
+		  (display "\n +++ 1.1.1.5 res1, res2 post proc.\n")
 		  (grsp-matrix-display res1)
+		  (display "\n")
+		  (grsp-matrix-display res2)		  
 		  (display "\n")))
 
 	   ;; Prepare data for activation function.
@@ -1769,32 +1778,51 @@
 	   (set! m5 (grsp-ann-actifun n7 l1))
 
 	   (cond ((equal? p_b3 #t)
-		  (display "\n +++ 1.1.6 Result of activation function\n")
+		  (display "\n +++ 1.1.1.6 Result of activation function\n")
 		  (display m5)
 		  (display "\n")))
+
+	   ;; Update p_a1 with res1. (find the row in p_a1 based on res1 id and
+	   ;; replace the whole row in p_a1 with res1. 	   
+	   (set! p_a1 (grsp-matrix-row-subrepf p_a1 res1 0 (array-ref res1 0 0)))
 	   
-	   ;; Process output connections. These receive the output value of the
-	   ;; node as it is.
+	   ;; Update p_a2 with res2.
+	   (while (<= i1 (grsp-hm res2))
 
-	   ;; If the node has incoming connections then we need to process them.
-	   (set! res5 (grsp-ann-conns-of-node "#from" p_a2 p_id))
-	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 0 p_id 5 m5))
+		  (set! p_a2 (grsp-matrix-row-subrepf p_a2 res2 0 (array-ref res2 0 0)))
+		  
+		  (set! i1 (in i1)))
+	   
+	   ;; If the node has outgoing connections then we need to process
+	   ;; them. These receive the output value of the node.
+	   (set! res2 (grsp-ann-conns-of-node "#from" p_a2 p_id))
+	   (set! res2 (grsp-matrix-row-update "#=" res2 3 p_id 6 (array-ref res1 0 6)))
+	   ;; ***
+	   
+	   ;; Update p_a2 with res2.
+	   (set! i1 (grsp-lm res2))
+	   (while (<= i1 (grsp-hm res2))
 
+		  ;;(set! p_a2 (grsp-matrix-row-subrepf p_a2 res2 0 (array-ref res2 0 0)))
+		  
+		  (set! i1 (in i1)))
+	   
+	   ;; These reports should show p_a1 and p_a2 with all updates.
 	   (cond ((equal? p_b3 #t)
-		  (display "\n +++ 1.1.6.1 Activation function value passed to conn ")
+		  (display "\n +++ 1.1.1.7 Activation function value passed to conns ")
 		  (display p_id)
 		  (display "\n")
 		  (grsp-matrix-display p_a2)
-		  (display "\n")))
-	   
-	   (cond ((equal? p_b3 #t)
-		  (display "\n +++ 1.1.7 Outbound connections and resulting values\n")
-		  (grsp-matrix-display res5)
+		  (display "\n\n +++ 1.1.1.9 Updated p_a1\n")
+		  (grsp-matrix-display p_a1)
+		  (display "\n")		  
+		  (display "\n\n +++ 1.1.1.10 Outbound connections and resulting values\n")
+		  (grsp-matrix-display res2)
 		  (display "\n")))
 	   
 	   ;; Reset element 5 of the input nodes going to node p_id to zero once
 	   ;; the data has been passed to the output connections.
-	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 4 p_id 5 0)) ;; ***
+	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 4 p_id 5 0))
 	   
 	   ;; Reset element 6 of the corresponding node to zero once the data
 	   ;; has been passed to the output connections.
@@ -1806,13 +1834,9 @@
 	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 4 p_id 1 0))))
 
 	  (cond ((equal? p_b3 #t)
-		 (display "\n +++ 1.1.8 Value of p_a2 after eval\n")
+		 (display "\n +++ 1.1.1.11 Value of p_a2 after eval\n")
 		 (grsp-matrix-display p_a2)
-		 (display "\n")))
-
-	  (cond ((equal? p_b3 #t)
-		 (display "\n End of node evaluation \n")
-		 (display "\n")))
+		 (display "\n\n End of node evaluation \n\n")))
 	  
 	   ;; Compose results.
 	   (set! res4 (list p_a1 p_a2 p_a3))
@@ -1963,7 +1987,7 @@
     
     ;; Evaluate nodes and their input and output connections.
     (cond ((equal? p_b3 #t)
-	   (display "\n + 1.0 Evaluating nodes: \n")
+	   (display "\n + 1. Evaluating nodes: \n")
 	   (display "\n")))
     
     (set! i1 (grsp-lm nodes))
@@ -4413,7 +4437,7 @@
     res1))
 
 ;;;; grsp-ann-conns-opmm - Performs operation p_s1 on values and biases of p_a2
-;; and returns results in matrix p_a1.
+;; and returns results in matrix p_a1 (element 6).
 ;;
 ;; - functions, ann, neural, network
 ;;
@@ -4426,8 +4450,8 @@
 ;;   - "#*+": result is the production of the sum of each value per its bias.
 ;;   - "#**": result is the production of the product of each value per its bias.
 ;;
-;; - p_a1: matrix.
-;; - p_a2: matrix.
+;; - p_a1: matrix. Data Subset in nodes format.
+;; - p_a2: matrix. Data Subset in conns.
 ;;
 ;; Output;
 ;;
@@ -4447,20 +4471,24 @@
     (let loop ((i1 (grsp-lm res2)))
       (if (<= i1 (grsp-hm res2))
 
-	  (cond ((equal? p_s1 "#++")
-		 (set! n1 (+ n1 (+ (array-ref res2 i1 5) (array-ref res2 i1 7)))))
-		((equal? p_s1 "#+*")
-		 (set! n1 (+ n1 (* (array-ref res2 i1 5) (array-ref res2 i1 7)))))
-		((equal? p_s1 "#*+")
-		 (set! n1 (* n1 (+ (array-ref res2 i1 5) (array-ref res2 i1 7)))))
-		((equal? p_s1 "#**")
-		 (set! n1 (* n1 (* (array-ref res2 i1 5) (array-ref res2 i1 7))))))
-		
-	  (loop (+ i1 1))))    
+	  (begin (cond ((equal? p_s1 "#++")
+			(set! n1 (+ n1 (+ (array-ref res2 i1 5) (array-ref res2 i1 7)))))
+		       ((equal? p_s1 "#+*")
+			(set! n1 (+ n1 (* (array-ref res2 i1 5) (array-ref res2 i1 7)))))
+		       ((equal? p_s1 "#*+")
+			(set! n1 (* n1 (+ (array-ref res2 i1 5) (array-ref res2 i1 7)))))
+		       ((equal? p_s1 "#**")
+			(set! n1 (* n1 (* (array-ref res2 i1 5) (array-ref res2 i1 7))))))
+
+		 (display "\n n1 \n")
+		 (display n1)
+		 (display "\n")
+		 
+		 (loop (+ i1 1)))))
 
   ;; Place n6 as the value of the node.
   (array-set! res1 n1 0 6)
-  
+
   res1))
 
 
