@@ -435,7 +435,9 @@
 	    grsp-matrix-part-create
 	    grsp-matrix-is-filled-with
 	    grsp-matrix-row-selectrn
-	    grsp-matrix-col-selectcn))
+	    grsp-matrix-col-selectcn
+	    grsp-matrix-row-subrepf
+	    grsp-matrix-row-subreps))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -1787,7 +1789,7 @@
 ;; - A matrix of m x 2 elements, being m the number of ocurrences that statisfy
 ;;   the search criteria. On row 0 goes the row coordinate of each element
 ;;   found, and on row 1 goes the corresponding col coordinate. Thus, this
-;;   matrix shows both he number of found elements as well as their positions
+;;   matrix shows both the number of found elements as well as their positions
 ;;   within p_a1.
 ;;
 (define (grsp-matrix-find p_s1 p_a1 p_v1)
@@ -10888,3 +10890,84 @@
     (set! res1 (grsp-matrix-subcpy p_a1 (grsp-lm p_a1) (grsp-hm p_a1) p_n1 p_n1))
     
     res1))
+
+
+;;;; grsp-matrix-row-subrepf - Replace in matrix p_a1 all rows with row vector
+;; p_a2 where col p_n1 is equal to p_v1.
+;;
+;; Keywords:
+;;
+;; - matrix, replacement, col, row
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix.
+;; - p_a2; matrix, row vector of the same number of cols as p_a1.
+;; - p_j1: col number.
+;; - p_v1: value.
+;;
+;; Notes:
+;;
+;; - See grsp-matrix-row-subreps.
+;;
+;; Output:
+;;
+;; - Matrix. Updated p_a1.
+;;
+(define (grsp-matrix-row-subrepf p_a1 p_a2 p_j1 p_v1)
+  (let ((res1 0)
+	(i1 0))
+
+    (set! res1 (grsp-matrix-cpy p_a1))
+    
+    ;; Cycle.
+    (let loop ((i1 (grsp-lm res1)))
+      (if (<= i1 (grsp-hm res1))
+	  
+	  (begin (cond ((equal? (array-ref res1 i1 p_j1) p_v1)
+			(set! res1 (grsp-matrix-subrep res1 p_a2 i1 (grsp-ln res1)))))
+		 
+		 (loop (+ i1 1)))))
+    
+    res1))
+
+
+;;;; grsp-matrix-row-subreps - For each and all rows of p_a2, replace in matrix
+;; p_a1 all rows with row vector p_a2 where col p_n1 is equal to p_v1. This is
+;; the same as saying that this function applies grsp-matrix-row-subrepf to
+;; all elements in p_a2, in order.
+;;
+;; Keywords:
+;;
+;; - matrix, replacement, col, row
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix.
+;; - p_a2; matrix, row vector of the same number of cols as p_a1.
+;; - p_j1: col number.
+;; - p_v1: value.
+;;
+;; Notes:
+;;
+;; - See grsp-matrix-row-subrepf.
+;;
+;; Output:
+;;
+;; - Matrix. Updated p_a1.
+;;
+(define (grsp-matrix-row-subreps p_a1 p_a2 p_j1 p_v1)
+  (let ((res1 0))
+
+    (set! res1 (grsp-matrix-cpy p_a1))
+    
+   ;; Cycle.
+    (let loop ((i1 (grsp-lm p_a2)))
+      (if (<= i1 (grsp-hm p_a2))
+	  
+	  (begin (set! res1 (grsp-matrix-row-subrepf res1 p_a2 p_j1 p_v1))
+		 
+		 (loop (+ i1 1)))))
+    
+    res1))
+
