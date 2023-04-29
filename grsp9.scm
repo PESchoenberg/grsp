@@ -52,7 +52,8 @@
 ;;   (Accessed: March 6, 2023).
 ;; - [6] Interpolation (2023) Wikipedia. Wikimedia Foundation. Available at:
 ;;   https://en.wikipedia.org/wiki/Interpolation (Accessed: March 8, 2023). 
-
+;; - [7] https://towardsdatascience.com/implementing-gradient-descent-in-python-from-scratch-760a8556c31f
+;; - [8] https://machinelearningspace.com/a-comprehensive-guide-to-gradient-descent-algorithm/#lregress
 
 (define-module (grsp grsp9)
   #:use-module (grsp grsp0)
@@ -99,12 +100,17 @@
 	    grsp-cop-mbird
 	    grsp-cop-mbird-mth
 	    grsp-cop-simionescu
-	    grsp-ipol-lerp))
+	    grsp-ipol-lerp
+	    grsp-opt-hypo
+	    grsp-opt-cost
+	    grsp-opt-cost-pd
+	    grsp-opt-bgd))
 
 
 ;;;; grsp-sop-booth - Booth test, single objective function.
 ;;
 ;; Keywords:
+;;
 ;; - functions, test, optimization, artificial, landscape
 ;;
 ;; Parameters:
@@ -1678,4 +1684,176 @@
     (set! res1 (+ p_y1 (* (- p_y2 p_y1)(/ (- p_x3 p_x1) (- p_x2 p_x1)))))
     
     res1))
+
+
+;;;; grsp-opt-hypo - Hypothesis function for linear regression.
+;;
+;; Keywords:
+;;
+;; - optimization
+;;
+;; Parameters:
+;;
+;; - p_a1: row matrix, features per instance (x).
+;; - p_a2: row matrix, parameters per instance (theta).
+;;
+;; Notes:
+;;
+;; - x[0] must equal 1.
+;; - Both a1 and a2 should be row vector matrices with the same number of
+;;   elements.
+;;
+;; Sources:
+;;
+;; - [8]
+;;
+(define (grsp-opt-hypo p_a1 p_a2)
+  (let ((res1 0))
+
+    (set! res1 (grsp-matrix-opew "#*" p_a1 p_a2))
+    
+    res1))
+
+
+;;;; grsp-opt-cost - Cost function.
+;;
+;; Keywords:
+;;
+;; - optimization
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix, with features per instance as rows (x).
+;; - p_a2: matrix, with parameters per instance as rows (theta).
+;; - p_a3: col matrix, observed data per instance (y).
+;;
+;; Sources:
+;;
+;; - [8]
+;;
+(define (grsp-opt-cost p_a1 p_a2 p_a3)
+  (let ((res1 0)
+	(h1 0)
+	(d1 0)
+	(a1 0)
+	(a2 0)
+	(tm 0)
+	(ln 0)
+	(hn 0)
+	(sum 0))
+
+    ;; Find out matrix dimension data.
+    (set! tm (grsp-tm p_a1))
+    (set! ln (grsp-ln p_a1))
+    (set! hn (grsp-hn p_a1))
+    
+     ;; Cycle dataset matrix.
+    (let loop ((i1 (grsp-lm p_a1)))
+      (if (<= i1 (grsp-hm p_a1))
+	  
+	  (begin (set! a1 (grsp-matrix-subcpy p_a1 i1 i1 ln hn))
+		 (set! a2 (grsp-matrix-subcpy p_a2 i1 i1 ln hn))
+
+		 ;; Calculate the hypothesis matrix.
+		 (set! h1 (grsp-opt-hypo a1 a2))
+
+		 ;; Calculate the difference squared.
+		 (set! d1 (grsp-matrix-opew "#-" h1 (array-ref p_a3 i1 0)))
+		 (set! d1 (grsp-matrix-opsc "#expt" d1 2))
+
+		 ;; Summation.
+		 (set! sum (+ sum d1))
+
+	  (loop (+ i1 1)))))
+
+    ;; Multiply.
+    (set! res1 (* res1 (/ 1 (* 2 tm))))
+    
+    res1))
+
+
+;;;; grsp-opt-cost-pd - Cost function partial derivative
+;;
+;; Keywords:
+;;
+;; - optimization
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix, with features per instance as rows (x).
+;; - p_a2: matrix, with parameters per instance as rows (theta).
+;; - p_a3: col matrix, observed data per instance (y).
+;; - p_j1: pd respect to this parameter.
+;;
+;; Sources:
+;;
+;; - [8]
+;;
+(define (grsp-opt-cost-pd p_a1 p_a2 p_a3 p_j1)
+  (let ((res1 0)
+	(h1 0)
+	(d1 0)
+	(a1 0)
+	(a2 0)
+	(tm 0)
+	(ln 0)
+	(hn 0)
+	(sum 0))
+
+    ;; Find out matrix dimension data.
+    (set! tm (grsp-tm p_a1))
+    (set! ln (grsp-ln p_a1))
+    (set! hn (grsp-hn p_a1))
+    
+     ;; Cycle dataset matrix.
+    (let loop ((i1 (grsp-lm p_a1)))
+      (if (<= i1 (grsp-hm p_a1))
+	  
+	  (begin (set! a1 (grsp-matrix-subcpy p_a1 i1 i1 ln hn))
+		 (set! a2 (grsp-matrix-subcpy p_a2 i1 i1 ln hn))
+
+		 ;; Calculate the hypothesis matrix.
+		 (set! h1 (grsp-opt-hypo a1 a2))
+
+		 ;; Calculate the difference.
+		 (set! d1 (grsp-matrix-opew "#-" h1 (array-ref p_a3 i1 0)))
+
+		 ;; Multiply by feature.
+		 (set! d1 (* d1 (array-ref p_a1 p_j1 0)))
+		 
+		 ;; Summation.
+		 (set! sum (+ sum d1))
+
+	  (loop (+ i1 1)))))
+
+    ;; Multiply.
+    (set! res1 (* res1 (/ 1 tm)))
+    
+    res1))
+
+
+;;;; grsp-opt-bgd - Batch gradient descent
+;;
+;; Keywords:
+;;
+;; - optimization
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix, with features per instance as rows (x).
+;; - p_a2: matrix, with parameters per instance as rows (theta).
+;; - p_a3: col matrix, observed data per instance (y).
+;; - p_lr: learning rate.
+;; - p_mi: max iterations.
+;;
+;; Sources:
+;;
+;; - [8]
+;;
+(define (grsp-opt-bgd p_a1 p_a2 p_a3 p_lr p_mi)
+  (let ((res1 0))
+    
+    res1))
+
+
 
