@@ -2177,7 +2177,7 @@
 ;;   - "#-": scalar substraction.
 ;;   - "#*": scalar multiplication.
 ;;   - "#/": scalar division.
-;;   - "#expt": applies expt function to each element of p_a1.
+;;   - "#expt": applies expt function to each element of p_a1 (expt p_a1 p_v1).
 ;;   - "#max": applies max function to each element of p_a1.
 ;;   - "#min": applies min function to each element of p_a1.
 ;;   - "#rw": replace all elements of p_a1 with p_v1 regardless of their value.
@@ -10893,7 +10893,7 @@
 
 
 ;;;; grsp-matrix-row-subrepf - Replace in matrix p_a1 all rows with row vector
-;; p_a2 where col p_n1 is equal to p_v1.
+;; p_a2 where col p_j1 has a value is equal to p_v1.
 ;;
 ;; Keywords:
 ;;
@@ -10916,17 +10916,20 @@
 ;;
 (define (grsp-matrix-row-subrepf p_a1 p_a2 p_j1 p_v1)
   (let ((res1 0)
+	(res2 0)
 	(i1 0))
 
+    ;; Safety copy.
     (set! res1 (grsp-matrix-cpy p_a1))
+    (set! res2 (grsp-matrix-cpy p_a2))
     
     ;; Cycle.
     (let loop ((i1 (grsp-lm res1)))
       (if (<= i1 (grsp-hm res1))
 	  
 	  (begin (cond ((equal? (array-ref res1 i1 p_j1) p_v1)
-			(set! res1 (grsp-matrix-subrep res1 p_a2 i1 (grsp-ln res1)))))
-		 
+			(set! res1 (grsp-matrix-subrep res1 res2 i1 (grsp-ln res1)))))	  
+	  
 		 (loop (+ i1 1)))))
     
     res1))
@@ -10944,9 +10947,11 @@
 ;; Parameters:
 ;;
 ;; - p_a1: matrix.
-;; - p_a2; matrix, row vector of the same number of cols as p_a1.
-;; - p_j1: col number.
-;; - p_v1: value.
+;; - p_a2; matrix from wich row vectors will be procesed.
+;; - p_j1: col number for p_a1
+;; - p_j2: col number for p_a2
+;; - p_v1: key value for p_a1.
+;; - p_v2: key value for p_a2.
 ;;
 ;; Notes:
 ;;
@@ -10956,18 +10961,42 @@
 ;;
 ;; - Matrix. Updated p_a1.
 ;;
-(define (grsp-matrix-row-subreps p_a1 p_a2 p_j1 p_v1)
-  (let ((res1 0))
+(define (grsp-matrix-row-subreps p_a1 p_a2 p_j1)
+  (let ((res1 0)
+	(res2 0)
+	(res3 0)
+	(b1 #t)
+	(n1 0)
+	(n2 0)
+	(i1 0)
+	(i2 0)
+	(j2 0))
 
+    ;; Safety copy.
     (set! res1 (grsp-matrix-cpy p_a1))
+    (set! res2 (grsp-matrix-cpy p_a2))
     
-   ;; Cycle.
-    (let loop ((i1 (grsp-lm p_a2)))
-      (if (<= i1 (grsp-hm p_a2))
-	  
-	  (begin (set! res1 (grsp-matrix-row-subrepf res1 p_a2 p_j1 p_v1))
+    ;; Cycle.
+    (let loop ((i2 (grsp-lm res2)))
+      (if (<= i2 (grsp-hm res2))
+
+	  ;; Get key value.
+	  (begin (set! n2 (array-ref res2 i2 p_j1))
 		 
-		 (loop (+ i1 1)))))
+		 (set! b1 #t)
+		 (set! i1 (grsp-lm res1))
+		 (while (equal? b1 #t)
+			(set! n1 (array-ref res1 i1 p_j1))
+
+			;; On row found.
+			(cond ((equal? i1 i2)
+			       (set! res3 (grsp-matrix-subcpy res2 i2 i2 (grsp-ln res2) (grsp-hn res2)))
+			       (set! res1 (grsp-matrix-subrep res1 res3 i1 (grsp-ln res1)))
+			       (set! b1 #f)))
+
+			(set! i1 (in i1)))
+		 
+		 (loop (+ i2 1)))))
     
     res1))
 

@@ -159,6 +159,7 @@
 ;; - [46] Racional Diádico (2022) Wikipedia. Wikimedia Foundation. Available at:
 ;;   https://es.wikipedia.org/wiki/Racional_di%C3%A1dico
 ;;   (Accessed: December 19, 2022).
+;; - [47] https://en.wikipedia.org/wiki/Numerical_differentiation
 
 
 (define-module (grsp grsp2)
@@ -264,7 +265,9 @@
 	    grsp-crenel
 	    grsp-padic
 	    grsp-n2c
-	    grsp-bop1))
+	    grsp-bop1
+	    grsp-dqnss
+	    grsp-dqsym))
 
 
 ;;;; grsp-gtels - Finds if p_n1 is greater, equal or smaller than p_n2.
@@ -3413,6 +3416,62 @@
 
     ;; Compose results.
     (set! res1 (list n1 n2))
+    
+    res1))
+
+
+;;;; grsp-dqnss - Newton's single-sideddiffernece quotient, single
+;; variable.
+;;
+;; Keywords
+;; - derivative, calculus, newton
+;;
+;; Parameters:
+;;
+;; - p_fxh: f(x + h).
+;; - p_fx: f(x).
+;; - p_h: h
+;;
+;; Output:
+;;
+;; - Approxiamtion to slope or tangent at x for function f.
+;;
+;; Sources:
+;;
+;; - [47].
+;;
+(define (grsp-dqnss p_fxh p_fx p_h)
+  (let ((res1 0))
+
+    (set! res1 (/ (- p_fxh p_fx) p_h))
+
+    res1))
+
+
+;;;; grsp-dqsym - Symmetric differnece quotient, single variable.
+;;
+;; Keywords:
+;;
+;; - derivative, calculus, newton
+;;
+;; Parameters:
+;;
+;; - p_fxh: f(x + h).
+;; - p_fhx; f(x - h).
+;; - p_h: h
+;;
+;; Output:
+;;
+;; - Approxiamtion to slope or tangent at x for function f.
+;;
+;; Sources:
+;;
+;; - [47].
+;;
+(define (grsp-dqsym p_fxh p_fhx p_h)
+  (let ((res1 0))
+
+    (set! res1 (/ (- p_fxh p_fhx) (* 2 p_h)))
     
     res1))
 

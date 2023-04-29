@@ -1688,47 +1688,45 @@
 ;; - List.
 ;;
 (define (grsp-ann-node-eval p_b3 p_id p_a1 p_a2 p_a3)
-  (let ((res1 0)
-	(res2 0)
-	(res3 0)
-	(res4 0)
-	(res5 0)
-	(l1 '())
+  (let ((res1 '())
+	(a1 0)
+	(a2 0)
+	(a3 0)
+	(a11 0)
+	(a21 0)
+	(a22 0)
 	(b1 #f)
 	(b2 #f)
-	(i1 0)
-	(n1 0)
-	(n2 0)
+	(i2 0)
+	(id 0)
+	(idf 0)
+	(l1 '())
 	(n5 0)
 	(n6 0)
 	(n7 0)
 	(n9 0)
-	(m1 0)
 	(m5 0))
 
+    ;; Safety copies.
+    (set! a1 (grsp-matrix-cpy p_a1))
+    (set! a2 (grsp-matrix-cpy p_a2))
+    (set! a3 (grsp-matrix-cpy p_a3))
+    (set! id p_id)
+    
     ;; First check if the node exists.
     ;;
     ;; - If it does exist, then evaluate.
     ;; - If it does not exist then kill any leftover connection (set status
     ;;   to zero).
     ;;
-    (set! res1 (grsp-matrix-row-select "#=" p_a1 0 p_id))  
-    (set! b1 (grsp-matrix-is-empty res1))
+    (set! a11 (grsp-matrix-row-select "#=" a1 0 id))
+    (set! b1 (grsp-matrix-is-empty a11))
 
     ;; If verbosity is on present node data.
-    (cond ((equal? p_b3 #t)
+    (cond ((equal? p_b3 #f)
 	   (display "\n +++ 1.1.1.1 Node row\n")
-	   (grsp-matrix-display res1)
+	   (grsp-matrix-display a11)
 	   (display "\n")))
-
-    ;; If node does not exist and verbosity is on, tell that the node
-    ;; will not be processed.
-    (cond ((equal? b1 #t)
-	   
-	   (cond ((equal? p_b3 #t)
-		  (display "\n +++ 1.1.1.2 Node does not exist\n")
-		  (grsp-matrix-display res1)
-		  (display "\n")))))
 
     ;; If node exists, evaluate.
     (cond ((equal? b1 #f)
@@ -1736,43 +1734,50 @@
 	   ;; If verbosity is on tell that the node will be evaluated.
 	   (cond ((equal? p_b3 #t)
 		  (display "\n +++ 1.1.1.3 Evaluating node\n")
-		  (grsp-matrix-display res1)
+		  (grsp-matrix-display a11)
 		  (display "\n")))
-	   
+
 	   ;; If the node has incoming connections then we need to process them
 	   ;; first.
-	   (set! res2 (grsp-ann-conns-of-node "#to" p_a2 p_id))
-	   (set! b2 (grsp-matrix-is-empty res2))
+	   (set! a21 (grsp-ann-conns-of-node "#to" a2 id))
+	   (set! b2 (grsp-matrix-is-empty a21))
 
 	   ;; Show if verbosity is on.
 	   (cond ((equal? p_b3 #t)
 		  (display "\n +++ 1.1.1.4 Inbound connections\n")
-		  (grsp-matrix-display res2)
+		  (grsp-matrix-display a21)
 		  (display "\n")
 		  (display "\n +++ 1.1.1.5 res1, res2 pre proc.\n")
-		  (grsp-matrix-display res1)
+		  (grsp-matrix-display a11)
 		  (display "\n")
-		  (grsp-matrix-display res2)
+		  (grsp-matrix-display a21)
 		  (display "\n")))	   
 
+	   ;; Summation of input data from TO connections. The resulting value
+	   ;; is passed to the node being evaluated (represented by row matrix
+	   ;; a11).
 	   (cond ((equal? b2 #f)
-		  (set! res1 (grsp-ann-conns-opmm "#+*" res1 res2))))
-	   
+		  (set! a11 (grsp-ann-conns-opmm "#+*" a11 a21))))
+
 	   (cond ((equal? p_b3 #t)
 		  (display "\n +++ 1.1.1.5 res1, res2 post proc.\n")
-		  (grsp-matrix-display res1)
+		  (grsp-matrix-display a11)
 		  (display "\n")
-		  (grsp-matrix-display res2)		  
+		  (grsp-matrix-display a21)		  
 		  (display "\n")))
 
-	   ;; Prepare data for activation function.
-	   (set! n5 (array-ref res1 0 5)) ;; Bias.
-	   (set! n7 (array-ref res1 0 7)) ;; Associated function.
-	   (set! n9 (array-ref res1 0 9)) ;; Weight (was elem 7).
+	   ;; Bias.
+	   (set! n5 (array-ref a1 0 5))
+
+	   ;; Associated function.
+	   (set! n7 (array-ref a1 0 7))
+
+	   ;; Weight (was elem 7).
+	   (set! n9 (array-ref a1 0 9)) 
 	   
 	   ;; Set activation function input value.
 	   (set! n6 (* (+ n6 n9) n5))
-	   
+
 	   ;; Select activation function and calculate.
 	   (set! l1 (list n6))
 	   (set! m5 (grsp-ann-actifun n7 l1))
@@ -1782,66 +1787,62 @@
 		  (display m5)
 		  (display "\n")))
 
-	   ;; Update p_a1 with res1. (find the row in p_a1 based on res1 id and
-	   ;; replace the whole row in p_a1 with res1. 	   
-	   (set! p_a1 (grsp-matrix-row-subrepf p_a1 res1 0 (array-ref res1 0 0)))
-	   
-	   ;; Update p_a2 with res2.
-	   (while (<= i1 (grsp-hm res2))
+	   ;; Update a1 with a11. (find the row in a1 based on a11 id and
+	   ;; replace the whole row in a1 with a11. 	   
+	   (set! a1 (grsp-matrix-row-subrepf a1 a11 0 id))
 
-		  (set! p_a2 (grsp-matrix-row-subrepf p_a2 res2 0 (array-ref res2 0 0)))
-		  
-		  (set! i1 (in i1)))
-	   
-	   ;; If the node has outgoing connections then we need to process
-	   ;; them. These receive the output value of the node.
-	   (set! res2 (grsp-ann-conns-of-node "#from" p_a2 p_id))
-	   (set! res2 (grsp-matrix-row-update "#=" res2 3 p_id 6 (array-ref res1 0 6)))
-	   ;; ***
-	   
-	   ;; Update p_a2 with res2.
-	   (set! i1 (grsp-lm res2))
-	   (while (<= i1 (grsp-hm res2))
+	   ;; If the node has outgoing connections then we need to process them
+	   ;; once the input summation has been done and the node value has been
+	   ;; calculated.
+	   (set! a22 (grsp-ann-conns-of-node "#from" a2 id))
+	   (set! b2 (grsp-matrix-is-empty a22))
 
-		  ;;(set! p_a2 (grsp-matrix-row-subrepf p_a2 res2 0 (array-ref res2 0 0)))
-		  
-		  (set! i1 (in i1)))
-	   
+	   ;; Cycle thorough connections and update values (col 5) with the
+	   ;; value coming from the node being evaluated (row 6 of a11).
+	   (set! i2 (grsp-lm a2))
+	   (while (<= i2 (grsp-hm a2))
+
+		  ;; Find if the conn comes from the node being evaluated.
+		  (set! idf (array-ref a2 i2 5))
+		  (cond ((= idf id)
+			 
+			 ;; Set value col 5 from node col 6.
+			 (array-set! a2 (array-ref a11 0 6) i2 5)))
+
+		  (set! i2 (in i2)))
+
 	   ;; These reports should show p_a1 and p_a2 with all updates.
 	   (cond ((equal? p_b3 #t)
 		  (display "\n +++ 1.1.1.7 Activation function value passed to conns ")
-		  (display p_id)
+		  (display id)
 		  (display "\n")
-		  (grsp-matrix-display p_a2)
+		  (grsp-matrix-display a2)
 		  (display "\n\n +++ 1.1.1.9 Updated p_a1\n")
-		  (grsp-matrix-display p_a1)
-		  (display "\n")		  
-		  (display "\n\n +++ 1.1.1.10 Outbound connections and resulting values\n")
-		  (grsp-matrix-display res2)
-		  (display "\n")))
-	   
-	   ;; Reset element 5 of the input nodes going to node p_id to zero once
-	   ;; the data has been passed to the output connections.
-	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 4 p_id 5 0))
-	   
-	   ;; Reset element 6 of the corresponding node to zero once the data
-	   ;; has been passed to the output connections.
-	   (set! p_a1 (grsp-matrix-row-update "#=" p_a1 0 p_id 6 0))) ;; ***
+		  (grsp-matrix-display a1)
+		  (display "\n"))))
 	  
-	  ;; Commit.
-	  ((equal? b1 #t) ;; If node does not exist.
-	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 3 p_id 1 0))
-	   (set! p_a2 (grsp-matrix-row-update "#=" p_a2 4 p_id 1 0))))
+	  ;; if Node dos not exist. 
+	  ((equal? b1 #t) 
+	    
+	    (set! a2 (grsp-matrix-row-update "#=" a2 3 id 1 0))
+	    (set! a2 (grsp-matrix-row-update "#=" a2 4 id 1 0))
+	    
+	    ;; If node does not exist and verbosity is on, tell that the node
+	    ;; was not processed.	   
+	    (cond ((equal? p_b3 #t)
+		   (display "\n +++ 1.1.1.2 Node does not exist\n")
+		   (grsp-matrix-display a11)
+		   (display "\n")))))
 
-	  (cond ((equal? p_b3 #t)
-		 (display "\n +++ 1.1.1.11 Value of p_a2 after eval\n")
-		 (grsp-matrix-display p_a2)
-		 (display "\n\n End of node evaluation \n\n")))
-	  
-	   ;; Compose results.
-	   (set! res4 (list p_a1 p_a2 p_a3))
-	   
-    res4))
+    ;; Compose results.    
+    (cond ((equal? p_b3 #t)
+	   (display "\n +++ 1.1.1.11 Value of p_a2 after eval\n")
+	   (grsp-matrix-display a2)
+	   (display "\n\n End of node evaluation \n\n")))
+    
+    (set! res1 (list a1 a2 a3))
+    
+    res1))
 
 
 ;;;; grsp-ann-actifun - Selects function p_n1 passing parameter p_n2.
