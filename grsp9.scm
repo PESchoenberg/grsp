@@ -102,7 +102,6 @@
 	    grsp-cop-simionescu
 	    grsp-ipol-lerp
 	    grsp-opt-hypo
-	    grsp-opt-cost
 	    grsp-opt-cost-pd
 	    grsp-opt-bgd))
 
@@ -1696,6 +1695,7 @@
 ;;
 ;; - p_a1: row matrix, features per instance (x).
 ;; - p_a2: row matrix, parameters per instance (theta).
+;; - p_x1: feature chosen.
 ;;
 ;; Notes:
 ;;
@@ -1707,69 +1707,14 @@
 ;;
 ;; - [8]
 ;;
-(define (grsp-opt-hypo p_a1 p_a2)
-  (let ((res1 0))
-
-    (set! res1 (grsp-matrix-opew "#*" p_a1 p_a2))
-    
-    res1))
-
-
-;;;; grsp-opt-cost - Cost function.
-;;
-;; Keywords:
-;;
-;; - optimization
-;;
-;; Parameters:
-;;
-;; - p_a1: matrix, with features per instance as rows (x).
-;; - p_a2: matrix, with parameters per instance as rows (theta).
-;; - p_a3: col matrix, observed data per instance (y).
-;;
-;; Sources:
-;;
-;; - [8]
-;;
-(define (grsp-opt-cost p_a1 p_a2 p_a3)
+(define (grsp-opt-hypo p_a1 p_a2 p_x1)
   (let ((res1 0)
-	(h1 0)
-	(d1 0)
-	(a1 0)
-	(a2 0)
-	(tm 0)
-	(ln 0)
-	(hn 0)
-	(sum 0))
+	(res2 0))
 
-    ;; Find out matrix dimension data.
-    (set! tm (grsp-tm p_a1))
-    (set! ln (grsp-ln p_a1))
-    (set! hn (grsp-hn p_a1))
+    (set! res1 (grsp-matrix-opew "#*" p_a1 p_a2))    
+    (set! res2 (array-ref res1 0 0))
     
-     ;; Cycle dataset matrix.
-    (let loop ((i1 (grsp-lm p_a1)))
-      (if (<= i1 (grsp-hm p_a1))
-	  
-	  (begin (set! a1 (grsp-matrix-subcpy p_a1 i1 i1 ln hn))
-		 (set! a2 (grsp-matrix-subcpy p_a2 i1 i1 ln hn))
-
-		 ;; Calculate the hypothesis matrix.
-		 (set! h1 (grsp-opt-hypo a1 a2))
-
-		 ;; Calculate the difference squared.
-		 (set! d1 (grsp-matrix-opew "#-" h1 (array-ref p_a3 i1 0)))
-		 (set! d1 (grsp-matrix-opsc "#expt" d1 2))
-
-		 ;; Summation.
-		 (set! sum (+ sum d1))
-
-	  (loop (+ i1 1)))))
-
-    ;; Multiply.
-    (set! res1 (* res1 (/ 1 (* 2 tm))))
-    
-    res1))
+    res2))
 
 
 ;;;; grsp-opt-cost-pd - Cost function partial derivative
@@ -1792,6 +1737,7 @@
 (define (grsp-opt-cost-pd p_a1 p_a2 p_a3 p_j1)
   (let ((res1 0)
 	(h1 0)
+	(h2 0)
 	(d1 0)
 	(a1 0)
 	(a2 0)
@@ -1804,7 +1750,7 @@
     (set! tm (grsp-tm p_a1))
     (set! ln (grsp-ln p_a1))
     (set! hn (grsp-hn p_a1))
-    
+
      ;; Cycle dataset matrix.
     (let loop ((i1 (grsp-lm p_a1)))
       (if (<= i1 (grsp-hm p_a1))
@@ -1813,13 +1759,13 @@
 		 (set! a2 (grsp-matrix-subcpy p_a2 i1 i1 ln hn))
 
 		 ;; Calculate the hypothesis matrix.
-		 (set! h1 (grsp-opt-hypo a1 a2))
-
+		 (set! h1 (grsp-opt-hypo a1 a2 i1))
+		 
 		 ;; Calculate the difference.
-		 (set! d1 (grsp-matrix-opew "#-" h1 (array-ref p_a3 i1 0)))
-
+		 (set! d1 (- h1 (array-ref p_a3 i1 0)))
+		 
 		 ;; Multiply by feature.
-		 (set! d1 (* d1 (array-ref p_a1 p_j1 0)))
+		 (set! d1 (* d1 (array-ref p_a1 0 p_j1)))
 		 
 		 ;; Summation.
 		 (set! sum (+ sum d1))
@@ -1827,7 +1773,7 @@
 	  (loop (+ i1 1)))))
 
     ;; Multiply.
-    (set! res1 (* res1 (/ 1 tm)))
+    (set! res1 (* sum (/ 1 tm)))
     
     res1))
 
