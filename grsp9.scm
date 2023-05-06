@@ -103,7 +103,8 @@
 	    grsp-ipol-lerp
 	    grsp-opt-hypo
 	    grsp-opt-cost-pd
-	    grsp-opt-bgd))
+	    grsp-opt-bgd
+	    grsp-opt-xty))
 
 
 ;;;; grsp-sop-booth - Booth test, single objective function.
@@ -1778,11 +1779,11 @@
     res1))
 
 
-;;;; grsp-opt-bgd - Batch gradient descent
+;;;; grsp-opt-bgd - Batch gradient descent.
 ;;
 ;; Keywords:
 ;;
-;; - optimization
+;; - optimization, gradient, descent
 ;;
 ;; Parameters:
 ;;
@@ -1791,15 +1792,94 @@
 ;; - p_a3: col matrix, observed data per instance (y).
 ;; - p_lr: learning rate.
 ;; - p_mi: max iterations.
+;; - p_cv: convergence value.
 ;;
 ;; Sources:
 ;;
 ;; - [8]
 ;;
-(define (grsp-opt-bgd p_a1 p_a2 p_a3 p_lr p_mi)
-  (let ((res1 0))
+(define (grsp-opt-bgd p_a1 p_a2 p_a3 p_lr p_mi p_cv)
+  (let ((res2 0)
+	(c1 0)
+	(c2 0)
+	(j2 0))
+
+    (set! res2 (grsp-matrix-subcpy p_a2
+				   (grsp-lm p_a2)
+				   (grsp-lm p_a2)
+				   (grsp-ln p_a2)
+				   (grsp-hn p_a2)))
+
+    ;; Max iter loop.
+    (let loopi1 ((i1 0))
+      (if (<= i1 p_mi)
+	  
+	  (begin (let loopj1 ((j1 (grsp-ln res2)))
+		   (if (<= j1 (grsp-hn res2))
+
+		       (begin (set! c1 (grsp-opt-cost-pd p_a1 p_a2 p_a3 j1))
+
+			      ;; Multiply cost partial derivative by learning
+			      ;; rate.
+			      (set! j2 (- (array-ref res2 0 j1) (* p_lr c1)))
+
+			      ;; Replace parameter theta[j1].
+			      (array-set! res2 j2 0 j1)
+
+			      ;; Check for convergence.
+			      (cond ((equal? (and (<= (- c2 c1) p_cv) (> i1 0)) #t)
+				     (set! j1 (grsp-hn res2))
+				     (set! i1 p_mi))
+				    (else (set! c2 c1)))
+			      
+		       (loopj1 (+ j1 1)))))
+
+	  (loopi1 (+ i1 1)))))
+    
+    res2))
+
+
+;;;; grsp-opt-xty - Calculates the summation of the products of elements of
+;; p_a1 and p_a2.
+;;
+;; Keywords:
+;;
+;; - optimization, gradient, descent
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix, with features per instance as rows (x).
+;; - p_a2: matrix, with parameters per instance as rows (theta).
+;;
+;; Output:
+;;
+;; - Col matrix containing the result of the operation per each row of p_a1
+;;   and p_a2.
+;;
+(define (grsp-opt-xty p_a1 p_a2)
+  (let ((res1 0)
+	(i1 0)
+	(j1 0)
+	(sum 0))
+	
+    ;; Create a col matrix to contain the results.
+    (set! res1 (grsp-matrix-create 0 (grsp-tm p_a1) 1))
+
+    ;; Row loop.
+    (set! i1 (grsp-lm p_a1))
+    (while (<= i1 (grsp-hm p_a1))
+
+	   (set! sum 0)
+	   (set! j1 (grsp-ln p_a1))
+	   (while (<= j1 (grsp-hn p_a1))
+
+		  (set! sum (+ sum (* (array-ref p_a1 i1 j1) (array-ref p_a2 i1 j1))))
+		  
+		  (set! j1 (in j1)))
+
+	   (array-set! res1 sum i1 0)
+	   
+	   (set! i1 (in i1)))
     
     res1))
-
-
 
