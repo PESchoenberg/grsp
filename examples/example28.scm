@@ -4,9 +4,9 @@
 
 ;; =============================================================================
 ;;
-;; example27.scm
+;; example28.scm
 ;;
-;; A sample of grsp functions. Cost function partial derivative.
+;; A sample of grsp functions. Batch gradient descent.
 ;;
 ;; Compilation:
 ;;
@@ -14,7 +14,7 @@
 ;;
 ;; - Enter the following:
 ;;
-;;   guile example27.scm 
+;;   guile example28.scm 
 ;;
 ;; =============================================================================
 ;;
@@ -68,18 +68,18 @@
 ;;;; Init.
 
 ;; Vars.
-(define X (grsp-matrix-create 1 5 2))
-(define T (grsp-matrix-create 1 5 2))
-(define Y (grsp-matrix-create 2 5 1))
-(define t 0)
+(define X (grsp-matrix-create "#Ladder" 5 2))
+(define T (grsp-matrix-create 4 5 2))
+(define Y (grsp-opt-xty X T))
+(define lr 0.0001)
+(define mi 1000000)
+(define cv 0.00000001)
 (define res1 0)
 
 ;;;; Main program.
-(set! res1  (grsp-opt-cost-pd X T Y t))
-(display "\n")
-(display res1)
-(display "\n")
-
-
-
+(set! res1 (grsp-opt-bgd X T Y lr mi cv))
+(grsp-matrix-ldl "X" X 1 1)
+(grsp-matrix-ldl "T" T 1 1)
+(grsp-matrix-ldl "Y" Y 1 1)
+(grsp-matrix-ldl "Optimized T parameters:" res1 1 1)
 

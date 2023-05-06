@@ -437,7 +437,8 @@
 	    grsp-matrix-row-selectrn
 	    grsp-matrix-col-selectcn
 	    grsp-matrix-row-subrepf
-	    grsp-matrix-row-subreps))
+	    grsp-matrix-row-subreps
+	    grsp-matrix-ldl))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -10999,4 +11000,32 @@
 		 (loop (+ i2 1)))))
     
     res1))
+
+
+;;;; grsp-matrix-ldl - Line, display title, display matrix. line. Displays p_n1
+;; blank lines before string p_s1 and matrix p_a2, and p_n2 blank lines after
+;; p_s1.
+;;
+;; Keywords:
+;;
+;; - console, strings, matrices
+;;
+;; Parameters:
+;;
+;; - p_s1: string.
+;; - p_a1: matrix.
+;; - p_n1: number of new lines preceeding the string.
+;; - p_n2: number of new lines after the string.
+;;
+;; Examples:
+;;
+;; - example3.scm.
+;;
+;; Output:
+;;
+;; - String as title, and matrix.
+;;
+(define (grsp-matrix-ldl p_s1 p_a1 p_n1 p_n2)
+  (grsp-ldl p_s1 p_n1 p_n2)
+  (grsp-matrix-display p_a1))
 
