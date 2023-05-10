@@ -68,18 +68,30 @@
 ;;;; Init.
 
 ;; Vars.
-(define X (grsp-matrix-create "#Ladder" 5 2))
-(define T (grsp-matrix-create 4 5 2))
+(define X (grsp-matrix-create "#Ladder" 10 2))
+(define T (grsp-matrix-create 4 10 2))
 (define Y (grsp-opt-xty X T))
-(define lr 0.0001)
+(define lr 0.0001) ;; Ref 0.001
 (define mi 1000000)
 (define cv 0.00000001)
 (define res1 0)
 
 ;;;; Main program.
+
+;; Create "noisy" data.
+(set! Y (grsp-matrix-blur "#normal" Y 0.15))
+
+;; BGD algorithm.
 (set! res1 (grsp-opt-bgd X T Y lr mi cv))
-(grsp-matrix-ldl "X" X 1 1)
-(grsp-matrix-ldl "T" T 1 1)
-(grsp-matrix-ldl "Y" Y 1 1)
-(grsp-matrix-ldl "Optimized T parameters:" res1 1 1)
+
+;; Show results.
+(clear)
+(grsp-ldl "example28.scm - A sample of grsp functions. Batch gradient descent." 1 0)
+(grsp-ldvl "Learning rate:  " lr 1 0)
+(grsp-ldvl "Max iterations: " mi 1 0) 
+(grsp-ldvl "Convergence:    " cv 1 0)
+(grsp-matrix-ldvl "Features X:" X 1 1)
+(grsp-matrix-ldvl "Parameters T:" T 1 1)
+(grsp-matrix-ldvl "Obsered results Y:" Y 1 1)
+(grsp-matrix-ldvl "Optimized T:" res1 1 1)
 

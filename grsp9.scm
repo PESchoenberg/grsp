@@ -1704,6 +1704,10 @@
 ;; - Both a1 and a2 should be row vector matrices with the same number of
 ;;   elements.
 ;;
+;; Notes:
+;;
+;; - See grsp-opt-cost-p.
+;;
 ;; Sources:
 ;;
 ;; - [8]
@@ -1730,6 +1734,10 @@
 ;; - p_a2: matrix, with parameters per instance as rows (theta).
 ;; - p_a3: col matrix, observed data per instance (y).
 ;; - p_j1: pd respect to this parameter.
+;;
+;; Notes:
+;;
+;; - See grsp-opt-bgd.
 ;;
 ;; Sources:
 ;;
@@ -1794,6 +1802,10 @@
 ;; - p_mi: max iterations.
 ;; - p_cv: convergence value.
 ;;
+;; Notes:
+;;
+;; - See example28.scm.
+;;
 ;; Sources:
 ;;
 ;; - [8]
@@ -1813,7 +1825,8 @@
     ;; Max iter loop.
     (let loopi1 ((i1 0))
       (if (<= i1 p_mi)
-	  
+
+	  ;; Parameters per row loop-
 	  (begin (let loopj1 ((j1 (grsp-ln res2)))
 		   (if (<= j1 (grsp-hn res2))
 
@@ -1869,14 +1882,17 @@
     (set! i1 (grsp-lm p_a1))
     (while (<= i1 (grsp-hm p_a1))
 
+	   ;; Col loop
 	   (set! sum 0)
 	   (set! j1 (grsp-ln p_a1))
 	   (while (<= j1 (grsp-hn p_a1))
 
+		  ;; Summation.
 		  (set! sum (+ sum (* (array-ref p_a1 i1 j1) (array-ref p_a2 i1 j1))))
 		  
 		  (set! j1 (in j1)))
 
+	   ;; PLace row summation (all cols per each row) in the results matrix.
 	   (array-set! res1 sum i1 0)
 	   
 	   (set! i1 (in i1)))
