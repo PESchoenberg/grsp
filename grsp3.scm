@@ -438,7 +438,9 @@
 	    grsp-matrix-col-selectcn
 	    grsp-matrix-row-subrepf
 	    grsp-matrix-row-subreps
-	    grsp-matrix-ldl))
+	    grsp-matrix-ldvl
+	    grsp-matrix-blur
+	    grsp-matrix-col-replacev))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -10894,7 +10896,7 @@
 
 
 ;;;; grsp-matrix-row-subrepf - Replace in matrix p_a1 all rows with row vector
-;; p_a2 where col p_j1 has a value is equal to p_v1.
+;; p_a2 where col p_j1 has a value equal to p_v1.
 ;;
 ;; Keywords:
 ;;
@@ -11002,7 +11004,7 @@
     res1))
 
 
-;;;; grsp-matrix-ldl - Line, display title, display matrix. line. Displays p_n1
+;;;; grsp-matrix-ldvl - Line, display title, display matrix. line. Displays p_n1
 ;; blank lines before string p_s1 and matrix p_a2, and p_n2 blank lines after
 ;; p_s1.
 ;;
@@ -11019,13 +11021,142 @@
 ;;
 ;; Examples:
 ;;
-;; - example3.scm.
+;; - example28.scm.
 ;;
 ;; Output:
 ;;
 ;; - String as title, and matrix.
 ;;
-(define (grsp-matrix-ldl p_s1 p_a1 p_n1 p_n2)
+(define (grsp-matrix-ldvl p_s1 p_a1 p_n1 p_n2)
   (grsp-ldl p_s1 p_n1 p_n2)
   (grsp-matrix-display p_a1))
 
+
+;;;; grsp-matrix-blur - Adds noise to elements of matrix p_a1 using stats
+;; distribution p_s1 with standard deviation p_v1.
+;;
+;; Keywords:
+;;
+;; - matrices, random, noise
+;;
+;; Parameters:
+;;
+;; - p_s1: type of distribution.
+;;
+;;   - "#normal": normal.
+;;   - "#exp": exponential.
+;;   - "#uniform": uniform.
+;;
+;; - p_a1: matrix.
+;; - p_v1: standard deviation.
+;;
+;; Notes:
+;;
+;; - Values in p_a1 will act as statistical mean in each case.
+;; - See grsp2.grsp-rprnd.
+;;
+;; Output:
+;;
+;; - Matrx, numeric.
+;;
+(define (grsp-matrix-blur p_s1 p_a1 p_v1)
+  (let ((res1 0)
+	(i1 0)
+	(j1 0))
+
+    ;; Safety copy.
+    (set! res1 (grsp-matrix-cpy p_a1))
+    
+    ;; Row loop.
+    (set! i1 (grsp-lm res1))
+    (while (<= i1 (grsp-hm res1))
+
+	   ;; Col loop.
+	   (set! j1 (grsp-ln res1))
+	   (while (<= j1 (grsp-hn res1))
+
+		  ;; Replace element value by its noisy or blurred variant.
+		  (array-set! res1 (grsp-rprnd p_s1 (array-ref res1 i1 j1) p_v1) i1 j1)
+		  
+		  (set! j1 (in j1)))
+
+	   (set! i1 (in i1)))
+    
+    res1))
+
+
+;;;; grsp-matrix-col-replacev - Replace all instances in column p_j1 with p_v2
+;; in matrix p_a1 for p_j1 elements with relationship p_s1 betwheen them and
+;; value p_v1.
+;;
+;; Keywords:
+;;
+;; - matrices, replace, columns, values
+;;
+;; Parameters:
+;;
+;; - p_s1: string.
+;;
+;;   - "#="; equal.
+;;   . "#!=" not equal.
+;;   - "#<"; less than.
+;;   - "#>"; greater than.
+;;   - "#<="; less or equal.
+;;   - "#>="; greater or equal than.
+;;
+;; - p_a1; matrix.
+;; - p_j1: numeric, column number.
+;; - p_v1; value.
+;; - p_v2; value
+;; - p_v3: value.
+;;
+;; Output:
+;;
+;; . Matrix.
+;;
+(define (grsp-matrix-col-replacev p_s1 p_a1 p_j1 p_v1 p_v2)
+  (let ((res1 0)
+	(v3 0))
+
+    ;; Safety copy.
+    (set! res1 (grsp-matrix-cpy p_a1))
+    
+    ;; Cycle.
+    (let loop ((i1 (grsp-lm res1)))
+      (if (<= i1 (grsp-hm res1))
+	  
+	  (begin (set! v3 (array-ref res1 i1 p_j1))
+		 
+		 (cond ((equal? p_s1 "#=")
+
+			(cond ((= v3 p_v1)
+			       (array-set! res1 p_v2 i1 p_j1))))
+
+		       ((equal? p_s1 "#!=")
+
+			(cond ((equal? (= v3 p_v1) #f)
+			       (array-set! res1 p_v2 i1 p_j1))))
+		       
+		       ((equal? p_s1 "#<")
+
+			(cond ((< v3 p_v1)
+			       (array-set! res1 p_v2 i1 p_j1))))
+
+		       ((equal? p_s1 "#>")
+
+			(cond ((> v3 p_v1)
+			       (array-set! res1 p_v2 i1 p_j1))))
+
+		       ((equal? p_s1 "#<=")
+
+			(cond ((<= v3 p_v1)
+			       (array-set! res1 p_v2 i1 p_j1))))
+
+		       ((equal? p_s1 "#>=")
+
+			(cond ((>= v3 p_v1)
+			       (array-set! res1 p_v2 i1 p_j1)))))      
+	  
+		 (loop (+ i1 1)))))
+	
+    res1))

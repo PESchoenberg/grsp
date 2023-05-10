@@ -101,6 +101,7 @@
 	    grsp-ld
 	    grsp-dl
 	    grsp-ldl
+	    grsp-ldvl
 	    grsp-cd
 	    grsp-ask
 	    grsp-askn
@@ -679,6 +680,43 @@
     
     (newlines n1)
     (display p_s1)
+    (newlines p_n2)))
+
+
+;;;; grsp-ldvl - Line, display valur, line. Displays p_n1 blank lines before
+;; string p_s1 and p_n2 blank lines after p_s1.
+;;
+;; Keywords:
+;;
+;; - console, strings
+;;
+;; Parameters:
+;;
+;; - p_s1: string (i.e. description or title of p_v1).
+;; - p_v1: value.
+;; - p_n1: number of new lines preceeding the string.
+;; - p_n2: number of new lines after the string.
+;;
+;; Examples:
+;;
+;; - example28.scm.
+;;
+;; Output:
+;;
+;; - String.
+;;
+(define (grsp-ldvl p_s1 p_v1 p_n1 p_n2)
+  (let ((n1 0))
+
+    (set! n1 (- p_n1 1))
+    
+    (cond ((< n1 0)
+	   (set! n1 0)))
+    
+    (newlines n1)
+    (display p_s1)
+    (display " ")
+    (display p_v1)
     (newlines p_n2)))
 
 
