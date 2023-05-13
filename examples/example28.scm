@@ -67,19 +67,68 @@
  
 ;;;; Init.
 
-;; Vars.
-(define X (grsp-matrix-create "#Ladder" 10 2))
-(define T (grsp-matrix-create 4 10 2))
+;; Increase or decrease i0, lr and mi for better results. Their default
+;; values should produce observed theta parametes with about 1% deviation
+;; from the theoretical ones.
+
+;; Number of samples.
+(define i0 100)
+
+;; Number of cols (features and parameters).
+(define j0 3)
+
+;; Default parameter 0.
+(define t0 4.0)
+
+;; Default parameter 1.
+(define t1 5.0)
+
+;; Default parameter 2.
+(define t2 2.0)
+
+;; Features matrix.
+(define X (grsp-matrix-create "#Ladder" i0 j0))
+
+;; Parameters matrix.
+(define T (grsp-matrix-create t0 i0 j0))
+
+;; Results matrix.
 (define Y (grsp-opt-xty X T))
-(define lr 0.0001) ;; Ref 0.001
-(define mi 1000000)
+
+;; Learning rate.
+(define lr 0.00001)
+
+;; Max iterations.
+(define mi 10000000)
+
+;; Convergence value.
 (define cv 0.00000001)
+
+;; Standar deviation.
+(define sd 0.05)
+
+;; Results matrix.
 (define res1 0)
+
+;; Theoretical theta matrix.
+(define res2 (grsp-matrix-create t0 1 j0))
+
 
 ;;;; Main program.
 
-;; Create "noisy" data.
-(set! Y (grsp-matrix-blur "#normal" Y 0.15))
+;; Set theoretical res2 values (without noise); these will be compared - as a
+;; reference - to the calculated (optimized) theta values after processing.
+(array-set! res2 t1 0 1)
+(array-set! res2 t2 0 2)
+
+;; Change some theta values.
+(set! T (grsp-matrix-col-replacev "#=" T 1 t0 t1))
+(set! T (grsp-matrix-col-replacev "#=" T 2 t0 t2))
+
+;; Now add some noise.
+(set! X (grsp-matrix-blur "#normal" X sd))
+(set! T (grsp-matrix-blur "#normal" T sd))
+(set! Y (grsp-matrix-blur "#normal" Y sd))
 
 ;; BGD algorithm.
 (set! res1 (grsp-opt-bgd X T Y lr mi cv))
@@ -90,8 +139,9 @@
 (grsp-ldvl "Learning rate:  " lr 1 0)
 (grsp-ldvl "Max iterations: " mi 1 0) 
 (grsp-ldvl "Convergence:    " cv 1 0)
-(grsp-matrix-ldvl "Features X:" X 1 1)
-(grsp-matrix-ldvl "Parameters T:" T 1 1)
-(grsp-matrix-ldvl "Obsered results Y:" Y 1 1)
-(grsp-matrix-ldvl "Optimized T:" res1 1 1)
+(grsp-matrix-ldvl "Features X (noisy):" X 1 1)
+(grsp-matrix-ldvl "Parameters T (noisy):" T 1 1)
+(grsp-matrix-ldvl "Obsered results Y (noisy):" Y 1 1)
+(grsp-matrix-ldvl "Theoretical T: " res2 1 1)
+(grsp-matrix-ldvl "T obtained from noisy data:" res1 1 1)
 
