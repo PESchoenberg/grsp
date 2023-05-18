@@ -777,6 +777,10 @@
 ;;   - 3: standard deviation.
 ;;   - 4: number.
 ;;
+;; Notes:
+;;
+;; - See grsp0.grsp-random-state-set.
+;;
 ;; Output:
 ;;
 ;; - Numeric.

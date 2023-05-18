@@ -141,7 +141,8 @@
 	    displayl
 	    displayf
 	    grsp-slists-append
-	    grsp-lam))
+	    grsp-lam
+	    grsp-random-state-set))
 
 
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
@@ -1490,7 +1491,7 @@
 ;;
 ;; Notes:
 ;;
-;; - See grsp-list-fname.
+;; - See grsp-list-fname, grsp-random-state-set.
 ;;
 ;; Output:
 ;;
@@ -1548,6 +1549,10 @@
 ;; Keywords:
 ;;
 ;; - functions, random, string
+;;
+;; Notes:
+;;
+;; - See grsp-random-state-set.
 ;;
 ;; Output:
 ;;
@@ -1979,5 +1984,27 @@
 		     "(grsp grsp17"))
     
     res1))
+
+
+;;;; grsp-random-state-set - Seed random state using platform-specific
+;; properties if p_b1 is #t. If you leave p_b1 as #f the value fo the system
+;; variable random-state will remain the same and therefore, you will get
+;; the same pseudo-random numbers each time you generate a random series. This
+;; could be useful in order to repeat experimental data. Otherwise, you should
+;; set p_b1 to #t in order ot get different number each time you star a program
+;; or call a random generation function.
+;;
+;; Keywords:
+;;
+;; - random, seeding, repetition
+;;
+;; Parameters:
+;;
+;; - p_b1: boolean. #t to set new random state, #f otherwise.
+;;
+(define (grsp-random-state-set p_b1)
+
+  (cond ((equal? p_b1 #t)
+	 (set! *random-state* (random-state-from-platform)))))
 
 

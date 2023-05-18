@@ -4,9 +4,9 @@
 
 ;; =============================================================================
 ;;
-;; example28.scm
+;; example29.scm
 ;;
-;; A sample of grsp functions. Batch gradient descent.
+;; A sample of grsp functions. Mini batch gradient descent.
 ;;
 ;; Compilation:
 ;;
@@ -14,7 +14,7 @@
 ;;
 ;; - Enter the following:
 ;;
-;;   guile example28.scm 
+;;   guile example29.scm 
 ;;
 ;; =============================================================================
 ;;
@@ -72,7 +72,7 @@
 ;; from the theoretical ones.
 
 ;; Number of samples.
-(define i0 100)
+(define i0 1000)
 
 ;; Random state. Set to #t to renew seed and get a different state each time the
 ;; program runs, or #f if you want to preserve the rando-state system variable
@@ -124,6 +124,9 @@
 ;; Drop rate.
 (define dr 0.25)
 
+;; Mini batch size
+(define m1 100)
+
 ;; Results matrix.
 (define res1 0)
 
@@ -150,20 +153,21 @@
 (set! T (grsp-matrix-blur "#normal" T sd))
 (set! Y (grsp-matrix-blur "#normal" Y sd))
 
-;; BGD algorithm.
-(set! res1 (grsp-opt-bgd sc X T Y lr mi cv de df dr))
+;; MBGD algorithm.
+(set! res1 (grsp-opt-mbgd sc X T Y lr mi cv de df dr m1))
 
 ;; Show results.
 (clear)
-(grsp-ldl "example28.scm - A sample of grsp functions. Batch gradient descent." 1 0)
+(grsp-ldl "example29.scm - A sample of grsp functions. Mini batch gradient descent." 1 0)
 (grsp-ldvl "Learning rate:  " lr 1 0)
 (grsp-ldvl "Max iterations: " mi 1 0) 
 (grsp-ldvl "Convergence:    " cv 1 0)
-(grsp-matrix-ldvl "Features X (noisy):" X 1 1)
-(grsp-matrix-ldvl "Parameters T (noisy):" T 1 1)
-(grsp-matrix-ldvl "Observed results Y (noisy):" Y 1 1)
+(grsp-matrix-ldvl "MB Features X (noisy):" (list-ref res1 1) 1 1)
+(grsp-matrix-ldvl "MB Parameters T (noisy):" (list-ref res1 2) 1 1)
+(grsp-matrix-ldvl "MB Observed results Y (noisy):" (list-ref res1 3) 1 1)
 (grsp-ldvl "Size of sample: " i0 1 0)
+(grsp-ldvl "Size of mini batch: " m1 1 0)
 (grsp-ldvl "Random state refresh:" b1 1 0)
 (grsp-matrix-ldvl "Theoretical T: " res2 1 1)
-(grsp-matrix-ldvl "T obtained from noisy data:" res1 1 1)
+(grsp-matrix-ldvl "T obtained from noisy data:" (list-ref res1 0) 1 1)
 
