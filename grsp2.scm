@@ -1109,7 +1109,7 @@
     res1))
 
 
-;;;; grsp-method-netwton - Simple implementation of the Newton-Rapson method.
+;;;; grsp-method-netwton - Simple implementation of the Newton-Raphson method.
 ;;
 ;; Keywords:
 ;;
@@ -2516,6 +2516,7 @@
 ;;
 ;; - See [32] for further details on how GNU Guile deals with random number
 ;;   generation.
+;; - See grsp0.grsp-random-state-set.
 ;;
 ;; Output:
 ;;
@@ -2556,6 +2557,7 @@
 ;; Notes:
 ;;
 ;; - See grsp-coinflip.
+;; - See grsp0.grsp-random-state-set.
 ;;
 ;; Output:
 ;;
@@ -3154,6 +3156,7 @@
 ;; Notes:
 ;;
 ;; - See grsp-ifrprnd.
+;; - See grsp0.grsp-random-state-set.
 ;;
 ;; Output:
 ;;

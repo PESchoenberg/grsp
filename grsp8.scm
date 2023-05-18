@@ -243,6 +243,8 @@
 ;;   [Accessed 20 September 2022].
 ;; - [18] https://en.wikipedia.org/wiki/Evolutionary_acquisition_of_neural_topologies
 ;; - [19] https://en.wikipedia.org/wiki/Neuroevolution_of_augmenting_topologies
+;; - [20] https://en.wikipedia.org/wiki/Catastrophic_interference
+;; - [21] https://en.wikipedia.org/wiki/Online_machine_learning
 
 
 (define-module (grsp grsp8)
@@ -2106,6 +2108,7 @@
 ;;   provide useful values for different nodes.
 ;; - See "Format of matrices used in grsp8" on top of this file for details
 ;;   on each matrix used.
+;; - See grsp0.grsp-random-state-set.
 ;;
 ;; Output:
 ;;

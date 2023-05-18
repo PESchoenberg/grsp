@@ -52,8 +52,15 @@
 ;;   (Accessed: March 6, 2023).
 ;; - [6] Interpolation (2023) Wikipedia. Wikimedia Foundation. Available at:
 ;;   https://en.wikipedia.org/wiki/Interpolation (Accessed: March 8, 2023). 
-;; - [7] https://towardsdatascience.com/implementing-gradient-descent-in-python-from-scratch-760a8556c31f
-;; - [8] https://machinelearningspace.com/a-comprehensive-guide-to-gradient-descent-algorithm/#lregress
+;; - [7] Sheth, V. (2022) Implementing gradient descent in python from scratch,
+;;   Medium. Available at:
+;;   https://towardsdatascience.com/implementing-gradient-descent-in-python-from-scratch-760a8556c31f
+;;   (Accessed: 16 May 2023). 
+;; - [8] Gradient descent: A comprehensive guide to implementing in Python
+;;   (2023) Machine Learning Space. Available at:
+;;   https://machinelearningspace.com/a-comprehensive-guide-to-gradient-descent-algorithm/#lregress
+;;   (Accessed: 16 May 2023). 
+ 
 
 (define-module (grsp grsp9)
   #:use-module (grsp grsp0)
@@ -104,7 +111,11 @@
 	    grsp-opt-hypo
 	    grsp-opt-cost-pd
 	    grsp-opt-bgd
-	    grsp-opt-xty))
+	    grsp-opt-xty
+	    grsp-opt-lrstb
+	    grsp-opt-lrsex
+	    grsp-opt-lrssb
+	    grsp-opt-mbgd))
 
 
 ;;;; grsp-sop-booth - Booth test, single objective function.
@@ -1795,12 +1806,22 @@
 ;;
 ;; Parameters:
 ;;
+;; - p_s1: string, learning rate scheduling.
+;;
+;;   - "#const": constant learning rate.
+;;   - "#time": time-based learning rate.
+;;   - "#exp": exponential learning rate.
+;;   - "#step": step-based learning rate.
+;;
 ;; - p_a1: matrix, with features per instance as rows (x).
 ;; - p_a2: matrix, with parameters per instance as rows (theta).
 ;; - p_a3: col matrix, observed data per instance (y).
 ;; - p_lr: learning rate.
 ;; - p_mi: max iterations.
 ;; - p_cv: convergence value.
+;; - p_de: learning rate decay.
+;; - p_df: drop frequency (only for "#step", you can leave as zero otherwise).
+;; - p_dr: drop rate (only for "#step", you can leave as zero otherwise).
 ;;
 ;; Notes:
 ;;
@@ -1810,22 +1831,38 @@
 ;;
 ;; - [8]
 ;;
-(define (grsp-opt-bgd p_a1 p_a2 p_a3 p_lr p_mi p_cv)
+(define (grsp-opt-bgd p_s1 p_a1 p_a2 p_a3 p_lr p_mi p_cv p_de p_df p_dr)
   (let ((res2 0)
 	(c1 0)
 	(c2 0)
-	(j2 0))
+	(j2 0)
+	(lr 0)
+	(li 0))
 
     (set! res2 (grsp-matrix-subcpy p_a2
 				   (grsp-lm p_a2)
 				   (grsp-lm p_a2)
 				   (grsp-ln p_a2)
 				   (grsp-hn p_a2)))
-
+    
+    ;; Initial learning rate.
+    (set! lr p_lr)
+    (set! li p_lr)
+    
     ;; Max iter loop.
     (let loopi1 ((i1 0))
       (if (<= i1 p_mi)
 
+	  ;; Adjust learning rate-
+	  (cond ((> i1 0)
+
+		 (cond ((equal? p_s1 "#time")
+			(set! lr (grsp-opt-lrstb lr i1 p_de)))
+		       ((equal? p_s1 "#exp")
+			(set! lr (grsp-opt-lrsex li i1 p_de)))
+		       ((equal? p_s1 "#step")
+			(set! lr (grsp-opt-lrssb li lr p_df p_dr))))))
+	  
 	  ;; Parameters per row loop-
 	  (begin (let loopj1 ((j1 (grsp-ln res2)))
 		   (if (<= j1 (grsp-hn res2))
@@ -1834,7 +1871,7 @@
 
 			      ;; Multiply cost partial derivative by learning
 			      ;; rate.
-			      (set! j2 (- (array-ref res2 0 j1) (* p_lr c1)))
+			      (set! j2 (- (array-ref res2 0 j1) (* lr c1)))
 
 			      ;; Replace parameter theta[j1].
 			      (array-set! res2 j2 0 j1)
@@ -1898,4 +1935,172 @@
 	   (set! i1 (in i1)))
     
     res1))
+
+
+;;;; grsp-opt-lrstb - Learning rate schedule, time-based.
+;;
+;; Keywords:
+;;
+;; - optimization, gradient, descent, learning, rate, scheduling
+;;
+;; Parameters:
+;;
+;; - p_li: initial learning rate.
+;; - p_lr: current learning rate.
+;; - p_it: iteration step.
+;; - p_de: decay.
+;;
+;; Sources:
+;;
+;; - [7].
+;;
+(define (grsp-opt-lrstb p_lr p_it p_de)
+  (let ((res1 0))
+
+    (set! res1 (/ p_lr (+ 1 (* p_it p_de))))
+    
+    res1))
+
+
+;;;; grsp-opt-lrsex - Learning rate schedule, exponential.
+;;
+;; Keywords:
+;;
+;; - optimization, gradient, descent, learning, rate, scheduling
+;;
+;; Parameters:
+;;
+;; - p_li: initial learning rate.
+;; - p_it: iteration step.
+;; - p_de: decay.
+;;
+;; Sources:
+;;
+;; - [7].
+;;
+(define (grsp-opt-lrsex p_li p_it p_de)
+  (let ((res1 0))
+
+    (set! res1 (* p_li (expt (grsp-e) (* -1 p_de p_it))))
+    
+    res1))
+
+
+;;;; grsp-opt-lrssb - Learning rate schedule, step-based.
+;;
+;; Keywords:
+;;
+;; - optimization, gradient, descent, learning, rate, scheduling
+;;
+;; Parameters:
+;;
+;; - p_li: initial learning rate.
+;; - p_lr: current learning rate.
+;; - p_df: drop frequency.
+;; - p_dr: drop rate.
+;;
+;; Sources:
+;;
+;; - [7].
+;;
+(define (grsp-opt-lrssb p_li p_lr p_df p_dr)
+  (let ((res1 0))
+
+    (set! res1 (* p_li (expt p_dr (/ (+ 1 p_lr) p_df))))
+    
+    res1))
+
+
+;;;; grsp-opt-mbgd - Mini batch gradient descent.
+;;
+;; Keywords:
+;;
+;; - optimization, gradient, descent
+;;
+;; Parameters:
+;;
+;; - p_s1: string, learning rate scheduling.
+;;
+;;   - "#const": constant learning rate.
+;;   - "#time": time-based learning rate.
+;;   - "#exp": exponential learning rate.
+;;   - "#step": step-based learning rate.
+;;
+;; - p_a1: matrix, with features per instance as rows (x).
+;; - p_a2: matrix, with parameters per instance as rows (theta).
+;; - p_a3: col matrix, observed data per instance (y).
+;; - p_lr: learning rate.
+;; - p_mi: max iterations.
+;; - p_cv: convergence value.
+;; - p_de: learning rate decay.
+;; - p_df: drop frequency (only for "#step", you can leave as zero otherwise).
+;; - p_dr: drop rate (only for "#step", you can leave as zero otherwise).
+;; - p_m1: integer, mini-batcj size (number of rows).
+;;
+;; Notes:
+;;
+;; - See example29.scm.
+;;
+;; Output:
+;;
+;; - List containing gradient descent results and mini batches of X, T and Y
+;;
+;; Sources:
+;;
+;; - [8]
+;;
+(define (grsp-opt-mbgd p_s1 p_a1 p_a2 p_a3 p_lr p_mi p_cv p_de p_df p_dr p_m1)
+  (let ((res1 0)
+	(res2 '())
+	(a1 0)
+	(a12 0)
+	(a2 0)
+	(a22 0)
+	(a3 0)
+	(a32 0)
+	(m1 0)
+	(m2 0))
+
+    ;; Build mini-batch random dataset.
+    
+    ;; If p_m1 is higher than the number of rows in p_a1, replace m1 with the
+    ;; number of rows of p_a1.
+    (set! m1 p_m1)
+    (cond ((> m1 (grsp-tm p_a1))
+	   (set! m1 (grsp-tm p_a1))))
+
+    ;; Create matrices of m1 rows and with the same number of cols as p_a1,
+    ;; p_a2 and p_a3.
+    (set! a1 (grsp-matrix-create 0 m1 (grsp-tn p_a1)))
+    (set! a2 (grsp-matrix-create 0 m1 (grsp-tn p_a2)))
+    (set! a3 (grsp-matrix-create 0 m1 (grsp-tn p_a3)))
+    
+    ;; Cycle.
+    (let loop ((i1 (grsp-lm a1)))
+      (if (<= i1 (grsp-hm a1))
+
+	  (begin (set! m2 (random (+ (grsp-tm a1) 1)))
+
+		 ;; Features.
+		 (set! a12 (grsp-matrix-subcpy p_a1 m2 m2 (grsp-ln p_a1) (grsp-hn p_a1)))
+		 (set! a1 (grsp-matrix-subrep a1 a12 i1 (grsp-ln a1)))
+
+		 ;; Theta.
+		 (set! a22 (grsp-matrix-subcpy p_a2 m2 m2 (grsp-ln p_a2) (grsp-hn p_a2)))
+		 (set! a2 (grsp-matrix-subrep a2 a22 i1 (grsp-ln a2)))		 
+
+		 ;; Observed results.
+		 (set! a32 (grsp-matrix-subcpy p_a3 m2 m2 (grsp-ln p_a3) (grsp-hn p_a3)))
+		 (set! a3 (grsp-matrix-subrep a3 a32 i1 (grsp-ln a3)))		 
+		 
+		 (loop (+ i1 1)))))
+     
+    ;; Solve with bgd for mini-batch.
+    (set! res1 (grsp-opt-bgd p_s1 a1 a2 a3 p_lr p_mi p_cv p_de p_df p_dr))
+
+    ;; Compose results.
+    (set! res2 (list res1 a1 a2 a3))
+    
+    res2))
+
 

@@ -136,6 +136,7 @@
 ;;
 ;; - The structure of the matrix is set to make it compatible with the
 ;;   requirements of other datas structures such as those of grsp8.
+;; - See grsp0.grsp-random-state-set.
 ;;
 ;; Output:
 ;;
@@ -190,6 +191,10 @@
 ;; - p_l2: list of arguments for p_s1.
 ;; - p_s1: base op (see grsp-evo-mod1-ff1).
 ;; - p_l1: list of columns of p_a1 on which p_s1 is performed.
+;;
+;; Notes:
+;;
+;; - See grsp0.grsp-random-state-set.
 ;;
 ;; Output:
 ;;

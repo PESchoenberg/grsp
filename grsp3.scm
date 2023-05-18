@@ -440,7 +440,8 @@
 	    grsp-matrix-row-subreps
 	    grsp-matrix-ldvl
 	    grsp-matrix-blur
-	    grsp-matrix-col-replacev))
+	    grsp-matrix-col-replacev
+	    grsp-matrix-selectmb))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -717,7 +718,7 @@
 ;;
 ;; Notes:
 ;;
-;; - See grsp0.grsp-s2dbc, grsp0.grsp-dbc2s.
+;; - See grsp0.grsp-s2dbc, grsp0.grsp-dbc2s, grsp0.grsp-random-state-set.
 ;;
 ;; Output:
 ;;
@@ -1220,7 +1221,7 @@
 ;;   instead of one. Be careful when interpreting some of these sets because it
 ;;   might be easy to confuse the programming and math conventions (example;
 ;;   matrix Sigma 1 would be returned as element 0 in the resulting list).
-;; - See grsp0.grsp-s2dbc, grsp0.grsp-dbc2s.
+;; - See grsp0.grsp-s2dbc, grsp0.grsp-dbc2s, grsp0.grsp-random-state-set.
 ;;
 ;;
 ;; Output:
@@ -2202,6 +2203,7 @@
 ;; - This function does not validate the dimensionality or boundaries of the 
 ;;   matrices involved; the user or an additional shell function should take
 ;;   care of that.
+;; - See grsp0.grsp-random-state-set.
 ;;
 ;; Output:
 ;;
@@ -7723,6 +7725,7 @@
 ;; Notes:
 ;;
 ;; - See grsp-matrix-crossover for further details.
+;; - See grsp0.grsp-random-state-set.
 ;;
 ;; Output
 ;;
@@ -7802,6 +7805,7 @@
 ;;
 ;; - This is just a convenience fitness function. You may want to create your
 ;;   own for your specific task.
+;; - See grsp0.grsp-random-state-set.
 ;;
 ;; Output
 ;;
@@ -11053,7 +11057,9 @@
 ;; Notes:
 ;;
 ;; - Values in p_a1 will act as statistical mean in each case.
-;; - See grsp2.grsp-rprnd.
+;; - See grsp2.grsp-rprnd, grsp0.grsp-random-state-set.
+;; - With a normal distribution, mean 0 and variance 1 you shoild get Gaussian
+;;   noise.
 ;;
 ;; Output:
 ;;
@@ -11159,4 +11165,45 @@
 	  
 		 (loop (+ i1 1)))))
 	
+    res1))
+
+
+;;;; grsp-matrix-selectmb - Select a random mini-batch of random rows from p_a1.
+;;
+;; Keywords:
+;;
+;; - random, group, combinatorics, combination
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix.
+;; - p_a2; integer, batch sizw.
+;;
+(define (grsp-matrix-selectmb p_a1 p_m1)
+  (let ((res1 0)
+	(res2 0)
+	(m1 0)
+	(m2 0))
+
+    ;; If p_m1 is higher than the number of rows in p_a1, replace m1 with the
+    ;; number of rows of p_a1. In this case the mini batch will be of the same
+    ;; size as the matrix.
+    (set! m1 p_m1)
+    (cond ((> m1 (grsp-tm p_a1))
+	   (set! m1 (grsp-tm p_a1))))
+
+    ;; Create a matrix of m1 rows and with the same number of cols as p_a1.
+    (set! res1 (grsp-matrix-create 0 m1 (grsp-tn p_a1)))
+    
+    ;; Cycle.
+    (let loop ((i1 (grsp-lm res1)))
+      (if (<= i1 (grsp-hm res1))
+
+	  (begin (set! m2 (random (+ (grsp-tm res1) 1)))
+		 
+		 (set! res2 (grsp-matrix-subcpy p_a1 m2 m2 (grsp-ln p_a1) (grsp-hn p_a1)))
+		 (set! res1 (grsp-matrix-subrep res1 res2 i1 (grsp-ln res1)))
+		 
+		 (loop (+ i1 1)))))
+    
     res1))

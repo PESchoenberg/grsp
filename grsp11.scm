@@ -305,6 +305,7 @@
 ;; Notes:
 ;;
 ;; - You may need to use seed->random-state for pseudo random numbers.
+;; - See grsp0.grsp-random-state-set.
 ;;
 ;; Sources:
 ;;
