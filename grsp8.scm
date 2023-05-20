@@ -241,10 +241,17 @@
 ;;   [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Integrated_information_theory
 ;;   [Accessed 20 September 2022].
-;; - [18] https://en.wikipedia.org/wiki/Evolutionary_acquisition_of_neural_topologies
-;; - [19] https://en.wikipedia.org/wiki/Neuroevolution_of_augmenting_topologies
-;; - [20] https://en.wikipedia.org/wiki/Catastrophic_interference
-;; - [21] https://en.wikipedia.org/wiki/Online_machine_learning
+;; - [18] Evolutionary acquisition of Neural Topologies. (2022a). Retrieved
+;;   from
+;;   https://en.wikipedia.org/wiki/Evolutionary_acquisition_of_neural_topologies 
+;; - [19] Neuroevolution of augmenting topologies. (2023, March 20).
+;;   https://en.wikipedia.org/wiki/Neuroevolution_of_augmenting_topologies 
+;; - [20] Wikimedia Foundation. (2023b, April 17). Catastrophic interference.
+;;   Wikipedia. https://en.wikipedia.org/wiki/Catastrophic_interference 
+;; - [21] Wikimedia Foundation. (2022a, September 6). Online machine learning.
+;;   Wikipedia. https://en.wikipedia.org/wiki/Online_machine_learning 
+;; - [22] Wikimedia Foundation. (2022a, July 10). Propagación hacia atrás.
+;;   Wikipedia. https://es.wikipedia.org/wiki/Propagaci%C3%B3n_hacia_atr%C3%A1s 
 
 
 (define-module (grsp grsp8)
