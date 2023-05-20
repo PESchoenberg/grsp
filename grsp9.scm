@@ -1825,7 +1825,7 @@
 ;;
 ;; Notes:
 ;;
-;; - See example28.scm.
+;; - See example28.scm, grsp-opt-mbgd.
 ;;
 ;; Sources:
 ;;
@@ -2035,11 +2035,11 @@
 ;; - p_de: learning rate decay.
 ;; - p_df: drop frequency (only for "#step", you can leave as zero otherwise).
 ;; - p_dr: drop rate (only for "#step", you can leave as zero otherwise).
-;; - p_m1: integer, mini-batcj size (number of rows).
+;; - p_m1: integer, mini-batch size (number of rows constituting the mini batch).
 ;;
 ;; Notes:
 ;;
-;; - See example29.scm.
+;; - See example29.scm, grsp-opt-bgd.
 ;;
 ;; Output:
 ;;
@@ -2082,20 +2082,32 @@
 	  (begin (set! m2 (random (+ (grsp-tm a1) 1)))
 
 		 ;; Features.
-		 (set! a12 (grsp-matrix-subcpy p_a1 m2 m2 (grsp-ln p_a1) (grsp-hn p_a1)))
+		 (set! a12 (grsp-matrix-subcpy p_a1
+					       m2
+					       m2
+					       (grsp-ln p_a1)
+					       (grsp-hn p_a1)))
 		 (set! a1 (grsp-matrix-subrep a1 a12 i1 (grsp-ln a1)))
 
 		 ;; Theta.
-		 (set! a22 (grsp-matrix-subcpy p_a2 m2 m2 (grsp-ln p_a2) (grsp-hn p_a2)))
-		 (set! a2 (grsp-matrix-subrep a2 a22 i1 (grsp-ln a2)))		 
+		 (set! a22 (grsp-matrix-subcpy p_a2
+					       m2
+					       m2
+					       (grsp-ln p_a2)
+					       (grsp-hn p_a2)))
+		 (set! a2 (grsp-matrix-subrep a2 a22 i1 (grsp-ln a2)))
 
 		 ;; Observed results.
-		 (set! a32 (grsp-matrix-subcpy p_a3 m2 m2 (grsp-ln p_a3) (grsp-hn p_a3)))
-		 (set! a3 (grsp-matrix-subrep a3 a32 i1 (grsp-ln a3)))		 
+		 (set! a32 (grsp-matrix-subcpy p_a3
+					       m2
+					       m2
+					       (grsp-ln p_a3)
+					       (grsp-hn p_a3)))
+		 (set! a3 (grsp-matrix-subrep a3 a32 i1 (grsp-ln a3)))
 		 
 		 (loop (+ i1 1)))))
      
-    ;; Solve with bgd for mini-batch.
+    ;; Solve with bgd for mini-batch rows.
     (set! res1 (grsp-opt-bgd p_s1 a1 a2 a3 p_lr p_mi p_cv p_de p_df p_dr))
 
     ;; Compose results.
