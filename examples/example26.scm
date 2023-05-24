@@ -87,6 +87,7 @@
 (set! L1 (grsp-ann-idata-bvw "conns" "#value" L1 1))
 (set! L1 (grsp-ann-idata-bvw "conns" "#weight" L1 1))
 
+
 ;;;; Main program.
 
 ;; We will process a copy of L1 in order to be able to compare both neural

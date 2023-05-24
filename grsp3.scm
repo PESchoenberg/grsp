@@ -441,7 +441,8 @@
 	    grsp-matrix-ldvl
 	    grsp-matrix-blur
 	    grsp-matrix-col-replacev
-	    grsp-matrix-selectmb))
+	    grsp-matrix-selectmb
+	    grsp-matrix-row-opscr))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -11203,6 +11204,65 @@
 		 
 		 (set! res2 (grsp-matrix-subcpy p_a1 m2 m2 (grsp-ln p_a1) (grsp-hn p_a1)))
 		 (set! res1 (grsp-matrix-subrep res1 res2 i1 (grsp-ln res1)))
+		 
+		 (loop (+ i1 1)))))
+    
+    res1))
+
+
+;;;; grsp-matrix-row-opscr - Performs operation p_s1 row by row on p_a1 and
+;; places scalar results on a column vector.
+;;
+;; Keywords:
+;;
+;; - functions, algebra, matrix, matrices
+;;
+;; Parameters:
+;;
+;; - p_s1:
+;;
+;;   - "#+": sum.
+;;   - "#-": substraction.
+;;   - "#*": product.
+;;   - "#/": division.
+;;
+;; - p_a1: matrix.
+;;
+;; - Matrix.
+;;
+(define (grsp-matrix-row-opscr p_s1 p_a1)
+  (let ((res1 0)
+	(res2 0)
+	(j2 0))
+
+    (set! res1 (grsp-matrix-create 0 (grsp-tm p_a1) 1))
+
+    ;; Cycle.
+    (let loop ((i1 (grsp-lm p_a1)))
+      (if (<= i1 (grsp-hm p_a1))
+
+	  (begin (set! j2 (grsp-ln p_a1))
+
+		 ;; Set res2 to the value of the first col and increment j2 to
+		 ;; start from the following column.
+		 (set! res2 (array-ref p_a1 i1 j2))
+		 (set! j2 (in j2))
+		 
+		 (let loop ((j1 j2))
+		   (if (<= j1 (grsp-hn p_a1))
+
+		       (begin (cond ((equal? p_s1 "#+")
+				     (set! res2 (+ res2 (array-ref p_a1 i1 j1))))
+				    ((equal? p_s1 "#-")
+				     (set! res2 (- res2 (array-ref p_a1 i1 j1))))
+				    ((equal? p_s1 "#*")
+				     (set! res2 (* res2 (array-ref p_a1 i1 j1))))
+				    ((equal? p_s1 "#/")
+				     (set! res2 (/ res2 (array-ref p_a1 i1 j1)))))
+
+			      (array-set! res1 res2 i1 0)
+			      
+			      (loop (+ j1 1)))))		 
 		 
 		 (loop (+ i1 1)))))
     

@@ -325,7 +325,8 @@
 	    grsp-ann-element-number
 	    grsp-ann-get-element
 	    grsp-ann-conns-opmm
-	    grsp-ann-idata-bvw))
+	    grsp-ann-idata-bvw
+	    grsp-ann-delta))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network as a list data
@@ -344,7 +345,7 @@
 ;;
 ;; Output:
 ;;
-;; - A list with seven elements, in this order.
+;; - A list with nine elements, in this order.
 ;;
 ;;   - nodes: a matrix for the definition of nodes.
 ;;   - conns: a matrix for the definition of connections between those
@@ -356,6 +357,8 @@
 ;;     of the ann.
 ;;   - specs: a matrix that contains the structural specifications of an ann.
 ;;   - odtid: a matrix that provides feedback structure from odata to idata.
+;;   - datai.
+;;   - datao.
 ;;
 ;; - In the case of active networs, these matrices will be filled with non-
 ;;   trivial data. In this case, only trivial data will be placed inside those
@@ -503,6 +506,7 @@
 			    odtid
 			    (grsp-ann-get-matrix "datai" res3)
 			    (grsp-ann-get-matrix "datao" res3))))
+	  
 	  (else (set! res1 res3)))
     
     ;; Update idata, odata and odtid tables.
@@ -527,6 +531,13 @@
 ;;   - "#bp": backpropagation.
 ;;
 ;; - p_l1: ann (list).
+;;
+;; Notes:
+;;
+;; - TODO: according to (Open Assistant), these algorithms could be used for
+;;   optimization: genetic algorithms, simulated annealing, particle swarm
+;;   optimization, evolutionary computation, stochastic gradient descent,
+;;   batch gradient descent, online gradient descent, and Adaboost. 
 ;;
 ;; Output:
 ;;
@@ -2050,17 +2061,20 @@
 		  (display "\n")
 		  (grsp-matrix-display (grsp-matrix-row-select "#=" conns 3 id))
 		  (display "\n")))
-	   	   
+
+	   ;; *** Test. Make conditional?
+	   ;; Pass output to odata. 
+	   (set! odata (grsp-nodes2odata nodes odata))
+
+	   ;; Add newest odata to datao. This should produce an incremental
+	   ;; datao table or matrix containing the results of each ann
+	   ;; iteration.	   
+	   (set! datao (grsp-odata2datao odata datao))
+	   
 	   (set! i1 (in i1)))
 	   
     ;; Update iteration counter.
     (grsp-ann-counter-upd count 2)   
-
-    ;; Pass output to odata.
-    (set! odata (grsp-nodes2odata nodes odata))
-
-    ;; Add newest odata to datao.
-    (set! datao (grsp-odata2datao odata datao))
 
     (cond ((equal? p_b3 #t)
 	   (display "\n End of nodes eval \n")
@@ -2804,7 +2818,7 @@
 
     res1))
 
-
+;; ***
 ;;;; grsp-m2datai - Casts the data of a grsp3 matrix as datai format. 
 ;;
 ;; Keywords:
@@ -2870,7 +2884,7 @@
     (set! ln3 (grsp-matrix-esi 3 p_a1))
     (set! hn3 (grsp-matrix-esi 4 p_a1))  
     
-    ;; Cycle thorough res1 row by row.
+    ;; Cycle thorough p_a1 row by row.
     (set! i3 lm3)
     (set! j4 lm1)
     (while (<= i3 hm3)
@@ -2909,7 +2923,7 @@
     res1))
 
 
-;;;; grsp-ann-data-update - Black box update of datai table using grsp-m2datai.
+;;;; grsp-ann-datai-update - Black box update of datai table using grsp-m2datai.
 ;;
 ;; Keywords:
 ;;
@@ -3258,14 +3272,6 @@
   (let ((res1 0)
 	(res2 0)
 	(res3 0)
-	(lm1 0)
-	(hm1 0)
-	(ln1 0)
-	(hn1 0)
-	(lm2 0)
-	(hm2 0)
-	(ln2 0)
-	(hn2 0)
 	(n2 0)
 	(i1 0)
 	(i2 0))
@@ -3276,24 +3282,13 @@
       
     (set! res1 (grsp-matrix-row-select "#=" res1 2 2))
 
-    ;; Extract matrix boundaries.
-    (set! lm1 (grsp-matrix-esi 1 res1))
-    (set! hm1 (grsp-matrix-esi 2 res1))
-    (set! ln1 (grsp-matrix-esi 3 res1))
-    (set! hn1 (grsp-matrix-esi 4 res1))
-
-    (set! lm2 (grsp-matrix-esi 1 res2))
-    (set! hm2 (grsp-matrix-esi 2 res2))
-    (set! ln2 (grsp-matrix-esi 3 res2))
-    (set! hn2 (grsp-matrix-esi 4 res2))     
-    
     ;; Loop over res2 and pass relevant data from each row to odata.
-    (set! i1 lm1)
-    (set! i2 lm2)
-    (while (<= i2 hm2)
+    (set! i1 (grsp-lm res1))
+    (set! i2 (grsp-lm res2))
+    (while (<= i2 (grsp-hm res2))
 
 	   ;; On iteration end, change the control value to 1.
-	   (cond ((= i1 hm1)
+	   (cond ((= i1 (grsp-hm res1))
 		  (set! n2 1))
 		 (else (set! n2 0)))		  
 	   
@@ -3331,14 +3326,6 @@
 	(res2 0)
 	(res3 0)
 	(res4 0)
-	(lm1 0)
-	(hm1 0)
-	(ln1 0)
-	(hn1 0)
-	(lm2 0)
-	(hm2 0)
-	(ln2 0)
-	(hn2 0)
 	(n2 0)
 	(i1 0)
 	(i2 0))
@@ -3347,20 +3334,9 @@
     (set! res1 (grsp-matrix-cpy p_a1))
     (set! res2 (grsp-matrix-cpy p_a2))
 
-    ;; Extract matrix boundaries.
-    (set! lm1 (grsp-matrix-esi 1 res1))
-    (set! hm1 (grsp-matrix-esi 2 res1))
-    (set! ln1 (grsp-matrix-esi 3 res1))
-    (set! hn1 (grsp-matrix-esi 4 res1))
-
-    (set! lm2 (grsp-matrix-esi 1 res2))
-    (set! hm2 (grsp-matrix-esi 2 res2))
-    (set! ln2 (grsp-matrix-esi 3 res2))
-    (set! hn2 (grsp-matrix-esi 4 res2))    
-
-    (set! i1 lm1)
-    (set! i2 lm2)
-    (while (<= i1 hm1)
+    (set! i1 (grsp-lm res1))
+    (set! i2 (grsp-lm res2))
+    (while (<= i1 (grsp-hm res1))
 
 	   ;; See if the last row of res2 (datao) is filled with zeros:
 	   ;;
@@ -3374,8 +3350,7 @@
 					  (grsp-hn res2)))
 
 	   (cond ((equal? (grsp-matrix-is-filled-with res2 0) #f)
-		  (set! res2 (grsp-matrix-subexp res2 1 0))
-		  (set! hm2 (grsp-matrix-esi 2 res2))))
+		  (set! res2 (grsp-matrix-subexp res2 1 0))))
 
 	   ;; Copy data from res1.
 	   (array-set! res2 (array-ref res1 i1 0) i2 0)
@@ -3423,7 +3398,7 @@
     ;; Extract matrices and lists.
     (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
     (set! conns (grsp-ann-get-matrix "conns" p_l1))  
-
+    
     ;; Extract matrix boundaries.
     (set! lm1 (grsp-matrix-esi 1 nodes))
     (set! hm1 (grsp-matrix-esi 2 nodes))
@@ -4164,7 +4139,7 @@
   (let ((i1 0)
 	(nodes 0)
 	(b2 #f))
-
+    
     ;; Extract matrix.
     (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
 
@@ -4504,7 +4479,7 @@
 
 
 ;;;; grsp-ann-row-idata-bvw - Updates the idata matrix of ann p_l1 by adding
-;; rows for matrices nodes and conns in which values fo bias, value or weight
+;; rows for matrices nodes and conns in which values for bias, value or weight
 ;; according to p_s1 are set to value p_n1.
 ;;
 ;; - functions, ann, neural, network, idata, configuration, block, batch
@@ -4617,4 +4592,36 @@
     
     res1))
 
+
+;;;; grsp-ann-delta -Calculates the error signal delta.
+;;
+;; Keywords:
+;;
+;; - error, difference, output, delta
+;;
+;; Parameters;
+;;
+;; - p_a1: real output data in odata format.
+;; - p_a2: expected value per odata register or row in odata format.
+;;
+;; Output:
+;;
+;; - Error signal values of output layer in odata format.
+;;
+(define (grsp-ann-delta p_a1 p_a2)
+  (let ((res1 0))
+
+    ;; Create results matrix.
+    (set! res1 (grsp-matrix-create-dim 0 p_a1))
+    
+    (let loop (( i1 (grsp-ln p_a1)))
+      (if (<= i1 (grsp-hn p_a1))
+
+	  ;;(begin (
+		  ;;
+		  ;;)
+			      
+		 (loop (+ i1 1))))
+    
+    res1))
 

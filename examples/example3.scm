@@ -65,13 +65,14 @@
 (define iterations_desired 1)
 (define mutations_desired 0)
 (define data_samples 10)
-(define verbosity #t)
+(define verbosity_itera #t)
+(define verbosity_nodes #t)
+(define verbosity_node #t)
 (define L2 '())
 (define L3 '())
 (define res1 0)
 (define s1 "--------------------------------------------")
 (define s2 "\n xxxxxxxxxxxxxxx \n")
-;;efine s2 (grsp-ldl " xxxxxxxxxxxxxxx "))
 (define mc -1)
 (define opt "? ")
 (define pdf " ")
@@ -105,7 +106,9 @@
   (set! iterations_desired 1)
   (set! mutations_desired 0)
   (set! data_samples 10)
-  (set! verbosity #t))
+  (set! verbosity_itera #t)
+  (set! verbosity_nodes #t)
+  (set! verbosity_node #t))
 
 
 ;;;; example3-ann-show-values - Shows current values for ann.
@@ -121,7 +124,9 @@
   (pres2 "iterations_desired" iterations_desired)
   (pres2 "mutations_desired" mutations_desired)
   (pres2 "data_samples" data_samples)
-  (pres2 "verbosity" verbosity))
+  (pres2 "verbosity iter" verbosity_itera)
+  (pres2 "verbosity nodes" verbosity_nodes)
+  (pres2 "verbosity node" verbosity_node)) 
 
 
 ;;;; example3-set-values - Sets some ann configuration values.
@@ -140,16 +145,19 @@
 ;;
 (define (example3-dadbp)
   (grsp-ldl (strings-append (list s1 "A)- Configuring ANN.") 1) 2 1)
-  ;;(grsp-ldl (strings-append (list s1 "A)- Configuring ANN.") 1))
   (grsp-ldl " Initial state of ann (L1):" 1 1)
   (grsp-lal-dev #t L1)
-  (display s2)
   (display L1)
-  (display s2)
   
   ;; Update ann with new datai matrix created from matrix data.
   (set! L1 (grsp-ann-datai-update data L1 0))
-  (display s2)
+
+  ;; We will set some values to 1 in nodes and conns.
+  (set! L1 (grsp-ann-idata-bvw "nodes" "#bias" L1 1))
+  (set! L1 (grsp-ann-idata-bvw "nodes" "#value" L1 1))
+  (set! L1 (grsp-ann-idata-bvw "nodes" "#weight" L1 1))
+  (set! L1 (grsp-ann-idata-bvw "conns" "#value" L1 1))
+  (set! L1 (grsp-ann-idata-bvw "conns" "#weight" L1 1))
   
   ;; Show data table.
   (display "\n")
@@ -175,7 +183,9 @@
 ;;;; example3-el2 - Evaluate L2.
 (define (example3-el2)
   (grsp-ldl (strings-append (list s1 "B)- Processing ANN.") 1) 2 1)
-  (set! L2 (grsp-ann-net-miter-omth verbosity
+  (set! L2 (grsp-ann-net-miter-omth verbosity_itera
+				    verbosity_nodes
+				    verbosity_node
 				    mth
 				    "#no"
 				    L2
