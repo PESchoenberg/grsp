@@ -326,7 +326,8 @@
 	    grsp-ann-get-element
 	    grsp-ann-conns-opmm
 	    grsp-ann-idata-bvw
-	    grsp-ann-delta))
+	    grsp-ann-delta
+	    grsp-ann-bp))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network as a list data
@@ -545,20 +546,40 @@
 ;;
 (define (grsp-ann-net-reconf p_s1 p_l1)
   (let ((res1 '())
-	(l1 '()))
+	(nodes 0)
+	(conns 0)
+	(count 0)
+	(idata 0)
+	(odata 0)
+	(specs 0)
+	(odtid 0)
+	(datai 0)
+	(datao 0))	
 
-    (set! l1 p_l1)
-
+    ;; Safety copy.
+    (set! res1 p_l1)
+       
     ;; Delete dead elements.
-    (set! l1 (grsp-ann-deletes l1))
+    (set! res1 (grsp-ann-deletes res1))
 
+    ;; Extract matrices and lists.
+    (set! nodes (grsp-ann-get-matrix "nodes" res1))
+    (set! conns (grsp-ann-get-matrix "conns" res1))
+    (set! count (grsp-ann-get-matrix "count" res1))    
+    (set! idata (grsp-ann-get-matrix "idata" res1))
+    (set! odata (grsp-ann-get-matrix "odata" res1))
+    (set! specs (grsp-ann-get-matrix "specs" res1))
+    (set! odtid (grsp-ann-get-matrix "odtid" res1))
+    (set! datai (grsp-ann-get-matrix "datai" res1))
+    (set! datao (grsp-ann-get-matrix "datao" res1))
+
+    ;; ***
     ;; Callibrate.
     (cond ((equal? p_s1 "#bp")
-	   (grsp-placebo " "))
-	  (else (grsp-placebo " ")))
-    
+	   (grsp-ann-bp res1)))
+
     ;; Compose results.
-    (set! res1 l1)
+    (set! res1 (list nodes conns count idata odata specs odtid datai datao))
     
     res1))
 
@@ -4593,7 +4614,8 @@
     res1))
 
 
-;;;; grsp-ann-delta -Calculates the error signal delta.
+;;;; grsp-ann-delta -Calculates the error signal delta for output p_a1 and
+;; expected values p_a2.
 ;;
 ;; Keywords:
 ;;
@@ -4609,19 +4631,43 @@
 ;; - Error signal values of output layer in odata format.
 ;;
 (define (grsp-ann-delta p_a1 p_a2)
-  (let ((res1 0))
+  (let ((res1 0)
+	(n1 0)
+	(n2 0))
 
     ;; Create results matrix.
-    (set! res1 (grsp-matrix-create-dim 0 p_a1))
-    
+    (set! res1 (grsp-matrix-cpy p_a1))
+
+    ;; Go over p_a1 and calculate delta as the difference between
+    ;; p_a1 and p_a2 values. Set results in res1.
     (let loop (( i1 (grsp-ln p_a1)))
       (if (<= i1 (grsp-hn p_a1))
 
-	  ;;(begin (
-		  ;;
-		  ;;)
-			      
+	  (begin (set! n1 (array-ref p_a1 i1 3))
+		 (set! n2 (array-ref p_a2 i1 3))
+		 (array-set! res1 (- n2 n1) i1 3))
+		 
 		 (loop (+ i1 1))))
     
+    res1))
+
+
+;;;; grsp-ann-bp - Backpropagation algorithm.
+;;
+;; Keywords:
+;;
+;; - backpropagation
+;;
+;; Parameters:
+;;
+;; - p_l1: list, ann.
+;;
+;; Output:
+;;
+;; - List, updated ann.
+;;
+(define (grsp-ann-bp p_l1)
+  (let ((res1 '()))
+
     res1))
 

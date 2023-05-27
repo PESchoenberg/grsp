@@ -3725,7 +3725,6 @@
 		  (set! j1 (grsp-lm A))
 		  (while (<= j1 (grsp-hm A))
 
-			 ;; ***
 			 ;; To avoid div by zero errors.
 			 (cond ((equal? (equal? (array-ref R k1 k1) 0) #f)
 				(array-set! Q (/ (array-ref A j1 k1) (array-ref R k1 k1)) j1 k1)) ;; B
