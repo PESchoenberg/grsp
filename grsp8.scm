@@ -148,7 +148,8 @@
 ;;     - Col 0: input idata layer pos (pos input).
 ;;     - Col 1: output odata layer pos (pos output).
 ;;
-;;   - Elem 7: datai.
+;;   - Elem 7: datai. Contains data that should be passe to the input stream
+;;     (idata), coming from the output stream (odata).
 ;;
 ;;     - Col 0: id of the receptive node.
 ;;     - Col 1: number that corresponds to the column in the nodes matrix in
@@ -171,12 +172,13 @@
 ;;       - 1: training data.
 ;;       - 2: control data.
 ;;
-;;   - Elem 8: datao.
+;;   - Elem 8: datao. Obtained values from each interation or forward feed of
+;;     the network.
 ;;
 ;;     - Col 0: id of each output node.
 ;;     - Col 1: layer.
 ;;     - Col 2: layer pos.
-;;     - Col 3: number (result).
+;;     - Col 3: number (obtained result).
 ;;     - Col 4: record control.
 ;;
 ;;       - 0: default.
@@ -187,6 +189,13 @@
 ;;       - 0: regular data.
 ;;       - 1: training data.
 ;;       - 2: control data.
+;;
+;;   - Elem 9: datae. Expected and delta values. Expected values must be provided
+;;     along input training data in order to train the newtwork.
+;;
+;;     - Col 0: number (expected result).
+;;     - Col 1: number (obtained result).
+;;     - Col 2: delta.
 ;;
 ;; Sources:
 ;;
@@ -327,7 +336,9 @@
 	    grsp-ann-conns-opmm
 	    grsp-ann-idata-bvw
 	    grsp-ann-delta
-	    grsp-ann-bp))
+	    grsp-ann-bp
+	    grsp-m2datae
+	    grsp-ann-load-datat))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network as a list data
@@ -346,20 +357,23 @@
 ;;
 ;; Output:
 ;;
-;; - A list with nine elements, in this order.
+;; - A list with ten elements, in this order.
 ;;
-;;   - nodes: a matrix for the definition of nodes.
-;;   - conns: a matrix for the definition of connections between those
+;;   - Elem 0: nodes, a matrix for the definition of nodes.
+;;   - Elem 1: conns, a matrix for the definition of connections between those
 ;;     nodes.
-;;   - count: a 1x4 counter matrix that defines the id of nodes amd conns
-;;     elements, as well as the iteration and layer counters.
-;;   - idata: a data input matrix. This is what goes into an ann.
-;;   - odata: an output matrix. This is what comes out of the output nodes
-;;     of the ann.
-;;   - specs: a matrix that contains the structural specifications of an ann.
-;;   - odtid: a matrix that provides feedback structure from odata to idata.
-;;   - datai.
-;;   - datao.
+;;   - Elem 2: count, a 1x4 counter matrix that defines the id of nodes amd
+;;     conns elements, as well as the iteration and layer counters.
+;;   - Elem 3: idata, a data input matrix. This is what goes into an ann.
+;;   - Elem 4: odata, an output matrix. This is what comes out of the output
+;;     nodes of the ann.
+;;   - Elem 5: specs, a matrix that contains the structural specifications of
+;;     an ann.
+;;   - Elem 6: odtid, a matrix that provides feedback structure from odata to
+;;     idata.
+;;   - Elem 7; datai, results to be transfered to idata.
+;;   - Elem 8: datao, obtained results.
+;;   - Elem 9: datae, expected results, delta values.
 ;;
 ;; - In the case of active networs, these matrices will be filled with non-
 ;;   trivial data. In this case, only trivial data will be placed inside those
@@ -381,7 +395,8 @@
 	(specs 0)
 	(odtid 0)
 	(datai 0)
-	(datao 0))
+	(datao 0)
+	(datae 0))
 
     ;; Create matrices with just one row.
     (set! nodes (grsp-ann-matrix-create "nodes" 1))
@@ -392,12 +407,27 @@
     (set! specs (grsp-ann-matrix-create "specs" 1))
     (set! odtid (grsp-ann-matrix-create "odtid" 1))
     (set! datai (grsp-ann-matrix-create "datai" 1))
-    (set! datao (grsp-ann-matrix-create "datao" 1))    
+    (set! datao (grsp-ann-matrix-create "datao" 1))
+    (set! datae (grsp-ann-matrix-create "datae" 1))
     
     ;; Rebuild the list and compose results.
     (cond ((equal? p_b1 #t)
-	   (set! res1 (list nodes conns count idata odata specs)))
-	  (else (set! res1 (grsp-ann-net-preb nodes conns count idata odata specs odtid datai datao))))
+	   (set! res1 (list nodes
+			    conns
+			    count
+			    idata
+			    odata
+			    specs)))
+	  (else (set! res1 (grsp-ann-net-preb nodes
+					      conns
+					      count
+					      idata
+					      odata
+					      specs
+					      odtid
+					      datai
+					      datao
+					      datae))))
     
     res1))
 
@@ -420,14 +450,16 @@
 ;;     process as the sixth of the ann list, meaning that this option returns
 ;;     full matrices:
 ;;
-;;     - nodes.
-;;     - conns.
-;;     - count.
-;;     - idata.
-;;     - odata.
-;;     - specs.
-;;     - datai.
-;;     - datao.
+;;     - Elem 0: nodes.
+;;     - Elem 1: conns.
+;;     - Elem 2: count.
+;;     - Elem 3: idata.
+;;     - Elem 4: odata.
+;;     - Elem 5: specs.
+;;     - Elem 6: odtid.
+;;     - Elem 7: datai.
+;;     - Elem 8: datao.
+;;     - Elem 9: datae.
 ;;
 ;; - p_n2: number of mutation iterations desired.
 ;; - p_nl: number of nodes in layer 0.
@@ -506,7 +538,8 @@
 			    specs
 			    odtid
 			    (grsp-ann-get-matrix "datai" res3)
-			    (grsp-ann-get-matrix "datao" res3))))
+			    (grsp-ann-get-matrix "datao" res3)
+			    (grsp-ann-get-matrix "datae" res3))))
 	  
 	  (else (set! res1 res3)))
     
@@ -554,8 +587,9 @@
 	(specs 0)
 	(odtid 0)
 	(datai 0)
-	(datao 0))	
-
+	(datao 0)	
+	(datae 0))
+	
     ;; Safety copy.
     (set! res1 p_l1)
        
@@ -572,6 +606,7 @@
     (set! odtid (grsp-ann-get-matrix "odtid" res1))
     (set! datai (grsp-ann-get-matrix "datai" res1))
     (set! datao (grsp-ann-get-matrix "datao" res1))
+    (set! datae (grsp-ann-get-matrix "datae" res1))    
 
     ;; ***
     ;; Callibrate.
@@ -579,7 +614,16 @@
 	   (grsp-ann-bp res1)))
 
     ;; Compose results.
-    (set! res1 (list nodes conns count idata odata specs odtid datai datao))
+    (set! res1 (list nodes
+		     conns
+		     count
+		     idata
+		     odata
+		     specs
+		     odtid
+		     datai
+		     datao
+		     datae))
     
     res1))
 
@@ -694,6 +738,7 @@
 ;; - p_a7: odtid.
 ;; - p_a8: datai.
 ;; - p_a9: datao.
+;; - p_a10: datae.
 ;;
 ;; Notes:
 ;;
@@ -706,7 +751,7 @@
 ;;
 ;; - List.
 ;;
-(define (grsp-ann-net-preb p_a1 p_a2 p_a3 p_a4 p_a5 p_a6 p_a7 p_a8 p_a9)
+(define (grsp-ann-net-preb p_a1 p_a2 p_a3 p_a4 p_a5 p_a6 p_a7 p_a8 p_a9 p_a10)
   (let ((res1 '())
 	(s1 "#="))
 
@@ -716,7 +761,7 @@
     (set! p_a1 (grsp-matrix-row-delete s1 p_a1 1 0))
     
     ;; Compose results.
-    (set! res1 (list p_a1 p_a2 p_a3 p_a4 p_a5 p_a6 p_a7 p_a8 p_a9))
+    (set! res1 (list p_a1 p_a2 p_a3 p_a4 p_a5 p_a6 p_a7 p_a8 p_a9 p_a10))
 
     res1))
 
@@ -887,7 +932,8 @@
 	(specs 0)
 	(odtid 0)
 	(datai 0)
-	(datao 0)
+	(datao 0)	
+	(datae 0)
 	(hn 0)
 	(i1 0)
 	(cn 0)
@@ -902,7 +948,8 @@
     (set! specs (grsp-ann-get-matrix "specs" p_l1))
     (set! odtid (grsp-ann-get-matrix "odtid" p_l1))
     (set! datai (grsp-ann-get-matrix "datai" p_l1))
-    (set! datao (grsp-ann-get-matrix "datao" p_l1))     
+    (set! datao (grsp-ann-get-matrix "datao" p_l1))
+    (set! datae (grsp-ann-get-matrix "datae" p_l1))    
     (set! l2 p_l2)
 
     ;; Update node count in counter and l2.
@@ -937,7 +984,16 @@
 		  (set! i1 (in i1)))))
     
     ;; Compose results.
-    (set! res1 (list nodes conns count idata odata specs odtid datai datao))
+    (set! res1 (list nodes
+		     conns
+		     count
+		     idata
+		     odata
+		     specs
+		     odtid
+		     datai
+		     datao
+		     datae))
     
     res1))
 
@@ -969,7 +1025,8 @@
 	(specs 0)
 	(odtid 0)
 	(datai 0)
-	(datao 0))
+	(datao 0)	
+	(datae 0))
 
     (set! l1 p_l1)
     
@@ -982,7 +1039,8 @@
     (set! specs (grsp-ann-get-matrix "specs" l1))
     (set! odtid (grsp-ann-get-matrix "odtid" l1))
     (set! datai (grsp-ann-get-matrix "datai" l1))
-    (set! datao (grsp-ann-get-matrix "datao" l1))     
+    (set! datao (grsp-ann-get-matrix "datao" l1))
+    (set! datae (grsp-ann-get-matrix "datae" l1))     
 
     ;; Save to database.
     (grsp-mc2dbc-csv p_d1 nodes "nodes.csv")
@@ -993,7 +1051,8 @@
     (grsp-mc2dbc-csv p_d1 specs "specs.csv")
     (grsp-mc2dbc-csv p_d1 odtid "odtid.csv")
     (grsp-mc2dbc-csv p_d1 datai "datai.csv")
-    (grsp-mc2dbc-csv p_d1 datao "datao.csv")))
+    (grsp-mc2dbc-csv p_d1 datao "datao.csv")
+    (grsp-mc2dbc-csv p_d1 datae "datae.csv")))    
     
 
 ;;;; grsp-dbc2ann - Retrieves an ann from a csv database.
@@ -1021,7 +1080,8 @@
 	(specs 0)
 	(odtid 0)
 	(datai 0)
-	(datao 0))
+	(datao 0)	
+	(datae 0))
 
     (set! nodes (grsp-dbc2mc-csv p_d1 "nodes.csv"))
     (set! conns (grsp-dbc2mc-csv p_d1 "conns.csv"))
@@ -1032,9 +1092,19 @@
     (set! odtid (grsp-dbc2mc-csv p_d1 "odtid.csv"))    
     (set! datai (grsp-dbc2mc-csv p_d1 "datai.csv"))
     (set! datao (grsp-dbc2mc-csv p_d1 "datao.csv"))
+    (set! datae (grsp-dbc2mc-csv p_d1 "datae.csv"))    
     
     ;; Compose results.
-    (set! res1 (list nodes conns count idata odata specs odtid datai datao))
+    (set! res1 (list nodes
+		     conns
+		     count
+		     idata
+		     odata
+		     specs
+		     odtid
+		     datai
+		     datao
+		     datae))
     
     res1))
 
@@ -1118,7 +1188,8 @@
 	(specs 0)
 	(odtid 0)
 	(datai 0)
-	(datao 0))
+	(datao 0)	
+	(datae 0))
 
     ;; Safe copy of argument matrix.
     (set! res2 (grsp-matrix-cpy p_a1))
@@ -1133,6 +1204,7 @@
     (set! odtid (grsp-ann-matrix-create "odtid" 1))
     (set! datai (grsp-ann-matrix-create "datai" 1))
     (set! datao (grsp-ann-matrix-create "datao" 1))
+    (set! datae (grsp-ann-matrix-create "datae" 1))    
     
     ;; Extract the boundaries of the argument matrix.
     (set! lm1 (grsp-matrix-esi 1 res2))
@@ -1189,7 +1261,7 @@
 		   (set! i2 (in i2)))
 	   
 	   (set! i1 (in i1)))
-    ;; ***
+
     ;; Purge nodes table; this is necessary since on creation a single row is
     ;; added with all elements set on zero. Normally this would not mean trouble
     ;; and such tables can be purged later, but in this case we need to do so
@@ -1290,7 +1362,8 @@
 				  specs
 				  odtid
 				  datai
-				  datao))
+				  datao
+				  datae))
     
     res1))
 
@@ -1426,7 +1499,8 @@
 	(specs 0)
 	(odtid 0)
 	(datai 0)
-	(datao 0))
+	(datao 0)	
+	(datae 0))
 
     (set! l2 p_l2)
     
@@ -1439,7 +1513,8 @@
     (set! specs (grsp-ann-get-matrix "specs" l2))
     (set! odtid (grsp-ann-get-matrix "odtid" l2))    
     (set! datai (grsp-ann-get-matrix "datai" l2))
-    (set! datao (grsp-ann-get-matrix "datao" l2)) 
+    (set! datao (grsp-ann-get-matrix "datao" l2))
+    (set! datae (grsp-ann-get-matrix "datae" l2))    
     
     ;; Mutate nodes.
     (set! l1 p_l1)
@@ -1466,7 +1541,16 @@
 					   l3))
 
     ;; Compose results.
-    (set! res1 (list nodes conns count idata odata specs odtid datai datao))    
+    (set! res1 (list nodes
+		     conns
+		     count
+		     idata
+		     odata
+		     specs
+		     odtid
+		     datai
+		     datao
+		     datae))
 
     res1))
 
@@ -1540,7 +1624,8 @@
 	(specs 0)
 	(odtid 0)
 	(datai 0)
-	(datao 0))
+	(datao 0)	
+	(datae 0))
 
     (set! l2 p_l2)
     
@@ -1553,7 +1638,8 @@
 	      (set! specs (grsp-ann-get-matrix "specs" l2))
 	      (set! odtid (grsp-ann-get-matrix "odtid" l2))    
 	      (set! datai (grsp-ann-get-matrix "datai" l2))
-	      (set! datao (grsp-ann-get-matrix "datao" l2)))
+	      (set! datao (grsp-ann-get-matrix "datao" l2))
+	      (set! datae (grsp-ann-get-matrix "datae" l2)))	      
     
     (parallel ((set! l1 p_l1)
 	       (set! nodes (grsp-matrix-col-lmutation nodes
@@ -1577,7 +1663,16 @@
 						      l3))))
 
     ;; Compose results.
-    (set! res1 (list nodes conns count idata odata specs odtid datai datao))    
+    (set! res1 (list nodes
+		     conns
+		     count
+		     idata
+		     odata
+		     specs
+		     odtid
+		     datai
+		     datao
+		     datae))
     
     res1))
 
@@ -1617,7 +1712,8 @@
 	(specs 0)
 	(odtid 0)
 	(datai 0)
-	(datao 0))
+	(datao 0)	
+	(datae 0))
 
     ;; Extract matrices and lists.
     (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
@@ -1628,13 +1724,23 @@
     (set! specs (grsp-ann-get-matrix "specs" p_l1))
     (set! odtid (grsp-ann-get-matrix "odtid" p_l1))
     (set! datai (grsp-ann-get-matrix "datai" p_l1))
-    (set! datao (grsp-ann-get-matrix "datao" p_l1))    
+    (set! datao (grsp-ann-get-matrix "datao" p_l1))
+    (set! datae (grsp-ann-get-matrix "datae" p_l1))    
     
     (set! nodes (grsp-matrix-row-delete "#=" nodes 1 0))
     (set! conns (grsp-matrix-row-delete "#=" conns 1 0))
 
     ;; Compose results.
-    (set! res1 (list nodes conns count idata odata specs odtid datai datao))
+    (set! res1 (list nodes
+		     conns
+		     count
+		     idata
+		     odata
+		     specs
+		     odtid
+		     datai
+		     datao
+		     datae))
 
     res1))
 
@@ -2009,7 +2115,8 @@
 	(specs 0)
 	(odtid 0)
 	(datai 0)
-	(datao 0))
+	(datao 0)	
+	(datae 0))
 
     (set! res1 p_l1)   
     
@@ -2022,7 +2129,8 @@
     (set! specs (grsp-ann-get-matrix "specs" res1))
     (set! odtid (grsp-ann-get-matrix "odtid" res1))
     (set! datai (grsp-ann-get-matrix "datai" res1))
-    (set! datao (grsp-ann-get-matrix "datao" res1))    
+    (set! datao (grsp-ann-get-matrix "datao" res1))
+    (set! datae (grsp-ann-get-matrix "datae" res1))     
     
     ;; Sort nodes by layer number.
     (set! nodes (grsp-matrix-row-sort "#asc" nodes 3))
@@ -2102,7 +2210,16 @@
 	   (display "\n")))
     
     ;; Compose results.
-    (set! res1 (list nodes conns count idata odata specs odtid datai datao))
+    (set! res1 (list nodes
+		     conns
+		     count
+		     idata
+		     odata
+		     specs
+		     odtid
+		     datai
+		     datao
+		     datae))
     
     res1))    
 
@@ -2285,7 +2402,8 @@
 	(specs 0)
 	(odtid 0)
 	(datai 0)
-	(datao 0))
+	(datao 0)	
+	(datae 0))
 
     ;; Extract matrices and lists.
     (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
@@ -2296,7 +2414,8 @@
     (set! specs (grsp-ann-get-matrix "specs" p_l1))
     (set! odtid (grsp-ann-get-matrix "odtid" p_l1))
     (set! datai (grsp-ann-get-matrix "datai" p_l1))
-    (set! datao (grsp-ann-get-matrix "datao" p_l1))    
+    (set! datao (grsp-ann-get-matrix "datao" p_l1))
+    (set! datae (grsp-ann-get-matrix "datae" p_l1))    
         
     ;; Extract boundaries of idata.
     (set! lm4 (grsp-matrix-esi 1 idata))
@@ -2326,7 +2445,16 @@
 	   (set! idata (grsp-ann-idata-create 0 1))))
     
     ;; Compose results.
-    (set! res1 (list nodes conns count idata odata specs odtid datai datao))
+    (set! res1 (list nodes
+		     conns
+		     count
+		     idata
+		     odata
+		     specs
+		     odtid
+		     datai
+		     datao
+		     datae))
     
     res1))
 
@@ -2470,6 +2598,7 @@
 ;;   - "odtid".
 ;;   - "datai".
 ;;   - "datao".
+;;   - "datae".
 ;;
 ;; - p_l1: ann.
 ;;
@@ -2512,7 +2641,9 @@
 	  ((equal? p_s1 "datai")
 	   (set! n1 7))
 	  ((equal? p_s1 "datao")
-	   (set! n1 8)))
+	   (set! n1 8))
+	  ((equal? p_s1 "datae")
+	   (set! n1 9)))	  
     
     ;; n1 starts from 0. n2 is counted from 1.
     (cond ((< n1 n2)
@@ -2541,6 +2672,7 @@
 ;;   - "odtid".
 ;;   - "datai".
 ;;   - "datao".
+;;   - "datae".
 ;;
 ;; - p_m1: number of rows.
 ;;
@@ -2569,7 +2701,9 @@
 	  ((equal? p_s1 "datai")
 	   (set! n1 6))
 	  ((equal? p_s1 "datao")
-	   (set! n1 6)))	  
+	   (set! n1 6))
+	  ((equal? p_s1 "datae")
+	   (set! n1 3)))	  
 
     (set! res1 (grsp-matrix-create 0 p_m1 n1))    
     
@@ -2613,7 +2747,8 @@
 	(specs 0)
 	(odtid 0)
 	(datai 0)
-	(datao 0))
+	(datao 0)	
+	(datae 0))
 
     ;; Extract matrices and lists.
     (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
@@ -2624,7 +2759,8 @@
     (set! specs (grsp-ann-get-matrix "specs" p_l1))
     (set! odtid (grsp-ann-get-matrix "odtid" p_l1))
     (set! datai (grsp-ann-get-matrix "datai" p_l1))
-    (set! datao (grsp-ann-get-matrix "datao" p_l1))    
+    (set! datao (grsp-ann-get-matrix "datao" p_l1))
+    (set! datae (grsp-ann-get-matrix "datae" p_l1))     
 
     ;; Create safety matrix. 
     (set! res2 (grsp-matrix-cpy nodes))
@@ -2666,7 +2802,16 @@
     (set! idata (grsp-matrix-subdell idata 0 (list 0 0 0 0)))
     
     ;; Compose results.
-    (set! res1 (list nodes conns count idata odata specs odtid datai datao))
+    (set! res1 (list nodes
+		     conns
+		     count
+		     idata
+		     odata
+		     specs
+		     odtid
+		     datai
+		     datao
+		     datae))
 
     res1))
 
@@ -2708,7 +2853,8 @@
 	(specs 0)
 	(odtid 0)
 	(datai 0)
-	(datao 0))
+	(datao 0)	
+	(datae 0))
 
     ;; Extract matrices and lists.
     (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
@@ -2719,7 +2865,8 @@
     (set! specs (grsp-ann-get-matrix "specs" p_l1))
     (set! odtid (grsp-ann-get-matrix "odtid" p_l1))
     (set! datai (grsp-ann-get-matrix "datai" p_l1))
-    (set! datao (grsp-ann-get-matrix "datao" p_l1))    
+    (set! datao (grsp-ann-get-matrix "datao" p_l1))
+    (set! datae (grsp-ann-get-matrix "datae" p_l1))     
 
     ;; Create safety matrix. 
     (set! res2 (grsp-matrix-cpy nodes))
@@ -2761,7 +2908,16 @@
     (set! odata (grsp-matrix-subdell odata 0 (list 0 0 0 0)))
     
     ;; Compose results.
-    (set! res1 (list nodes conns count idata odata specs odtid datai datao))
+    (set! res1 (list nodes
+		     conns
+		     count
+		     idata
+		     odata
+		     specs
+		     odtid
+		     datai
+		     datao
+		     datae))
 
     res1))
 
@@ -2801,7 +2957,8 @@
 	(specs 0)
 	(odtid 0)
 	(datai 0)
-	(datao 0))
+	(datao 0)	
+	(datae 0))
 
     ;; Create safety matrix.   
     (set! res2 p_l1)
@@ -2815,7 +2972,8 @@
     (set! specs (grsp-ann-get-matrix "specs" res2))
     (set! odtid (grsp-ann-get-matrix "odtid" res2))
     (set! datai (grsp-ann-get-matrix "datai" res2))
-    (set! datao (grsp-ann-get-matrix "datao" res2))    
+    (set! datao (grsp-ann-get-matrix "datao" res2))
+    (set! datae (grsp-ann-get-matrix "datae" res2))    
 
     (cond ((equal? (grsp-matrix-is-samedim idata odata) #t)
     
@@ -2835,11 +2993,20 @@
 		  (set! i1 (in i1)))))
 	   
     ;; Compose results.
-    (set! res1 (list nodes conns count idata odata specs odtid datai datao)) 
+    (set! res1 (list nodes
+		     conns
+		     count
+		     idata
+		     odata
+		     specs
+		     odtid
+		     datai
+		     datao
+		     datae)) 
 
     res1))
 
-;; ***
+
 ;;;; grsp-m2datai - Casts the data of a grsp3 matrix as datai format. 
 ;;
 ;; Keywords:
@@ -2855,7 +3022,7 @@
 ;;
 ;; Notes: 
 ;;
-;; - See grsp-ann-datai-update.
+;; - See grsp-ann-datai-update, grsp-m2datae.
 ;;
 ;; Output:
 ;;
@@ -2985,7 +3152,8 @@
 	(specs 0)
 	(odtid 0)
 	(datai 0)
-	(datao 0))
+	(datao 0)	
+	(datae 0))
 
     ;; Create safety matrix. 
     (set! res2 p_l1)
@@ -3000,12 +3168,22 @@
     (set! odtid (grsp-ann-get-matrix "odtid" res2))
     (set! datai (grsp-ann-get-matrix "datai" res2))
     (set! datao (grsp-ann-get-matrix "datao" res2))
+    (set! datae (grsp-ann-get-matrix "datae" res2))    
 
     ;; Cast p_a1 as datai.
     (set! datai (grsp-m2datai p_a1 idata datai p_n1))
 
     ;; Compose results.
-    (set! res1 (list nodes conns count idata odata specs odtid datai datao)) 
+    (set! res1 (list nodes
+		     conns
+		     count
+		     idata
+		     odata
+		     specs
+		     odtid
+		     datai
+		     datao
+		     datae)) 
     
     res1))
 
@@ -3040,7 +3218,8 @@
 	(specs 0)
 	(odtid 0)
 	(datai 0)
-	(datao 0))
+	(datao 0)	
+	(datae 0))
    
     ;; Extract matrices and lists.
     (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
@@ -3052,6 +3231,7 @@
     (set! odtid (grsp-ann-get-matrix "odtid" p_l1))
     (set! datai (grsp-ann-get-matrix "datai" p_l1))
     (set! datao (grsp-ann-get-matrix "datao" p_l1))
+    (set! datae (grsp-ann-get-matrix "datae" p_l1))    
 
     ;; Cycle.
     (set! i1 0)
@@ -3092,7 +3272,16 @@
     (set! datai (grsp-matrix-row-delete "#=" datai 2 2))
         
     ;; Compose results.
-    (set! res1 (list nodes conns count idata odata specs odtid datai datao))
+    (set! res1 (list nodes
+		     conns
+		     count
+		     idata
+		     odata
+		     specs
+		     odtid
+		     datai
+		     datao
+		     datae))
 	
     res1))
 
@@ -3118,6 +3307,7 @@
 ;;   - "odtid".
 ;;   - "datai".
 ;;   - "datao".
+;;   - "datae".
 ;;
 ;; - p_l1: ann.
 ;; - p_l2: ann.
@@ -3179,7 +3369,8 @@
 	(specs 0)
 	(odtid 0)
 	(datai 0)
-	(datao 0))	
+	(datao 0)	
+	(datae 0))	
 
     (set! nodes (grsp-ann-fdifm "nodes" p_l1 p_l2))
     (set! conns (grsp-ann-fdifm "conns" p_l1 p_l2))		    
@@ -3190,9 +3381,19 @@
     (set! odtid (grsp-ann-fdifm "odtid" p_l1 p_l2))
     (set! datai (grsp-ann-fdifm "datai" p_l1 p_l2))
     (set! datao (grsp-ann-fdifm "datao" p_l1 p_l2))
+    (set! datae (grsp-ann-fdifm "datae" p_l1 p_l2))    
 
     ;; Compose results.
-    (set! res1 (list nodes conns count idata odata specs odtid datai datao))
+    (set! res1 (list nodes
+		     conns
+		     count
+		     idata
+		     odata
+		     specs
+		     odtid
+		     datai
+		     datao
+		     datae))
     
     res1))
 
@@ -3216,6 +3417,7 @@
 ;;   - "odtid".
 ;;   - "datai".
 ;;   - "datao".
+;;   - "datae".
 ;;
 ;; - p_a1 matrix to replace the one selected by p_s1.
 ;; - p_l1: ann.
@@ -3235,7 +3437,8 @@
 	(specs 0)
 	(odtid 0)
 	(datai 0)
-	(datao 0))	
+	(datao 0)	
+	(datae 0))	
 
     ;; Extract matrices and lists.
     (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
@@ -3247,6 +3450,7 @@
     (set! odtid (grsp-ann-get-matrix "odtid" p_l1))
     (set! datai (grsp-ann-get-matrix "datai" p_l1))
     (set! datao (grsp-ann-get-matrix "datao" p_l1))
+    (set! datae (grsp-ann-get-matrix "datae" p_l1))    
 
     ;; Update matrix.
     (cond ((equal? p_s1 "nodes")
@@ -3266,10 +3470,21 @@
 	  ((equal? p_s1 "datai")
 	   (set! datai p_a1))
 	  ((equal? p_s1 "datao")
-	   (set! datao p_a1)))
+	   (set! datao p_a1))
+	  ((equal? p_s1 "datae")
+	   (set! datae p_a1)))
     
     ;; Compose results.
-    (set! res1 (list nodes conns count idata odata specs odtid datai datao))
+    (set! res1 (list nodes
+		     conns
+		     count
+		     idata
+		     odata
+		     specs
+		     odtid
+		     datai
+		     datao
+		     datae))
     
     res1))
 
@@ -3898,7 +4113,16 @@
 (define (grsp-ann-devt p_b1 p_l1)
   (let ((l2 '()))
     
-    (set! l2 (list "nodes" "conns" "count" "idata" "odata" "specs" "odtid" "datai" "datao"))
+    (set! l2 (list "nodes"
+		   "conns"
+		   "count"
+		   "idata"
+		   "odata"
+		   "specs"
+		   "odtid"
+		   "datai"
+		   "datao"
+		   "datae"))
     (grsp-lal-devt p_b1 p_l1 l2)))
 
 
@@ -3937,7 +4161,17 @@
     (display "\n --- Node ")
     (display p_n1)
     (display " values \n")
-    (set! l3 (list "id" "status" "type" "layer" "layer pos" "bias" "output value" "assoc fun" "evol" "weight" "iter"))
+    (set! l3 (list "id"
+		   "status"
+		   "type"
+		   "layer"
+		   "layer pos"
+		   "bias"
+		   "output value"
+		   "assoc fun"
+		   "evol"
+		   "weight"
+		   "iter"))
     (grsp-lal-devt p_b1 l2 l3)))
 
 
@@ -3974,7 +4208,16 @@
 
     ;; Describe conns row cas as a list.
     (display "\n ------- Connection values \n")
-    (set! l3 (list "id" "status" "type" "from" "to" "value" "evol" "weight" "iter" "to layer pos"))
+    (set! l3 (list "id"
+		   "status"
+		   "type"
+		   "from"
+		   "to"
+		   "value"
+		   "evol"
+		   "weight"
+		   "iter"
+		   "to layer pos"))
     (grsp-lal-devt p_b1 l2 l3)))
 
 
@@ -4010,7 +4253,16 @@
     ;; first list has elements, and shows the combination of each pair of list
     ;; elements.
     (display "\n ------- Connection values \n")
-    (set! l3 (list "id" "status" "type" "from" "to" "value" "evol" "weight" "iter" "to layer pos"))
+    (set! l3 (list "id"
+		   "status"
+		   "type"
+		   "from"
+		   "to"
+		   "value"
+		   "evol"
+		   "weight"
+		   "iter"
+		   "to layer pos"))
     (grsp-lal-devt p_b1 l2 l3)))
 
 
@@ -4286,6 +4538,9 @@
     
     (grsp-ldl "datao" 2 1)
     (grsp-matrix-display (grsp-ann-get-matrix "datao" p_l1))    
+
+    (grsp-ldl "datae" 2 1)
+    (grsp-matrix-display (grsp-ann-get-matrix "datae" p_l1))
     
     res1))
 
@@ -4301,14 +4556,15 @@
 ;;
 ;; - p_s1: string, matrix name.
 ;;
-;;   - nodes.
-;;   - conns.
-;;   - count.
-;;   - idata.
-;;   - odata.
-;;   - specs.
-;;   - datai.
-;;   - datao.
+;;   - "nodes".
+;;   - "conns".
+;;   - "count".
+;;   - "idata".
+;;   - "odata".
+;;   - "specs".
+;;   - "datai".
+;;   - "datao".
+;;   - "datae".
 ;;
 ;; - p_l1: ann.
 ;; - p_m1: row number.
@@ -4328,7 +4584,8 @@
 	(specs 0)
 	(odtid 0)
 	(datai 0)
-	(datao 0))
+	(datao 0)	
+	(datae 0))
    
     ;; Extract matrices and lists.
     (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
@@ -4340,6 +4597,7 @@
     (set! odtid (grsp-ann-get-matrix "odtid" p_l1))
     (set! datai (grsp-ann-get-matrix "datai" p_l1))
     (set! datao (grsp-ann-get-matrix "datao" p_l1))
+    (set! datae (grsp-ann-get-matrix "datae" p_l1))    
 
     ;; Update row of selected matrix.
     (cond ((equal? p_s1 "nodes")
@@ -4359,10 +4617,21 @@
 	  ((equal? p_s1 "datai")
 	   (set! datai (grsp-l2mr datai p_l2 p_m1 (grsp-ln datai))))
 	  ((equal? p_s1 "datao")
-	   (set! datao (grsp-l2mr datao p_l2 p_m1 (grsp-ln datao)))))
+	   (set! datao (grsp-l2mr datao p_l2 p_m1 (grsp-ln datao))))
+	  ((equal? p_s1 "datae")
+	   (set! datao (grsp-l2mr datao p_l2 p_m1 (grsp-ln datae)))))	  
     
     ;; Compose results.
-    (set! res1 (list nodes conns count idata odata specs odtid datai datao))
+    (set! res1 (list nodes
+		     conns
+		     count
+		     idata
+		     odata
+		     specs
+		     odtid
+		     datai
+		     datao
+		     datae))
     
     res1))
 
@@ -4378,14 +4647,15 @@
 ;;
 ;; - p_s1: string, matrix name.
 ;;
-;;   - nodes.
-;;   - conns.
-;;   - count.
-;;   - idata.
-;;   - odata.
-;;   - specs.
-;;   - datai.
-;;   - datao.
+;;   - "nodes".
+;;   - "conns".
+;;   - "count".
+;;   - "idata".
+;;   - "odata".
+;;   - "specs".
+;;   - "datai".
+;;   - "datao".
+;;   - "datae"
 ;;
 ;; - p_l1: ann.
 ;;
@@ -4413,7 +4683,9 @@
 	  ((equal? p_s1 "datai")
 	   (set! res1 7))
 	  ((equal? p_s1 "datao")
-	   (set! res1 8)))
+	   (set! res1 8))
+	  ((equal? p_s1 "datae")
+	   (set! res1 9)))	  
     
     res1))
 
@@ -4542,7 +4814,8 @@
 	(specs 0)
 	(odtid 0)
 	(datai 0)
-	(datao 0))
+	(datao 0)	
+	(datae 0))
    
     ;; Extract matrices and lists.
     (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
@@ -4554,6 +4827,7 @@
     (set! odtid (grsp-ann-get-matrix "odtid" p_l1))
     (set! datai (grsp-ann-get-matrix "datai" p_l1))
     (set! datao (grsp-ann-get-matrix "datao" p_l1))
+    (set! datae (grsp-ann-get-matrix "datae" p_l1))    
 
     (set! a2 (grsp-matrix-cpy idata))
     
@@ -4609,7 +4883,16 @@
 	  ((equal? p_s1 "conns")
 	   (set! conns (grsp-matrix-cpy a1))))
 
-    (set! res1 (list nodes conns count idata odata specs odtid datai datao))    
+    (set! res1 (list nodes
+		     conns
+		     count
+		     idata
+		     odata
+		     specs
+		     odtid
+		     datai
+		     datao
+		     datae))    
     
     res1))
 
@@ -4671,3 +4954,134 @@
 
     res1))
 
+
+;;;; grsp-m2datae - Casts the last p_n1 columns of a grsp3 matrix as datae
+;; format. 
+;;
+;; Keywords:
+;;
+;; - functions, ann, neural, network
+;;
+;; Parameters:
+;;
+;; - p_a1: data matrix.
+;; - p_n1; number of columns assigned to results.
+;;
+;; Notes: 
+;;
+;; - See grsp-m2datai.
+;; - p_a1 should contain th following columns:
+;;
+;;   - Col 0 ... Col n-1: training data.
+;;   - Col n ... Col n+p_n1: expected results for col 0 ... col n-1.
+;;
+;; Output:
+;;
+;; - List containing:
+;;
+;;   - Elem 0: matrix p_a1 sans the last p_n1 columns, ready to be processed
+;;     with grsp-m2datai.
+;;   - Elem 1: datae format matrix, can replace current datae or be appended
+;;     to it.
+;;
+(define (grsp-m2datae p_a1 p_n1)
+  (let ((res1 '())
+	(a1 0)
+	(a3 0))
+
+    ;; Create a3.
+    (set! a3 (grsp-matrix-create 0 (grsp-tm p_a1) 3))
+    
+    ;; Loop
+    (let loop ((i1 (grsp-lm p_a1)))
+      (if (<= i1 (grsp-hm p_a1))
+
+	  (begin (array-set! a3 (array-ref p_a1 i1 (grsp-hn p_a1)) i1 0)
+		 
+		 (loop (+ i1 1)))))
+
+    ;; Cut p_a1.
+    (set! a1 (grsp-matrix-subcpy p_a1
+				 (grsp-lm p_a1)
+				 (grsp-hm p_a1)
+				 (grsp-ln p_a1)
+				 (- (grsp-hn p_a1) p_n1)))
+      
+    ;; Compose results.
+    (set! res1 (list a1 a3))
+    
+    res1))
+
+
+;;;; grsp-ann-load-datat - Load a training dataset p_a1 into neural network p_l1.
+;;
+;; Keywords:
+;;
+;; - functions, ann, neural, network
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix (last column should contain expected results).
+;; - p_n1; number of columns assigned to results.
+;; - p_l1; list, neural network.
+;;
+;; Notes: 
+;;
+;; - See grsp-m2datai, grsp-m2datae.
+;; - p_a1 should contain th following columns:
+;;
+;;   - Col 0 ... Col n-1: training data.
+;;   - Col n ... Col n+p_n1: expected results for col 0 ... col n-1.
+;;
+;; Output:
+;;
+;; - List (ann).
+;;
+(define (grsp-ann-load-datat p_a1 p_n1 p_l1)
+  (let ((res1 '())
+	(l2 '())
+	(a1 0)
+	(nodes 0)
+	(conns 0)
+	(count 0)
+	(idata 0)
+	(odata 0)
+	(specs 0)
+	(odtid 0)
+	(datai 0)
+	(datao 0)	
+	(datae 0))
+   
+    ;; Extract matrices and lists.
+    (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
+    (set! conns (grsp-ann-get-matrix "conns" p_l1))
+    (set! count (grsp-ann-get-matrix "count" p_l1))    
+    (set! idata (grsp-ann-get-matrix "idata" p_l1))
+    (set! odata (grsp-ann-get-matrix "odata" p_l1))
+    (set! specs (grsp-ann-get-matrix "specs" p_l1))
+    (set! odtid (grsp-ann-get-matrix "odtid" p_l1))
+    (set! datai (grsp-ann-get-matrix "datai" p_l1))
+    (set! datao (grsp-ann-get-matrix "datao" p_l1))
+    (set! datae (grsp-ann-get-matrix "datae" p_l1))
+
+    ;; Configure data.
+    (set! l2 (grsp-m2datae p_a1 p_n1))
+    (set! a1 (list-ref l2 0))
+    (set! datae (list-ref l2 1))
+
+    ;; Configure datai.
+    (set! datai (grsp-m2datai a1 idata datai 1))
+    
+    ;; Compose results.
+    (set! res1 (list nodes
+		     conns
+		     count
+		     idata
+		     odata
+		     specs
+		     odtid
+		     datai
+		     datao
+		     datae))    
+    
+    res1))
