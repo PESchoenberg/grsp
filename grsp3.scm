@@ -11168,7 +11168,7 @@
     res1))
 
 
-;;;; grsp-matrix-selectmb - Select a random mini-batch of random rows from p_a1.
+;;;; grsp-matrix-selectmb - Select a mini-batch of random rows from p_a1.
 ;;
 ;; Keywords:
 ;;
