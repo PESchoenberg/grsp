@@ -31,7 +31,7 @@
 ;; - A grsp neural network is essentially a list of matrices that constitute a
 ;;   database in itself according to the developments of file grsp3. The format
 ;;   and structure of the matrices used in grsp8 (contained in the list
-;;   data structure just mentioned ) is as follows:
+;;   data structure just mentioned) is as follows:
 ;;
 ;;   - Elem 0: nodes. Matrix. Each row of this matrix contains data representing
 ;;     the properties and processes of a specific node of a neural network.
@@ -338,7 +338,8 @@
 	    grsp-ann-delta
 	    grsp-ann-bp
 	    grsp-m2datae
-	    grsp-ann-load-datat))
+	    grsp-ds2ann
+	    grsp-ann-ds-create))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network as a list data
@@ -3019,6 +3020,10 @@
 ;; - p_id: idata.
 ;; - p_di: datai.
 ;; - p_n1: classifier.
+
+;;       - 0: regular data.
+;;       - 1: training data.
+;;       - 2: control data.
 ;;
 ;; Notes: 
 ;;
@@ -3122,6 +3127,10 @@
 ;; - p_a1: data matrix.
 ;; - p_l1: ann.
 ;; - p_n1: classifier.
+;;
+;;       - 0: regular data.
+;;       - 1: training data.
+;;       - 2: control data.
 ;;
 ;; Notes:
 ;;
@@ -4955,7 +4964,7 @@
     res1))
 
 
-;;;; grsp-m2datae - Casts the last p_n1 columns of a grsp3 matrix as datae
+;;;; grsp-m2datae - Casts the last p_j1 columns of a grsp3 matrix as datae
 ;; format. 
 ;;
 ;; Keywords:
@@ -4965,15 +4974,15 @@
 ;; Parameters:
 ;;
 ;; - p_a1: data matrix.
-;; - p_n1; number of columns assigned to results.
+;; - p_j1; number of columns assigned to results.
 ;;
 ;; Notes: 
 ;;
 ;; - See grsp-m2datai.
 ;; - p_a1 should contain th following columns:
 ;;
-;;   - Col 0 ... Col n-1: training data.
-;;   - Col n ... Col n+p_n1: expected results for col 0 ... col n-1.
+;;   - Col 0 ... Col j-1: training data.
+;;   - Col j ... Col j+p_j1: expected results for col 0 ... col j-1.
 ;;
 ;; Output:
 ;;
@@ -4984,7 +4993,7 @@
 ;;   - Elem 1: datae format matrix, can replace current datae or be appended
 ;;     to it.
 ;;
-(define (grsp-m2datae p_a1 p_n1)
+(define (grsp-m2datae p_a1 p_j1)
   (let ((res1 '())
 	(a1 0)
 	(a3 0))
@@ -5005,7 +5014,7 @@
 				 (grsp-lm p_a1)
 				 (grsp-hm p_a1)
 				 (grsp-ln p_a1)
-				 (- (grsp-hn p_a1) p_n1)))
+				 (- (grsp-hn p_a1) p_j1)))
       
     ;; Compose results.
     (set! res1 (list a1 a3))
@@ -5013,31 +5022,37 @@
     res1))
 
 
-;;;; grsp-ann-load-datat - Load a training dataset p_a1 into neural network p_l1.
+;;;; grsp-ds2ann - Load a dataset p_a1 into neural network p_l1.
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural, network
+;; - functions, ann, neural, network, training, datasets
 ;;
 ;; Parameters:
 ;;
-;; - p_a1: matrix (last column should contain expected results).
-;; - p_n1; number of columns assigned to results.
-;; - p_l1; list, neural network.
+;; - p_a1: matrix (last p_j1 columns should contain expected results).
+;; - p_n1: classifier.
+;;
+;;       - 0: regular data.
+;;       - 1: training data.
+;;       - 2: control data.
+;;
+;; - p_j1; number of columns assigned to results.
+;; - p_l1: list, neural network.
 ;;
 ;; Notes: 
 ;;
 ;; - See grsp-m2datai, grsp-m2datae.
-;; - p_a1 should contain th following columns:
+;; - p_a1 should contain the following columns:
 ;;
-;;   - Col 0 ... Col n-1: training data.
-;;   - Col n ... Col n+p_n1: expected results for col 0 ... col n-1.
+;;   - Col 0 ... col j-1: training data.
+;;   - Col j ... col j+p_j1: expected results for col 0 ... col j-1.
 ;;
 ;; Output:
 ;;
 ;; - List (ann).
 ;;
-(define (grsp-ann-load-datat p_a1 p_n1 p_l1)
+(define (grsp-ds2ann p_a1 p_n1 p_j1 p_l1)
   (let ((res1 '())
 	(l2 '())
 	(a1 0)
@@ -5065,12 +5080,12 @@
     (set! datae (grsp-ann-get-matrix "datae" p_l1))
 
     ;; Configure data.
-    (set! l2 (grsp-m2datae p_a1 p_n1))
+    (set! l2 (grsp-m2datae p_a1 p_j1))
     (set! a1 (list-ref l2 0))
     (set! datae (list-ref l2 1))
 
     ;; Configure datai.
-    (set! datai (grsp-m2datai a1 idata datai 1))
+    (set! datai (grsp-m2datai a1 idata datai p_n1))
     
     ;; Compose results.
     (set! res1 (list nodes
@@ -5083,5 +5098,50 @@
 		     datai
 		     datao
 		     datae))    
+    
+    res1))
+
+
+;;;; grsp-ann-ds-create - Creates "synthetic" datasets with one column results
+;; to be used with function grsp-ds2ann.
+;;
+;; Keywords:
+;;
+;; - functions, ann, neural, network, training, datasets
+;;
+;; Parameters:
+;;
+;; - p_s1: matrix type. See grsp3.grsp-matrix-create for details.
+;; - p_s2: string, operation type- See grsp-matrix-row-opscr for available
+;;   operations.
+;; - p_m1: rows, positive integer.
+;; - p_n1: cols (without results col), positive integer.
+;;
+;; Notes:
+;;
+;; - See grsp-ds2ann.
+;; . Consider using grsp-random-state-set before this function if you want to
+;;   create pseudo-random data with p_s1 value "#rprnd".
+;;
+;; Output:
+;;
+;; - Matrix in which the last column contains the results of operation p_s2
+;;   between the column elements of each row.
+;;
+(define (grsp-ann-ds-create p_s1 p_s2 p_m1 p_n1)
+  (let ((res1 0)
+	(res2 0)
+	(a1 0)
+	(a2 0))
+
+    ;; Create matrix.
+    (set! a1 (grsp-matrix-create p_s1 p_m1 p_n1))
+
+    ;; Create results vector.
+    (set! res2 (grsp-matrix-row-opscr p_s2 a1))
+
+    ;; Merge.
+    (set! a2 (grsp-matrix-subexp a1 0 1))
+    (set! res1 (grsp-matrix-subrep a2 res2 (grsp-lm a2) (grsp-hn a2)))
     
     res1))
