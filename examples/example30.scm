@@ -66,15 +66,29 @@
 
 
 ;;;; Vars.
-(define L1 (grsp-ann-net-create-ffv #f 0 2 1 2 2 1))
-(define res1 0)
 
 ;; Set to #r to define a new random set eaxh time the program runs.
 (define b1 #f) 
 
+;; Number of epochs to process (set to -1 in order to process all data in the dataset)
+(define te 1)
+
 ;; tm is the number of rows and cols that the dataset will contain.
-(define tm 10)
-(define tn 3)
+(define tm1 10)
+(define tn1 3)
+(define mut 0)
+(define ila 1)
+(define tn2 tn1)
+(define af 2)
+(define nf 0)
+
+;; Define the network.
+(define L1 (grsp-ann-net-create-ffv #f mut tn1 ila tn2 af nf))
+
+;; Set bias and weight values in nodes and conns to 1.
+;;(set! L1 (grsp-ann-idata-bvw "nodes" "#bias" L1 1))
+;;(set! L1 (grsp-ann-idata-bvw "nodes" "#weight" L1 1))
+;;(set! L1 (grsp-ann-idata-bvw "conns" "#weight" L1 1))
 
 ;;;; Main program.
 (clear)
@@ -82,13 +96,53 @@
 
 ;; Dataset will contain random numbers.
 (grsp-random-state-set b1)
-(define dataset (grsp-ann-ds-create "#rprnd" "#+" tm tn))
+(define dataset (grsp-ann-ds-create "#rprnd" "#+" tm1 tn1))
 
 ;; Show dataset
 (grsp-matrix-ldvl "Dataset as it will be passed to the ANN"  dataset 1 1)
 (grsp-ask-etc)
 
 (set! L1 (grsp-ds2ann dataset 1 1 L1))
+
+;; Set bias and weight values in nodes and conns to 1.
+(set! L1 (grsp-ann-idata-bvw "nodes" "#bias" L1 1))
+(set! L1 (grsp-ann-idata-bvw "nodes" "#weight" L1 1))
+(set! L1 (grsp-ann-idata-bvw "conns" "#weight" L1 1))
+
 (grsp-ann-display L1)
 
+(grsp-ldl "Ready to process epochs" 1 1)
+(grsp-ask-etc)
+
+;; Loop
+(let loop ((i1 1))
+  (if (<= i1 te)
+
+      (begin (set! L1 (grsp-datai2idata L1))
+
+	     (clear)
+	     (grsp-ldl "ANN before epoch processing" 1 1)
+	     (grsp-ann-display L1)
+	     (grsp-ask-etc)
+	     
+	     ;; Evaluate.
+	     (set! L1 (grsp-ann-net-miter-omth #f #f #f #f "#no" L1 1 0))
+
+	     ;; If all the data in the dataset is ti be processed.
+	     (cond ((= te -1)
+
+		    ;; If all data in dataset has been passed, cut the loop.
+		    (cond ((= (grsp-tm dataset) 0)
+			   (set! te 0)))))
+
+	     (clear)
+	     (grsp-ldl "ANN after epoch processing" 1 1)
+	     (grsp-ann-display L1)
+	     (grsp-ask-etc)	     
+	     
+	     (loop (+ i1 1)))))
+
+;; Display.
+(grsp-ldl "ANN, final results" 1 1)
+(grsp-ann-display L1)
 
