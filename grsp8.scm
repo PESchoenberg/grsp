@@ -85,7 +85,7 @@
 ;;
 ;;     - Col 0: nodes id counter.
 ;;     - Col 1: conns id counter.
-;;     - Col 2: iteration counter.
+;;     - Col 2: epoch counter.
 ;;     - Col 3: layer counter.
 ;;
 ;;   - Elem 3: idata. Matrix. Contains an instance of input data. This is how the
@@ -110,12 +110,12 @@
 ;;     - Col 4: control.
 ;;
 ;;       - 0: default.
-;;       - 1: iteration end.
+;;       - 1: epoch end.
 ;;       - 2: delete node or conn.
 ;;
 ;;   - Elem 4: odata. Matrix. Contains am instance of data originated in the
 ;;     output nodes of a neural network. I.e. this matrix contains the
-;;     results of a network iteration.
+;;     results of a network epoch.
 ;;
 ;;     - Col 0: id of each output node.
 ;;     - Col 1: layer.
@@ -124,7 +124,7 @@
 ;;     - Col 4: control.
 ;;
 ;;       - 0: default.
-;;       - 1: iteration end.
+;;       - 1: epoch end.
 ;;       - 2: delete.
 ;;
 ;;   - Elem 5: specs. Matrix. Each row contains specifications for a neural
@@ -141,21 +141,21 @@
 ;;     - Col 3: activation function.
 ;;
 ;;   - Elem 6: odtid. Matrix. Establishes a correlation between the data
-;;     found on each iteration n on the output nodes of a neural network and
-;;     the input data that will be found on the input nodes during iteration
+;;     found on each epoch n on the output nodes of a neural network and
+;;     the input data that will be found on the input nodes during epoch
 ;;     (+ n 1), in the case that the network works by means of a feedback loop.
 ;;
 ;;     - Col 0: input idata layer pos (pos input).
 ;;     - Col 1: output odata layer pos (pos output).
 ;;
-;;   - Elem 7: datai. Contains data that should be passe to the input stream
-;;     (idata), coming from the output stream (odata).
+;;   - Elem 7: datai. Contains data that should be passed to the input stream
+;;     (idata), coming from either the output stream (odata) or from a dataset.
 ;;
 ;;     - Col 0: id of the receptive node.
 ;;     - Col 1: number that corresponds to the column in the nodes matrix in
 ;;       which for the row whose col 0 is equal to the id value passed in col 0
 ;;       of the idata matrix the input value will be stored.
-;;     - Col 2: number.
+;;     - Col 2: number; value to be passed.
 ;;     - Col 3: type, the kind of element that will receive this data.
 ;;
 ;;       - 0: for node.
@@ -164,7 +164,7 @@
 ;;     - Col 4: record control.
 ;;
 ;;       - 0: default.
-;;       - 1: iteration end.
+;;       - 1: epoch end.
 ;;
 ;;     - Col 5: classifier.
 ;;
@@ -182,7 +182,7 @@
 ;;     - Col 4: record control.
 ;;
 ;;       - 0: default.
-;;       - 1: iteration end.
+;;       - 1: epoch end.
 ;;
 ;;     - Col 5: classifier.
 ;;
@@ -307,7 +307,7 @@
 	    grsp-ann-odtid-atlorpn
 	    grsp-m2datai
 	    grsp-ann-datai-update
-	    grsp-datai2ann
+	    grsp-datai2idata
 	    grsp-ann-fdifm
 	    grsp-ann-fdif
 	    grsp-ann-updatem
@@ -364,7 +364,7 @@
 ;;   - Elem 1: conns, a matrix for the definition of connections between those
 ;;     nodes.
 ;;   - Elem 2: count, a 1x4 counter matrix that defines the id of nodes amd
-;;     conns elements, as well as the iteration and layer counters.
+;;     conns elements, as well as the epoch and layer counters.
 ;;   - Elem 3: idata, a data input matrix. This is what goes into an ann.
 ;;   - Elem 4: odata, an output matrix. This is what comes out of the output
 ;;     nodes of the ann.
@@ -543,7 +543,7 @@
 			    (grsp-ann-get-matrix "datae" res3))))
 	  
 	  (else (set! res1 res3)))
-    
+
     ;; Update idata, odata and odtid tables.
     (set! res1 (grsp-ann-idata-atlorpn res1))
     (set! res1 (grsp-ann-odata-atlorpn res1))
@@ -629,7 +629,8 @@
     res1))
 
 
-;;;; grsp-ann-net-miter-omth - Iterate evaluations of the network p_n1 times.
+;;;; grsp-ann-net-miter-omth - Perform evaluations of the network p_n1 times
+;; (epochs).
 ;;
 ;; Keywords:
 ;;
@@ -647,7 +648,7 @@
 ;;
 ;; - p_s1: reconfiguration method. See grsp-ann-net-reconf for details.
 ;; - p_l1: ann (list).
-;; - p_n1: desired iterations.
+;; - p_n1: desired iterations per epoch.
 ;; - p_n2: mutation cycles desired after each iteration.
 ;;
 ;; Examples:
@@ -662,15 +663,15 @@
   (let ((res1 '())
 	(b1 #f)
 	(idata 0)
-	(s1 "\n ------------------------------------------ Iteration number: ")
+	(s1 "\n ------------------------------------------ Epoch number: ")
 	(s2 "\n Mutation iteration ")
-	(s3 "\n Idata status on iteration (before loading into ann): ")
+	(s3 "\n Idata status on epoch (before loading into ann): ")
 	(i1 0)
 	(i2 0))
 
     (set! res1 p_l1)
 
-    ;; Eval loop, iterate p_n1 times.
+    ;; Eval loop, go for p_n1 epochs.
     (while (< i1 p_n1)
 
 	   ;; If verbosity is on, present iteration data.
@@ -697,7 +698,7 @@
 	   ;; each new iteration.
 	   (set! idata (grsp-ann-get-matrix "idata" res1))
 
-	   ;; If verbosity is on, present iteration data.
+	   ;; If verbosity is on, present epoch data.
 	   (cond ((equal? p_b3 #t)
 		  (display s3)
 		  (display "\n\n")
@@ -767,7 +768,7 @@
     res1))
 
 
-;;;; grsp-ann-counter-upd - Updates the ann id and iteration counters.
+;;;; grsp-ann-counter-upd - Updates the ann id and epoch counters.
 ;;
 ;; Keywords:
 ;;
@@ -780,7 +781,7 @@
 ;;
 ;;   - 0: updates nodes counter.
 ;;   - 1: updates conns counter.
-;;   - 2: updates iteration counter.
+;;   - 2: updates epoch counter.
 ;;   - 3: updates layer counter.
 ;;
 ;; Notes:
@@ -790,7 +791,7 @@
 ;;
 ;; Output:
 ;;
-;; - Numeric. Returns a new id number, either for nodes, conns, iteration or
+;; - Numeric. Returns a new id number, either for nodes, conns, epoch or
 ;;   layer number.
 ;;
 (define (grsp-ann-counter-upd p_a3 p_n1)
@@ -1871,7 +1872,7 @@
     (set! b1 (grsp-matrix-is-empty a11))
 
     ;; If verbosity is on present node data.
-    (cond ((equal? p_b3 #f)
+    (cond ((equal? p_b3 #t)
 	   (display "\n +++ 1.1.1.1 Node row\n")
 	   (grsp-matrix-display a11)
 	   (display "\n")))
@@ -2082,7 +2083,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural, network, eval, evaluation, iteration, iterate
+;; - functions, ann, neural, network, eval, evaluation, epoch, iterate
 ;;
 ;; Parameters:
 ;;
@@ -2198,12 +2199,12 @@
 
 	   ;; Add newest odata to datao. This should produce an incremental
 	   ;; datao table or matrix containing the results of each ann
-	   ;; iteration.	   
+	   ;; epoch.	   
 	   (set! datao (grsp-odata2datao odata datao))
 	   
 	   (set! i1 (in i1)))
 	   
-    ;; Update iteration counter.
+    ;; Update counter.
     (grsp-ann-counter-upd count 2)   
 
     (cond ((equal? p_b3 #t)
@@ -3197,8 +3198,8 @@
     res1))
 
 
-;;;; grsp-datai2ann - Passes the first input group of a datai table to the input
-;; nodes of the ann and then deletes the group.
+;;;; grsp-datai2idata - Passes the first input group of a datai table to the
+;; input nodes of the ann and then deletes the group.
 ;;
 ;; Keywords:
 ;;
@@ -3212,7 +3213,7 @@
 ;;
 ;; - List.
 ;;
-(define (grsp-datai2ann p_l1)
+(define (grsp-datai2idata p_l1)
   (let ((res1 '())
 	(res2 0)
 	(i1 0)
@@ -3230,7 +3231,7 @@
 	(datao 0)	
 	(datae 0))
    
-    ;; Extract matrices and lists.
+    ;; Extract matrices.
     (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
     (set! conns (grsp-ann-get-matrix "conns" p_l1))
     (set! count (grsp-ann-get-matrix "count" p_l1))    
@@ -3251,8 +3252,9 @@
 	    
 	    ;; Find what kind of target we have.
 	    (set! n3 (array-ref datai i1 3))
-
-	    ;; Check control element.
+	    
+	    ;; Check control element. If epoch ends, according to the value
+	    ;; contained in col 4 of current datai row, set b1 to false.
 	    (cond ((= (array-ref datai i1 4) 1)
 		   (set! b1 #t)))
 	    
@@ -4805,6 +4807,7 @@
 ;; Notes:
 ;;
 ;; - "#bias" applies to "nodes" only.
+;; - Should be used AFTER using grsp-ds2ann.
 ;;
 (define (grsp-ann-idata-bvw p_s1 p_s2 p_l1 p_n1)
   (let ((res1 '())
@@ -4839,7 +4842,7 @@
     (set! datae (grsp-ann-get-matrix "datae" p_l1))    
 
     (set! a2 (grsp-matrix-cpy idata))
-    
+   
     ;; Find the applicable col number.
     (cond ((equal? p_s1 "nodes")
 	   (set! a1 (grsp-matrix-cpy nodes))
@@ -4866,7 +4869,7 @@
 	   (set! it 0))		 
 	  ((equal? p_s1 "conns")
 	   (set! it 1)))
-
+    
     (let loop ((i1 (grsp-lm a1)))
       (if (<= i1 (grsp-hm a1))
 	   
@@ -5043,6 +5046,7 @@
 ;; Notes: 
 ;;
 ;; - See grsp-m2datai, grsp-m2datae.
+;; - Should be used BEFORE grsp-ann-idata-bvw.
 ;; - p_a1 should contain the following columns:
 ;;
 ;;   - Col 0 ... col j-1: training data.
@@ -5107,15 +5111,15 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural, network, training, datasets
+;; - functions, ann, neural, network, training, datasets, random, simulation
 ;;
 ;; Parameters:
 ;;
 ;; - p_s1: matrix type. See grsp3.grsp-matrix-create for details.
-;; - p_s2: string, operation type- See grsp-matrix-row-opscr for available
+;; - p_s2: string, operation type. See grsp-matrix-row-opscr for available
 ;;   operations.
 ;; - p_m1: rows, positive integer.
-;; - p_n1: cols (without results col), positive integer.
+;; - p_n1: cols (without counting the results col), positive integer.
 ;;
 ;; Notes:
 ;;

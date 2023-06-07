@@ -684,7 +684,7 @@
     (newlines p_n2)))
 
 
-;;;; grsp-ldvl - Line, display valur, line. Displays p_n1 blank lines before
+;;;; grsp-ldvl - Line, display value, line. Displays p_n1 blank lines before
 ;; string p_s1 and p_n2 blank lines after p_s1.
 ;;
 ;; Keywords:
