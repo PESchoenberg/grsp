@@ -5909,53 +5909,34 @@
 ;; - [16].
 ;;
 (define (grsp-matrix-commit p_a1 p_a2 p_j1)
-  (let ((res1 p_a1)
-	(lm1 0)
-	(hm1 0)
-	(ln1 0)
-	(hn1 0)
-	(lm2 0)
-	(hm2 0)
-	(ln2 0)
-	(hn2 0)
+  (let ((res1 0)
 	(n1 0)
 	(n2 0)
 	(i1 0)
 	(i2 0)
-	(j2 0))
-
-    ;; Extract the boundaries of the first matrix.
-    (set! lm1 (grsp-matrix-esi 1 p_a1))
-    (set! hm1 (grsp-matrix-esi 2 p_a1))
-    (set! ln1 (grsp-matrix-esi 3 p_a1))
-    (set! hn1 (grsp-matrix-esi 4 p_a1))
-
-    ;; Extract the boundaries of the second matrix.
-    (set! lm2 (grsp-matrix-esi 1 p_a2))
-    (set! hm2 (grsp-matrix-esi 2 p_a2))
-    (set! ln2 (grsp-matrix-esi 3 p_a2))
-    (set! hn2 (grsp-matrix-esi 4 p_a2))    
+	(j2 0))  
 
     ;; Cycle p_a2.
-    (set! i2 lm2)
-    (while (<= i2 hm2)
+    (set! i2 (grsp-lm p_a2))
+    (while (<= i2 (grsp-hm p_a2))	   
 
 	   ;; Get the key for each row of p_a2.
 	   (set! n2 (array-ref p_a2 i2 p_j1))
 	   
 	   ;; Cycle p_a1.
-	   (set! i1 lm1)
-	   (while (<= i1 hm1)
-
+	   (set! i1 (grsp-lm p_a1))
+	   (while (<= i1 (grsp-hm p_a1))
+	   
 		  ;; Get the key for each row of p_a1.
 		  (set! n1 (array-ref p_a1 i1 p_j1))
 
 		  ;; If the keys for the current p_a2 and p_a1 rows are the same
 		  ;; then copy data from p_a2 into p_a1.
 		  (cond ((equal? n1 n2)
-			 
-			 (set! j2 ln2)
-			 (while (<= j2 hn2)				
+
+			 (set! j2 (grsp-ln p_a2))
+			 (while (<= j2 (grsp-hn p_a2))
+			
 				(array-set! p_a1 (array-ref p_a2 i2 j2) i1 j2)				
 				(set! j2 (+ j2 1)))))			 
 
