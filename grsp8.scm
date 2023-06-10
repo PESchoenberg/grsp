@@ -380,7 +380,7 @@
 ;;   trivial data. In this case, only trivial data will be placed inside those
 ;;   matrices. This means that this fouction actually produces the structure
 ;;   of a neural network, but not a network per se.
-;; - See grsp-ann-net-create-ffv in order tocreate a non-trivial or empty
+;; - See grsp-ann-net-create-ffv in order to create a non-trivial or empty
 ;;   network.
 ;;
 ;; - For more details on thse matrices, see "Format of matrices used in grsp8"
@@ -471,7 +471,7 @@
 ;;
 ;; Notes:
 ;;
-;; - This functions creates a network with all its associated values as
+;; - This function creates a network with all its associated values as
 ;;   defined by the arguments passed to it.
 ;; - See also grsp-ann-net-specs-ffn, grsp-ann-net-create-ffn and
 ;;   grsp-ann-net-mutate on how these functions operate.
@@ -2167,7 +2167,6 @@
 		  (display "\n")
 		  (grsp-matrix-display (grsp-matrix-row-selectrn nodes i1))
 		  (display "\n")))
-
 	   
 	   ;; Eval of connections related to the node being processed.
 	   (cond ((equal? p_b3 #t)
@@ -3243,34 +3242,68 @@
     (set! datao (grsp-ann-get-matrix "datao" p_l1))
     (set! datae (grsp-ann-get-matrix "datae" p_l1))    
 
+    ;;   - Elem 7: datai. Contains data that should be passed to the input stream
+    ;;     (idata), coming from either the output stream (odata) or from a dataset.
+    ;;
+    ;;     - Col 0: id of the receptive node.
+    ;;     - Col 1: number that corresponds to the column in the nodes matrix in
+    ;;       which for the row whose col 0 is equal to the id value passed in col 0
+    ;;       of the idata matrix the input value will be stored.
+    ;;     - Col 2: number; value to be passed.
+    ;;     - Col 3: type, the kind of element that will receive this data.
+    ;;
+    ;;       - 0: for node.
+    ;;       - 1: for connection.
+    ;;
+    ;;     - Col 4: record control.
+    ;;
+    ;;       - 0: default.
+    ;;       - 1: epoch end.
+    ;;
+    ;;     - Col 5: classifier.
+    ;;
+    ;;       - 0: regular data.
+    ;;       - 1: training data.
+    ;;       - 2: control data.
+    
     ;; Cycle.
-    (set! i1 0)
+    (set! i1 (grsp-lm datai))
     (while (equal? b1 #f)
 
 	    ;; Find id of target.
 	    (set! n0 (array-ref datai i1 0)) 
 	    
-	    ;; Find what kind of target we have.
+	    ;; Find what kind of target we have at col 3.
+	    ;;
+	    ;; - 0: for node.
+	    ;; - 1: for connection.
+	    ;;
 	    (set! n3 (array-ref datai i1 3))
 	    
 	    ;; Check control element. If epoch ends, according to the value
-	    ;; contained in col 4 of current datai row, set b1 to false.
+	    ;; contained in col 4 of current datai row, set b1 to true.
+	    ;;
+	    ;; - 0: default.
+	    ;; - 1: epoch end.
+	    ;;
 	    (cond ((= (array-ref datai i1 4) 1)
 		   (set! b1 #t)))
 	    
 	    ;; Depending on the kind of target, select the rows from one table
 	    ;; or another whose id number (col 0) is equal to n0.
-	    (cond ((= n3 0)
+	    ;;
+	    (cond ((= n3 0) ;; Node.
 		   (set! res2 (grsp-matrix-row-select "#=" nodes 0 n0)))
-		  ((= n3 1)
+		  ((= n3 1) ;; Connection.
 		   (set! res2 (grsp-matrix-row-select "#=" conns 0 n0))))
 
-	    ;; Update res2.
-	    (array-set! res2 (array-ref datai i1 2) 0 (array-ref datai i1 1))
+	    ;; Update res2. Note that essentially there will be on row selected in
+	    ;; res2 since each node or connection has its own id.
+	    (array-set! res2 (array-ref datai i1 2) 0 (array-ref datai i1 1)) ;; ***
 
-	    ;; Mark datai record for deletion.
+	    ;; Mark datai record just passed to idata for deletion.
 	    (array-set! datai 2 i1 2)
-	    	    
+	    
 	    ;; Commit.
 	    (cond ((= n3 0)
 		   (set! nodes (grsp-matrix-commit nodes res2 0)))
@@ -3279,7 +3312,7 @@
 	    
 	    (set! i1 (in i1)))
 
-    ;; Update datai (delete what has been just copied).
+    ;; Update datai (batch delete what has been just copied).
     (set! datai (grsp-matrix-row-delete "#=" datai 2 2))
         
     ;; Compose results.
@@ -5051,6 +5084,9 @@
 ;;
 ;;   - Col 0 ... col j-1: training data.
 ;;   - Col j ... col j+p_j1: expected results for col 0 ... col j-1.
+;;
+;; - This function casts dataset matrix into datai format. The ann works by
+;;   loading rows corresponding to one epoch into idata.
 ;;
 ;; Output:
 ;;

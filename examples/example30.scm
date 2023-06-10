@@ -70,9 +70,6 @@
 ;; Set to #r to define a new random set eaxh time the program runs.
 (define b1 #f) 
 
-;; Number of epochs to process (set to -1 in order to process all data in the dataset)
-(define te 1)
-
 ;; tm is the number of rows and cols that the dataset will contain.
 (define tm1 10)
 (define tn1 3)
@@ -82,13 +79,11 @@
 (define af 2)
 (define nf 0)
 
+;; Number of epochs to process (set to -1 in order to process all data in the dataset)
+(define te -1)
+
 ;; Define the network.
 (define L1 (grsp-ann-net-create-ffv #f mut tn1 ila tn2 af nf))
-
-;; Set bias and weight values in nodes and conns to 1.
-;;(set! L1 (grsp-ann-idata-bvw "nodes" "#bias" L1 1))
-;;(set! L1 (grsp-ann-idata-bvw "nodes" "#weight" L1 1))
-;;(set! L1 (grsp-ann-idata-bvw "conns" "#weight" L1 1))
 
 ;;;; Main program.
 (clear)
@@ -100,18 +95,25 @@
 
 ;; Show dataset
 (grsp-matrix-ldvl "Dataset as it will be passed to the ANN"  dataset 1 1)
-(grsp-ask-etc)
-
 (set! L1 (grsp-ds2ann dataset 1 1 L1))
+(grsp-ask-etc)
 
 ;; Set bias and weight values in nodes and conns to 1.
 (set! L1 (grsp-ann-idata-bvw "nodes" "#bias" L1 1))
 (set! L1 (grsp-ann-idata-bvw "nodes" "#weight" L1 1))
 (set! L1 (grsp-ann-idata-bvw "conns" "#weight" L1 1))
 
-(grsp-ann-display L1)
+;; Check limits for te. If value of te is negative or higher than the number
+;; of rows in datai, then te will be set to the number of rows in datai. One
+;; row represents one epoch in thsi case.
+(cond ((<= te 0)
+       (set! te tm1))
+      ((> te tm1)
+       (set! te tm1)))
 
-(grsp-ldl "Ready to process epochs" 1 1)
+(grsp-ldl "ANN with initial values for bias and weight passed" 1 1)
+(grsp-ann-display L1)
+(grsp-ldvl "Epochs to run: " te 1 1)
 (grsp-ask-etc)
 
 ;; Loop
@@ -121,21 +123,11 @@
       (begin (set! L1 (grsp-datai2idata L1))
 
 	     (clear)
-	     (grsp-ldl "ANN before epoch processing" 1 1)
-	     (grsp-ann-display L1)
-	     (grsp-ask-etc)
+	     (grsp-ldvl "Epoch number " i1 1 1)
 	     
 	     ;; Evaluate.
 	     (set! L1 (grsp-ann-net-miter-omth #f #f #f #f "#no" L1 1 0))
-
-	     ;; If all the data in the dataset is ti be processed.
-	     (cond ((= te -1)
-
-		    ;; If all data in dataset has been passed, cut the loop.
-		    (cond ((= (grsp-tm dataset) 0)
-			   (set! te 0)))))
-
-	     (clear)
+	     
 	     (grsp-ldl "ANN after epoch processing" 1 1)
 	     (grsp-ann-display L1)
 	     (grsp-ask-etc)	     
