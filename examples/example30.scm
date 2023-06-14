@@ -77,7 +77,7 @@
 (define ila 1)
 (define tn2 tn1)
 (define af 2)
-(define nf 0)
+(define nf 1)
 
 ;; Number of epochs to process (set to -1 in order to process all data in the dataset)
 (define te -1)

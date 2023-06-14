@@ -339,7 +339,10 @@
 	    grsp-ann-bp
 	    grsp-m2datae
 	    grsp-ds2ann
-	    grsp-ann-ds-create))
+	    grsp-ann-ds-create
+	    grsp-ann-nodes-select-linked
+	    grsp-ann-nodes-select--layer
+	    grsp-ann-nodes-select-st))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network as a list data
@@ -5184,4 +5187,123 @@
     (set! a2 (grsp-matrix-subexp a1 0 1))
     (set! res1 (grsp-matrix-subrep a2 res2 (grsp-lm a2) (grsp-hn a2)))
     
+    res1))
+
+
+;;;; grsp-ann-nodes-select-linked - Returns a list of two elements containing:
+;;
+;; - Elem 0: list of connections from node p_n1 to node p_n2.
+;; - Elem 1: list of connections from node p_n2 to node p_n1.
+;;
+;; Keywors:
+;;
+;; - nodes. related, linked
+;;
+;; Parameters:
+;;
+;; - p_l1: list, ANN.
+;; - p_n1: numeric, node Id.
+;; - p_n2: numeric, node Id.
+;;
+(define (grsp-ann-nodes-select-linked p_l1 p_n1 p_n2)
+  (let ((res1 '())
+	(a1 0)
+	(a2 0)
+	(a3 0)
+	(a4 0)
+	(conns 0))
+
+    ;; Extract matrices and lists.
+    (set! conns (grsp-ann-get-matrix "conns" p_l1))
+
+    ;; Select find connections FROM p_n1 TO p_n2.
+    (set! a1 (grsp-matrix-row-select "#=" conns 3 p_n1))
+    (set! a2 (grsp-matrix-row-select "#=" a1 4 p_n2))
+
+    ;; Select find connections FROM p_n2 TO p_n1.
+    (set! a3 (grsp-matrix-row-select "#=" conns 3 p_n2))
+    (set! a4 (grsp-matrix-row-select "#=" a3 4 p_n1))
+    
+    ;; Compose results.
+    (set! res1 (list a2 a4))    
+
+    res1))
+
+
+;;;; grsp-ann-nodes-select-layer - Selects all nodes of ANN p_l1 located in layer
+;; p_n1.
+;;
+;; Keywords:
+;;
+;; - nodes, layer
+;;
+;; Parameters:
+;;
+;; - p_l1: list, ANN.
+;; - p_n1: layer number.
+;;
+(define (grsp-ann-nodes-select-layer p_l1 p_n1)
+  (let ((res1 0)
+	(nodes 0))
+
+    ;; Extract matrices and lists.
+    (set! nodes (grsp-ann-get-matrix "nodes" p_l1))	
+
+    ;; Select all nodes of layer p_n1
+    (set! res1 (grsp-matrix-row-select "#=" nodes 3 p_n1))
+    
+    res1))
+
+
+;;;; grsp-ann-nodes-select-st - Selects all nodes of ANN p_l1 of status or
+;; type p_s1.
+;;
+;; Keywords:
+;;
+;; - nodes, type, status
+;;
+;; Parameters:
+;;
+;; - p_l1: list, ANN.
+;; - p_s1: string, status or type.
+;;
+;;   - "dead".
+;;   - "inactive".
+;;   - "active".
+;;   - "input".
+;;   - "neuron".
+;;   - "output".
+;;
+(define (grsp-ann-nodes-select-st p_l1 p_s1)
+  (let ((res1 0)
+	(n1 0)
+	(n2 0)
+	(nodes 0))
+
+    ;; Extract matrices and lists.
+    (set! nodes (grsp-ann-get-matrix "nodes" p_l1))	
+    
+    ;; Set col number and value.
+    (cond ((equal? p_s1 "dead")
+	   (set! n1 1)
+	   (set! n2 0))
+	  ((equal? p_s1 "inactive")
+	   (set! n1 1)
+	   (set! n2 1))
+	  ((equal? p_s1 "active")
+	   (set! n1 1)
+	   (set! n2 2))
+	  ((equal? p_s1 "input")
+	   (set! n1 2)
+	   (set! n2 0))
+	  ((equal? p_s1 "neuron")
+	   (set! n1 2)
+	   (set! n2 1))
+	  ((equal? p_s1 "output")
+	   (set! n1 2)
+	   (set! n2 2)))
+
+    ;; Compose results.
+    (set! res1 (grsp-matrix-row-select "#=" nodes n1 n2))
+        
     res1))
