@@ -90,7 +90,7 @@
 ;;
 ;;   - Elem 3: idata. Matrix. Contains an instance of input data. This is how the
 ;;     data should be passed to the network. Using this format it is possible to
-;;     modify the number of input nodes interactively if and when an evolving
+;;     modify the number of nodes interactively if and when an evolving
 ;;     neural network is used. It is also possible to pass data interactively to
 ;;     the network that does not go directly to the input nodes but modifies the
 ;;     behavior of existing nodes.
@@ -101,7 +101,7 @@
 ;;       passed in col 0 of the idata matrix the input value will be stored.
 ;;     - Col 2: number.
 ;;     - Col 3: type, the kind of element that will receive this data. This means
-;;       that based on any given idata row a row in nodes or conns matrices will
+;;       that based on any given idata row, a row in nodes or conns matrices will
 ;;       be updated.
 ;;
 ;;       - 0: for node.
@@ -172,7 +172,7 @@
 ;;       - 1: training data.
 ;;       - 2: control data.
 ;;
-;;   - Elem 8: datao. Obtained values from each interation or forward feed of
+;;   - Elem 8: datao. Obtained values from each iteration or forward feed of
 ;;     the network.
 ;;
 ;;     - Col 0: id of each output node.
@@ -341,8 +341,10 @@
 	    grsp-ds2ann
 	    grsp-ann-ds-create
 	    grsp-ann-nodes-select-linked
-	    grsp-ann-nodes-select--layer
-	    grsp-ann-nodes-select-st))
+	    grsp-ann-nodes-select-layer
+	    grsp-ann-nodes-select-st
+	    grsp-ann-id-update
+	    grsp-ann-node-info))
 
 
 ;;;; grsp-ann-net-create-000 - Creates an empty neural network as a list data
@@ -1778,8 +1780,8 @@
     res1))
 
 
-;;;; grsp-ann-conns-of-node - Finds the connections that reach node with id p_id
-;; aacording to p_s1 in p_a1.
+;;;; grsp-ann-conns-of-node - Finds the connections that reach or go out from
+;; node with id p_id according to p_s1 in p_a1.
 ;;
 ;; Keywords:
 ;;
@@ -5306,4 +5308,162 @@
     ;; Compose results.
     (set! res1 (grsp-matrix-row-select "#=" nodes n1 n2))
         
+    res1))
+
+
+;;;; grsp-ann-id-updat - Change id number of element p_s1 whith id p_n1 to id
+;; p_n2 in ANN p_l1.
+;;
+;; Keywords:
+;;
+;; - key, id
+;;
+;; Parameters:
+;;
+;; . p_s1: string, element type.
+;;
+;;   - "node".
+;;   - "conns".
+;;
+;; - p_l1: list, ANN.
+;; - p_n1: numeric, old id.
+;; - p_n2: numeric, new id.
+;;
+;; Notes:
+;;
+;; - Use with care in order not to mess up the id of elements in your ANN.
+;;
+(define (grsp-ann-id-update p_s1 p_l1 p_n1 p_n2)
+  (let ((res1 '())
+	(a1 0)
+	(lm 0)
+	(hm 0)
+	(nodes 0)
+	(conns 0)
+	(count 0)
+	(idata 0)
+	(odata 0)
+	(specs 0)
+	(odtid 0)
+	(datai 0)
+	(datao 0)	
+	(datae 0))
+   
+    ;; Extract matrices.
+    (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
+    (set! conns (grsp-ann-get-matrix "conns" p_l1))
+    (set! count (grsp-ann-get-matrix "count" p_l1))    
+    (set! idata (grsp-ann-get-matrix "idata" p_l1))
+    (set! odata (grsp-ann-get-matrix "odata" p_l1))
+    (set! specs (grsp-ann-get-matrix "specs" p_l1))
+    (set! odtid (grsp-ann-get-matrix "odtid" p_l1))
+    (set! datai (grsp-ann-get-matrix "datai" p_l1))
+    (set! datao (grsp-ann-get-matrix "datao" p_l1))
+    (set! datae (grsp-ann-get-matrix "datae" p_l1))	
+
+    (cond ((equal? p_s1 "nodes")
+
+	   ;; Change id of the node in nodes.
+	   (set! nodes (grsp-matrix-row-update "#=" nodes 0 p_n1 0 p_n2))
+
+	   ;; Change FROM value in conns.
+	   (set! conns (grsp-matrix-row-update "#=" conns 3 p_n1 3 p_n2))
+
+	   ;; Change TO value conns.
+	   (set! conns (grsp-matrix-row-update "#=" conns 4 p_n1 4 p_n2))
+	   
+	   ;; Select rows for nodes from idata and change id.
+	   (let loop ((i1 lm))
+	     (if (<= i1 hm)
+
+		 (begin (cond ((equal? (and (equal? (array-ref idata i1 0) p_n1)
+					    (equal? (array-ref idata i1 3) 1)) #t)
+
+			       (array-set! idata p_n2 i1 0)))
+		 
+			(loop (+ i1 1)))))
+
+	   ;; Change odata.
+	   (set! odata (grsp-matrix-row-update "#=" odata 0 p_n1 0 p_n2))
+
+	   ;; Select rows for nodes from datai and change id.
+	   (let loop ((i1 lm))
+	     (if (<= i1 hm)
+
+		 (begin (cond ((equal? (and (equal? (array-ref datai i1 0) p_n1)
+					    (equal? (array-ref datai i1 3) 1)) #t)
+
+			       (array-set! datai p_n2 i1 0)))
+		 
+			(loop (+ i1 1)))))
+
+	   ;; Change datao.
+	   (set! datao (grsp-matrix-row-update "#=" datao 0 p_n1 0 p_n2)))
+	   
+	  ((equal? p_s1 "conns")
+
+	   ;; Change id of the edge in conns.
+	   (set! conns (grsp-matrix-row-update "#=" conns 0 p_n1 0 p_n2))))
+    
+    ;; Compose results.
+    (set! res1 (list nodes
+		     conns
+		     count
+		     idata
+		     odata
+		     specs
+		     odtid
+		     datai
+		     datao
+		     datae))  
+
+    res1))
+
+
+;;;;  grsp-ann-node-info - Extracts infro from node identified as p_n1 from
+;; network p_l1
+;;
+;; Keywords:
+;;
+;; - anatomy, extract, info, structure
+;;
+;; Parameters:
+;;
+;; - p_l1: list, ANN.
+;; - p_n1: numeric. Id of the node to clone.
+;;
+;; Output:
+;;
+;; - A list with three elements:
+;;
+;;   - Elem 0: A matrix row from matrix nodes that corresponds to the node
+;;     requested.
+;;   - Elem 1: A submatrix from matrix conns with connections TO node p_n1.
+;;   - Elem 2: A submatrix from matrix conns with connections FROM node p_n1.
+;;
+;; - Will return empty matrices in case that no node or connections are found.
+;;   Use grsp-matrix-is-empty to verify.
+;;
+(define (grsp-ann-node-info p_l1 p_n1)
+  (let ((res1 '())
+	(l2 '())
+	(a1 0)
+	(b1 #f)
+	(nodes 0))
+    
+    ;; Extract matrices.
+    (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
+
+    ;; Check if node with id p_n1 exists and if so, extract info.
+    (set! a1 (grsp-matrix-row-select "#=" nodes 0 p_n1))
+    (set! b1 (grsp-matrix-is-empty a1))
+    
+    (cond ((equal? b1 #f)
+	       
+	   ;; Find conns.
+	   (set! l2 (grsp-ann-node-conns p_l1 p_n1))
+   
+	   ;; Compose results.
+	   (set! res1 (list a1 (list-ref l2 0) (list-ref l2 1)))))
+
     res1))
