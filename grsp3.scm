@@ -1162,25 +1162,28 @@
 ;;   p_v2.
 ;;
 (define (grsp-matrix-change p_a1 p_v1 p_v2)
-  (let ((res1 p_a1)
+  (let ((res1 0)
 	(i1 0)
 	(j1 0))
 
+    ;; Safety copy.
+    (set! res1 (grsp-matrix-cpy p_a1))
+    
     ;; Cycle thorough the matrix and change to p_v1 those elements whose value  
     ;; is p_v1.
-    (set! i1 (grsp-lm res1))
-    (while (<= i1 (grsp-hm res1))
-	   
-	   (set! j1 (grsp-ln res1))
-	   (while (<= j1 (grsp-hn res1))
-		  
-		  (cond ((equal? (array-ref res1 i1 j1) p_v1)
-			 (array-set! res1 p_v2 i1 j1)))
-		  
-		  (set! j1 (+ j1 1)))
-	   
-	   (set! i1 (+ i1 1)))
+    (let loop ((i1 (grsp-lm res1)))
+      (if (<= i1 (grsp-hm res1))
 
+	  (begin (let loop ((j1 (grsp-ln res1)))
+		   (if (<= j1 (grsp-hn res1))
+
+		       (begin (cond ((equal? (array-ref res1 i1 j1) p_v1)
+				     (array-set! res1 p_v2 i1 j1)))		
+			      
+			      (loop (+ j1 1)))))
+		 
+		 (loop (+ i1 1)))))
+    
     res1))
 
 
@@ -1891,28 +1894,31 @@
 ;; - [1][2][3][4].
 ;;
 (define (grsp-matrix-transpose p_a1)
-  (let ((res1 p_a1)
-	(res2 0)
+  (let ((res1 0)
+	(a1 0)
 	(i1 0)
 	(j1 0))
 
+    ;; Safety copy.
+    (set! a1 (grsp-matrix-cpy p_a1))
+    
     ;; Create new matrix with transposed shape.
-    (set! res2 (grsp-matrix-create res2
-				   (+ (- (grsp-hn res1) (grsp-ln res1)) 1)
-				   (+ (- (grsp-hm res1) (grsp-lm res1)) 1)))
+    (set! res1 (grsp-matrix-create 0
+				   (+ (- (grsp-hn a1) (grsp-ln a1)) 1)
+				   (+ (- (grsp-hm a1) (grsp-lm a1)) 1)))
     
     ;; Transpose the elements.
-    (set! i1 (grsp-lm res1))
-    (while (<= i1 (grsp-hm res1))
+    (set! i1 (grsp-lm a1))
+    (while (<= i1 (grsp-hm a1))
 	   
-	   (set! j1 (grsp-ln res1))
-	   (while (<= j1 (grsp-hn res1))		  
-		  (array-set! res2 (array-ref res1 i1 j1) j1 i1)
+	   (set! j1 (grsp-ln a1))
+	   (while (<= j1 (grsp-hn a1))		  
+		  (array-set! res1 (array-ref a1 i1 j1) j1 i1)
 		  (set! j1 (+ j1 1)))
 	   
 	   (set! i1 (+ i1 1)))
 
-    res2))
+    res1))
 
 
 ;;;; grsp-matrix-transposer - Transposes p_a1 p_n1 times.
@@ -1931,17 +1937,21 @@
 ;; - Matrix.
 ;;
 (define (grsp-matrix-transposer p_a1 p_n1)
-  (let ((res1 p_a1)
-	(i1 0))
+  (let ((res1 0))
 
+    (set! res1 (grsp-matrix-cpy p_a1))
+    
     (cond ((< p_n1 0)	   
 	   (set! p_n1 0))	  
 	  ((> p_n1 4)	   
 	   (set! p_n1 4)))
-    
-    (while (< i1 p_n1)	   
-	   (set! res1 (grsp-matrix-transpose res1))	   
-	   (set! i1 (+ i1 1)))
+
+    (let loop ((i1 0))
+      (if (< i1 p_n1)
+
+	  (begin (set! res1 (grsp-matrix-transpose res1))
+		 
+		 (loop (+ i1 1)))))
     
     res1))
 
@@ -1961,12 +1971,13 @@
 ;; - Matrix.
 ;;
 (define (grsp-matrix-conjugate p_a1)
-  (let ((res1 p_a1)
-	(res2 0))
+  (let ((a1 0)
+	(res1 0))
 
-    (set! res2 (grsp-matrix-opsc "#si" res1 0))
+    (set! a1 (grsp-matrix-cpy p_a1))
+    (set! res1 (grsp-matrix-opsc "#si" a1 0))
 
-    res2))
+    res1))
 
 
 ;;;; grsp-matrix-conjugate-transpose - Calculates the conjugate transpose matrix
@@ -1990,12 +2001,13 @@
 ;; - [40][41].
 ;;
 (define (grsp-matrix-conjugate-transpose p_a1)
-  (let ((res1 p_a1)
-	(res2 0))
+  (let ((a1 0)
+	(res1 0))
 
-    (set! res2 (grsp-matrix-conjugate (grsp-matrix-transpose res1)))
+    (set! a1 (grsp-matrix-cpy p_a1))
+    (set! res1 (grsp-matrix-conjugate (grsp-matrix-transpose a1)))
 
-    res2))
+    res1))
 
 
 ;;;; grsp-matrix-opio - Internal operations that produce a scalar result.
@@ -2046,16 +2058,17 @@
 ;; - [1][2][3][4].
 ;;
 (define (grsp-matrix-opio p_s1 p_a1 p_l1)
-  (let ((res1 p_a1)
+  (let ((a1 0)
 	(res2 0)
-	(res3 1)
+	(n1 0)
 	(l1 0)
 	(i1 0)
 	(j1 0)
 	(k1 0))
 
+    (set! a1 (grsp-matrix-cpy p_a1))
     (set! l1 p_l1)
-    (set! k1 (grsp-hm res1))
+    (set! k1 (grsp-hm a1))
     
     (cond ((equal? p_s1 "#*")	   
 	   (set! res2 1))	  
@@ -2079,86 +2092,88 @@
 	   (set! res2 1)))
 	  
     ;; Apply internal operation.
-    (set! i1 (grsp-lm res1))
-    (while (<= i1 (grsp-hm res1))
+    (set! i1 (grsp-lm a1))
+    (while (<= i1 (grsp-hm a1))
 
-	   (set! j1 (grsp-ln res1))
-	   (while (<= j1 (grsp-hn res1))
+	   (set! j1 (grsp-ln a1))
+	   (while (<= j1 (grsp-hn a1))
+
+		  (set! n1 (array-ref a1 i1 j1))
 		  
 		  (cond ((equal? p_s1 "#+")			 
-			 (set! res2 (+ res2 (array-ref res1 i1 j1))))			
+			 (set! res2 (+ res2 n1)))
 			((equal? p_s1 "#-")			 
-			 (set! res2 (- res2 (array-ref res1 i1 j1))))			
+			 (set! res2 (- res2 n1)))
 			((equal? p_s1 "#*")			 
-			 (set! res2 (* res2 (array-ref res1 i1 j1))))			
+			 (set! res2 (* res2 n1)))			
 			((equal? p_s1 "#/")			 
-			 (set! res2 (/ res2 (array-ref res1 i1 j1))))
+			 (set! res2 (/ res2 n1)))
 			 
 			;; Main diagonal operations.
 			((equal? p_s1 "#+md")
 			 
 			 (cond ((equal? (grsp-gtels i1 j1) 0)				
-				(set! res2 (+ res2 (array-ref res1 i1 j1))))))
+				(set! res2 (+ res2 n1)))))
 			
 			((equal? p_s1 "#-md")
 			 
 			 (cond ((equal? (grsp-gtels i1 j1) 0)				
-				(set! res2 (- res2 (array-ref res1 i1 j1))))))
+				(set! res2 (- res2 n1)))))
 			
 			((equal? p_s1 "#*md")
 			 
 			 (cond ((equal? (grsp-gtels i1 j1) 0)				
-				(set! res2 (* res2 (array-ref res1 i1 j1))))))
+				(set! res2 (* res2 n1)))))
 			
 			((equal? p_s1 "#/md")
 			 
 			 (cond ((equal? (grsp-gtels i1 j1) 0)				
-				(set! res2 (/ res2 (array-ref res1 i1 j1))))))
+				(set! res2 (/ res2 n1)))))
 
 			;; Anti diagonal operations.
 			((equal? p_s1 "#+ad")
 			 
 			 (cond ((equal? k1 (+ i1 j1))				
-				(set! res2 (+ res2 (array-ref res1 i1 j1))))))
+				(set! res2 (+ res2 n1)))))
 			
 			((equal? p_s1 "#-ad")
 			 
 			 (cond ((equal? k1 (+ i1 j1))				
-				(set! res2 (- res2 (array-ref res1 i1 j1))))))
+				(set! res2 (- res2 n1)))))
 			
 			((equal? p_s1 "#*ad")
 			 
 			 (cond ((equal? k1 (+ i1 j1))				
-				(set! res2 (* res2 (array-ref res1 i1 j1))))))
+				(set! res2 (* res2 n1)))))
 			
 			((equal? p_s1 "#/ad")
 			 
 			 (cond ((equal? k1 (+ i1 j1))				
-				(set! res2 (/ res2 (array-ref res1 i1 j1)))))))			
+				(set! res2 (/ res2 n1))))))
 			
 		  ;; Row operations.
 		  (cond ((= l1 i1)
 			 
 			 (cond ((equal? p_s1 "#+r")				
-				(set! res2 (+ res2 (array-ref res1 i1 j1))))			       
+				(set! res2 (+ res2 n1)))
 			       ((equal? p_s1 "#-r")				
-				(set! res2 (- res2 (array-ref res1 i1 j1))))			       
+				(set! res2 (- res2 n1)))
 			       ((equal? p_s1 "#*r")				
-				(set! res2 (* res2 (array-ref res1 i1 j1))))			       
+				(set! res2 (* res2 n1)))
 			       ((equal? p_s1 "#/r")				
-				(set! res2 (/ res2 (array-ref res1 i1 j1)))))))
+				(set! res2 (/ res2 n1))))))
 
 		  ;; Column operations.
 		  (cond ((= l1 j1)
 			 
 			 (cond ((equal? p_s1 "#+c")				
-				(set! res2 (+ res2 (array-ref res1 i1 j1))))			       
+				(set! res2 (+ res2 n1)))
 			       ((equal? p_s1 "#-c")				
-				(set! res2 (- res2 (array-ref res1 i1 j1))))			       
+				(set! res2 (- res2 n1)))
 			       ((equal? p_s1 "#*c")				
-				(set! res2 (* res2 (array-ref res1 i1 j1))))			       
+				(set! res2 (* res2 n1)))
 			       ((equal? p_s1 "#/c")				
-				(set! res2 (/ res2 (array-ref res1 i1 j1)))))))
+				(set! res2 (/ res2 n1))))))
 
 		  (set! j1 (+ j1 1)))
 	   
@@ -2215,77 +2230,64 @@
 ;; - [5][6].
 ;;
 (define (grsp-matrix-opsc p_s1 p_a1 p_v1)
-  (let ((res1 p_a1)
-	(res2 2)
-	(lm1 0)
-	(hm1 0)
-	(ln1 0)
-	(hn1 0)
+  (let ((a1 0)
+	;;(res1 2)
+	(res1 0)
+	(n1 0)
 	(i1 0)
 	(j1 0))
 
-    ;; Extract the boundaries of the argument matrix.
-    (set! lm1 (grsp-matrix-esi 1 res1))
-    (set! hm1 (grsp-matrix-esi 2 res1))
-    (set! ln1 (grsp-matrix-esi 3 res1))
-    (set! hn1 (grsp-matrix-esi 4 res1))
-
+    ;; Safety copy.
+    (set! a1 (grsp-matrix-cpy p_a1))
+    
     ;; Create holding matrix.
-    (set! res2 (grsp-matrix-create res2 (+ (- hm1 lm1) 1) (+ (- hn1 ln1) 1)))
+    (set! res1 (grsp-matrix-create res1
+				   (+ (- (grsp-hm a1) (grsp-lm a1)) 1)
+				   (+ (- (grsp-hn a1) (grsp-ln a1)) 1)))
     
     ;; Apply scalar operation.
-    (set! i1 lm1)
-    (while (<= i1 hm1)
+    (set! i1 (grsp-lm a1))
+    (while (<= i1 (grsp-hm a1))
 	   
-	   (set! j1 ln1)
-	   (while (<= j1 hn1)
+	   (set! j1 (grsp-ln a1))
+	   (while (<= j1 (grsp-hn a1))
+		  
+		  (set! n1 (array-ref a1 i1 j1))
 		  
 		  (cond ((equal? p_s1 "#+")			 
-			 (array-set! res2 (+ (array-ref res1 i1 j1) p_v1) i1 j1))			
+			 (array-set! res1 (+ n1 p_v1) i1 j1))			
 			((equal? p_s1 "#-")			 
-			 (array-set! res2 (- (array-ref res1 i1 j1) p_v1) i1 j1))			
+			 (array-set! res1 (- n1 p_v1) i1 j1))			
 			((equal? p_s1 "#*")			 
-			 (array-set! res2 (* (array-ref res1 i1 j1) p_v1) i1 j1))			
+			 (array-set! res1 (* n1 p_v1) i1 j1))			
 			((equal? p_s1 "#/")			 
-			 (array-set! res2 (/ (array-ref res1 i1 j1) p_v1) i1 j1))			
+			 (array-set! res1 (/ n1 p_v1) i1 j1))			
 			((equal? p_s1 "#expt")			 
-			 (array-set! res2
-				     (expt (array-ref res1 i1 j1) p_v1)
-				     i1
-				     j1))			
+			 (array-set! res1 (expt n1 p_v1) i1 j1))
 			((equal? p_s1 "#max")			 
-			 (array-set! res2
-				     (max (array-ref res1 i1 j1) p_v1)
-				     i1
-				     j1))			
+			 (array-set! res1 (max n1 p_v1) i1 j1))
 			((equal? p_s1 "#min")			 
-			 (array-set! res2
-				     (min (array-ref res1 i1 j1) p_v1)
-				     i1
-				     j1))			
+			 (array-set! res1 (min n1 p_v1) i1 j1))
 			((equal? p_s1 "#rw")			 
-			 (array-set! res2 p_v1 i1 j1))			
+			 (array-set! res1 p_v1 i1 j1))			
 			((equal? p_s1 "#rprnd")			 
-			 (array-set! res2
+			 (array-set! res1
 				     (grsp-rprnd "#normal" 0.0 p_v1)
 				     i1
 				     j1))			
 			((equal? p_s1 "#si")			 
-			 (array-set! res2
-				     (grsp-complex-inv p_s1
-						       (array-ref res1 i1 j1))
+			 (array-set! res1
+				     (grsp-complex-inv p_s1 n1)
 				     i1
-				     j1))			
+				     j1))	
 			((equal? p_s1 "#is")			 
-			 (array-set! res2
-				     (grsp-complex-inv p_s1
-						       (array-ref res1 i1 j1))
+			 (array-set! res1
+				     (grsp-complex-inv p_s1 n1)
 				     i1
 				     j1))			
 			((equal? p_s1 "#ii")			 
-			 (array-set! res2
-				     (grsp-complex-inv p_s1
-						       (array-ref res1 i1 j1))
+			 (array-set! res1
+				     (grsp-complex-inv p_s1 n1)
 				     i1
 				     j1)))
 		  
@@ -2293,7 +2295,7 @@
 	   
 	   (set! i1 (+ i1 1)))
 
-    res2))
+    res1))
 
 
 ;;;; grsp-matrix-opew - Performs element-wise operation p_s1 between matrices
