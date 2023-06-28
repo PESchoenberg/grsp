@@ -9538,20 +9538,20 @@
     (set! res1 (grsp-matrix-cpy p_a1))
     
     ;; Cycle rows.
-    (set! i1 (grsp-lm res1))
-    (while (<= i1 (grsp-hm res1))
+    (let loop ((i1 (grsp-lm res1)))
+      (if (<= i1 (grsp-hm res1))
 
-	   ;; Cycle cols.
-	   (set! j1 (grsp-lm res1))
-	   (while (<= j1 (grsp-hm res1))	   
+	  ;; Cycle cols.
+	  (begin (let loop ((j1 (grsp-ln res1)))
+		   (if (<= j1 (grsp-hn res1))
 
-		  (cond ((= i1 j1)
-			 (array-set! res1 p_n1 i1 j1)))
-		  
-		  (set! j1 (in j1)))
-
-	   (set! i1 (in i1)))
-		  
+		       (begin (cond ((= i1 j1)
+				     (array-set! res1 p_n1 i1 j1)))
+			      
+			      (loop (+ j1 1)))))
+	  
+	  (loop (+ i1 1)))))
+    
     res1))
 
 
@@ -9578,13 +9578,15 @@
 
     (set! n1 (grsp-matrix-te1 (grsp-lm p_a1) (grsp-hm p_a1)))
     (set! res1 (grsp-matrix-create 0 1 n1))
-
-    (set! i1 (grsp-lm p_a1))
     (set! j1 (grsp-ln res1))
-    (while (<= i1 (grsp-hm p_a1))
-	   (array-set! res1 (array-ref p_a1 i1 i1) 0 j1)
-	   (set! j1 (in j1))	 
-	   (set! i1 (in i1)))
+
+    (let loop ((i1 (grsp-lm p_a1)))
+      (if (<= i1 (grsp-hm p_a1))
+
+	  (begin (array-set! res1 (array-ref p_a1 i1 i1) 0 j1)
+		 (set! j1 (in j1))
+		 
+		 (loop (+ i1 1)))))    
     
     res1))
 
@@ -9612,7 +9614,6 @@
 	(uu 0))
 
     (set! uv (grsp-matrix-opmsc "#.R" p_a2 p_a1))
-    ;;(set! uu (grsp-matrix-opmsc "#.R" p_a2 p_a2))
     (set! uu (grsp-matrix-normf uu))
     (set! res2 (/ uv uu))
     (set! res1 (grsp-matrix-opsc "#*" p_a2 res2))
@@ -9813,12 +9814,8 @@
     (set! i2 (grsp-lm v))
     (while (<= i2 (grsp-hm v))
 
-	   (set! res2 (grsp-matrix-opsc "#*" I (array-ref v i2 0))) ;; ***
+	   (set! res2 (grsp-matrix-opsc "#*" I (array-ref v i2 0)))
 	   (set! res3 (grsp-matrix-opmm "#-" A res2))
-	   ;; https://www.youtube.com/watch?v=WTLl03D4TNA&list=TLPQMTUwMTIwMjOXmOL4FUM0fQ&index=3
-	   ;; https://www.youtube.com/watch?v=TQvxWaQnrqI&list=TLPQMTUwMTIwMjOXmOL4FUM0fQ&index=3
-	   ;; forward substitution, linear syst of eq.
-	   ;; https://www.andreinc.net/2021/01/20/writing-your-own-linear-algebra-matrix-library-in-c#solving-linear-systems-of-equations
 	   
 	   ;; Place eigenvector in list.
 	   (list-set! res1 i2 res3)
@@ -10360,16 +10357,14 @@
 ;;
 ;; - -1 if rows > cols.
 ;; - 0 if rows = cols-
-;; - 1 of rows < cols.
+;; - 1 if rows < cols.
 ;;
 (define (grsp-matrix-wlongest p_a1)
-  (let ((res1 0)
-	(tm (grsp-tm p_a1))
-	(tn (grsp-tn p_a1)))
+  (let ((res1 0))
 
-    (cond ((> tm tn)
+    (cond ((> (grsp-tm p_a1) (grsp-tn p_a1))
 	   (set! res1 -1))
-	  ((< tm tn)
+	  ((< (grsp-tm p_a1) (grsp-tn p_a1))
 	   (set! res1 1)))
     
     res1))
@@ -10485,7 +10480,7 @@
 
 
 ;;;; grsp-matrix-bsubst - Performs a backward substitution on linear system
-;; of equations p_a1 * x = p_a2, solving for coulmn vector x.
+;; of equations p_a1 * x = p_a2, solving for column vector x.
 ;;
 ;; Keywords:
 ;;
@@ -10508,6 +10503,8 @@
   (let ((res1 0)
 	(sum 0)
 	(hj (grsp-hn p_a1))
+	(n1 0)
+	(n2 0)
 	(b1 0)
 	(i1 1)
 	(j1 0)
@@ -10518,23 +10515,24 @@
     (array-set! res1 (/ (array-ref p_a2 hj 0) (array-ref p_a1 hj hj)) hj 0) ;; y[n] = B[n] / U[n,n]
 
     ;; Dec cycle.
-    (set! i1 (- hj 1))
-    (while (>= i1 0)
+    (let loop ((i1 (- hj 1)))
+      (if (>= i1 0)
+	   
+	   ;; Summation
+	  (begin (set! sum 0)
+		 (let loop ((j1 (+ i1 1)))
+		   (if (<= j1 hj)
 
-	   ;; Summation.
-	   (set! sum 0)
-	   (set! j1 (+ i1 1))
-	   (while (<= j1 hj)
+		       (begin (set! sum (+ sum (* (array-ref p_a1 i1 j1) (array-ref res1 j1 0))))
+			      ;;(set! j1 (in j1))
+			      
+			      (loop (+ j1 1)))))
+		 
+		 ;; Find matrix var.
+		 (set! y1 (/ (- (array-ref p_a2 i1 0) sum) (array-ref p_a1 i1 i1)))
+		 (array-set! res1 y1 i1 0)	   
 
-		  (set! sum (+ sum (* (array-ref p_a1 i1 j1) (array-ref res1 j1 0))))
-		  
-		  (set! j1 (in j1)))
-
-	   ;; Find matrix var.
-	   (set! y1 (/ (- (array-ref p_a2 i1 0) sum) (array-ref p_a1 i1 i1)))
-	   (array-set! res1 y1 i1 0)	   
-
-	   (set! i1 (de i1)))
+	   (loop (- i1 1)))))
 	   
     res1))
 
@@ -10566,20 +10564,11 @@
 ;; - [68].
 ;;
 (define (grsp-matrix-compatibility p_s1 p_a1 p_a2)
-  (let ((res1 #f)
-	(m1 0)
-	(n1 0)
-	(m2 0)
-	(n2 0))
+  (let ((res1 #f))
 
-    (set! m1 (grsp-tm p_a1))
-    (set! n1 (grsp-tn p_a1))
-    (set! m2 (grsp-tm p_a2))
-    (set! n2 (grsp-tn p_a2))
-    
     (cond ((equal? p_s1 "#+")
 
-	   (cond ((equal? (and (equal? m1 m2) (equal? n1 n2)) #t)
+	   (cond ((equal? (and (equal? (grsp-tm p_a1) (grsp-tm p_a2)) (equal? (grsp-tn p_a1) (grsp-tn p_a2))) #t)
 		  (set! res1 #t))))
 
 	  ((equal? p_s1 "#*f")
@@ -10587,7 +10576,7 @@
 	  
 	  ((equal? p_s1 "#*")
 
-	   (cond ((equal? n1 n2)
+	   (cond ((equal? (grsp-tn p_a1) (grsp-tn p_a2))
 		  (set! res1 #t)))))
 		      
     res1))
@@ -10911,7 +10900,7 @@
 ;;
 ;; Output:
 ;;
-;; - Matrx, numeric.
+;; - Matrix, numeric.
 ;;
 (define (grsp-matrix-blur p_s1 p_a1 p_v1)
   (let ((res1 0)
@@ -10922,19 +10911,19 @@
     (set! res1 (grsp-matrix-cpy p_a1))
     
     ;; Row loop.
-    (set! i1 (grsp-lm res1))
-    (while (<= i1 (grsp-hm res1))
+    (let loop ((i1 (grsp-lm res1)))
+      (if (<= i1 (grsp-hm res1))
 
-	   ;; Col loop.
-	   (set! j1 (grsp-ln res1))
-	   (while (<= j1 (grsp-hn res1))
+	  ;; Col loop.
+	  (begin (let loop ((j1 (grsp-ln res1)))
+		   (if (<= j1 (grsp-hn res1))
 
-		  ;; Replace element value by its noisy or blurred variant.
-		  (array-set! res1 (grsp-rprnd p_s1 (array-ref res1 i1 j1) p_v1) i1 j1)
-		  
-		  (set! j1 (in j1)))
-
-	   (set! i1 (in i1)))
+		       ;; Replace element value by its noisy or blurred variant.
+		       (begin (array-set! res1 (grsp-rprnd p_s1 (array-ref res1 i1 j1) p_v1) i1 j1)		       
+			      
+			      (loop (+ j1 1))))))
+	  
+	  (loop (+ i1 1))))
     
     res1))
 
@@ -11082,6 +11071,7 @@
 	(res2 0)
 	(j2 0))
 
+    ;; Safety copy.
     (set! res1 (grsp-matrix-create 0 (grsp-tm p_a1) 1))
 
     ;; Cycle.
