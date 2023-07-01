@@ -9206,16 +9206,20 @@
 
     ;; Cycle thorough both matrices, cast each element of p_a1 as a string
     ;; and copy it to the exact position into res1.
-    (set! i1 (grsp-lm p_a1))
-    (while (<= i1 (grsp-hm p_a1))
 
-	   (set! j1 (grsp-ln p_a1))
-	   (while (<= j1 (grsp-hn p_a1))
-		  (array-set! res1 (grsp-n2s (array-ref p_a1 i1 j1)) i1 j1)
-		  
-		  (set! j1 (in j1)))
+    ;; Row.
+    (let loop ((i1 (grsp-lm p_a1)))
+      (if (<= i1 (grsp-hm p_a1))
 
-	   (set! i1 (in i1)))	      
+	  ;; Cols.
+	  (begin (let loop ((j1 (grsp-ln p_a1)))
+		   (if (<= j1 (grsp-hn p_a1))
+
+		       (begin (array-set! res1 (grsp-n2s (array-ref p_a1 i1 j1)) i1 j1)
+				    
+			      (loop (+ j1 1)))))
+		 
+		 (loop (+ i1 1)))))
     
     res1))
 
@@ -9252,18 +9256,21 @@
 
     ;; Make safety copy.
     (set! res1 (grsp-matrix-cpy p_a1))
-    
-    (set! i1 (grsp-lm res1))
-    (while (<= i1 (grsp-hm res1))
 
-	   (set! j1 (grsp-ln res1))
-	   (while (<= j1 (grsp-hn res1))
+    ;; Row.
+    (let loop ((i1 (grsp-lm res1)))
+      (if (<= i1 (grsp-hm res1))
 
-		  (set! s2 (grsp-string-pjustify p_s1 (array-ref res1 i1 j1) p_s3 p_n1))
-		  (array-set! res1 s2 i1 j1)		  
-		  (set! j1 (in j1)))
-	   
-	   (set! i1 (in i1)))
+	  ;; Cols.
+	  (begin (let loop ((j1 (grsp-ln res1)))
+		   (if (<= j1 (grsp-hn res1))
+
+		       (begin (set! s2 (grsp-string-pjustify p_s1 (array-ref res1 i1 j1) p_s3 p_n1))
+			      (array-set! res1 s2 i1 j1)
+				    
+			      (loop (+ j1 1)))))
+		 
+		 (loop (+ i1 1)))))
     
     res1))
 
@@ -9290,21 +9297,23 @@
 	(i1 0)
 	(j1 0))
 
-    (set! i1 (grsp-lm p_a1))
-    (while (<= i1 (grsp-hm p_a1))
+    ;; Row.
+    (let loop ((i1 (grsp-lm p_a1)))
+      (if (<= i1 (grsp-hm p_a1))
 
-	   (set! j1 (grsp-ln p_a1))
-	   (while (<= j1 (grsp-hn p_a1))
+	  ;; Cols.
+	  (begin (let loop ((j1 (grsp-ln p_a1)))
+		   (if (<= j1 (grsp-hn p_a1))
 
-		  (set! s1 (array-ref p_a1 i1 j1))
-		  (set! n1 (string-length s1))
-		  
-		  (cond ((> n1 res1)
-			 (set! res1 n1)))
-		  
-		  (set! j1 (in j1)))
-
-	   (set! i1 (in i1)))
+		       (begin (set! s1 (array-ref p_a1 i1 j1))
+			      (set! n1 (string-length s1))
+			      
+			      (cond ((> n1 res1)
+				     (set! res1 n1)))
+				    
+			      (loop (+ j1 1)))))
+		 
+		 (loop (+ i1 1)))))
     
     res1))
 
@@ -9337,20 +9346,22 @@
     ;; Justify.
     (set! a2 (grsp-matrix-spjustify "#r" p_a1 " " l1))
 
-    (set! i1 (grsp-lm p_a1))
-    (while (<= i1 (grsp-hm p_a1))
-	   
-	   (set! j1 (grsp-ln p_a1))
-	   (while (<= j1 (grsp-hn p_a1))
+    ;; Row.
+    (let loop ((i1 (grsp-lm p_a1)))
+      (if (<= i1 (grsp-hm p_a1))
 
-		  (set! res1 (string-append res1 (array-ref a2 i1 j1)))
-		  
-		  (set! j1 (in j1)))
+	  ;; Cols.
+	  (begin (let loop ((j1 (grsp-ln p_a1)))
+		   (if (<= j1 (grsp-hn p_a1))
 
-	   ;; Insert a new line string after a row is completed.	   
-	   (set! res1 (string-append res1 "\n"))
-	   
-	   (set! i1 (in i1)))
+		       (begin (set! res1 (string-append res1 (array-ref a2 i1 j1)))
+			      
+			      (loop (+ j1 1)))))
+
+		 ;; Insert a new line string after a row is completed.	   
+		 (set! res1 (string-append res1 "\n"))
+		 
+		 (loop (+ i1 1)))))
     
     res1))
 
@@ -9397,7 +9408,8 @@
 ;; Notes:
 ;;
 ;; - The strings corresponding to each element must correspond
-;;   to numbers, for example "42" or "666".
+;;   to numbers, for example "42" or "666". Otherwise you might
+;;   get an error or a matrix filled with #f values.
 ;;
 ;; Output
 ;;
@@ -9413,17 +9425,17 @@
     (set! res1 (grsp-matrix-create-dim 0 p_a1))
 
     ;; Cycle thorough both matrices, cast each element of p_a1 as a number
-    ;; and copy it to the exact position into res1.
-    (set! i1 (grsp-lm p_a1))
-    (while (<= i1 (grsp-hm p_a1))
+    (let loop ((i1 (grsp-lm p_a1)))
+      (if (<= i1 (grsp-hm p_a1))
 
-	   (set! j1 (grsp-ln p_a1))
-	   (while (<= j1 (grsp-hn p_a1))
-		  (array-set! res1 (grsp-s2n (array-ref p_a1 i1 j1)) i1 j1)
-		  
-		  (set! j1 (in j1)))
+	  (begin (let loop ((j1 (grsp-ln p_a1)))
+		   (if (<= j1 (grsp-hn p_a1))
 
-	   (set! i1 (in i1)))	      
+		       (begin (array-set! res1 (grsp-s2n (array-ref p_a1 i1 j1)) i1 j1)
+		       
+			      (loop (+ j1 1)))))
+		       
+		       (loop (+ i1 1)))))
     
     res1))
 

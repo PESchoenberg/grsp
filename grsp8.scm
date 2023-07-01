@@ -5373,6 +5373,7 @@
 	   (set! conns (grsp-matrix-row-update "#=" conns 4 p_n1 4 p_n2))
 	   
 	   ;; Select rows for nodes from idata and change id.
+	   ;; ***
 	   (let loop ((i1 lm))
 	     (if (<= i1 hm)
 
