@@ -3118,12 +3118,12 @@
 
     ;; Create expanded matrix.
     (set! res1 (grsp-matrix-create res1
-				   (+ (- (+ (grsp-hm p_a1) p_am1) (grsp-ln p_a1)) 1)
+				   (+ (- (+ (grsp-hm p_a1) p_am1) (grsp-lm p_a1)) 1) ;; ln
 				   (+ (- (+ (grsp-hn p_a1) p_an1) (grsp-ln p_a1)) 1)))
-    
+    ;; *** hn hm
     ;; Copy to submatrix.
     (set! i1 (grsp-lm p_a1))
-    (while (<= i1 (grsp-hn p_a1))
+    (while (<= i1 (grsp-hm p_a1))
     
 	   (set! j1 (grsp-ln p_a1))
 	   (while (<= j1 (grsp-hn p_a1))
@@ -8686,7 +8686,6 @@
 (define (grsp-matrix-opew-mth p_s1 p_a1 p_a2)
   (let ((res1 0)
 	(a3 0)
-	(i1 0)
 	(i2 0))
 
     ;; Safety copy.
@@ -8695,13 +8694,16 @@
     ;; Cycle. Note that indexes for p_a1 and p_a2 should be initialized    
     ;; and updated separatedly since the row ordinals for each matrix
     ;; might be different.
-    (set! i1 (grsp-lm p_a1))
     (set! i2 (grsp-lm p_a2))
-    (while (<= i1 (grsp-hm p_a1))
-	   (set! a3 (grsp-matrix-row-opew-mth p_s1 p_a1 p_a2 i1 i2))
-	   (set! res1 (grsp-matrix-subrep res1 a3 i1 (grsp-ln a3)))
-	   (set! i1 (in i1))
-	   (set! i2 (in i2)))
+
+    (let loop ((i1 (grsp-lm p_a1)))
+      (if (<= i1 (grsp-hm p_a1))
+
+	  (begin (set! a3 (grsp-matrix-row-opew-mth p_s1 p_a1 p_a2 i1 i2))
+		 (set! res1 (grsp-matrix-subrep res1 a3 i1 (grsp-ln a3)))
+		 (set! i2 (in i2))
+		 
+	  (loop (+ i1 1)))))
     
     res1))
 
@@ -8975,9 +8977,7 @@
 ;; - Matrix.
 ;;
 (define (grsp-matrix-ldiagonal p_a1 p_n1)
-  (let ((res1 0)
-	(i1 (grsp-lm p_a1))
-	(j1 (grsp-ln p_a1)))
+  (let ((res1 0))
 
     ;; Make safety copy.
     (set! res1 (grsp-matrix-cpy p_a1))
@@ -8985,18 +8985,22 @@
     ;; Cycle and replace all elements of the matrix except in the case
     ;; of those with m = n (equal row and col numbers, meaning that they
     ;; are in the main diagonal.
-    (while (<= i1 (grsp-hm res1))
+    
+    ;; Rows.
+    (let loop ((i1 (grsp-lm res1)))
+      (if (<= i1 (grsp-hm res1))
 
-	   (set! j1 (grsp-ln res1))
-	   (while (<= j1 (grsp-hn res1))
-		  
-		  (cond ((equal? (equal? i1 j1) #f)
-			 (array-set! res1 p_n1 i1 j1)))
+	  ;; Cols.
+	  (begin (let loop ((j1 (grsp-ln res1)))
+		   (if (<= j1 (grsp-hn res1))
 
-		  (set! j1 (in j1)))
-
-	   (set! i1 (in i1)))
-	   
+		       (begin (cond ((equal? (equal? i1 j1) #f)
+				     (array-set! res1 p_n1 i1 j1)))
+			      
+			      (loop (+ j1 1)))))
+		 
+		 (loop (+ i1 1)))))
+    
     res1))
 
 
@@ -9092,24 +9096,26 @@
 ;; - [42].
 ;;
 (define (grsp-matrix-cofactor p_a1)
-  (let ((res1 0)
-	(i1 0)
-	(j1 0))
+  (let ((res1 0))
 
-    ;; Set res1 to be a matrix of the same size as p_a1.
-    (set! res1 (grsp-matrix-create-dim 0 p_a1))
-    
-    (set! i1 (grsp-lm p_a1))
-    (while (<= i1 (grsp-hm p_a1))
+    ;; Set res1 to be a matrix of the same size as p_a1, filled with zeros.
+    (set! res1 (grsp-matrix-create-dim 0 p_a1))    
 
-	   (set! j1 (grsp-ln p_a1))
-	   (while (<= j1 (grsp-hm p_a1))
-		  (array-set! res1 (grsp-matrix-minor-cofactor p_a1 i1 j1)
-			      i1
-			      j1)
-		  (set! j1 (in j1)))
+    ;; Rows.
+    (let loop ((i1 (grsp-lm p_a1)))
+      (if (<= i1 (grsp-hm p_a1))
 
-	   (set! i1 (in i1)))
+	  ;; Cols.
+	  (begin (let loop ((j1 (grsp-ln p_a1)))
+		   (if (<= j1 (grsp-hn p_a1))
+
+		       (begin (array-set! res1 (grsp-matrix-minor-cofactor p_a1 i1 j1)
+					  i1
+					  j1)
+			      
+		       (loop (+ j1 1)))))
+		       
+		 (loop (+ i1 1)))))
     
     res1))
 
@@ -10382,7 +10388,8 @@
     res1))
 
 
-;;;; grsp-matrix-mmt - Given matrix p_a1, calculates p_a1 * p_a1t.
+;;;; grsp-matrix-mmt - Given matrix p_a1, calculates the product of p_a1 and
+;; its transposed matrix
 ;;
 ;; Keywords:
 ;;
@@ -10399,17 +10406,18 @@
 (define (grsp-matrix-mmt p_a1)
   (let ((res1 0)
 	(a1 0)
-	(a1t 0))
+	(a2 0))
 
     (set! a1 (grsp-matrix-cpy p_a1))
     
-    (set! a1t (grsp-matrix-transpose a1))
-    (set! res1 (grsp-matrix-opmm "#*" a1 a1t))
+    (set! a2 (grsp-matrix-transpose a1))
+    (set! res1 (grsp-matrix-opmm "#*" a1 a2))
     
     res1))
 
 
-;;;; grsp-matrix-mtm - Given matrix p_a1, calculates p_a1t * p_a1.
+;;;; grsp-matrix-mtm - Given matrix p_a1, calculates the product of its
+;; transposed matrix and  p_a1.
 ;;
 ;; Keywords:
 ;;
@@ -10426,12 +10434,12 @@
 (define (grsp-matrix-mtm p_a1)
   (let ((res1 0)
 	(a1 0)
-	(a1t 0))
+	(a2 0))
 
     (set! a1 (grsp-matrix-cpy p_a1))
     
-    (set! a1t (grsp-matrix-transpose a1))
-    (set! res1 (grsp-matrix-opmm "#*" a1t a1))
+    (set! a2 (grsp-matrix-transpose a1))
+    (set! res1 (grsp-matrix-opmm "#*" a2 a1))
     
     res1))
 
@@ -10469,25 +10477,27 @@
     (set! res1 (grsp-matrix-create-dim 0 p_a2)) 
     (array-set! res1 (array-ref p_a2 0 0) 0 0) ;; y0 = b0
 
-    ;;(set! i1 (in i1))
-    (while (<= i1 (grsp-hm res1))
+    ;; Row loop.
+    (let loop ((i1 1))
+      (if (<= i1 (grsp-hm res1))
+	  
+	  (begin (set! sum 0)
+		 (set! hj (- i1 1))
+		 
+		 ;; Col loop.
+		 (begin (let loop ((j1 0))
+			  (if (<= j1 hj)
 
-	   ;; Summation.
-	   (set! sum 0)
-	   (set! j1 0)
-	   (set! hj (- i1 1))
-	   (while (<= j1 hj)
+			      (begin (set! sum (+ sum (* (array-ref p_a1 i1 j1) (array-ref res1 j1 0))))
+				     
+				     (loop (+ j1 1))))))
 
-		  (set! sum (+ sum (* (array-ref p_a1 i1 j1) (array-ref res1 j1 0))))
-
-		  (set! j1 (in j1)))
-
-	   ;; Find matrix var.
-	   (set! y1 (- (array-ref p_a2 i1 0) sum))
-	   (array-set! res1 y1 i1 0)
+		 ;; Find matrix var.
+		 (set! y1 (- (array-ref p_a2 i1 0) sum))
+		 (array-set! res1 y1 i1 0)
+		 
+		 (loop (+ i1 1)))))
     
-	   (set! i1 (in i1)))
-
     res1))
 
 
