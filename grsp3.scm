@@ -4298,7 +4298,6 @@
 ;;
 (define (grsp-m2l p_a1)
   (let ((res1 '())
-	(i1 0)
 	(n1 0))
 
     ;; Create the list based on the dimensions of the matrix.
@@ -4306,9 +4305,12 @@
     (set! res1 (make-list n1 0))
 
     ;; Cycle over the matrix and copy its elements to the list.
-    (while (< i1 n1)	   
-	   (list-set! res1 i1 (array-ref p_a1 0 i1))	   
-	   (set! i1 (+ i1 1)))
+    (let loop ((i1 0))
+      (if (< i1 n1)
+
+	  (begin (list-set! res1 i1 (array-ref p_a1 0 i1))
+		 
+		 (loop (+ i1 1)))))
     
     res1))
 
@@ -5003,6 +5005,7 @@
 	(Q 0)
 	(R 0))
 
+    ;; Safety copyy.
     (set! a1 (grsp-matrix-cpy p_a1))
     
     ;; Perform a QR decomposition over a1.
@@ -7620,9 +7623,13 @@
   (let ((res1 #f))
 
     (cond ((= (grsp-lm p_a1) (grsp-lm p_a2))
+	   
 	   (cond ((= (grsp-hm p_a1) (grsp-hm p_a2))
+		  
 		  (cond ((= (grsp-ln p_a1) (grsp-ln p_a2))
+			 
 			 (cond ((= (grsp-hn p_a1) (grsp-hn p_a2))
+				
 				(set! res1 #t)))))))))
     res1))
 
@@ -7817,17 +7824,17 @@
 ;; - Matrix.
 ;;
 (define (grsp-matrix-col-aupdate p_a1 p_n1 p_n2)
-  (let ((res1 0)
-	(i1 0))
+  (let ((res1 0))
 
     ;; Create safety matrix. 
     (set! res1 (grsp-matrix-cpy p_a1))
     
-    ;; Cycle.
-    (set! i1 (grsp-lm res1))
-    (while (<= i1 (grsp-hm res1))	   
-	   (array-set! res1 p_n2 i1 p_n1)
-	   (set! i1 (in i1)))
+    (let loop ((i1 (grsp-lm res1)))
+      (if (<= i1 (grsp-hm res1))
+
+	  (begin (array-set! res1 p_n2 i1 p_n1)
+		 
+		 (loop (+ i1 1)))))
     
     res1))
 
@@ -8087,7 +8094,6 @@
   (let ((res1 0)
 	(res2 0)
 	(res3 0)
-	(j3 0)
 	(n1 0)
 	(n2 0)
 	(n3 0))
@@ -8103,16 +8109,18 @@
     (set! res1 (grsp-matrix-create 0 1 n3))
     
     ;; Cycle.
-    (set! j3 (grsp-ln res3))
     (set! n2 0)
-    (while (<= j3 (grsp-hn res3))
-	   (set! n1 (array-ref res3 (grsp-lm res3) j3))
-	   
-	   (cond ((> n2 0)
-		  (array-set! res1 0 0 j3))
-		 (else (array-set! res1 n1 0 j3)))
-	   
-	   (set! j3 (in j3)))
+
+    (let loop ((j3 (grsp-ln res3)))
+      (if (<= j3 (grsp-hn res3))
+
+	  (begin (set! n1 (array-ref res3 (grsp-lm res3) j3))
+		 
+		 (cond ((> n2 0)
+			(array-set! res1 0 0 j3))
+		       (else (array-set! res1 n1 0 j3)))
+		 
+		 (loop (+ j3 1)))))
     
     res1))
 
@@ -8250,9 +8258,13 @@
 
     ;; Compare the size of both matrices.
     (cond ((= (grsp-lm p_a1) (grsp-lm p_a2))
+	   
 	   (cond ((= (grsp-hm p_a1) (grsp-hm p_a2))
+		  
 		  (cond ((= (grsp-ln p_a1) (grsp-ln p_a2))
+			 
 			 (cond ((= (grsp-hn p_a1) (grsp-hn p_a2))
+				
 				(set! res1 #t)))))))))
     
     res1))
@@ -8278,28 +8290,30 @@
   (let ((res1 #t)
 	(a0 0)
 	(a1 0)
-	(j1 1)
 	(b1 #f))
 
     ;; All matrices will be compared to the first one.
     (set! a0 (list-ref p_l1 0))
 
-    (while (< j1 (length p_l1))
-	  (set! a1 (list-ref p_l1 j1))
-	  (set! b1 (grsp-matrix-is-samedim a0 a1))
+    (let loop ((j1 1))
+      (if (< j1 (length p_l1))
 
-	  ;; If one anomalous matrix is found is enough to stop
-	  ;; the process and return #f.
-	  (cond ((equal? b1 #f)
-		 (set! res1 #f)
-		 (set! j1 (length p_l1))))
+	  (begin (set! a1 (list-ref p_l1 j1))
+		 (set! b1 (grsp-matrix-is-samedim a0 a1))
 
-	  (set! j1 (in j1)))
-    
+		 ;; If one anomalous matrix is found is enough to stop
+		 ;; the process and return #f.
+		 (cond ((equal? b1 #f)
+			(set! res1 #f)
+			(set! j1 (length p_l1))))
+		 
+		 (loop (+ j1 1)))))
+        
     res1))
 
 
-;;;; grsp-matrix-fill - Fills all elements of matrix p_a1 with value p_n1.
+;;;; grsp-matrix-fill - Creates a matrix of the same dimensions as p_a1 Filled
+;; with value p_n1.
 ;;
 ;; Keywords:
 ;;
@@ -8314,24 +8328,10 @@
 ;; - Matrix.
 ;;
 (define (grsp-matrix-fill p_a1 p_n1)
-  (let ((res1 0)
-	(i1 0)
-	(j1 0))
-    
-    ;; Create safety matrix. 
-    (set! res1 (grsp-matrix-cpy p_a1))
-	  
-    ;; Cycle.
-    (set! i1 (grsp-lm res1))
-    (while (<= i1 (grsp-hm res1))
+  (let ((res1 0))
+   
+    (set! res1 (grsp-matrix-create p_n1 (grsp-tm p_a1) (grsp-tn p_a1)))
 
-	   (set! j1 (grsp-ln res1))
-	   (while (<= j1 (grsp-hn res1))		  
-		  (array-set! res1 p_n1 i1 j1)		  
-		  (set! j1 (in j1)))
-	   
-	   (set! i1 (in i1)))
-    
     res1))
 
 
@@ -8363,8 +8363,6 @@
   (let ((res1 0)
 	(res2 0)
 	(res3 0)
-	(i1 0)
-	(j1 0)
 	(n1 0)
 	(n3 0)
 	(n4 0))
@@ -8373,26 +8371,29 @@
     (set! res1 (grsp-matrix-cpy p_a1))
     (set! res2 (grsp-matrix-cpy p_a2))
     (set! res3 (grsp-matrix-cpy res1))
-	  
+
     ;; Find if matrices have the same dimensions.
     (cond ((equal? (grsp-matrix-is-samedim res1 res2) #t)
+  
+	   ;; Rows.
+	   (let loop ((i1 (grsp-lm res1)))
+	     (if (<= i1 (grsp-hm res1))
 
-	   (set! i1 (grsp-lm res1))
-	   (while (<= i1 (grsp-hm res1))
-		  
-		  (set! j1 (grsp-ln res1))
-		  (while (<= j1 (grsp-hn res1))			 
-			 (set! n3 (array-ref res1 i1 j1))
-			 (set! n4 (array-ref res2 i1 j1))
-			 
-			 (cond ((= n3 n4)
-				(array-set! res3 0 i1 j1))
-			       (else (array-set! res3 1 i1 j1)))
+		 ;; Cols.
+		 (begin (let loop ((j1 (grsp-ln res1)))
+			  (if (<= j1 (grsp-hn res1))
 
-			 (set! j1 (in j1)))
-
-		  (set! i1 (in i1))))
-	  
+			      (begin (set! n3 (array-ref res1 i1 j1))
+				     (set! n4 (array-ref res2 i1 j1))
+				     
+				     (cond ((= n3 n4)
+					    (array-set! res3 0 i1 j1))
+					   (else (array-set! res3 1 i1 j1)))
+				     
+				     (loop (+ j1 1)))))
+			
+			(loop (+ i1 1))))))
+	   
 	  (else (set! res3 (grsp-matrix-fill res3 (grsp-nan)))))
 			     
     res3))
@@ -8446,7 +8447,6 @@
   (let ((res1 0)
 	(res2 0)
 	(res3 0)
-	(i1 0)
 	(n1 0)
 	(n2 0)
 	(n3 0))
@@ -8458,39 +8458,40 @@
     (set! res3 (grsp-matrix-cpy p_a3))
 	  
     ;; Cycle over p_a1 rows.
-    (set! i1 (grsp-lm res1))
-    (while (<= i1 (grsp-hm res1))
-	   (set! n1 (array-ref res1 i1 p_j1))
-	   (set! n2 (array-ref res2 i1 p_j2))
-	   (set! n3 (array-ref res3 i1 p_j3))
-	   
-	   (cond ((equal? p_s1 "#+")		  
-		  (set! n3 (+ n1 n2)))		 
-		 ((equal? p_s1 "#-")		  
-		  (set! n3 (+ n1 n2)))		 
-		 ((equal? p_s1 "#*")		  
-		  (set! n3 (* n1 n2)))		 
-		 ((equal? p_s1 "#/")		  
-		  (set! n3 (/ n1 n2)))		 
-		 ((equal? p_s1 "#expt")		  
-		  (set! n3 (expt n1 n2)))		 
-		 ((equal? p_s1 "#max")		  
-		  (set! n3 (max n1 n2)))		 
-		 ((equal? p_s1 "#min")		  
-		  (set! n3 (min n1 n2)))		 
-		 ((equal? p_s1 "#=")
-		  
-		  (cond ((equal? n1 n2)			 
-			 (set! n3 n1))))
-		 
-		 ((equal? p_s1 "#!=")
-		  
-		  (cond ((equal? (equal? n1 n2) #f)			 
-			 (set! n3 n1)))))	 
+    (let loop ((i1 (grsp-lm res1)))
+      (if (<= i1 (grsp-hm res1))
 
-	   (array-set! res3 n3 i1 p_j3)
-	   
-	   (set! i1 (in i1)))
+	  (begin (set! n1 (array-ref res1 i1 p_j1))
+		 (set! n2 (array-ref res2 i1 p_j2))
+		 (set! n3 (array-ref res3 i1 p_j3))
+		 
+		 (cond ((equal? p_s1 "#+")		  
+			(set! n3 (+ n1 n2)))		 
+		       ((equal? p_s1 "#-")		  
+			(set! n3 (+ n1 n2)))		 
+		       ((equal? p_s1 "#*")		  
+			(set! n3 (* n1 n2)))		 
+		       ((equal? p_s1 "#/")		  
+			(set! n3 (/ n1 n2)))		 
+		       ((equal? p_s1 "#expt")		  
+			(set! n3 (expt n1 n2)))		 
+		       ((equal? p_s1 "#max")		  
+			(set! n3 (max n1 n2)))		 
+		       ((equal? p_s1 "#min")		  
+			(set! n3 (min n1 n2)))		 
+		       ((equal? p_s1 "#=")
+			
+			(cond ((equal? n1 n2)			 
+			       (set! n3 n1))))
+		       
+		       ((equal? p_s1 "#!=")
+			
+			(cond ((equal? (equal? n1 n2) #f)
+			       (set! n3 n1)))))	 
+
+		 (array-set! res3 n3 i1 p_j3)
+		 
+		 (loop (+ i1 1)))))
     
     res3))
 
