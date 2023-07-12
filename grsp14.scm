@@ -60,6 +60,7 @@
 	(dif 0))
 
     (set! dif (abs (- p_y1 bis)))
+    
     (cond ((integer? (/ dif 4))
 	   (set! res1 #t)))
 
@@ -203,6 +204,7 @@
     
     (let loop ((i1 2))
       (if (<= i1 3)
+	  
 	  (begin (set! m1 (+ m1 1))
 		 
 		 (cond ((= m1 13)
