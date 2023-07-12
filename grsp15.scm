@@ -196,8 +196,10 @@
     ;; Cycle.
     (let loop ((i1 (grsp-lm res2)))
       (if (<= i1 (grsp-hm res2))
+	  
 	  (begin (set! y1 (array-ref res2 i1 (+ (grsp-ln res2) 1)))
 		 (set! res1 (+ res1 (* y1 (grsp-lagrange-bpoly p_x1 i1 res2))))
+		 
 		 (loop (+ i1 1)))))
     
     res1))
@@ -232,9 +234,11 @@
     ;; Cycle over and calculate other elements.
     (let loop ((j1 1))
       (if (<= j1 (grsp-hn res1))
+	  
 	  (begin (array-set! res1 (+ (array-ref p_a1 0 j1)
 				     (* (array-ref res1 0 (- j1 1)) p_n1))
 			     0 j1)
+		 
 		 (loop (+ j1 1)))))
     
     res1))

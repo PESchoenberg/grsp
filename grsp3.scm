@@ -3499,21 +3499,32 @@
 ;; - [8].
 ;;
 (define (grsp-matrix-row-opsc p_s1 p_a1 p_m1 p_v1)
-  (let ((j1 0))
+  
+  (let loop ((j1 (grsp-lm p_a1)))
+    (if (<= j1 (grsp-hn p_a1))
 
-    (set! j1 (grsp-ln p_a1))
-    (while (<= j1 (grsp-hm p_a1))
-	   
-	   (cond ((equal? p_s1 "#+")		  
-		  (array-set! p_a1 (+ (array-ref p_a1 p_m1 j1) p_v1) p_m1 j1))		 
-		 ((equal? p_s1 "#-")		  
-		  (array-set! p_a1 (+ (array-ref p_a1 p_m1 j1) p_v1) p_m1 j1))		 
-		 ((equal? p_s1 "#*")		  
-		  (array-set! p_a1 (* (array-ref p_a1 p_m1 j1) p_v1) p_m1 j1))		 
-		 ((equal? p_s1 "#/")		  
-		  (array-set! p_a1 (+ (array-ref p_a1 p_m1 j1) p_v1) p_m1 j1)))
-	   
-	   (set! j1 (+ j1 1)))))
+	(begin (cond ((equal? p_s1 "#+")		  
+		      (array-set! p_a1
+				  (+ (array-ref p_a1 p_m1 j1) p_v1)
+				  p_m1
+				  j1))		 
+		     ((equal? p_s1 "#-")		  
+		      (array-set! p_a1
+				  (+ (array-ref p_a1 p_m1 j1) p_v1)
+				  p_m1
+				  j1))		 
+		     ((equal? p_s1 "#*")		  
+		      (array-set! p_a1
+				  (* (array-ref p_a1 p_m1 j1) p_v1)
+				  p_m1
+				  j1))		 
+		     ((equal? p_s1 "#/")		  
+		      (array-set! p_a1
+				  (+ (array-ref p_a1 p_m1 j1) p_v1)
+				  p_m1
+				  j1)))
+	       
+	       (loop (+ j1 1))))))
 
 
 ;;;; grsp-matrix-row-opsw - Swaps rows p_m1 and p_m2 in matrix p_a1.
@@ -4007,21 +4018,18 @@
   (let ((res1 #f)
 	(res2 0)
 	(res3 #t)
-	(i1 0)
-	(j1 0)
 	(k1 0))
 
-    ;; Cycle.
-    (set! i1 (grsp-lm p_a1))
-    (while (<= i1 (grsp-hm p_a1))
-	   
-	   (set! res2 (grsp-matrix-subcpy p_a1 i1 i1 (grsp-ln p_a1) (grsp-hn p_a1)))
-	   
-	   (cond ((equal? (grsp-matrix-is-nonnegative res2) #t)		  
-		  (set! k1 (+ k1 (grsp-matrix-opio "#+" res2 0))))
-		 (else (set! res3 #f)))
-	   
-	   (set! i1 (+ i1 1)))
+    (let loop ((i1 (grsp-lm p_a1)))
+      (if (<= i1 (grsp-hm p_a1))
+
+	  (begin (set! res2 (grsp-matrix-subcpy p_a1 i1 i1 (grsp-ln p_a1) (grsp-hn p_a1)))
+		 
+		 (cond ((equal? (grsp-matrix-is-nonnegative res2) #t) 
+			(set! k1 (+ k1 (grsp-matrix-opio "#+" res2 0))))
+		       (else (set! res3 #f)))
+		 
+		 (loop (+ i1 1)))))
     
     (cond ((equal? res3 #t)
 	   
@@ -4271,14 +4279,15 @@
 ;;
 (define (grsp-l2m p_l1)
   (let ((res1 (grsp-matrix-create 0 1 (length p_l1)))
-	(i1 0)
 	(n1 (- (length p_l1) 1)))
 
-    ;; Cycle over the list and copy its elements to the argument matrix.
-    (while (<= i1 n1)	   
-	   (array-set! res1 (list-ref p_l1 i1) 0 i1)	   
-	   (set! i1 (+ i1 1)))
-    
+    (let loop ((i1 0))
+      (if (<= i1 n1)
+
+	  (begin (array-set! res1 (list-ref p_l1 i1) 0 i1)
+		 
+		 (loop (+ i1 1)))))
+
     res1))
     
 
@@ -7802,7 +7811,7 @@
 
 		  (set! i2 (+ i2 p_n3))		  
 		  (set! i1 (in i1)))))
-    
+	   
     res1))
 
 
@@ -7948,8 +7957,6 @@
 (define (grsp-matrix-is-multiset p_a1)
   (let ((res1 0)
 	(res2 #f)
-	(i1 0)
-	(j1 0)
 	(n1 0)
 	(n2 0)
 	(b1 #f))
@@ -7957,24 +7964,26 @@
     ;; Create safety matrix. 
     (set! res1 (grsp-matrix-cpy p_a1))
     
-    ;; Cycle.
-    (set! i1 (grsp-lm res1))
-    (while (<= i1 (grsp-hm res1))
-	   
-	   (set! j1 (grsp-ln res1))
-	   (while (<= j1 (grsp-hn res1))		  
-		  (set! n2 (array-ref res1 i1 j1))
-		  (set! n1 (grsp-matrix-total-element res1 n2))
-		  
-		  (cond ((> n1 1)			 
-			 (set! b1 #t)
-			 (set! i1 (grsp-hm res1))
-			 (set! j1 (grsp-hn res1))))
-		  
-		  (set! j1 (in j1)))
-	   
-	   (set! i1 (in i1)))
+    ;; Cycle rows.
+    (let loop ((i1 (grsp-lm res1)))
+      (if (<= i1 (grsp-hm res1))
 
+	  ;; Cycle cols.
+	  (begin (let loop ((j1 (grsp-ln res1)))
+		   (if (<= j1 (grsp-hn res1))
+
+		       (begin (set! n2 (array-ref res1 i1 j1))
+			      (set! n1 (grsp-matrix-total-element res1 n2))
+			      
+			      (cond ((> n1 1)			 
+				     (set! b1 #t)
+				     (set! i1 (grsp-hm res1))
+				     (set! j1 (grsp-hn res1))))
+			      
+			      (loop (+ j1 1)))))
+		 
+		 (loop (+ i1 1)))))
+    
     ;; Compose results.
     (set! res2 b1)
 
@@ -8015,50 +8024,50 @@
 (define (grsp-matrix-argtype p_a1)
   (let ((res1 0)
 	(res2 0)
-	(res3 0)
-	(i1 0)
-	(j1 0))
+	(res3 0))
 	
     ;; Create safety matrix. 
     (set! res2 (grsp-matrix-cpy p_a1))
     (set! res1 res2)		
 
-    ;; Cycle.
-    (set! i1 (grsp-lm res2))
-    (while (<= i1 (grsp-hm res2))
+    ;; Cycle rows.
+    (let loop ((i1 (grsp-lm res2)))
+      (if (<= i1 (grsp-hm res2))
 
-	   (set! j1 (grsp-ln res2))
-	   (while (<= j1 (grsp-hn res2))
+	  ;; Cycle cols.
+	  (begin (let loop ((j1 (grsp-ln res2)))
+		   (if (<= j1 (grsp-hn res2))
 
-		  (cond ((list? (array-ref res2 i1 j1))			 
-			 (set! res3 1))			
-			((string? (array-ref res2 i1 j1))
-			 (set! res3 2))			
-			((array? (array-ref res2 i1 j1))
-			 (set! res3 3))			
-			((boolean? (array-ref res2 i1 j1))
-			 (set! res3 4))			
-			((char? (array-ref res2 i1 j1))			 
-			 (set! res3 5))			
-			((integer? (array-ref res2 i1 j1))
-			 (set! res3 6))			
-			((real? (array-ref res2 i1 j1))			 
-			 (set! res3 7))			
-			((complex? (array-ref res2 i1 j1))
-			 (set! res3 8)))
+		       (begin (cond ((list? (array-ref res2 i1 j1))			 
+				     (set! res3 1))			
+				    ((string? (array-ref res2 i1 j1))
+				     (set! res3 2))			
+				    ((array? (array-ref res2 i1 j1))
+				     (set! res3 3))			
+				    ((boolean? (array-ref res2 i1 j1))
+				     (set! res3 4))			
+				    ((char? (array-ref res2 i1 j1))			 
+				     (set! res3 5))			
+				    ((integer? (array-ref res2 i1 j1))
+				     (set! res3 6))			
+				    ((real? (array-ref res2 i1 j1))			 
+				     (set! res3 7))			
+				    ((complex? (array-ref res2 i1 j1))
+				     (set! res3 8)))
 
-		  ;; This should be processed separatedly.
-		  (cond ((< res3 8)
-			 
-			 (cond ((inf? (array-ref res2 i1 j1))				
-				(set! res3 9))			       
-			       ((nan? (array-ref res2 i1 j1))				
-				(set! res3 10)))))
-		  
-		  (array-set! res1 res3 i1 j1)		  
-		  (set! j1 (in j1)))
-
-	   (set! i1 (in i1)))
+			      ;; This should be processed separatedly.
+			      (cond ((< res3 8)
+				     
+				     (cond ((inf? (array-ref res2 i1 j1))				
+					    (set! res3 9))			       
+					   ((nan? (array-ref res2 i1 j1))				
+					    (set! res3 10)))))
+			      
+			      (array-set! res1 res3 i1 j1)
+			      
+			      (loop (+ j1 1)))))
+		 
+		 (loop (+ i1 1)))))
     
     res1))
 
@@ -9783,7 +9792,7 @@
     res2))
 
 
-;;;; grsp-eigenvec- Calculates right eigenvectors based on p_a1 and p_a2.
+;;;; grsp-eigenvec - Calculates right eigenvectors based on p_a1 and p_a2.
 ;;
 ;; Keywords:
 ;;
@@ -9814,32 +9823,29 @@
 	(A 0)
 	(I 0)
 	(v 0)
-	(tm 0)
-	(i1 0)
-	(i2 0))
+	(tm 0))
 
     ;; Safety copies.
     (set! A (grsp-matrix-cpy p_a1))
     (set! v (grsp-matrix-cpy p_a2))
 
-    ;; Create identity matrix.
+    ;; Create identity matrix of same dimensions as A.
     (set! I (grsp-matrix-create-dim "#I" A))
 
     ;; Create results list.
     (set! tm (grsp-tm v))
     (set! res1 (make-list tm 0))
-    
-    ;; Solve for each eigenvalue and obtain eigenvectors.
-    (set! i2 (grsp-lm v))
-    (while (<= i2 (grsp-hm v))
 
-	   (set! res2 (grsp-matrix-opsc "#*" I (array-ref v i2 0)))
-	   (set! res3 (grsp-matrix-opmm "#-" A res2))
-	   
-	   ;; Place eigenvector in list.
-	   (list-set! res1 i2 res3)
-	   
-	   (set! i2 (in i2)))
+    (let loop ((i2 (grsp-lm v)))
+      (if (<= i2 (grsp-hm v))
+
+	  (begin (set! res2 (grsp-matrix-opsc "#*" I (array-ref v i2 0)))
+		 (set! res3 (grsp-matrix-opmm "#-" A res2))
+		 
+		 ;; Place eigenvector in list of results.
+		 (list-set! res1 i2 res3)
+		 
+		 (loop (+ i2 1)))))
     
     res1))
 
