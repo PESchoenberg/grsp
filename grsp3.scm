@@ -6591,9 +6591,7 @@
 	(hm1 0)
 	(ln1 0)
 	(lm2 0)
-	(hm2 0)
-	(ln2 0)
-	(hn2 0))
+	(hm2 0))
 
     ;; Create matrices. 
     (set! res1 (grsp-matrix-cpy p_a1))
@@ -6606,14 +6604,12 @@
     ;; Extract boundaries of the second matrix.
     (set! lm2 (grsp-matrix-esi 1 res2))
     (set! hm2 (grsp-matrix-esi 2 res2))
-    (set! ln2 (grsp-matrix-esi 3 res2))
-    (set! hn2 (grsp-matrix-esi 4 res2))    
     
     ;; Expand res1.
     (set! res1 (grsp-matrix-subexp res1 (grsp-matrix-te1 lm2 hm2) 0))
     
     ;; Append res2 to res1.
-    (set! res1 (grsp-matrix-subrep res1 res2 (+ hm1 1) ln1))
+    (set! res1 (grsp-matrix-subrep res1 res2 (+ hm1 1) ln1))  
     
     res1))
 
@@ -6725,23 +6721,25 @@
 ;; - Matrix.
 ;;
 (define (grsp-matrix-subrepv p_a1 p_v1 p_m1 p_m2 p_n1 p_n2)
-  (let ((res1 0)	
-	(i1 0)
-	(j1 0))
+  (let ((res1 0))
 
     ;; Create safety matrix. 
     (set! res1 (grsp-matrix-cpy p_a1))
     
     ;; Cycle and replace.
-    (set! i1 p_m1)
-    (while (<= i1 p_m2)
-	   
-	   (set! j1 p_n1)
-	   (while (<= j1 p_n2)		  
-		  (array-set! res1 p_v1 i1 j1)		  
-		  (set! j1 (+ j1 1)))
-	   
-	   (set! i1 (+ i1 1)))
+    ;; Row loop.
+    (let loop ((i1 p_m1))
+      (if (<= i1 p_m2)
+
+	  ;; Col loop.
+	  (begin (let loop ((j1 p_n1))
+		   (if (<= j1 p_n2)
+
+		       (begin (array-set! res1 p_v1 i1 j1)		       
+			      
+			      (loop (+ j1 1)))))
+		 
+		 (loop (+ i1 1)))))
     
     res1))
 
@@ -6949,19 +6947,23 @@
 ;;
 (define (grsp-matrix-clear p_a1 p_l1)
   (let ((res1 0)
-	(res2 0)
-	(j2 0))
+	(res2 0))
 
-    ;; Create safety matrices. 
+    ;; Create safety matrix. 
     (set! res1 (grsp-matrix-cpy p_a1))
+
+    ;; Cast list as a matrix (simpler to deal here with a matrix tha a list).
     (set! res2 (grsp-l2m p_l1))
     
-    ;; Cycle over the list (now matrix) of values to look on every part of p_a1.
-    (set! j2 (grsp-ln res2))
-    (while (<= j2 (grsp-hn res2))	   
-	   (set! res1 (grsp-matrix-row-deletev res1 (array-ref res2 0 j2)))
-	   (set! j2 (+ j2 1)))
+    ;; Cycle over the matrix that was the list of values to look on every part
+    ;; of p_a1.
+    (let loop ((j2 (grsp-ln res2)))
+      (if (<= j2 (grsp-hn res2))
 
+	  (begin (set! res1 (grsp-matrix-row-deletev res1 (array-ref res2 0 j2)))
+		 
+		 (loop (+ j2 1)))))
+    
     res1))
 
 
@@ -7189,7 +7191,6 @@
 	(res2 0)
 	(s1 "#>")
 	(s2 "#asc")
-	(i1 0)
 	(n1 0))
 
     ;; Create safety matrices. 
@@ -7205,14 +7206,15 @@
     (set! res1 (grsp-matrix-row-sort s2 res1 p_j1))
 
     ;; Perform the selection and then read the value of col p_j1 row 0.
-    (set! i1 1)
-    (while (<= i1 n1)
-	   
-	   (cond ((> i1 1)		  
-		   (set! res1 (grsp-matrix-row-select s1 res1 p_j1 res2))))
-	    
-	    (set! res2 (array-ref res1 0 p_j1))	    
-	    (set! i1 (+ i1 1)))  
+    (let loop ((i1 1))
+      (if (<= i1 n1)
+
+	  (begin (cond ((> i1 1)		  
+			(set! res1 (grsp-matrix-row-select s1 res1 p_j1 res2))))
+		 
+		 (set! res2 (array-ref res1 0 p_j1))	
+		 
+		 (loop (+ i1 1)))))    
     
     res2))
 
@@ -7236,9 +7238,7 @@
   (let ((res1 0)
 	(res2 0)
 	(res3 '())
-	(res4 '())
-	(i1 0)
-	(j1 0))
+	(res4 '()))
 
     ;; Create safety matrix. 
     (set! res1 (grsp-matrix-cpy p_a1))
@@ -7248,22 +7248,23 @@
     (set! res4 (make-list (grsp-matrix-te1 (grsp-lm res1) (grsp-hm res1)) 0))
     
     ;; Cycle over the matrix and copy its elements to the list.
-    (set! i1 (grsp-lm res1))
-    (while (<= i1 (grsp-hm res1))
+    (let loop ((i1 (grsp-lm res1)))
+      (if (<= i1 (grsp-hm res1))
 
-	   ;; Read row i1 into res2.
-	   (set! res2 (grsp-matrix-subcpy res1
-					  i1
-					  i1
-					  (grsp-ln res1)
-					  (grsp-hn res1)))
-	   
-	   ;; Convert res2 to list res3.
-	   (set! res3 (grsp-m2l res2))
-	   
-	   ;; Place list res3 into list res4.	   
-	   (list-set! res4 i1 res3)
-	   (set! i1 (+ i1 1)))
+	  ;; Read row i1 into res2.
+	  (begin (set! res2 (grsp-matrix-subcpy res1
+						i1
+						i1
+						(grsp-ln res1)
+						(grsp-hn res1)))
+		 
+		 ;; Convert res2 to list res3.
+		 (set! res3 (grsp-m2l res2))
+		 
+		 ;; Place list res3 into list res4.	   
+		 (list-set! res4 i1 res3)
+	  
+	  (loop (+ i1 1)))))
     
     res4))
 
@@ -7306,8 +7307,6 @@
 ;;
 (define (grsp-matrix-mutation p_a1 p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2)
   (let ((res1 0)
-	(i1 0)
-	(j1 0)
 	(j2 0)
 	(n1 0)
 	(n2 0))	
@@ -7315,22 +7314,22 @@
     ;; Create safety matrix. 
     (set! res1 (grsp-matrix-cpy p_a1))
 
-    ;; Cycle.
-    (set! i1 (grsp-lm res1))
-    (while (<= i1 (grsp-hm res1))
-	   
-	  (set! j1 (grsp-ln res1))
-	  (while (<= j1 (grsp-hn res1))
+    ;; Row loop.
+    (let loop ((i1 (grsp-lm res1)))
+      (if (<= i1 (grsp-hm res1))
 
-		 ;; If pseudo random number < p_n1, generate a new random number
-		 ;; and replace the value of the current matrix element with it.
-		 (cond ((equal? (grsp-ifrprnd p_s1 p_u1 p_v1 p_n1) #t)			
-			(array-set! res1 (grsp-rprnd p_s2 p_u2 p_v2) i1 j1)))
-		 
-		 (set! j1 (in j1)))
+	  ;; Col loop.
+	  (begin (let loop ((j1 (grsp-ln res1)))
+		   (if (<= j1 (grsp-hn res1))
+
+		       ;; Replace element value by its noisy or blurred variant.
+		       (begin (cond ((equal? (grsp-ifrprnd p_s1 p_u1 p_v1 p_n1) #t)			
+				     (array-set! res1 (grsp-rprnd p_s2 p_u2 p_v2) i1 j1)))
+			      
+			      (loop (+ j1 1)))))
 	  
-	  (set! i1 (in i1)))
-    
+	  (loop (+ i1 1)))))
+   
     res1))
 
 
@@ -7435,9 +7434,7 @@
 ;;
 (define (grsp-matrix-col-lmutation p_a1 p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2 p_l1)
   (let ((res1 0)
-	(j1 0)
 	(j2 0)
-	(hn1 0)
 	(l1 '()))
 
     ;; Create safety matrix. 
@@ -7445,21 +7442,23 @@
 
     ;; Cycle.
     (set! l1 p_l1)
-    (set! hn1 (length l1))
-    (while (< j1 hn1)
-	   
-	   (set! j2 (list-ref l1 j1))
-	   (set! res1 (grsp-matrix-col-mutation res1
-						p_n1
-						p_s1
-						p_u1
-						p_v1
-						p_s2
-						p_u2
-						p_v2
-						j2))
-	   (set! j1 (in j1)))
 
+    (let loop ((j1 0))
+      (if (< j1 (length l1))
+
+	  (begin (set! j2 (list-ref l1 j1))
+		 (set! res1 (grsp-matrix-col-mutation res1
+						      p_n1
+						      p_s1
+						      p_u1
+						      p_v1
+						      p_s2
+						      p_u2
+						      p_v2
+						      j2))
+		 
+		 (loop (+ j1 1)))))    
+    
     res1))
 
 
@@ -10950,9 +10949,9 @@
 		       ;; Replace element value by its noisy or blurred variant.
 		       (begin (array-set! res1 (grsp-rprnd p_s1 (array-ref res1 i1 j1) p_v1) i1 j1)		       
 			      
-			      (loop (+ j1 1))))))
+			      (loop (+ j1 1)))))
 	  
-	  (loop (+ i1 1))))
+	  (loop (+ i1 1)))))
     
     res1))
 
