@@ -1895,9 +1895,7 @@
 ;;
 (define (grsp-matrix-transpose p_a1)
   (let ((res1 0)
-	(a1 0)
-	(i1 0)
-	(j1 0))
+	(a1 0))
 
     ;; Safety copy.
     (set! a1 (grsp-matrix-cpy p_a1))
@@ -1906,18 +1904,22 @@
     (set! res1 (grsp-matrix-create 0
 				   (+ (- (grsp-hn a1) (grsp-ln a1)) 1)
 				   (+ (- (grsp-hm a1) (grsp-lm a1)) 1)))
-    
-    ;; Transpose the elements.
-    (set! i1 (grsp-lm a1))
-    (while (<= i1 (grsp-hm a1))
-	   
-	   (set! j1 (grsp-ln a1))
-	   (while (<= j1 (grsp-hn a1))		  
-		  (array-set! res1 (array-ref a1 i1 j1) j1 i1)
-		  (set! j1 (+ j1 1)))
-	   
-	   (set! i1 (+ i1 1)))
 
+    ;; Row loop.
+    (let loop ((i1 (grsp-lm a1)))
+      (if (<= i1 (grsp-hm a1))
+
+	  ;; Col loop.
+	  (begin (let loop ((j1 (grsp-ln a1)))
+		   (if (<= j1 (grsp-hn a1))
+
+		       ;; Transpose coordinates.
+		       (begin (array-set! res1 (array-ref a1 i1 j1) j1 i1)
+			      
+			      (loop (+ j1 1)))))		 
+		 
+		 (loop (+ i1 1)))))
+   
     res1))
 
 
@@ -1985,8 +1987,8 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, hermitian conjugate, adjoint,
-;;   transjugate
+;; - functions, algebra, matrix, matrices, vectors, hermitian conjugate,
+;;   adjoint, transjugate
 ;;
 ;; Parameters:
 ;;
@@ -2231,7 +2233,6 @@
 ;;
 (define (grsp-matrix-opsc p_s1 p_a1 p_v1)
   (let ((a1 0)
-	;;(res1 2)
 	(res1 0)
 	(n1 0)
 	(i1 0)
@@ -2425,8 +2426,10 @@
     ;; Cycle.
     (let loop ((j1 1))
       (if (< j1 ln)
+	  
 	  (begin (set! a2 (list-ref p_l1 j1))
 		 (set! res1 (grsp-matrix-opew p_s1 res1 a2))
+		 
 		 (loop (+ j1 1)))))
     
     res1))
@@ -2738,7 +2741,9 @@
     (let loop ((j1 1))
       (if (< j1 ln)
 	  (begin (set! a2 (list-ref p_l1 j1))
+		 
 		 (set! res1 (grsp-matrix-opmm p_s1 res1 a2))
+		 
 		 (loop (+ j1 1)))))
     
     res1))
@@ -2869,11 +2874,14 @@
 	   (set! j1 p_ln1)
 	   (set! j2 0)
 	   (while (<= j1 p_hn1)
+		  
 		  (array-set! res2 (array-ref res1 i1 j1) i2 j2)
 		  (set! j2 (+ j2 1))
+		  
 		  (set! j1 (+ j1 1)))
 	   
 	   (set! i2 (+ i2 1))
+	   
 	   (set! i1 (+ i1 1)))
 
     res2))
@@ -2912,11 +2920,14 @@
 	   (set! j1 p_n1)
 	   (set! j2 (grsp-ln p_a2))
 	   (while (<= j2 (grsp-hn p_a2))
+		  
 		  (array-set! res1 (array-ref p_a2 i2 j2) i1 j1)
 		  (set! j2 (+ j2 1))
+		  
 		  (set! j1 (+ j1 1)))
 	   
 	   (set! i2 (+ i2 1))
+	   
 	   (set! i1 (+ i1 1)))
 
     res1))
@@ -3127,7 +3138,9 @@
     
 	   (set! j1 (grsp-ln p_a1))
 	   (while (<= j1 (grsp-hn p_a1))
+		  
 		  (array-set! res1 (array-ref p_a1 i1 j1) i1 j1)
+		  
 		  (set! j1 (+ j1 1)))
 	   
 	   (set! i1 (+ i1 1)))
@@ -3267,26 +3280,26 @@
 ;;
 (define (grsp-matrix-is-diagonal p_a1)
   (let ((res1 #f)
-	(i1 0)
-	(j1 0)
 	(k1 0))
 
     (cond ((equal? (grsp-matrix-is-square p_a1) #t)
-	   
-	   (set! i1 (grsp-lm p_a1))
-	   (while (<= i1 (grsp-hm p_a1))
 
-		  (set! j1 (grsp-ln p_a1))
-		  (while (<= j1 (grsp-hn p_a1))
-			 
-			 (cond ((equal? (equal? (array-ref p_a1 i1 j1) 0) #f)
-				
-				(cond ((equal? (equal? i1 j1) #f)				       
-				       (set! k1 (+ k1 1))))))
-			 
-			 (set! j1 (+ j1 1)))
-		  
-		  (set! i1 (+ i1 1)))
+	   ;; Row loop.
+	   (let loop ((i1 (grsp-lm p_a1)))
+	     (if (<= i1 (grsp-hm p_a1))
+
+		 ;; Col loop.
+		 (begin (let loop ((j1 (grsp-ln p_a1)))
+			  (if (<= j1 (grsp-hn p_a1))
+
+			      (begin (cond ((equal? (equal? (array-ref p_a1 i1 j1) 0) #f)
+					    
+					    (cond ((equal? (equal? i1 j1) #f)				       
+						   (set! k1 (+ k1 1))))))
+				     
+				     (loop (+ j1 1)))))		 
+			
+			(loop (+ i1 1)))))
 	   
 	   (cond ((equal? k1 0)		  
 		  (set! res1 #t)))))
@@ -3879,27 +3892,27 @@
 ;;
 (define (grsp-matrix-is-symmetric-md p_a1)
   (let ((res1 #f)
-	(i1 0)
-	(j1 0)
 	(d1 0))
 
     (cond ((equal? (grsp-matrix-is-square p_a1))
-	   
-	   (set! i1 (grsp-lm p_a1))
-	   (while (<= i1 (grsp-hm p_a1))
-		  
-		  (set! j1 (grsp-ln p_a1))
-		  (while (<= j1 (grsp-hn p_a1))
-			 
-			 (cond ((equal? (array-ref p_a1 i1 j1)
-					(array-ref p_a1 j1 i1))
-				
-				(set! d1 (+ d1 1))))
-			 
-			 (set! j1 (+ j1 1)))
-		  
-		  (set! i1 (+ i1 1)))
 
+	   ;; Row loop.
+	   (let loop ((i1 (grsp-lm p_a1)))
+	     (if (<= i1 (grsp-hm p_a1))
+
+		 ;; Col loop.
+		 (begin (let loop ((j1 (grsp-ln p_a1)))
+			  (if (<= j1 (grsp-hn p_a1))
+
+			      (begin (cond ((equal? (array-ref p_a1 i1 j1)
+						    (array-ref p_a1 j1 i1))
+					    
+					    (set! d1 (+ d1 1))))
+				     
+				     (loop (+ j1 1)))))		 
+			
+			(loop (+ i1 1)))))
+	   
 	   (cond ((equal? d1 (grsp-matrix-total-elements p_a1))		  
 		  (set! res1 #t)))))
 
@@ -6296,8 +6309,6 @@
 ;;
 (define (grsp-matrix-supp p_a1)
   (let ((res1 0)	
-	(j1 0)
-	(j2 0)
 	(n1 0)
 	(n2 0)
 	(n3 0)
@@ -6309,28 +6320,29 @@
     ;; Extract the boundaries of the res2 matrix.
     (set! n3 -inf.0)
     (set! n4 +inf.0)
+
+
+    ;; First loop.
+    (let loop ((j1 (grsp-ln res1)))
+      (if (<= j1 (grsp-hn res1))
+
+	  ;; Second loop.
+ 	  (begin (set! n1 (array-ref res1 0 j1))
+		 (set! n2 0)
+		 
+		 (let loop ((j2 (grsp-ln res1)))
+		   (if (<= j2 (grsp-hn res1))
+
+		       (begin (cond ((= n1 (array-ref res1 0 j2))
+				     (set! n2 (+ n2 1))
+				     
+				     (cond ((> n2 1)				
+					    (array-set! res1 n3 0 j2)))))
+			      
+			      (loop (+ j2 1)))))		 
+		 
+		 (loop (+ j1 1)))))
     
-    (set! j1 (grsp-ln res1))
-    (while (<= j1 (grsp-hn res1))
-
-	   ;; Read each element.
-	   (set! n1 (array-ref res1 0 j1))
-	   (set! n2 0)
-
-	   ;; Find new ocurrences of n1 in the matrix.
-	   (set! j2 (grsp-ln res1))
-	   (while (<= j2 (grsp-hn res1))
-		  
-		  (cond ((= n1 (array-ref res1 0 j2))
-			 (set! n2 (+ n2 1))
-			 
-			 (cond ((> n2 1)				
-				(array-set! res1 n3 0 j2)))))
-		  
-		  (set! j2 (+ j2 1)))			       
-	   
-	   (set! j1 (+ j1 1)))
-
     ;; Compose results.
     (set! res1 (grsp-matrix-row-select "#>" (grsp-matrix-transpose res1) 0 n3))
     (set! res1 (grsp-matrix-row-select "#<" res1 0 n4))
@@ -6426,7 +6438,7 @@
 		  (set! res5 (grsp-matrix-subrep res5 res4 hm5 ln1))))
 	   
 	   (set! i1 (+ i1 1)))
-
+    
     ;; Compose results.
     (set! res5 (grsp-matrix-subdel "#Delr" res5 0))
     
@@ -6469,54 +6481,53 @@
 (define (grsp-matrix-row-update p_s1 p_a1 p_j1 p_n1 p_j2 p_n2)
   (let ((res1 0)
 	(b1 #f)
-	(i1 0)
 	(n1 0))
 
     ;; Safety copy.
     (set! res1 (grsp-matrix-cpy p_a1))
-    
-     ;; Cycle and update.
-    (set! i1 (grsp-lm res1))
-    (while (<= i1 (grsp-hm res1))
 
-	   (set! n1 (array-ref res1 i1 p_j1))
-	   
-	   (cond ((equal? p_s1 "#<")
+    ;; Row loop.
+    (let loop ((i1 (grsp-lm res1)))
+      (if (<= i1 (grsp-hm res1))
 
-		  (cond ((< n1 p_n1)
-			 (set! b1 #t))))
-		  
-		 ((equal? p_s1 "#>")
+	  (begin (set! n1 (array-ref res1 i1 p_j1))
+		 
+		 (cond ((equal? p_s1 "#<")
 
-		  (cond ((> n1 p_n1)
-			 (set! b1 #t))))
-		  
-		 ((equal? p_s1 "#<=")
+			(cond ((< n1 p_n1)
+			       (set! b1 #t))))
+		       
+		       ((equal? p_s1 "#>")
 
-		  (cond ((<= n1 p_n1)
-			 (set! b1 #t))))
-		  
-		 ((equal? p_s1 "#>=")
+			(cond ((> n1 p_n1)
+			       (set! b1 #t))))
+		       
+		       ((equal? p_s1 "#<=")
 
-		  (cond ((>= n1 p_n1)
-			 (set! b1 #t))))		  
+			(cond ((<= n1 p_n1)
+			       (set! b1 #t))))
+		       
+		       ((equal? p_s1 "#>=")
 
-		 ((equal? p_s1 "#=")
+			(cond ((>= n1 p_n1)
+			       (set! b1 #t))))		  
 
-		  (cond ((= n1 p_n1)
-			 (set! b1 #t))))
+		       ((equal? p_s1 "#=")
 
-		 ((equal? p_s1 "#!=")
+			(cond ((= n1 p_n1)
+			       (set! b1 #t))))
 
-		  (cond ((equal? (= n1 p_n1) #f)
-			 (set! b1 #t)))))		 
+		       ((equal? p_s1 "#!=")
 
-	   ;; Update element.
-	   (cond ((equal? b1 #t)
-		  (set! b1 #f)
-		  (array-set! res1 p_n2 i1 p_j2)))
-	   
-	   (set! i1 (in i1)))
+			(cond ((equal? (= n1 p_n1) #f)
+			       (set! b1 #t)))))		 
+
+		 ;; Update element.
+		 (cond ((equal? b1 #t)
+			(set! b1 #f)
+			(array-set! res1 p_n2 i1 p_j2)))
+		 
+		 (loop (+ i1 1)))))
     
     res1))
 
