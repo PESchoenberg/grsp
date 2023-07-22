@@ -914,10 +914,6 @@
 				
 				(set! i1 (+ i1 1))))
 			
-			((equal? p_s1 "#Pfsum")
-			 ;; https://en.wikipedia.org/wiki/Prefix_sum
-			 )
-
 			((equal? p_s1 "#Ex2SVD")			 
 			 (set! res1 (grsp-matrix-create 0 4 2))
 			 (array-set! res1 2 0 0)
@@ -1169,11 +1165,11 @@
     ;; Safety copy.
     (set! res1 (grsp-matrix-cpy p_a1))
     
-    ;; Cycle thorough the matrix and change to p_v1 those elements whose value  
-    ;; is p_v1.
+    ;; Row loop.
     (let loop ((i1 (grsp-lm res1)))
       (if (<= i1 (grsp-hm res1))
 
+	  ;; Col loop.
 	  (begin (let loop ((j1 (grsp-ln res1)))
 		   (if (<= j1 (grsp-hn res1))
 
@@ -2865,7 +2861,7 @@
 	(j2 0))
 
     ;; Create submatrix.
-    (set! res2 (grsp-matrix-create res2 (+ (- p_hm1 p_lm1) 1) (+ (- p_hn1 p_ln1) 1)))  
+    (set! res2 (grsp-matrix-create res2 (+ (- p_hm1 p_lm1) 1) (+ (- p_hn1 p_ln1) 1)))
     
     ;; Copy to submatrix.
     (set! i1 p_lm1)
@@ -2906,12 +2902,15 @@
 ;; - Matrix.
 ;;
 (define (grsp-matrix-subrep p_a1 p_a2 p_m1 p_n1)
-  (let ((res1 p_a1)
-	(i1 p_m1)
-	(j1 p_n1)
+  (let ((res1 0)
+	(i1 0)
+	(j1 0)
 	(i2 0)
 	(j2 0))
 
+    ;; Safety copy.
+    (set! res1 (grsp-matrix-cpy p_a1))
+    
     ;; Replacement cycle.
     (set! i2 (grsp-lm p_a2))
     (set! i1 p_m1)
@@ -2929,7 +2928,7 @@
 	   (set! i2 (+ i2 1))
 	   
 	   (set! i1 (+ i1 1)))
-
+    
     res1))
 
 
@@ -3123,9 +3122,7 @@
 ;; - Matrix.
 ;;
 (define (grsp-matrix-subexp p_a1 p_am1 p_an1)
-  (let ((res1 0)
-	(i1 0)
-	(j1 0))
+  (let ((res1 0))
 
     ;; Create expanded matrix.
     (set! res1 (grsp-matrix-create res1
@@ -3133,18 +3130,20 @@
 				   (+ (- (+ (grsp-hn p_a1) p_an1) (grsp-ln p_a1)) 1)))
     ;; *** hn hm
     ;; Copy to submatrix.
-    (set! i1 (grsp-lm p_a1))
-    (while (<= i1 (grsp-hm p_a1))
-    
-	   (set! j1 (grsp-ln p_a1))
-	   (while (<= j1 (grsp-hn p_a1))
-		  
-		  (array-set! res1 (array-ref p_a1 i1 j1) i1 j1)
-		  
-		  (set! j1 (+ j1 1)))
-	   
-	   (set! i1 (+ i1 1)))
+    ;; Row loop.
+    (let loop ((i1 (grsp-lm p_a1)))
+      (if (<= i1 (grsp-hm p_a1))
 
+	  ;; Col loop.
+	  (begin (let loop ((j1 (grsp-ln p_a1)))
+		   (if (<= j1 (grsp-hn p_a1))
+
+		       (begin (array-set! res1 (array-ref p_a1 i1 j1) i1 j1)
+			      
+			      (loop (+ j1 1)))))		 
+		 
+		 (loop (+ i1 1)))))
+    
     res1))
 
 
@@ -3169,14 +3168,16 @@
 ;; - Boolean.
 ;;
 (define (grsp-matrix-is-equal p_a1 p_a2)
-  (let ((res1 p_a1)
-	(res2 p_a2)
+  (let ((res1 0)
+	(res2 0)
 	(res4 #f)
 	(res3 #f)
-	(res5 0)
-	(i1 0)
-	(j1 0))
+	(res5 0))
 
+    ;; Safety copies.
+    (set! res1 (grsp-matrix-cpy p_a1))
+    (set! res2 (grsp-matrix-cpy p_a2))    
+    
     ;; Compare the size of both matrices.
     (cond ((= (grsp-lm res1) (grsp-lm res2))
 	   
@@ -3191,18 +3192,20 @@
     ;; If the size is the same, compare each element.
     (cond ((equal? res4 #t)
 	   
-	   (set! i1 (grsp-lm res1))
-	   (while (<= i1 (grsp-hm res1))
-		  
-		  (set! j1 (grsp-ln res1))
-		  (while (<= j1 (grsp-hn res1))
-			 
-			 (cond ((equal? (equal? (grsp-gtels (array-ref res1 i1 j1) (array-ref res2 i1 j1)) 0) #f)
-				(set! res5 (+ res5 1))))
-			 
-			 (set! j1 (+ j1 1)))
-		  
-		  (set! i1 (+ i1 1)))))
+	   ;; Row loop.
+	   (let loop ((i1 (grsp-lm res1)))
+	     (if (<= i1 (grsp-hm res1))
+
+		 ;; Col loop.
+		 (begin (let loop ((j1 (grsp-ln res1)))
+			  (if (<= j1 (grsp-hn res1))
+
+			      (begin (cond ((equal? (equal? (grsp-gtels (array-ref res1 i1 j1) (array-ref res2 i1 j1)) 0) #f)
+					    (set! res5 (+ res5 1))))
+				     
+				     (loop (+ j1 1)))))		 
+			
+			(loop (+ i1 1)))))))
 
     (cond ((> res5 0)
 	   (set! res3 #f)))
@@ -3699,7 +3702,7 @@
 	   (set! res1 (list Q R)))
 
 	  ((equal? p_s1 "#SVD")
-	   ;; https://web.mit.edu/be.400/www/SVD/Singular_Value_Decomposition.htm
+
 	   ;; Construct working matrices.
 	   (set! AAt (grsp-matrix-mmt A))
 	   (set! AtA (grsp-matrix-mtm A))
@@ -3713,11 +3716,9 @@
 	   (set! AtAb (grsp-eigenvec AtA AtAv))
 
 	   ;; U, Vt and S.
-	   ;; ***
 	   (set! Ul (grsp-eigenvec AAt AAtv))
 	   (set! U (list-ref Ul 0))
 	   (set! V (grsp-eigenvec AtA AtAv))
-	   ;;(set! S (grsp-matrix-opsc "#expt" AAtv 0.5))
 	   (set! S (grsp-matrix-opsc "#expt" AAt 0.5))
 	   (set! Ve (list-ref V 0))
 	   (set! Vt (grsp-matrix-transpose Ve))
@@ -3959,23 +3960,22 @@
 ;; - Numeric.
 ;;
 (define (grsp-matrix-total-element p_a1 p_v1)
-  (let ((res1 0)
-	(i1 0)
-	(j1 0))
+  (let ((res1 0))
 
-    ;; Cycle.
-    (set! i1 (grsp-lm p_a1))
-    (while (<= i1 (grsp-hm p_a1))
+    ;; Row loop.
+    (let loop ((i1 (grsp-lm p_a1)))
+      (if (<= i1 (grsp-hm p_a1))
 
-	   (set! j1 (grsp-ln p_a1))
-	   (while (<= j1 (grsp-hn p_a1))
-		  
-		  (cond ((equal? p_v1 (array-ref p_a1 i1 j1))
-			 (set! res1 (+ res1 1))))
-		  
-		  (set! j1 (+ j1 1)))
-	   
-	   (set! i1 (+ i1 1)))
+	  ;; Col loop.
+	  (begin (let loop ((j1 (grsp-ln p_a1)))
+		   (if (<= j1 (grsp-hn p_a1))
+
+		       (begin (cond ((equal? p_v1 (array-ref p_a1 i1 j1))
+				     (set! res1 (+ res1 1))))
+			      
+			      (loop (+ j1 1)))))		 
+		 
+		 (loop (+ i1 1)))))    
     
     res1))
 
@@ -4069,32 +4069,30 @@
 ;;
 (define (grsp-matrix-is-signature p_a1)
   (let ((res1 #f)
-	(i1 0)
-	(j1 0)
-	(k1 0)
-	(k2 0))
+	(k1 0))
 
-    ; Chech if the matrix is diagonal.
+    ; Check if the matrix is diagonal.
     (cond ((equal? (grsp-matrix-is-diagonal p_a1) #t)    
-
-	   ; Cycle.
-	   (set! i1 (grsp-lm p_a1))
 	   (set! res1 #t)
-	   (while (<= i1 (grsp-hm p_a1))
-		  
-		  (set! j1 (grsp-ln p_a1))
-		  (while (<= j1 (grsp-hn p_a1))
-			 
-			 (cond ((equal? i1 j1)
-				
-				(cond ((equal? (abs (array-ref p_a1 i1 j1)) 1)				       
-				       (set! k1 (+ k1 1)))				      
-				      (else ((set! res1 #f))))))
-			 
-			 (set! j1 (+ j1 1)))
-		  
-		  (set! i1 (+ i1 1)))))
+	   
+	   ;; Row loop.
+	   (let loop ((i1 (grsp-lm p_a1)))
+	     (if (<= i1 (grsp-hm p_a1))
 
+		 ;; Col loop.
+		 (begin (let loop ((j1 (grsp-ln p_a1)))
+			  (if (<= j1 (grsp-hn p_a1))
+
+			      (begin (cond ((equal? i1 j1)
+					    
+					    (cond ((equal? (abs (array-ref p_a1 i1 j1)) 1)				       
+						   (set! k1 (+ k1 1)))				      
+						  (else ((set! res1 #f))))))
+				     
+				     (loop (+ j1 1)))))		 
+			
+			(loop (+ i1 1)))))))
+    
     res1))
 
 
