@@ -4351,24 +4351,27 @@
 ;;
 (define (grsp-m2v p_a1)
   (let ((res1 0)
-	(i1 0)
-	(j1 0)
 	(j2 0))
 
     ;; Create empty vector.
     (set! res1 (grsp-matrix-create 0 1 (grsp-matrix-total-elements p_a1)))
 
     ; Cycle over p_a1 and put each matrix value on vector res1.
-    (set! i1 (grsp-lm p_a1))
-    (while (<= i1 (grsp-hm p_a1))
+    
+    ;; Row loop.
+    (let loop ((i1 (grsp-lm p_a1)))
+      (if (<= i1 (grsp-hm p_a1))
 
-	   (set! j1 (grsp-ln p_a1))
-	   (while (<= j1 (grsp-hn p_a1))		  
-		  (array-set! res1 (array-ref p_a1 i1 j1) 0 j2)
-		  (set! j2 (+ j2 1))		  
-		  (set! j1 (+ j1 1)))
-	   
-	   (set! i1 (+ i1 1)))  
+	  ;; Col loop.
+	  (begin (let loop ((j1 (grsp-ln p_a1)))
+		   (if (<= j1 (grsp-hn p_a1))
+
+		       (begin (array-set! res1 (array-ref p_a1 i1 j1) 0 j2)
+			      (set! j2 (+ j2 1))		  
+			      
+			      (loop (+ j1 1)))))		 
+		 
+		 (loop (+ i1 1)))))
     
     res1))
 
@@ -5391,7 +5394,6 @@
 	(ln1 0)
 	(hn1 0)
 	(hm2 0)
-	(i1 0)
 	(n1 0)
 	(n2 0)
 	(n3 0))
@@ -5407,35 +5409,35 @@
     (set! res3 res2)
     
     ;; Eval.
-    (set! i1 lm1)
-    (while (<= i1 hm1)
+    ;; Row loop.
+    (let loop ((i1 lm1))
+      (if (<= i1 hm1)
 
-	   ;; Inter init.
-	   (set! n2 (array-ref p_a1 i1 p_j1))
-	   (set! n3 (array-ref res2 0 p_j1))
-	   (set! res3 (grsp-matrix-subcpy p_a1 i1 i1 ln1 hn1))
+	  (begin (set! n2 (array-ref p_a1 i1 p_j1))
+		 (set! n3 (array-ref res2 0 p_j1))
+		 (set! res3 (grsp-matrix-subcpy p_a1 i1 i1 ln1 hn1))
 
-	   ;; Compare.
-	   (cond ((equal? p_s1 "#min")
-		  
-		  (cond ((< n2 n3)			 
-			 (set! res2 res3))			
-			((and (= n2 n3) (> i1 lm1))			 
-			 (set! res2 (grsp-matrix-subexp res2 1 0))
-			 (set! hm2 (grsp-matrix-esi 2 res2))
-			 (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1)))))
+		 ;; Compare.
+		 (cond ((equal? p_s1 "#min")
+			
+			(cond ((< n2 n3)			 
+			       (set! res2 res3))			
+			      ((and (= n2 n3) (> i1 lm1))			 
+			       (set! res2 (grsp-matrix-subexp res2 1 0))
+			       (set! hm2 (grsp-matrix-esi 2 res2))
+			       (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1)))))
+		       
+		       ((equal? p_s1 "#max")
+			
+			(cond ((> n2 n3)			 
+			       (set! res2 res3))			
+			      ((and (= n2 n3) (> i1 lm1))			 
+			       (set! res2 (grsp-matrix-subexp res2 1 0))
+			       (set! hm2 (grsp-matrix-esi 2 res2))
+			       (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1))))))					 
 		 
-		 ((equal? p_s1 "#max")
-		  
-		  (cond ((> n2 n3)			 
-			 (set! res2 res3))			
-			((and (= n2 n3) (> i1 lm1))			 
-			 (set! res2 (grsp-matrix-subexp res2 1 0))
-			 (set! hm2 (grsp-matrix-esi 2 res2))
-			 (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1))))))			
-	   
-	   (set! i1 (+ i1 1)))
-
+		 (loop (+ i1 1)))))
+    
     ;; Compose results.
     (set! res1 res2)
     
@@ -5482,7 +5484,6 @@
 	(ln1 0)
 	(hn1 0)
 	(hm2 0)
-	(i1 0)
 	(n1 0)
 	(n2 0))
 
@@ -5497,58 +5498,58 @@
     (set! res3 res2)
 
     ;; Cycle and eval.
-    (set! i1 lm1)
-    (while (<= i1 hm1)
+    ;; Row loop.
+    (let loop ((i1 lm1))
+      (if (<= i1 hm1)
 
-	   ;; Iter init.
-	   (set! n2 (array-ref p_a1 i1 p_j1))
-	   (set! res3 (grsp-matrix-subcpy p_a1 i1 i1 ln1 hn1))
+	  (begin (set! n2 (array-ref p_a1 i1 p_j1))
+		 (set! res3 (grsp-matrix-subcpy p_a1 i1 i1 ln1 hn1))
 
-	   ;; Compare.
-	   (cond ((equal? p_s1 "#<")
-		  
-		  (cond ((< n2 p_n1)			 
-			 (set! res2 (grsp-matrix-subexp res2 1 0))
-			 (set! hm2 (grsp-matrix-esi 2 res2))
-			 (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1)))))
+		 ;; Compare.
+		 (cond ((equal? p_s1 "#<")
+			
+			(cond ((< n2 p_n1)			 
+			       (set! res2 (grsp-matrix-subexp res2 1 0))
+			       (set! hm2 (grsp-matrix-esi 2 res2))
+			       (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1)))))
+		       
+		       ((equal? p_s1 "#>")
+			
+			(cond ((> n2 p_n1)			 
+			       (set! res2 (grsp-matrix-subexp res2 1 0))
+			       (set! hm2 (grsp-matrix-esi 2 res2))
+			       (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1)))))
+		       
+		       ((equal? p_s1 "#<=")
+			
+			(cond ((<= n2 p_n1)			 
+			       (set! res2 (grsp-matrix-subexp res2 1 0))
+			       (set! hm2 (grsp-matrix-esi 2 res2))
+			       (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1)))))
+		       
+		       ((equal? p_s1 "#>=")
+			
+			(cond ((>= n2 p_n1)			 
+			       (set! res2 (grsp-matrix-subexp res2 1 0))
+			       (set! hm2 (grsp-matrix-esi 2 res2))
+			       (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1)))))
+		       
+		       ((equal? p_s1 "#!=")
+			
+			(cond ((not (= n2 p_n1))			 
+			       (set! res2 (grsp-matrix-subexp res2 1 0))
+			       (set! hm2 (grsp-matrix-esi 2 res2))
+			       (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1)))))
+		       
+		       ((equal? p_s1 "#=")
+			
+			(cond ((= n2 p_n1)			 
+			       (set! res2 (grsp-matrix-subexp res2 1 0))
+			       (set! hm2 (grsp-matrix-esi 2 res2))
+			       (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1))))))
 		 
-		 ((equal? p_s1 "#>")
-		  
-		  (cond ((> n2 p_n1)			 
-			 (set! res2 (grsp-matrix-subexp res2 1 0))
-			 (set! hm2 (grsp-matrix-esi 2 res2))
-			 (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1)))))
-		 
-		 ((equal? p_s1 "#<=")
-		  
-		  (cond ((<= n2 p_n1)			 
-			 (set! res2 (grsp-matrix-subexp res2 1 0))
-			 (set! hm2 (grsp-matrix-esi 2 res2))
-			 (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1)))))
-		 
-		 ((equal? p_s1 "#>=")
-		  
-		  (cond ((>= n2 p_n1)			 
-			 (set! res2 (grsp-matrix-subexp res2 1 0))
-			 (set! hm2 (grsp-matrix-esi 2 res2))
-			 (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1)))))
-		 
-		 ((equal? p_s1 "#!=")
-		  
-		  (cond ((not (= n2 p_n1))			 
-			 (set! res2 (grsp-matrix-subexp res2 1 0))
-			 (set! hm2 (grsp-matrix-esi 2 res2))
-			 (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1)))))
-		 
-		 ((equal? p_s1 "#=")
-		  
-		  (cond ((= n2 p_n1)			 
-			 (set! res2 (grsp-matrix-subexp res2 1 0))
-			 (set! hm2 (grsp-matrix-esi 2 res2))
-			 (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1))))))
-	   
-	   (set! i1 (+ i1 1)))
-
+		 (loop (+ i1 1)))))
+    
     ;; Compose results.
     (set! res1 (grsp-matrix-subdel "#Delr" res2 0))
     
@@ -5731,38 +5732,39 @@
 (define (grsp-matrix-row-invert p_a1)
   (let ((res1 0)
 	(res2 0)
-	(i1 0)
 	(i2 0)
 	(i3 0))
 
     ;; Create seed matrix.
     (set! res1 (grsp-matrix-create 0 1 (+ (grsp-hn p_a1) 1)))     
     
-    ;; Cycle.    
-    (set! i1 (grsp-lm p_a1))    
-    (set! i2 (grsp-hm p_a1))
-    
+    ;; Cycle.       
+    (set! i2 (grsp-hm p_a1))    
     (set! i3 1)
-    (while (<= i1 (grsp-hm p_a1))
 
-	   ;; Get row from input matrix (read in reverse row order).
-	   (set! res2 (grsp-matrix-subcpy p_a1
-					  i2
-					  i2
-					  (grsp-ln p_a1)
-					  (grsp-hn p_a1)))
+    ;; Row loop.
+    (let loop ((i1 (grsp-lm p_a1)))
+      (if (<= i1 (grsp-hm p_a1))
 
-	   ;; Expand seed matrix by one row.
-	   (set! res1 (grsp-matrix-subexp res1 1 0))
+	  ;; Get row from input matrix (read in reverse row order).
+	  (begin (set! res2 (grsp-matrix-subcpy p_a1
+						i2
+						i2
+						(grsp-ln p_a1)
+						(grsp-hn p_a1)))
 
-	   ;; Copy extracted row to expanded row in seed matrix.
-	   (set! res1 (grsp-matrix-subrep res1 res2 i3 (grsp-ln p_a1)))
+		 ;; Expand seed matrix by one row.
+		 (set! res1 (grsp-matrix-subexp res1 1 0))
 
-	   ;; Update counters.
-	   (set! i1 (+ i1 1))
-	   (set! i2 (- i2 1))
-	   (set! i3 (+ i3 1)))
+		 ;; Copy extracted row to expanded row in seed matrix.
+		 (set! res1 (grsp-matrix-subrep res1 res2 i3 (grsp-ln p_a1)))
 
+		 ;; Update counters.
+		 (set! i2 (- i2 1))
+		 (set! i3 (+ i3 1))
+		 
+		 (loop (+ i1 1)))))    
+    
     ;; Compose results.
     (set! res1 (grsp-matrix-subdel "#Delr" res1 0))
 
