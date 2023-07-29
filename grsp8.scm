@@ -614,7 +614,6 @@
     (set! datao (grsp-ann-get-matrix "datao" res1))
     (set! datae (grsp-ann-get-matrix "datae" res1))    
 
-    ;; ***
     ;; Callibrate.
     (cond ((equal? p_s1 "#bp")
 	   (grsp-ann-bp res1)))
@@ -639,7 +638,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural, network
+;; - functions, ann, neural, network, eval
 ;;
 ;; Parameters:
 ;;
@@ -820,7 +819,7 @@
 ;; - p_a1: nodes.
 ;; - p_a2: conns.
 ;; - p_a3: count.
-;; - p_n1:
+;; - p_n1: 
 ;;
 ;;   - 0: new id for nodes.
 ;;   - 1: new id for conns.
@@ -1062,7 +1061,7 @@
     (grsp-mc2dbc-csv p_d1 datae "datae.csv")))    
     
 
-;;;; grsp-dbc2ann - Retrieves an ann from a csv database.
+;;;; grsp-dbc2ann - Retrieves ann from a csv database.
 ;;
 ;; Keywords:
 ;;
@@ -1116,7 +1115,7 @@
     res1))
 
 
-;;;; grsp-ann-net-create-ffn - Creates an ann by matrix data. Each row of the
+;;;; grsp-ann-net-create-ffn - Creates ann by matrix data. Each row of the
 ;; matrix should contain data for the creation of one layer of the ann.
 ;;
 ;; Keywords:
@@ -1283,7 +1282,7 @@
     (while (equal? b1 #t)
 
 	   (set! y1 (array-ref res4 0 3))
-	   ;; ***
+
 	   ;; If the layer number is zero, it means that we are dealing with the
 	   ;; initial one and hence, no connections going to this layer will be
 	   ;; created. Othewise, every node of the layer will be connected to
@@ -1291,6 +1290,7 @@
 	   (cond ((> y1 0)
 		  
 		  ;; Separate the corrent res4 into two parts:
+		  ;;
 		  ;; - One will contain the rows (nodes) whose column 3 (layer)
 		  ;;   equals y1. This will be table res3.
 		  ;; - The second part contains everything else. That is, given
@@ -1327,13 +1327,16 @@
 		  (set! hn5 (grsp-matrix-esi 4 res5))
 
 		  ;; So, right now:
+		  ;;
 		  ;; - res3 has the nodes of the target layer.
 		  ;; - res4 has all the nodes of the ann except those of the
 		  ;;   target layer.
 		  ;; - res5 has the nodes of the origin layer.
+		  ;;
 		  ;; Now we cycle over the target layer, and for each node we
 		  ;; will create connections coming from each node of the
-		  ;; origin layer.	  
+		  ;; origin layer.
+		  ;;
 		  (set! i3 lm3)
 		  (while (<= i3 hm3)
 
@@ -1794,7 +1797,7 @@
 ;;   - "#fr": those going out of node p_id.
 ;;   - "#to": those reaching node p_id.
 ;;
-;; - P_a1: matrix (conns).
+;; - p_a1: matrix (conns).
 ;; - p_id: node id.
 ;;
 ;; Output:
@@ -2084,7 +2087,7 @@
     res1))
 
 
-;;;; grsp-ann-nodes-eval -Evaluates all nodes in ann p_l1.
+;;;; grsp-ann-nodes-eval - Evaluates all nodes in ann p_l1.
 ;;
 ;; Keywords:
 ;;
@@ -2794,10 +2797,10 @@
 	   (set! idata (grsp-matrix-row-subrepal idata m3 (list 0 0 0 0)))
 
 	   ;; Fill data.
-	   (array-set! idata (array-ref res2 i2 0) m3 0) ;; id
+	   (array-set! idata (array-ref res2 i2 0) m3 0) ;; id.
 	   (array-set! idata 6 m3 1) ;; output value col.
 	   (array-set! idata 0 m3 2) ;; number, 0 for now.
-	   (array-set! idata 0 m3 3) ;; for node	   
+	   (array-set! idata 0 m3 3) ;; for node.	   
 	   
 	   (set! i2 (in i2)))
 
@@ -3025,10 +3028,10 @@
 ;; - p_id: idata.
 ;; - p_di: datai.
 ;; - p_n1: classifier.
-
-;;       - 0: regular data.
-;;       - 1: training data.
-;;       - 2: control data.
+;;
+;;   - 0: regular data.
+;;   - 1: training data.
+;;   - 2: control data.
 ;;
 ;; Notes: 
 ;;
@@ -3115,7 +3118,8 @@
     ;; Purge datai.
     (set! hm2 (grsp-matrix-esi 2 datai))    
     (set! datai (grsp-matrix-subdell datai hm2 (list 0 0 0 0 0)))    
-    
+
+    ;; Compose results.
     (set! res1 datai)
     
     res1))
@@ -3133,9 +3137,9 @@
 ;; - p_l1: ann.
 ;; - p_n1: classifier.
 ;;
-;;       - 0: regular data.
-;;       - 1: training data.
-;;       - 2: control data.
+;;   - 0: regular data.
+;;   - 1: training data.
+;;   - 2: control data.
 ;;
 ;; Notes:
 ;;
@@ -3247,30 +3251,6 @@
     (set! datao (grsp-ann-get-matrix "datao" p_l1))
     (set! datae (grsp-ann-get-matrix "datae" p_l1))    
 
-    ;;   - Elem 7: datai. Contains data that should be passed to the input stream
-    ;;     (idata), coming from either the output stream (odata) or from a dataset.
-    ;;
-    ;;     - Col 0: id of the receptive node.
-    ;;     - Col 1: number that corresponds to the column in the nodes matrix in
-    ;;       which for the row whose col 0 is equal to the id value passed in col 0
-    ;;       of the idata matrix the input value will be stored.
-    ;;     - Col 2: number; value to be passed.
-    ;;     - Col 3: type, the kind of element that will receive this data.
-    ;;
-    ;;       - 0: for node.
-    ;;       - 1: for connection.
-    ;;
-    ;;     - Col 4: record control.
-    ;;
-    ;;       - 0: default.
-    ;;       - 1: epoch end.
-    ;;
-    ;;     - Col 5: classifier.
-    ;;
-    ;;       - 0: regular data.
-    ;;       - 1: training data.
-    ;;       - 2: control data.
-    
     ;; Cycle.
     (set! i1 (grsp-lm datai))
     (while (equal? b1 #f)
@@ -5074,9 +5054,9 @@
 ;; - p_a1: matrix (last p_j1 columns should contain expected results).
 ;; - p_n1: classifier.
 ;;
-;;       - 0: regular data.
-;;       - 1: training data.
-;;       - 2: control data.
+;;   - 0: regular data.
+;;   - 1: training data.
+;;   - 2: control data.
 ;;
 ;; - p_j1; number of columns assigned to results.
 ;; - p_l1: list, neural network.
@@ -5320,7 +5300,7 @@
 ;;
 ;; Parameters:
 ;;
-;; . p_s1: string, element type.
+;; - p_s1: string, element type.
 ;;
 ;;   - "node".
 ;;   - "conns".
@@ -5373,7 +5353,6 @@
 	   (set! conns (grsp-matrix-row-update "#=" conns 4 p_n1 4 p_n2))
 	   
 	   ;; Select rows for nodes from idata and change id.
-	   ;; ***
 	   (let loop ((i1 lm))
 	     (if (<= i1 hm)
 
