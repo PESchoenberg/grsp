@@ -5874,10 +5874,7 @@
 	(lm3 0)
 	(hm3 0)
 	(ln3 0)
-	(hn3 0)	
-	(j2 0)
-	(i3 0)
-	(j3 0))
+	(hn3 0))
 
     ;; Create matrices.
     (set! res2 (grsp-l2m p_l1))
@@ -5897,32 +5894,33 @@
     (set! res1 (grsp-matrix-create 0 1 (+ (- hn3 ln3) 1)))
 
     ;; Cycle, main.
-    (set! j2 ln2)
-    (while (<= j2 hn2)
+    (let loop ((j2 ln2))
+      (if (<= j2 hn2)
 
-	   ;; Look for records stated in each res2 element in res3.
-	   (set! i3 lm3)
-	   (while (<= i3 hm3)
+	  (begin (let loop ((i3 lm3))
+		   (if (<= i3 hn3)
 
-		  ;; If row is the correct one, then copy.
-		  (cond ((equal? i3 (array-ref res2 0 j2))
-			 
-			 ;; Expand seed matrix by one row.
-			 (set! res1 (grsp-matrix-subexp res1 1 0))
+		       ;; If row is the correct one, then copy.
+		       (begin (cond ((equal? i3 (array-ref res2 0 j2))
+				     
+				     ;; Expand seed matrix by one row.
+				     (set! res1 (grsp-matrix-subexp res1 1 0))
 
-			 ;; Extract boundaries of the res1 matrix.
-			 (set! hm1 (grsp-matrix-esi 2 res1))
-			 
-			 ;; Copy row from res3 to res1.
-			 (set! j3 ln3)
-			 (while (<= j3 hn3)				
-				(array-set! res1 (array-ref res3 i3 j3) hm1 j3)				
-				(set! j3 (+ j3 1)))))
+				     ;; Extract boundaries of the res1 matrix.
+				     (set! hm1 (grsp-matrix-esi 2 res1))
+				     
+				     ;; Copy row from res3 to res1.
+				     (let loop ((j3 ln3))
+				       (if (<= j3 hn3)
 
-		  (set! i3 (+ i3 1)))
-	   
-	   (set! j2 (+ j2 1)))
-
+					   (begin (array-set! res1 (array-ref res3 i3 j3) hm1 j3)
+						  
+						  (loop (+ j3 1)))))))
+			      
+			      (loop (+ i3 1)))))		 
+		 
+		 (loop (+ j2 1)))))
+    
     ;; Compose results.
     (set! res1 (grsp-matrix-subdel "#Delr" res1 0))
     
@@ -6834,8 +6832,7 @@
 (define (grsp-matrix-col-total-element p_s1 p_a1 p_j1 p_n1)
   (let ((res1 0)
 	(res2 0)
-	(n2 0)
-	(i1 0))
+	(n2 0))
 
     ;; Extract column p_j1.
     (set! res2 (grsp-matrix-subcpy p_a1
@@ -6844,43 +6841,43 @@
 				   p_j1
 				   p_j1))
 
-    ;; Cycle and count.
-    (set! i1 (grsp-lm p_a1))
-    (while (<= i1 (grsp-hm p_a1))
-	   
-	   (set! n2 (array-ref res2 i1 p_j1))
-	   
-	   (cond ((equal? p_s1 "#<")
-		  
-		  (cond ((< n2 p_n1)			 
-			 (set! res1 (+ res1 1)))))
+    ;; Row loop.
+    (let loop ((i1 (grsp-lm p_a1)))
+      (if (<= i1 (grsp-hm p_a1))
+
+	  (begin (set! n2 (array-ref res2 i1 p_j1))
 		 
-		 ((equal? p_s1 "#>")
-		  
-		  (cond ((> n2 p_n1)			 
-			 (set! res1 (+ res1 1)))))
+		 (cond ((equal? p_s1 "#<")
+			
+			(cond ((< n2 p_n1)			 
+			       (set! res1 (+ res1 1)))))
+		       
+		       ((equal? p_s1 "#>")
+			
+			(cond ((> n2 p_n1)			 
+			       (set! res1 (+ res1 1)))))
+		       
+		       ((equal? p_s1 "#<=")
+			
+			(cond ((<= n2 p_n1)			 
+			       (set! res1 (+ res1 1)))))
+		       
+		       ((equal? p_s1 "#>=")
+			
+			(cond ((>= n2 p_n1)			 
+			       (set! res1 (+ res1 1)))))
+		       
+		       ((equal? p_s1 "#=")
+			
+			(cond ((= n2 p_n1)			 
+			       (set! res1 (+ res1 1)))))
+		       
+		       ((equal? p_s1 "#!=")
+			
+			(cond ((equal? (= n2 p_n1) #f)			 
+			       (set! res1 (+ res1 1))))))
 		 
-		 ((equal? p_s1 "#<=")
-		  
-		  (cond ((<= n2 p_n1)			 
-			 (set! res1 (+ res1 1)))))
-		 
-		 ((equal? p_s1 "#>=")
-		  
-		  (cond ((>= n2 p_n1)			 
-			 (set! res1 (+ res1 1)))))
-		 
-		 ((equal? p_s1 "#=")
-		  
-		  (cond ((= n2 p_n1)			 
-			 (set! res1 (+ res1 1)))))
-		 
-		 ((equal? p_s1 "#!=")
-		  
-		  (cond ((equal? (= n2 p_n1) #f)			 
-			 (set! res1 (+ res1 1))))))
-	   
-	   (set! i1 (+ i1 1)))
+		 (loop (+ i1 1)))))
     
     res1))
 
