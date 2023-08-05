@@ -63,7 +63,7 @@
   #:use-module (grsp grsp4)  
   #:export (grsp-seq-hailstorm
 	    grsp-seq-geometric
-	    grsp-seq-hyperarmonic
+	    grsp-seq-hyperharmonic
 	    grsp-seq-euler
 	    grsp-seq-pi))
 
@@ -139,7 +139,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - numbers, sequences, geometric, convergent
+;; - numbers, sequences, geometric, convergent, convergence
 ;;
 ;; Parameters:
 ;;
@@ -212,11 +212,11 @@
     res2))
 
 
-;;;; grsp-seq-hyperarmonic - Calculates a hyperarmonic series.
+;;;; grsp-seq-hyperharmonic - Calculates a hyperharmonic series.
 ;;
 ;; Keywords:
 ;;
-;; - numbers, sequences, harmonic, hyper, convergent
+;; - numbers, sequences, harmonic, hyper, convergent, harmonic
 ;;
 ;; Parameters:
 ;;
@@ -251,7 +251,7 @@
 ;;
 ;; - [2][5][grsp4.12].
 ;;    
-(define (grsp-seq-hyperarmonic p_b1 p_s1 p_n1 p_m1 p_m2 p_p1)
+(define (grsp-seq-hyperharmonic p_b1 p_s1 p_n1 p_m1 p_m2 p_p1)
   (let ((res1 0.0)
 	(res2 '())
 	(res3 '())

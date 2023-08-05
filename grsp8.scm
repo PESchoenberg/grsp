@@ -352,7 +352,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network, matrices, matrix, element, list
+;; - functions, ann, neural network, matrices, matrix, element, list, skeletal
 ;;
 ;; Parameters:
 ;;
@@ -444,7 +444,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural, network
+;; - functions, ann, neural, network, ffn
 ;;
 ;; Parameters:
 ;;
@@ -561,7 +561,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural, network
+;; - functions, ann, neural, network, config, configuration, adjust
 ;;
 ;; Parameters:
 ;;
@@ -638,7 +638,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural, network, eval
+;; - functions, ann, neural, network, eval, epochal
 ;;
 ;; Parameters:
 ;;
@@ -731,7 +731,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural, network
+;; - functions, ann, neural, network, clean, simplify, cut, renew
 ;;
 ;; Parameters:
 ;;
@@ -776,7 +776,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural, network
+;; - functions, ann, neural, network, counting, count
 ;;
 ;; Parameters:
 ;;
@@ -812,7 +812,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural, network
+;; - functions, ann, neural, network, primary, key
 ;;
 ;; Parameters:
 ;;
@@ -850,7 +850,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural, network
+;; - functions, ann, neural, network, connections, edges, links
 ;;
 ;; Parameters:
 ;;
@@ -909,7 +909,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural, network
+;; - functions, ann, neural, network, update, add
 ;;
 ;; Parameters:
 ;;
@@ -1008,7 +1008,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural, network
+;; - functions, ann, neural, network, comma, separated, csv
 ;;
 ;; Parameters:
 ;;
@@ -1065,7 +1065,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural, network
+;; - functions, ann, neural, network, cooma, separated, csv
 ;;
 ;; Parameters:
 ;;
