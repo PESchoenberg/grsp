@@ -76,7 +76,15 @@
 ;;   https://en.wikipedia.org/wiki/List_of_terms_relating_to_algorithms_and_data_structures
 ;;   (Accessed: February 8, 2023). 
 ;; - [10] Dictionary of algorithms and Data Structures (no date) NIST.
-;;   Available at: https://www.nist.gov/dads/ (Accessed: February 8, 2023). 
+;;   Available at: https://www.nist.gov/dads/ (Accessed: February 8, 2023).
+;; - [11] Scheme requests for implementation (no date) Scheme Requests for
+;;   Implementation. Available at: https://srfi.schemers.org/
+;;   (Accessed: 29 July 2023). 
+;; - [12] Practical scheme (no date) Practical Scheme. Available at:
+;;   https://practical-scheme.net/ (Accessed: 29 July 2023).
+;; - [13] Project MAC (‘Switzerland’) (no date) Project MAC Home Page.
+;;   Available at: http://groups.csail.mit.edu/mac/projects/mac/
+;;   (Accessed: 29 July 2023). 
 
 
 (define-module (grsp grsp0)
@@ -142,7 +150,8 @@
 	    displayf
 	    grsp-slists-append
 	    grsp-lam
-	    grsp-random-state-set))
+	    grsp-random-state-set
+	    displayc))
 
 
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
@@ -2008,3 +2017,22 @@
 	 (set! *random-state* (random-state-from-platform)))))
 
 
+;;;; displayc - Displays p_v1 if p_b1 is #t.
+;;
+;; Keywords:
+;;
+;; - console, display
+;;
+;; Parameters:
+;;
+;; - p_b1: boolean.
+;;
+;;   - #t: display p_v1.
+;;   - #f: otherwise-
+;;
+;; - p_v1: value.
+;;
+(define (displayc p_b1 p_v1)
+
+  (cond ((equal? p_b1 #t)
+	 (grsp-ldl p_v1 0 0))))

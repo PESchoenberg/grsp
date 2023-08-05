@@ -190,7 +190,7 @@
     ;; Calculate root of summation of dimensions. If Euclidean space is
     ;; used, nf = 1 so that spacelike vectors will be positive (+ + +), and if
     ;; spacetime is used, nf = -1 so that spacelike vectors become negative and
-    ;; the timelike vector is trated as positive (+ - - -).
+    ;; the timelike vector is treated as positive (+ - - -).
     (set! res1 (sqrt (+ (+ (+ nx ny) nz) nt)))
 	   
     res1))
@@ -253,7 +253,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - relativity, dilation
+;; - relativity, dilation, observer
 ;;
 ;; Parameters:
 ;; 
@@ -280,7 +280,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - relativity, dilation
+;; - relativity, dilation, observer
 ;;
 ;; Parameters:
 ;; 
@@ -308,7 +308,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - relativity, contraction
+;; - relativity, contraction, observer
 ;;
 ;; Parameters:
 ;; 
@@ -415,7 +415,7 @@
     res1))
 
 
-;;;; grsp-beta - Calculates the beta term of the Lortentz factor.
+;;;; grsp-beta - Calculates the beta term of the Lorentz factor.
 ;;
 ;; Keywords:
 ;;
@@ -555,7 +555,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - waves, sources
+;; - waves, sources, observer, relativity
 ;;
 ;; Parameters:
 ;;
@@ -606,7 +606,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - waves, wave, shift
+;; - waves, wave, shift, redshift
 ;;
 ;; Parameters:
 ;;
@@ -641,7 +641,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - dynamics, distance, time
+;; - dynamics, distance, time, velocity, speed, dsiplacement
 ;;
 ;; Parameters:
 ;;
@@ -664,7 +664,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - dynamics, accelerate, time, speed, velocity
+;; - dynamics, accelerate, time, speed, velocity, displacement, speed
 ;;
 ;; Parameters:
 ;;
@@ -843,7 +843,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - astro, gravity, planet, earth. latitude
+;; - astro, gravity, planet, earth. latitude, coordinates
 ;;
 ;; Parameters:
 ;;
@@ -873,7 +873,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - astro, planet, earth. latitude
+;; - astro, planet, earth. latitude, logitude, height, altitude
 ;;
 ;; Parameters:
 ;;

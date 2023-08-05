@@ -184,7 +184,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists
+;; - function, algebra, lists, lenght, quantity
 ;;
 ;; Parameters:
 ;;
@@ -210,7 +210,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists
+;; - function, algebra, lists, equality, equivalent, equivalence
 ;;
 ;; Parameters:
 ;;
@@ -444,7 +444,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists
+;; - function, algebra, lists, genetic, random, mutation, mutate
 ;;
 ;; Parameters:
 ;;
@@ -487,7 +487,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists
+;; - function, algebra, lists, show
 ;;
 ;; Parameters:
 ;;
@@ -519,7 +519,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists
+;; - function, algebra, lists, show
 ;;
 ;; Parameters:
 ;;
@@ -559,7 +559,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists
+;; - function, algebra, lists, subset
 ;;
 ;; Parameters:
 ;;
@@ -593,7 +593,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists
+;; - function, algebra, lists, subset
 ;;
 ;; Parameters:
 ;;
@@ -708,7 +708,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists
+;; - function, algebra, lists, quantity, total, instances
 ;;
 ;; Parameters:
 ;;
@@ -732,7 +732,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists
+;; - function, algebra, lists, single, equal
 ;;
 ;; Parameters:
 ;;
@@ -756,7 +756,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists
+;; - function, algebra, lists, ordering
 ;;
 ;; Parameters
 ;;
@@ -783,7 +783,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists
+;; - function, algebra, lists, minmax, max, min
 ;;
 ;; Parameters:
 ;;
@@ -812,7 +812,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists
+;; - function, algebra, lists, instances
 ;;
 ;; Parameters:
 ;;
@@ -835,7 +835,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists
+;; - function, algebra, lists, equality, quantity
 ;;
 ;; Parameters:
 ;;
@@ -860,7 +860,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, matrix, matrices, vectors
+;; - function, algebra, matrix, matrices, vectors, repetition
 ;;
 ;; Parameters:
 ;;
@@ -882,7 +882,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - list, sort
+;; - list, sort, sorting
 ;;
 ;; Parameters:
 ;;
@@ -974,7 +974,7 @@
 ;;;; grsp-lal-deque - Uses list p-l1 as a double ended queue.
 ;; Keywords:
 ;;
-;; - function, lists, swap. change, move
+;; - function, lists, swap. change, move, queues
 ;;
 ;; Parameters:
 ;;
@@ -1051,4 +1051,3 @@
     (set! res1 (list p_l1 p_l2))
     
     res1))
-

@@ -58,7 +58,9 @@
 ;; - [8] Many-worlds interpretation (2022) Wikipedia. Wikimedia Foundation.
 ;;   Available at: https://en.wikipedia.org/wiki/Many-worlds_interpretation
 ;;   (Accessed: January 6, 2023).
-;; - [9] https://en.wikipedia.org/wiki/Mathematical_universe_hypothesis
+;; - [9] Mathematical universe hypothesis (2023) Wikipedia. Available at:
+;;   https://en.wikipedia.org/wiki/Mathematical_universe_hypothesis
+;;   (Accessed: 31 July 2023). 
 
 
 (define-module (grsp grsp17)

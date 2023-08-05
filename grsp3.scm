@@ -6887,7 +6887,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, relational
+;; - functions, algebra, matrix, matrices, vectors, relational, deletion
 ;;
 ;; Parameters:
 ;;
@@ -6903,9 +6903,7 @@
 	(lm1 0)
 	(hm1 0)
 	(ln1 0)
-	(hn1 0)
-	(i1 0)
-	(j1 0))
+	(hn1 0))
 
     ;; Create safety matrix. 
     (set! res1 (grsp-matrix-cpy p_a1))
@@ -6916,24 +6914,24 @@
     (set! ln1 (grsp-matrix-esi 3 res1))
     (set! hn1 (grsp-matrix-esi 4 res1)) 
 
-    ;; Cycle.
-    (set! i1 lm1)
-    (while (<= i1 hm1)
-	   
-	   (set! j1 ln1)
-	   (while (<= j1 hn1)
+    ;; Row loop.
+    (let loop ((i1 lm1))
+      (if (<= i1 hm1)
 
-		  ;; Delete row where p_n1 is found at column j1.
-		  (set! res1 (grsp-matrix-row-delete "#=" res1 j1 p_n1))
+	  ;; Col loop.
+	  (begin (let loop ((j1 ln1))
+		   (if (<= j1 hn1)
 
-		  ;; Extract current boundaries.
-		  (set! lm1 (grsp-matrix-esi 1 res1))
-		  (set! hm1 (grsp-matrix-esi 2 res1))		  
-		  
-		  (set! j1 (+ j1 1)))
-	   
-	   (set! i1 (+ i1 1)))
-		  
+		       (begin (set! res1 (grsp-matrix-row-delete "#=" res1 j1 p_n1))
+
+			      ;; Extract current boundaries.
+			      (set! lm1 (grsp-matrix-esi 1 res1))
+			      (set! hm1 (grsp-matrix-esi 2 res1))
+			      
+			      (loop (+ j1 1)))))		 
+		 
+		 (loop (+ i1 1)))))    
+    
     res1))
 
 
@@ -11140,3 +11138,4 @@
 		 (loop (+ i1 1)))))
     
     res1))
+

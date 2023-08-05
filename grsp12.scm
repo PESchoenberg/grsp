@@ -125,7 +125,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, evolution, genetic
+;; - function, evolution, genetic, samples, populate
 ;;
 ;; Parameters:
 ;;
