@@ -442,7 +442,9 @@
 	    grsp-matrix-blur
 	    grsp-matrix-col-replacev
 	    grsp-matrix-selectmb
-	    grsp-matrix-row-opscr))
+	    grsp-matrix-row-opscr
+	    grsp-ms2dbc
+	    grsp-dbc2ms))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -7763,7 +7765,7 @@
 ;; - p_s1: string
 ;;
 ;;   - "#row" will use row p_n1 as index.
-;;   - "#col" will use column _n1 as index.
+;;   - "#col" will use column p_n1 as index.
 ;;
 ;; - p_a1: matrix.
 ;; - p_n1: number, will represent a row or column depending on p_s1.
@@ -11139,3 +11141,94 @@
     
     res1))
 
+
+;;;; grsp-ms2dbc - Casts a matrix of strings as a matrix of numbers representing
+;; those strings as numeric values.
+;;
+;; Keywords:
+;;
+;; - casting, convert, strings, numeric
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix containing strings.
+;;
+;; Notes:
+;;
+;; - See grsp-s2dbc, grsp-dbc2s, grsp-dbc2ms.
+;; - This function is the oppositoe of grsp-dbc2ms.
+;;
+;; Output:
+;;
+;; - Matrix.
+;;
+(define (grsp-ms2dbc p_a1)
+  (let ((res1 0)
+	(s1 0)
+	(n1 0))
+
+    (set! res1 (grsp-matrix-create-dim 0 p_a1))
+
+    ;; Row loop.
+    (let loop ((i1 (grsp-lm p_a1)))
+      (if (<= i1 (grsp-hm p_a1))
+
+	  ;; Col loop.
+	  (begin (let loop ((j1 (grsp-ln p_a1)))
+		   (if (<= j1 (grsp-hn p_a1))
+
+		       (begin (set! s1 (array-ref p_a1 i1 j1))
+			      (set! n1 (grsp-s2dbc s1))
+			      (array-set! res1 n1 i1 j1)
+			      
+			      (loop (+ j1 1)))))		 
+		 
+		 (loop (+ i1 1)))))
+    
+    res1))
+
+
+;;;; grsp-dbc2ms - Casts a dbc matrix of numbers representing strings as a
+;; matrix of strings
+;;
+;; Keywords:
+;;
+;; - casting, convert, strings, numeric
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix containing numbers representing strings.
+;;
+;; Notes:
+;;
+;; - See grsp-s2dbc, grsp-dbc2s, grsp-ms2dbc.
+;; - This function is the oppositoe of grsp-ms2dbc.
+;;
+;; Output:
+;;
+;; - Matrix.
+;;
+(define (grsp-dbc2ms p_a1)
+  (let ((res1 0)
+	(s1 0)
+	(n1 0))
+
+    (set! res1 (grsp-matrix-create-dim "" p_a1))
+
+    ;; Row loop.
+    (let loop ((i1 (grsp-lm p_a1)))
+      (if (<= i1 (grsp-hm p_a1))
+
+	  ;; Col loop.
+	  (begin (let loop ((j1 (grsp-ln p_a1)))
+		   (if (<= j1 (grsp-hn p_a1))
+
+		       (begin (set! n1 (array-ref p_a1 i1 j1))
+			      (set! s1 (grsp-dbc2s n1))
+			      (array-set! res1 s1 i1 j1)
+			      
+			      (loop (+ j1 1)))))		 
+		 
+		 (loop (+ i1 1)))))
+    
+    res1))

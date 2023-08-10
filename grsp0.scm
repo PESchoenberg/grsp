@@ -151,7 +151,8 @@
 	    grsp-slists-append
 	    grsp-lam
 	    grsp-random-state-set
-	    displayc))
+	    displayc
+	    grsp-confirm))
 
 
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
@@ -1662,7 +1663,7 @@
 
 
 ;;;; grsp-s2dbc - Casts a string as a number composed of a succession of the
-;; unicode representation of each character string interpected by the unicode
+;; unicode representation of each character string interspected by the unicode
 ;; representation of the string "|" . This is a useful way to store
 ;; strings in numeric matrices as integers. This function converts any string
 ;; to a number apt to be stored in a grsp relational matrix.
@@ -2036,3 +2037,26 @@
 
   (cond ((equal? p_b1 #t)
 	 (grsp-ldl p_v1 0 0))))
+
+
+;;;; grsp-confirm - If p_b1 #t, asks for confirmation.
+;;
+;; Keywords:
+;;
+;; - confirmation, safety
+;;
+;; Parameters:
+;;
+;; - p_b1: boolean.
+;;
+;;   - #t to ask for confirmation.
+;;   - #f otherwise.
+;;
+(define (grsp-confirm p_b1)
+  (let ((res1 #f))
+
+  (cond ((equal? p_b1 #t)
+	 (set! res1 (grsp-ask "Confirm operation [#t/#f]? "))))
+
+  res1))
+
