@@ -11189,7 +11189,7 @@
 
 
 ;;;; grsp-dbc2ms - Casts a dbc matrix of numbers representing strings as a
-;; matrix of strings
+;; matrix of strings.
 ;;
 ;; Keywords:
 ;;
@@ -11202,7 +11202,7 @@
 ;; Notes:
 ;;
 ;; - See grsp-s2dbc, grsp-dbc2s, grsp-ms2dbc.
-;; - This function is the oppositoe of grsp-ms2dbc.
+;; - This function is the opposite of grsp-ms2dbc.
 ;;
 ;; Output:
 ;;
