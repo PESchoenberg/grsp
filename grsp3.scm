@@ -9412,9 +9412,14 @@
   (let ((res1 "")
 	(a1 ""))
 
-    (set! a1 (grsp-mn2ms p_a1))
-    (set! res1 (grsp-ms2s a1))
+    ;;(set! a1 (grsp-mn2ms p_a1))
+    (cond ((equal? (number? (array-ref p_a1 0 0)) #t)    
+	   (set! a1 (grsp-mn2ms p_a1)))
+	  ((equal? (string? (array-ref p_a1 0 0)) #t)
+	   (set! a1 p_a1)))
     
+    (set! res1 (grsp-ms2s a1))
+	   
     (display res1)))
   
 
