@@ -444,7 +444,8 @@
 	    grsp-matrix-selectmb
 	    grsp-matrix-row-opscr
 	    grsp-ms2dbc
-	    grsp-dbc2ms))
+	    grsp-dbc2ms
+	    grsp-matrix-split))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -11235,5 +11236,64 @@
 			      (loop (+ j1 1)))))		 
 		 
 		 (loop (+ i1 1)))))
+    
+    res1))
+
+
+;;;; grsp-matrix-split - From matrix p_a1 with primary key on column 0,
+;; this function creates two matrices:
+;;
+;; - Matrix 1: from col 0 to col p_n1.
+;; - Matrix 2: at col 0 it copies col 9 from p_a1, and from p_n1+1 to
+;;   col hn (last col on the right).
+;;
+;; Keywords:
+;;
+;; - splitting, matrices, separate
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix.
+;; - p_n1: numeric, col number.
+;;
+;; Notes:
+;;
+;; - Matrix p_a1 must have a primary key on col 0.
+;; - Both output matrices wiññ have the same primary keys on col 0.
+;;
+;; Output:
+;;
+;; - A list of two matrices.
+;;
+(define (grsp-matrix-split p_a1 p_n1)
+  (let ((res1 '())
+	(a1 0)
+	(a2 0)
+	(a3 0)
+	(a4 0))
+
+    ;; First matrix.
+    (set! a1 (grsp-matrix-subcpy p_a1
+				 (grsp-lm p_a1)
+				 (grsp-hm p_a1)
+				 (grsp-ln p_a1)
+				 p_n1))
+    
+    ;; Intermediate matrix.
+    (set! a3 (grsp-matrix-subcpy p_a1
+				 (grsp-lm p_a1)
+				 (grsp-hm p_a1)
+				 (+ p_n1 1)
+				 (grsp-hn p_a1)))
+
+    ;; Second matrix.
+    (set! a2 (grsp-matrix-create 0 (grsp-tm a3) (+ (grsp-tn a3) 1)))
+
+    ;; Set col 0 of a2 with the same primary keys as a1.
+    (set! a4 (grsp-matrix-subcpy a1 (grsp-lm a1) (grsp-hm a1) 0 0))        
+    (set! a2 (grsp-matrix-subrep a1 a4 0 0))
+    
+    ;; Compose results.
+    (set! res1 (list a1 a2))
     
     res1))
