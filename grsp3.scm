@@ -445,7 +445,10 @@
 	    grsp-matrix-row-opscr
 	    grsp-ms2dbc
 	    grsp-dbc2ms
-	    grsp-matrix-split))
+	    grsp-matrix-split
+	    grsp-matrix-inputev
+	    grsp-matrix-row-inputev
+	    grsp-matrix-rows-inputev))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -11290,10 +11293,169 @@
     (set! a2 (grsp-matrix-create 0 (grsp-tm a3) (+ (grsp-tn a3) 1)))
 
     ;; Set col 0 of a2 with the same primary keys as a1.
-    (set! a4 (grsp-matrix-subcpy a1 (grsp-lm a1) (grsp-hm a1) 0 0))        
-    (set! a2 (grsp-matrix-subrep a1 a4 0 0))
+    (set! a4 (grsp-matrix-subcpy a1 (grsp-lm a1) (grsp-hm a1) 0 0))
+    (set! a2 (grsp-matrix-subrep a2 a4 0 0))    
+    (set! a2 (grsp-matrix-subrep a2 a3 0 1))
     
     ;; Compose results.
     (set! res1 (list a1 a2))
+    
+    res1))
+
+
+;;;; grsp-matrix-inputev - Input a value in element p_i1 p_j1 of matrix p_a1
+;; interactively.
+;;
+;; Leywords:
+;;
+;; - interactive, data, entry, matrices, input, enter, entering, loading
+;;
+;; Parameters:
+;;
+;; - p_b1: boolean.
+;;
+;;   - #t to show p_a1 before entering the value.
+;;   - #f otherwise.
+;;
+;; - p_b2: boolean.
+;;
+;;   - #t to show p_a1 after entering the value.
+;;   - #f otherwise.
+;;
+;; - p_a1: matrix.
+;; - p_i1; numeric, row coordinate.
+;; - p_j1: numeric, col coordinate.
+;;
+;; Note:
+;;
+;; - For string and numeric matrices only.
+;;
+(define (grsp-matrix-inputev p_b1 p_b2 p_a1 p_i1 p_j1)
+  (let ((res1 0)
+	(s1 "")
+	(s2 "")
+	(s3 "")
+	(n1 0))
+
+    (set! res1 (grsp-matrix-cpy p_a1))
+
+    (cond ((equal? p_b1 #t)
+	   (clear)
+	   (grsp-ldl "Matrix before updating:" 0 0)
+	   (grsp-matrix-display res1)))
+	   
+    (set! s1 (strings-append (list "Value for element ["
+				   (grsp-n2s p_i1)
+				   ", "
+				   (grsp-n2s p_j1)
+				   "]?")
+			     0))
+
+    (set! s2 (grsp-ask s1))
+
+    (cond ((symbol? s2)    
+	   (set! s3 (symbol->string s2)))
+	  ((number? s2)
+	   (set! s3 (grsp-n2s s2)))
+	  ((string? s2)
+	   (set! s3 s2)))
+    
+    (cond ((string? (array-ref res1 p_i1 p_j1))
+	   (array-set! res1 s3 p_i1 p_j1))
+	  ((number? (array-ref res1 p_i1 p_j1))
+	   (set! n1 (grsp-s2n s3))
+	   (array-set! res1 n1 p_i1 p_j1)))
+
+    (cond ((equal? p_b2 #t)
+	   (clear)
+	   (grsp-ldl "Matrix after updating:" 0 0)	   
+	   (grsp-matrix-display res1)))
+    
+    res1))
+
+
+;;;; grsp-matrix-row-inputev - Input a value in every element of row p_i1 of
+;; matrix p_a1 interactively.
+;;
+;; Leywords:
+;;
+;; - interactive, data, entry, matrices, input, enter, entering, loading
+;;
+;; Parameters:
+;;
+;; - p_b1: boolean.
+;;
+;;   - #t to show p_a1 before entering the value.
+;;   - #f otherwise.
+;;
+;; - p_b2: boolean.
+;;
+;;   - #t to show p_a1 after entering the value.
+;;   - #f otherwise.
+;;
+;; - p_a1: matrix.
+;; - p_i1; numeric, row number.
+;;
+;; Note:
+;;
+;; - For string and numeric matrices only.
+;;
+(define (grsp-matrix-row-inputev p_b1 p_b2 p_a1 p_i1)
+  (let ((res1 0))
+
+    ;; Safety copy
+    (set! res1 (grsp-matrix-cpy p_a1))
+    
+    ;; Col loop.
+    (let loop ((j1 (grsp-ln p_a1)))
+      (if (<= j1 (grsp-hn p_a1))
+
+	  (begin (set! res1 (grsp-matrix-inputev p_b1 p_b2 res1 p_i1 j1))
+		 
+		 (loop (+ j1 1)))))
+    
+    res1))
+
+
+;;;; grsp-matrix-row-inputev - Input a value in every element of every row of
+;; matrix p_a1 between prows p_i1 an dp_i2 interactively.
+;;
+;; Leywords:
+;;
+;; - interactive, data, entry, matrices, input, enter, entering, loading
+;;
+;; Parameters:
+;;
+;; - p_b1: boolean.
+;;
+;;   - #t to show p_a1 before entering the value.
+;;   - #f otherwise.
+;;
+;; - p_b2: boolean.
+;;
+;;   - #t to show p_a1 after entering the value.
+;;   - #f otherwise.
+;;
+;; - p_a1: matrix.
+;; - p_i1; numeric, row number, initial.
+;; - p_i2; numeric, row number, final.
+;;
+;; Note:
+;;
+;; - For string and numeric matrices only.
+;;
+(define (grsp-matrix-rows-inputev p_b1 p_b2 p_a1 p_i1 p_i2)
+  (let ((res1 0))
+
+    ;; Safety copy
+    (set! res1 (grsp-matrix-cpy p_a1))
+    
+    ;; Row loop.
+    (let loop ((i1 p_i1))
+      (if (<= i1 p_i2)
+
+	  (begin (set! res1 (grsp-matrix-row-inputev p_b1 p_b2 res1 i1))
+		 
+		 (loop (+ i1 1)))))
     
     res1))
