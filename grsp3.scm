@@ -448,7 +448,9 @@
 	    grsp-matrix-split
 	    grsp-matrix-inputev
 	    grsp-matrix-row-inputev
-	    grsp-matrix-rows-inputev))
+	    grsp-matrix-rows-inputev
+	    grsp-matrix-rows-addev
+	    grsp-matrix-rows-filled-with))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -11306,7 +11308,7 @@
 ;;;; grsp-matrix-inputev - Input a value in element p_i1 p_j1 of matrix p_a1
 ;; interactively.
 ;;
-;; Leywords:
+;; Keywords:
 ;;
 ;; - interactive, data, entry, matrices, input, enter, entering, loading
 ;;
@@ -11326,7 +11328,7 @@
 ;; - p_i1; numeric, row coordinate.
 ;; - p_j1: numeric, col coordinate.
 ;;
-;; Note:
+;; Notes:
 ;;
 ;; - For string and numeric matrices only.
 ;;
@@ -11377,7 +11379,7 @@
 ;;;; grsp-matrix-row-inputev - Input a value in every element of row p_i1 of
 ;; matrix p_a1 interactively.
 ;;
-;; Leywords:
+;; Keywords:
 ;;
 ;; - interactive, data, entry, matrices, input, enter, entering, loading
 ;;
@@ -11396,7 +11398,7 @@
 ;; - p_a1: matrix.
 ;; - p_i1; numeric, row number.
 ;;
-;; Note:
+;; Notes:
 ;;
 ;; - For string and numeric matrices only.
 ;;
@@ -11418,9 +11420,9 @@
 
 
 ;;;; grsp-matrix-row-inputev - Input a value in every element of every row of
-;; matrix p_a1 between prows p_i1 an dp_i2 interactively.
+;; matrix p_a1 between rows p_i1 and p_i2 interactively.
 ;;
-;; Leywords:
+;; Keywords:
 ;;
 ;; - interactive, data, entry, matrices, input, enter, entering, loading
 ;;
@@ -11440,7 +11442,7 @@
 ;; - p_i1; numeric, row number, initial.
 ;; - p_i2; numeric, row number, final.
 ;;
-;; Note:
+;; Notes:
 ;;
 ;; - For string and numeric matrices only.
 ;;
@@ -11459,3 +11461,86 @@
 		 (loop (+ i1 1)))))
     
     res1))
+
+
+;;;; grsp-matrix-rows-addev - Add rows to matrix p_a1 interactively.
+;;
+;; Keywords:
+;;
+;; - interactive, data, entry, matrices, input, enter, entering, loading
+;;
+;; Parameters:
+;;
+;; - p_b1: boolean.
+;;
+;;   - #t to show p_a1 before entering the value.
+;;   - #f otherwise.
+;;
+;; - p_b2: boolean.
+;;
+;;   - #t to show p_a1 after entering the value.
+;;   - #f otherwise.
+;;
+;; - p_a1: matrix.
+;;
+;; Notes:
+;;
+;; - For string and numeric matrices only.
+;;
+(define (grsp-matrix-rows-addev p_b1 p_b2 p_a1)
+  (let ((res1 0)
+	(b3 #t))
+
+    ;; Safety copy.
+    (set! res1 (grsp-matrix-cpy p_a1))
+    
+    (while (equal? b3 #t)
+	   (clear)
+	   (grsp-ldl "Add row to matrix..." 0 0)
+	   (grsp-matrix-display res1)	   
+	   (set! b3 (grsp-confirm b3))
+	   
+	   (cond ((equal? b3 #t)
+		  (set! res1 (grsp-matrix-subexp res1 1 0))
+		  (set! res1 (grsp-matrix-row-inputev p_b1 p_b2 res1 (grsp-hm res1))))))
+	       
+    res1))
+
+
+;;;; grsp-matrix-lm-filled-with - Returns #t if the p_i1 initial rows of the
+;; matrix are filled with value p_v1. If p_i1 exceeds the total number of rows
+;; of p_a1, then the function with perfor the evaluation not on the number of
+;; rows delcared by p_i1 but on the total numbero fo rows of the matrix.
+;;
+;; Keywords:
+;;
+;; - initial, empty, row, record
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix.
+;; - p_i1: numeric, number of rows to test.
+;; - p_v1: value.
+;;
+(define (grsp-matrix-rows-filled-with p_a1 p_i1 p_v1)
+  (let ((res1 #f)
+	(res2 0)
+	(i1 0)
+	(tm 0))
+
+    (set! tm (grsp-tm p_a1))
+    
+    (cond ((> p_i1 tm)
+	   (set! i1 tm))
+	  (else (set! i1 p_i1)))
+    
+    (set! res2 (grsp-matrix-subcpy p_a1
+				   (grsp-lm p_a1)
+				   (- i1 1)
+				   (grsp-ln p_a1)
+				   (grsp-hn p_a1)))
+    
+    (set! res1 (grsp-matrix-is-filled-with res2 p_v1))
+    
+    res1))
+    
