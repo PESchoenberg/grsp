@@ -152,7 +152,9 @@
 	    grsp-lam
 	    grsp-random-state-set
 	    displayc
-	    grsp-confirm))
+	    grsp-confirm
+	    grsp-b2s
+	    grsp-s2b))
 
 
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
@@ -2059,4 +2061,54 @@
 	 (set! res1 (grsp-ask "Confirm operation [#t/#f]? "))))
 
   res1))
+
+
+;;;; grsp-b2s - Casts a boolean value as string.
+;;
+;; Keywords:
+;;
+;; - console, strings
+;;
+;; Parameters:
+;;
+;; - p_b1: boolean.
+;;
+;; Output:
+;;
+;; - String.
+(define (grsp-b2s p_b1)
+  (let ((res1 ""))
+
+    (cond ((equal? p_b1 #t)
+	   (set! res1 "#t"))
+	  (else (set! res1 "#f")))
+
+    res1))
+
+
+;;;; grsp-s2b - Casts a string representing a boolean value as boolean.
+;;
+;; Keywords:
+;;
+;; - console, strings
+;;
+;; Parameters:
+;;
+;; - p_s1: string.
+;;
+;;   - "#t" for #t.
+;;   - "#f" otherwise.
+;;
+;; Output:
+;;
+;; - String.
+;;
+(define (grsp-s2b p_s1)
+  (let ((res1 #f))
+
+    (cond ((equal? p_s1 "#t")
+	   (set! res1 #t))
+	  (else (set! res1 #f)))
+
+    res1))
 
