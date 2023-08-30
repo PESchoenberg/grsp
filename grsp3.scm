@@ -258,6 +258,7 @@
   #:use-module (grsp grsp1)
   #:use-module (grsp grsp2)
   #:use-module (grsp grsp4)
+  #:use-module (grsp grsp11)  
   #:use-module (ice-9 threads)  
   #:export (grsp-lm
 	    grsp-hm
@@ -450,7 +451,11 @@
 	    grsp-matrix-row-inputev
 	    grsp-matrix-rows-inputev
 	    grsp-matrix-rows-addev
-	    grsp-matrix-rows-filled-with))
+	    grsp-matrix-rows-filled-with
+	    grsp-matrix-displayts
+	    grsp-matrix-subadd
+	    grsp-matrix-displaytn
+	    grsp-matrix-edit))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -9419,7 +9424,7 @@
 	(a1 ""))
 
     ;;(set! a1 (grsp-mn2ms p_a1))
-    (cond ((equal? (number? (array-ref p_a1 0 0)) #t)    
+    (cond ((equal? (number? (array-ref p_a1 0 0)) #t)
 	   (set! a1 (grsp-mn2ms p_a1)))
 	  ((equal? (string? (array-ref p_a1 0 0)) #t)
 	   (set! a1 p_a1)))
@@ -11509,7 +11514,7 @@
 
 ;;;; grsp-matrix-lm-filled-with - Returns #t if the p_i1 initial rows of the
 ;; matrix are filled with value p_v1. If p_i1 exceeds the total number of rows
-;; of p_a1, then the function with perfor the evaluation not on the number of
+;; of p_a1, then the function with perform the evaluation not on the number of
 ;; rows delcared by p_i1 but on the total numbero fo rows of the matrix.
 ;;
 ;; Keywords:
@@ -11544,3 +11549,141 @@
     
     res1))
     
+
+;;;; grsp-matrix-displayts - Display string matrix p_a1 with column titles
+;; according to string list p_l1.
+;;
+;; Keywords
+;;
+;; - matrix, display, titled, titles, names, columns
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix of strings.
+;; - p_l1: list of strings.
+;;
+;; Notes:
+;;
+;; - The number of elements of p_l1 should be the same as the number of columns
+;;   of p_a1
+;;
+(define (grsp-matrix-displayts p_a1 p_l1)
+  (let ((res1 0)
+	(a1 0)
+	(a2 0)
+	(hm1 0)
+	(i2 0)
+	(l1 '()))
+
+    ;; Safety copy.
+    (set! a1 (grsp-matrix-cpy p_a1))
+    
+    ;; Generate col headers.
+    (set! l1 (list-copy p_l1))
+    (set! l1 (grsp-lal-ansl l1))
+    (set! res1 (grsp-l2m l1))
+
+    ;; Ad col headers.
+    (set! res1 (grsp-matrix-subadd res1 a1))     
+
+    ;; Create row headers
+    (set! a2 (grsp-matrix-create " " (grsp-tm res1) (+ (grsp-tn res1) 1)))
+    (array-set! a2 "/" 0 0)
+     
+    (let loop ((i1 1))
+      (if (<= i1 (grsp-hm a2))
+
+	  (begin (set! i2 (- i1 1))
+		 (array-set! a2 (grsp-n2s i2) i1 0)
+		 
+		 (loop (+ i1 1)))))
+
+    ;; Compose.
+    (set! res1 (grsp-matrix-subrep a2 res1 0 1))
+    
+    ;; Display.
+    (grsp-matrix-display res1)))
+
+
+;;;; grsp-matrix-subadd - Add p_a2 at the bottom of p_a1. 
+;;
+;; Keywords:
+;;
+;; - paste, add
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix.
+;; - p_a2: matrix.
+;;
+(define (grsp-matrix-subadd p_a1 p_a2)
+  (let ((res1 0)
+	(a1 0)
+	(a2 0)
+	(lm2 0))
+
+    (set! a1 (grsp-matrix-cpy p_a1))
+    (set! a2 (grsp-matrix-cpy p_a2))
+    (set! lm2 (+ (grsp-hm a1) 1))
+    (set! a1 (grsp-matrix-subexp a1 (grsp-tm a2) 0))
+    (set! res1 (grsp-matrix-subrep a1 a2 lm2 0))
+    
+    res1))  
+
+
+;;;; grsp-matrix-displaytn - Display numeric matrix p_a1 with column titles
+;; according to string list p_l1.
+;;
+;; Keywords
+;;
+;; - matrix, display, titled, titles, names, columns
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix, numeric.
+;; - p_l1: list of strings.
+;;
+;; Notes:
+;;
+;; - The number of elements of p_l1 should be the same as the number of columns
+;;   of p_a1
+;;
+(define (grsp-matrix-displaytn p_a1 p_l1)
+  (let ((a1 0))
+
+    (set! a1 (grsp-mn2ms p_a1))
+    (grsp-matrix-displayts a1 p_l1)))
+
+
+;;;; grsp-matrix-edit - Edit a matrix interactively.
+;;
+;; Keywords:
+;;
+;; - edit, add, delete
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix.
+;; - p_l1: list of strings.
+;;
+(define (grsp-matrix-edit p_a1 p_l1)
+  (let ((res1 0)
+	(a2 0))
+
+    ;;   - 0: undefined.
+    ;;   - 1: list.
+    ;;   - 2: string.
+    ;;   - 3: array.
+    ;;   - 4: boolean.
+    ;;   - 5: char.
+    ;;   - 6: integer.
+    ;;   - 7: real.
+    ;;   - 8: complex.
+    ;;   - 9: inf.
+    ;;   - 10: nan.
+    ;;
+    (set! a2 (grsp-matrix-argstru p_a1))
+
+    ;;(grsp-matrix-displayts p_a1 p_l1)
+    
+    res1))

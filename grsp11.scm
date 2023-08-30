@@ -75,7 +75,8 @@
 	    grsp-lal-sorts
 	    grsp-lal-swap
 	    grsp-lal-deque
-	    grsp-lal-ll2l))
+	    grsp-lal-ll2l
+	    grsp-lal-ansl))
 
 
 ;;;; grsp-lal-rel - Replace element in list. Replace element p_j1 of list p_l1
@@ -1051,3 +1052,34 @@
     (set! res1 (list p_l1 p_l2))
     
     res1))
+
+
+;;;; grsp-lal-amsl - Add the list ordinal to each element of list p_L1-
+;;
+;; Keywords:
+;;
+;; - list, ordinals, edition
+;;
+;; Parameters:
+;;
+;; - p_l1: list of strings.
+;;
+(define (grsp-lal-ansl p_l1)
+  (let ((res1 '())
+	(hn 0)
+	(s1 "")
+	(s2 ""))
+
+    (set! res1 p_l1)
+    (set! hn (- (length res1) 1))
+    
+    (let loop ((j1 0))
+      (if (<= j1 hn)
+
+	  (begin (set! s1 (strings-append (list (grsp-n2s j1) (list-ref res1 j1)) 1))
+		 (list-set! res1 j1 s1)
+		 
+		 (loop (+ j1 1)))))
+    
+    res1))
+  
