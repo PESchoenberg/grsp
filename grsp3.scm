@@ -455,7 +455,9 @@
 	    grsp-matrix-displayts
 	    grsp-matrix-subadd
 	    grsp-matrix-displaytn
-	    grsp-matrix-edit))
+	    grsp-matrix-edit
+	    grsp-my2ms
+	    grsp-matrix-displaytm))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -11668,22 +11670,117 @@
 ;;
 (define (grsp-matrix-edit p_a1 p_l1)
   (let ((res1 0)
-	(a2 0))
+	(a1 0)
+	(a2 0)
+	(a3 0)
+	(n1 0)
+	(i1 0)
+	(j1 0)
+	(b1 #t))
 
-    ;;   - 0: undefined.
-    ;;   - 1: list.
-    ;;   - 2: string.
-    ;;   - 3: array.
-    ;;   - 4: boolean.
-    ;;   - 5: char.
-    ;;   - 6: integer.
-    ;;   - 7: real.
-    ;;   - 8: complex.
-    ;;   - 9: inf.
-    ;;   - 10: nan.
-    ;;
-    (set! a2 (grsp-matrix-argstru p_a1))
+    ;; Safety copy.
+    (set! a1 (grsp-matrix-cpy p_a1))
 
-    ;;(grsp-matrix-displayts p_a1 p_l1)
+    (while (equal? b1 #t)
+
+	   (clear)
+	   (set! a3 (grsp-my2ms a1))
+	   (set! a2 (grsp-matrix-displaytm a1))
+	   (grsp-matrix-displayts a3 p_l1)
+	   
+	   (grsp-ldl "| 0 - Exit | 1 - Edit element | 2 - Add row | 3 - Delete row |" 0 0)
+
+	   (set! n1 (grsp-askn "? "))
+
+	   (cond ((equal? n1 0)
+		  (set! b1 #f))
+		 ((equal? n1 1)
+		  (set! i1 (grsp-askn "Row? "))
+		  (set! j1 (grsp-askn "Col? "))
+		  (set! a1 (grsp-matrix-inputev #f #f a1 i1 j1)))
+		 ((equal? n1 2)
+		  (set! a1 (grsp-matrix-rows-addev #f #f a1)))
+		 ((equal? n1 3)
+		  (set! i1 (grsp-askn "Row? "))
+		  (set! a1 (grsp-matrix-subdel "#Delr" a1 i1)))))
+
+    ;; Compose results.
+    (set! res1 a1)
+	   
+    res1))
+
+  
+;;;; grsp-my2ms - Casts a matrix with columns of multiple data types as a
+;; matrix of strings.
+;;
+;; Keywords:
+;;
+;; - cast, types, artyoe
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix.
+;;
+;; Notes:
+;;
+;; - The following types cannot be cast as strings:
+;;
+;;   - 0: undefined.
+;;   - 1: list.
+;;   - 3: array.
+;;
+(define (grsp-my2ms p_a1)
+  (let ((res1 0)
+	(s1 "")
+	(a1 0))
     
+    ;; Safety copy.
+    (set! a1 (grsp-matrix-cpy p_a1))
+
+    ;; Create results matrix.
+    (set! res1 (grsp-matrix-create-dim " " a1))
+
+    ;; go over the matrix and cast each element.
+    
+    ;; Row loop.
+    (let loop ((i1 (grsp-lm a1)))
+      (if (<= i1 (grsp-hm a1))
+
+	  ;; Col loop.
+	  (begin (let loop ((j1 (grsp-ln a1)))
+		   (if (<= j1 (grsp-hn a1))
+
+		       (begin (set! s1 (grsp-y2s (array-ref a1 i1 j1)))
+			      (array-set! res1 s1 i1 j1)
+			      
+			      (loop (+ j1 1)))))		 
+		 
+		 (loop (+ i1 1)))))    
+    
+    res1))
+  
+
+
+;;;; grsp-matrix-displaytn - Displays the type matrix of matrix p_a1 and returns
+;; said type matrix.
+;;
+;; Keywords
+;;
+;; - matrix, types, columns, data
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix, numeric.
+;;
+;; Output:
+;;
+;; - Matrix, datatypes of p_a1.
+;;
+(define (grsp-matrix-displaytm p_a1)
+  (let ((res1 0))
+
+    (grsp-ldl "Data types:" 0 0)
+    (set! res1 (grsp-matrix-argstru p_a1))
+    (grsp-matrix-display res1)
+
     res1))

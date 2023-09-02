@@ -154,7 +154,16 @@
 	    displayc
 	    grsp-confirm
 	    grsp-b2s
-	    grsp-s2b))
+	    grsp-s2b
+	    grsp-y2s
+	    grsp-nan2s
+	    grsp-s2nan
+	    grsp-inf2s
+	    grsp-s2inf
+	    grsp-s2y
+	    grsp-confirm-ask
+	    grsp-art1
+	    grsp-art2))
 
 
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
@@ -2112,3 +2121,232 @@
 
     res1))
 
+
+;;;; grsp-y2s - Casts various different types to string.
+;;
+;; Keywords:
+;;
+;; - types. multi, multicast
+;;
+;; Parameters:
+;;
+;; - p_v1: value.
+;;
+;; Notes:
+;;
+;; - Cannot cast arrays, lists, undefined types.
+;;
+(define (grsp-y2s p_v1)
+  (let ((res1 ""))
+
+    (cond ((boolean? p_v1)
+	   (set! res1 (grsp-b2s p_v1)))
+	  ((real? p_v1)
+	   (set! res1 (grsp-n2s p_v1)))
+	  ((number? p_v1)
+	   (set! res1 (grsp-n2s p_v1)))
+	  ((complex? p_v1)
+	   (set! res1 (grsp-n2s p_v1)))
+	  ((integer? p_v1)
+	   (set! res1 (grsp-n2s p_v1)))
+	  ((nan? p_v1)
+	   (set! res1 (grsp-nan2s p_v1)))
+	  ((inf? p_v1)
+	   (set! res1 (grsp-inf2s p_v1))))	  
+    
+    res1))
+
+
+;;;; grsp-nan2s - Casts a NaN value as string.
+;;
+;; Keywords:
+;;
+;; - console, strings
+;;
+;; Parameters:
+;;
+;; - p_v1; value.
+;;
+;; Output:
+;;
+;; - String.
+;;
+(define (grsp-nan2s p_v1)
+  (let ((res1 ""))
+
+    (cond ((equal? p_v1 +nan.0)
+	   (set! res1 "+nan.0"))
+	  ((equal? p_v1 -nan.0)
+	   (set! res1 "-nan.0")))
+
+    res1))
+
+
+;;;; grsp-s2nan - Casts a NaN string value as a real NaN.
+;;
+;; Keywords:
+;;
+;; - console, strings
+;;
+;; Parameters:
+;;
+;; - p_v1; value.
+;;
+;; Output:
+;;
+;; - NaN.
+;;
+(define (grsp-s2nan p_v1)
+  (let ((res1 0))
+
+    (cond ((equal? p_v1 "+nan.0")
+	   (set! res1 +nan.0))
+	  ((equal? p_v1 "-nan.0")
+	   (set! res1 -nan.0)))
+
+    res1))
+
+
+;;;; grsp-inf2s - Casts an inf value as string.
+;;
+;; Keywords:
+;;
+;; - console, strings
+;;
+;; Parameters:
+;;
+;; - p_v1; value.
+;;
+;; Output:
+;;
+;; - String.
+;;
+(define (grsp-inf2s p_v1)
+  (let ((res1 ""))
+
+    (cond ((equal? p_v1 +inf.0)
+	   (set! res1 "+inf.0"))
+	  ((equal? p_v1 -inf.0)
+	   (set! res1 "-inf.0")))
+
+    res1))
+
+
+;;;; grsp-s2inf - Casts an inf string value as a real inf.
+;;
+;; Keywords:
+;;
+;; - console, strings
+;;
+;; Parameters:
+;;
+;; - p_v1; value.
+;;
+;; Output:
+;;
+;; - NaN.
+;;
+(define (grsp-s2inf p_v1)
+  (let ((res1 0))
+
+    (cond ((equal? p_v1 "+inf.0")
+	   (set! res1 +inf.0))
+	  ((equal? p_v1 "-inf.0")
+	   (set! res1 -inf.0)))
+
+    res1))
+
+
+;;;; grsp-s2y - Casts a string to various different typesg.
+;;
+;; Keywords:
+;;
+;; - types. multi, multicast
+;;
+;; Parameters:
+;;
+;; - p_v1: value.
+;;
+;; Notes:
+;;
+;; - Cannot cast arrays, lists, undefined types.
+;;
+(define (grsp-s2y p_v1)
+  (let ((res1 ""))
+
+    (cond ((equal? (or (equal? p_v1 "#t") (equal? p_v1 "#f")) #t)
+	   (set! res1 (grsp-s2b p_v1)))
+	  ((equal? (or (equal? p_v1 "-nan.0") (equal? p_v1 "+nan.0")) #t)
+	   (set! res1 (grsp-s2nan p_v1)))
+	  ((equal? (or (equal? p_v1 "-inf.0") (equal? p_v1 "+inf.0")) #t)
+	   (set! res1 (grsp-s2inf p_v1)))
+	  ((string? p_v1)
+	   (set! res1 p_v1)))
+    
+    res1))
+
+
+;;;; grsp-confirm-ask - If p_b1 #t, asks for confirmation of p_s1.
+;;
+;; Keywords:
+;;
+;; - confirmation, safety
+;;
+;; Parameters:
+;;
+;; - p_b1: boolean.
+;;
+;;   - #t to ask for confirmation.
+;;   - #f otherwise.
+;;
+;; - p_s1: Text to display.
+;;
+(define (grsp-confirm-ask p_b1 p_s1)
+  (let ((res1 #f))
+
+  (cond ((equal? p_b1 #t)
+	 (set! res1 (grsp-ask p_s1))))
+
+  res1))
+
+
+;;;; grsp-art1 - Art 1 value method.
+;;
+;; Keywords:
+;; 
+;; - art, value, caluclation, method
+;;
+;; Paramters:
+;;
+;; - p_n1: length.
+;; - p_n2: width.
+;; - p_n3; square unit reference value.
+;;
+(define (grsp-art1 p_n1 p_n2 p_n3)
+  (let ((res1 0))
+
+    (set! res1 (* p_n1 p_n2 p_n3))
+
+    res1))
+
+
+;;;; grsp-art1 - Art 2 value method.
+;;
+;; Keywords:
+;; 
+;; - art, value, caluclation, method
+;;
+;; Paramters:
+;;
+;; - p_n1: length.
+;; - p_n2: width.
+;; - p_n3: initial reference year.
+;; - p_n4: final reference year.
+;; - p_n4: reputation factor.
+;;
+(define (grsp-art2 p_n1 p_n2 p_n3 p_n4 p_n5)
+  (let ((res1 0))
+
+    (set! res1 (* (+ p_n1 p_n2) (* (- p_n4 p_n3) p_n5)))
+
+    res1))
