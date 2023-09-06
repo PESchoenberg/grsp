@@ -4426,7 +4426,6 @@
 ;;
 ;; - p_d1: database name.
 ;; - p_t1: table name.
-
 ;;
 ;; Output:
 ;;
@@ -11503,7 +11502,7 @@
     
     (while (equal? b3 #t)
 	   (clear)
-	   (grsp-ldl "Add row to matrix..." 0 0)
+	   (grsp-ldl "Add row to matrix..." 0 1)
 	   (grsp-matrix-display res1)	   
 	   (set! b3 (grsp-confirm b3))
 	   
@@ -11759,7 +11758,6 @@
     
     res1))
   
-
 
 ;;;; grsp-matrix-displaytn - Displays the type matrix of matrix p_a1 and returns
 ;; said type matrix.
