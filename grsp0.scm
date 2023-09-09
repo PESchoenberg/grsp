@@ -2139,20 +2139,20 @@
 (define (grsp-y2s p_v1)
   (let ((res1 ""))
 
-    (cond ((boolean? p_v1)
+    (cond ((equal? (boolean? p_v1) #t)
 	   (set! res1 (grsp-b2s p_v1)))
-	  ((real? p_v1)
+	  ((equal? (real? p_v1) #t)
 	   (set! res1 (grsp-n2s p_v1)))
-	  ((number? p_v1)
+	  ((equal? (number? p_v1) #t)
 	   (set! res1 (grsp-n2s p_v1)))
-	  ((complex? p_v1)
+	  ((equal? (complex? p_v1) #t)
 	   (set! res1 (grsp-n2s p_v1)))
-	  ((integer? p_v1)
+	  ((equal? (integer? p_v1) #t)
 	   (set! res1 (grsp-n2s p_v1)))
-	  ((nan? p_v1)
+	  ((equal? (nan? p_v1) #t)
 	   (set! res1 (grsp-nan2s p_v1)))
-	  ((inf? p_v1)
-	   (set! res1 (grsp-inf2s p_v1))))	  
+	  ((equal? (inf? p_v1) #t)
+	   (set! res1 (grsp-inf2s p_v1))))
     
     res1))
 
@@ -2330,7 +2330,7 @@
     res1))
 
 
-;;;; grsp-art1 - Art 2 value method.
+;;;; grsp-art2 - Art 2 value method.
 ;;
 ;; Keywords:
 ;; 

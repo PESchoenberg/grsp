@@ -457,7 +457,8 @@
 	    grsp-matrix-displaytn
 	    grsp-matrix-edit
 	    grsp-my2ms
-	    grsp-matrix-displaytm))
+	    grsp-matrix-displaytm
+	    grsp-matrix-editu))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -11666,8 +11667,9 @@
 ;;
 ;; - p_a1: matrix.
 ;; - p_l1: list of strings.
+;; - p_l2: list of default values per row.
 ;;
-(define (grsp-matrix-edit p_a1 p_l1)
+(define (grsp-matrix-edit p_a1 p_l1 p_l2)
   (let ((res1 0)
 	(a1 0)
 	(a2 0)
@@ -11683,6 +11685,12 @@
     (while (equal? b1 #t)
 
 	   (clear)
+
+	   ;; Assign default values if matrix has one row filled with zeros,
+	   ;; meaning that it has just been created.
+	   (cond ((equal? (grsp-tm a1) 1)
+		  (grsp-matrix-editu a1 (grsp-lm a1) p_l2)))
+	   
 	   (set! a3 (grsp-my2ms a1))
 	   (set! a2 (grsp-matrix-displaytm a1))
 	   (grsp-matrix-displayts a3 p_l1)
@@ -11698,7 +11706,8 @@
 		  (set! j1 (grsp-askn "Col? "))
 		  (set! a1 (grsp-matrix-inputev #f #f a1 i1 j1)))
 		 ((equal? n1 2)
-		  (set! a1 (grsp-matrix-rows-addev #f #f a1)))
+		  (set! a1 (grsp-matrix-rows-addev #f #f a1))
+		  (grsp-matrix-editu a1 (grsp-hm a1) p_l2))
 		 ((equal? n1 3)
 		  (set! i1 (grsp-askn "Row? "))
 		  (set! a1 (grsp-matrix-subdel "#Delr" a1 i1)))))
@@ -11782,3 +11791,38 @@
     (grsp-matrix-display res1)
 
     res1))
+
+
+;;;; grsp-matrix-editu - Sets default values contained in list p_l1 in row p_i1
+;; of matrix p_a1.
+;;
+;; Keywords:
+;;
+;; - default, initial
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix.
+;; - p_i1: numeric, row number.
+;; - p_l1: list of default values for every element of row p_i1.
+;;
+;; Notes:
+;;
+;; - Be careful not to overwrite existing values in rows that don{t
+;;   need default values.
+;;
+(define (grsp-matrix-editu p_a1 p_i1 p_l1)
+  (let ((res1 0))
+	
+    (set! res1 (grsp-matrix-cpy p_a1))
+
+    ;; Col loop.
+    (let loop ((j1 (grsp-ln res1)))
+      (if (<= j1 (grsp-hn res1))
+
+	  (begin (array-set! res1 (list-ref p_l1 j1) p_i1 j1)
+		 
+		 (loop (+ j1 1))))) 
+    
+    res1))
+
