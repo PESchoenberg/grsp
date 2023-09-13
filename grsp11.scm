@@ -1082,4 +1082,35 @@
 		 (loop (+ j1 1)))))
     
     res1))
-  
+
+
+;;;; grsp-ly2code - Returns a list's contents as a string of Guile Scheme
+;; code.
+;;
+;; Keywords:
+;;
+;; - code, coding, programming, edition, lisp, scheme
+;;
+;; Arguments:
+;;
+;; - p_l1: list.
+;; - p_s1: list name.
+;;
+(define (grsp-ly2code p_l1)
+  (let ((res1 0)
+	(a1 0)
+	(a2 0)
+	(s2 ""))
+
+    (set! a1 (grsp-l2m p_l1))
+    (set! a2 (grsp-my2ms a1))
+    
+    ;; Col loop.
+    (let loop ((j1 (grsp-lm a2)))
+      (if (<= j1 (grsp-hm a2))
+
+	  (begin ()
+		 
+		 (loop (+ j1 1)))))
+    
+    res1))
