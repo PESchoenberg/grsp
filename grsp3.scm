@@ -458,7 +458,8 @@
 	    grsp-matrix-edit
 	    grsp-my2ms
 	    grsp-matrix-displaytm
-	    grsp-matrix-editu))
+	    grsp-matrix-editu
+	    grsp-my2code))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -11661,12 +11662,12 @@
 ;;
 ;; Keywords:
 ;;
-;; - edit, add, delete
+;; - edit, add, delete, interactive
 ;;
 ;; Parameters:
 ;;
 ;; - p_a1: matrix.
-;; - p_l1: list of strings.
+;; - p_l1: list of strings, column names or titles.
 ;; - p_l2: list of default values per row.
 ;;
 (define (grsp-matrix-edit p_a1 p_l1 p_l2)
@@ -11689,14 +11690,14 @@
 	   ;; Assign default values if matrix has one row filled with zeros,
 	   ;; meaning that it has just been created.
 	   (cond ((equal? (grsp-tm a1) 1)
-		  (grsp-matrix-editu a1 (grsp-lm a1) p_l2)))
-	   
+		  (set! a1 (grsp-matrix-editu a1 (grsp-lm a1) p_l2))))
+
+	   ;; Display matrix.
 	   (set! a3 (grsp-my2ms a1))
 	   (set! a2 (grsp-matrix-displaytm a1))
-	   (grsp-matrix-displayts a3 p_l1)
-	   
-	   (grsp-ldl "| 0 - Exit | 1 - Edit element | 2 - Add row | 3 - Delete row |" 0 0)
-
+	   (grsp-ldl "Data matrix:" 0 0)
+	   (grsp-matrix-displayts a3 p_l1)	   
+	   (grsp-ldl "0 - Exit  1 - Edit  2 - Add  3 - Delete  4 - Set to def. " 0 0)
 	   (set! n1 (grsp-askn "? "))
 
 	   (cond ((equal? n1 0)
@@ -11706,11 +11707,14 @@
 		  (set! j1 (grsp-askn "Col? "))
 		  (set! a1 (grsp-matrix-inputev #f #f a1 i1 j1)))
 		 ((equal? n1 2)
-		  (set! a1 (grsp-matrix-rows-addev #f #f a1))
-		  (grsp-matrix-editu a1 (grsp-hm a1) p_l2))
-		 ((equal? n1 3)
+		  (set! a1 (grsp-matrix-subexp a1 1 0))
+		  (set! a1 (grsp-matrix-editu a1 (grsp-hm a1) p_l2)))
+		 ((equal? n1 3)		  
 		  (set! i1 (grsp-askn "Row? "))
-		  (set! a1 (grsp-matrix-subdel "#Delr" a1 i1)))))
+		  (set! a1 (grsp-matrix-subdel "#Delr" a1 i1)))
+		 ((equal? n1 4)
+		  (set! i1 (grsp-askn "Row? "))
+		  (set! a1 (grsp-matrix-editu a1 i1 p_l2)))))
 
     ;; Compose results.
     (set! res1 a1)
@@ -11826,3 +11830,80 @@
     
     res1))
 
+
+;;;; grsp-my2code - Returns the matrix contents as a string of Guile Scheme
+;; code.
+;;
+;; Keywords:
+;;
+;; - code, coding, programming, edition, lisp, scheme
+;;
+;; Arguments:
+;;
+;; - p_s1: string.
+;;
+;;   - "#define", for define op.
+;;   " "#set!", for set! op.
+;;
+;; - p_s2: string, name of the matrix to create.
+;; - p_a1: matrix.
+;;
+(define (grsp-my2code p_s1 p_s2 p_a1)
+  (let ((res1 "")
+	(a1 0)
+	(s1 "")
+	(s2 "")
+	(s3 ""))
+
+    ;; First cast the matrix as astring matrix.
+    (set! a1 (grsp-my2ms p_a1))
+
+    (cond ((equal? p_s1 "#define")
+	   (set! s1 (strings-append (list "(define "
+					  p_s2
+					  " (grsp-matrix-create "
+					  p_s2)
+				    0)))
+	  ((equal? p_s1 "#set!")
+	   (set! s1 (strings-append (list "(set! "
+					  p_s2
+					  " (grsp-matrix-create "
+					  p_s2)
+				    0))))
+	   
+    (set! res1 (strings-append (list s1
+				     " "
+				     (grsp-n2s (grsp-tm p_a1))
+				     " "
+				     (grsp-n2s (grsp-tn p_a1))
+				     ")")
+			       0))
+    
+    ;; Row loop.
+    (let loop ((i1 (grsp-lm a1)))
+      (if (<= i1 (grsp-hm a1))
+
+	  ;; Col loop.
+	  (begin (let loop ((j1 (grsp-ln a1)))
+		   (if (<= j1 (grsp-hn a1))
+
+		       (begin (set! s2 (array-ref a1 i1 j1))
+			      (set! s3 (strings-append (list "(array-set! "
+							     p_s2
+							     " "
+							     s2
+							     " "
+							     (grsp-n2s i1)
+							     " "
+							     (grsp-n2s j1)
+							     ")")
+						       0))
+			      (set! res1 (strings-append (list res1 "\n" s3) 0))
+			      
+			      (loop (+ j1 1)))))		 
+		 
+		 (loop (+ i1 1)))))
+
+    (set! res1 (strings-append (list res1 "\n") 0))
+    
+    res1))
