@@ -163,7 +163,9 @@
 	    grsp-s2y
 	    grsp-confirm-ask
 	    grsp-art1
-	    grsp-art2))
+	    grsp-art2
+	    grsp-string-element-is-number
+	    grsp-string-is-number))
 
 
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
@@ -2139,8 +2141,10 @@
 (define (grsp-y2s p_v1)
   (let ((res1 ""))
 
-    (cond ((equal? (boolean? p_v1) #t)
-	   (set! res1 (grsp-b2s p_v1)))
+    (cond ((equal? (string? p_v1) #t)
+	   (set! res1 p_v1))
+	  ((equal? (boolean? p_v1) #t)
+	   (set! res1 (grsp-b2s p_v1)))	  
 	  ((equal? (real? p_v1) #t)
 	   (set! res1 (grsp-n2s p_v1)))
 	  ((equal? (number? p_v1) #t)
@@ -2257,7 +2261,7 @@
     res1))
 
 
-;;;; grsp-s2y - Casts a string to various different typesg.
+;;;; grsp-s2y - Casts a string to various different types.
 ;;
 ;; Keywords:
 ;;
@@ -2281,8 +2285,11 @@
 	  ((equal? (or (equal? p_v1 "-inf.0") (equal? p_v1 "+inf.0")) #t)
 	   (set! res1 (grsp-s2inf p_v1)))
 	  ((string? p_v1)
-	   (set! res1 p_v1)))
-    
+
+	   (cond ((equal? (grsp-string-is-number p_v1) #t)
+		  (set! res1 p_v1))
+		 (else (set! res1 (grsp-s2n p_v1))))))
+
     res1))
 
 
@@ -2349,4 +2356,90 @@
 
     (set! res1 (* (+ p_n1 p_n2) (* (- p_n4 p_n3) p_n5)))
 
+    res1))
+
+
+;;;; grsp-string-elelent-is-number - The function finds out if the first
+;; element of string p_s1 represents a number.
+;;
+;; Keywords:
+;;
+;; - stirngs, numbers, alphanumeric
+;;
+;; Parameters:
+;;
+;; - p_s1; string
+;;
+(define (grsp-string-element-is-number p_s1)
+  (let ((res1 #t)
+	(s1 "")
+	(s2 "")
+	(l1 (list "0" "1" "2" "3" "4" "5" "6" "7" "8" "9")))
+
+    ;; Take negative numbers into account.
+    (set! s2 (string-copy p_s1 0 1))
+    
+    (cond ((equal? s2 "-")
+	   (set! s1 (string-copy p_s1 1 2)))
+	  (else (set! s1 (string-copy p_s1 0 1))))
+
+    (cond ((equal? (member s1 l1) #f)
+	   (set! res1 #f)))	  
+    
+    res1))
+
+
+;;;; grsp-string-elelent-is-number - The function finds out if string p_s1
+;; represents a number.
+;;
+;; Keywords:
+;;
+;; - stirngs, numbers, alphanumeric
+;;
+;; Parameters:
+;;
+;; - p_s1; string
+;;
+(define (grsp-string-is-number p_s1)
+  (let ((res1 #t)
+	(j1 0)
+	(j2 0)
+	(hn 0)
+	(s1 "")
+	(s2 "")
+	(s3 ""))
+
+    ;; Safety copy.
+    (set! s1 p_s1)
+
+    ;; If string length is zero, it obviously does not represent a number.
+    (set! hn (- (string-length s1) 1))
+    
+    (cond ((> hn 0)
+
+	   ;; Take negative numbers into account.
+	   (set! s3 (string-copy s1 j1 (+ j1 1)))
+	   
+	   (cond ((equal? s3 "-")
+		  (set! j2 1)))
+	   
+	   ;; Row loop.
+	   (let loop ((j1 j2))
+	     (if (<= j1 (- hn 1))
+
+		 (begin (set! s2 (string-copy s1 j1 (+ j1 1)))
+
+			(grsp-ld "---")
+			(grsp-ld s2)
+			(grsp-ld "---")
+			(cond ((equal? s2 "." #f)
+			       (grsp-ld "not dot")
+			       (cond ((equal? (grsp-string-element-is-number s2) #f)
+				      (grsp-ld "ok")
+				      (set! res1 #f)))))
+			
+			(grsp-ld res1)
+			
+			(loop (+ j1 1)))))))
+	
     res1))
