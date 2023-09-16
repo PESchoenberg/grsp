@@ -459,7 +459,8 @@
 	    grsp-my2ms
 	    grsp-matrix-displaytm
 	    grsp-matrix-editu
-	    grsp-my2code))
+	    grsp-my2code
+	    grsp-ms2my))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -8077,7 +8078,7 @@
 				     (set! res3 8)))
 
 			      ;; This should be processed separatedly.
-			      (cond ((< res3 8)
+			      (cond ((equal? (and (> res3 5) (< res3 8)) #t)
 				     
 				     (cond ((inf? (array-ref res2 i1 j1))				
 					    (set! res3 9))			       
@@ -11727,7 +11728,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - cast, types, artyoe
+;; - cast, types, argtyoe
 ;;
 ;; Parameters:
 ;;
@@ -11907,3 +11908,49 @@
     (set! res1 (strings-append (list res1 "\n") 0))
     
     res1))
+
+
+;;;; grsp-ms2my - Casts a matrix of strings as a matrix with columns of multiple
+;; data types.
+;;
+;; Keywords:
+;;
+;; - cast, types, argtyoe
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix.
+;;
+;; Notes:
+;;
+;; - The following types cannot be cast using this function.
+;;
+;;   - 0: undefined.
+;;   - 1: list.
+;;   - 3: array.
+;;
+(define (grsp-ms2my p_a1)
+  (let ((res1 0)
+	(s1 "")
+	(a1 0))
+
+    (set! res1 (grsp-matrix-create-dim 0 p_a1))
+
+    ;; Row loop.
+    (let loop ((i1 (grsp-lm p_a1)))
+      (if (<= i1 (grsp-hm p_a1))
+
+	  ;; Col loop.
+	  (begin (let loop ((j1 (grsp-ln p_a1)))
+		   (if (<= j1 (grsp-hn p_a1))
+
+		       (begin (set! s1 (array-ref p_a1 i1 j1))
+			      (array-set! res1 (grsp-s2y s1) i1 j1)
+			      
+			      (loop (+ j1 1)))))		 
+		 
+		 (loop (+ i1 1)))))
+    
+    res1))
+
+

@@ -76,7 +76,8 @@
 	    grsp-lal-swap
 	    grsp-lal-deque
 	    grsp-lal-ll2l
-	    grsp-lal-ansl))
+	    grsp-lal-ansl
+	    grsp-ly2code))
 
 
 ;;;; grsp-lal-rel - Replace element in list. Replace element p_j1 of list p_l1
@@ -1093,24 +1094,39 @@
 ;;
 ;; Arguments:
 ;;
-;; - p_l1: list.
-;; - p_s1: list name.
+;; Arguments:
 ;;
-(define (grsp-ly2code p_l1)
-  (let ((res1 0)
+;; - p_s1: string.
+;;
+;;   - "#define", for define op.
+;;   " "#set!", for set! op.
+;;
+;; - p_s2: string, name of the matrix to create.
+;; - p_l1: list.
+;;
+(define (grsp-ly2code p_s1 p_s2 p_l1)
+  (let ((res1 "")
 	(a1 0)
 	(a2 0)
+	(s1 "")
 	(s2 ""))
 
     (set! a1 (grsp-l2m p_l1))
     (set! a2 (grsp-my2ms a1))
+
+    (cond ((equal? p_s1 "#define")
+	   (set! res1 (strings-append (list "(define " p_s2 " (list" ) 0)))
+	  ((equal? p_s1 "#set!")
+	   (set! res1 (strings-append (list "(set! " p_s2 " (list" ) 0))))
     
     ;; Col loop.
-    (let loop ((j1 (grsp-lm a2)))
-      (if (<= j1 (grsp-hm a2))
+    (let loop ((j1 (grsp-ln a2)))
+      (if (<= j1 (grsp-hn a2))
 
-	  (begin ()
+	  (begin (set! res1 (strings-append (list res1 " " (array-ref a2 0 j1)) 0))
 		 
 		 (loop (+ j1 1)))))
+
+    (set! res1 (strings-append (list res1 "))") 0))
     
     res1))
