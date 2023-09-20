@@ -164,8 +164,8 @@
 	    grsp-confirm-ask
 	    grsp-art1
 	    grsp-art2
-	    grsp-string-element-is-number
-	    grsp-string-is-number))
+	    grsp-string-is-number
+	    grsp-art3))
 
 
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
@@ -2287,9 +2287,9 @@
 	  ((string? p_v1)
 
 	   (cond ((equal? (grsp-string-is-number p_v1) #t)
-		  (set! res1 p_v1))
-		 (else (set! res1 (grsp-s2n p_v1))))))
-
+		  (set! res1 (grsp-s2n p_v1)))
+		 (else (set! res1 p_v1)))))
+    
     res1))
 
 
@@ -2349,7 +2349,7 @@
 ;; - p_n2: width.
 ;; - p_n3: initial reference year.
 ;; - p_n4: final reference year.
-;; - p_n4: reputation factor.
+;; - p_n5: reputation factor.
 ;;
 (define (grsp-art2 p_n1 p_n2 p_n3 p_n4 p_n5)
   (let ((res1 0))
@@ -2359,37 +2359,7 @@
     res1))
 
 
-;;;; grsp-string-elelent-is-number - The function finds out if the first
-;; element of string p_s1 represents a number.
-;;
-;; Keywords:
-;;
-;; - stirngs, numbers, alphanumeric
-;;
-;; Parameters:
-;;
-;; - p_s1; string
-;;
-(define (grsp-string-element-is-number p_s1)
-  (let ((res1 #t)
-	(s1 "")
-	(s2 "")
-	(l1 (list "0" "1" "2" "3" "4" "5" "6" "7" "8" "9")))
-
-    ;; Take negative numbers into account.
-    (set! s2 (string-copy p_s1 0 1))
-    
-    (cond ((equal? s2 "-")
-	   (set! s1 (string-copy p_s1 1 2)))
-	  (else (set! s1 (string-copy p_s1 0 1))))
-
-    (cond ((equal? (member s1 l1) #f)
-	   (set! res1 #f)))	  
-    
-    res1))
-
-
-;;;; grsp-string-elelent-is-number - The function finds out if string p_s1
+;;;; grsp-string-is-number - The function finds out if string p_s1
 ;; represents a number.
 ;;
 ;; Keywords:
@@ -2398,48 +2368,57 @@
 ;;
 ;; Parameters:
 ;;
-;; - p_s1; string
+;; - p_s1: string
+;;
+;; Output:
+;;
+;; - #t if p_s1 represents a number.
+;; - #f otherwise.
 ;;
 (define (grsp-string-is-number p_s1)
-  (let ((res1 #t)
-	(j1 0)
-	(j2 0)
-	(hn 0)
-	(s1 "")
-	(s2 "")
-	(s3 ""))
+  (let ((res1 #f))
 
-    ;; Safety copy.
-    (set! s1 p_s1)
-
-    ;; If string length is zero, it obviously does not represent a number.
-    (set! hn (- (string-length s1) 1))
+    (cond ((equal? (string->number p_s1) #f)
+	   (set! res1 #f))
+	  (else (set! res1 #t)))
     
-    (cond ((> hn 0)
+    res1))
 
-	   ;; Take negative numbers into account.
-	   (set! s3 (string-copy s1 j1 (+ j1 1)))
-	   
-	   (cond ((equal? s3 "-")
-		  (set! j2 1)))
-	   
-	   ;; Row loop.
-	   (let loop ((j1 j2))
-	     (if (<= j1 (- hn 1))
+;;;; grsp-art3 - Provides combines results of grsp-art1 and grsp-art2 in list
+;; format.
+;;
+;; Keywords:
+;; 
+;; - art, value, caluclation, method
+;;
+;; Paramters:
+;;
+;; - p_n1: length.
+;; - p_n2: width.
+;; - p_n3; square unit reference value.
+;; - p_n4: initial reference year.
+;; - p_n5: final reference year.
+;; - p_n6: reputation factor.
+;;
+;; Output:
+;;
+;; - List:
+;;
+;;   - Elem 0: Value basen on grsp-art1.
+;;   - Elem 1: Value based on grsp-art2.
+;;   - Elem 2: Absoulte mean of elem 1 and 2.
+;;
+(define (grsp-art3 p_n1 p_n2 p_n3 p_n4 p_n5 p_n6)
+  (let ((res1 '())
+	(v1 0)
+	(v2 0)
+	(v3 0))
 
-		 (begin (set! s2 (string-copy s1 j1 (+ j1 1)))
-
-			(grsp-ld "---")
-			(grsp-ld s2)
-			(grsp-ld "---")
-			(cond ((equal? s2 "." #f)
-			       (grsp-ld "not dot")
-			       (cond ((equal? (grsp-string-element-is-number s2) #f)
-				      (grsp-ld "ok")
-				      (set! res1 #f)))))
-			
-			(grsp-ld res1)
-			
-			(loop (+ j1 1)))))))
-	
+    (set! v1 (grsp-art1 p_n1 p_n2 p_n3))
+    (set! v2 (grsp-art2 p_n1 p_n2 p_n4 p_n5 p_n6))
+    (set! v3 (/ (+ v1 v2) 2))
+    
+    ;; Compose results
+    (set! res1 (list v1 v2 v3))
+    
     res1))
