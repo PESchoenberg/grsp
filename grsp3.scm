@@ -460,7 +460,9 @@
 	    grsp-matrix-displaytm
 	    grsp-matrix-editu
 	    grsp-my2code
-	    grsp-ms2my))
+	    grsp-ms2my
+	    grsp-cy2cy
+	    grsp-ms2mb))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -1763,7 +1765,7 @@
 ;; Parameters:
 ;;
 ;; . p_s1: see grsp-matrix-create.
-;; - p_a2: matrix.
+;; - p_a1: matrix.
 ;;
 ;; Output:
 ;;
@@ -4394,7 +4396,7 @@
     res1))
 
 
-;;;; grsp-dbc2cm - Fills a matrix of complex or complex-subset numbers with the
+;;;; grsp-dbc2mc - Fills a matrix of complex or complex-subset numbers with the
 ;; contents of a database containing serialized complex or complex-subset
 ;; numbers.
 ;;
@@ -11954,3 +11956,85 @@
     res1))
 
 
+;;;; - Casts as type p_s1 column p_j1 of matrix p_a1.
+;;
+;; Keywords:
+;;
+;; - casting, columns
+;;
+;; Parameters:
+;;
+;; - p_s1: string, type.
+;;
+;;   - "#bol"; boolean.
+;;   - "#num": numeric.
+;;   - "#str": string.
+;;
+;; - p_a1: matrix.
+;; - p_j1: col number.
+;;
+(define (grsp-cy2cy p_s1 p_a1 p_j1)
+  (let ((res1 0)
+	(a1 0)
+	(a2 0)
+	(a3 0))
+
+    ;; Safety copy.
+    (set! a1 (grsp-matrix-cpy p_a1))
+
+    ;; Extract column.
+    (set! a2 (grsp-matrix-subcpy a1 (grsp-lm a1) (grsp-hm a1) p_j1 p_j1))
+
+    ;; Cast the whole column.
+    (set! a2 (grsp-my2ms a2))
+    
+    (cond ((equal? p_s1 "#num")
+	   (set! a3 (grsp-ms2mn a2)))
+	  ((equal? p_s1 "#bol")
+	   (set! a3 (grsp-ms2mb a2))))
+	      
+    ;; Replace the old colunn in a1 with a3.
+    (set! res1 (grsp-matrix-subrep a1 a3 (grsp-lm a1) p_j1))
+
+    res1))
+
+;;;; grsp-ms2mb - Cast mattrix of strings p_a1 representing bollean values as a
+;; matrix of bolleans.
+;;
+;; Keywords:
+;;
+;; . boole. bollean, logical
+;;
+;; Arguments:
+;;
+;; - p_a1: matrix of strings.
+;;
+(define (grsp-ms2mb p_a1)
+  (let ((res1 0)
+	(a1 0)
+	(a2 0)
+	(s1 ""))
+
+    ;; Safety copy.
+    (set! a1 (grsp-matrix-cpy p_a1))
+    (set! a2 (grsp-matrix-create-dim "" a1))
+    
+    ;; Row loop.
+    (let loop ((i1 (grsp-lm a1)))
+      (if (<= i1 (grsp-hm a1))
+
+	  ;; Col loop.
+	  (begin (let loop ((j1 (grsp-ln a1)))
+		   (if (<= j1 (grsp-hn a1))
+
+		       (begin (set! s1 (array-ref a1 i1 j1))
+
+			      (array-set! a2 (grsp-s2b s1) i1 j1)
+			      
+			      (loop (+ j1 1)))))
+		 
+		 (loop (+ i1 1)))))
+
+    (set! res1 a2)
+    
+    res1))
