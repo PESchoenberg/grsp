@@ -462,7 +462,8 @@
 	    grsp-my2code
 	    grsp-ms2my
 	    grsp-cy2cy
-	    grsp-ms2mb))
+	    grsp-ms2mb
+	    grsp-matrix-row-select-like))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -11815,7 +11816,7 @@
 ;;
 ;; Notes:
 ;;
-;; - Be careful not to overwrite existing values in rows that don{t
+;; - Be careful not to overwrite existing values in rows that don't
 ;;   need default values.
 ;;
 (define (grsp-matrix-editu p_a1 p_i1 p_l1)
@@ -11960,7 +11961,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - casting, columns
+;; - casting, columns, cast
 ;;
 ;; Parameters:
 ;;
@@ -11998,12 +11999,13 @@
 
     res1))
 
+
 ;;;; grsp-ms2mb - Cast mattrix of strings p_a1 representing bollean values as a
 ;; matrix of bolleans.
 ;;
 ;; Keywords:
 ;;
-;; . boole. bollean, logical
+;; . boole. bollean, logical. cast, casting
 ;;
 ;; Arguments:
 ;;
@@ -12037,4 +12039,50 @@
 
     (set! res1 a2)
     
+    res1))
+
+
+;;;; grsp-matrix-row-select-like - Selects all rows where the element found at
+;; col p_j1 is like p_v1.
+;;
+;; Keywords:
+;;
+;; p_a1: matrix.
+;; p_j1; number, row.
+;; p_v1: value.
+;;
+;; Output:
+;;
+;; . Submatrix of p_a1 containing the quieried results, if found; zero otherwise.
+;;
+(define (grsp-matrix-row-select-like p_a1 p_j1 p_v1)
+  (let ((res1 0)
+	(a1 0)
+	(a2 0)
+	(s1 "")
+	(s2 "")
+	(n1 0)
+	(v1 ""))
+
+    ;; These two need a check.
+    ;;(set! a1 (grsp-myms p_a1))
+    ;;(set! v1 (grsp-y2s p_v1))
+    
+    ;; Row loop.
+    (let loop ((i1 (grsp-lm p_a1)))
+      (if (<= i1 (grsp-hm p_a1))
+
+	  (begin (set! s1 (array-ref a1 i1 p_j1))
+
+		 (cond ((equal? (number? (string-contains s1 v1)) #t)
+
+			(cond ((equal? n1 0)
+			       ;; Create resultsmatrix.
+			       (set! n1 (in n1)))
+			      ((> n1 0)
+			       ;; Add row to results matrix.
+			       ))))
+
+		 (loop (+ i1 1)))))
+
     res1))
