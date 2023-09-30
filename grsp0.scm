@@ -165,7 +165,8 @@
 	    grsp-art1
 	    grsp-art2
 	    grsp-string-is-number
-	    grsp-art3))
+	    grsp-art3
+	    grsp-s2qs))
 
 
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
@@ -2297,7 +2298,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - confirmation, safety
+;; - confirmation, safety, input
 ;;
 ;; Parameters:
 ;;
@@ -2321,7 +2322,7 @@
 ;;
 ;; Keywords:
 ;; 
-;; - art, value, caluclation, method
+;; - art, value, caluclation, method, valuation
 ;;
 ;; Paramters:
 ;;
@@ -2341,7 +2342,7 @@
 ;;
 ;; Keywords:
 ;; 
-;; - art, value, caluclation, method
+;; - art, value, caluclation, method, valuation
 ;;
 ;; Paramters:
 ;;
@@ -2364,7 +2365,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - stirngs, numbers, alphanumeric
+;; - stirngs, numbers, alphanumeric, valuation
 ;;
 ;; Parameters:
 ;;
@@ -2389,7 +2390,7 @@
 ;;
 ;; Keywords:
 ;; 
-;; - art, value, caluclation, method
+;; - art, value, caluclation, method, valuation
 ;;
 ;; Paramters:
 ;;
@@ -2420,5 +2421,23 @@
     
     ;; Compose results
     (set! res1 (list v1 v2 v3))
+    
+    res1))
+
+
+;;;; grsp-s2qs - Ads quotes at the beginning and endo fo a string as part of the string itself.
+;;
+;; Keywords
+;;
+;; - quotations, quoted
+;;
+;; Parameter:
+;;
+;; p_s1: string.
+;;
+(define (grsp-s2qs p_s1)
+  (let ((res1 ""))
+
+    (set! res1 (strings-append (list "\"" p_s1 "\"") 0))
     
     res1))
