@@ -90,6 +90,7 @@
 (define-module (grsp grsp0)
   #:use-module (grsp grsp3)
   #:use-module (ice-9 string-fun)
+  #:use-module (ice-9 futures)  
   #:export (pline
 	    ptit
 	    newlines
@@ -166,7 +167,8 @@
 	    grsp-art2
 	    grsp-string-is-number
 	    grsp-art3
-	    grsp-s2qs))
+	    grsp-s2qs
+	    grsp-touch-lf))
 
 
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
@@ -2440,4 +2442,28 @@
 
     (set! res1 (strings-append (list "\"" p_s1 "\"") 0))
     
+    res1))
+
+
+;;;; grsp-touch-lf - Touch all ellements of p_l1.
+;;
+;; Keywords:
+;;
+;; - mth, futures
+;;
+;; Parameters:
+;; 
+;; - p_a1: list, futures.
+;;
+;; Output:
+;;
+;; - List containing the results of the operation for each element of p_l1; the
+;;   type of each element of the list and the number of elements it may contain
+;;   depends on the properties of p_l1 and its elements.
+;;
+(define (grsp-touch-lf p_l1)
+  (let ((res1 '()))
+
+    (set! res1 (map touch p_l1))
+
     res1))

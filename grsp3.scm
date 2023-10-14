@@ -251,6 +251,7 @@
 ;;   (Accessed: March 17, 2023). 
 ;; - [70] Block matrix (2023) Wikipedia. Wikimedia Foundation. Available at:
 ;;   https://en.wikipedia.org/wiki/Block_matrix (Accessed: March 28, 2023). 
+;; - [71] https://www.gnu.org/software/guile/manual/html_node/Futures.html
 
 
 (define-module (grsp grsp3)
@@ -259,7 +260,8 @@
   #:use-module (grsp grsp2)
   #:use-module (grsp grsp4)
   #:use-module (grsp grsp11)  
-  #:use-module (ice-9 threads)  
+  #:use-module (ice-9 threads)
+  #:use-module (ice-9 futures) 
   #:export (grsp-lm
 	    grsp-hm
 	    grsp-ln
@@ -463,7 +465,8 @@
 	    grsp-ms2my
 	    grsp-cy2cy
 	    grsp-ms2mb
-	    grsp-matrix-row-select-like))
+	    grsp-matrix-row-select-like
+	    grsp-matrix-sincostan-mth))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -12067,6 +12070,7 @@
     ;; These two need a check.
     ;;(set! a1 (grsp-myms p_a1))
     ;;(set! v1 (grsp-y2s p_v1))
+    ;; ***
     
     ;; Row loop.
     (let loop ((i1 (grsp-lm p_a1)))
@@ -12085,4 +12089,43 @@
 
 		 (loop (+ i1 1)))))
 
+    res1))
+
+
+;;;; grsp-matrix-sincostan-mth - Calculates sin, cos and tan for elements of matrix p_a1.
+;;
+;; Keywords:
+;;
+;; - mth, trigonometric
+;;
+;; Parameter:
+;;
+;; . p_a1: matrix, numeric.
+;;
+;; Output: a list containing:
+;;
+;; - Elem 0: future of sin calculation of p_a1 elements.
+;; - Elem 1: future of cos calculation of p_a1 elements.
+;; - Elem 2: future of tan calculation of p_a1 elements.
+;;
+;; Sources:
+;;
+;; - [71]. 
+;;
+(define (grsp-matrix-sincostan-mth p_a1)
+  (let ((res1 '())
+	(f1 (future (grsp-matrix-opfn "#sin" p_a1)))
+	(f2 (future (grsp-matrix-opfn "#cos" p_a1)))
+	(f3 (future (grsp-matrix-opfn "#tan" p_a1)))
+	(t1 0)
+	(t2 0)
+	(t3 0))
+
+    ;;(set! t1 (touch f1))
+    ;;(set! t2 (touch f2))
+    ;;(set! t3 (touch f3))    
+    
+    ;;(set! res1 (list t1 t2 t3))
+    (set! res1 (list f1 f2 f3))
+  
     res1))
