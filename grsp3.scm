@@ -11593,7 +11593,7 @@
     (set! l1 (grsp-lal-ansl l1))
     (set! res1 (grsp-l2m l1))
 
-    ;; Ad col headers.
+    ;; Add col headers.
     (set! res1 (grsp-matrix-subadd res1 a1))     
 
     ;; Create row headers
@@ -12056,7 +12056,7 @@
 ;;
 ;; Output:
 ;;
-;; . Submatrix of p_a1 containing the quieried results, if found; zero otherwise.
+;; . Submatrix of p_a1 containing the queried results, if found; zero otherwise.
 ;;
 (define (grsp-matrix-row-select-like p_a1 p_j1 p_v1)
   (let ((res1 0)
@@ -12068,8 +12068,8 @@
 	(v1 ""))
 
     ;; These two need a check.
-    ;;(set! a1 (grsp-myms p_a1))
-    ;;(set! v1 (grsp-y2s p_v1))
+    (set! a1 (grsp-my2ms p_a1))
+    (set! v1 (grsp-y2s p_v1))
     ;; ***
     
     ;; Row loop.
@@ -12080,12 +12080,15 @@
 
 		 (cond ((equal? (number? (string-contains s1 v1)) #t)
 
+			(set! a2 (grsp-matrix-subcpy a1 i1 i1 (grsp-ln a1) (grsp-hn a1)))
+			
 			(cond ((equal? n1 0)
-			       ;; Create resultsmatrix.
+			       ;; Create results matrix.
+			       (set! res1 (grsp-matrix-cpy a2))
 			       (set! n1 (in n1)))
 			      ((> n1 0)
 			       ;; Add row to results matrix.
-			       ))))
+			       (set! res1 (grsp-matrix-subadd res1 a2))))))
 
 		 (loop (+ i1 1)))))
 
@@ -12116,16 +12119,8 @@
   (let ((res1 '())
 	(f1 (future (grsp-matrix-opfn "#sin" p_a1)))
 	(f2 (future (grsp-matrix-opfn "#cos" p_a1)))
-	(f3 (future (grsp-matrix-opfn "#tan" p_a1)))
-	(t1 0)
-	(t2 0)
-	(t3 0))
+	(f3 (future (grsp-matrix-opfn "#tan" p_a1))))
 
-    ;;(set! t1 (touch f1))
-    ;;(set! t2 (touch f2))
-    ;;(set! t3 (touch f3))    
-    
-    ;;(set! res1 (list t1 t2 t3))
     (set! res1 (list f1 f2 f3))
   
     res1))
