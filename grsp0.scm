@@ -2387,8 +2387,9 @@
     
     res1))
 
-;;;; grsp-art3 - Provides combines results of grsp-art1 and grsp-art2 in list
-;; format.
+
+;;;; grsp-art3 - Provides a combination of results of grsp-art1 and grsp-art2
+;; in list format.
 ;;
 ;; Keywords:
 ;; 
