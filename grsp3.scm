@@ -11669,7 +11669,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - edit, add, delete, interactive
+;; - edit, add, delete, interactive, edition, modification
 ;;
 ;; Parameters:
 ;;
