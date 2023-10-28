@@ -466,7 +466,8 @@
 	    grsp-cy2cy
 	    grsp-ms2mb
 	    grsp-matrix-row-select-like
-	    grsp-matrix-sincostan-mth))
+	    grsp-matrix-sincostan-mth
+	    grsp-matrix-row-number))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -12123,4 +12124,47 @@
 
     (set! res1 (list f1 f2 f3))
   
+    res1))
+
+
+;;;; grsp-matrix-row-number - Returns a list containing the row numbers for
+;; each instance in which for matrix p_a1 value p_v1 is found at column p_j1.
+;;
+;; Keywords:
+;;
+;; - row, order, numbering
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix.
+;; - p_v1: value.
+;; - p_j1: col number.
+;;
+;; Output:
+;;
+;; - If ocurrences are found, it returns a list with the row numbers.
+;; - Else returns an empty list.
+;;
+(define (grsp-matrix-row-number p_a1 p_v1 p_j1)
+  (let ((res1 '())
+	(l1 '())
+	(b1 #f))
+
+    ;; Row loop.
+    (let loop ((i1 (grsp-lm p_a1)))
+      (if (<= i1 (grsp-hm p_a1))
+
+	  (begin (cond ((equal? (array-ref p_a1 i1 p_j1) p_v1)
+
+			;; Change value on finding the first ocurrrence and
+			;; pass the row number to the list.
+			(cond ((equal? b1 #f)
+			       (set! res1 (list i1))
+			       (set! b1 #t))
+			      ((equal? b1 #t)
+			       (set! l1 (list i1))
+			       (set! res1 (append res1 l1))))))
+		 
+		 (loop (+ i1 1)))))
+
     res1))

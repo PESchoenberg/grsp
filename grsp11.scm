@@ -77,7 +77,8 @@
 	    grsp-lal-deque
 	    grsp-lal-ll2l
 	    grsp-lal-ansl
-	    grsp-ly2code))
+	    grsp-ly2code
+	    grsp-lal-deletee))
 
 
 ;;;; grsp-lal-rel - Replace element in list. Replace element p_j1 of list p_l1
@@ -1128,5 +1129,38 @@
 		 (loop (+ j1 1)))))
 
     (set! res1 (strings-append (list res1 "))") 0))
+    
+    res1))
+
+
+;;;; grsp-lal-deletee - Delete element p_j1 from list p_l1.
+;;
+;; Keywords:
+;;
+;; - list. element, deleteion
+;;
+;; Parameters:
+;;
+;; - p_l1: list.
+;; - p_j1: element number.
+;;
+;; Output:
+;;
+;; - List.
+;;
+(define (grsp-lal-deletee p_l1 p_j1)
+  (let ((res1 '())
+	(hn 0))
+
+    (set! hn (- (length p_l1) 1))
+    
+    ;; Row loop.
+    (let loop ((j1 0))
+      (if (<= j1 hn)
+
+	  (begin (cond ((equal? (equal? j1 p_j1) #f)
+			(set! res1 (append res1 (list (list-ref p_l1 j1))))))
+		 
+		 (loop (+ j1 1)))))
     
     res1))
