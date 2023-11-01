@@ -467,7 +467,9 @@
 	    grsp-ms2mb
 	    grsp-matrix-row-select-like
 	    grsp-matrix-sincostan-mth
-	    grsp-matrix-row-number))
+	    grsp-matrix-row-number
+	    grsp-matrix-keygen
+	    grsp-matrix-keyapl))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -11677,8 +11679,15 @@
 ;; - p_a1: matrix.
 ;; - p_l1: list of strings, column names or titles.
 ;; - p_l2: list of default values per row.
+;; - p_l3: list of properties per col.
 ;;
-(define (grsp-matrix-edit p_a1 p_l1 p_l2)
+;;   - "#str": string.
+;;   - "#num": numeric.
+;;   - "#bol": boolean.
+;;   - "#key": primary key column.
+;;   - "": no properties.
+;;
+(define (grsp-matrix-edit p_a1 p_l1 p_l2 p_l3)
   (let ((res1 0)
 	(a1 0)
 	(a2 0)
@@ -12167,4 +12176,74 @@
 		 
 		 (loop (+ i1 1)))))
 
+    res1))
+
+
+;;;; grsp-matrix-keygen - Creates an unique numeric key value for column p_j1
+;; of matrix p_a1.
+;;
+;; Keywords:
+;;
+;; - column, adding
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix.
+;; - p_j1: col number.
+;; - p_n1: increment value.
+;;
+;; Notes:
+;;
+;; - Should only be used on columns defined as primary key.
+;;
+;; Output:
+;;
+;; - Numeric value.
+;;
+(define (grsp-matrix-keygen p_a1 p_j1 p_n1)
+  (let ((res1 0)
+	(a1 0))
+
+    (set! a1 (grsp-matrix-row-minmax "#max" p_a1 p_j1))
+    (set! res1 (array-ref a1 0 p_j1))
+    (set! res1 (+ res1 p_n1))
+    
+    res1))
+
+
+;;;; grsp-matrix-keyapl - Appends a new key value to the element of column
+;; p_j1 fo the last row of matrix p_a1.
+;;
+;; Keywords:
+;;
+;; - column, adding
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix.
+;; - p_j1: col number.
+;; - p_n1: increment value.
+;;
+;; Notes:
+;;
+;; - Should only be used on columns defined as primary key.
+;;
+;; Output:
+;;
+;; - Matrix with a newly unique value for element at col p_j1 of
+;;   the last row of matrix p_a1-
+;;
+(define (grsp-matrix-keyapl p_a1 p_j1 p_n1)
+  (let ((res1 0)
+	(n1 0))
+
+    ;; Safety copy.
+    (set! res1 (grsp-matrix-cpy p_a1))
+
+    ;; Calculate the value for new key.
+    (set! n1 (grsp-matrix-keygen res1 p_j1 p_n1))
+
+    ;; Apply key.
+    (array-set! res1 n1 (grsp-hm res1) p_j1) 
+    
     res1))
