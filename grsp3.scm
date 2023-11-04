@@ -11685,6 +11685,9 @@
 ;;   - "#num": numeric.
 ;;   - "#bol": boolean.
 ;;   - "#key": primary key column.
+;;   - "#ai": autoincrement.
+;;   - "#0": start counting from zero.
+;;   - "#key#num#ai": autoincrementable, numeric, primary key.
 ;;   - "": no properties.
 ;;
 (define (grsp-matrix-edit p_a1 p_l1 p_l2 p_l3)
