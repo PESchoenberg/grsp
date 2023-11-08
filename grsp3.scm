@@ -12187,7 +12187,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - column, adding
+;; - column, adding, keys, unique
 ;;
 ;; Parameters:
 ;;
@@ -12230,6 +12230,7 @@
 ;; Notes:
 ;;
 ;; - Should only be used on columns defined as primary key.
+;; - The user should dentify correctly which column will be modified. 
 ;;
 ;; Output:
 ;;
