@@ -12219,18 +12219,18 @@
 ;;
 ;; Keywords:
 ;;
-;; - column, adding
+;; - column, adding, key, increment, values
 ;;
 ;; Parameters:
 ;;
 ;; - p_a1: matrix.
-;; - p_j1: col number.
-;; - p_n1: increment value.
+;; - p_j1: col number corresponding to the key column.
+;; - p_n1: increment step value.
 ;;
 ;; Notes:
 ;;
 ;; - Should only be used on columns defined as primary key.
-;; - The user should dentify correctly which column will be modified. 
+;; - The user should identify correctly which column will be modified. 
 ;;
 ;; Output:
 ;;

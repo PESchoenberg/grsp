@@ -444,11 +444,12 @@
 (define (read-file-as-string p_f1)
   (call-with-input-file p_f1
     (lambda (p1)
+      
       (let loop((ls1 '()) (c1 (read-char p1)))	
 	(if (eof-object? c1)
-	    (begin
-	      (close-input-port p1)
-	      (list->string (reverse ls1)))
+	    (begin (close-input-port p1)
+		   (list->string (reverse ls1)))
+	    
 	    (loop (cons c1 ls1) (read-char p1)))))))
 
 
