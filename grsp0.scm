@@ -2429,7 +2429,8 @@
     res1))
 
 
-;;;; grsp-s2qs - Ads quotes at the beginning and endo fo a string as part of the string itself.
+;;;; grsp-s2qs - Ads quotes at the beginning and endo fo a string as part of
+;; the string itself.
 ;;
 ;; Keywords
 ;;
