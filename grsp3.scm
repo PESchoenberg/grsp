@@ -476,7 +476,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices
+;; - functions, algebra, matrix, matrices, properties, dimensions, size
 ;;
 ;; Parameters:
 ;;
@@ -12083,7 +12083,6 @@
     ;; These two need a check.
     (set! a1 (grsp-my2ms p_a1))
     (set! v1 (grsp-y2s p_v1))
-    ;; ***
     
     ;; Row loop.
     (let loop ((i1 (grsp-lm p_a1)))
@@ -12093,7 +12092,11 @@
 
 		 (cond ((equal? (number? (string-contains s1 v1)) #t)
 
-			(set! a2 (grsp-matrix-subcpy a1 i1 i1 (grsp-ln a1) (grsp-hn a1)))
+			(set! a2 (grsp-matrix-subcpy a1
+						     i1
+						     i1
+						     (grsp-ln a1)
+						     (grsp-hn a1)))
 			
 			(cond ((equal? n1 0)
 			       ;; Create results matrix.
@@ -12108,7 +12111,8 @@
     res1))
 
 
-;;;; grsp-matrix-sincostan-mth - Calculates sin, cos and tan for elements of matrix p_a1.
+;;;; grsp-matrix-sincostan-mth - Calculates sin, cos and tan for elements of
+;; matrix p_a1.
 ;;
 ;; Keywords:
 ;;
@@ -12215,7 +12219,7 @@
 
 
 ;;;; grsp-matrix-keyapl - Appends a new key value to the element of column
-;; p_j1 fo the last row of matrix p_a1.
+;; p_j1 of the last row of matrix p_a1.
 ;;
 ;; Keywords:
 ;;
@@ -12229,7 +12233,7 @@
 ;;
 ;; Notes:
 ;;
-;; - Should only be used on columns defined as primary key.
+;; - Should only be used on columns defined as primary key or autoincrementable.
 ;; - The user should identify correctly which column will be modified. 
 ;;
 ;; Output:
@@ -12251,3 +12255,4 @@
     (array-set! res1 n1 (grsp-hm res1) p_j1) 
     
     res1))
+
