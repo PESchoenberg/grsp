@@ -4757,6 +4757,7 @@
 		  ;;
 		  ;; If this is the last element of the matrix, do not add the
 		  ;; new line character at the end of the string.
+		  ;;
 		  (cond ((equal? (and (>= j1 hn1) (>= i1 hm1)) #t)			 
 			 (set! s1 (strings-append (list (grsp-n2s i1)
 							s2
@@ -4785,7 +4786,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, databases
+;; - functions, algebra, matrix, matrices, vectors, databases, gnuplot
 ;;
 ;; Parameters:
 ;;
@@ -4843,6 +4844,7 @@
 		  ;;
 		  ;; If this is the last element of the matrix, do not add the
 		  ;; new line character at the end of the string.
+		  ;;
 		  (cond ((equal? (and (>= j1 hn1) (>= i1 hm1)) #t)			 
 			 (set! s1 (strings-append (list (grsp-n2s i1)
 							s2
@@ -4871,7 +4873,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, databases
+;; - functions, algebra, matrix, matrices, vectors, databases, gnuplot
 ;;
 ;; Parameters:
 ;;
@@ -4955,7 +4957,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors
+;; - functions, algebra, matrix, matrices, vectors, intervals, mean, average
 ;;
 ;; Parameters:
 ;;
