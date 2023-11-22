@@ -469,7 +469,8 @@
 	    grsp-matrix-sincostan-mth
 	    grsp-matrix-row-number
 	    grsp-matrix-keygen
-	    grsp-matrix-keyapl))
+	    grsp-matrix-keyapl
+	    grsp-matrix-subdelr))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -12258,3 +12259,39 @@
     
     res1))
 
+
+;;;; grsp-matrix-subdelr - Deletes rows from p_m1 to p_m2 of matrix p_a1.
+;;
+;; Keywords:
+;;
+;; - deletion, submatrix, submatrices
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix.
+;; - p_m1: numeric, row.
+;; - p_m2: numeric, row.
+;;
+(define (grsp-matrix-subdelr p_a1 p_m1 p_m2)
+  (let ((res1 0)
+	(a1 0)
+	(a2 0)
+	(a3 0)
+	(m1 0)
+	(m2 0))
+
+    (set! m1 (- p_m1 1))
+    (cond ((< m1 0)
+	   (set! m1 0)))
+
+    (set! m2 (+ p_m2 1))
+    (cond ((> m2 (grsp-hm a1))
+	   (set! m2 p_m2)))
+     
+    
+    (set! a1 (grsp-matrix-subcpy p_a1 (grsp-lm a1) m1 (grsp-ln a1) (grsp-hn a1)))
+    (set! a2 (grsp-matrix-subcpy p_a1 m2 (grsp-hm p_a1) (grsp-ln a1) (grsp-hn a2)))
+
+    (set! res1 (grsp-matrix-subadd a1 a2)) 
+    
+    res1))

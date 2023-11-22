@@ -90,7 +90,8 @@
 (define-module (grsp grsp0)
   #:use-module (grsp grsp3)
   #:use-module (ice-9 string-fun)
-  #:use-module (ice-9 futures)  
+  #:use-module (ice-9 futures)
+  #:use-module (ice-9 binary-ports)
   #:export (pline
 	    ptit
 	    newlines
@@ -444,6 +445,9 @@
 (define (read-file-as-string p_f1)
   (call-with-input-file p_f1
     (lambda (p1)
+
+      ;; ***
+      ;;(if binary "rb" "r")
       
       (let loop((ls1 '()) (c1 (read-char p1)))	
 	(if (eof-object? c1)
@@ -509,7 +513,7 @@
   (grsp-ld "grsp-test"))
 	      
 
-;;;; grsp-save-to-file - Saves a string to file p_f1.   
+;;;; grsp-save-to-file - Saves a string to string file p_f1.   
 ;;
 ;; Keywords:
 ;;
@@ -523,22 +527,24 @@
 ;;
 ;;  - "w": open for input. Rewrite if exists.
 ;;  - "a": open for append. Create if does not exist.
+;;  - "wb w": open for binary input.
+;;  - "ab a": open for binary append.
 ;;
 ;; Output:
 ;;
 ;; - File.
 ;;
-;; Sources;
+;; Sources:
 ;;
 ;; - [2].
 ;;
 (define (grsp-save-to-file p_s1 p_f1 p_m1)
   (let ((output-port (open-file p_f1 p_m1)))    
-
+    ;; ***
     (display p_s1 output-port)
     (newline output-port)
     (close output-port)))
-
+			       
 
 ;;;; grsp-delete-file - Deletes file p_f1.   
 ;;
