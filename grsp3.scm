@@ -32,7 +32,16 @@
 ;; - grsp3 provides some level of matrix algebra functionality for Guile, but in
 ;;   its current version it is not intended to be particulary fast. It does not 
 ;;   make use of any additional non-Scheme library like BLAS or Lapack.
-;; - As a convention here, m represents rows, n represents columns.
+;; - As a convention here, m represents rows, n represents columns; variations
+;;   in this theme include:
+;;
+;;   - lm: lowest row number.
+;;   - hm: highest row number.
+;;   - ln: lowest col number.
+;;   - hn: highest col number.
+;;   - tm: total number of rows.
+;;   - tn: total number of columns.
+;;
 ;; - All matrices referred in this file are numeric except wherever specifically
 ;;   stated.
 ;;
@@ -12276,22 +12285,36 @@
   (let ((res1 0)
 	(a1 0)
 	(a2 0)
-	(a3 0)
 	(m1 0)
 	(m2 0))
 
+    ;; Check lower limit coherence.
     (set! m1 (- p_m1 1))
     (cond ((< m1 0)
 	   (set! m1 0)))
 
+    ;; Check upper limit coherence.
     (set! m2 (+ p_m2 1))
-    (cond ((> m2 (grsp-hm a1))
+    (cond ((> m2 (grsp-hm p_a1))
 	   (set! m2 p_m2)))
      
-    
-    (set! a1 (grsp-matrix-subcpy p_a1 (grsp-lm a1) m1 (grsp-ln a1) (grsp-hn a1)))
-    (set! a2 (grsp-matrix-subcpy p_a1 m2 (grsp-hm p_a1) (grsp-ln a1) (grsp-hn a2)))
+    ;; Copy lower block, from the first row to the lower limit.
+    (set! a1 (grsp-matrix-subcpy p_a1
+				 (grsp-lm p_a1)
+				 m1
+				 (grsp-ln p_a1)
+				 (grsp-hn p_a1)))
 
+    ;; Copy higher block from the upper limit to the last row.
+    (set! a2 (grsp-matrix-subcpy p_a1
+				 m2
+				 (grsp-hm p_a1)
+				 (grsp-ln p_a1)
+				 (grsp-hn p_a1)))
+
+    ;; The two steps before create two submatrices and leave out the rows in
+    ;; the intersection of the lower and higher limits. Then we add the two
+    ;; copied submatrices to compose the result.
     (set! res1 (grsp-matrix-subadd a1 a2)) 
-    
+
     res1))
