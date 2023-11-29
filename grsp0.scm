@@ -169,7 +169,8 @@
 	    grsp-string-is-number
 	    grsp-art3
 	    grsp-s2qs
-	    grsp-touch-lf))
+	    grsp-touch-lf
+	    grsp-sldvls))
 
 
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
@@ -2476,3 +2477,34 @@
     (set! res1 (map touch p_l1))
 
     res1))
+
+
+;;;; grsp-sldvls - Speparator, Line, display value, line, separator. Displays
+;; p_n1 blank lines before a spearator defined by p_s2, string p_s1 and p_n2
+;; blank lines after p_s1 and separator p_s3.
+;;
+;; Keywords:
+;;
+;; - console, strings
+;;
+;; Parameters:
+;;
+;; - p_s1: string (i.e. description or title of p_v1).
+;; - p_v1: value.
+;; - p_n1: number of new lines preceeding the string.
+;; - p_n2: number of new lines after the string.
+;; - p_s2; string, separator.
+;; - p_s3; string, separator.
+;;
+;; Examples:
+;;
+;; - example28.scm.
+;;
+;; Output:
+;;
+;; - String.
+;;
+(define (grsp-sldvls p_s1 p_v1 p_n1 p_n2 p_s2 p_s3)
+  (grsp-ldl p_s2 p_n1 p_n1)
+  (grsp-ldvl p_s1 p_v1 0 0)
+  (grsp-ldl p_s3 p_n2 p_n2))
