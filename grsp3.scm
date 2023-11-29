@@ -479,7 +479,8 @@
 	    grsp-matrix-row-number
 	    grsp-matrix-keygen
 	    grsp-matrix-keyapl
-	    grsp-matrix-subdelr))
+	    grsp-matrix-subdelr
+	    grsp-matrix-row-vol))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -12318,3 +12319,67 @@
     (set! res1 (grsp-matrix-subadd a1 a2)) 
 
     res1))
+
+
+;;;; gdb-de-vol-vol - Subdivides a matrix row-wise.
+;;
+;; Keywords:
+;;
+;; - entity, submatrix, properties, sections
+;;
+;; Parameters:
+;;
+;; - p_a1; matrix.
+;; - p_n1: numeric, rows per volume.
+;;
+(define (grsp-matrix-row-vol p_a1 p_n1)
+  (let ((res1 0)
+	(a1 0)
+	(q2 0)
+	(r1 0)
+	(mi 0)
+	(lm 0)
+	(hm 0)
+	(i2 1))
+
+    ;; Calculate number of iterations.
+    (set! q2 (floor-quotient (grsp-tm p_a1) p_n1))
+    (set! r1 (floor-remainder(grsp-tm p_a1) p_n1))
+
+    ;; Iterations.
+    ;;(cond ((= r1 0)
+	   ;;(set! mi q2)
+	   ;;(b1 #t))
+	  ;;(else (set! mi (+ q2 1))))
+
+    ;; Create results matrix.
+    (set! res1 (grsp-matrix-create 0 (+ q2 r1) 2))
+    
+    ;; Row loop.
+    (let loop ((i1 1))
+      (if (<= i1 q2)
+	  
+	  (begin (cond ((= i1 1)
+			(set! lm (grsp-lm p_a1))
+			(set! hm (- (* i1 p_n1) 1)))
+		       ((> i1 1)
+			(set! lm (+ hm 1))
+			(set! hm (- (* i1 p_n1) 1))))
+
+		 (set! i2 (- i1 1))
+		 
+		 (array-set! res1 lm i2 0)
+		 (array-set! res1 hm i2 1)
+
+		 (grsp-ld i1)
+		 
+		 (loop (+ i1 1)))))
+
+    ;; Add remainder if it exists.
+    (cond ((> r1 0)
+	   (set! i2 (+ i2 1))
+	   (array-set! res1 (+ hm 1) i2 0)
+	   (array-set! res1 (grsp-hm p_a1) i2 1)))
+    
+    res1))
+
