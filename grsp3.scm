@@ -5623,7 +5623,7 @@
 ;; Sources:
 ;;
 ;; - [16].
-;;
+;; ***
 (define (grsp-matrix-row-delete p_s1 p_a1 p_j1 p_n1)
   (let ((res1 0)
 	(s2 p_s1))

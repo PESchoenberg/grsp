@@ -2053,7 +2053,7 @@
 ;; - p_b1: boolean.
 ;;
 ;;   - #t: display p_v1.
-;;   - #f: otherwise-
+;;   - #f: otherwise.
 ;;
 ;; - p_v1: value.
 ;;
@@ -2507,4 +2507,4 @@
 (define (grsp-sldvls p_s1 p_v1 p_n1 p_n2 p_s2 p_s3)
   (grsp-ldl p_s2 p_n1 p_n1)
   (grsp-ldvl p_s1 p_v1 0 0)
-  (grsp-ldl p_s3 p_n2 p_n2))
+  (grsp-ldl p_s3 p_n1 p_n2))
