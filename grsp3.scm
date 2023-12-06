@@ -12321,7 +12321,7 @@
     res1))
 
 
-;;;; gdb-de-vol-vol - Subdivides a matrix row-wise.
+;;;; gdb-de-row-vol - Subdivides a matrix row-wise.
 ;;
 ;; Keywords:
 ;;
@@ -12345,15 +12345,9 @@
     ;; Calculate number of iterations.
     (set! q2 (floor-quotient (grsp-tm p_a1) p_n1))
     (set! r1 (floor-remainder(grsp-tm p_a1) p_n1))
-
-    ;; Iterations.
-    ;;(cond ((= r1 0)
-	   ;;(set! mi q2)
-	   ;;(b1 #t))
-	  ;;(else (set! mi (+ q2 1))))
-
+    
     ;; Create results matrix.
-    (set! res1 (grsp-matrix-create 0 (+ q2 r1) 2))
+    (set! res1 (grsp-matrix-create 0 (+ q2 r1) 2))   
     
     ;; Row loop.
     (let loop ((i1 1))
@@ -12375,9 +12369,9 @@
 		 
 		 (loop (+ i1 1)))))
 
-    ;; Add remainder if it exists.
+    ;; Add remainder, if it exists.
     (cond ((> r1 0)
-	   (set! i2 (+ i2 1))
+	   (set! i2 (+ i2 1))	   	   
 	   (array-set! res1 (+ hm 1) i2 0)
 	   (array-set! res1 (grsp-hm p_a1) i2 1)))
     
