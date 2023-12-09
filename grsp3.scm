@@ -12185,7 +12185,7 @@
 
 	  (begin (cond ((equal? (array-ref p_a1 i1 p_j1) p_v1)
 
-			;; Change value on finding the first ocurrrence and
+			;; Change value on finding the first ocurrence and
 			;; pass the row number to the list.
 			(cond ((equal? b1 #f)
 			       (set! res1 (list i1))
@@ -12345,9 +12345,16 @@
     ;; Calculate number of iterations.
     (set! q2 (floor-quotient (grsp-tm p_a1) p_n1))
     (set! r1 (floor-remainder(grsp-tm p_a1) p_n1))
+
+    (grsp-ld q2)
+    (grsp-ld r1)
     
     ;; Create results matrix.
-    (set! res1 (grsp-matrix-create 0 (+ q2 r1) 2))   
+    ;;(set! res1 (grsp-matrix-create 0 (+ q2 r1) 2))
+
+    (cond ((equal? r1 0)
+	   (set! res1 (grsp-matrix-create 0 q2 2)))
+	  (else (set! res1 (grsp-matrix-create 0 (+ q2 1) 2))))
     
     ;; Row loop.
     (let loop ((i1 1))
@@ -12365,8 +12372,6 @@
 		 (array-set! res1 lm i2 0)
 		 (array-set! res1 hm i2 1)
 
-		 (grsp-ld i1)
-		 
 		 (loop (+ i1 1)))))
 
     ;; Add remainder, if it exists.
