@@ -170,7 +170,9 @@
 	    grsp-art3
 	    grsp-s2qs
 	    grsp-touch-lf
-	    grsp-sldvls))
+	    grsp-sldvls
+	    grsp-clear-on-demand
+	    grsp-ldlc))
 
 
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
@@ -789,6 +791,10 @@
 ;;
 ;; - example3.scm.
 ;;
+;; Notes:
+;;
+;; - https://stackoverflow.com/questions/59006417/how-to-read-a-string-to-get-user-input-in-gnu-guile
+;;
 ;; Output:
 ;;
 ;; - Returns data from the user's input. You may need to use symbol->[type] in
@@ -796,11 +802,11 @@
 ;;
 (define (grsp-ask p_s1)
   (let ((res1 " "))
-
+    
     (newline)
     (grsp-ld p_s1)
     (set! res1 (read))
-
+    
     res1))
 
 
@@ -2508,3 +2514,51 @@
   (grsp-ldl p_s2 p_n1 p_n1)
   (grsp-ldvl p_s1 p_v1 0 0)
   (grsp-ldl p_s3 p_n1 p_n2))
+
+
+;;;; grsp-clear-on-demand - Clear the screen or console window if p_b1 is #t.
+;;
+;; Keywords:
+;;
+;; - clear, console, screen, window
+;;
+;; Parameters:
+;;
+;; - p_b1: boolean.
+;;
+;;   - #t: clear.
+;;   - #f: otherwise.
+;;
+(define (grsp-clear-on-demand p_b1)
+  (let ((res1 0))
+
+    (cond ((equal? p_b1 #t)
+	   (clear)))
+    
+    res1))
+
+
+;;;; grsp-ldlc - Clear the scree first if p_b1 #t and then call grsp-ldl.
+;;
+;; Keywrods:
+;;
+;; - clear, console, screen, shell
+;;
+;; Parameters:
+;;
+;; - p_b1: boolean.
+;;
+;;   - #t: clear.
+;;   - #f: otherwise.
+;;
+;; - p_s1: string.
+;; - p_n1: number of new lines preceeding the string.
+;; - p_n2: number of new lines after the string.
+;;
+(define (grsp-ldlc p_b1 p_s1 p_n1 p_n2)
+  (let ((res1 0))
+
+    (grsp-clear-on-demand p_b1)
+    (grsp-ldl p_s1 p_n1 p_n2)
+    
+    res1))
