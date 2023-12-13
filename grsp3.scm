@@ -480,7 +480,9 @@
 	    grsp-matrix-keygen
 	    grsp-matrix-keyapl
 	    grsp-matrix-subdelr
-	    grsp-matrix-row-vol))
+	    grsp-matrix-row-vol
+	    grsp-ms-get-longest-element
+	    grsp-ms-trim))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -12382,3 +12384,78 @@
     
     res1))
 
+
+;;;; grsp-ms-get-longest-element - Get the longest string from matrix p_a1.
+;;
+;; Keywords:
+;;
+;; - strings, length
+;;
+;; Parameters:
+;;
+;; - p_a1: string matrix.
+;;
+(define (grsp-ms-get-longest-element p_a1)
+  (let ((res1 "")
+	(s1 ""))
+
+    ;; Get the first element.
+    (set! res1 (array-ref p_a1 (grsp-lm p_a1) (grsp-ln p_a1)))
+	
+    ;; Row loop.
+    (let loop ((i1 (grsp-lm p_a1)))
+      (if (<= i1 (grsp-hm p_a1))
+
+	  ;; Col loop.
+	  (begin (let loop ((j1 (grsp-ln p_a1)))
+		   (if (<= j1 (grsp-hn p_a1))
+
+		       (begin (set! s1 (array-ref p_a1 i1 j1))
+
+			      (cond ((> (string-length s1) (string-length res1))
+				     (set! res1 s1)))
+			      
+			      (loop (+ j1 1)))))		 
+		 
+		 (loop (+ i1 1)))))
+    
+    res1))
+
+
+;;;; -grsp-ms-trim - Trim all elements of string matrix p_a1 to a string lenght
+;; of p_n1, by adding or truncating.
+;;
+;; Keywords:
+;;
+;; - trim, truncate
+;;
+;; Parameters:
+;;
+;; - P_a1: string matrix.
+;; - p_n1: numbe prepresenting the trim lenght desired.
+;;
+(define (grsp-ms-trim p_a1 p_n1)
+  (let ((res1 0)
+	(s1 ""))
+
+    ;; Safety copy.
+    (set! res1 (grsp-matrix-cpy p_a1))
+    
+    ;; Row loop.
+    (let loop ((i1 (grsp-lm res1)))
+      (if (<= i1 (grsp-hm res1))
+
+	  ;; Col loop.
+	  (begin (let loop ((j1 (grsp-ln res1)))
+		   (if (<= j1 (grsp-hn res1))
+
+		       (begin (set! s1 (array-ref res1 i1 j1))
+
+			      (cond ((> (string-length s1) p_n1)
+				     (array-set! res1 (substring s1 0 p_n1) i1 j1)))
+			      
+			      (loop (+ j1 1)))))		 
+		 
+		 (loop (+ i1 1)))))
+    
+    res1))
