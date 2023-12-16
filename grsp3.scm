@@ -482,7 +482,8 @@
 	    grsp-matrix-subdelr
 	    grsp-matrix-row-vol
 	    grsp-ms-get-longest-element
-	    grsp-ms-trim))
+	    grsp-ms-create-col-headers
+	    grsp-ms-create-row-headers))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -3168,7 +3169,7 @@
     (set! res1 (grsp-matrix-create res1
 				   (+ (- (+ (grsp-hm p_a1) p_am1) (grsp-lm p_a1)) 1) ;; ln
 				   (+ (- (+ (grsp-hn p_a1) p_an1) (grsp-ln p_a1)) 1)))
-    ;; *** hn hm
+    
     ;; Copy to submatrix.
     ;; Row loop.
     (let loop ((i1 (grsp-lm p_a1)))
@@ -9286,7 +9287,7 @@
     res1))
 
 
-;;;; grsp-string-lpjustify - Applies grsp-string-pjustify to every element of
+;;;; grsp-string-spjustify - Applies grsp-string-pjustify to every element of
 ;; p_a1, producing a matrix of strings of equal length, padded with p_s3 and
 ;; lustified according to p_s1.
 ;;
@@ -9380,7 +9381,7 @@
     res1))
 
 
-;;;; grsp-mn2s - Creates a formatted long string from p_a1 for display. This
+;;;; grsp-ms2s - Creates a formatted long string from p_a1 for display. This
 ;; function transforms all elements of a string matrix into a unified string.
 ;;
 ;; Keywords:
@@ -9389,32 +9390,69 @@
 ;;
 ;; Parameters:
 ;;
+;; - p_b1:
+;;
+;;   - #t: to justify each column separatedly.
+;;   - #f: otherwise.
+;;
 ;; - p_a1: matrix. String.
 ;;
 ;; Output
 ;;
 ;; - String.
 ;;
-(define (grsp-ms2s p_a1)
+(define (grsp-ms2s p_b1 p_a1)
   (let ((res1 "")
+	(a1 0)
 	(a2 "")
+	(a3 0)
 	(l1 0)
 	(i1 0)
 	(j1 0))
 
-    ;; Find the longest string in the matrix.
-    (set! l1 (+ (grsp-matrix-slongest p_a1) 1))
+    ;; Safety copy.
+    (set! a1 (grsp-matrix-cpy p_a1))
+    
+    (cond ((equal? p_b1 #t)
 
-    ;; Justify.
-    (set! a2 (grsp-matrix-spjustify "#r" p_a1 " " l1))
+	   ;; Col loop. We deal with each column of p_a1 separatedly.
+	   (let loop ((j1 (grsp-lm a1)))
+	     (if (<= j1 (grsp-hm a1))
 
-    ;; Row.
-    (let loop ((i1 (grsp-lm p_a1)))
-      (if (<= i1 (grsp-hm p_a1))
+		 (begin (set! a3 (grsp-matrix-subcpy a1
+						     (grsp-lm p_a1)
+						     (grsp-hm p_a1)
+						     j1
+						     j1))
+			
+			;; Find the longest string in the matrix.
+			(set! l1 (+ (grsp-matrix-slongest a3) 1))
+			
+			;; Justify.
+			(set! a3 (grsp-matrix-spjustify "#r" a3 " " l1))
+			
+			;; Put a3 back in a1.
+			(set! a1 (grsp-matrix-subrep a1 a3 (grsp-lm a1) j1))
+			
+			(loop (+ j1 1)))))
+
+	   (set! a2 (grsp-matrix-cpy a1)))
+	  
+	  ((equal? p_b1 #f)
+	   
+	   ;; Find the longest string in the matrix.
+	   (set! l1 (+ (grsp-matrix-slongest a1) 1))
+	   
+	   ;; Justify.
+	   (set! a2 (grsp-matrix-spjustify "#r" a1 " " l1))))
+
+    ;; Row loop. Append everything to a string.
+    (let loop ((i1 (grsp-lm a1)))
+      (if (<= i1 (grsp-hm a1))
 
 	  ;; Cols.
-	  (begin (let loop ((j1 (grsp-ln p_a1)))
-		   (if (<= j1 (grsp-hn p_a1))
+	  (begin (let loop ((j1 (grsp-ln a1)))
+		   (if (<= j1 (grsp-hn a1))
 
 		       (begin (set! res1 (string-append res1 (array-ref a2 i1 j1)))
 			      
@@ -9451,14 +9489,13 @@
   (let ((res1 "")
 	(a1 ""))
 
-    ;;(set! a1 (grsp-mn2ms p_a1))
     (cond ((equal? (number? (array-ref p_a1 0 0)) #t)
 	   (set! a1 (grsp-mn2ms p_a1)))
 	  ((equal? (string? (array-ref p_a1 0 0)) #t)
 	   (set! a1 p_a1)))
-    
-    (set! res1 (grsp-ms2s a1))
-	   
+
+    (set! res1 (grsp-ms2s #t a1))
+
     (display res1)))
   
 
@@ -11598,35 +11635,21 @@
 (define (grsp-matrix-displayts p_a1 p_l1)
   (let ((res1 0)
 	(a1 0)
-	(a2 0)
-	(hm1 0)
-	(i2 0)
-	(l1 '()))
+	(a2 0))
 
     ;; Safety copy.
     (set! a1 (grsp-matrix-cpy p_a1))
-    
-    ;; Generate col headers.
-    (set! l1 (list-copy p_l1))
-    (set! l1 (grsp-lal-ansl l1))
-    (set! res1 (grsp-l2m l1))
 
+    ;; Create col headers
+    (set! res1 (grsp-ms-create-col-headers p_a1 p_l1))
+    
     ;; Add col headers.
     (set! res1 (grsp-matrix-subadd res1 a1))     
 
-    ;; Create row headers
-    (set! a2 (grsp-matrix-create " " (grsp-tm res1) (+ (grsp-tn res1) 1)))
-    (array-set! a2 "/" 0 0)
-     
-    (let loop ((i1 1))
-      (if (<= i1 (grsp-hm a2))
-
-	  (begin (set! i2 (- i1 1))
-		 (array-set! a2 (grsp-n2s i2) i1 0)
-		 
-		 (loop (+ i1 1)))))
-
-    ;; Compose.
+    ;; Create row headers.
+    (set! a2 (grsp-ms-create-row-headers res1))
+    
+    ;; Add row headers.
     (set! res1 (grsp-matrix-subrep a2 res1 0 1))
     
     ;; Display.
@@ -11717,7 +11740,7 @@
 
     ;; Safety copy.
     (set! a1 (grsp-matrix-cpy p_a1))
-
+    ;; ***
     (while (equal? b1 #t)
 
 	   (clear)
@@ -12422,39 +12445,82 @@
     res1))
 
 
-;;;; -grsp-ms-trim - Trim all elements of string matrix p_a1 to a string lenght
-;; of p_n1, by adding or truncating.
+;;;; grsp-ms-create-col.headers - Creates and pads column headers for string
+;; matrix display.
 ;;
 ;; Keywords:
 ;;
-;; - trim, truncate
+;; - padding, headers, presentation, display
 ;;
 ;; Parameters:
 ;;
-;; - P_a1: string matrix.
-;; - p_n1: numbe prepresenting the trim lenght desired.
+;; - p_a1: string matrix.
+;; - p_l1: list of headers.
 ;;
-(define (grsp-ms-trim p_a1 p_n1)
+;; Notes:
+;;
+;; - grsp-ms-create-row-headers
+;;
+;; Output:
+;;
+;; - 1 x n string matrix of headers formatted to display with p_a1.
+;;
+(define (grsp-ms-create-col-headers p_a1 p_l1)
   (let ((res1 0)
-	(s1 ""))
+	(l1 '())
+	(s1 "")
+	(s2 ""))
 
-    ;; Safety copy.
-    (set! res1 (grsp-matrix-cpy p_a1))
+    ;; Generate col headers.
+    (set! l1 (list-copy p_l1))
+    (set! l1 (grsp-lal-ansl l1))
+    (set! res1 (grsp-l2m l1))
+
+    ;; Padding col headers.
+    (let loop ((j1 (grsp-ln res1)))
+      (if (<= j1 (grsp-hn res1))
+
+	  (begin (set! s1 (array-ref res1 0 j1))
+		 (set! s2 (array-ref p_a1 0 j1))
+		 (set! s1 (grsp-pad-lr s1 s2))
+		 (array-set! res1 s1 0 j1)
+		 
+		 (loop (+ j1 1)))))
     
-    ;; Row loop.
-    (let loop ((i1 (grsp-lm res1)))
+    res1))
+
+
+;;;; grsp-ms-create-row-headers - Builds row headers for string matrix display.
+;;
+;; Keywords:
+;;
+;; - padding, headers, presentation, display
+;;
+;; Parameters:
+;;
+;; - p_a1: string matrix.
+;;
+;; Notes:
+;;
+;; - grsp-ms-create-col-headers
+;;
+;; Output:
+;;
+;; - m x 1 string matrix with numbered rows to be joined to the matrix to be
+;;   displayed.
+;;
+(define (grsp-ms-create-row-headers p_a1)
+  (let ((res1 0)
+	(i2 0))
+
+    (set! res1 (grsp-matrix-create " " (grsp-tm p_a1) (+ (grsp-tn p_a1) 1)))
+    (array-set! res1 "/" 0 0)
+     
+    (let loop ((i1 1))
       (if (<= i1 (grsp-hm res1))
 
-	  ;; Col loop.
-	  (begin (let loop ((j1 (grsp-ln res1)))
-		   (if (<= j1 (grsp-hn res1))
-
-		       (begin (set! s1 (array-ref res1 i1 j1))
-
-			      (cond ((> (string-length s1) p_n1)
-				     (array-set! res1 (substring s1 0 p_n1) i1 j1)))
-			      
-			      (loop (+ j1 1)))))		 
+	  (begin (set! i2 (- i1 1))
+		 (array-set! res1 (grsp-n2s i2) i1 0)
 		 
 		 (loop (+ i1 1)))))
     

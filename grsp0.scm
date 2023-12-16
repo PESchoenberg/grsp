@@ -172,7 +172,9 @@
 	    grsp-touch-lf
 	    grsp-sldvls
 	    grsp-clear-on-demand
-	    grsp-ldlc))
+	    grsp-ldlc
+	    grsp-padlr
+	    grsp-pad-lr))
 
 
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
@@ -2560,5 +2562,25 @@
 
     (grsp-clear-on-demand p_b1)
     (grsp-ldl p_s1 p_n1 p_n2)
+    
+    res1))
+
+
+;;;; gdp-pad-lr - Pad string p_s1 to the lenght of string p_s2, or truncate to
+;; the length of p_s2.
+;;
+;; Keywords:
+;;
+;; - padding, length
+;;
+;; Parameters:
+;;
+;; - p_s1: string.
+;; - p_s2: string.
+;;
+(define (grsp-pad-lr p_s1 p_s2)
+  (let ((res1 ""))
+
+    (set! res1 (string-pad-right p_s1 (string-length p_s2)))
     
     res1))
