@@ -483,7 +483,8 @@
 	    grsp-matrix-row-vol
 	    grsp-ms-get-longest-element
 	    grsp-ms-create-col-headers
-	    grsp-ms-create-row-headers))
+	    grsp-ms-create-row-headers
+	    grsp-ms-pad-elements))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -9415,27 +9416,32 @@
     
     (cond ((equal? p_b1 #t)
 
-	   ;; Col loop. We deal with each column of p_a1 separatedly.
-	   (let loop ((j1 (grsp-lm a1)))
-	     (if (<= j1 (grsp-hm a1))
+	   ;; Pad with some spaces.
+	   (set! a1 (grsp-ms-pad-elements a1 1 1))
+	   
+	   ;; Col loop. We deal with each column of a1 separatedly.
+	   (let loop ((j1 (grsp-ln a1)))
+	     (if (<= j1 (grsp-hn a1))
 
 		 (begin (set! a3 (grsp-matrix-subcpy a1
-						     (grsp-lm p_a1)
-						     (grsp-hm p_a1)
+						     (grsp-lm a1)
+						     (grsp-hm a1)
 						     j1
 						     j1))
 			
 			;; Find the longest string in the matrix.
 			(set! l1 (+ (grsp-matrix-slongest a3) 1))
+			;;(set! l1 (grsp-ms-get-longest-element p_a1))
 			
 			;; Justify.
-			(set! a3 (grsp-matrix-spjustify "#r" a3 " " l1))
+			(set! a3 (grsp-matrix-spjustify "#l" a3 " " l1))
+			;;(set! a3 (grsp-matrix-spjustify "#r" a3 " " (string-length l1)))
 			
 			;; Put a3 back in a1.
 			(set! a1 (grsp-matrix-subrep a1 a3 (grsp-lm a1) j1))
 			
 			(loop (+ j1 1)))))
-
+	   
 	   (set! a2 (grsp-matrix-cpy a1)))
 	  
 	  ((equal? p_b1 #f)
@@ -9489,11 +9495,12 @@
   (let ((res1 "")
 	(a1 ""))
 
-    (cond ((equal? (number? (array-ref p_a1 0 0)) #t)
-	   (set! a1 (grsp-mn2ms p_a1)))
-	  ((equal? (string? (array-ref p_a1 0 0)) #t)
-	   (set! a1 p_a1)))
+    ;;(cond ((equal? (number? (array-ref p_a1 0 0)) #t)
+	   ;;(set! a1 (grsp-mn2ms p_a1)))
+	  ;;((equal? (string? (array-ref p_a1 0 0)) #t)
+	   ;;(set! a1 p_a1)))
 
+    (set! a1 (grsp-my2ms p_a1))
     (set! res1 (grsp-ms2s #t a1))
 
     (display res1)))
@@ -12521,6 +12528,45 @@
 
 	  (begin (set! i2 (- i1 1))
 		 (array-set! res1 (grsp-n2s i2) i1 0)
+		 
+		 (loop (+ i1 1)))))
+    
+    res1))
+
+;;;; grsp-ms-pad-elements - Pads elements of a string matrix to the right or
+;; left with blank spaces.
+;;
+;; Keywords:
+;;
+;; - pad, padding, fill, filling, display
+;;
+;; Parameters:
+;;
+;; - p_a1: string matrix.
+;; - p_n1: number of blanks to add to the right.
+;; - p_n2: number of blanks to add to the left.
+;;
+(define (grsp-ms-pad-elements p_a1 p_n1 p_n2)
+  (let ((res1 0)
+	(s1 ""))
+
+    ;; Safety copy.
+    (set! res1 (grsp-matrix-cpy p_a1))
+    
+    ;; Row loop.
+    (let loop ((i1 (grsp-lm res1)))
+      (if (<= i1 (grsp-hm res1))
+
+	  ;; Col loop.
+	  (begin (let loop ((j1 (grsp-ln res1)))
+		   (if (<= j1 (grsp-hn res1))
+
+		       (begin (set! s1 (array-ref res1 i1 j1))
+			      (set! s1 (newspaces p_n1 s1 0))
+			      (set! s1 (newspaces p_n2 s1 1))
+			      (array-set! res1 s1 i1 j1)
+			      
+			      (loop (+ j1 1)))))		 
 		 
 		 (loop (+ i1 1)))))
     

@@ -84,7 +84,9 @@
 ;;   https://practical-scheme.net/ (Accessed: 29 July 2023).
 ;; - [13] Project MAC (‘Switzerland’) (no date) Project MAC Home Page.
 ;;   Available at: http://groups.csail.mit.edu/mac/projects/mac/
-;;   (Accessed: 29 July 2023). 
+;;   (Accessed: 29 July 2023).
+;; - [14] https://www.gnu.org/software/guile/manual/html_node/Pipes.html
+;; - [15] https://askubuntu.com/questions/859975/how-to-know-the-vertical-position-of-the-command-prompt
 
 
 (define-module (grsp grsp0)
@@ -92,6 +94,8 @@
   #:use-module (ice-9 string-fun)
   #:use-module (ice-9 futures)
   #:use-module (ice-9 binary-ports)
+  #:use-module (ice-9 popen)
+  #:use-module (ice-9 rdelim)
   #:export (pline
 	    ptit
 	    newlines
@@ -174,7 +178,11 @@
 	    grsp-clear-on-demand
 	    grsp-ldlc
 	    grsp-padlr
-	    grsp-pad-lr))
+	    grsp-pad-lr
+	    grsp-menuv
+	    grsp-menup
+	    grsp-menufv
+	    grsp-piped))
 
 
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
@@ -262,7 +270,7 @@
 	       (loop (+ i1 1))))))
 
 
-;;;; clear - Clears the shell by inserting 100 blank lines.
+;;;; clear - Clears the terminal or shell by inserting 100 blank lines.
 ;;
 ;; Keywords:
 ;;
@@ -362,19 +370,22 @@
   (let ((res1 " ")
 	(s1 ""))
 
-    (let loop ((i1 0))
-      
-      ;; Create a string of blanks.
+    (set! res1 p_l1)
+    
+    ;; Create a string of blanks.
+    (let loop ((i1 0))     
       (if (< i1 p_n1)
+	  
 	  (begin (set! s1 (string-append s1 " "))
+		 
 		 (loop (+ i1 1)))))
       
       ;; Add the blank string.
       (if (= p_s1 0)
-  	  (set! res1 (string-append s1 p_l1)))
+  	  (set! res1 (string-append s1 res1)))
       
       (if (= p_s1 1)
-	  (set! res1 (string-append p_l1 s1)))
+	  (set! res1 (string-append res1 s1)))
 
       res1))
 
@@ -2544,7 +2555,7 @@
 ;;
 ;; Keywrods:
 ;;
-;; - clear, console, screen, shell
+;; - clear, console, screen, shell, terminal
 ;;
 ;; Parameters:
 ;;
@@ -2584,3 +2595,144 @@
     (set! res1 (string-pad-right p_s1 (string-length p_s2)))
     
     res1))
+
+
+;; grsp-menuv - Build a vertical menu with the options in list p_l1.
+;;
+;; Keywords:
+;;
+;; - menus, shell, interface, io, terminal
+;;
+;; Parameters:
+;;
+;; - p_l1: list, strings, menu items.
+;;
+;; Notes:
+;;
+;; - See grsp-menufv, grsp-menup.
+;; - Option 0 is reserved for an exit option.
+;;
+(define (grsp-menuv p_l1)
+  (let ((res1 0)
+	(j2 0)
+	(s1 "")
+	(s2 ""))
+
+    ;; Present exit option in all cases.
+    (grsp-ld "0 - Exit")
+    
+    ;; List loop.    
+    (let loop ((j1 0))
+      (if (<= j1 (- (length p_l1) 1))
+
+	  (begin (set! s1 (list-ref p_l1 j1))
+		 (set! j2 (+ j1 1))
+		 (set! s2 (strings-append (list (grsp-n2s j2) " - " s1) 0))
+		 (grsp-ld s2)
+		 
+		 (loop (+ j1 1)))))
+
+    (set! res1 (grsp-ask "? "))
+    
+    res1))
+
+
+;; grsp-menup - This is a presentation for terminal or shell program menus.
+;;
+;; Keywords:
+;;
+;; - menus, shell, interface, io, terminals
+;;
+;; Arguments:
+;;
+;; - p_b1: boolean: if you want an <ENT> message to appear.
+;;
+;;  - #t for an <ENT> message to appear.
+;;  - #f for no.
+;;
+;; - p_s1: menu title.
+;; - p_s2: text, brief description.
+;; - p_n1: numer of lines, terminal or shell height.
+;; - p_n2: line length, terminal or shell width.
+;;
+;; Notes:
+;;
+;; - See grsp-menuv, grsp-menufv.
+;;
+(define (grsp-menup p_b1 p_s1 p_s2 p_n1 p_n2)
+  (let ((res1 0)
+	(n1 0))
+
+    (clearl p_n1)
+    (system "tput cup 0")
+    (ptit "=" p_n2 2 p_s1)
+    (ptit " " p_n2 0 p_s2)   
+    
+    (cond ((equal? p_b1 #t)
+	   (set! res1 (grsp-ask "Press <ENT> to continue."))))))
+
+
+;; grsp-menufv - Fully vertical terminal or shell menus.
+;;
+;; Keywords:
+;;
+;; - menus, shell, interface, io, terminals
+;;
+;; Arguments:
+;;
+;; - p_s1: menu title.
+;; - p_s2: text, brief description.
+;; - p_l1: list, strings, menu items.
+;;
+;; Notes:
+;;
+;; - See grsp-menuv, grsp-menup.
+;;
+(define (grsp-menufv p_s1 p_s2 p_l1)
+  (let ((res1 0)
+	(tm 0)
+	(tn 0))
+
+    (set! tm (grsp-s2n (grsp-piped "tput lines")))
+    (set! tn (grsp-s2n (grsp-piped "tput cols")))
+    (grsp-menup #f p_s1 p_s2 tm tn)
+    (set! res1 (grsp-menuv p_l1))
+    
+    res1))
+
+
+;;;; grsp-piped - Use system commands with a pipe from them.
+;;
+;; Keywords:
+;;
+;; - piped, pipes
+;;
+;; Parameters:
+;;
+;; - p_s1: string, system command.
+;;
+;; Output:
+;;
+;; - String.
+;;
+;; Sources:
+;;
+;; - [14]-
+;;
+(define (grsp-piped p_s1)
+  (let* ((port (open-input-pipe p_s1))
+	 (res1 (read-line port)))
+    
+    (close-pipe port)
+    
+    res1))
+
+
+;;;; clearl - Clears the terminal or shell by inserting p_n1 blank lines.
+;;
+;; Keywords:
+;;
+;; - console, strings
+;;
+(define (clearl p_n1)
+  (newlines p_n1))
