@@ -11411,25 +11411,38 @@
 ;;
 (define (grsp-matrix-inputev p_b1 p_b2 p_a1 p_i1 p_j1)
   (let ((res1 0)
+	(res2 0)
 	(s1 "")
 	(s2 "")
 	(s3 "")
+	(s4 "")
+	(s5 "")
 	(n1 0))
 
-    (set! res1 (grsp-matrix-cpy p_a1))
-
+    (set! res2 (grsp-matrix-cpy p_a1))
+    (set! res1 (grsp-my2ms res2))
+    
     (cond ((equal? p_b1 #t)
 	   (clear)
 	   (grsp-ldl "Matrix before updating:" 0 0)
 	   (grsp-matrix-display res1)))
-	   
-    (set! s1 (strings-append (list "Value for element ["
+
+    (set! s5 (array-ref res1 p_i1 p_j1))    
+    (set! s4 (strings-append (list "Current value for element ["
 				   (grsp-n2s p_i1)
 				   ", "
 				   (grsp-n2s p_j1)
-				   "]?")
+				   "]  "
+				   s5)
+			     0))			     
+    
+    (set! s1 (strings-append (list "New value for element ["
+				   (grsp-n2s p_i1)
+				   ", "
+				   (grsp-n2s p_j1)
+				   "]? ")
 			     0))
-
+    (grsp-ldl s4 1 1)
     (set! s2 (grsp-ask s1))
 
     (cond ((symbol? s2)    
@@ -11747,11 +11760,12 @@
 
     ;; Safety copy.
     (set! a1 (grsp-matrix-cpy p_a1))
-    ;; ***
+
     (while (equal? b1 #t)
 
 	   (clear)
-
+	   (system "tput cup 0")
+	   
 	   ;; Assign default values if matrix has one row filled with zeros,
 	   ;; meaning that it has just been created.
 	   (cond ((equal? (grsp-tm a1) 1)
@@ -12571,3 +12585,5 @@
 		 (loop (+ i1 1)))))
     
     res1))
+
+

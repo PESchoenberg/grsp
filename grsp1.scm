@@ -32,7 +32,8 @@
 
 (define-module (grsp grsp1)
   #:use-module (grsp grsp0)
-  #:export (gconst))
+  #:export (gconst
+	    gconsten))
 	    
 
 ;;;; gconst - Various constants.
@@ -130,7 +131,7 @@
 ;;   [Accessed 4 November 2020].
 
 
-;;;; gconst - Constants.
+;;;; gconst - Constants, numeric.
 ;;
 ;; Keywords:
 ;;
@@ -1091,3 +1092,36 @@
 
     res))
 
+
+;;;; gconsten - Constants, strings, in English.
+;;
+;; Keywords:
+;;
+;; - constants.
+;;
+;; Parameters:
+;;
+;; - p_s1: string, constant identifier.
+;;
+(define (gconsten p_s1)
+  (let ((res1 ""))
+
+    (cond ((equal? p_s1 "hw")
+	   (set! res1 "Hello world!"))
+	  ((equal? p_s1 "pdf")
+	   (set! res1 "See docs for details."))
+	  ((equal? p_s1 "pec")
+	   (set! res1 "Press <ENT> to continue."))
+	  ((equal? p_s1 "opt")
+	   (set! res1 "? "))
+	  ((equal? p_s1 "ged")
+	   (set! res1 "Getting data..."))
+	  ((equal? p_s1 "plw")
+	   (set! res1 "Please wait..."))
+	  ((equal? p_s1 "fin")
+	   (set! res1 "Finished!"))
+	  ((equal? p_s1 "bmm")
+	   (set! res1 "Back to main menu!\n")))	  
+
+    res1))
+	  	  
