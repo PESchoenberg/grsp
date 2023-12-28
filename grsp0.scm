@@ -91,12 +91,14 @@
 
 (define-module (grsp grsp0)
   #:use-module (grsp grsp3)
+  #:use-module (grsp grsp1)  
   #:use-module (ice-9 string-fun)
   #:use-module (ice-9 futures)
   #:use-module (ice-9 binary-ports)
   #:use-module (ice-9 popen)
   #:use-module (ice-9 rdelim)
   #:export (pline
+	    plinetn
 	    ptit
 	    newlines
 	    clear
@@ -182,7 +184,10 @@
 	    grsp-menuv
 	    grsp-menup
 	    grsp-menufv
-	    grsp-piped))
+	    grsp-piped
+	    clearl
+	    grsp-clear-cup
+	    grsp-repos))
 
 
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
@@ -215,6 +220,25 @@
 		 (newlines 1))
 	  (begin (set! s1 (string-append s1 p_s1))
 	         (loop (+ i1 1)))))))
+
+
+;;;; plinetn . same as pline but applies the string to the total width of the
+;; shell or terminal.
+;;
+;; Keywords:
+;;
+;; - pline, terminal, decoration
+;;
+;; Parameters:
+;;
+;; - p_s1: line character to display.
+;;
+(define (plinetn p_s1)
+  (let ((res1 9))
+
+    (pline p_s1 (grsp-s2n (grsp-piped "tput cols")))
+    
+    res1))
 
 
 ;;;; ptit - Displays a console title with one or two lines.
@@ -461,9 +485,6 @@
 (define (read-file-as-string p_f1)
   (call-with-input-file p_f1
     (lambda (p1)
-
-      ;; ***
-      ;;(if binary "rb" "r")
       
       (let loop((ls1 '()) (c1 (read-char p1)))	
 	(if (eof-object? c1)
@@ -556,7 +577,7 @@
 ;;
 (define (grsp-save-to-file p_s1 p_f1 p_m1)
   (let ((output-port (open-file p_f1 p_m1)))    
-    ;; ***
+
     (display p_s1 output-port)
     (newline output-port)
     (close output-port)))
@@ -864,7 +885,7 @@
 (define (grsp-ask-etc)
   (let ((res1 " "))
 
-    (grsp-ask "Press <ENT> to continue.")
+    (grsp-ask (gconsten "pec"))
     
     res1))
 
@@ -961,9 +982,11 @@
     (cond ((string? p_a1)
 	   (set! res1 p_a1))	  
 	  ((boolean? p_a1)
+
 	   (cond ((equal? p_a1 #t)
 		  (set! res1 "#t"))
 		 (else (set! res1 "#f"))))
+	  
 	  ((char? p_a1)
 	   (set! l1 (list p_a1))
 	   (set! res1 (list->string l1)))
@@ -1117,7 +1140,7 @@
 ;; - String.
 ;;
 (define (grsp-hw)
-  (grsp-ldl "Hello world!" 1 1))
+  (grsp-ldl (gconsten "hw") 1 1))
 
 
 ;;;; grsp-gb - Says goodbye.
@@ -1131,7 +1154,7 @@
 ;; - String.
 ;;
 (define (grsp-gb)
-  (grsp-ldl "Good bye!" 1 1))
+  (grsp-ldl (gconsten "gob") 1 1))
 
 
 ;;;; grsp-string-tlength - Returns the length of trimmed string p_s2.
@@ -2099,7 +2122,7 @@
   (let ((res1 #f))
 
   (cond ((equal? p_b1 #t)
-	 (set! res1 (grsp-ask "Confirm operation [#t/#f]? "))))
+	 (set! res1 (grsp-ask (gconsten "cop")))))
 
   res1))
 
@@ -2669,7 +2692,7 @@
     (ptit " " p_n2 0 p_s2)   
     
     (cond ((equal? p_b1 #t)
-	   (set! res1 (grsp-ask "Press <ENT> to continue."))))))
+	   (set! res1 (grsp-ask (gconsten "pec")))))))
 
 
 ;; grsp-menufv - Fully vertical terminal or shell menus.
@@ -2736,3 +2759,46 @@
 ;;
 (define (clearl p_n1)
   (newlines p_n1))
+
+
+;;;; grsp-clear-cup - Clears the terminal or shell and repositions the cursor
+;; at line p_m1.
+;;
+;; Keywords:
+;;
+;; - console, strings
+;;
+;; ParametersL
+;;
+;; - p_m1: numeric, line number.
+;;
+(define (grsp-clear-cup p_m1)
+  (let ((res1 0))
+    
+  (clear)
+  (grsp-repos p_m1)
+
+  res1))
+
+
+;;;; grsp-clear-cup - Repositions the cursor to line p_m1 without clearing the
+;; terminal.
+;;
+;; Keywords:
+;;
+;; - console, strings
+;;
+;; ParametersL
+;;
+;; - p_m1: numeric, line number.
+;;
+(define (grsp-repos p_m1)
+  (let ((res1 0)
+	(s1 ""))
+
+  (set! s1 (strings-append (list "tput cup" (grsp-n2s p_m1)) 1))
+  (system s1)
+
+  res1))
+
+
