@@ -484,7 +484,8 @@
 	    grsp-ms-get-longest-element
 	    grsp-ms-create-col-headers
 	    grsp-ms-create-row-headers
-	    grsp-ms-pad-elements))
+	    grsp-ms-pad-elements
+	    grsp-matrix-displaytms))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -5465,19 +5466,25 @@
 			
 			(cond ((< n2 n3)			 
 			       (set! res2 res3))			
-			      ((and (= n2 n3) (> i1 lm1))			 
+			      ((and (= n2 n3) (> i1 lm1))
 			       (set! res2 (grsp-matrix-subexp res2 1 0))
 			       (set! hm2 (grsp-matrix-esi 2 res2))
-			       (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1)))))
+			       (set! res2 (grsp-matrix-subrep res2
+							      res3
+							      hm2
+							      ln1)))))
 		       
 		       ((equal? p_s1 "#max")
 			
 			(cond ((> n2 n3)			 
 			       (set! res2 res3))			
-			      ((and (= n2 n3) (> i1 lm1))			 
+			      ((and (= n2 n3) (> i1 lm1))
 			       (set! res2 (grsp-matrix-subexp res2 1 0))
 			       (set! hm2 (grsp-matrix-esi 2 res2))
-			       (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1))))))					 
+			       (set! res2 (grsp-matrix-subrep res2
+							      res3
+							      hm2
+							      ln1))))))					 
 		 
 		 (loop (+ i1 1)))))
     
@@ -5504,6 +5511,7 @@
 ;;   - "#<=".
 ;;   - "#!=".
 ;;   - "#=".
+;;   - "#eq".
 ;;
 ;; - p_a1: matrix.
 ;; - p_j1: column number.
@@ -5554,42 +5562,70 @@
 			(cond ((< n2 p_n1)			 
 			       (set! res2 (grsp-matrix-subexp res2 1 0))
 			       (set! hm2 (grsp-matrix-esi 2 res2))
-			       (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1)))))
+			       (set! res2 (grsp-matrix-subrep res2
+							      res3
+							      hm2
+							      ln1)))))
 		       
 		       ((equal? p_s1 "#>")
 			
 			(cond ((> n2 p_n1)			 
 			       (set! res2 (grsp-matrix-subexp res2 1 0))
 			       (set! hm2 (grsp-matrix-esi 2 res2))
-			       (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1)))))
+			       (set! res2 (grsp-matrix-subrep res2
+							      res3
+							      hm2
+							      ln1)))))
 		       
 		       ((equal? p_s1 "#<=")
 			
 			(cond ((<= n2 p_n1)			 
 			       (set! res2 (grsp-matrix-subexp res2 1 0))
 			       (set! hm2 (grsp-matrix-esi 2 res2))
-			       (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1)))))
+			       (set! res2 (grsp-matrix-subrep res2
+							      res3
+							      hm2
+							      ln1)))))
 		       
 		       ((equal? p_s1 "#>=")
 			
 			(cond ((>= n2 p_n1)			 
 			       (set! res2 (grsp-matrix-subexp res2 1 0))
 			       (set! hm2 (grsp-matrix-esi 2 res2))
-			       (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1)))))
+			       (set! res2 (grsp-matrix-subrep res2
+							      res3
+							      hm2
+							      ln1)))))
 		       
 		       ((equal? p_s1 "#!=")
 			
 			(cond ((not (= n2 p_n1))			 
 			       (set! res2 (grsp-matrix-subexp res2 1 0))
 			       (set! hm2 (grsp-matrix-esi 2 res2))
-			       (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1)))))
+			       (set! res2 (grsp-matrix-subrep res2
+							      res3
+							      hm2
+							      ln1)))))
+
+		       ((equal? p_s1 "#eq")
+			
+			(cond ((equal? n2 p_n1)			 
+			       (set! res2 (grsp-matrix-subexp res2 1 0))
+			       (set! hm2 (grsp-matrix-esi 2 res2))
+			       (set! res2 (grsp-matrix-subrep res2
+							      res3
+							      hm2
+							      ln1)))))
 		       
 		       ((equal? p_s1 "#=")
 			
 			(cond ((= n2 p_n1)			 
 			       (set! res2 (grsp-matrix-subexp res2 1 0))
 			       (set! hm2 (grsp-matrix-esi 2 res2))
-			       (set! res2 (grsp-matrix-subrep res2 res3 hm2 ln1))))))
+			       (set! res2 (grsp-matrix-subrep res2
+							      res3
+							      hm2
+							      ln1))))))
 		 
 		 (loop (+ i1 1)))))
     
@@ -5956,7 +5992,11 @@
 				     (let loop ((j3 ln3))
 				       (if (<= j3 hn3)
 
-					   (begin (array-set! res1 (array-ref res3 i3 j3) hm1 j3)
+					   (begin (array-set! res1
+							      (array-ref res3
+									 i3
+									 j3)
+							      hm1 j3)
 						  
 						  (loop (+ j3 1)))))))
 			      
@@ -6965,7 +7005,10 @@
 	  (begin (let loop ((j1 ln1))
 		   (if (<= j1 hn1)
 
-		       (begin (set! res1 (grsp-matrix-row-delete "#=" res1 j1 p_n1))
+		       (begin (set! res1 (grsp-matrix-row-delete "#="
+								 res1
+								 j1
+								 p_n1))
 
 			      ;; Extract current boundaries.
 			      (set! lm1 (grsp-matrix-esi 1 res1))
@@ -9431,11 +9474,9 @@
 			
 			;; Find the longest string in the matrix.
 			(set! l1 (+ (grsp-matrix-slongest a3) 1))
-			;;(set! l1 (grsp-ms-get-longest-element p_a1))
 			
 			;; Justify.
 			(set! a3 (grsp-matrix-spjustify "#l" a3 " " l1))
-			;;(set! a3 (grsp-matrix-spjustify "#r" a3 " " (string-length l1)))
 			
 			;; Put a3 back in a1.
 			(set! a1 (grsp-matrix-subrep a1 a3 (grsp-lm a1) j1))
@@ -9460,7 +9501,8 @@
 	  (begin (let loop ((j1 (grsp-ln a1)))
 		   (if (<= j1 (grsp-hn a1))
 
-		       (begin (set! res1 (string-append res1 (array-ref a2 i1 j1)))
+		       (begin (set! res1 (string-append res1
+							(array-ref a2 i1 j1)))
 			      
 			      (loop (+ j1 1)))))
 
@@ -9494,11 +9536,6 @@
 (define (grsp-matrix-display p_a1)
   (let ((res1 "")
 	(a1 ""))
-
-    ;;(cond ((equal? (number? (array-ref p_a1 0 0)) #t)
-	   ;;(set! a1 (grsp-mn2ms p_a1)))
-	  ;;((equal? (string? (array-ref p_a1 0 0)) #t)
-	   ;;(set! a1 p_a1)))
 
     (set! a1 (grsp-my2ms p_a1))
     (set! res1 (grsp-ms2s #t a1))
@@ -11424,11 +11461,11 @@
     
     (cond ((equal? p_b1 #t)
 	   (clear)
-	   (grsp-ldl "Matrix before updating:" 0 0)
+	   (grsp-ldl (gconsten "mbu") 0 0)
 	   (grsp-matrix-display res1)))
 
     (set! s5 (array-ref res1 p_i1 p_j1))    
-    (set! s4 (strings-append (list "Current value for element ["
+    (set! s4 (strings-append (list (gconsten "cve")
 				   (grsp-n2s p_i1)
 				   ", "
 				   (grsp-n2s p_j1)
@@ -11436,7 +11473,7 @@
 				   s5)
 			     0))			     
     
-    (set! s1 (strings-append (list "New value for element ["
+    (set! s1 (strings-append (list (gconsten "nve")
 				   (grsp-n2s p_i1)
 				   ", "
 				   (grsp-n2s p_j1)
@@ -11460,7 +11497,7 @@
 
     (cond ((equal? p_b2 #t)
 	   (clear)
-	   (grsp-ldl "Matrix after updating:" 0 0)	   
+	   (grsp-ldl (gconsten "mau") 0 0)	   
 	   (grsp-matrix-display res1)))
     
     res1))
@@ -11586,7 +11623,7 @@
     
     (while (equal? b3 #t)
 	   (clear)
-	   (grsp-ldl "Add row to matrix..." 0 1)
+	   (grsp-ldl (gconsten "arm") 0 1)
 	   (grsp-matrix-display res1)	   
 	   (set! b3 (grsp-confirm b3))
 	   
@@ -11763,36 +11800,31 @@
 
     (while (equal? b1 #t)
 
-	   (clear)
-	   (system "tput cup 0")
-	   
+	   ;; TODO: this requires a proper control of the row.
 	   ;; Assign default values if matrix has one row filled with zeros,
 	   ;; meaning that it has just been created.
-	   (cond ((equal? (grsp-tm a1) 1)
-		  (set! a1 (grsp-matrix-editu a1 (grsp-lm a1) p_l2))))
-
+	   ;;(cond ((equal? (grsp-tm a1) 1)
+		  ;;(set! a1 (grsp-matrix-editu a1 (grsp-lm a1) p_l2))))
+	   ;; ***
 	   ;; Display matrix.
-	   (set! a3 (grsp-my2ms a1))
-	   (set! a2 (grsp-matrix-displaytm a1))
-	   (grsp-ldl "Data matrix:" 0 0)
-	   (grsp-matrix-displayts a3 p_l1)	   
-	   (grsp-ldl "0 - Exit  1 - Edit  2 - Add  3 - Delete  4 - Set to def. " 0 0)
+	   (grsp-matrix-displaytms a1 p_l1)
+	   (grsp-ldl (gconsten "01234") 0 0)
 	   (set! n1 (grsp-askn "? "))
 
 	   (cond ((equal? n1 0)
 		  (set! b1 #f))
 		 ((equal? n1 1)
-		  (set! i1 (grsp-askn "Row? "))
-		  (set! j1 (grsp-askn "Col? "))
+		  (set! i1 (grsp-askn (gconsten "row")))
+		  (set! j1 (grsp-askn (gconsten "col")))
 		  (set! a1 (grsp-matrix-inputev #f #f a1 i1 j1)))
 		 ((equal? n1 2)
 		  (set! a1 (grsp-matrix-subexp a1 1 0))
 		  (set! a1 (grsp-matrix-editu a1 (grsp-hm a1) p_l2)))
 		 ((equal? n1 3)		  
-		  (set! i1 (grsp-askn "Row? "))
+		  (set! i1 (grsp-askn (gconsten "row")))
 		  (set! a1 (grsp-matrix-subdel "#Delr" a1 i1)))
 		 ((equal? n1 4)
-		  (set! i1 (grsp-askn "Row? "))
+		  (set! i1 (grsp-askn (gconsten "row")))
 		  (set! a1 (grsp-matrix-editu a1 i1 p_l2)))))
 
     ;; Compose results.
@@ -11869,7 +11901,7 @@
 (define (grsp-matrix-displaytm p_a1)
   (let ((res1 0))
 
-    (grsp-ldl "Data types:" 0 0)
+    (grsp-ldl (gconsten "dat") 0 0)
     (set! res1 (grsp-matrix-argstru p_a1))
     (grsp-matrix-display res1)
 
@@ -12075,7 +12107,7 @@
     res1))
 
 
-;;;; grsp-ms2mb - Cast mattrix of strings p_a1 representing bollean values as a
+;;;; grsp-ms2mb - Casts mattrix of strings p_a1 representing bollean values as a
 ;; matrix of bolleans.
 ;;
 ;; Keywords:
@@ -12587,3 +12619,30 @@
     res1))
 
 
+;;;; grsp-matrix-displaytms - Applies functions grsp-matrixtm and grsp-matrixts
+;; to matrix p_a1 and displays it.
+;;
+;; Keywords:
+;;
+;; - show, display
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix.
+;; - p_l1: list of strings, column names or titles.
+;;
+(define (grsp-matrix-displaytms p_a1 p_l1)
+  (let ((res1 0)
+	(a1 0)
+	(a2 0)
+	(a3 0))
+
+    ;; Safety copy.
+    (set! a1 (grsp-matrix-cpy p_a1))
+    
+    (set! a3 (grsp-my2ms a1))
+    (set! a2 (grsp-matrix-displaytm a1))
+    (grsp-ldl (gconsten "dam") 0 0)
+    (grsp-matrix-displayts a3 p_l1)
+
+    res1))
