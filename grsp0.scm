@@ -7,7 +7,7 @@
 ;;
 ;; =============================================================================
 ;;
-;; Copyright (C) 2018 - 2023 Pablo Edronkin (pablo.edronkin at yahoo.com)
+;; Copyright (C) 2018 - 2024 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
 ;;   it under the terms of the GNU Lesser General Public License as published by
@@ -885,7 +885,7 @@
 (define (grsp-ask-etc)
   (let ((res1 " "))
 
-    (grsp-ask (gconsten "pec"))
+    (grsp-ask (gconsts "pec"))
     
     res1))
 
@@ -1140,7 +1140,7 @@
 ;; - String.
 ;;
 (define (grsp-hw)
-  (grsp-ldl (gconsten "hw") 1 1))
+  (grsp-ldl (gconsts "hw") 1 1))
 
 
 ;;;; grsp-gb - Says goodbye.
@@ -1154,7 +1154,7 @@
 ;; - String.
 ;;
 (define (grsp-gb)
-  (grsp-ldl (gconsten "gob") 1 1))
+  (grsp-ldl (gconsts "gob") 1 1))
 
 
 ;;;; grsp-string-tlength - Returns the length of trimmed string p_s2.
@@ -2122,7 +2122,7 @@
   (let ((res1 #f))
 
   (cond ((equal? p_b1 #t)
-	 (set! res1 (grsp-ask (gconsten "cop")))))
+	 (set! res1 (grsp-ask (gconsts "cop")))))
 
   res1))
 
@@ -2692,7 +2692,7 @@
     (ptit " " p_n2 0 p_s2)   
     
     (cond ((equal? p_b1 #t)
-	   (set! res1 (grsp-ask (gconsten "pec")))))))
+	   (set! res1 (grsp-ask (gconsts "pec")))))))
 
 
 ;; grsp-menufv - Fully vertical terminal or shell menus.
