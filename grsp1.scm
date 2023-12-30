@@ -6,7 +6,7 @@
 ;;
 ;; =============================================================================
 ;;
-;; Copyright (C) 2018 - 2023 Pablo Edronkin (pablo.edronkin at yahoo.com)
+;; Copyright (C) 2018 - 2024 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
 ;;   it under the terms of the GNU Lesser General Public License as published by
@@ -33,10 +33,34 @@
 (define-module (grsp grsp1)
   #:use-module (grsp grsp0)
   #:export (gconst
+	    gconsts
 	    gconsten))
 	    
 
-;;;; gconst - Various constants.
+;;;; gconsts - String constants.
+;;
+;; Keywords:
+;;
+;; - constants
+;;
+;; Parameters:
+;;
+;; - p_s1: string, constant identifier.
+;;
+;; Notes:
+;;
+;; - Change the name of the inner function in order to change language.
+;;
+(define (gconsts p_s1)
+  (let ((res1 ""))
+
+    ;; Change the function here to use different languages.
+    (set! res1 (gconsten p_s1))
+    
+    res1))
+
+
+;;;; gconst - Various numeric constants.
 ;;
 ;; Keywords:
 ;;

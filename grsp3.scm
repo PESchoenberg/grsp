@@ -8,7 +8,7 @@
 ;;
 ;; =============================================================================
 ;;
-;; Copyright (C) 2020 - 2023 Pablo Edronkin (pablo.edronkin at yahoo.com)
+;; Copyright (C) 2020 - 2024 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
 ;;   it under the terms of the GNU Lesser General Public License as published by
@@ -11461,11 +11461,11 @@
     
     (cond ((equal? p_b1 #t)
 	   (clear)
-	   (grsp-ldl (gconsten "mbu") 0 0)
+	   (grsp-ldl (gconsts "mbu") 0 0)
 	   (grsp-matrix-display res1)))
 
     (set! s5 (array-ref res1 p_i1 p_j1))    
-    (set! s4 (strings-append (list (gconsten "cve")
+    (set! s4 (strings-append (list (gconsts "cve")
 				   (grsp-n2s p_i1)
 				   ", "
 				   (grsp-n2s p_j1)
@@ -11473,7 +11473,7 @@
 				   s5)
 			     0))			     
     
-    (set! s1 (strings-append (list (gconsten "nve")
+    (set! s1 (strings-append (list (gconsts "nve")
 				   (grsp-n2s p_i1)
 				   ", "
 				   (grsp-n2s p_j1)
@@ -11497,7 +11497,7 @@
 
     (cond ((equal? p_b2 #t)
 	   (clear)
-	   (grsp-ldl (gconsten "mau") 0 0)	   
+	   (grsp-ldl (gconsts "mau") 0 0)	   
 	   (grsp-matrix-display res1)))
     
     res1))
@@ -11623,7 +11623,7 @@
     
     (while (equal? b3 #t)
 	   (clear)
-	   (grsp-ldl (gconsten "arm") 0 1)
+	   (grsp-ldl (gconsts "arm") 0 1)
 	   (grsp-matrix-display res1)	   
 	   (set! b3 (grsp-confirm b3))
 	   
@@ -11808,23 +11808,23 @@
 	   ;; ***
 	   ;; Display matrix.
 	   (grsp-matrix-displaytms a1 p_l1)
-	   (grsp-ldl (gconsten "01234") 0 0)
+	   (grsp-ldl (gconsts "01234") 0 0)
 	   (set! n1 (grsp-askn "? "))
 
 	   (cond ((equal? n1 0)
 		  (set! b1 #f))
 		 ((equal? n1 1)
-		  (set! i1 (grsp-askn (gconsten "row")))
-		  (set! j1 (grsp-askn (gconsten "col")))
+		  (set! i1 (grsp-askn (gconsts "row")))
+		  (set! j1 (grsp-askn (gconsts "col")))
 		  (set! a1 (grsp-matrix-inputev #f #f a1 i1 j1)))
 		 ((equal? n1 2)
 		  (set! a1 (grsp-matrix-subexp a1 1 0))
 		  (set! a1 (grsp-matrix-editu a1 (grsp-hm a1) p_l2)))
 		 ((equal? n1 3)		  
-		  (set! i1 (grsp-askn (gconsten "row")))
+		  (set! i1 (grsp-askn (gconsts "row")))
 		  (set! a1 (grsp-matrix-subdel "#Delr" a1 i1)))
 		 ((equal? n1 4)
-		  (set! i1 (grsp-askn (gconsten "row")))
+		  (set! i1 (grsp-askn (gconsts "row")))
 		  (set! a1 (grsp-matrix-editu a1 i1 p_l2)))))
 
     ;; Compose results.
@@ -11901,7 +11901,7 @@
 (define (grsp-matrix-displaytm p_a1)
   (let ((res1 0))
 
-    (grsp-ldl (gconsten "dat") 0 0)
+    (grsp-ldl (gconsts "dat") 0 0)
     (set! res1 (grsp-matrix-argstru p_a1))
     (grsp-matrix-display res1)
 
@@ -12642,7 +12642,7 @@
     
     (set! a3 (grsp-my2ms a1))
     (set! a2 (grsp-matrix-displaytm a1))
-    (grsp-ldl (gconsten "dam") 0 0)
+    (grsp-ldl (gconsts "dam") 0 0)
     (grsp-matrix-displayts a3 p_l1)
 
     res1))
