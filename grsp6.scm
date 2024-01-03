@@ -1,27 +1,28 @@
-;; =============================================================================
+;; =========================================================================
 ;;
 ;; grsp6.scm
 ;;
 ;; Physics functions and related code.
 ;;
-;; =============================================================================
+;; =========================================================================
 ;;
 ;; Copyright (C) 2018 - 2024 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
-;;   it under the terms of the GNU Lesser General Public License as published by
-;;   the Free Software Foundation, either version 3 of the License, or
-;;   (at your option) any later version.
+;;   it under the terms of the GNU Lesser General Public License as
+;;   published by the Free Software Foundation, either version 3 of the
+;;   License, or (at your option) any later version.
 ;;
 ;;   This program is distributed in the hope that it will be useful,
 ;;   but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 ;;   GNU Lesser General Public License for more details.
 ;;
-;;   You should have received a copy of the GNU Lesser General Public License
-;;   along with this program. If not, see <https://www.gnu.org/licenses/>.
+;;   You should have received a copy of the GNU Lesser General Public
+;;   License along with this program. If not, see
+;;   <https://www.gnu.org/licenses/>.
 ;;
-;; =============================================================================
+;; =========================================================================
 
 
 ;;;; General notes:
@@ -38,42 +39,48 @@
 ;;   https://en.wikipedia.org/wiki/Standard_gravitational_parameter
 ;;   [Accessed 22 September 2020].
 ;; - [2] En.wikipedia.org. 2020. Minkowski Space. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Minkowski_space [Accessed 31 August 2020].
+;;   https://en.wikipedia.org/wiki/Minkowski_space [Accessed 31 August
+;;   2020].
 ;; - [3] En.wikipedia.org. 2020. Lorentz Factor. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Lorentz_factor [Accessed 19 September 2020].
+;;   https://en.wikipedia.org/wiki/Lorentz_factor [Accessed 19 September
+;;   2020].
 ;; - [4] En.wikipedia.org. 2020. List Of Relativistic Equations. [online]
-;;   Available at: https://en.wikipedia.org/wiki/List_of_relativistic_equations
+;;   Available at:
+;;   https://en.wikipedia.org/wiki/List_of_relativistic_equations
 ;;   [Accessed 4 September 2020].
 ;; - [5] En.wikipedia.org. 2020. Doppler Effect. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Doppler_effect [Accessed 7 September 2020].
+;;   https://en.wikipedia.org/wiki/Doppler_effect [Accessed 7 September
+;;   2020].
 ;; - [6] En.wikipedia.org. 2020. Redshift. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Redshift [Accessed 9 September 2020].
 ;; - [7]  En.wikipedia.org. 2020. Modern Physics. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Modern_physics [Accessed 26 September 2020].
+;;   https://en.wikipedia.org/wiki/Modern_physics [Accessed 26 September
+;;   2020].
 ;; - [8] See grsp1 [14].
-;; - [9] Es.wikipedia.org. 2020. Ecuación Del Cohete De Tsiolkovski. [online]
-;;   Available at:
+;; - [9] Es.wikipedia.org. 2020. Ecuación Del Cohete De Tsiolkovski.
+;;   [online] Available at:
 ;;   https://es.wikipedia.org/wiki/Ecuaci%C3%B3n_del_cohete_de_Tsiolkovski
 ;;   [Accessed 29 September 2020].
 ;; - [10] En.wikipedia.org. 2020. Eötvös Effect. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/E%C3%B6tv%C3%B6s_effect
 ;;   [Accessed 2 October 2020].
 ;; - [11] En.wikipedia.org. 2020. Gravity Of Earth. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Gravity_of_Earth [Accessed 3 October 2020].
-;; - [12] En.wikipedia.org. 2020. Gravitational Acceleration. [online] Available
-;;   at: https://en.wikipedia.org/wiki/Gravitational_acceleration
+;;   https://en.wikipedia.org/wiki/Gravity_of_Earth [Accessed 3 October
+;;   2020].
+;; - [12] En.wikipedia.org. 2020. Gravitational Acceleration. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Gravitational_acceleration
 ;;   [Accessed 8 October 2020].
-;; - [13] En.wikipedia.org. 2020. Theoretical Gravity. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Theoretical_gravity
-;;   [Accessed 8 October 2020].
+;; - [13] En.wikipedia.org. 2020. Theoretical Gravity. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Theoretical_gravity [Accessed 8
+;;   October 2020].
 ;; - [14] En.wikipedia.org. 2020. Clairaut's Theorem. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Clairaut%27s_theorem#Somigliana_equation
 ;;   [Accessed 10 October 2020].
-;; - [15] Pl.wikipedia.org. 2020. Przyspieszenie Ziemskie. [online] Available
-;;   at: https://pl.wikipedia.org/wiki/Przyspieszenie_ziemskie
+;; - [15] Pl.wikipedia.org. 2020. Przyspieszenie Ziemskie. [online]
+;;   Available at: https://pl.wikipedia.org/wiki/Przyspieszenie_ziemskie
 ;;   [Accessed 12 October 2020].
-;; - [16] Es.wikipedia.org. 2020. Métrica De Alcubierre. [online] Available at:
-;;   https://es.wikipedia.org/wiki/M%C3%A9trica_de_Alcubierre
+;; - [16] Es.wikipedia.org. 2020. Métrica De Alcubierre. [online] Available
+;;   at: https://es.wikipedia.org/wiki/M%C3%A9trica_de_Alcubierre
 ;;   [Accessed 5 November 2020].
 ;; - [17] Es.wikipedia.org. 2021. Métrica de Schwarzschild - Wikipedia, la
 ;;   enciclopedia libre. [online] Available at:
@@ -82,14 +89,17 @@
 ;; - [18] En.wikipedia.org. 2021. Equations of motion - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Equations_of_motion
 ;;   [Accessed 21 November 2021].
-;; - [19] En.wikipedia.org. 2022. Wormhole - Wikipedia. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Wormhole[Accessed 25 January 2022].
-;; - [20] En.wikipedia.org. 2022. ER = EPR - Wikipedia. [online] Available at:
-;;   https://en.wikipedia.org/wiki/ER_%3D_EPR [Accessed 25 January 2022].
-;; - [21] En.wikipedia.org. 2022. Bloch sphere - Wikipedia. [online] Available
-;;   at: https://en.wikipedia.org/wiki/Bloch_sphere [Accessed 26 May 2022].
-;; - [22] En.wikipedia.org. 2022. Riemann sphere - Wikipedia. [online] Available
-;;   at: https://en.wikipedia.org/wiki/Riemann_sphere [Accessed 26 May 2022].
+;; - [19] En.wikipedia.org. 2022. Wormhole - Wikipedia. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Wormhole[Accessed 25 January 2022].
+;; - [20] En.wikipedia.org. 2022. ER = EPR - Wikipedia. [online] Available
+;;   at: https://en.wikipedia.org/wiki/ER_%3D_EPR [Accessed 25 January
+;;   2022].
+;; - [21] En.wikipedia.org. 2022. Bloch sphere - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Bloch_sphere [Accessed
+;;   26 May 2022].
+;; - [22] En.wikipedia.org. 2022. Riemann sphere - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Riemann_sphere [Accessed
+;;   26 May 2022].
 
 
 (define-module (grsp grsp6)
@@ -131,8 +141,8 @@
 	    grsp-grav-somigliana-mth))
 
 
-;;;; grsp-ds - Calculate intervals in Euclidean space or Minkowski spacetime
-;; (norm of a time-like vector).
+;;;; grsp-ds - Calculate intervals in Euclidean space or Minkowski
+;; spacetime (norm of a time-like vector).
 ;;
 ;; Keywords:
 ;;
@@ -166,8 +176,9 @@
 	(nf -1)
 	(l #t))
 
-    ;; If p_t1 and p_t2 are zero, ignore time displacement and use Euclidean
-    ;; space. If time coordinates are not zero, use Minkowski spacetime.
+    ;; If p_t1 and p_t2 are zero, ignore time displacement and use
+    ;; Euclidean space. If time coordinates are not zero, use Minkowski
+    ;; spacetime.
     (cond ((equal? p_t1 0)
 	   
 	   (cond ((equal? p_t2 0)
@@ -188,9 +199,9 @@
 	   (set! nt (expt (* (gconst "c") (- p_t1 p_t2)) 2 ))))
 
     ;; Calculate root of summation of dimensions. If Euclidean space is
-    ;; used, nf = 1 so that spacelike vectors will be positive (+ + +), and if
-    ;; spacetime is used, nf = -1 so that spacelike vectors become negative and
-    ;; the timelike vector is treated as positive (+ - - -).
+    ;; used, nf = 1 so that spacelike vectors will be positive (+ + +),
+    ;; and if spacetime is used, nf = -1 so that spacelike vectors become
+    ;; negative and the timelike vector is treated as positive (+ - - -).
     (set! res1 (sqrt (+ (+ (+ nx ny) nz) nt)))
 	   
     res1))
@@ -275,8 +286,8 @@
     res1))
 
 
-;;;; grsp-time-dilation - Calculates time t' from t at a given position x in
-;; same inertial frame.
+;;;; grsp-time-dilation - Calculates time t' from t at a given position x
+;; in same inertial frame.
 ;;
 ;; Keywords:
 ;;
@@ -303,8 +314,8 @@
     res1))
 
 
-;;;; grsp-length-contraction - Calculates length contraction under relativistic
-;; conditions.
+;;;; grsp-length-contraction - Calculates length contraction under
+;; relativistic conditions.
 ;;
 ;; Keywords:
 ;;
@@ -373,7 +384,8 @@
     res1))
 
 
-;;;; grsp-lorentz-transf-x-mth - Multithreaded variant of grsp-lorentz-transf.
+;;;; grsp-lorentz-transf-x-mth - Multithreaded variant of
+;; grsp-lorentz-transf.
 ;;
 ;; Keywords:
 ;;
@@ -404,7 +416,9 @@
 	(l1 0.0))
 
     (set! l1 (grsp-lorentz-factor p_v1))
-    (parallel (set! t2 (* l1 (- p_t1 (/ (* p_v1 p_x1) (expt (gconst "c") 2)))))
+    (parallel (set! t2 (* l1
+			  (- p_t1
+			     (/ (* p_v1 p_x1) (expt (gconst "c") 2)))))
 	      (set! x2 (* l1 (- p_x1 (* p_v1 p_t1))))
 	      (set! y2 p_y1)
 	      (set! z2 p_z1))
@@ -561,15 +575,17 @@
 ;;
 ;; - p_s1: string, relative movement between the source and the receiver.
 ;;
-;;   - "#++": p_v1 is added to p_v2 (receiver moves toward source), and p_v1 is
-;;     added to p_v2 (source moves away from the receiver).
-;;   - "$+-": p_v1 is added to p_v2 (receiver moves toward source), and p_v3 is
-;;     substracted from p_v1 (source is moving towards the receiver).
-;;   - "$-+": p_v2 is substracted from p_v1 (receiver moves away from source),
-;;     and p_v1 is added to p_v2 (source moves away from the receiver).
-;;   - "$--": p_v2 is substracted from p_v1 (receiver moves away from source),
-;;     and p_v3 is substracted from p_v1 (source is moving towards the
+;;   - "#++": p_v1 is added to p_v2 (receiver moves toward source), and
+;;     p_v1 is added to p_v2 (source moves away from the receiver).
+;;   - "$+-": p_v1 is added to p_v2 (receiver moves toward source), and
+;;     p_v3 is substracted from p_v1 (source is moving towards the
 ;;     receiver).
+;;   - "$-+": p_v2 is substracted from p_v1 (receiver moves away from
+;;     source), and p_v1 is added to p_v2 (source moves away from the
+;;     receiver).
+;;   - "$--": p_v2 is substracted from p_v1 (receiver moves away from
+;;     source), and p_v3 is substracted from p_v1 (source is moving
+;;     towards the receiver).
 ;;
 ;; - p_v1: propagation speed in the medium.
 ;; - p_v2: speed of the receiver.
@@ -729,8 +745,8 @@
     res1))
 
 
-;;;; grsp-sgp-mass - Calculates the standard gravitational parameter of a body
-;; of mass m1.
+;;;; grsp-sgp-mass - Calculates the standard gravitational parameter of a
+;; body of mass m1.
 ;;
 ;; Keywords:
 ;;
@@ -756,8 +772,8 @@
     res1))
 
 
-;;;; grsp-sgp=mass - Calculates the standard gravitational parameter of a body
-;; at relative distance p_a1 and orbital period p_t1.
+;;;; grsp-sgp=mass - Calculates the standard gravitational parameter of a
+;; body at relative distance p_a1 and orbital period p_t1.
 ;;
 ;; Keywords:
 ;;
@@ -1014,7 +1030,8 @@
     res1))
 
 
-;;;; grsp-grav-somigliana-mth - Multithreaded variant of grsp-grav-somigliana.
+;;;; grsp-grav-somigliana-mth - Multithreaded variant of
+;; grsp-grav-somigliana.
 ;;
 ;; Keywords:
 ;;

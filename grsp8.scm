@@ -667,9 +667,9 @@
   (let ((res1 '())
 	(b1 #f)
 	(idata 0)
-	(s1 "\n ------------------------------------------ Epoch number: ")
-	(s2 "\n Mutation iteration ")
-	(s3 "\n Idata status on epoch (before loading into ann): ")
+	(s1 (strings-append (list "\n" (gconsts "En")) 0))
+	(s2 (strings-append (list "\n" (gconsts "Mi")) 0))
+	(s3 (strings-append (list "\n" (gconsts "Isoe")) 0))
 	(i1 0)
 	(i2 0))
 
@@ -748,8 +748,8 @@
 ;;
 ;; Notes:
 ;;
-;; - In this case, matrices must be passed as separate parameters, not as a list
-;;   of matrices like in most grsp8 functions.
+;; - In this case, matrices must be passed as separate parameters, not as
+;;   a list of matrices like in most grsp8 functions.
 ;; - See "Format of matrices used in grsp8" on top of this file for details
 ;;   on each matrix used.
 ;;
@@ -761,8 +761,8 @@
   (let ((res1 '())
 	(s1 "#="))
 
-    ;; Delete rows where the value of col 1 is zero, meaning that connections
-    ;; and nodes are dead.	  
+    ;; Delete rows where the value of col 1 is zero, meaning that
+    ;; connections and nodes are dead.	  
     (set! p_a2 (grsp-matrix-row-delete s1 p_a2 1 0))
     (set! p_a1 (grsp-matrix-row-delete s1 p_a1 1 0))
     
@@ -807,8 +807,8 @@
     res1))
 
 
-;;;; grsp-ann-id-create - Creates a new id number for a row in nodes or conns
-;; and updates the corresponding matrix element.
+;;;; grsp-ann-id-create - Creates a new id number for a row in nodes or
+;; conns and updates the corresponding matrix element.
 ;;
 ;; Keywords:
 ;;
@@ -904,8 +904,8 @@
     res1))
 
 
-;;;; grsp-ann-nodes-create - Creates node p_l2 connected according to p_l3 in
-;; ann p_l1.
+;;;; grsp-ann-nodes-create - Creates node p_l2 connected according to p_l3
+;; in ann p_l1.
 ;;
 ;; Keywords:
 ;;
@@ -971,9 +971,9 @@
     ;; Create connections only of node is not initial.
     (cond ((equal? (equal? (list-ref l2 2) 0) #f)
 	   
-	   ;; Create connections. There might be several connections per node
-	   ;; in p_l3 each list element is in itself a list representing one
-	   ;; connection.
+	   ;; Create connections. There might be several connections per
+	   ;; node in p_l3 each list element is in itself a list
+	   ;; representing one connection.
 	   (set! hn (length p_l3))
 	   (while (< i1 hn)
 
@@ -981,11 +981,15 @@
 		  (set! l3 (list-ref p_l3 i1))
 		  (set! cc (array-ref count 0 1))	  
 
-		  ;; Update id and to values in the list corresponding to the
-		  ;; connection to be created.
+		  ;; Update id and to values in the list corresponding to
+		  ;; the connection to be created.
 		  (list-set! l3 0 cn)
 		  (list-set! l3 4 cc)
-		  (set! conns (grsp-ann-item-create nodes conns count 1 l3))
+		  (set! conns (grsp-ann-item-create nodes
+						    conns
+						    count
+						    1
+						    l3))
 		  
 		  (set! i1 (in i1)))))
     
@@ -1017,8 +1021,8 @@
 ;;
 ;; Output:
 ;;
-;; - Gatabase. The ann will be saved to csv files stored in a folder called
-;;   p_d1.
+;; - Gatabase. The ann will be saved to csv files stored in a folder
+;;   called  p_d1.
 ;;
 (define (grsp-ann2dbc p_d1 p_l1)
   (let ((res1 0)
@@ -1128,8 +1132,8 @@
 ;;
 ;; Notes:
 ;;
-;; - See "Format of matrices used in grsp8" on top of this file for details
-;;   on each matrix used.
+;; - See "Format of matrices used in grsp8" on top of this file for
+;;   details on each matrix used.
 ;; - See also grsp-ann-net-specs-ffn.
 ;;
 ;; Output:
@@ -1235,8 +1239,8 @@
 	   (set! a2 (array-ref res2 i1 2))
 	   (set! a3 (array-ref res2 i1 3))	   
 	   
-	   ;; Per each row of res2, repeat this cycle as many times as nodes per
-	   ;; layer are required. Bias set to 1 (elem 5 on l1).
+	   ;; Per each row of res2, repeat this cycle as many times as
+	   ;; nodes per layer are required. Bias set to 1 (elem 5 on l1).
 	   (set! i2 0)
 	   (while (< i2 a1)
 
@@ -1268,44 +1272,46 @@
 	   
 	   (set! i1 (in i1)))
 
-    ;; Purge nodes table; this is necessary since on creation a single row is
-    ;; added with all elements set on zero. Normally this would not mean trouble
-    ;; and such tables can be purged later, but in this case we need to do so
-    ;; because otherwise creation of connections from nodes of the first layer
-    ;, could cause trouble.
+    ;; Purge nodes table; this is necessary since on creation a single
+    ;; row is added with all elements set on zero. Normally this would
+    ;; not mean trouble and such tables can be purged later, but in this
+    ;; case we need to do so because otherwise creation of connections
+    ;; from nodes of the first layer could cause trouble.
     (set! nodes (grsp-matrix-row-delete "#=" nodes 1 0))
     
-    ;; Create connections (connect every node of a layer to all nodes of the
-    ;; prior layer). Repeat for every layer.
+    ;; Create connections (connect every node of a layer to all nodes of
+    ;; the prior layer). Repeat for every layer.
     (set! res4 (grsp-matrix-cpy nodes))
     (set! res4 (grsp-matrix-row-sort "#des" res4 3))
     (while (equal? b1 #t)
 
 	   (set! y1 (array-ref res4 0 3))
 
-	   ;; If the layer number is zero, it means that we are dealing with the
-	   ;; initial one and hence, no connections going to this layer will be
-	   ;; created. Othewise, every node of the layer will be connected to
-	   ;; every node of the prior layer.
+	   ;; If the layer number is zero, it means that we are dealing
+	   ;; with the initial one and hence, no connections going to
+	   ;; this layer will be created. Othewise, every node of the
+	   ;; layer will be connected to every node of the prior layer.
 	   (cond ((> y1 0)
 		  
 		  ;; Separate the corrent res4 into two parts:
 		  ;;
-		  ;; - One will contain the rows (nodes) whose column 3 (layer)
-		  ;;   equals y1. This will be table res3.
-		  ;; - The second part contains everything else. That is, given
-		  ;;   the row sort and selectc ops performed, res4 from now on
-		  ;;   will contain what would be processed in the next
-		  ;;   iteration, excluding what will be processed on this one.
+		  ;; - One will contain the rows (nodes) whose column 3
+		  ;;   (layer) equals y1. This will be table res3.
+		  ;; - The second part contains everything else. That is,
+		  ;;   given the row sort and selectc ops performed,
+		  ;;   res4 from now on will contain what would be
+		  ;;   processed in the next iteration, excluding what
+		  ;;   will be processed on this one.
 		  (set! l2 (grsp-matrix-row-selectc "#=" res4 3 y1))
 		  (set! res3 (list-ref l2 0))
 		  (set! res4 (list-ref l2 1))
 		  
-		  ;; Get the layer numbers from the first rows of the target
-		  ;; layer matrix (res3) as well as from the remainder matrix
-		  ;; which represents the layer number of the origin layer (the
-		  ;; layer with the layer number immediately lower than the
-		  ;; number of the target layer.
+		  ;; Get the layer numbers from the first rows of the
+		  ;; target layer matrix (res3) as well as from the
+		  ;; remainder matrix which represents the layer number
+		  ;; of the origin layer (the layer with the layer
+		  ;; number immediately lower than the number of the
+		  ;; target layer.
 		  (set! y3 (array-ref res3 0 3))
 		  (set! y4 (array-ref res4 0 3))
 
@@ -1313,8 +1319,9 @@
 		  (set! res5 (grsp-matrix-row-select "#=" res4 3 y4))
 		  (set! y5 (array-ref res5 0 3))
 		  
-		  ;; Extract the boundaries of res3 (target layer); it contains
-		  ;; only rows corresponding to nodes of the target layer.
+		  ;; Extract the boundaries of res3 (target layer); it
+		  ;; contains only rows corresponding to nodes of the
+		  ;; target layer.
 		  (set! lm3 (grsp-matrix-esi 1 res3))
 		  (set! hm3 (grsp-matrix-esi 2 res3))
 		  (set! ln3 (grsp-matrix-esi 3 res3))
@@ -1329,14 +1336,13 @@
 		  ;; So, right now:
 		  ;;
 		  ;; - res3 has the nodes of the target layer.
-		  ;; - res4 has all the nodes of the ann except those of the
-		  ;;   target layer.
+		  ;; - res4 has all the nodes of the ann except those of
+		  ;;   the target layer.
 		  ;; - res5 has the nodes of the origin layer.
 		  ;;
-		  ;; Now we cycle over the target layer, and for each node we
-		  ;; will create connections coming from each node of the
-		  ;; origin layer.
-		  ;;
+		  ;; Now we cycle over the target layer, and for each
+		  ;; node we will create connections coming from each
+		  ;; node of the origin layer.
 		  (set! i3 lm3)
 		  (while (<= i3 hm3)
 
@@ -1348,9 +1354,9 @@
 			 (set! i5 lm5)
 			 (while (<= i5 hm5)
 
-				(set! o0 (array-ref res5 i5 0)) ;; Node id.
+				(set! o0 (array-ref res5 i5 0)) ;; Node.
 				(set! o3 (array-ref res5 i5 3)) ;; Layer.
-				(set! o4 (array-ref res5 i5 4)) ;; Layer pos.
+				(set! o4 (array-ref res5 i5 4)) ;; L pos.
 				(set! conns (grsp-ann-item-create nodes
 								  conns
 								  count
@@ -1395,8 +1401,8 @@
 ;;
 ;; Notes:
 ;;
-;; - See "Format of matrices used in grsp8" on top of this file for details
-;;   on each matrix used.
+;; - See "Format of matrices used in grsp8" on top of this file for
+;;   details on each matrix used.
 ;; - See also grsp-ann-net-create-ffn.
 ;;
 ;; Output:
@@ -1469,12 +1475,14 @@
 ;;
 ;; - p_u2: mean for element random value.
 ;; - p_v2: standard deviation for element random value.
-;; - p_l1: list of elements (cols) of nodes to mutate. Usually values should be:
+;; - p_l1: list of elements (cols) of nodes to mutate. Usually values
+;;   should be:
 ;;
 ;;   - 5: bias.
 ;;   - 9: weight.
 ;;
-;; - p_l3: list of elements (cols) of conns to mutate. Usually values should be:
+;; - p_l3: list of elements (cols) of conns to mutate. Usually values
+;;   should be:
 ;;
 ;;   - 5: value.
 ;;   - 7: weight.
@@ -1483,9 +1491,11 @@
 ;;
 ;; - See grsp-matrix-col-lmutation.
 ;; - You can mutate any element that corresponds to the ann, passed via 
-;;   parameters p_l1 and p_l3 but be careful, since modifying random elements
-;;   other than those mentioned above could yield unexpected results
-;; - See "Format of matrices used in grsp8" on top of this file for details
+;;   parameters p_l1 and p_l3 but be careful, since modifying random
+;;   elements other than those mentioned above could yield unexpected
+;;   results
+;; - See "Format of matrices used in grsp8" on top of this file for
+;;   details
 ;;   on each matrix used.
 ;;
 ;; Output:
@@ -1565,8 +1575,8 @@
     res1))
 
 
-;;;; grsp-ann-net-mutate-mth - Multithreaded variant of grsp-ann-net-mutate.
-;; Mutate and randomize ann p_l1.
+;;;; grsp-ann-net-mutate-mth - Multithreaded variant of grsp-ann-net-
+;; mutate. Mutate and randomize ann p_l1.
 ;;
 ;; Keywords:
 ;;
@@ -1592,12 +1602,14 @@
 ;;
 ;; - p_u2: mean for element random value.
 ;; - p_v2: standard deviation for element random value.
-;; - p_l1: list of elements (cols) of nodes to mutate. Usually values should be:
+;; - p_l1: list of elements (cols) of nodes to mutate. Usually values
+;;   should be:
 ;;
 ;;   - 5: bias.
 ;;   - 9: weight.
 ;;
-;; - p_l3: list of elements (cols) of conns to mutate. Usually values should be:
+;; - p_l3: list of elements (cols) of conns to mutate. Usually values
+;;   should be:
 ;;
 ;;   - 5: value.
 ;;   - 7: weight.
@@ -1605,13 +1617,14 @@
 ;; Notes:
 ;;
 ;; - See grsp-matrix-col-lmutation.
-;; - You can mutate any element of a neural network passed via parameters p_l1
-;;   and p_l3 but be careful, since modifying randomly elements other than
-;;   those mentioned above could yield unexpected results, even altering the
-;;   structure of the network iteslf or render it unusable. Always backup your
+;; - You can mutate any element of a neural network passed via parameters
+;;   p_l1 and p_l3 but be careful, since modifying randomly elements
+;;   other than those mentioned above could yield unexpected results,
+;;   even altering the structure of the network iteslf or render it
+;;   unusable. Always backup your
 ;;   ANN before toying with this function.
-;; - See "Format of matrices used in grsp8" on top of this file for details
-;;   on each matrix used.
+;; - See "Format of matrices used in grsp8" on top of this file for
+;;   details on each matrix used.
 ;;
 ;; Output:
 ;;
@@ -1687,8 +1700,8 @@
     res1))
 
 
-;;;; grsp-ann-deletes - Deletes from ann p_l1 all elements with status (col 1)
-;; equal to zero.
+;;;; grsp-ann-deletes - Deletes from ann p_l1 all elements with status
+;; (col 1) equal to zero.
 ;;
 ;; Keywords:
 ;;
@@ -1700,10 +1713,10 @@
 ;;
 ;; Notes:
 ;;
-;; - This function is agnostic regarding connections and how they depend from
-;;   nodes, meaning that in ordenr not to leave orphaned connectins once
-;;   dead nodes have been deleted, the status of the dependent nodes should
-;;   be set to zero before using this function.
+;; - This function is agnostic regarding connections and how they depend
+;;   from nodes, meaning that in ordenr not to leave orphaned connectins
+;;   once dead nodes have been deleted, the status of the dependent
+;;   nodes should be set to zero before using this function.
 ;; - By setting row 1 to 0 at will and applying this function you can
 ;;   essentially delete any component of a neural network, following any
 ;;   schedule.
@@ -1755,8 +1768,8 @@
     res1))
 
 
-;;;; grsp-ann-row-updatei - Updates col p_j2 with value p_n2 of element with id
-;; p_id of table p_a1 (nodes or conns).
+;;;; grsp-ann-row-updatei - Updates col p_j2 with value p_n2 of element
+;; with id p_id of table p_a1 (nodes or conns).
 ;;
 ;; Keywords:
 ;;
@@ -1783,8 +1796,8 @@
     res1))
 
 
-;;;; grsp-ann-conns-of-node - Finds the connections that reach or go out from
-;; node with id p_id according to p_s1 in p_a1.
+;;;; grsp-ann-conns-of-node - Finds the connections that reach or go out
+;; from node with id p_id according to p_s1 in p_a1.
 ;;
 ;; Keywords:
 ;;
@@ -1816,9 +1829,9 @@
     res1))
 
 
-;;;; grsp-ann-node-eval - Evaluates node p_id and its related connections. It
-;; reads the input connections, applies the specified activation function and
-;; exports the result to the output connections.
+;;;; grsp-ann-node-eval - Evaluates node p_id and its related
+;; connections. It reads the input connections, applies the specified
+;; activation function and exports the result to the output connections.
 ;;
 ;; Keywords:
 ;;
@@ -1873,15 +1886,19 @@
     ;; First check if the node exists.
     ;;
     ;; - If it does exist, then evaluate.
-    ;; - If it does not exist then kill any leftover connection (set status
-    ;;   to zero).
+    ;; - If it does not exist then kill any leftover connection (set
+    ;;   status to zero).
     ;;
     (set! a11 (grsp-matrix-row-select "#=" a1 0 id))
     (set! b1 (grsp-matrix-is-empty a11))
 
     ;; If verbosity is on present node data.
     (cond ((equal? p_b3 #t)
-	   (display "\n +++ 1.1.1.1 Node row\n")
+	   (display (strings-append (list "\n +++ 1.1.1.1 "
+					  (gconsts
+					   "Nr")
+					  "\n")
+				    0))
 	   (grsp-matrix-display a11)
 	   (display "\n")))
 
@@ -1890,34 +1907,46 @@
 
 	   ;; If verbosity is on tell that the node will be evaluated.
 	   (cond ((equal? p_b3 #t)
-		  (display "\n +++ 1.1.1.3 Evaluating node\n")
+		  (display (strings-append (list "\n +++ 1.1.1.3 "
+						 (gconsts "Ev")
+						 "\n")
+					   0))
 		  (grsp-matrix-display a11)
 		  (display "\n")))
 
-	   ;; If the node has incoming connections then we need to process them
-	   ;; first.
+	   ;; If the node has incoming connections then we need to
+	   ;; process them first.
 	   (set! a21 (grsp-ann-conns-of-node "#to" a2 id))
 	   (set! b2 (grsp-matrix-is-empty a21))
 
 	   ;; Show if verbosity is on.
 	   (cond ((equal? p_b3 #t)
-		  (display "\n +++ 1.1.1.4 Inbound connections\n")
+		  (display (strings-append (list "\n +++ 1.1.1.4 "
+						 (gconsts "Ib")
+						 "\n")
+					   0))
 		  (grsp-matrix-display a21)
 		  (display "\n")
-		  (display "\n +++ 1.1.1.5 res1, res2 pre proc.\n")
+		  (display (strings-append (list "\n +++ 1.1.1.5 "
+						 (gconsts "rrpp")
+						 "\n")
+					   0))
 		  (grsp-matrix-display a11)
 		  (display "\n")
 		  (grsp-matrix-display a21)
 		  (display "\n")))	   
 
-	   ;; Summation of input data from TO connections. The resulting value
-	   ;; is passed to the node being evaluated (represented by row matrix
-	   ;; a11).
+	   ;; Summation of input data from TO connections. The resulting
+	   ;; value is passed to the node being evaluated (represented
+	   ;; by row matrix a11).
 	   (cond ((equal? b2 #f)
 		  (set! a11 (grsp-ann-conns-opmm "#+*" a11 a21))))
 
 	   (cond ((equal? p_b3 #t)
-		  (display "\n +++ 1.1.1.5 res1, res2 post proc.\n")
+		  (display (strings-append (list "\n +++ 1.1.1.5 "
+						 (gconsts "rrop")
+						 ".\n")
+					   0))
 		  (grsp-matrix-display a11)
 		  (display "\n")
 		  (grsp-matrix-display a21)		  
@@ -1940,7 +1969,10 @@
 	   (set! m5 (grsp-ann-actifun n7 l1))
 
 	   (cond ((equal? p_b3 #t)
-		  (display "\n +++ 1.1.1.6 Result of activation function\n")
+		  (display (strings-append (list "\n +++ 1.1.1.6 "
+						 (gconsts "Raf")
+						 "\n")
+					   0))
 		  (display m5)
 		  (display "\n")))
 
@@ -1948,14 +1980,15 @@
 	   ;; replace the whole row in a1 with a11. 	   
 	   (set! a1 (grsp-matrix-row-subrepf a1 a11 0 id))
 
-	   ;; If the node has outgoing connections then we need to process them
-	   ;; once the input summation has been done and the node value has been
-	   ;; calculated.
+	   ;; If the node has outgoing connections then we need to
+	   ;; process them once the input summation has been done and
+	   ;; the node value has been calculated.
 	   (set! a22 (grsp-ann-conns-of-node "#from" a2 id))
 	   (set! b2 (grsp-matrix-is-empty a22))
 
-	   ;; Cycle thorough connections and update values (col 5) with the
-	   ;; value coming from the node being evaluated (row 6 of a11).
+	   ;; Cycle thorough connections and update values (col 5) with
+	   ;; the value coming from the node being evaluated (row 6 of
+	   ;; a11).
 	   (set! i2 (grsp-lm a2))
 	   (while (<= i2 (grsp-hm a2))
 
@@ -1970,11 +2003,16 @@
 
 	   ;; These reports should show p_a1 and p_a2 with all updates.
 	   (cond ((equal? p_b3 #t)
-		  (display "\n +++ 1.1.1.7 Activation function value passed to conns ")
+		  (display (strings-append (list "\n +++ 1.1.1.7 "
+						 (gconsts "Afvpc"))
+					   0))
 		  (display id)
 		  (display "\n")
 		  (grsp-matrix-display a2)
-		  (display "\n\n +++ 1.1.1.9 Updated p_a1\n")
+		  (display (strings-append (list "\n\n +++ 1.1.1.9 "
+						 (gconsts "Upa1")
+						 "\n")
+					   0))
 		  (grsp-matrix-display a1)
 		  (display "\n"))))
 	  
@@ -1984,18 +2022,26 @@
 	    (set! a2 (grsp-matrix-row-update "#=" a2 3 id 1 0))
 	    (set! a2 (grsp-matrix-row-update "#=" a2 4 id 1 0))
 	    
-	    ;; If node does not exist and verbosity is on, tell that the node
-	    ;; was not processed.	   
+	    ;; If node does not exist and verbosity is on, tell that the
+	    ;; node was not processed.	   
 	    (cond ((equal? p_b3 #t)
-		   (display "\n +++ 1.1.1.2 Node does not exist\n")
+		   (display (strings-append (list "\n +++ 1.1.1.2 "
+						  (gconsts "Ndne")
+						  "\n")
+					    0))
 		   (grsp-matrix-display a11)
 		   (display "\n")))))
 
     ;; Compose results.    
     (cond ((equal? p_b3 #t)
-	   (display "\n +++ 1.1.1.11 Value of p_a2 after eval\n")
+	   (display (strings-append (list "\n +++ 1.1.1.11 "
+					  (gconsts "Vpa2ae")
+					  "\n")
+				    0))
 	   (grsp-matrix-display a2)
-	   (display "\n\n End of node evaluation \n\n")))
+	   (display (strings-append (list "\n\n "
+					  (gconsts "Fin")
+					  "\n\n") 0))))
     
     (set! res1 (list a1 a2 a3))
     
@@ -2102,10 +2148,10 @@
 ;;
 ;; Notes:
 ;;
-;; - See "Format of matrices used in grsp8" on top of this file for details
-;;   on each matrix used.
-;; - Use grsp-ann-idata-update before this function to pass actual data to the
-;;   ann.
+;; - See "Format of matrices used in grsp8" on top of this file for
+;;   details on each matrix used.
+;; - Use grsp-ann-idata-update before this function to pass actual data
+;;   to the ann.
 ;;
 ;; Output:
 ;;
@@ -2147,7 +2193,10 @@
     
     ;; Evaluate nodes and their input and output connections.
     (cond ((equal? p_b3 #t)
-	   (display "\n + 1. Evaluating nodes: \n")
+	   (display (strings-append (list "\n + 1. "
+					  (gconsts "Pro")
+					  "\n")
+				    0))
 	   (display "\n")))
     
     (set! i1 (grsp-lm nodes))
@@ -2156,10 +2205,15 @@
 
 	   ;; nodes table comparison.
 	   (cond ((equal? p_b3 #t)
-		  (display "\n ++ 1.1 Node number ")
+		  (display (strings-append (list "\n ++ 1.1 "
+						 (gconsts
+						  "Node"))
+					   0))
 		  (display id)
 		  (display "\n")
-		  (display "\n +++ 1.1.1 Node before evaluation ")
+		  (display (strings-append (list "\n +++ 1.1.1 "
+						 (gconsts "Bef"))
+					   0))
 		  (display "\n")
 		  (grsp-matrix-display (grsp-matrix-row-selectrn nodes i1))
 		  (display "\n")))
@@ -2171,18 +2225,24 @@
 	   (set! nodes (list-ref res3 0))
 	   
 	   (cond ((equal? p_b3 #t)
-		  (display "\n +++ 1.1.2 Node after evaluation ")
+		  (display (strings-append (list "\n +++ 1.1.2 "
+						 (gconsts "Aft"))
+					   0))
 		  (display "\n")
 		  (grsp-matrix-display (grsp-matrix-row-selectrn nodes i1))
 		  (display "\n")))
 	   
 	   ;; Eval of connections related to the node being processed.
 	   (cond ((equal? p_b3 #t)
-		  (display "\n +++ 1.1.3 Related TO (this node) connections before evaluation ")
+		  (display (strings-append (list "\n +++ 1.1.3 "
+						 (gconsts "RTb"))
+					   0))
 		  (display "\n")
 		  (grsp-matrix-display (grsp-matrix-row-select "#=" conns 4 id))
 		  (display "\n")
-		  (display "\n +++ 1.1.4 Related FROM (this node) connections before evaluation ")
+		  (display (strings-append (list "\n +++ 1.1.4 "
+						 (gconsts "RFb"))
+					   0))
 		  (display "\n")
 		  (grsp-matrix-display (grsp-matrix-row-select "#=" conns 3 id))
 		  (display "\n")))
@@ -2191,11 +2251,15 @@
 	   (set! conns (list-ref res3 1))
 	   
 	   (cond ((equal? p_b3 #t)
-		  (display "\n +++ 1.1.5 Related TO (this node) connections after evaluation ")
+		  (display (strings-append (list "\n +++ 1.1.5 "
+						 (gconsts "RTa"))
+					   0))
 		  (display "\n")
 		  (grsp-matrix-display (grsp-matrix-row-select "#=" conns 4 id))
 		  (display "\n")
-		  (display "\n +++ 1.1.6 Related FROM (this node) connections after evaluation ")
+		  (display (strings-append (list "\n +++ 1.1.6 "
+						 (gconsts "RFa"))
+					   0))
 		  (display "\n")
 		  (grsp-matrix-display (grsp-matrix-row-select "#=" conns 3 id))
 		  (display "\n")))
@@ -2204,9 +2268,9 @@
 	   ;; Pass output to odata. 
 	   (set! odata (grsp-nodes2odata nodes odata))
 
-	   ;; Add newest odata to datao. This should produce an incremental
-	   ;; datao table or matrix containing the results of each ann
-	   ;; epoch.	   
+	   ;; Add newest odata to datao. This should produce an
+	   ;; incremental datao table or matrix containing the results
+	   ;; of each ann epoch.	   
 	   (set! datao (grsp-odata2datao odata datao))
 	   
 	   (set! i1 (in i1)))
@@ -2215,7 +2279,7 @@
     (grsp-ann-counter-upd count 2)   
 
     (cond ((equal? p_b3 #t)
-	   (display "\n End of nodes eval \n")
+	   (display (strings-append (list "\n" (gconst "Fin") "\n") 0))
 	   (display "\n")))
     
     ;; Compose results.
@@ -2268,14 +2332,14 @@
 ;;
 ;; Notes:
 ;;
-;; - See grsp-matrix-create fo detals on paramter p_s1. Some configurations 
-;;   might require a symmetric matrix (3 x 3) to work.
+;; - See grsp-matrix-create fo detals on paramter p_s1. Some
+;;   configurations might require a symmetric matrix (3 x 3) to work.
 ;; - Column 0 will be set to zero. You should set the values  of this col
 ;;   acording to the id of each node to be evaluated with the given data.
 ;; - You might have to modify the elements of columns 0 and 1 in order to
 ;;   provide useful values for different nodes.
-;; - See "Format of matrices used in grsp8" on top of this file for details
-;;   on each matrix used.
+;; - See "Format of matrices used in grsp8" on top of this file for
+;;   details on each matrix used.
 ;; - See grsp0.grsp-random-state-set.
 ;;
 ;; Output:
@@ -2294,8 +2358,8 @@
     res1))
 
 
-;;;; grsp-ann-net-nmutate-omth - Safely mutates and randomizes ann p_l2 using a
-;; standard normal distribution.
+;;;; grsp-ann-net-nmutate-omth - Safely mutates and randomizes ann p_l2
+;; using a standard normal distribution.
 ;;
 ;; Keywords:
 ;;
@@ -2357,8 +2421,8 @@
     res1))
 
 
-;;;; grsp-ann-idata-update - Inputs data of idata into matrices nodes and conns
-;; of ann p_l1.
+;;;; grsp-ann-idata-update - Inputs data of idata into matrices nodes
+;; and conns of ann p_l1.
 ;;
 ;; Keywords:
 ;;
@@ -2375,12 +2439,12 @@
 ;;
 ;; Notes:
 ;;
-;; - While normally idata would be used to pass data to input nodes, the matrix
-;;   could be used to pass other values to the nodes matrix.
-;; - Use this function before calling grsp-ann-nodes-eval in order to provide
-;;   input data to the nn.
-;; - See "Format of matrices used in grsp8" on top of this file for details
-;;   on each matrix used.
+;; - While normally idata would be used to pass data to input nodes, the
+;;   matrix could be used to pass other values to the nodes matrix.
+;; - Use this function before calling grsp-ann-nodes-eval in order to
+;;   provide input data to the nn.
+;; - See "Format of matrices used in grsp8" on top of this file for
+;;   details on each matrix used.
 ;;
 ;; Output:
 ;;
@@ -2442,14 +2506,24 @@
 
 	   ;; Update either the nodes or conns matrix.
 	   (cond ((= n3 0)
-		  (set! nodes (grsp-matrix-row-update "#=" nodes 0 id j2 n2)))
+		  (set! nodes (grsp-matrix-row-update "#="
+						      nodes
+						      0
+						      id
+						      j2
+						      n2)))
 		 ((= n3 1)
-		  (set! conns (grsp-matrix-row-update "#=" conns 0 id j2 n2))))
+		  (set! conns (grsp-matrix-row-update "#="
+						      conns
+						      0
+						      id
+						      j2
+						      n2))))
 	   
 	   (set! i4 (in i4)))
 
-    ;; Replace current idata with a brand new one in order to prevent passing
-    ;; the same data twice to tbe ann.    
+    ;; Replace current idata with a brand new one in order to prevent
+    ;; passing the same data twice to tbe ann.    
     (cond ((equal? p_b1 #t)
 	   (set! idata (grsp-ann-idata-create 0 1))))
     
@@ -2468,7 +2542,8 @@
     res1))
 
 
-;;;; grsp-ann-odata-update - Provides a current output data matrix for ann p_l1.
+;;;; grsp-ann-odata-update - Provides a current output data matrix for
+;; ann p_l1.
 ;;
 ;; Keywords:
 ;;
@@ -2480,13 +2555,13 @@
 ;;
 ;; Notes:
 ;;
-;; - See "Format of matrices used in grsp8" on top of this file for details
-;;   on each matrix used.
+;; - See "Format of matrices used in grsp8" on top of this file for
+;; details on each matrix used.
 ;;
 ;; Output:
 ;;
-;; - odata. An m x 4 matrix containing the data from the output nodes of the
-;;   neural network.
+;; - odata. An m x 4 matrix containing the data from the output nodes of
+;; the neural network.
 ;;
 (define (grsp-ann-odata-update p_l1)
   (let ((res1 0)
@@ -2503,9 +2578,9 @@
     res1))
 
 
-;;;; grsp-odata2idata - Provides feedback by transfer of data from from odata to
-;; idata matrices. Transforms data from the output layer of an ann into data for
-;; the input layer of the same or a different network.
+;;;; grsp-odata2idata - Provides feedback by transfer of data from from
+;; odata to idata matrices. Transforms data from the output layer of an
+;; ann into data for the input layer of the same or a different network.
 ;;
 ;; Keywords:
 ;;
@@ -2518,10 +2593,10 @@
 ;;
 ;; Notes:
 ;;
-;; - See "Format of matrices used in grsp8" on top of this file for details
-;;   on each matrix used.
-;; - The function delivers an idata table based on the odata pand conversion
-;;   table provided.
+;; - See "Format of matrices used in grsp8" on top of this file for
+;;   details on each matrix used.
+;; - The function delivers an idata table based on the odata pand
+;;   conversion table provided.
 ;;
 ;; Output:
 ;;
@@ -2906,7 +2981,7 @@
 	   (array-set! odata (array-ref res2 i2 0) m3 0) ;; id.
 	   (array-set! odata (array-ref res2 i2 3) m3 1) ;; layer.
 	   (array-set! odata (array-ref res2 i2 4) m3 2) ;; layer pos.
-	   (array-set! odata (array-ref res2 i2 6) m3 3) ;; output value col.
+	   (array-set! odata (array-ref res2 i2 6) m3 3) ;; output col.
 	   
 	   (set! i2 (in i2)))
 
@@ -2931,11 +3006,11 @@
     res1))
 
 
-;;;; grsp-ann-odtid-atlorpn - Basic data for output to input (odata to idata)
-;; feedback. This function builds a table that correlates each output node to
-;; one input node for direct feedback loops. It requires that both matrices
-;; should have the same number of rows in order to establish a node-to-node
-;; relationship.
+;;;; grsp-ann-odtid-atlorpn - Basic data for output to input (odata to
+;; idata) feedback. This function builds a table that correlates each
+;; output node to one input node for direct feedback loops. It requires
+;; that both matrices should have the same number of rows in order to
+;; establish a node-to-node relationship.
 ;;
 ;; Keywords:
 ;;
@@ -3094,8 +3169,9 @@
 	   (set! j3 lm1)
 	   (while (<= j3 hm1)
 
-		  ;; Start by creating a new row in datai that will hold the data
-		  ;; from one element of p_a1 of the row being read from idata.
+		  ;; Start by creating a new row in datai that will hold
+		  ;; the data from one element of p_a1 of the row being
+		  ;; read from idata.
 		  (set! datai (grsp-matrix-subexp datai 1 0))
 
 		  ;; Update datai m-size data.
@@ -3103,12 +3179,24 @@
 		  
 		  ;; Read row j3 from idata to get data to construct a new
 		  ;; datai row and  create new datai row.
-		  (array-set! datai (array-ref idata j3 0) j4 0) ;; Id of the receptive node.
-		  (array-set! datai (array-ref idata j3 1) j4 1) ;; Column to input data in.
-		  (array-set! datai (array-ref p_a1 i3 j3) j4 2) ;; Value to input.
-		  (array-set! datai 0 j4 3)                      ;; Type (in this case, input node).
-		  (array-set! datai (array-ref idata j3 4) j4 4) ;; Record contro.
-		  (array-set! datai p_n1 j4 5)                   ;; User-provided classifier.
+
+		  ;; Id of the receptive node.
+		  (array-set! datai (array-ref idata j3 0) j4 0)
+
+		  ;; Column to input data in.
+		  (array-set! datai (array-ref idata j3 1) j4 1)
+
+		  ;; Value to input.
+		  (array-set! datai (array-ref p_a1 i3 j3) j4 2)
+
+		  ;; Type (in this case, input node).
+		  (array-set! datai 0 j4 3)
+
+		  ;; Record contro.
+		  (array-set! datai (array-ref idata j3 4) j4 4)
+
+		  ;; User-provided classifier.
+		  (array-set! datai p_n1 j4 5)
 
 		  (set! j4 (in j4))
 		  (set! j3 (in j3)))
@@ -3125,7 +3213,8 @@
     res1))
 
 
-;;;; grsp-ann-datai-update - Black box update of datai table using grsp-m2datai.
+;;;; grsp-ann-datai-update - Black box update of datai table using
+;; grsp-m2datai.
 ;;
 ;; Keywords:
 ;;
@@ -3206,8 +3295,8 @@
     res1))
 
 
-;;;; grsp-datai2idata - Passes the first input group of a datai table to the
-;; input nodes of the ann and then deletes the group.
+;;;; grsp-datai2idata - Passes the first input group of a datai table to
+;; the input nodes of the ann and then deletes the group.
 ;;
 ;; Keywords:
 ;;
@@ -3265,8 +3354,9 @@
 	    ;;
 	    (set! n3 (array-ref datai i1 3))
 	    
-	    ;; Check control element. If epoch ends, according to the value
-	    ;; contained in col 4 of current datai row, set b1 to true.
+	    ;; Check control element. If epoch ends, according to the
+	    ;; value contained in col 4 of current datai row, set b1 to
+	    ;; true.
 	    ;;
 	    ;; - 0: default.
 	    ;; - 1: epoch end.
@@ -3282,9 +3372,13 @@
 		  ((= n3 1) ;; Connection.
 		   (set! res2 (grsp-matrix-row-select "#=" conns 0 n0))))
 
-	    ;; Update res2. Note that essentially there will be on row selected in
-	    ;; res2 since each node or connection has its own id.
-	    (array-set! res2 (array-ref datai i1 2) 0 (array-ref datai i1 1)) ;; ***
+	    ;; Update res2. Note that essentially there will be on row
+	    ;; selected in res2 since each node or connection has its
+	    ;; own id.
+	    (array-set! res2
+			(array-ref datai i1 2)
+			0
+			(array-ref datai i1 1)) ;; ***
 
 	    ;; Mark datai record just passed to idata for deletion.
 	    (array-set! datai 2 i1 2)
@@ -3315,9 +3409,9 @@
     res1))
 
 
-;;;; grsp-ann-fdifm - Applies grsp-matrix-fdif to matrix p_s1 of ann p_l1 and
-;; p_l2 to find differences between their matrices. This is useful to study the
-;; behaviour of your ann.
+;;;; grsp-ann-fdifm - Applies grsp-matrix-fdif to matrix p_s1 of ann
+;; p_l1 and p_l2 to find differences between their matrices. This is
+;; useful to study the behaviour of your ann.
 ;;
 ;; Keywords:
 ;;
@@ -3359,8 +3453,8 @@
     res1))
 
 
-;; grsp-ann-fdif - Appies grsp-ann-fdifm to all matrices of a neural network.
-;; This shows changes on all ann components (diff map).
+;; grsp-ann-fdif - Appies grsp-ann-fdifm to all matrices of a neural
+;; network. This shows changes on all ann components (diff map).
 ;;
 ;; Keywords:
 ;;
@@ -3381,8 +3475,9 @@
 ;;
 ;; Output:
 ;;
-;; - A list containing difference maps (matrices) for each pair of ann matrices;
-;;   this list is a representation of the differences between two networks.
+;; - A list containing difference maps (matrices) for each pair of ann
+;;   matrices; this list is a representation of the differences between
+;;   two networks.
 ;;
 ;; Output:
 ;;
@@ -3518,7 +3613,8 @@
     res1))
 
 
-;;;; grsp-nodes2odata - Casts the data contained in output nodes to odata table.
+;;;; grsp-nodes2odata - Casts the data contained in output nodes to
+;; odata table.
 ;;
 ;; Keywords:
 ;;
@@ -3556,12 +3652,21 @@
 	   (cond ((= i1 (grsp-hm res1))
 		  (set! n2 1))
 		 (else (set! n2 0)))		  
-	   
-	   (array-set! res2 (array-ref res1 i1 0) i2 0) ;; Id of output node.
-	   (array-set! res2 (array-ref res1 i1 3) i2 1) ;; Layer.
-	   (array-set! res2 (array-ref res1 i1 4) i2 2) ;; Layer pos.
-	   (array-set! res2 (array-ref res1 i1 6) i2 3) ;; Result.
-	   (array-set! res2 n2 i2 4) ;; Control.
+
+	   ;; Id of output node.
+	   (array-set! res2 (array-ref res1 i1 0) i2 0)
+
+	   ;; Layer.
+	   (array-set! res2 (array-ref res1 i1 3) i2 1)
+
+	   ;; Layer pos.
+	   (array-set! res2 (array-ref res1 i1 4) i2 2)
+
+	   ;; Result.
+	   (array-set! res2 (array-ref res1 i1 6) i2 3)
+
+	   ;; Control.
+	   (array-set! res2 n2 i2 4)
 
 	   (set! i2 (in i2))
 	   (set! i1 (in i1)))
@@ -3569,9 +3674,9 @@
     res2))
 
 
-;;;; grsp-odata2datao - Adds the most recent data from odata (one row or record
-;; obtained from the evaluation of the nodes) to datao (table containing the
-;; results of all evaluations performed so far.
+;;;; grsp-odata2datao - Adds the most recent data from odata (one row or
+;; record obtained from the evaluation of the nodes) to datao (table
+;; containing the results of all evaluations performed so far.
 ;;
 ;; Keywords:
 ;;
@@ -3731,14 +3836,14 @@
     (set! lm1 (grsp-matrix-esi 1 nodes))
     (set! hm1 (grsp-matrix-esi 2 nodes))
 
-    ;; Set matrix res1 to have a number of rows equal to the number of rows
-    ;; found in matrix nodes, and two columns.    
+    ;; Set matrix res1 to have a number of rows equal to the number of
+    ;; rows found in matrix nodes, and two columns.    
     (set! m1 (grsp-matrix-te1 lm1 hm1))
     (set! res1 (grsp-matrix-create 0 m1 4))
 
-    ;;Evaluate each node and sum the number of conns reaching it and the number
-    ;; of conns leaving the node. Then sum both numbers and get the total for
-    ;; each node.
+    ;;Evaluate each node and sum the number of conns reaching it and the
+    ;; number of conns leaving the node. Then sum both numbers and get
+    ;; the total for each node.
     (set! i1 lm1)
     (while (<= i1 hm1)
 
@@ -3756,15 +3861,19 @@
 	   (array-set! res1 (array-ref res2 0 0) i1 2)	   
 
 	   ;; Calculate total size.
-	   (array-set! res1 (+ (array-ref res1 i1 1) (array-ref res1 i1 2) ) i1 3)
+	   (array-set! res1
+		       (+ (array-ref res1 i1 1)
+			  (array-ref res1 i1 2))
+		       i1
+		       3)
 	   
 	   (set! i1 (in i1)))	   
     
     res1))
 
 
-;; grsp-ann-net-adegree - Average degrees (directed, undirected) of network
-;; p_l1.
+;; grsp-ann-net-adegree - Average degrees (directed, undirected) of
+;; network p_l1.
 ;;
 ;; Keywords:
 ;;
@@ -3881,8 +3990,8 @@
     res1))
 
 
-;;;; grsp-ann-node-conns - Finds the connections (edges) linking to node p_n1
-;; of network p_l1.
+;;;; grsp-ann-node-conns - Finds the connections (edges) linking to node
+;; p_n1 of network p_l1.
 ;;
 ;; Keywords:
 ;;
@@ -3921,8 +4030,8 @@
     res1))
 
 
-;;;; grsp-ann-nodes-conns - Find the connections (edges) connected to each node
-;; of ann p_l1
+;;;; grsp-ann-nodes-conns - Find the connections (edges) connected to
+;; each node of ann p_l1
 ;;
 ;; Keywords:
 ;;
@@ -3955,8 +4064,8 @@
     (set! lm1 (grsp-matrix-esi 1 nodes))
     (set! hm1 (grsp-matrix-esi 2 nodes))
 
-    ;; Define res1 as a list with a number of elements equal to the number of
-    ;; nodes.
+    ;; Define res1 as a list with a number of elements equal to the
+    ;; number of nodes.
     (set! i2 (grsp-matrix-te1 lm1 hm1))
     (set! res1 (make-list i2))
     
@@ -3976,8 +4085,8 @@
     res1))
   
 
-;;;; grsp-ann-conn-nodes - Finds the FROM and TO nodes linked by connection p_n1
-;; of network p_l1.
+;;;; grsp-ann-conn-nodes - Finds the FROM and TO nodes linked by
+;; connection p_n1 of network p_l1.
 ;;
 ;; Keywords:
 ;;
@@ -4039,11 +4148,13 @@
     ;; (2) and (3) help guarantee that the correct type (matrix) will be
     ;; returned as result considering how res6 was configured at (1).
     
-    ;; (2) Select node record (row) from matrix nodes which p_n1 goes (TO).
+    ;; (2) Select node record (row) from matrix nodes which p_n1 goes
+    ;; (TO).
     (cond ((equal? b1 #t)
 	   (set! res2 (grsp-matrix-row-select "#=" nodes 0 to))))
 
-    ;; (3) Select node record (row) from matrix nodes which p_n1 comes (FROM).
+    ;; (3) Select node record (row) from matrix nodes which p_n1 comes
+    ;; (FROM).
     (cond ((equal? b2 #t)    
 	   (set! res3 (grsp-matrix-row-select "#=" nodes 0 fr))))
 
@@ -4053,8 +4164,8 @@
     res1))
 
 
-;;;; grsp-ann-conns-nodes - Finds the FROM and TO nodes linked by connections
-;; (edges) of network p_l1.
+;;;; grsp-ann-conns-nodes - Finds the FROM and TO nodes linked by
+;; connections (edges) of network p_l1.
 ;;
 ;; Keywords:
 ;;
@@ -4071,7 +4182,8 @@
 ;; Output:
 ;;
 ;; - grsp-ann-conn-nodes results as a matrix for each and all nodes
-;;   of p_l1. Note that connection ID is not providred in a separated column.
+;;   of p_l1. Note that connection ID is not providred in a separated
+;;   column.
 ;;
 ;;   - Col 0: TO nodes.
 ;;   - Col 1: FROM nodes.
@@ -4095,8 +4207,8 @@
     (set! lm1 (grsp-matrix-esi 1 conns))
     (set! hm1 (grsp-matrix-esi 2 conns))
 
-    ;; Define res1 as a list with a number of elements equal to the number of
-    ;; connections.
+    ;; Define res1 as a list with a number of elements equal to the
+    ;; number of connections.
     (set! i2 (grsp-matrix-te1 lm1 hm1))
     (set! res1 (make-list i2))
     
@@ -4187,9 +4299,9 @@
     (set! l2 (grsp-m2l a2))
 
     ;; Describe node row cas as a list.
-    (display "\n --- Node ")
+    (display (strings-append (list "\n --- " (gconsts "Node")) 0))
     (display p_n1)
-    (display " values \n")
+    (display " val \n")
     (set! l3 (list "id"
 		   "status"
 		   "type"
@@ -4236,7 +4348,7 @@
     (set! l2 (grsp-m2l a2))
 
     ;; Describe conns row cas as a list.
-    (display "\n ------- Connection values \n")
+    (display (strings-append (list "\n ------- " (gconsts "Cv") "\n") 0))
     (set! l3 (list "id"
 		   "status"
 		   "type"
@@ -4277,11 +4389,11 @@
     ;; Cast input matrix as list.
     (set! l2 (grsp-m2l p_a2))
 
-    ;; Describe conns row which was cast as a list. grsp-lal-devt takes the list
-    ;; cast from the original matrix and a list with as many labels as the
-    ;; first list has elements, and shows the combination of each pair of list
-    ;; elements.
-    (display "\n ------- Connection values \n")
+    ;; Describe conns row which was cast as a list. grsp-lal-devt takes
+    ;; the list cast from the original matrix and a list with as many
+    ;; labels as the first list has elements, and shows the combination
+    ;; of each pair of list elements.
+    (display (strings-append (list "\n ------- " (gconsts "Cv") "\n") 0))
     (set! l3 (list "id"
 		   "status"
 		   "type"
@@ -4295,8 +4407,8 @@
     (grsp-lal-devt p_b1 l2 l3)))
 
 
-;;;; grsp-ann-devnc - Describes node with id p_n1 from network p_l1 and its
-;; connections.
+;;;; grsp-ann-devnc - Describes node with id p_n1 from network p_l1 and
+;; its connections.
 ;;
 ;; Keywords:
 ;;
@@ -4323,7 +4435,7 @@
 ;;
 (define (grsp-ann-devnc p_b1 p_l1 p_n1 p_n2)
   (let ((n2 0)
-	(s1 "\n ----- Input and output connections.\n")
+	(s1 "")    
 	(nodes 0)
 	(node 0)
 	(conns 0)
@@ -4333,6 +4445,9 @@
 	(bt #t)
 	(bf #t))
 
+    (set! s1 (strings-append (list "\n ----- " (gconsts "IOc") "\n") 0))
+    (display s1)
+    
     ;; Check for valid p_n2 values N [0..2].
     (cond ((> p_n2 2)
 	   (set! n2 0))
@@ -4341,9 +4456,11 @@
 
     ;; Change title, if applicable.
     (cond ((= n2 1)
-	   (set! s1 "\n ----- Input connections only.\n"))
+	   (set! s1 (strings-append (list "\n ----- " (gconsts "Ic") "\n")
+				    0))
 	  ((= n2 2)
-	   (set! s1 "\n ----- Output connections only.\n")))
+	   (set! s1 (strings-append (list "\n ----- " (gconsts "Oc") "\n")
+				    0)))))
 
     ;; Find if node exists.
     (set! nodes (grsp-ann-get-matrix "nodes" p_l1))  
@@ -4368,35 +4485,58 @@
 	   (display s1)
 	   
 	   (cond ((= n2 0)
-		  (display "\n ------ Input \n")
+		  (display (strings-append (list "\n ------ "
+						 (gconsts "Ic")
+						 "\n")
+					   0))
 		  
 		  (cond ((equal? bt #f)
 			 (grsp-ann-devcl p_b1 connst))
 			((equal? bt #t)
-			 (display "\n No conns. \n")))
+			 (display (strings-append (list "\n "
+							(gconsts "Nocon")
+							"\n")
+						  0))))
 		  
-		  (display "\n ------ Output \n")
+		  (display (strings-append (list "\n ------ "
+						 (gconsts "Oc")
+						 "\n")
+					   0))
 
 		  (cond ((equal? bf #f)
 			 (grsp-ann-devcl p_b1 connsf))
 			((equal? bf #t)
-			 (display "\n No conns. \n"))))
-		 
+			 (display (strings-append (list "\n "
+							(gconsts "Nocon")
+							"\n")
+						  0)))))
 		 ((= n2 1)
-		  (display "\n ------ Input \n")
+		  (display (strings-append (list "\n ------ "
+						 (gconsts "Ic")
+						 "\n")
+					   0))
 
 		  (cond ((equal? bt #f)
 			 (grsp-ann-devcl p_b1 connst))
 			((equal? bt #t)
-			 (display "\n No conns. \n"))))
+			 (display (strings-append (list "\n "
+							(gconsts "Nocon")
+							"\n")
+						  0)))))
 		 
 		 ((= n2 2)
-		  (display "\n ------ Output \n")
+		  (display (strings-append (list "\n ------ "
+						 (gconsts "Oc")
+						 "\n")
+					   0))
 
 		  (cond ((equal? bf #f)
 			 (grsp-ann-devcl p_b1 connsf))
 			((equal? bf #t)
-			 (display "\n No conns. \n")))))))))
+			 (display (strings-append (list "\n "
+							(gconsts "Nocon")
+							"\n")
+						  0))))))))))
     
 
 ;;;; grsp-ann-devnca - Describes all nodes from network p_l1 and their
@@ -4445,13 +4585,13 @@
     ;; Extract matrix.
     (set! nodes (grsp-ann-get-matrix "nodes" p_l1))
 
-    ;; Find if results matrix is empty; empty would mean no nodes present in
-    ;; the network.
+    ;; Find if results matrix is empty; empty would mean no nodes
+    ;; present in the network.
     (set! b2 (grsp-matrix-is-empty nodes))
     
-    ;; Cycle if results matrix is not empty. If it is empty, it means that there
-    ;; are no nodes and thus, no valid connections. A network with connections
-    ;; but no nodes would not be functional.
+    ;; Cycle if results matrix is not empty. If it is empty, it means
+    ;; that there are no nodes and thus, no valid connections. A network
+    ;; with connections but no nodes would not be functional.
     (cond ((equal? b2 #f)
 	   
 	   (set! i1 (grsp-lm nodes))
@@ -4459,13 +4599,14 @@
 		  (grsp-ann-devnc p_b1 p_l1 (array-ref nodes i1 0) p_n2)
 
 		  (cond ((equal? p_b3 #t)
-			 (grsp-ask "Press [ENTER] to continue.")
+			 (grsp-ask (gconsts "pec"))
 			 (clear)))
 		  
 		  (set! i1 (in i1)))))))
 
 
-;;;; grsp-ann-stats - Provides basic network info and statistics on ann p_a1.
+;;;; grsp-ann-stats - Provides basic network info and statistics on ann
+;; p_a1.
 ;;
 ;; Keywords:
 ;;
@@ -4493,33 +4634,33 @@
 	(cnode 0)
 	(nconn 0))
 	
-    (grsp-ldl (strings-append (list p_s1 "ANN properties") 1) 2 1)
+    (grsp-ldl (strings-append (list p_s1 (gconsts "ANNp")) 1) 2 1)
     (set! size (grsp-ann-net-size p_l1))
-    (grsp-ldl "Size " 2 0)
+    (grsp-ldl "Dim " 2 0)
     (grsp-ldl size 0 1)
 
     (set! degree (grsp-ann-node-degree p_l1))
-    (grsp-ldl "Degree " 2 0)
+    (grsp-ldl "Deg " 2 0)
     (grsp-ldl degree 0 1)
 
     (set! adegree (grsp-ann-net-adegree p_l1))
-    (grsp-ldl "Average degree " 2 0)
+    (grsp-ldl "u deg " 2 0)
     (grsp-ldl adegree 0 1)
 
     (set! density (grsp-ann-net-density p_l1))
-    (grsp-ldl "Density " 2 0)
+    (grsp-ldl "Den " 2 0)
     (grsp-ldl density 0 1)
 
     (set! pdensity (grsp-ann-net-pdensity p_l1))
-    (grsp-ldl "Planar density " 2 0)
+    (grsp-ldl "Planar den " 2 0)
     (grsp-ldl pdensity 0 1)
 
     (set! cnode (grsp-ann-nodes-conns p_l1))
-    (grsp-ldl "Connections per node " 2 0)
+    (grsp-ldl "C x n " 2 0)
     (grsp-lal-dev #t cnode)
 
     (set! nconn (grsp-ann-conns-nodes p_l1))
-    (grsp-ldl "Nodes per connection " 2 0)
+    (grsp-ldl "N x c " 2 0)
     (grsp-lal-dev #t nconn)))
 
 
@@ -4574,8 +4715,8 @@
     res1))
 
        
-;;;; grsp-ann-updater - Update row p_m1 of matrix p_s1 of ann p_l1 with the
-;; values contained in p_l2
+;;;; grsp-ann-updater - Update row p_m1 of matrix p_s1 of ann p_l1 with
+;; the values contained in p_l2.
 ;;
 ;; Keywords:
 ;;
@@ -4665,8 +4806,8 @@
     res1))
 
 
-;;;; grsp-ann-element-number - Returns the element number of matrix p_s1 in ann
-;; list p_l1.
+;;;; grsp-ann-element-number - Returns the element number of matrix p_s1
+;; in ann list p_l1.
 ;;
 ;; Keywords:
 ;;
@@ -4718,8 +4859,9 @@
     
     res1))
 
-;;;; grsp-ann-get-element - Get element number p_n1 from ann p_l1, which is a
-;; list of matrices.
+;;;; grsp-ann-get-element - Get element number p_n1 from ann p_l1, which
+;; is a list of matrices.
+;;
 ;; Keywords:
 ;;
 ;; - functions, ann, neural, network
@@ -4744,8 +4886,8 @@
     
     res1))
 
-;;;; grsp-ann-conns-opmm - Performs operation p_s1 on values and biases of p_a2
-;; and returns results in matrix p_a1 (element 6).
+;;;; grsp-ann-conns-opmm - Performs operation p_s1 on values and biases
+;; of p_a2 and returns results in matrix p_a1 (element 6).
 ;;
 ;; - functions, ann, neural, network
 ;;
@@ -4753,10 +4895,14 @@
 ;;
 ;; - p_s1: string.
 ;;
-;;   - "#++"; result is the summation of the sum of each value per its bias.
-;;   - "#+*": result is the summation of the product of each value per its bias.
-;;   - "#*+": result is the production of the sum of each value per its bias.
-;;   - "#**": result is the production of the product of each value per its bias.
+;;   - "#++"; result is the summation of the sum of each value per its
+;;      bias.
+;;   - "#+*": result is the summation of the product of each value per
+;;     its bias.
+;;   - "#*+": result is the production of the sum of each value per its
+;;     bias.
+;;   - "#**": result is the production of the product of each value per
+;;     its bias.
 ;;
 ;; - p_a1: matrix. Data Subset in nodes format.
 ;; - p_a2: matrix. Data Subset in conns.
@@ -4780,13 +4926,21 @@
       (if (<= i1 (grsp-hm res2))
 
 	  (begin (cond ((equal? p_s1 "#++")
-			(set! n1 (+ n1 (+ (array-ref res2 i1 5) (array-ref res2 i1 7)))))
+			(set! n1 (+ n1
+				    (+ (array-ref res2 i1 5)
+				       (array-ref res2 i1 7)))))
 		       ((equal? p_s1 "#+*")
-			(set! n1 (+ n1 (* (array-ref res2 i1 5) (array-ref res2 i1 7)))))
+			(set! n1 (+ n1
+				    (* (array-ref res2 i1 5)
+				       (array-ref res2 i1 7)))))
 		       ((equal? p_s1 "#*+")
-			(set! n1 (* n1 (+ (array-ref res2 i1 5) (array-ref res2 i1 7)))))
+			(set! n1 (* n1
+				    (+ (array-ref res2 i1 5)
+				       (array-ref res2 i1 7)))))
 		       ((equal? p_s1 "#**")
-			(set! n1 (* n1 (* (array-ref res2 i1 5) (array-ref res2 i1 7))))))
+			(set! n1 (* n1
+				    (* (array-ref res2 i1 5)
+				       (array-ref res2 i1 7))))))
 
 		 (display "\n n1 \n")
 		 (display n1)
@@ -4800,9 +4954,9 @@
   res1))
 
 
-;;;; grsp-ann-row-idata-bvw - Updates the idata matrix of ann p_l1 by adding
-;; rows for matrices nodes and conns in which values for bias, value or weight
-;; according to p_s1 are set to value p_n1.
+;;;; grsp-ann-row-idata-bvw - Updates the idata matrix of ann p_l1 by
+;; adding rows for matrices nodes and conns in which values for bias,
+;; value or weight according to p_s1 are set to value p_n1.
 ;;
 ;; - functions, ann, neural, network, idata, configuration, block, batch
 ;;
@@ -5009,10 +5163,10 @@
 ;;
 ;; - List containing:
 ;;
-;;   - Elem 0: matrix p_a1 sans the last p_n1 columns, ready to be processed
-;;     with grsp-m2datai.
-;;   - Elem 1: datae format matrix, can replace current datae or be appended
-;;     to it.
+;;   - Elem 0: matrix p_a1 sans the last p_n1 columns, ready to be
+;;     processed with grsp-m2datai.
+;;   - Elem 1: datae format matrix, can replace current datae or be
+;;     appended to it.
 ;;
 (define (grsp-m2datae p_a1 p_j1)
   (let ((res1 '())
@@ -5070,8 +5224,8 @@
 ;;   - Col 0 ... col j-1: training data.
 ;;   - Col j ... col j+p_j1: expected results for col 0 ... col j-1.
 ;;
-;; - This function casts dataset matrix into datai format. The ann works by
-;;   loading rows corresponding to one epoch into idata.
+;; - This function casts dataset matrix into datai format. The ann works
+;;   by loading rows corresponding to one epoch into idata.
 ;;
 ;; Output:
 ;;
@@ -5127,12 +5281,13 @@
     res1))
 
 
-;;;; grsp-ann-ds-create - Creates "synthetic" datasets with one column results
-;; to be used with function grsp-ds2ann.
+;;;; grsp-ann-ds-create - Creates "synthetic" datasets with one column
+;; results to be used with function grsp-ds2ann.
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural, network, training, datasets, random, simulation
+;; - functions, ann, neural, network, training, datasets, random,
+;;   simulation
 ;;
 ;; Parameters:
 ;;
@@ -5145,13 +5300,13 @@
 ;; Notes:
 ;;
 ;; - See grsp-ds2ann.
-;; . Consider using grsp-random-state-set before this function if you want to
-;;   create pseudo-random data with p_s1 value "#rprnd".
+;; - Consider using grsp-random-state-set before this function if you
+;;   want to create pseudo-random data with p_s1 value "#rprnd".
 ;;
 ;; Output:
 ;;
-;; - Matrix in which the last column contains the results of operation p_s2
-;;   between the column elements of each row.
+;; - Matrix in which the last column contains the results of operation
+;;   p_s2 between the column elements of each row.
 ;;
 (define (grsp-ann-ds-create p_s1 p_s2 p_m1 p_n1)
   (let ((res1 0)
@@ -5172,7 +5327,8 @@
     res1))
 
 
-;;;; grsp-ann-nodes-select-linked - Returns a list of two elements containing:
+;;;; grsp-ann-nodes-select-linked - Returns a list of two elements
+;; containing:
 ;;
 ;; - Elem 0: list of connections from node p_n1 to node p_n2.
 ;; - Elem 1: list of connections from node p_n2 to node p_n1.
@@ -5212,7 +5368,8 @@
     res1))
 
 
-;;;; grsp-ann-nodes-select-layer - Selects all nodes of ANN p_l1 located in layer
+;;;; grsp-ann-nodes-select-layer - Selects all nodes of ANN p_l1 located
+;; in layer
 ;; p_n1.
 ;;
 ;; Keywords:
@@ -5291,8 +5448,8 @@
     res1))
 
 
-;;;; grsp-ann-id-updat - Change id number of element p_s1 whith id p_n1 to id
-;; p_n2 in ANN p_l1.
+;;;; grsp-ann-id-updat - Change id number of element p_s1 whith id p_n1
+;; to id p_n2 in ANN p_l1.
 ;;
 ;; Keywords:
 ;;
@@ -5383,7 +5540,12 @@
 	  ((equal? p_s1 "conns")
 
 	   ;; Change id of the edge in conns.
-	   (set! conns (grsp-matrix-row-update "#=" conns 0 p_n1 0 p_n2))))
+	   (set! conns (grsp-matrix-row-update "#="
+					       conns
+					       0
+					       p_n1
+					       0
+					       p_n2))))
     
     ;; Compose results.
     (set! res1 (list nodes
@@ -5400,8 +5562,8 @@
     res1))
 
 
-;;;;  grsp-ann-node-info - Extracts infro from node identified as p_n1 from
-;; network p_l1
+;;;;  grsp-ann-node-info - Extracts infro from node identified as p_n1
+;; from network p_l1
 ;;
 ;; Keywords:
 ;;
@@ -5418,10 +5580,13 @@
 ;;
 ;;   - Elem 0: A matrix row from matrix nodes that corresponds to the node
 ;;     requested.
-;;   - Elem 1: A submatrix from matrix conns with connections TO node p_n1.
-;;   - Elem 2: A submatrix from matrix conns with connections FROM node p_n1.
+;;   - Elem 1: A submatrix from matrix conns with connections TO node
+;;     p_n1.
+;;   - Elem 2: A submatrix from matrix conns with connections FROM node
+;;     p_n1.
 ;;
-;; - Will return empty matrices in case that no node or connections are found.
+;; - Will return empty matrices in case that no node or connections are
+;;   found.
 ;;   Use grsp-matrix-is-empty to verify.
 ;;
 (define (grsp-ann-node-info p_l1 p_n1)

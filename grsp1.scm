@@ -1,27 +1,28 @@
-;; =============================================================================
+;; =========================================================================
 ;;
 ;; grsp1.scm
 ;;
 ;; Constants.
 ;;
-;; =============================================================================
+;; =========================================================================
 ;;
 ;; Copyright (C) 2018 - 2024 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
-;;   it under the terms of the GNU Lesser General Public License as published by
-;;   the Free Software Foundation, either version 3 of the License, or
-;;   (at your option) any later version.
+;;   it under the terms of the GNU Lesser General Public License as
+;;   published by the Free Software Foundation, either version 3 of the
+;;   License, or (at your option) any later version.
 ;;
 ;;   This program is distributed in the hope that it will be useful,
 ;;   but WITHOUT ANY WARRANTY; without even the implied warranty of
-;;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-;;   GNU Lesser General Public License for more details.
+;;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+;;   Lesser General Public License for more details.
 ;;
-;;   You should have received a copy of the GNU Lesser General Public License
-;;   along with this program. If not, see <https://www.gnu.org/licenses/>.
+;;   You should have received a copy of the GNU Lesser General Public
+;;   License along with this program. If not, see
+;;   <https://www.gnu.org/licenses/>.
 ;;
-;; =============================================================================
+;; =========================================================================
 
 
 ;;;; General notes:
@@ -171,7 +172,7 @@
     (cond ((equal? p_n1 "gr")
 	   (set! res 1.00))
 
-	  ;; -------------------------------------------------------------------
+	  ;; --------------------------------------------------------------
 	  ;; Math
 
 	  ;; NaN, Not a Number, as per GNU Guile specs.
@@ -298,7 +299,7 @@
 	  ((equal? p_n1 "StarsMilkyWay")
 	   (set! res (expt 10 11)))
 	  
-          ;; -------------------------------------------------------------------
+          ;; --------------------------------------------------------------
 	  
 	  ;; Million [5][6].
 	  ((equal? p_n1 "Million")
@@ -340,7 +341,7 @@
 	  ((equal? p_n1 "Decillion")
 	   (set! res (expt 10 33)))
 
-          ;; -------------------------------------------------------------------
+          ;; --------------------------------------------------------------
 	  
 	  ;; Million [5][6].
 	  ((equal? p_n1 "Mega")
@@ -370,7 +371,7 @@
 	  ((equal? p_n1 "Yotta")
 	   (set! res (expt 10 24)))
 
-          ;; -------------------------------------------------------------------
+          ;; --------------------------------------------------------------
 	  
 	  ;; Millionth [5][6].
 	  ((equal? p_n1 "Millionth")
@@ -412,7 +413,7 @@
 	  ((equal? p_n1 "Decillionth")
 	   (set! res (expt 10 -33)))
 
-          ;; -------------------------------------------------------------------
+          ;; --------------------------------------------------------------
 	  
 	  ;; Micro [5][6].
 	  ((equal? p_n1 "Micro")
@@ -442,7 +443,7 @@
 	  ((equal? p_n1 "Yocto")
 	   (set! res (expt 10 -24)))
 	  
-          ;; -------------------------------------------------------------------
+          ;; --------------------------------------------------------------
 	  
 	  ;; ISQ - Kibi [5][6].
 	  ((equal? p_n1 "Kibi")
@@ -476,7 +477,7 @@
 	  ((equal? p_n1 "Yobi")
 	   (set! res (expt 1024 8)))	  
 
-          ;; -------------------------------------------------------------------	  	  
+          ;; ------------------------------------------------------------- 
 	  
           ;; Archimedes' constant. Pi [1][2].
 	  ((equal? p_n1 "A000796")
@@ -787,7 +788,7 @@
 	   (set! res 0.36651292058166432701))	       
 	  
  	  	  	  	  	  	  
-	  ;; -------------------------------------------------------------------
+	  ;; --------------------------------------------------------------
 	  ;; Physics
 
           ;; Fine structure constant [30].
@@ -930,7 +931,8 @@
 	  ((equal? p_n1 "ch")
 	   (set! res (* 6.27 (expt 10 -24))))
 
-          ;; Distance from the Sun to Proxima Centauri (AU) (+/- 126) [8][9].
+          ;; Distance from the Sun to Proxima Centauri (AU) (+/- 126)
+	  ;; [8][9].
 	  ((equal? p_n1 "AU Proxima Centauri")
 	   (set! res 268000))
 
@@ -1006,17 +1008,18 @@
 	  ((equal? p_n1 "AU Sedna")
 	   (set! res 525.86))
 
-          ;; Mean distance from the Sun to the inner limit of the Kuiper belt
-	  ;; (AU) [8][9].
+          ;; Mean distance from the Sun to the inner limit of the Kuiper
+	  ;; belt (AU) [8][9].
 	  ((equal? p_n1 "Inner Kuiper belt")
 	   (set! res 30.00))
 
-          ;; Distance (est) from the Sun to the outer limit of the Oort cloud
-	  ;; (AU) [8][9].
+          ;; Distance (est) from the Sun to the outer limit of the Oort
+	  ;; cloud (AU) [8][9].
 	  ((equal? p_n1 "Outer Oort cloud")
 	   (set! res 75000))
 
-          ;; Distance (est) from the Sun to the galactic center (AU) [8][9].
+          ;; Distance (est) from the Sun to the galactic center (AU)
+	  ;; [8][9].
 	  ((equal? p_n1 "Milky Way center")
 	   (set! res 1700000000))
 
@@ -1088,7 +1091,8 @@
 	  ((equal? p_n1 "Mass Moon")
 	   (set! res 0.0123000371))
 
-	  ;; Mass loss rate of the Sun at present stage (Earth masses) [24].
+	  ;; Mass loss rate of the Sun at present stage (Earth masses)
+	  ;; [24].
 	  ((equal? p_n1 "Mass loss rate Sun G2V")
 	   (set! res (* (gconst "Mass Sun") 2.5 (expt 10 -14))))
 
@@ -1133,47 +1137,101 @@
     (cond ((equal? p_s1 "hw")
 	   (set! res1 "Hello world!"))
 	  ((equal? p_s1 "01234")
-	   (set! res1 "0 - Exit  1 - Edit  2 - Add  3 - Delete  4 - Set to def. "))	  
+	   (set! res1 "0 - Exit  1 - Edit  2 - Add  3 - Delete  4 - Set to def. "))
+	  ((equal? p_s1 "Aft")
+	   (set! res1 "After "))
+	  ((equal? p_s1 "ANNp")
+	   (set! res1 "ANN properties "))	  
 	  ((equal? p_s1 "arm")
 	   (set! res1 "Add row to matrix..."))
+	  ((equal? p_s1 "Afvpc")
+	   (set! res1 "Activation function value passed to conns "))	  
 	  ((equal? p_s1 "bmm")
 	   (set! res1 "Back to main menu!\n"))
+	  ((equal? p_s1 "Bef")
+	   (set! res1 "Before "))	  
 	  ((equal? p_s1 "cop")
 	   (set! res1 "Confirm operation [#t/#f]? "))	  
 	  ((equal? p_s1 "col")
-	   (set! res1 "Col? "))	  
+	   (set! res1 "Col? "))
+	  ((equal? p_s1 "Cv")
+	   (set! res1 "Connection values "))	  
 	  ((equal? p_s1 "cve")
 	   (set! res1 "Current value for element ["))	  
 	  ((equal? p_s1 "dam")
 	   (set! res1 "Data matrix:"))
 	  ((equal? p_s1 "dat")
-	   (set! res1 "Data types:"))	  
-	  ((equal? p_s1 "fin")
-	   (set! res1 "Finished!"))
+	   (set! res1 "Data types:"))
+	  ((equal? p_s1 "En")
+	   (set! res1 "Epoch number "))	  
+	  ((equal? p_s1 "Ev")
+	   (set! res1 "Evaluating node "))	  
+	  ((equal? p_s1 "Fin")
+	   (set! res1 "Finished!"))	  
+	  ((equal? p_s1 "Isoe")
+	   (set! res1 "Idata status on epoch (before loading into ann) "))
+	  ((equal? p_s1 "Ib")
+	   (set! res1 "Inbound connections "))	  
 	  ((equal? p_s1 "ged")
 	   (set! res1 "Getting data..."))
 	  ((equal? p_s1 "gob")
-	   (set! res1 "Good bye!"))	  
+	   (set! res1 "Good bye!"))
+	  ((equal? p_s1 "IOc")
+	   (set! res1 "I/O connections "))
+	  ((equal? p_s1 "Ic")
+	   (set! res1 "Input connections "))	  
 	  ((equal? p_s1 "mau")
 	   (set! res1 "Matrix after updating:"))	  
 	  ((equal? p_s1 "mbu")
-	   (set! res1 "Matrix before updating:"))	  
+	   (set! res1 "Matrix before updating:"))
+	  ((equal? p_s1 "Mi")
+	   (set! res1 "Mutation iteration "))
+	  ((equal? p_s1 "Ndne")
+	   (set! res1 "Node does not exist "))
+	  ((equal? p_s1 "Nocon")
+	   (set! res1 "No connections "))	  
+	  ((equal? p_s1 "Node")
+	   (set! res1 "Node "))	  
 	  ((equal? p_s1 "notav")
 	   (set! res1 "Option not available.\n"))
 	  ((equal? p_s1 "nve")
 	   (set! res1 "New value for element ["))	  
+	  ((equal? p_s1 "Nr")
+	   (set! res1 "Node row "))	  
 	  ((equal? p_s1 "notf")
 	   (set! res1 "Not found."))
 	  ((equal? p_s1 "opt")
 	   (set! res1 "? "))
+	  ((equal? p_s1 "Oc")
+	   (set! res1 "Output connections "))	  
+	  ((equal? p_s1 "RFa")
+	   (set! res1 "Related FROM (this node) connections after evaluation "))
+	  ((equal? p_s1 "RTa")
+	   (set! res1 "Related TO (this node) connections after evaluation "))
+	  ((equal? p_s1 "RF")
+	   (set! res1 "Related FROM (this node) connections before evaluation "))
+	  ((equal? p_s1 "RTb")
+	   (set! res1 "Related TO (this node) connections before evaluation "))
 	  ((equal? p_s1 "row")
-	   (set! res1 "Row? "))	  
+	   (set! res1 "Row? "))
+	  ((equal? p_s1 "rrpp")
+	   (set! res1 "res1, res2 pre proc. "))
+	  ((equal? p_s1 "rrop")
+	   (set! res1 "res1, res2 post proc. "))	  
 	  ((equal? p_s1 "pdf")
 	   (set! res1 "See docs for details."))	  
 	  ((equal? p_s1 "plw")
 	   (set! res1 "Please wait..."))
 	  ((equal? p_s1 "pec")
-	   (set! res1 "Press <ENT> to continue."))	  
+	   (set! res1 "Press <ENT> to continue."))
+	  ((equal? p_s1 "Pro")
+	   (set! res1 "Processing... "))	  
+	  ((equal? p_s1 "Raf")
+	   (set! res1 "Result of activation function "))
+	  ((equal? p_s1 "Upa1")
+	   (set! res1 "Updated p_a1 "))
+	  ((equal? p_s1 "Vpa2ae")
+	   (set! res1 "Value of p_a2 after eval "))		  
 	  ((equal? p_s1 "wrch")
 	   (set! res1 "Wrong choice. Please try again.\n")))
  

@@ -1,27 +1,28 @@
-;; =============================================================================
+;; =========================================================================
 ;;
 ;; grsp7.scm
 ;;
 ;; Geometry and related functions.
 ;;
-;; =============================================================================
+;; =========================================================================
 ;;
 ;; Copyright (C) 2018 - 2024 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
-;;   it under the terms of the GNU Lesser General Public License as published by
-;;   the Free Software Foundation, either version 3 of the License, or
-;;   (at your option) any later version.
+;;   it under the terms of the GNU Lesser General Public License as
+;;   published by the Free Software Foundation, either version 3 of the
+;;   License, or (at your option) any later version.
 ;;
 ;;   This program is distributed in the hope that it will be useful,
 ;;   but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 ;;   GNU Lesser General Public License for more details.
 ;;
-;;   You should have received a copy of the GNU Lesser General Public License
-;;   along with this program. If not, see <https://www.gnu.org/licenses/>.
+;;   You should have received a copy of the GNU Lesser General Public
+;;   License along with this program. If not, see
+;;   <https://www.gnu.org/licenses/>.
 ;;
-;; =============================================================================
+;; =========================================================================
 
 
 ;;;; General notes:
@@ -39,14 +40,15 @@
 ;; - [2] En.wikipedia.org. 2021. Plücker's conoid - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Pl%C3%BCcker%27s_conoid
 ;;   [Accessed 21 November 2021].
-;; - [3] En.wikipedia.org. 2021. Saddle point - Wikipedia. [online] Available
-;;   at: https://en.wikipedia.org/wiki/Saddle_point [Accessed 21 November 2021].
+;; - [3] En.wikipedia.org. 2021. Saddle point - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Saddle_point [Accessed 21
+;;   November 2021].
 ;; - [4] En.wikipedia.org. 2021. List of complex and algebraic surfaces -
 ;;   Wikipedia. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/List_of_complex_and_algebraic_surfaces
 ;;   [Accessed 21 November 2021].
-;; - [5] En.wikipedia.org. 2021. Dupin cyclide - Wikipedia. [online] Available
-;;   at: https://en.wikipedia.org/wiki/Dupin_cyclide
+;; - [5] En.wikipedia.org. 2021. Dupin cyclide - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Dupin_cyclide
 ;;   [Accessed 21 November 2021].
 
 
@@ -247,9 +249,10 @@
 (define (grsp-geo-cylinder p_x1 p_y1)
   (let ((res1 0))
 
-	(set! res1 (+ (* 2 (grsp-geo-circle p_x1)) (* 2 (grsp-pi) p_x1 p_y1)))
+    (set! res1 (+ (* 2 (grsp-geo-circle p_x1))
+		  (* 2 (grsp-pi) p_x1 p_y1)))
     
-	res1))
+    res1))
 
 
 ;;;; grsp-geo-cylinderv - Volume of a cylinder.
@@ -350,7 +353,8 @@
     res1))
 
 
-;;;; grsp-geo-pi-shanks1 - Approximates pi using the original Shanks' formula.
+;;;; grsp-geo-pi-shanks1 - Approximates pi using the original Shanks'
+;; formula.
 ;;
 ;; Keywords:
 ;;
@@ -536,8 +540,8 @@
     res1))
 
 
-;;;; grsp-geo-ellyptic-cyclide - Calculates x, y and y values for an ellyptic
-;; cyclide.
+;;;; grsp-geo-ellyptic-cyclide - Calculates x, y and y values for an
+;; ellyptic cyclide.
 ;;
 ;; Keywords:
 ;;

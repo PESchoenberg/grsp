@@ -1,4 +1,4 @@
-;; =============================================================================
+;; =========================================================================
 ;; 
 ;; grsp3.scm
 ;;
@@ -6,34 +6,36 @@
 ;; functions constitute the basis for other functions found in the grspX.scm
 ;; files, where X > 3.
 ;;
-;; =============================================================================
+;; =========================================================================
 ;;
 ;; Copyright (C) 2020 - 2024 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
-;;   it under the terms of the GNU Lesser General Public License as published by
-;;   the Free Software Foundation, either version 3 of the License, or
-;;   (at your option) any later version.
+;;   it under the terms of the GNU Lesser General Public License as
+;;   published by the Free Software Foundation, either version 3 of the
+;;   License, or (at your option) any later version.
 ;;
 ;;   This program is distributed in the hope that it will be useful,
 ;;   but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 ;;   GNU Lesser General Public License for more details.
 ;;
-;;   You should have received a copy of the GNU Lesser General Public License
-;;   along with this program. If not, see <https://www.gnu.org/licenses/>.
+;;   You should have received a copy of the GNU Lesser General Public
+;;   License along with this program. If not, see
+;;   <https://www.gnu.org/licenses/>.
 ;;
-;; =============================================================================
+;; =========================================================================
 
 
 ;;;; General  notes:
 ;;
 ;; - Read sources for limitations on function parameters.
-;; - grsp3 provides some level of matrix algebra functionality for Guile, but in
-;;   its current version it is not intended to be particulary fast. It does not 
-;;   make use of any additional non-Scheme library like BLAS or Lapack.
-;; - As a convention here, m represents rows, n represents columns; variations
-;;   in this theme include:
+;; - grsp3 provides some level of matrix algebra functionality for Guile,
+;;   but in its current version it is not intended to be particulary fast.
+;;   It does not make use of any additional non-Scheme library like BLAS
+;;   or Lapack.
+;; - As a convention here, m represents rows, n represents columns;
+;;   variations in this theme include:
 ;;
 ;;   - lm: lowest row number.
 ;;   - hm: highest row number.
@@ -42,8 +44,8 @@
 ;;   - tm: total number of rows.
 ;;   - tn: total number of columns.
 ;;
-;; - All matrices referred in this file are numeric except wherever specifically
-;;   stated.
+;; - All matrices referred in this file are numeric except wherever
+;;   specifically stated.
 ;;
 ;; Sources:
 ;;
@@ -54,16 +56,17 @@
 ;;   Available at:
 ;;   http://www.hep.by/gnu/guile/Array-Procedures.html#Array-Procedures
 ;;   [Accessed 28 Jan. 2020].
-;; - [2] En.wikipedia.org. (2020). Numerical linear algebra. [online] Available 
-;;   at: https://en.wikipedia.org/wiki/Numerical_linear_algebra
+;; - [2] En.wikipedia.org. (2020). Numerical linear algebra. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Numerical_linear_algebra
 ;;   [Accessed 28 Jan. 2020].
 ;; - [3] En.wikipedia.org. (2020). Matrix theory. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Category:Matrix_theory
 ;;   [Accessed 28 Jan. 2020].
 ;; - [4] En.wikipedia.org. (2020). List of matrices. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/List_of_matrices [Accessed 8 Mar. 2020].
-;; - [5] Gnu.org. (2020). Random (Guile Reference Manual). [online] Available
-;;   at: https://www.gnu.org/software/guile/manual/html_node/Random.html
+;; - [5] Gnu.org. (2020). Random (Guile Reference Manual). [online]
+;;   Available at:
+;;   https://www.gnu.org/software/guile/manual/html_node/Random.html
 ;;   [Accessed 26 Jan. 2020].
 ;; - [6] Es.wikipedia.org. (2020). Factorización LU. [online] Available at:
 ;;   https://es.wikipedia.org/wiki/Factorizaci%C3%B3n_LU
@@ -76,54 +79,62 @@
 ;;   [Accessed 24 Feb. 2020].
 ;; - [9] En.wikipedia.org. 2020. Determinant. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Determinant [Accessed 2 August 2020].
-;; - [10] En.wikipedia.org. 2020. Leibniz Formula For Determinants. [online]
-;;   Available at: https://en.wikipedia.org/wiki/Leibniz_formula_for_determinants
+;; - [10] En.wikipedia.org. 2020. Leibniz Formula For Determinants.
+;;   [online]
+;;   Available at:
+;;   https://en.wikipedia.org/wiki/Leibniz_formula_for_determinants
 ;;   [Accessed 4 August 2020].
 ;; - [11] En.wikipedia.org. 2020. Invertible Matrix. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Invertible_matrix [Accessed 5 August 2020].
-;; - [12] En.wikipedia.org. 2020. Permanent (Mathematics). [online] Available
-;;   at: https://en.wikipedia.org/wiki/Permanent_(mathematics)
+;;   https://en.wikipedia.org/wiki/Invertible_matrix [Accessed 5 August
+;;   2020].
+;; - [12] En.wikipedia.org. 2020. Permanent (Mathematics). [online]
+;;   Available at: https://en.wikipedia.org/wiki/Permanent_(mathematics)
 ;;   [Accessed 7 August 2020].
 ;; - [13] En.wikipedia.org. 2020. Immanant. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Immanant [Accessed 14 August 2020].
 ;; - [14] En.wikipedia.org. 2020. Eigendecomposition Of A Matrix. [online]
-;;   Available at: https://en.wikipedia.org/wiki/Eigendecomposition_of_a_matrix
-;; - [15] En.wikipedia.org. 2020. Eigenvalue Algorithm. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Eigenvalue_algorithm
+;;   Available at:
+;;   https://en.wikipedia.org/wiki/Eigendecomposition_of_a_matrix
+;; - [15] En.wikipedia.org. 2020. Eigenvalue Algorithm. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Eigenvalue_algorithm
 ;;   [Accessed 12 August 2020].
-;; - [16] En.wikipedia.org. 2021. Relational algebra. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Relational_algebra [Accessed 16 March 2021].
-;; - [17] En.wikipedia.org. 2021. Support (mathematics). [online] Available at:
-;;   https://en.wikipedia.org/wiki/Support_(mathematics)> [Accessed 27 March
-;;   2021].
+;; - [16] En.wikipedia.org. 2021. Relational algebra. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Relational_algebra [Accessed 16
+;;   March 2021].
+;; - [17] En.wikipedia.org. 2021. Support (mathematics). [online]
+;;   Available at:
+;;   https://en.wikipedia.org/wiki/Support_(mathematics)> [Accessed 27
+;;   March 2021].
 ;; - [18] Mathispower4u. (2020). LU Decomposition. [online] Available at:
 ;;   https://www.youtube.com/watch?v=UlWcofkUDDU [Accessed 5 Mar. 2020].
 ;; - [19] En.wikipedia.org. 2021. Genetic algorithm - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Genetic_algorithm
 ;;   [Accessed 13 May 2021].
-;; - [20] En.wikipedia.org. 2021. Crossover (genetic algorithm) - Wikipedia.
-;;   [online] Available at:
+;; - [20] En.wikipedia.org. 2021. Crossover (genetic algorithm) -
+;;   Wikipedia. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)
 ;;   [Accessed 13 May 2021].
 ;; - [21] En.wikipedia.org. 2021. Mutation (genetic algorithm) - Wikipedia.
 ;;   [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Mutation_(genetic_algorithm)
 ;;   [Accessed 13 May 2021].
-;; - [22] En.wikipedia.org. 2021. Selection (genetic algorithm) - Wikipedia.
-;;   [online] Available at:
+;; - [22] En.wikipedia.org. 2021. Selection (genetic algorithm) -
+;;   Wikipedia. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Selection_(genetic_algorithm)
 ;;   [Accessed 13 May 2021].
 ;; - [23] fitness, A., 2015. Accumulated normalized fitness. [online] Stack
 ;;   Overflow. Available at:
 ;;   https://stackoverflow.com/questions/27524241/accumulated-normalized-fitness
 ;;   [Accessed 13 May 2021].
-;; - [24] En.wikipedia.org. 2021. Multiset - Wikipedia. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Multiset [Accessed 17 September 2021].
+;; - [24] En.wikipedia.org. 2021. Multiset - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Multiset [Accessed 17
+;;   September 2021].
 ;; - [25] Gnuplotting.org. 2021. Plotting data « Gnuplotting. [online]
 ;;   Available at: http://www.gnuplotting.org/plotting-data/
 ;;   [Accessed 21 November 2021].
-;; - [26] Gnu.org. 2022. Scheduling (Guile Reference Manual). [online] Available
-;;   at: https://www.gnu.org/software/guile/manual/html_node/Scheduling.html
+;; - [26] Gnu.org. 2022. Scheduling (Guile Reference Manual). [online]
+;;   Available at:
+;;   https://www.gnu.org/software/guile/manual/html_node/Scheduling.html
 ;;   [Accessed 16 May 2022].
 ;; - [27] En.wikipedia.org. 2022. Pauli matrices - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Pauli_matrices
@@ -131,8 +142,8 @@
 ;; - [28] En.wikipedia.org. 2022. Gamma matrices - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Gamma_matrices#Dirac_basis
 ;;   [Accessed 16 May 2022].
-;; - [29] En.wikipedia.org. 2022. Higher-dimensional gamma matrices - Wikipedia.
-;;   [online] Available at:
+;; - [29] En.wikipedia.org. 2022. Higher-dimensional gamma matrices -
+;;   Wikipedia. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Higher-dimensional_gamma_matrices
 ;;   [Accessed 16 May 2022].
 ;; - [30] En.wikipedia.org. 2022. Gell-Mann matrices - Wikipedia. [online]
@@ -148,12 +159,12 @@
 ;;   [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Penrose_graphical_notation
 ;;   [Accessed 31 May 2022].
-;; - [34] En.wikipedia.org. 2022. Categorical quantum mechanics - Wikipedia.
-;;   [online] Available at:
+;; - [34] En.wikipedia.org. 2022. Categorical quantum mechanics -
+;;   Wikipedia. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Categorical_quantum_mechanics
 ;;   [Accessed 31 May 2022].
-;; - [35] En.wikipedia.org. 2022. Qutrit - Wikipedia. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Qutrit#Qutrit_quantum_gates
+;; - [35] En.wikipedia.org. 2022. Qutrit - Wikipedia. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Qutrit#Qutrit_quantum_gates
 ;;   [Accessed 31 May 2022].
 ;; - [36] En.wikipedia.org. 2022. Tensor product - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Tensor_product
@@ -165,17 +176,19 @@
 ;;   Kronecker Product. [online] Mathematics Stack Exchange. Available at:
 ;;   https://math.stackexchange.com/questions/203947/tensor-product-and-kronecker-product
 ;;   [Accessed 1 June 2022].
-;; - [39] En.wikipedia.org. 2022. List of named matrices - Wikipedia. [online]
-;;   Available at: https://en.wikipedia.org/wiki/List_of_named_matrices
-;;   [Accessed 6 June 2022].
+;; - [39] En.wikipedia.org. 2022. List of named matrices - Wikipedia.
+;;   [online] Available at:
+;;   https://en.wikipedia.org/wiki/List_of_named_matrices [Accessed 6
+;;   June 2022].
 ;; - [40] En.wikipedia.org. 2022. Hermitian adjoint - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Hermitian_adjoint
 ;;   [Accessed 9 June 2022].
 ;; - [41] En.wikipedia.org. 2022. Conjugate transpose - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Conjugate_transpose
 ;;   [Accessed 9 June 2022].
-;; - [42] En.wikipedia.org. 2022. Minor (linear algebra) - Wikipedia. [online]
-;;   Available at: https://en.wikipedia.org/wiki/Minor_(linear_algebra)
+;; - [42] En.wikipedia.org. 2022. Minor (linear algebra) - Wikipedia.
+;;   [online] Available at:
+;;   https://en.wikipedia.org/wiki/Minor_(linear_algebra)
 ;;   [Accessed 9 June 2022].
 ;; - [43] GeeksforGeeks. 2022. Doolittle Algorithm : LU Decomposition -
 ;;   GeeksforGeeks. [online] Available at:
@@ -185,35 +198,42 @@
 ;;   [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Crout_matrix_decomposition
 ;;   [Accessed 27 June 2022].
-;; - [45] En.wikipedia.org. 2022. Unit vector - Wikipedia. [online] Available
-;;   at: https://en.wikipedia.org/wiki/Unit_vector [Accessed 27 June 2022].
-;; - [46] En.wikipedia.org. 2022. Dot product - Wikipedia. [online] Available
-;;   at: https://en.wikipedia.org/wiki/Dot_product [Accessed 27 June 2022].
+;; - [45] En.wikipedia.org. 2022. Unit vector - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Unit_vector
+;;   [Accessed 27 June 2022].
+;; - [46] En.wikipedia.org. 2022. Dot product - Wikipedia. [online]
+;;   Available at:
+;;   https://en.wikipedia.org/wiki/Dot_product [Accessed 27 June 2022].
 ;; - [47] En.wikipedia.org. 2022. Inner product space - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Inner_product_space
 ;;   [Accessed 27 June 2022].
-;; - [48] En.wikipedia.org. 2022. Gram–Schmidt process - Wikipedia. [online]
-;;   Available at: https://en.wikipedia.org/wiki/Gram%E2%80%93Schmidt_process
+;; - [48] En.wikipedia.org. 2022. Gram–Schmidt process - Wikipedia.
+;;   [online] Available at:
+;;   https://en.wikipedia.org/wiki/Gram%E2%80%93Schmidt_process
 ;;   [Accessed 27 June 2022].
-;; - [49] 1980. Algorithms for the QR-Decomposition. [ebook] Zuerich. Gander.
-;;   Available at: https://people.inf.ethz.ch/gander/papers/qrneu.pdf
-;;   [Accessed 6 July 2022].
+;; - [49] 1980. Algorithms for the QR-Decomposition. [ebook] Zuerich.
+;;   Gander. Available at:
+;;   https://people.inf.ethz.ch/gander/papers/qrneu.pdf [Accessed 6 July
+;;   2022].
 ;; - [50] Bindel, 2017. Householder QR. [ebook] Available at:
 ;;   https://www.cs.cornell.edu/~bindel/class/cs6210-f09/lec18.pdf
 ;;   [Accessed 6 July 2022].
 ;; - [51] People.math.wisc.edu. 2022. qr-4-ls-by-qr. [online] Available at:
 ;;   https://people.math.wisc.edu/~roch/mmids/qr-4-ls-by-qr.html
 ;;   [Accessed 6 July 2022].
-;; - [52] En.wikipedia.org. 2022. Wilson matrix - Wikipedia. [online] Available
-;;   at: https://en.wikipedia.org/wiki/Wilson_matrix [Accessed 7 July 2022].
-;; - [53] En.wikipedia.org. 2022. Cholesky decomposition - Wikipedia. [online]
-;;   Available at: https://en.wikipedia.org/wiki/Cholesky_decomposition
-;;   [Accessed 7 July 2022].
-;; - [54] Es.wikipedia.org. 2022. Norma matricial - Wikipedia, la enciclopedia
-;;   libre. [online] Available at: https://es.wikipedia.org/wiki/Norma_matricial
-;;   [Accessed 10 July 2022].
-;; - [55] En.wikipedia.org. 2022. QR algorithm - Wikipedia. [online] Available
-;;   at: https://en.wikipedia.org/wiki/QR_algorithm [Accessed 18 July 2022].
+;; - [52] En.wikipedia.org. 2022. Wilson matrix - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Wilson_matrix [Accessed
+;;   7 July 2022].
+;; - [53] En.wikipedia.org. 2022. Cholesky decomposition - Wikipedia.
+;;   [online] Available at:
+;;   https://en.wikipedia.org/wiki/Cholesky_decomposition [Accessed 7
+;;   July 2022].
+;; - [54] Es.wikipedia.org. 2022. Norma matricial - Wikipedia, la
+;;   enciclopedia libre. [online] Available at:
+;;   https://es.wikipedia.org/wiki/Norma_matricial [Accessed 10 July 2022].
+;; - [55] En.wikipedia.org. 2022. QR algorithm - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/QR_algorithm [Accessed
+;;   18 July 2022].
 ;; - [56] En.wikipedia.org. 2022. List of numerical analysis topics -
 ;;   Wikipedia. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/List_of_numerical_analysis_topics
@@ -222,21 +242,23 @@
 ;;   Available at: https://en.wikipedia.org/wiki/Matrix_splitting
 ;;   [Accessed 21 July 2022].
 ;; - [58] En.wikipedia.org. 2022. Gauss–Seidel method - Wikipedia. [online]
-;;   Available at: https://en.wikipedia.org/wiki/Gauss%E2%80%93Seidel_method
-;;   [Accessed 21 July 2022].
-;; - [59] En.wikipedia.org. 2022. Jacobi method - Wikipedia. [online] Available
-;;   at: https://en.wikipedia.org/wiki/Jacobi_method [Accessed 21 July 2022].
+;;   Available at:
+;;   https://en.wikipedia.org/wiki/Gauss%E2%80%93Seidel_method [Accessed
+;;   21 July 2022].
+;; - [59] En.wikipedia.org. 2022. Jacobi method - Wikipedia. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Jacobi_method [Accessed
+;;   21 July 2022].
 ;; - [60] En.wikipedia.org. 2022. Spectral radius - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Spectral_radius
 ;;   [Accessed 22 July 2022].
 ;; - [61] En.wikipedia.org. 2022. Rotation matrix - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Rotation_matrix
 ;;   [Accessed 5 October 2022].
-;; - [62] Eigenvector and eigenvalue (no date) Math is Fun Advanced. Available
-;;   at: https://www.mathsisfun.com/algebra/eigenvalue.html
+;; - [62] Eigenvector and eigenvalue (no date) Math is Fun Advanced.
+;;   Available at: https://www.mathsisfun.com/algebra/eigenvalue.html
 ;;   (Accessed: January 26, 2023). 
-;; - [63] Ciobanu, A. (2021) Writing your own Linear Algebra Matrix Library in
-;;   C, andreinc. Available at:
+;; - [63] Ciobanu, A. (2021) Writing your own Linear Algebra Matrix
+;;   Library in C, andreinc. Available at:
 ;;   https://www.andreinc.net/2021/01/20/writing-your-own-linear-algebra-matrix-library-in-c#solving-linear-systems-of-equations
 ;;   (Accessed: January 26, 2023). 
 ;; - [64] Forward substitution (no date) Algowiki. Available at:
@@ -245,21 +267,23 @@
 ;; - [65] Backward substitution (no date) Algowiki. Available at:
 ;;   https://algowiki-project.org/en/Backward_substitution
 ;;   (Accessed: January 26, 2023).
-;; - [66] Singular Value Decomposition (SVD) tutorial  BE.400 / 7.548 (no date)
-;;   Singular value decomposition (SVD) tutorial. Available at:
+;; - [66] Singular Value Decomposition (SVD) tutorial  BE.400 / 7.548
+;;   (no date) Singular value decomposition (SVD) tutorial. Available at:
 ;;   https://web.mit.edu/be.400/www/SVD/Singular_Value_Decomposition.htm
 ;;   (Accessed: March 13, 2023). 
-;; - [67] Singular value decomposition (2023) Wikipedia. Wikimedia Foundation.
-;;   Available at: https://en.wikipedia.org/wiki/Singular_value_decomposition
+;; - [67] Singular value decomposition (2023) Wikipedia. Wikimedia
+;;   Foundation. Available at:
+;;   https://en.wikipedia.org/wiki/Singular_value_decomposition
 ;;   (Accessed: March 16, 2023). 
 ;; - [68] Frobenius inner product (2022) Wikipedia. Wikimedia Foundation.
 ;;   Available at: https://en.wikipedia.org/wiki/Frobenius_inner_product
 ;;   (Accessed: March 16, 2023). 
-;; - [69] Khatri–rao product (2023) Wikipedia. Wikimedia Foundation. Available
-;;   at: https://en.wikipedia.org/wiki/Khatri%E2%80%93Rao_product
+;; - [69] Khatri–rao product (2023) Wikipedia. Wikimedia Foundation.
+;;   Available at: https://en.wikipedia.org/wiki/Khatri%E2%80%93Rao_product
 ;;   (Accessed: March 17, 2023). 
-;; - [70] Block matrix (2023) Wikipedia. Wikimedia Foundation. Available at:
-;;   https://en.wikipedia.org/wiki/Block_matrix (Accessed: March 28, 2023). 
+;; - [70] Block matrix (2023) Wikipedia. Wikimedia Foundation. Available
+;;   at: https://en.wikipedia.org/wiki/Block_matrix (Accessed: March 28,
+;;   2023). 
 ;; - [71] https://www.gnu.org/software/guile/manual/html_node/Futures.html
 
 
@@ -592,8 +616,8 @@
     res1))
 
 
-;;;; grsp-tm - Convenience function that returns the total number of rows in
-;; p_a1.
+;;;; grsp-tm - Convenience function that returns the total number of rows
+;; in p_a1.
 ;;
 ;; Keywords:
 ;;
@@ -621,8 +645,8 @@
     res1))
 
 
-;;;; grsp-tn - Convenience function that returns the total number of cols in
-;; p_a1.
+;;;; grsp-tn - Convenience function that returns the total number of cols
+;; in p_a1.
 ;;
 ;; Keywords:
 ;;
@@ -693,8 +717,8 @@
 ;;
 ;; Output:
 ;;
-;; - A number corresponding to the shape element value desired. Returns zero  
-;;   if p_e1 is incorrect.
+;; - A number corresponding to the shape element value desired. Returns
+;;   zero if p_e1 is incorrect.
 ;;
 (define (grsp-matrix-esi p_e1 p_m1)
   (let ((res1 0)
@@ -857,15 +881,14 @@
 			 (set! s1 0))			
 			((equal? p_s1 "#n0[-m:+m]")			 
 			 (set! s1 0)
-			 (set! m1 (+ 1 (* m1 2))))
-			
+			 (set! m1 (+ 1 (* m1 2))))			
 			(else (set! s1 p_s1)))
 
 		  ;; Build the matrix.
 		  (set! res1 (make-array s1 m1 n1))
 
-		  ;; Once the matrix has been created, depending on the type of 
-		  ;; matrix, modify its values.
+		  ;; Once the matrix has been created, depending on the
+		  ;; type of matrix, modify its values.
 		  (cond ((equal? p_s1 "#I")
 			 
 			 (while (< i1 m1)
@@ -895,7 +918,7 @@
 				(set! j1 0)
 				(while (< j1 n1)
 				       (array-set! res1 s1 i1 j1)
-				       (set! s1 (+ s1 1))				       
+				       (set! s1 (+ s1 1))	       
 				       (set! j1 (+ j1 1)))
 				
 				(set! i1 (+ i1 1))))
@@ -907,8 +930,7 @@
 			 (grsp-matrix-row-opsc "#+" res1 0 1)
 			 (set! res1 (grsp-matrix-transpose res1))
 			 (set! res1 (grsp-matrix-transpose res1))
-			 (array-set! res1 1 0 0))
-			
+			 (array-set! res1 1 0 0))			
 			((equal? p_s1 "#AI")
 			 
 			 (set! i1 (- m1 1))
@@ -929,8 +951,13 @@
 			 (while (< i1 m1)
 				
 				(set! j1 0)
-				(while (< j1 n1)				       
-				       (array-set! res1 (/ 1 (- (+ (+ i1 1) (+ j1 1)) 1)) i1 j1)				     
+				(while (< j1 n1)	       
+				       (array-set! res1
+						   (/ 1
+						      (- (+ (+ i1 1) (+ j1 1))
+							 1))
+						   i1
+						   j1)
 				       (set! j1 (+ j1 1)))
 				
 				(set! i1 (+ i1 1))))
@@ -940,8 +967,12 @@
 			 (while (< i1 m1)
 				
 				(set! j1 0)				
-				(while (< j1 n1)				       
-				       (array-set! res1 (/ (min (+ i1 1) (+ j1 1)) (max (+ i1 1) (+ j1 1))) i1 j1)
+				(while (< j1 n1)
+				       (array-set! res1 (/ (min (+ i1 1)
+								(+ j1 1))
+							   (max (+ i1 1)
+								(+ j1 1)))
+						   i1 j1)
 				       (set! j1 (+ j1 1)))
 				
 				(set! i1 (+ i1 1))))
@@ -951,8 +982,12 @@
 			 (while (< i1 m1)
 				
 				(set! j1 0)				
-				(while (< j1 n1)				       
-				       (array-set! res1 (grsp-biconr (+ i1 j1) i1) i1 j1)				       
+				(while (< j1 n1)
+				       (array-set! res1
+						   (grsp-biconr (+ i1 j1)
+								i1)
+						   i1
+						   j1)
 				       (set! j1 (+ j1 1)))
 				
 				(set! i1 (+ i1 1))))
@@ -963,14 +998,12 @@
 			 (array-set! res1 4 0 1)
 			 (array-set! res1 1 1 0)
 			 (array-set! res1 3 1 1))
-
 			((equal? p_s1 "#Ex1SVD")			 
 			 (set! res1 (grsp-matrix-create 0 4 5))
 			 (array-set! res1 1 0 0)
 			 (array-set! res1 2 0 4)
 			 (array-set! res1 3 1 2)			 
-			 (array-set! res1 2 3 1))
-			
+			 (array-set! res1 2 3 1))			
 			((equal? p_s1 "#Fibonacci")			 
 			 (set! p0 0)
 			 (set! p1 1)
@@ -981,19 +1014,19 @@
 				(set! j1 0)
 				(while (< j1 n1)
 
-				       ;; Non-recursive calculation of Fibonacci
-				       ;; terms in order to fill the matrix
-				       ;; easily.
-				       (cond ((equal? s1 0)					      
+				       ;; Non-recursive calculation of
+				       ;; Fibonacci terms in order to
+				       ;; fill the matrix easily.
+				       (cond ((equal? s1 0) 
 					      (set! p0 0)
-					      (set! s1 1))					     
-					     ((equal? s1 1)					      
+					      (set! s1 1))
+					     ((equal? s1 1)
 					      (set! p0 1)
-					      (set! s1 2))					     
-					     ((equal? s1 2)					      
+					      (set! s1 2))
+					     ((equal? s1 2)
 					      (set! p0 1)
-					      (set! s1 3))					     
-					     ((equal? s1 3)					      
+					      (set! s1 3))
+					     ((equal? s1 3)
 					      (set! p0 (+ p1 p2))))
 
 				       ;; Insert the Fibonacci term.
@@ -1023,17 +1056,20 @@
 				
 				(set! i1 (+ i1 1))))
 			
-			((equal? p_s1 "#CHR")
-			 
-			 (set! res1 (grsp-matrix-create "#rprnd" m1 n1))			 
+			((equal? p_s1 "#CHR")			 
+			 (set! res1 (grsp-matrix-create "#rprnd" m1 n1))  
 			 (while (< i1 m1)
 				
 				(set! j1 0)
 				(while (< j1 n1)
-				       
-				       (cond ((>= (array-ref res1 i1 j1) 0) ;; Mean 0.0 sd 0.15
+
+				       ;; Mean 0.0 sd 0.15
+				       (cond ((>= (array-ref res1 i1 j1) 0)
 					      (array-set! res1 1 i1 j1))
-					     (else (array-set! res1 0 i1 j1)))
+					     (else (array-set! res1
+							       0
+							       i1
+							       j1)))
 				       
 				       (set! j1 (+ j1 1)))
 				
@@ -1056,7 +1092,7 @@
 				
 				(set! j1 0)
 				(while (< j1 n1)
-				       (array-set! res1 (- i1 j1) i1 j1)				       
+				       (array-set! res1 (- i1 j1) i1 j1)
 				       (set! j1 (+ j1 1)))
 				
 				(set! i1 (+ i1 1))))
@@ -1066,13 +1102,14 @@
 			 (while (< i1 m1)
 				
 				(set! j1 0)				
-				(while (< j1 n1)			        
-				       (array-set! res1 (* i1 j1) i1 j1)				       
+				(while (< j1 n1)			  
+				       (array-set! res1 (* i1 j1) i1 j1)
 				       (set! j1 (+ j1 1)))
 				
 				(set! i1 (+ i1 1))))
 			
 			((equal? p_s1 "#/IJ")
+			 
 			 (while (< i1 m1)
 				
 				(set! j1 0)
@@ -1082,7 +1119,10 @@
 					      (array-set! res1 0 i1 j1)))
 				       
 				       (cond ((> j1 0)
-					      (array-set! res1 (/ i1 j1) i1 j1)))
+					      (array-set! res1
+							  (/ i1 j1)
+							  i1
+							  j1)))
 				       
 				       (set! j1 (+ j1 1)))
 				
@@ -1096,7 +1136,10 @@
 				(while (< j1 (- n1 1))
 				       
 				       (cond ((eq? i1 j1)
-					      (array-set! res1 1 i1 (+ j1 1))))
+					      (array-set! res1
+							  1
+							  i1
+							  (+ j1 1))))
 				       
 				       (set! j1 (+ j1 1)))
 				
@@ -1139,15 +1182,17 @@
 			
 			((equal? p_s1 "#rprnd")			 
 			 (set! res1 (grsp-matrix-create 1 m1 n1))
-			 (set! res1 (grsp-matrix-opsc "#rprnd" res1 0.15)))			
-			((equal? p_s1 "#zrow")
+			 (set! res1 (grsp-matrix-opsc "#rprnd"
+						      res1
+						      0.15)))
+			((equal? p_s1 "#zrow")			 
+			 (set! res1 (grsp-matrix-create 0 m1 n1))
 			 
-			 (set! res1 (grsp-matrix-create 0 m1 n1))			 
 			 (while (< i1 m1)
 				
 				(set! j1 0)
 				(while (< j1 n1)    
-				       (array-set! res1 i1 i1 j1)				       
+				       (array-set! res1 i1 i1 j1)
 				       (set! j1 (+ j1 1)))
 				
 				(set! i1 (+ i1 1))))
@@ -1159,7 +1204,7 @@
 				
 				(set! j1 0)
 				(while (< j1 n1)
-				       (array-set! res1 j1 i1 j1)				       
+				       (array-set! res1 j1 i1 j1)       
 				       (set! j1 (+ j1 1)))
 				
 				(set! i1 (+ i1 1))))
@@ -1169,7 +1214,7 @@
 			 
 			 (while (< i1 m1)
 				(array-set! res1 m3 i1 0)
-				(set! m3 (in m3))				
+				(set! m3 (in m3))
 				(set! i1 (in i1))))
 			
 			((equal? p_s1 "#Q")			 
@@ -1197,8 +1242,8 @@
 ;;
 ;; Output:
 ;;
-;; - A modified matrix p_a in which all p_v1 values would have been replaced by
-;;   p_v2.
+;; - A modified matrix p_a in which all p_v1 values would have been
+;; replaced by p_v2.
 ;;
 (define (grsp-matrix-change p_a1 p_v1 p_v2)
   (let ((res1 0)
@@ -1217,7 +1262,7 @@
 		   (if (<= j1 (grsp-hn res1))
 
 		       (begin (cond ((equal? (array-ref res1 i1 j1) p_v1)
-				     (array-set! res1 p_v2 i1 j1)))		
+				     (array-set! res1 p_v2 i1 j1)))
 			      
 			      (loop (+ j1 1)))))
 		 
@@ -1226,8 +1271,8 @@
     res1))
 
 
-;;;; grsp-matrix-create-set - Creates pre-defined sets of matrices as elements
-;; of a list.
+;;;; grsp-matrix-create-set - Creates pre-defined sets of matrices as
+;; elements of a list.
 ;;
 ;; Keywords:
 ;;
@@ -1244,7 +1289,8 @@
 ;;   - "#Dirac": Dirac gamma matrices.
 ;;   - "#srdd": Ax = b with A strictly diagonal.
 ;;   - "#rprnd": pseudo random values, normal distribution, sd = 0.15.
-;;   - "#mee1": contains original example1 matrix, eigenvectors and eigenvalue.
+;;   - "#mee1": contains original example1 matrix, eigenvectors and
+;;     eigenvalue.
 ;;
 ;; - p_n2: number of matrices to create.
 ;; - p_n3: default value for said matrices.
@@ -1253,19 +1299,19 @@
 ;;
 ;; Notes:
 ;;
-;; - Parameters p_n1, p_n2, p_m1 and/or p_n1 might not be relevant in the case
-;;   of some sets (for example, in the case of Pauli matrices, which are all of
-;;   2 x 2). In such cases, these two parameters will not be taken into
-;;   account irrespectively of the values passed.
-;; - If paramenter p_s1 is passed as "#UD", paramseters p_n1, p_n2 p_m1 and
-;;   p_n1 do matter.
+;; - Parameters p_n1, p_n2, p_m1 and/or p_n1 might not be relevant in
+;;   the case of some sets (for example, in the case of Pauli matrices,
+;;   which are all of 2 x 2). In such cases, these two parameters will
+;;   not be taken into account irrespectively of the values passed.
+;; - If paramenter p_s1 is passed as "#UD", paramseters p_n1, p_n2 p_m1
+;;   and p_n1 do matter.
 ;; - See grsp-matrix-create.
-;; - In Scheme lists elements are identified by their ordinals starting at zero
-;;   instead of one. Be careful when interpreting some of these sets because it
-;;   might be easy to confuse the programming and math conventions (example;
-;;   matrix Sigma 1 would be returned as element 0 in the resulting list).
+;; - In Scheme lists elements are identified by their ordinals starting
+;;   at zero instead of one. Be careful when interpreting some of these
+;;   sets because it might be easy to confuse the programming and math
+;;   conventions (example; matrix Sigma 1 would be returned as element
+;;   0 in the resulting list).
 ;; - See grsp0.grsp-s2dbc, grsp0.grsp-dbc2s, grsp0.grsp-random-state-set.
-;;
 ;;
 ;; Output:
 ;;
@@ -1437,7 +1483,10 @@
 	   (while (<= i1 (grsp-hm a0))
 
 		  (set! n1 (array-ref a0 i1 i1))
-		  (array-set! a0 (- (grsp-matrix-opio "#+r" a0 i1) n1) i1 i1)
+		  (array-set! a0
+			      (- (grsp-matrix-opio "#+r" a0 i1) n1)
+			      i1
+			      i1)
 		  
 		  (set! i1 (in i1)))
 
@@ -1509,8 +1558,8 @@
     res1))
 
 
-;;;; grsp-matrix-create-fix - Creates pre-defined matrices of specific sizes
-;; and values.
+;;;; grsp-matrix-create-fix - Creates pre-defined matrices of specific
+;; sizes and values.
 ;;
 ;; Keywords:
 ;;
@@ -1533,14 +1582,14 @@
 ;;   - "#CX": Qubit quantum gate. Controlled X.
 ;;   - "#CY": Qubit quantum gate. Controlled Y.
 ;;   - "#CZ": Qubit quantum gate. Controlled Z.
-;;   - "#CP": Qubit quantum gate. Controlled P, requires also p_z1 and state
-;;     |11>.
-;;   - "#RX": Qubit quantum gate. Rotation operator on X, requires also p_z1
-;;     (theta).
-;;   - "#RY": Qubit quantum gate. Rotation operator on Y, requires also p_z1
-;;     (theta).
-;;   - "#RZ": Qubit quantum gate. Rotation operator on Z, requires also p_z1
-;;     (theta).
+;;   - "#CP": Qubit quantum gate. Controlled P, requires also p_z1 and
+;;     state |11>.
+;;   - "#RX": Qubit quantum gate. Rotation operator on X, requires also
+;;     p_z1 (theta).
+;;   - "#RY": Qubit quantum gate. Rotation operator on Y, requires also
+;;     p_z1 (theta).
+;;   - "#RZ": Qubit quantum gate. Rotation operator on Z, requires also
+;;     p_z1 (theta).
 ;;   - "#SWAP": Qubit quantum gate. SWAP.
 ;;   - "#SQSWAP": Qubit quantum gate. Square root of SWAP.
 ;;   - "#CSWAP": Qubit quantum gate. CSWAP, Fredkin.
@@ -1548,9 +1597,12 @@
 ;;   - "#SQISWAP": Qubit quantum gate. Square root of imaginary SWAP.
 ;;   - "#CCX": Qubit quantum gate. CCX. Toffoli.
 ;;   - "#SQX": Qubit quantum gate. SQX. Square root of X.
-;;   - "#RXX": Qubit quantum gate. Ising coupling gate, X, requires also p_z1.
-;;   - "#RYY": Qubit quantum gate. Ising coupling gate, Y, requires also p_z1.
-;;   - "#RZZ": Qubit quantum gate. Ising coupling gate, Z, requires also p_z1.
+;;   - "#RXX": Qubit quantum gate. Ising coupling gate, X, requires also
+;;     p_z1.
+;;   - "#RYY": Qubit quantum gate. Ising coupling gate, Y, requires also
+;;     p_z1.
+;;   - "#RZZ": Qubit quantum gate. Ising coupling gate, Z, requires also
+;;     p_z1.
 ;;   - "#Wilson": Wilson matrix.
 ;;   - "#corr": element wise correlation matrix (1 x 6), according to:
 ;;
@@ -1561,8 +1613,9 @@
 ;;     - [0,4]: col, element of second matrix.
 ;;     - [0,5]: value of element, second matrix.
 ;;
-;;   - "#part": partition matrix. Used to partition a given matrix in several
-;;     submatrices. Creates a 1 x 6 matrix (requires p_z1 for number of rows).
+;;   - "#part": partition matrix. Used to partition a given matrix in
+;;     several submatrices. Creates a 1 x 6 matrix (requires p_z1 for
+;;     number of rows).
 ;;
 ;;     - Col0: lower m boundary (rows) in partitioned matrix.
 ;;     - Col1: higher m boundary (rows) in partitioned matrix.
@@ -1610,11 +1663,26 @@
 	(z0p1n 0.0-1.0i))	
 
     (cond ((equal? p_s1 "#X")
-	   (set! res1 (list-ref (grsp-matrix-create-set "#Pauli" 0 0 0 0) 0)))
+	   (set! res1 (list-ref (grsp-matrix-create-set "#Pauli"
+							0
+							0
+							0
+							0)
+				0)))
 	  ((equal? p_s1 "#Y")
-	   (set! res1 (list-ref (grsp-matrix-create-set "#Pauli" 0 0 0 0) 1)))
+	   (set! res1 (list-ref (grsp-matrix-create-set "#Pauli"
+							0
+							0
+							0
+							0)
+				1)))
 	  ((equal? p_s1 "#Z")
-	   (set! res1 (list-ref (grsp-matrix-create-set "#Pauli" 0 0 0 0) 2)))
+	   (set! res1 (list-ref (grsp-matrix-create-set "#Pauli"
+							0
+							0
+							0
+							0)
+				2)))
 	  ((equal? p_s1 "#QI")	   
 	   (set! res1 (grsp-matrix-create "#I" 2 2))
 	   (set! res1 (grsp-matrix-opsc "#*" res1 z1p0p)))
@@ -1782,8 +1850,8 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, structure, dimensionality,
-;;   size
+;; - functions, algebra, matrix, matrices, vectors, structure,
+;;   dimensionality, size
 ;;
 ;; Parameters:
 ;;
@@ -1798,10 +1866,12 @@
   (let ((res1 0)
 	(a2 0))
 
-    ;; Extract the number of rows and cols of p_a1 and create a new matrix of
-    ;; type p_s1 with the same size.
+    ;; Extract the number of rows and cols of p_a1 and create a new
+    ;; matrix of type p_s1 with the same size.
     (set! a2 (grsp-matrix-te2 p_a1))
-    (set! res1 (grsp-matrix-create p_s1 (array-ref a2 0 0) (array-ref a2 0 1)))
+    (set! res1 (grsp-matrix-create p_s1
+				   (array-ref a2 0 0)
+				   (array-ref a2 0 1)))
 
     res1))
 
@@ -1833,11 +1903,11 @@
 ;;
 ;; Output:
 ;;
-;; - A matrix of m x 2 elements, being m the number of ocurrences that statisfy
-;;   the search criteria. On row 0 goes the row coordinate of each element
-;;   found, and on row 1 goes the corresponding col coordinate. Thus, this
-;;   matrix shows both the number of found elements as well as their positions
-;;   within p_a1.
+;; - A matrix of m x 2 elements, being m the number of ocurrences that
+;;   statisfy the search criteria. On row 0 goes the row coordinate of
+;;   each element found, and on row 1 goes the corresponding col
+;;   coordinate. Thus, this matrix shows both the number of found
+;;   elements as well as their positions within p_a1.
 ;;
 (define (grsp-matrix-find p_s1 p_a1 p_v1)
   (let ((res1 0)
@@ -1855,7 +1925,7 @@
 
 		  (cond ((equal? p_s1 "#=")
 			 
-			 (cond ((equal? p_v1 (array-ref p_a1 i1 j1))				
+			 (cond ((equal? p_v1 (array-ref p_a1 i1 j1))
 				(set! k1 (+ k1 1))
 				(set! c1 #t))))
 			
@@ -1867,39 +1937,41 @@
 			
 			((equal? p_s1 "#<")
 			 
-			 (cond ((< (array-ref p_a1 i1 j1) p_v1)				
+			 (cond ((< (array-ref p_a1 i1 j1) p_v1)
 				(set! k1 (+ k1 1))
 				(set! c1 #t))))
 			
 			((equal? p_s1 "#>=")
 			 
-			 (cond ((>= (array-ref p_a1 i1 j1) p_v1)				
+			 (cond ((>= (array-ref p_a1 i1 j1) p_v1)
 				(set! k1 (+ k1 1))
 				(set! c1 #t))))
 			
 			((equal? p_s1 "#<=")
 			 
-			 (cond ((<= (array-ref p_a1 i1 j1) p_v1)				
+			 (cond ((<= (array-ref p_a1 i1 j1) p_v1)
 				(set! k1 (+ k1 1))
 				(set! c1 #t))))
 			
 			((equal? p_s1 "#!=")
 			 
-			 (cond ((< (array-ref p_a1 i1 j1) p_v1)				
+			 (cond ((< (array-ref p_a1 i1 j1) p_v1)
 				(set! k1 (+ k1 1))
 				(set! c1 #t))
 			       
-			       ((> (array-ref p_a1 i1 j1) p_v1)				
+			       ((> (array-ref p_a1 i1 j1) p_v1)
 				(set! k1 (+ k1 1))
 				(set! c1 #t)))))
 		  
-		  (cond ((equal? c1 #t)
-			 
-			 ;; Create row1 or increase the number of its rows.
+		  (cond ((equal? c1 #t)			 
+			 ;; Create row1 or increase the number of its
+			 ;; rows.
 			 (cond ((equal? k1 1)				
-				(set! res1 (grsp-matrix-create 0 1 2)))			       
+				(set! res1 (grsp-matrix-create 0 1 2)))
 			       ((> k1 1)				
-				(set! res1 (grsp-matrix-subexp res1 1 0))))
+				(set! res1 (grsp-matrix-subexp res1
+							       1
+							       0))))
 
 			 ;; Fill a new row of res1 with data.
 			 (array-set! res1 i1 (grsp-hm res1) 0)
@@ -1913,8 +1985,8 @@
     res1))
     
 
-;;;; grsp-matrix-transpose - Transposes a matrix of shape m x n into another
-;; with shape n x m.
+;;;; grsp-matrix-transpose - Transposes a matrix of shape m x n into
+;; another with shape n x m.
 ;;
 ;; Keywords:
 ;;
@@ -2021,8 +2093,8 @@
     res1))
 
 
-;;;; grsp-matrix-conjugate-transpose - Calculates the conjugate transpose matrix
-;; of p_a1.
+;;;; grsp-matrix-conjugate-transpose - Calculates the conjugate transpose
+;; matrix of p_a1.
 ;;
 ;; Keywords:
 ;;
@@ -2153,67 +2225,67 @@
 			;; Main diagonal operations.
 			((equal? p_s1 "#+md")
 			 
-			 (cond ((equal? (grsp-gtels i1 j1) 0)				
+			 (cond ((equal? (grsp-gtels i1 j1) 0)	
 				(set! res2 (+ res2 n1)))))
 			
 			((equal? p_s1 "#-md")
 			 
-			 (cond ((equal? (grsp-gtels i1 j1) 0)				
+			 (cond ((equal? (grsp-gtels i1 j1) 0)
 				(set! res2 (- res2 n1)))))
 			
 			((equal? p_s1 "#*md")
 			 
-			 (cond ((equal? (grsp-gtels i1 j1) 0)				
+			 (cond ((equal? (grsp-gtels i1 j1) 0) 	
 				(set! res2 (* res2 n1)))))
 			
 			((equal? p_s1 "#/md")
 			 
-			 (cond ((equal? (grsp-gtels i1 j1) 0)				
+			 (cond ((equal? (grsp-gtels i1 j1) 0)
 				(set! res2 (/ res2 n1)))))
 
 			;; Anti diagonal operations.
 			((equal? p_s1 "#+ad")
 			 
-			 (cond ((equal? k1 (+ i1 j1))				
+			 (cond ((equal? k1 (+ i1 j1))
 				(set! res2 (+ res2 n1)))))
 			
 			((equal? p_s1 "#-ad")
 			 
-			 (cond ((equal? k1 (+ i1 j1))				
+			 (cond ((equal? k1 (+ i1 j1))
 				(set! res2 (- res2 n1)))))
 			
 			((equal? p_s1 "#*ad")
 			 
-			 (cond ((equal? k1 (+ i1 j1))				
+			 (cond ((equal? k1 (+ i1 j1))
 				(set! res2 (* res2 n1)))))
 			
 			((equal? p_s1 "#/ad")
 			 
-			 (cond ((equal? k1 (+ i1 j1))				
+			 (cond ((equal? k1 (+ i1 j1))
 				(set! res2 (/ res2 n1))))))
 			
 		  ;; Row operations.
 		  (cond ((= l1 i1)
 			 
-			 (cond ((equal? p_s1 "#+r")				
+			 (cond ((equal? p_s1 "#+r")
 				(set! res2 (+ res2 n1)))
-			       ((equal? p_s1 "#-r")				
+			       ((equal? p_s1 "#-r")
 				(set! res2 (- res2 n1)))
-			       ((equal? p_s1 "#*r")				
+			       ((equal? p_s1 "#*r")
 				(set! res2 (* res2 n1)))
-			       ((equal? p_s1 "#/r")				
+			       ((equal? p_s1 "#/r")
 				(set! res2 (/ res2 n1))))))
 
 		  ;; Column operations.
 		  (cond ((= l1 j1)
 			 
-			 (cond ((equal? p_s1 "#+c")				
+			 (cond ((equal? p_s1 "#+c")
 				(set! res2 (+ res2 n1)))
-			       ((equal? p_s1 "#-c")				
+			       ((equal? p_s1 "#-c")
 				(set! res2 (- res2 n1)))
-			       ((equal? p_s1 "#*c")				
+			       ((equal? p_s1 "#*c")
 				(set! res2 (* res2 n1)))
-			       ((equal? p_s1 "#/c")				
+			       ((equal? p_s1 "#/c")
 				(set! res2 (/ res2 n1))))))
 
 		  (set! j1 (+ j1 1)))
@@ -2238,18 +2310,21 @@
 ;;   - "#-": scalar substraction.
 ;;   - "#*": scalar multiplication.
 ;;   - "#/": scalar division.
-;;   - "#expt": applies expt function to each element of p_a1 (expt p_a1 p_v1).
+;;   - "#expt": applies expt function to each element of p_a1 (expt p_a1
+;;     p_v1).
 ;;   - "#max": applies max function to each element of p_a1.
 ;;   - "#min": applies min function to each element of p_a1.
-;;   - "#rw": replace all elements of p_a1 with p_v1 regardless of their value.
-;;   - "#rprnd": replace all elements of p_a1 with pseudo random numbers in a
-;;      normal distribution with mean 0.0 and standard deviation equal to p_v1.
-;;   - "#si": applies (grsp-complex-inv "#si" z1) to each element z1 of p_a1
-;;     (complex conjugate).
-;;   - "#is": applies (grsp-complex-inv "#is" z1) to each element z1 of p_a1
-;;     (sign inversion of real element of complex number).
-;;   - "#ii": applies (grsp-complex-inv "#ii" z1) to each element z1 of p_a1
-;;     (sign inversion of both elements of a complex number).
+;;   - "#rw": replace all elements of p_a1 with p_v1 regardless of their
+;;     value.
+;;   - "#rprnd": replace all elements of p_a1 with pseudo random numbers
+;;     in a normal distribution with mean 0.0 and standard deviation
+;;     equal to p_v1.
+;;   - "#si": applies (grsp-complex-inv "#si" z1) to each element z1 of
+;;     p_a1 (complex conjugate).
+;;   - "#is": applies (grsp-complex-inv "#is" z1) to each element z1 of
+;;     p_a1 (sign inversion of real element of complex number).
+;;   - "#ii": applies (grsp-complex-inv "#ii" z1) to each element z1 of
+;;     p_a1 (sign inversion of both elements of a complex number).
 ;;
 ;; - p_a1: matrix.
 ;; - p_v1: scalar value.
@@ -2257,9 +2332,9 @@
 ;; Notes:
 ;;
 ;; - You may need to use seed->random-state for pseudo random numbers.
-;; - This function does not validate the dimensionality or boundaries of the 
-;;   matrices involved; the user or an additional shell function should take
-;;   care of that.
+;; - This function does not validate the dimensionality or boundaries of
+;;   the matrices involved; the user or an additional shell function
+;;   should take care of that.
 ;; - See grsp0.grsp-random-state-set.
 ;;
 ;; Output:
@@ -2295,13 +2370,13 @@
 		  (set! n1 (array-ref a1 i1 j1))
 		  
 		  (cond ((equal? p_s1 "#+")			 
-			 (array-set! res1 (+ n1 p_v1) i1 j1))			
+			 (array-set! res1 (+ n1 p_v1) i1 j1))
 			((equal? p_s1 "#-")			 
-			 (array-set! res1 (- n1 p_v1) i1 j1))			
+			 (array-set! res1 (- n1 p_v1) i1 j1))
 			((equal? p_s1 "#*")			 
-			 (array-set! res1 (* n1 p_v1) i1 j1))			
+			 (array-set! res1 (* n1 p_v1) i1 j1))
 			((equal? p_s1 "#/")			 
-			 (array-set! res1 (/ n1 p_v1) i1 j1))			
+			 (array-set! res1 (/ n1 p_v1) i1 j1))
 			((equal? p_s1 "#expt")			 
 			 (array-set! res1 (expt n1 p_v1) i1 j1))
 			((equal? p_s1 "#max")			 
@@ -2338,12 +2413,13 @@
     res1))
 
 
-;;;; grsp-matrix-opew - Performs element-wise operation p_s1 between matrices
-;; p_a1 and p_a2.
+;;;; grsp-matrix-opew - Performs element-wise operation p_s1 between
+;; matrices p_a1 and p_a2.
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, hadamard, direct, schur
+;; - functions, algebra, matrix, matrices, vectors, hadamard, direct,
+;;   schur
 ;;
 ;; Parameters:
 ;;
@@ -2364,9 +2440,9 @@
 ;;
 ;; Notes:
 ;;
-;; - This function does not validate the dimensionality or boundaries of the 
-;;   matrices involved; the user or an additional shell function should take 
-;;   care of that.
+;; - This function does not validate the dimensionality or boundaries of
+;;   the matrices involved; the user or an additional shell function
+;;   should take care of that.
 ;; - See grsp-matrix-opewc, grsp-matrix-opewl.
 ;;
 ;; Examples:
@@ -2406,15 +2482,15 @@
 		  (set! n2 (array-ref a2 i1 j1))
 		  
 		  (cond ((equal? p_s1 "#+")			 
-			 (array-set! res1 (+ n1 n2) i1 j1))			
+			 (array-set! res1 (+ n1 n2) i1 j1))
 			((equal? p_s1 "#-")			 
-			 (array-set! res1 (- n1 n2) i1 j1))			
+			 (array-set! res1 (- n1 n2) i1 j1))
 			((equal? p_s1 "#*")			 
-			 (array-set! res1 (* n1 n2) i1 j1))			
+			 (array-set! res1 (* n1 n2) i1 j1))
 			((equal? p_s1 "#/")			 
-			 (array-set! res1 (/ n1 n2) i1 j1))			
+			 (array-set! res1 (/ n1 n2) i1 j1))
 			((equal? p_s1 "#expt")			 
-			 (array-set! res1 (expt n1 n2) i1 j1))			
+			 (array-set! res1 (expt n1 n2) i1 j1))
 			((equal? p_s1 "#max")			 
 			 (array-set! res1 (max n1 n2) i1 j1))
 			((equal? p_s1 "#min")			 
@@ -2436,12 +2512,13 @@
     res1))
 
 
-;;;; grsp-matrix-opewl - Applies function grsp-matrix-opew succesively to all
-;; elements of list p_l1.
+;;;; grsp-matrix-opewl - Applies function grsp-matrix-opew succesively
+;; to all elements of list p_l1.
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, hadamard, direct, schur
+;; - functions, algebra, matrix, matrices, vectors, hadamard, direct,
+;;   schur
 ;;
 ;; Parameters:
 ;;
@@ -2528,8 +2605,10 @@
     
     ;; Create holding matrix.
     (set! res3 (grsp-matrix-create res3
-				   (+ (- (grsp-hm res1) (grsp-ln res1)) 1)
-				   (+ (- (grsp-hn res1) (grsp-ln res1)) 1)))
+				   (+ (- (grsp-hm res1) (grsp-ln res1))
+				      1)
+				   (+ (- (grsp-hn res1) (grsp-ln res1))
+				      1)))
 
     ;; Apply bitwise operation.
     (set! i1 (grsp-lm res1))		 
@@ -2596,8 +2675,8 @@
     res3))
 
 
-;;;; grsp-matrix-opmm - Performs operation p_s1 between matrices p_a1 and p_a2
-;; producing a matrix as a result.
+;;;; grsp-matrix-opmm - Performs operation p_s1 between matrices p_a1
+;; and p_a2 producing a matrix as a result.
 ;;
 ;; Keywords:
 ;;
@@ -2619,10 +2698,10 @@
 ;;
 ;; Notes:
 ;;
-;; - This function does not validate the dimensionality or boundaries of the 
-;;   matrices involved; the user or an additional shell function should take
-;;   care of that.
-;; - See grsp-matrix-opmml
+;; - This function does not validate the dimensionality or boundaries of
+;;   the matrices involved; the user or an additional shell function
+;;   should take care of that.
+;; - See grsp-matrix-opmml.
 ;;
 ;; Examples:
 ;;
@@ -2654,8 +2733,10 @@
 		   
     ;; Create a default results matrix.
     (set! res3 (grsp-matrix-create res3
-				   (+ (- (grsp-hm p_a1) (grsp-lm p_a1)) 1)
-				   (+ (- (grsp-hn p_a2) (grsp-ln p_a2)) 1)))
+				   (+ (- (grsp-hm p_a1) (grsp-lm p_a1))
+				      1)
+				   (+ (- (grsp-hn p_a2) (grsp-ln p_a2))
+				      1)))
     
     ;; Apply mm operation.
     (cond ((equal? p_s1 "#*")
@@ -2670,7 +2751,9 @@
 			 (set! k1 (grsp-ln p_a1))
 			 (while (<= k1 (grsp-hn p_a1))
 
-				(set! sum (+ sum (* (array-ref p_a1 i1 k1) (array-ref p_a2 k1 j1))))
+				(set! sum (+ sum
+					     (* (array-ref p_a1 i1 k1)
+						(array-ref p_a2 k1 j1))))
 				
 				(set! k1 (in k1)))
 
@@ -2692,7 +2775,9 @@
 			 (set! k1 (grsp-ln p_a1))
 			 (while (<= k1 (grsp-hn p_a1))
 
-				(set! sum (+ sum (/ (array-ref p_a1 i1 k1) (array-ref p_a2 k1 j1))))
+				(set! sum (+ sum
+					     (/ (array-ref p_a1 i1 k1)
+						(array-ref p_a2 k1 j1))))
 				
 				(set! k1 (in k1)))
 
@@ -2707,8 +2792,12 @@
 	  ((equal? p_s1 "#-")	   
 	   (set! res3 (grsp-matrix-opew p_s1 p_a1 p_a2)))	  
 	  ((equal? p_s1 "#(+)")
-	   (set! I1 (grsp-matrix-create "#I" (grsp-tm p_a2) (grsp-tm p_a2)))
-	   (set! I2 (grsp-matrix-create "#I" (grsp-tm p_a1) (grsp-tm p_a1)))
+	   (set! I1 (grsp-matrix-create "#I"
+					(grsp-tm p_a2)
+					(grsp-tm p_a2)))
+	   (set! I2 (grsp-matrix-create "#I"
+					(grsp-tm p_a1)
+					(grsp-tm p_a1)))
 	   (set! res5 (grsp-matrix-opmm "#(*)" p_a1 I2))
 	   (set! res6 (grsp-matrix-opmm "#(*)" I1 p_a2))
 	   (set! res3 (grsp-matrix-opmm "#+" res5 res6)))
@@ -2719,11 +2808,13 @@
 	   ;; Kronecker product generates a matrix M of (m1*m2)*(n1*n2)
 	   ;; size.	   
 	   (set! res3 (grsp-matrix-create 0
-					  (* (grsp-tm p_a1) (grsp-tm p_a2))
-					  (* (grsp-tn p_a1) (grsp-tn p_a2))))
+					  (* (grsp-tm p_a1)
+					     (grsp-tm p_a2))
+					  (* (grsp-tn p_a1)
+					     (grsp-tn p_a2))))
 
-	   ;; Cycle over p_a1 and perform a scalar product between each element
-	   ;; of p_a1 and matrix p_a2
+	   ;; Cycle over p_a1 and perform a scalar product between each
+	   ;; element of p_a1 and matrix p_a2
 	   (set! i3 (grsp-lm res3))
 	   (set! j3 (grsp-ln res3))
 	   (set! i1 (grsp-lm p_a1))
@@ -2733,14 +2824,20 @@
 		  (set! j1 (grsp-ln p_a1))
 		  (while (<= j1 (grsp-hn p_a1))
 
-			 ;; Perform scalar product between p_a1(i1,j1) and p_b1.
-			 (set! res5 (grsp-matrix-opsc "#*" p_a2 (array-ref p_a1 i1 j1)))
+			 ;; Perform scalar product between p_a1(i1,j1)
+			 ;; and p_b1.
+			 (set! res5 (grsp-matrix-opsc "#*"
+						      p_a2
+						      (array-ref p_a1
+								 i1
+								 j1)))
 
 			 ;; Paste res5 into res3.
 			 (set! res3 (grsp-matrix-subrep res3 res5 i3 j3))
 
-			 ;; Find the next position in res3 where to paste the
-			 ;; next matrix resulting from the scalar product.
+			 ;; Find the next position in res3 where to
+			 ;; paste the next matrix resulting from the
+			 ;; scalar product.
 			 (set! j3 (+ j3 (grsp-tn p_a2)))
 			 (set! j1 (in j1)))
 		  
@@ -2750,12 +2847,13 @@
     res3))
 
 
-;;;; grsp-matrix-opmml - Applies function grsp-matrix-opmm succesively to all
-;; elements of list p_l1.
+;;;; grsp-matrix-opmml - Applies function grsp-matrix-opmm succesively
+;; to all elements of list p_l1.
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, hadamard, direct, schur
+;; - functions, algebra, matrix, matrices, vectors, hadamard, direct,
+;;   schur
 ;;
 ;; Parameters:
 ;;
@@ -2788,8 +2886,8 @@
     res1))
 
 
-;;;; grsp-matrix-opmsc - Operations between two matrices that produce a scalar
-;; result.
+;;;; grsp-matrix-opmsc - Operations between two matrices that produce a
+;; scalar result.
 ;;
 ;; Keywords:
 ;;
@@ -2874,10 +2972,10 @@
     res1))
 
 
-;;;; grsp-matrix-subcpy - Extracts a block or sub matrix from matrix p_a1. The
-;; process is not destructive with regards to p_a1. The user is responsible for
-;; providing correct boundaries since the function does not check those
-;; parameters in relation to p_a1.
+;;;; grsp-matrix-subcpy - Extracts a block or sub matrix from matrix
+;; p_a1. The process is not destructive with regards to p_a1. The user
+;; is responsible for providing correct boundaries since the function
+;; does not check those parameters in relation to p_a1.
 ;;
 ;; Keywords:
 ;;
@@ -2904,7 +3002,9 @@
 	(j2 0))
 
     ;; Create submatrix.
-    (set! res2 (grsp-matrix-create res2 (+ (- p_hm1 p_lm1) 1) (+ (- p_hn1 p_ln1) 1)))
+    (set! res2 (grsp-matrix-create res2
+				   (+ (- p_hm1 p_lm1) 1)
+				   (+ (- p_hn1 p_ln1) 1)))
     
     ;; Copy to submatrix.
     (set! i1 p_lm1)
@@ -2926,8 +3026,8 @@
     res2))
 
 
-;;;; grsp-matrix-subrep - Replaces a submatrix or section of matrix p_a1 with 
-;; matrix p_a2.
+;;;; grsp-matrix-subrep - Replaces a submatrix or section of matrix p_a1
+;; with matrix p_a2.
 ;;
 ;; Keywords:
 ;;
@@ -2937,8 +3037,10 @@
 ;;
 ;; - p_a1: matrix.
 ;; - p_a2: matrix.
-;; - p_m1: row coordinate of p_a1 where to place the upper left corner of p_a2.
-;; - p_n1: col coordinate of p_a1 where to place the upper left corner of p_a2.
+;; - p_m1: row coordinate of p_a1 where to place the upper left corner
+;;   of p_a2.
+;; - p_n1: col coordinate of p_a1 where to place the upper left corner
+;;   of p_a2.
 ;;
 ;; Output:
 ;;
@@ -2975,8 +3077,8 @@
     res1))
 
 
-;;;; grsp-matrix-subdcn - Deletes row from matrix p_a1 that fulfills condition
-;; p_s2 for column p_j1 with regards to value p_n2.
+;;;; grsp-matrix-subdcn - Deletes row from matrix p_a1 that fulfills
+;; condition p_s2 for column p_j1 with regards to value p_n2.
 ;;
 ;; Keywords:
 ;;
@@ -3125,24 +3227,47 @@
 	  ((equal? p_s1 "#Delr")
 	   
 	   (cond ((equal? n1 lm1)		  
-		  (set! res2 (grsp-matrix-subcpy res1 (+ lm1 1) hm1 ln1 hn1)))		 
+		  (set! res2 (grsp-matrix-subcpy res1
+						 (+ lm1 1)
+						 hm1
+						 ln1
+						 hn1)))
 		 ((equal? n1 hm1)		  
-		  (set! res2 (grsp-matrix-subcpy res1 lm1 (- hm1 1) ln1 hn1)))		 
+		  (set! res2 (grsp-matrix-subcpy res1
+						 lm1
+						 (- hm1 1)
+						 ln1
+						 hn1)))		 
 		 ((and (> n1 lm1) (< n1 hm1))		  
-		  (set! res3 (grsp-matrix-subcpy res1 lm1 (- n1 1) ln1 hn1))
-		  (set! res4 (grsp-matrix-subcpy res1 (+ n1 1) hm1 ln1 hn1))
+		  (set! res3 (grsp-matrix-subcpy res1
+						 lm1
+						 (- n1 1)
+						 ln1
+						 hn1))
+		  (set! res4 (grsp-matrix-subcpy res1
+						 (+ n1 1)
+						 hm1
+						 ln1
+						 hn1))
 
 		  ;; Get structural data from the third submatix.
 		  (set! hm3 (grsp-matrix-esi 2 res3))
 		  (set! ln3 (grsp-matrix-esi 3 res3))	
 
-		  ;; Expand the third submatrix in order to paste to the fourh
-		  ;; one.		    
-		  (set! res3 (grsp-matrix-subexp res3 (+ 1 (- (grsp-hm res4) (grsp-lm res4))) 0))
+		  ;; Expand the third submatrix in order to paste to the
+		  ;; fourth one.		    
+		  (set! res3 (grsp-matrix-subexp res3
+						 (+ 1
+						    (- (grsp-hm res4)
+						       (grsp-lm res4)))
+						 0))
 		  
-		  ;; Move the data of the fourth submatrix to the expanded part 
-		  ;; of the third one.
-		  (set! res2 (grsp-matrix-subrep res3 res4 (+ hm3 1) ln3))))))
+		  ;; Move the data of the fourth submatrix to the
+		  ;; expanded part of the third one.
+		  (set! res2 (grsp-matrix-subrep res3
+						 res4
+						 (+ hm3 1)
+						 ln3))))))
     
     res2))
 
@@ -3169,8 +3294,13 @@
 
     ;; Create expanded matrix.
     (set! res1 (grsp-matrix-create res1
-				   (+ (- (+ (grsp-hm p_a1) p_am1) (grsp-lm p_a1)) 1) ;; ln
-				   (+ (- (+ (grsp-hn p_a1) p_an1) (grsp-ln p_a1)) 1)))
+				   (+ (- (+ (grsp-hm p_a1) p_am1)
+					 (grsp-lm p_a1))
+				      1) ;; ln
+				   (+ (- (+ (grsp-hn p_a1)
+					    p_an1)
+					 (grsp-ln p_a1))
+				      1)))
     
     ;; Copy to submatrix.
     ;; Row loop.
@@ -3181,7 +3311,10 @@
 	  (begin (let loop ((j1 (grsp-ln p_a1)))
 		   (if (<= j1 (grsp-hn p_a1))
 
-		       (begin (array-set! res1 (array-ref p_a1 i1 j1) i1 j1)
+		       (begin (array-set! res1
+					  (array-ref p_a1 i1 j1)
+					  i1
+					  j1)
 			      
 			      (loop (+ j1 1)))))		 
 		 
@@ -3190,8 +3323,8 @@
     res1))
 
 
-;;;; grsp-matrix-is-equal - Returns #t if matrix p_a1 is equal to matrix p_a2
-;; (same dimensionality and same elements).
+;;;; grsp-matrix-is-equal - Returns #t if matrix p_a1 is equal to matrix
+;; p_a2 (same dimensionality and same elements).
 ;;
 ;; Keywords:
 ;;
@@ -3228,7 +3361,7 @@
 		  
 		  (cond ((= (grsp-ln res1) (grsp-ln res2))
 			 
-			 (cond ((= (grsp-hn res1) (grsp-hn res2))				
+			 (cond ((= (grsp-hn res1) (grsp-hn res2))
 				(set! res3 #t)
 				(set! res4 #t)))))))))
     
@@ -3256,7 +3389,8 @@
     res3))
 
 
-;;;; grsp-matrix-is-square - Returns #t if matrix p_a1 is square (i.e. m x m).
+;;;; grsp-matrix-is-square - Returns #t if matrix p_a1 is square (i.e.
+;; m x m).
 ;;
 ;; Keywords:
 ;;
@@ -3281,8 +3415,8 @@
     res2))
 
 
-;;;; grsp-matrix-is-symmetric - Returns #t if p_a1 is a symmetrix matrix. #f 
-;; otherwise.
+;;;; grsp-matrix-is-symmetric - Returns #t if p_a1 is a symmetrix matrix.
+;; #f otherwise.
 ;;
 ;; Keywords:
 ;;
@@ -3309,8 +3443,8 @@
     res1))
 
 
-;;;; grsp-matrix-is-diagonal - Returns #t if p_a1 is a square diagonal matrix,
-;; #f otherise.
+;;;; grsp-matrix-is-diagonal - Returns #t if p_a1 is a square diagonal
+;; matrix, #f otherise.
 ;;
 ;; Keywords:
 ;;
@@ -3353,8 +3487,8 @@
     res1))
 
 
-;;;; grsp-matrix-is-hermitian - Returns #t if p_a1 is equal to its conjugate 
-;; transpose.
+;;;; grsp-matrix-is-hermitian - Returns #t if p_a1 is equal to its
+;; conjugate transpose.
 ;;
 ;; Keywords:
 ;;
@@ -3383,7 +3517,8 @@
     res1))
 
 
-;;;; grsp-matrix-is-binary - Returns #t if p_a1 contains only values 0 or 1.
+;;;; grsp-matrix-is-binary - Returns #t if p_a1 contains only values 0
+;; or 1.
 ;;
 ;; Keywords:
 ;;
@@ -3408,7 +3543,8 @@
     res1))
 
 
-;;;; grsp-matrix-is-nonnegative - Returns #t if p_a1 contains only values >= 0.
+;;;; grsp-matrix-is-nonnegative - Returns #t if p_a1 contains only
+;; values >= 0.
 ;;
 ;; Keywords:
 ;;
@@ -3431,7 +3567,8 @@
     res1))
 
 
-;;;; grsp-matrix-is-positive - Returns #t if p_a1 contains only values > 0.
+;;;; grsp-matrix-is-positive - Returns #t if p_a1 contains only
+;; values > 0.
 ;;
 ;; Keywords:
 ;;
@@ -3454,8 +3591,9 @@
     res1))
 
 
-;;;; grsp-matrix-row-opar - Finds the inverse multiple res1 of p_a1[p_m2, p_n2]
-;; so that p_a1[p_m2, p_n2] + ( p_a1[p_m1, p_n1] * res1 ) = 0
+;;;; grsp-matrix-row-opar - Finds the inverse multiple res1 of
+;; p_a1[p_m2, p_n2] so that p_a1[p_m2, p_n2] + ( p_a1[p_m1, p_n1]
+;; * res1 ) = 0
 ;;
 ;; or
 ;;
@@ -3484,8 +3622,8 @@
 ;;
 ;; Output:
 ;;
-;; - Note that the function does not return a value but modifies the values of
-;;   elements in two matrices directly.
+;; - Note that the function does not return a value but modifies the
+;;   values of elements in two matrices directly.
 ;;
 ;; Sources:
 ;;
@@ -3502,8 +3640,8 @@
     res1))
 
 
-;;;; grsp-matrix-row-opmm - Replaces the value of element p_a1[p_m1, p_n1] with
-;; ( p_a1[p_m1, p_n1] * p_a2[p_m2, p_n2] ).
+;;;; grsp-matrix-row-opmm - Replaces the value of element p_a1[p_m1, p_n
+;; with ( p_a1[p_m1, p_n1] * p_a2[p_m2, p_n2] ).
 ;;
 ;; Keywords:
 ;;
@@ -3550,8 +3688,8 @@
 ;;
 ;; Output:
 ;;
-;; - Note that the function does not return a value but modifies the values of
-;;   elements in row p_m1 of matrix p_a1.
+;; - Note that the function does not return a value but modifies the
+;; values of elements in row p_m1 of matrix p_a1.
 ;;
 ;; Sources:
 ;;
@@ -3600,8 +3738,8 @@
 ;;
 ;; Output:
 ;;
-;; - Note that the function does not return a value but modifies the values of
-;;   elements in matrix p_a1.
+;; - Note that the function does not return a value but modifies the
+;;   values of elements in matrix p_a1.
 ;;
 ;; Sources:
 ;;
@@ -3613,8 +3751,16 @@
 	(res3 0))
 
     ;; Copy elements of p_a1, rows p_m1 and p_m2 to separate arrays.
-    (set! res2 (grsp-matrix-subcpy p_a1 p_m1 p_m1 (grsp-ln p_a1) (grsp-hn p_a1)))
-    (set! res3 (grsp-matrix-subcpy p_a1 p_m2 p_m2 (grsp-ln p_a1) (grsp-hn p_a1)))    
+    (set! res2 (grsp-matrix-subcpy p_a1
+				   p_m1
+				   p_m1
+				   (grsp-ln p_a1)
+				   (grsp-hn p_a1)))
+    (set! res3 (grsp-matrix-subcpy p_a1
+				   p_m2
+				   p_m2
+				   (grsp-ln p_a1)
+				   (grsp-hn p_a1)))
 
     ;; Swap positions.
     (set! p_a1 (grsp-matrix-subrep p_a1 res2 p_m2 (grsp-ln p_a1)))
@@ -3641,8 +3787,8 @@
 ;; Notes:
 ;;
 ;; - This function does not perform viability checks on p_a1 for the 
-;;   required operation; the user or an additional shell function should take 
-;;   care of that.
+;;   required operation; the user or an additional shell function should
+;;   take care of that.
 ;;
 ;; Examples:
 ;;
@@ -3703,7 +3849,7 @@
 		  (set! sum 0)
 		  (set! j1 (grsp-lm A))
 		  (while (<= j1 (grsp-hm A))
-			 (set! sum (+ sum (expt (array-ref A j1 k1) 2)))			
+			 (set! sum (+ sum (expt (array-ref A j1 k1) 2)))
 			 (set! j1 (in j1)))
 		  
 		  (array-set! R (sqrt sum) k1 k1)
@@ -3714,7 +3860,11 @@
 
 			 ;; To avoid div by zero errors.
 			 (cond ((equal? (equal? (array-ref R k1 k1) 0) #f)
-				(array-set! Q (/ (array-ref A j1 k1) (array-ref R k1 k1)) j1 k1)) ;; B
+				(array-set! Q
+					    (/ (array-ref A j1 k1)
+					       (array-ref R k1 k1))
+					    j1
+					    k1)) ;; B
 			       ((equal? (equal? (array-ref R k1 k1) 0) #t)
 				(array-set! Q 0 j1 k1)))
 			 
@@ -3727,14 +3877,20 @@
 			 (set! sum 0)
 			 (set! j1 (grsp-lm A))
 			 (while (<= j1 (grsp-hm A))
-				(set! sum (+ sum (* (array-ref A j1 i1) (array-ref Q j1 k1))))
+				(set! sum (+ sum
+					     (* (array-ref A j1 i1)
+						(array-ref Q j1 k1))))
 				(set! j1 (in j1)))
 				
 			 (array-set! R sum k1 i1)
 			 
 			 (set! j1 (grsp-lm A))
 			 (while (<= j1 (grsp-hm A))
-				(array-set! A (- (array-ref A j1 i1) (* (array-ref R k1 i1) (array-ref Q j1 k1))) j1 i1)
+				(array-set! A
+					    (- (array-ref A j1 i1)
+					       (* (array-ref R k1 i1)
+						  (array-ref Q j1 k1)))
+					    j1 i1)
 				(set! j1 (in j1)))
 				 
 			 (set! i1 (in i1)))
@@ -3789,9 +3945,22 @@
 				(set! k1 (in k1)))
 
 			 (cond ((equal? i1 j1)
-				(array-set! L (sqrt (- (array-ref A i1 i1) sum)) i1 j1))			       
-			       (else (array-set! L (* (/ 1.0 (array-ref L j1 j1))
-						      (- (array-ref A i1 j1) sum)) i1 j1)))
+				(array-set! L
+					    (sqrt (- (array-ref A i1 i1)
+						     sum))
+					    i1
+					    j1))			       
+			       (else (array-set! L
+						 (* (/ 1.0
+						       (array-ref L
+								  j1
+								  j1))
+						    (- (array-ref A
+								  i1
+								  j1)
+						       sum))
+						 i1
+						 j1)))
 				
 			 (set! j1 (in j1)))
 
@@ -3820,11 +3989,13 @@
 			 (set! sum 0)
 			 (set! j1 (grsp-lm A))
 			 (while (< j1 i1)
-				(set! sum (+ sum (* (array-ref L i1 j1) (array-ref U j1 k1))))				
+				(set! sum (+ sum
+					     (* (array-ref L i1 j1)
+						(array-ref U j1 k1))))
 				(set! j1 (in j1)))
 
 			 ;; Evaluation.
-			 (array-set! U (- (array-ref A i1 k1) sum) i1 k1)			       
+			 (array-set! U (- (array-ref A i1 k1) sum) i1 k1)
 			 (set! k1 (in k1)))
 
 		  ;; L
@@ -3841,11 +4012,25 @@
 				;; Summation.
 				(set! j1 (grsp-lm A))
 				(while (< j1 i1)
-				       (set! sum (+ sum (* (array-ref L k1 j1) (array-ref U j1 i1))))
+				       (set! sum (+ sum
+						    (* (array-ref L
+								  k1
+								  j1)
+						       (array-ref U
+								  j1
+								  i1))))
 				       (set! j1 (in j1)))
 
 				;; Evaluation.
-				(array-set! L (/ (- (array-ref A k1 j1) sum) (array-ref U i1 i1)) k1 i1)))
+				(array-set! L (/ (- (array-ref A
+							       k1
+							       j1)
+						    sum)
+						 (array-ref U
+							    i1
+							    i1))
+					    k1
+					    i1)))
 			 
 			 (set! k1 (in k1)))
 		  
@@ -3895,8 +4080,8 @@
     res2))
 
 
-;;;; grsp-matrix-is-sparse - Returns #t if matrix density of p_a1 is < 0.5, or
-;; #f otherwise.
+;;;; grsp-matrix-is-sparse - Returns #t if matrix density of p_a1 is
+;; < 0.5, or #f otherwise.
 ;;
 ;; Keywords:
 ;;
@@ -3919,8 +4104,8 @@
     res1))
 
 
-;;;; grsp-matrix-is-symmetric-md - Returns #t if matrix p_a1 is symmetric along 
-;; its main diagonal; #f otherwise.
+;;;; grsp-matrix-is-symmetric-md - Returns #t if matrix p_a1 is
+;; symmetric along its main diagonal; #f otherwise.
 ;;
 ;; Keywords:
 ;;
@@ -3963,8 +4148,8 @@
     res1))
 
 
-;;;; grsp-matrix-total-elements - Calculates the number of elements in matrix
-;; p_a1.
+;;;; grsp-matrix-total-elements - Calculates the number of elements in
+;; matrix p_a1.
 ;;
 ;; Keywords:
 ;;
@@ -3987,7 +4172,8 @@
     res1))
 
 
-;;;; grsp-matrix-total-element - Counts the number of ocurrences of p_v1 in p_a1.
+;;;; grsp-matrix-total-element - Counts the number of ocurrences of
+;; p_v1 in p_a1.
 ;;
 ;; Keywords:
 ;;
@@ -4023,8 +4209,8 @@
     res1))
 
     
-;;;; grsp-matrix-is-hadamard - Returns #t if matrix p_a1 is of Hadamard type; #f
-;; otherwise.
+;;;; grsp-matrix-is-hadamard - Returns #t if matrix p_a1 is of Hadamard
+;; type; #f otherwise.
 ;;
 ;; Keywords:
 ;;
@@ -4055,8 +4241,8 @@
     res1))
 	   
 
-;;;; grsp-matrix-is-markov - Returns #t if matrix p_a1 is of Markov type; #f
-;; otherwise.
+;;;; grsp-matrix-is-markov - Returns #t if matrix p_a1 is of Markov
+;; type; #f otherwise.
 ;;
 ;; Keywords:
 ;;
@@ -4079,7 +4265,11 @@
     (let loop ((i1 (grsp-lm p_a1)))
       (if (<= i1 (grsp-hm p_a1))
 
-	  (begin (set! res2 (grsp-matrix-subcpy p_a1 i1 i1 (grsp-ln p_a1) (grsp-hn p_a1)))
+	  (begin (set! res2 (grsp-matrix-subcpy p_a1
+						i1
+						i1
+						(grsp-ln p_a1)
+						(grsp-hn p_a1)))
 		 
 		 (cond ((equal? (grsp-matrix-is-nonnegative res2) #t) 
 			(set! k1 (+ k1 (grsp-matrix-opio "#+" res2 0))))
@@ -4139,9 +4329,9 @@
     res1))
 
 
-;;;; grsp-matrix-is-single-entry - Returns #t if matrix p_a1 is of single entry 
-;; type for value p_v1; #f otherwise (extension of single entry concept from
-;; ine to any value).
+;;;; grsp-matrix-is-single-entry - Returns #t if matrix p_a1 is of single
+;; entry type for value p_v1; #f otherwise (extension of single entry
+;; concept from ine to any value).
 ;;
 ;; Keywords:
 ;;
@@ -4169,9 +4359,9 @@
     res1))
 
 
-;;;; grsp-matrix-identify - Returns #t if matrix p_a1 is of type p_s1. This 
-;; function aggregates several specific identification functions into one
-;; single interface.
+;;;; grsp-matrix-identify - Returns #t if matrix p_a1 is of type p_s1.
+;; This function aggregates several specific identification functions
+;; into one single interface.
 ;;
 ;; Keywords:
 ;;
@@ -4257,7 +4447,9 @@
 	  ((equal? p_s1 "#Idempotent")	   
 	   (set! v1 #t)
 	   (set! res1 (grsp-matrix-is-equal p_a1
-					    (grsp-matrix-opmm "#*" p_a1 p_a1))))	  
+					    (grsp-matrix-opmm "#*"
+							      p_a1
+							      p_a1))))	  
 	  ((equal? p_s1 "#Square")	   
 	   (set! v1 #t)
 	   (set! res1 (grsp-matrix-is-square p_a1))))
@@ -4273,8 +4465,8 @@
     res1))
 
 
-;;;; grsp-matrix-is-metzler - Returns #t if matrix p_a1 is of Metzler type; #f
-;; otherwise.
+;;;; grsp-matrix-is-metzler - Returns #t if matrix p_a1 is of Metzler
+;; type; #f otherwise.
 ;;
 ;; Keywords:
 ;;
@@ -4378,7 +4570,8 @@
     res1))
 
 
-;;;; grsp-m2v - Casts a matrix p_a1 of m x n elements as a 1 x (m x n) vector.
+;;;; grsp-m2v - Casts a matrix p_a1 of m x n elements as a 1 x (m x n)
+;; vector.
 ;;
 ;; Keywords:
 ;;
@@ -4409,7 +4602,12 @@
 	  (begin (let loop ((j1 (grsp-ln p_a1)))
 		   (if (<= j1 (grsp-hn p_a1))
 
-		       (begin (array-set! res1 (array-ref p_a1 i1 j1) 0 j2)
+		       (begin (array-set! res1
+					  (array-ref p_a1
+						     i1
+						     j1)
+					  0
+					  j2)
 			      (set! j2 (+ j2 1))		  
 			      
 			      (loop (+ j1 1)))))		 
@@ -4419,9 +4617,9 @@
     res1))
 
 
-;;;; grsp-dbc2mc - Fills a matrix of complex or complex-subset numbers with the
-;; contents of a database containing serialized complex or complex-subset
-;; numbers.
+;;;; grsp-dbc2mc - Fills a matrix of complex or complex-subset numbers
+;; with the contents of a database containing serialized complex or
+;; complex-subset numbers.
 ;;
 ;; Keywords:
 ;;
@@ -4442,9 +4640,9 @@
     res1))
 
 
-;;;; grsp-dbc2mc-csv - Fills a matrix of complex or complex-subset numbers with
-;; the contents of a csv format database file containing serialized complex or
-;; complex-subset numbers.
+;;;; grsp-dbc2mc-csv - Fills a matrix of complex or complex-subset
+;; numbers with the contents of a csv format database file containing
+;; serialized complex or complex-subset numbers.
 ;;
 ;; Keywords:
 ;;
@@ -4492,7 +4690,8 @@
     ;; - field 2: col number.
     ;; - field 3: value.
 
-    ;; Create a list in which each line of the file becomes a list element.
+    ;; Create a list in which each line of the file becomes a list
+    ;; element.
     (set! l2 (string-split s1 #\nl))
     
     ;; Process list l2.
@@ -4501,13 +4700,14 @@
     (while (<= j2 hn2)
 
 	   ;; Take an element from l2 and create list l3 of three elements
-	   ;; being these the two matrix coordinates and the matrix element.
-	   ;; value.
+	   ;; being these the two matrix coordinates and the matrix
+	   ;; element value.
 	   (set! s2 (list-ref l2 j2))
 	   (set! l3 (string-split s2 #\,))
 	   
-	   ;; Create res3 on the first instance; othewise add a row. This matrix
-	   ;; will contain the numeric values of each file line.
+	   ;; Create res3 on the first instance; othewise add a row.
+	   ;; This matrix will contain the numeric values of each file
+	   ;; line.
 	   (cond ((= j2 0)		  
 		  (set! res3 (grsp-matrix-create 0 1 3)))		 
 		 (else (set! res3 (grsp-matrix-subexp res3 1 0))))
@@ -4525,16 +4725,17 @@
 	   
 	   (set! j2 (in j2)))
 
-    ;; Find the max values of cols 0 and 1 of res3 and use them as dimensions to
-    ;; create the final matrix.
+    ;; Find the max values of cols 0 and 1 of res3 and use them as
+    ;; dimensions to create the final matrix.
     (set! lm1 (array-ref (grsp-matrix-row-sort "#asc" res3 0) 0 0))
     (set! hm1 (array-ref (grsp-matrix-row-sort "#des" res3 0) 0 0))
     (set! ln1 (array-ref (grsp-matrix-row-sort "#asc" res3 1) 0 1))
     (set! hn1 (array-ref (grsp-matrix-row-sort "#des" res3 1) 0 1))
     (set! res1 (grsp-matrix-create 0 (+ (- hm1 lm1) 1) (+ (- hn1 ln1) 1)))
 
-    ;; Once the matrix has been created, go over it and read each row, pasting
-    ;; its third element on the position described by the coordinates of res3.
+    ;; Once the matrix has been created, go over it and read each row,
+    ;; pasting its third element on the position described by the
+    ;; coordinates of res3.
     (set! i3 lm3)
     (while (<= i3 hm3)	   
 	   (set! m1 (array-ref res3 i3 0))
@@ -4545,9 +4746,9 @@
     res1))
 
 
-;;;; grsp-mc2dbc - Creates a database table or dataset for complex or complex
-;; subset numbers from matrix p_a1, which contains complex or complex-subset
-;; numbers. 
+;;;; grsp-mc2dbc - Creates a database table or dataset for complex or
+;; complex subset numbers from matrix p_a1, which contains complex or
+;; complex-subset numbers. 
 ;;
 ;; Keywords:
 ;;
@@ -4566,7 +4767,8 @@
 ;;
 ;; Notes:
 ;;
-;; - The database name must contain the strings ".db", ".h5" or ".csv" in its
+;; - The database name must contain the strings ".db", ".h5" or ".csv"
+;;   in its
 ;;   name for this function to work.
 ;;
 (define (grsp-mc2dbc p_d1 p_a1 p_t1)
@@ -4579,9 +4781,9 @@
 	 (grsp-mc2dbc-hdf5 p_d1 p_a1 p_t1))))
 	
 
-;;;; grsp-mc2dbc-sqlite3 - Creates a Sqlite3 table or dataset for complex or
-;; complex subset numbers from matrix p_a1, which contains complex or complex
-;; subset numbers. 
+;;;; grsp-mc2dbc-sqlite3 - Creates a Sqlite3 table or dataset for complex
+;; or complex subset numbers from matrix p_a1, which contains complex or
+;; complex subset numbers. 
 ;;
 ;; Keywords:
 ;;
@@ -4622,7 +4824,8 @@
     (set! q1 (strings-append (list "CREATE TABLE" p_t1 "(Id INTEGER PRIMARY KEY UNIQUE, Vm INTEGER, Vn INTEGER, Vr REAL, Vi REAL);") 1))
     (system (strings-append (list "./sqlp " p_d1 " \"" q1 "\"") 0))
 
-    ;; Loop over p_a1 and extract each value and insert it into the new table.
+    ;; Loop over p_a1 and extract each value and insert it into the new
+    ;; table.
     (set! i1 0)
     (while (< i1 vm)
 	   
@@ -4646,9 +4849,9 @@
 	   (set! i1 (+ i1 1)))))
 
 
-;;;; grsp-mc2dbc-hdf5 - Creates an HDF5 table or dataset for complex or complex
-;; subset numbers from matrix p_a1, which contains complex or complex subset
-;; numbers. 
+;;;; grsp-mc2dbc-hdf5 - Creates an HDF5 table or dataset for complex or
+;; complex subset numbers from matrix p_a1, which contains complex or
+;; complex subset numbers. 
 ;;
 ;; Keywords:
 ;;
@@ -4689,7 +4892,8 @@
     (set! q1 (strings-append (list "CREATE TABLE" p_t1 "(Id INTEGER PRIMARY KEY UNIQUE, Vm INTEGER, Vn INTEGER, Vr REAL, Vi REAL);") 1))
     (system (strings-append (list "./sqlp " p_d1 " \"" q1 "\"") 0))
 
-    ;; Loop over p_a1 and extract each value and insert it into the new table.
+    ;; Loop over p_a1 and extract each value and insert it into the new
+    ;; table.
     (set! i1 0)
     (while (< i1 vm)
 	   
@@ -4713,9 +4917,9 @@
 	   (set! i1 (+ i1 1)))))
 
 
-;;;; grsp-mc2dbc-csv - Creates a csv table or dataset for complex or complex
-;; subset numbers from matrix p_a1, which contains complex or complex subset
-;; numbers. 
+;;;; grsp-mc2dbc-csv - Creates a csv table or dataset for complex or
+;; complex subset numbers from matrix p_a1, which contains complex or
+;; complex subset numbers. 
 ;;
 ;; Keywords:
 ;;
@@ -4755,7 +4959,8 @@
     ;; We have to create the relative path.
     (set! rp (strings-append (list d1 "/" t1) 0))
     
-    ;; Loop over p_a1 and extract each value and insert it into the new table.
+    ;; Loop over p_a1 and extract each value and insert it into the new
+    ;; table.
     (set! i1 lm1)
     (while (<= i1 hm1)
 	   
@@ -4771,15 +4976,16 @@
 		  ;; - 1: col number.
 		  ;; - 2: value.
 		  ;;
-		  ;; If this is the last element of the matrix, do not add the
-		  ;; new line character at the end of the string.
+		  ;; If this is the last element of the matrix, do not
+		  ;; add the new line character at the end of the string.
 		  ;;
-		  (cond ((equal? (and (>= j1 hn1) (>= i1 hm1)) #t)			 
+		  (cond ((equal? (and (>= j1 hn1) (>= i1 hm1)) #t)
 			 (set! s1 (strings-append (list (grsp-n2s i1)
 							s2
 							(grsp-n2s j1)
 							s2
-							(grsp-n2s ve)) 0)))
+							(grsp-n2s ve))
+						  0)))
 			
 			(else (set! s1 (strings-append (list (grsp-n2s i1)
 							     s2
@@ -4842,7 +5048,8 @@
     ;; We have to create the relative path.
     (set! rp (strings-append (list d1 "/" t1) 0))
     
-    ;; Loop over p_a1 and extract each value and insert it into the new table.
+    ;; Loop over p_a1 and extract each value and insert it into the new
+    ;; table.
     (set! i1 lm1)
     (while (<= i1 hm1)
 	   
@@ -4858,10 +5065,11 @@
 		  ;; - 1: col number.
 		  ;; - 2: value.
 		  ;;
-		  ;; If this is the last element of the matrix, do not add the
+		  ;; If this is the last element of the matrix, do not
+		  ;; add the
 		  ;; new line character at the end of the string.
 		  ;;
-		  (cond ((equal? (and (>= j1 hn1) (>= i1 hm1)) #t)			 
+		  (cond ((equal? (and (>= j1 hn1) (>= i1 hm1)) #t)
 			 (set! s1 (strings-append (list (grsp-n2s i1)
 							s2
 							(grsp-n2s j1)
@@ -4932,7 +5140,8 @@
     ;; We have to create the relative path.
     (set! rp (strings-append (list d1 "/" t1) 0))
     
-    ;; Loop over p_a1 and extract each value and insert it into the new table.
+    ;; Loop over p_a1 and extract each value and insert it into the new
+    ;; table.
     (set! i1 lm1)
     (while (<= i1 hm1)
 
@@ -4944,7 +5153,9 @@
 
 		  ;; Create the string record.
 		  (cond ((> j1 ln1)			 
-			 (set! s1 (strings-append (list s1 (grsp-n2s ve)) 1)))			
+			 (set! s1 (strings-append (list s1
+							(grsp-n2s ve))
+						  1)))			
 			(else (set! s1 (grsp-n2s ve))))
 		  
 		  (set! j1 (+ j1 1)))
@@ -4959,8 +5170,8 @@
     (grsp-save-to-file s3 rp "w")))
   
 
-;;;; grsp-matrix-interval-mean - Creates a 3 x 1 matrix containing the following
-;; values:
+;;;; grsp-matrix-interval-mean - Creates a 3 x 1 matrix containing the
+;; following values:
 ;;
 ;; - (- p_n1 p_min).
 ;; - (p_min + p_max) / 2.
@@ -4969,7 +5180,8 @@
 ;; thus creating an interval [p_min, p_max] in which:
 ;;
 ;; - p_min <= p_n1 <= p_max.
-;; - p_min <= m <= p_max, being m the mean value of l1 and h1 (see var def).
+;; - p_min <= m <= p_max, being m the mean value of l1 and h1 (see var
+;;   def).
 ;;
 ;; Keywords:
 ;;
@@ -4978,10 +5190,10 @@
 ;; Parameters:
 ;;
 ;; - p_n1: reference value.
-;; - p_min: what needs to be substracted to p_n1 to define the lower boundary of
-;;   the interval.
-;; - p_max: what needs to be added to p_n1 to define the higher boundary of
-;;   the interval.
+;; - p_min: what needs to be substracted to p_n1 to define the lower
+;;   boundary of the interval.
+;; - p_max: what needs to be added to p_n1 to define the higher boundary
+;;   of the interval.
 ;;
 ;; Output:
 ;;
@@ -5003,8 +5215,8 @@
     res1))
 
 
-;;;; grsp-matrix-determinant-lu - Finds the determinant of matrix p_a1 using the
-;; LU decompostion (Doolitle).  
+;;;; grsp-matrix-determinant-lu - Finds the determinant of matrix p_a1
+;; using the LU decompostion (Doolitle).  
 ;;
 ;; Keywords:
 ;;
@@ -5047,8 +5259,8 @@
     res1))
 
 
-;;;; grsp-matrix-determinant-qr - Finds the determinant of matrix p_a1 using the
-;; QR decompostion.  
+;;;; grsp-matrix-determinant-qr - Finds the determinant of matrix p_a1
+;; using the QR decompostion.  
 ;;
 ;; Keywords:
 ;;
@@ -5143,8 +5355,8 @@
     res1))
 
 
-;;;; grsp-matrix-sort - Sort elements in matrix p_a1 in ascending or descending
-;; order.
+;;;; grsp-matrix-sort - Sort elements in matrix p_a1 in ascending or
+;; descending order.
 ;;
 ;; Keywords:
 ;;
@@ -5212,7 +5424,7 @@
 				; Compare.
 				(cond ((eq? s1 "#asc")
 				       
-				       (cond ((<= v3 v2)					      
+				       (cond ((<= v3 v2)
 					      (set! i3 i2)
 					      (set! j3 j2)
 					      (set! f1 +inf.0)
@@ -5220,11 +5432,11 @@
 				      
 				      ((eq? s1 "#des")
 				       
-				       (cond ((>= v3 v2)					      
+				       (cond ((>= v3 v2)
 					      (set! i3 i2)
-					      (set! j3 j2)					      
+					      (set! j3 j2)
 					      (set! f1 -inf.0)
-					      (set! v2 v3)))))					      
+					      (set! v2 v3)))))
 				 
 				(set! j2 (+ j2 1)))
 			 
@@ -5317,7 +5529,7 @@
 		  ;; or not.
 		  (cond ((equal? p_s1 "#=")
 			 
-			 (cond ((not (equal? n1 p_n1))				
+			 (cond ((not (equal? n1 p_n1))
 				(set! b2 #t))))
 			
 			((equal? p_s1 "#>")
@@ -5345,9 +5557,10 @@
 			 (cond ((equal? n1 p_n1)				
 				(set! b2 #t)))))
 			
-		  ;; Add value to vector. If this is the first pass, create the
-		  ;; vector first. If not, increase the vector size by one
-		  ;; element to contain the new value passed from p_a1.
+		  ;; Add value to vector. If this is the first pass,
+		  ;; create the vector first. If not, increase the vector
+		  ;; size by one element to contain the new value passed
+		  ;; from p_a1.
 		  (cond ((equal? b2 #t)
 			 
 			 (cond ((equal? b1 #f)
@@ -5358,11 +5571,16 @@
 			       ((equal? b1 #t)
 				
 				;; Add element to vector.
-				(set! res1 (grsp-matrix-subexp res1 0 1))))
+				(set! res1 (grsp-matrix-subexp res1
+							       0
+							       1))))
 
 			 ;; Add approved number to the last element of the
 			 ;; vector.
-			 (array-set! res1 n1 (grsp-lm res1) (grsp-hn res1))
+			 (array-set! res1
+				     n1
+				     (grsp-lm res1)
+				     (grsp-hn res1))
 			 (set! b2 #f)))		  
 		  
 		  (set! j1 (+ j1 1)))
@@ -5372,8 +5590,8 @@
     res1))
 
 
-;;;; grsp-matrix-select - Select between p_a1 and p_a2 based on the value of
-;; p_n1. 
+;;;; grsp-matrix-select - Select between p_a1 and p_a2 based on the value
+;; of p_n1. 
 ;;
 ;; Keywords:
 ;;
@@ -5403,9 +5621,9 @@
     res1))
 
 
-;;;; grsp-matrix-row-minmax - Finds the min or max value for column p_j1 in 
-;; matrix p_a1 and returns a matrix containing the complete rows where that 
-;; value is found.
+;;;; grsp-matrix-row-minmax - Finds the min or max value for column p_j1
+;; in matrix p_a1 and returns a matrix containing the complete rows where
+;; that value is found.
 ;;
 ;; Keywords:
 ;;
@@ -5452,8 +5670,7 @@
     (set! res2 (grsp-matrix-subcpy p_a1 lm1 lm1 ln1 hn1))
     (set! res3 res2)
     
-    ;; Eval.
-    ;; Row loop.
+    ;; Eval.  Row loop.
     (let loop ((i1 lm1))
       (if (<= i1 hm1)
 
@@ -5494,8 +5711,8 @@
     res1))
 
 
-;;;; grsp-matrix-row-select - Select rows from matrix p_a1 for which condition
-;; p_s1 is met with regards to value p_n1 in column p_j1.
+;;;; grsp-matrix-row-select - Select rows from matrix p_a1 for which
+;; condition p_s1 is met with regards to value p_n1 in column p_j1.
 ;;
 ;; Keywords:
 ;;
@@ -5548,8 +5765,7 @@
     (set! res2 (grsp-matrix-create 0 1 (+ (- hn1 ln1) 1)))
     (set! res3 res2)
 
-    ;; Cycle and eval.
-    ;; Row loop.
+    ;; Cycle and eval. Row loop.
     (let loop ((i1 lm1))
       (if (<= i1 hm1)
 
@@ -5635,8 +5851,8 @@
     res1))
 
 
-;;;; grsp-matrix-row-delete - Deletes rows from matrix p_a1 for which condition
-;; p_s1 is met with regards to value p_n1 in column p_j1.
+;;;; grsp-matrix-row-delete - Deletes rows from matrix p_a1 for which
+;; condition p_s1 is met with regards to value p_n1 in column p_j1.
 ;;
 ;; Keywords:
 ;;
@@ -5688,8 +5904,8 @@
     res1))
 
 
-;;;; grsp-matrix-row-sort - Sorts rows from matrix p_a1 for which condition
-;; p_s1 is met with regards to column p_j1.
+;;;; grsp-matrix-row-sort - Sorts rows from matrix p_a1 for which
+;; condition p_s1 is met with regards to column p_j1.
 ;;
 ;; Keywords:
 ;;
@@ -5764,8 +5980,11 @@
 		  (set! ln3 (grsp-matrix-esi 3 res3))
 		  (set! hn3 (grsp-matrix-esi 4 res3)) 
 		  
-		  ;; Add a similar number of rows to res3 that exist in res2.
-		  (set! res3 (grsp-matrix-subexp res3 (+ (- hm2 lm2) 1) 0))
+		  ;; Add a similar number of rows to res3 that exist in
+		  ;; res2.
+		  (set! res3 (grsp-matrix-subexp res3
+						 (+ (- hm2 lm2) 1)
+						 0))
 
 		  ;; Copy the info from res2 to res3.
 		  (set! res3 (grsp-matrix-subrep res3 res2 (+ hm3 1) ln3))
@@ -5788,9 +6007,9 @@
     res1))
 
 
-;;;; grsp-matrix-row-invert - Inverts the order of all rows in p_a1, so that
-;; if p_a1 has rows [0, m] row 0 becomes row m, row 1 becomes row m -1 ...
-;; and row m becomes row 0.
+;;;; grsp-matrix-row-invert - Inverts the order of all rows in p_a1, so
+;; that if p_a1 has rows [0, m] row 0 becomes row m, row 1 becomes row
+;; m -1 ... and row m becomes row 0.
 ;;
 ;; Keywords:
 ;;
@@ -5836,7 +6055,10 @@
 		 (set! res1 (grsp-matrix-subexp res1 1 0))
 
 		 ;; Copy extracted row to expanded row in seed matrix.
-		 (set! res1 (grsp-matrix-subrep res1 res2 i3 (grsp-ln p_a1)))
+		 (set! res1 (grsp-matrix-subrep res1
+						res2
+						i3
+						(grsp-ln p_a1)))
 
 		 ;; Update counters.
 		 (set! i2 (- i2 1))
@@ -5850,8 +6072,8 @@
     res1))
 
 
-;;;; grsp-matrix-commit - Given that p_a2 is a processed submatrix of p_a1,
-;; this function copies the data of p_a2 to p_a1.
+;;;; grsp-matrix-commit - Given that p_a2 is a processed submatrix of
+;; p_a1, this function copies the data of p_a2 to p_a1.
 ;;
 ;; Keywords:
 ;;
@@ -5901,14 +6123,17 @@
 		  ;; Get the key for each row of p_a1.
 		  (set! n1 (array-ref p_a1 i1 p_j1))
 
-		  ;; If the keys for the current p_a2 and p_a1 rows are the same
-		  ;; then copy data from p_a2 into p_a1.
+		  ;; If the keys for the current p_a2 and p_a1 rows are
+		  ;; the same then copy data from p_a2 into p_a1.
 		  (cond ((equal? n1 n2)
 
 			 (set! j2 (grsp-ln p_a2))
 			 (while (<= j2 (grsp-hn p_a2))
 			
-				(array-set! p_a1 (array-ref p_a2 i2 j2) i1 j2)				
+				(array-set! p_a1
+					    (array-ref p_a2 i2 j2)
+					    i1
+					    j2)				
 				(set! j2 (+ j2 1)))))			 
 
 		  (set! i1 (+ i1 1)))
@@ -5921,8 +6146,8 @@
     res1))
 
 
-;;;; grsp-matrix-row-selectn - Selects from p_a1 only the rows specified in list
-;; p_l1.
+;;;; grsp-matrix-row-selectn - Selects from p_a1 only the rows specified
+;; in list p_l1.
 ;;
 ;; Keywords:
 ;;
@@ -5983,9 +6208,11 @@
 		       (begin (cond ((equal? i3 (array-ref res2 0 j2))
 				     
 				     ;; Expand seed matrix by one row.
-				     (set! res1 (grsp-matrix-subexp res1 1 0))
+				     (set! res1 (grsp-matrix-subexp res1
+								    1 0))
 
-				     ;; Extract boundaries of the res1 matrix.
+				     ;; Extract boundaries of the res1
+				     ;; matrix.
 				     (set! hm1 (grsp-matrix-esi 2 res1))
 				     
 				     ;; Copy row from res3 to res1.
@@ -6010,8 +6237,8 @@
     res1))
 
 
-;;;; grsp-matrix-col-selectn - Selects from p_a1 only the columns specified in
-;; list p_l1.
+;;;; grsp-matrix-col-selectn - Selects from p_a1 only the columns
+;; specified in list p_l1.
 ;;
 ;; Keywords:
 ;;
@@ -6093,8 +6320,8 @@
     res1))
 
 
-;;;; grsp-matrix-njoin - Natural join of p_a1 with key p_n1 and p_a2 with key
-;; p_n2.
+;;;; grsp-matrix-njoin - Natural join of p_a1 with key p_n1 and p_a2
+;; with key p_n2.
 ;;
 ;; Keywords:
 ;;
@@ -6166,7 +6393,8 @@
     (set! res3 (grsp-matrix-create 0 1 j3))
 
     ;; Cycle over res1, read each key and for each instance copy the rows
-    ;; for the current res1 and all the records of res3 that have the same key.
+    ;; for the current res1 and all the records of res3 that have the
+    ;; same key.
     (set! i1 lm1)
     (while (<= i1 hm1)
 
@@ -6176,8 +6404,8 @@
 					      p_n2
 					      (array-ref res1 i1 p_n1)))
 
-	   ;; Extract the boundaries of the res4 matrix, which contains the
-	   ;; rows SELECTed from res2.
+	   ;; Extract the boundaries of the res4 matrix, which contains
+	   ;; the rows SELECTed from res2.
 	   (set! lm4 (grsp-matrix-esi 1 res4))
 	   (set! hm4 (grsp-matrix-esi 2 res4))
 	   (set! ln4 (grsp-matrix-esi 3 res4))
@@ -6205,7 +6433,10 @@
 		  ;; Add the res2 component of the row.
 		  (set! j2 ln2)
 		  (while (<= j2 hn2)			 
-			 (array-set! res3 (array-ref res2 i1 j2) hm3 (+ j1 j2))			 
+			 (array-set! res3
+				     (array-ref res2 i1 j2)
+				     hm3
+				     (+ j1 j2))
 			 (set! j2 (+ j2 1)))		  
 		  
 		  (set! i4 (+ i4 1)))
@@ -6271,8 +6502,8 @@
     res3))
 
 
-;;;; grsp-matrix-ajoin - Antijoin. Produces a matrix of elements of p_a1 that
-;; cannot be njoined to p_a2 given p_n1 and p_n2.
+;;;; grsp-matrix-ajoin - Antijoin. Produces a matrix of elements of
+;; p_a1 that cannot be njoined to p_a2 given p_n1 and p_n2.
 ;;
 ;; Keywords:
 ;;
@@ -6338,8 +6569,8 @@
     (set! ln3 (grsp-matrix-esi 3 res3))
     (set! hn3 (grsp-matrix-esi 4 res3)) 
     
-    ;; Compare p_a1 and p_a2 to find out which tuples from p_a1 were not joined
-    ;; into p_a2.
+    ;; Compare p_a1 and p_a2 to find out which tuples from p_a1 were
+    ;; not joined into p_a2.
     (set! i1 lm1)
     (while (<= i1 hm1)
 	   
@@ -6368,9 +6599,9 @@
 
 
 ;;;; grsp-matrix-supp - Given 1 x n matrix p_a1, it returns a 1 x (n - p)
-;; vector that contains one instance per each element value contained in p_a1.
-;; That is, it elimitates repeated instances of the elements of p_a1 and
-;; returns its domain subset.
+;; vector that contains one instance per each element value contained in
+;; p_a1. That is, it elimitates repeated instances of the elements of
+;; p_a1 and returns its domain subset.
 ;;
 ;; Keywords:
 ;;
@@ -6505,8 +6736,8 @@
     (set! i1 lm1)
     (while (<= i1 hm1)
 	   
-	   ;; Check if the current row in res1 can be njoined with all rows in
-	   ;; res2.
+	   ;; Check if the current row in res1 can be njoined with all
+	   ;;rows in res2.
 	   (set! n1 (array-ref res1 i1 p_n1))
 	   (cond ((= t3 (grsp-matrix-total-element res3 n1))
 
@@ -6526,8 +6757,9 @@
     res5))
 
 
-;;;; grsp-matrix-row-update - Updates all rows setting value p_n2 in column p_j2
-;; from p_a1 where column p_j1 has a p_s1 relationship with p_n1.
+;;;; grsp-matrix-row-update - Updates all rows setting value p_n2 in
+;; column p_j2 from p_a1 where column p_j1 has a p_s1 relationship with
+;; p_n1.
 ;;
 ;; Keywords:
 ;;
@@ -6613,8 +6845,8 @@
     res1))
 
 
-;; grsp-matrix-te1 - Total elements of a row or column based on the lower and
-;; higher coordinate values.
+;; grsp-matrix-te1 - Total elements of a row or column based on the
+;; lower and higher coordinate values.
 ;;
 ;; Keywords:
 ;;
@@ -6662,7 +6894,8 @@
     res1))
 
 
-;; grsp-matrix-append - Appends all the rows of p_a2 below the rows of p_a1.
+;; grsp-matrix-append - Appends all the rows of p_a2 below the rows of
+;; p_a1.
 ;;
 ;; Keywords:
 ;;
@@ -6764,7 +6997,8 @@
     (set! ln4 (grsp-matrix-esi 3 res4))
     (set! hn4 (grsp-matrix-esi 4 res4)) 
 
-    ;; We need to find if both tables are of equal width (number of columns).
+    ;; We need to find if both tables are of equal width (number of
+    ;; columns).
     (set! n3 (grsp-matrix-te1 ln3 hn3))
     (set! n4 (grsp-matrix-te1 ln4 hn4))
 
@@ -6838,8 +7072,9 @@
 
 ;; grsp-matrix-subswap - Swaps the contents of the submatrix defined by
 ;; coordinates (p_m1, p_n1) for its upper right vertex and  (p_m2, p_n2)
-;; as its lowest left vertex with a submatrix with its upper right vertex at
-;; (p_m3, p_n3) and the same size and shape as the first submatrix.
+;; as its lowest left vertex with a submatrix with its upper right
+;; vertex at (p_m3, p_n3) and the same size and shape as the first
+;; submatrix.
 ;;
 ;; Keywords:
 ;;
@@ -6885,9 +7120,9 @@
     res1))
 
 
-;;;; grsp-matrix-col-total-element - Counts the number of ocurrences of elements
-;; in column p_j1 of matrix p_a1 for which relationship p_s1 is fulfilled with 
-;; regards to p_n1. 
+;;;; grsp-matrix-col-total-element - Counts the number of ocurrences of
+;; elements in column p_j1 of matrix p_a1 for which relationship p_s1 is
+;; fulfilled with regards to p_n1. 
 ;;
 ;; Keywords:
 ;;
@@ -6965,8 +7200,8 @@
     res1))
 
 
-;;;; grsp-matrix-row-deletev - Deletes all rows where value p_n1 is found at any
-;; column.
+;;;; grsp-matrix-row-deletev - Deletes all rows where value p_n1 is found
+;; at any column.
 ;;
 ;; Keywords:
 ;;
@@ -7021,8 +7256,8 @@
     res1))
 
 
-;;;; grsp-matrix-clear - Deletes all rows from matrix p_a1 where any of the
-;; values contained in list p_l1 is found at any column.
+;;;; grsp-matrix-clear - Deletes all rows from matrix p_a1 where any of
+;; the values contained in list p_l1 is found at any column.
 ;;
 ;; Keywords:
 ;;
@@ -7044,11 +7279,12 @@
     ;; Create safety matrix. 
     (set! res1 (grsp-matrix-cpy p_a1))
 
-    ;; Cast list as a matrix (simpler to deal here with a matrix tha a list).
+    ;; Cast list as a matrix (simpler to deal here with a matrix tha a
+    ;; list).
     (set! res2 (grsp-l2m p_l1))
     
-    ;; Cycle over the matrix that was the list of values to look on every part
-    ;; of p_a1.
+    ;; Cycle over the matrix that was the list of values to look on
+    ;; every part of p_a1.
     (let loop ((j2 (grsp-ln res2)))
       (if (<= j2 (grsp-hn res2))
 
@@ -7059,8 +7295,9 @@
     res1))
 
 
-;;;; grsp-matrix-clearni - Deletes all rows from matrix p_a1 where any of the
-;; values contained in list defined by (grsp-naninf) is found at any column.
+;;;; grsp-matrix-clearni - Deletes all rows from matrix p_a1 where any
+;; of the values contained in list defined by (grsp-naninf) is found at
+;; any column.
 ;;
 ;; Keywords:
 ;;
@@ -7082,9 +7319,10 @@
     res1))
 
 
-;;;; grsp-matrix-row-cartesian - Cartesian product of all rows of p_a1 and p_a2.
-;; Note that this function combines every row of one matrix with every row of
-;; another matrix, and not every element with every other element.
+;;;; grsp-matrix-row-cartesian - Cartesian product of all rows of p_a1
+;; and p_a2. Note that this function combines every row of one matrix
+;; with every row of another matrix, and not every element with every
+;; other element.
 ;;
 ;; Keywords:
 ;;
@@ -7151,8 +7389,8 @@
     (set! ln6 (grsp-matrix-esi 3 res6))
     (set! hn6 (grsp-matrix-esi 4 res6))     
 
-    ;; cycle over res1 and combine each row of it with each rown of res2 in
-    ;; res3.
+    ;; cycle over res1 and combine each row of it with each rown of res2
+    ;; in res3.
     (set! i1 lm1)
     (while (<= i1 hm1)
 
@@ -7169,8 +7407,8 @@
 		  ;; Col append rows from res3 and res4.
 		  (set! res5 (grsp-matrix-col-append res3 res4))
 
-		  ;; Add a fresh row to res5 in which to place the col appended
-		  ;; rows.
+		  ;; Add a fresh row to res5 in which to place the col
+		  ;; appended rows.
 		  (set! res6 (grsp-matrix-subexp res6 1 0))
 		  (set! hm6 (grsp-matrix-esi 2 res6))
 
@@ -7187,8 +7425,8 @@
     res6))
 	
 
-;;;; grsp-matrix-col-append - Appends all the columns of p_a2 to the right of
-;; p_a1 row by row.
+;;;; grsp-matrix-col-append - Appends all the columns of p_a2 to the
+;; right of p_a1 row by row.
 ;;
 ;; Keywords:
 ;;
@@ -7252,8 +7490,8 @@
     res1))
 
 
-;;;; grsp-matrix-col-find-nth - Finds the p_n1th element in p_s1 order from
-;; column p_j1 in matrix p_a1.
+;;;; grsp-matrix-col-find-nth - Finds the p_n1th element in p_s1 order
+;; from column p_j1 in matrix p_a1.
 ;;
 ;; Keywords:
 ;;
@@ -7288,8 +7526,8 @@
     ;; Create safety matrices. 
     (set! res1 (grsp-matrix-cpy p_a1))
 
-    ;; We need to sort the matrix since we will later read the first row of
-    ;; the selected ones.
+    ;; We need to sort the matrix since we will later read the first row
+    ;; of the selected ones.
     (cond ((equal? p_s1 "#des")	   
 	   (set! s1 "#<")
 	   (set! s2 "#des")))
@@ -7302,7 +7540,10 @@
       (if (<= i1 n1)
 
 	  (begin (cond ((> i1 1)		  
-			(set! res1 (grsp-matrix-row-select s1 res1 p_j1 res2))))
+			(set! res1 (grsp-matrix-row-select s1
+							   res1
+							   p_j1
+							   res2))))
 		 
 		 (set! res2 (array-ref res1 0 p_j1))	
 		 
@@ -7311,8 +7552,8 @@
     res2))
 
 
-;;;; grsp-mn2ll - Casts m x n matrix p_a1 into a list of m elements which are
-;; themselves lists of n elements each.
+;;;; grsp-mn2ll - Casts m x n matrix p_a1 into a list of m elements
+;; which are themselves lists of n elements each.
 ;;
 ;; Keywords:
 ;;
@@ -7336,8 +7577,14 @@
     (set! res1 (grsp-matrix-cpy p_a1))
 
     ;; Create lists based on the dimensions of the matrix.
-    (set! res3 (make-list (grsp-matrix-te1 (grsp-ln res1) (grsp-hn res1)) 0))
-    (set! res4 (make-list (grsp-matrix-te1 (grsp-lm res1) (grsp-hm res1)) 0))
+    (set! res3 (make-list (grsp-matrix-te1
+			   (grsp-ln res1)
+			   (grsp-hn res1))
+			  0))
+    (set! res4 (make-list (grsp-matrix-te1
+			   (grsp-lm res1)
+			   (grsp-hm res1))
+			  0))
     
     ;; Cycle over the matrix and copy its elements to the list.
     (let loop ((i1 (grsp-lm res1)))
@@ -7361,8 +7608,8 @@
     res4))
 
 
-;;;; grsp-matrix-mutation - Produces random mutations in the values of elements 
-;; of matrix p_a1.
+;;;; grsp-matrix-mutation - Produces random mutations in the values of
+;; elements of matrix p_a1.
 ;;
 ;; Keywords:
 ;;
@@ -7414,9 +7661,15 @@
 	  (begin (let loop ((j1 (grsp-ln res1)))
 		   (if (<= j1 (grsp-hn res1))
 
-		       ;; Replace element value by its noisy or blurred variant.
+		       ;; Replace element value by its noisy or blurred
+		       ;; variant.
 		       (begin (cond ((equal? (grsp-ifrprnd p_s1 p_u1 p_v1 p_n1) #t)			
-				     (array-set! res1 (grsp-rprnd p_s2 p_u2 p_v2) i1 j1)))
+				     (array-set! res1
+						 (grsp-rprnd p_s2
+							     p_u2
+							     p_v2)
+						 i1
+						 j1)))
 			      
 			      (loop (+ j1 1)))))
 	  
@@ -7426,8 +7679,8 @@
 
 
 ;;;; grsp-matrix-col-mutation - Produces random mutations in the values of
-;; elements of col p_n2 of matrix p_a1. Applies grsp-matrix-mutation to the
-;; selected column instead of the whole matrix.
+;; elements of col p_n2 of matrix p_a1. Applies grsp-matrix-mutation to
+;; the selected column instead of the whole matrix.
 ;;
 ;; Keywords:
 ;;
@@ -7478,7 +7731,14 @@
 				   p_n2))    
 
     ;; Mutate res2.
-    (set! res2 (grsp-matrix-mutation res2 p_n1 p_s1 p_u1 p_v1 p_s2 p_u2 p_v2))
+    (set! res2 (grsp-matrix-mutation res2
+				     p_n1
+				     p_s1
+				     p_u1
+				     p_v1
+				     p_s2
+				     p_u2
+				     p_v2))
 
     ;; Compose results.
     (set! res1 (grsp-matrix-subrep res1 res2 (grsp-lm res1) p_n2))
@@ -7486,9 +7746,10 @@
     res1))
 
 
-;;;; grsp-matrix-col-lmutation - Produces random mutations in the values of
-;; elements of list p_1 of columns of matrix p_a1. Applies grsp-matrix-mutation
-;; to the selected columns instead of the whole matrix.
+;;;; grsp-matrix-col-lmutation - Produces random mutations in the values
+;; of elements of list p_1 of columns of matrix p_a1. Applies
+;; grsp-matrix-mutation to the selected columns instead of the whole
+;; matrix.
 ;;
 ;; Keywords:
 ;;
@@ -7554,8 +7815,9 @@
     res1))
 
 
-;;;; grsp-matrix-crossover - Performs a crossover of columns defined by the
-;; intervals [p_ln1, p_hn1] and [p_ln2, p_hn2] between matrices p_a1 and p_a2.
+;;;; grsp-matrix-crossover - Performs a crossover of columns defined by
+;; the intervals [p_ln1, p_hn1] and [p_ln2, p_hn2] between matrices p_a1
+;; and p_a2.
 ;;
 ;; Keywords:
 ;;
@@ -7573,8 +7835,9 @@
 ;; Notes:
 ;;
 ;; - Matrices should have the same number of rows and columns.
-;; - Intervals [p_ln1, p_hn1] and [p_ln2, p_hn2] may not have the same ordinals
-;;   (indexes or col numbers) but must have the same number of columns.
+;; - Intervals [p_ln1, p_hn1] and [p_ln2, p_hn2] may not have the same
+;;   ordinals (indexes or col numbers) but must have the same number of
+;;   columns.
 ;;
 ;; Output
 ;;
@@ -7607,7 +7870,8 @@
     (set! res1 (grsp-matrix-cpy p_a1))
     (set! res2 (grsp-matrix-cpy p_a2))    
 
-    ;; Only perform this operation if matrices have the same dimensionality.
+    ;; Only perform this operation if matrices have the same
+    ;; dimensionality.
     (cond ((equal? (grsp-matrix-same-dims p_a1 p_a2) #t)	   
 	   (set! b1 #t)))
 
@@ -7649,7 +7913,8 @@
 
 ;;;; grsp-matrix-crossover-rprnd - Randomizes the application of
 ;; grsp-matrix-crossover. In some cases it might be useful to use the 
-;; crossover function in an aleatory fashion, while in others it might not.
+;; crossover function in an aleatory fashion, while in others it might
+;; not.
 ;;
 ;; Keywords:
 ;;
@@ -7700,8 +7965,8 @@
     res1))
 
 
-;;;; grsp-matrix-same_dims - Checks if p_a1 and p_a2 have the same number of
-;; rows and columns.
+;;;; grsp-matrix-same_dims - Checks if p_a1 and p_a2 have the same
+;; number of rows and columns.
 ;;
 ;; Keywords:
 ;;
@@ -7716,7 +7981,8 @@
 ;;
 ;; - Boolean.
 ;;
-;;   - Returns #t if both matrices have the same number of rows and columns.
+;;   - Returns #t if both matrices have the same number of rows and
+;;     columns.
 ;;   - #f otherwise.
 ;;
 (define (grsp-matrix-same-dims p_a1 p_a2)
@@ -7734,8 +8000,8 @@
     res1))
 
 
-;;;; grsp-matrix-fitness-rprnd - Basic fitness function based on pseudo - random
-;; numbers.
+;;;; grsp-matrix-fitness-rprnd - Basic fitness function based on pseudo
+;; - random numbers.
 ;;
 ;; Keywords:
 ;;
@@ -7758,8 +8024,8 @@
 ;;
 ;; Notes:
 ;;
-;; - This is just a convenience fitness function. You may want to create your
-;;   own for your specific task.
+;; - This is just a convenience fitness function. You may want to create
+;;   your own for your specific task.
 ;; - See grsp0.grsp-random-state-set.
 ;;
 ;; Output
@@ -7798,8 +8064,8 @@
 ;;
 ;; Notes:
 ;;
-;; - You should perform operations such as mutation and fitness calculation on
-;;   your dataset before using this function.
+;; - You should perform operations such as mutation and fitness
+;;   calculation on your dataset before using this function.
 ;;
 ;; Output:
 ;;
@@ -7836,9 +8102,9 @@
     res1))
 
 
-;;;; grsp-matrix-keyon - On row or column p_n1 of matrix p_a1, as defined by
-;; p_s1, the function creates a unique key starting on value p_n2 and with
-;; incremental step p_n3.
+;;;; grsp-matrix-keyon - On row or column p_n1 of matrix p_a1, as defined
+;; by p_s1, the function creates a unique key starting on value p_n2 and
+;; with incremental step p_n3.
 ;;
 ;; Keywords:
 ;;
@@ -7860,11 +8126,11 @@
 ;;
 ;; - This function will overwrite anything on row or column p_n1.
 ;; - Do not use with set!
-;; - Interstingly, you can use these keys to unequivocally identify anything;
-;;   you can, for example, set a column wit unique identifiers within a matrix
-;;   to point to specific kinds of files. That is, if you set column n as
-;;   containing keys, each key can identify a txt or pdf file, for example,
-;;   which is pointed from the matrix.
+;; - Interstingly, you can use these keys to unequivocally identify
+;;   anything; you can, for example, set a column wit unique identifiers
+;;   within a matrix to point to specific kinds of files. That is, if you
+;;   set column n as containing keys, each key can identify a txt or pdf
+;;   file, for example, which is pointed from the matrix.
 ;;
 ;; Output
 ;;
@@ -7896,7 +8162,7 @@
 	   (while (<= i1 h1)
 		  
 		  (cond ((equal? p_s1 "#row")			 
-			 (set! res1 (array-set! p_a1 i2 p_n1 i1)))			
+			 (set! res1 (array-set! p_a1 i2 p_n1 i1)))	
 			((equal? p_s1 "#col")			 
 			 (set! res1 (array-set! p_a1 i2 i1 p_n1))))
 
@@ -7906,8 +8172,8 @@
     res1))
 
 
-;;;; grsp-matrix-col-aupdate - Updates all elements of column p_n1 of matrix
-;; p_a1, setting value p_n2 in them.
+;;;; grsp-matrix-col-aupdate - Updates all elements of column p_n1 of
+;; matrix p_a1, setting value p_n2 in them.
 ;;
 ;; Keywords:
 ;;
@@ -8026,8 +8292,8 @@
     res1))
 
 
-;;;; grsp-matrix-is-multiset - Returns #t if the matrix has repeated elements;
-;; #f otherwise.
+;;;; grsp-matrix-is-multiset - Returns #t if the matrix has repeated
+;; elements; #f otherwise.
 ;;
 ;; Keywords:
 ;;
@@ -8064,7 +8330,8 @@
 		   (if (<= j1 (grsp-hn res1))
 
 		       (begin (set! n2 (array-ref res1 i1 j1))
-			      (set! n1 (grsp-matrix-total-element res1 n2))
+			      (set! n1 (grsp-matrix-total-element res1
+								  n2))
 			      
 			      (cond ((> n1 1)			 
 				     (set! b1 #t)
@@ -8093,8 +8360,9 @@
 ;;
 ;; Output:
 ;;
-;; - A matrix of the same dimensions and shape as p_a1 but containing the type
-;;   of each one of its elements according to the following representation:
+;; - A matrix of the same dimensions and shape as p_a1 but containing the
+;;   type of each one of its elements according to the following
+;;   representation:
 ;;
 ;;   - 0: undefined.
 ;;   - 1: list.
@@ -8129,7 +8397,7 @@
 	  (begin (let loop ((j1 (grsp-ln res2)))
 		   (if (<= j1 (grsp-hn res2))
 
-		       (begin (cond ((list? (array-ref res2 i1 j1))			 
+		       (begin (cond ((list? (array-ref res2 i1 j1)) 
 				     (set! res3 1))			
 				    ((string? (array-ref res2 i1 j1))
 				     (set! res3 2))			
@@ -8137,11 +8405,11 @@
 				     (set! res3 3))			
 				    ((boolean? (array-ref res2 i1 j1))
 				     (set! res3 4))			
-				    ((char? (array-ref res2 i1 j1))			 
+				    ((char? (array-ref res2 i1 j1))
 				     (set! res3 5))			
 				    ((integer? (array-ref res2 i1 j1))
 				     (set! res3 6))			
-				    ((real? (array-ref res2 i1 j1))			 
+				    ((real? (array-ref res2 i1 j1))
 				     (set! res3 7))			
 				    ((complex? (array-ref res2 i1 j1))
 				     (set! res3 8)))
@@ -8149,9 +8417,9 @@
 			      ;; This should be processed separatedly.
 			      (cond ((equal? (and (> res3 5) (< res3 8)) #t)
 				     
-				     (cond ((inf? (array-ref res2 i1 j1))				
-					    (set! res3 9))			       
-					   ((nan? (array-ref res2 i1 j1))				
+				     (cond ((inf? (array-ref res2 i1 j1))
+					    (set! res3 9))
+					   ((nan? (array-ref res2 i1 j1))
 					    (set! res3 10)))))
 			      
 			      (array-set! res1 res3 i1 j1)
@@ -8163,7 +8431,8 @@
     res1))
 
 
-;; grsp-matrix-argstru - Finds the data types of each column of an n x m matrix.
+;; grsp-matrix-argstru - Finds the data types of each column of an
+;; n x m matrix.
 ;;
 ;; Keywords:
 ;;
@@ -8225,9 +8494,9 @@
     res1))
 
 
-;;;; grsp-matrix-row-subrepal - Replaces row p_m1 of matrix p_a1 with the values
-;; contained in list p_l1. If row p_m1 does not exist then a new row is added to
-;; place the values of p_l1.
+;;;; grsp-matrix-row-subrepal - Replaces row p_m1 of matrix p_a1 with the
+;; values contained in list p_l1. If row p_m1 does not exist then a new
+;; row is added to place the values of p_l1.
 ;;
 ;; Keywords:
 ;;
@@ -8295,7 +8564,8 @@
 
 
 ;;;; grsp-matrix-subdell - Deletes row p_m1 from matrix p_a1 if its
-;; elements are respetively equal, in the same order, to those in list p_l1. 
+;; elements are respetively equal, in the same order, to those in list
+;; p_l1. 
 ;;
 ;; Keywords:
 ;;
@@ -8336,8 +8606,9 @@
     res1))
 
 
-;;;; grsp-matrix-is-samedim - Returns #t if the dimensionality of matrix p_a1
-;; and matrix p_a2 is the same, but not necessarily have the same elements.
+;;;; grsp-matrix-is-samedim - Returns #t if the dimensionality of matrix
+;; p_a1 and matrix p_a2 is the same, but not necessarily have the same
+;; elements.
 ;;
 ;; Keywords:
 ;;
@@ -8350,8 +8621,8 @@
 ;;
 ;; Output:
 ;;
-;; - Returns #t if both matrices have the same number of rows and columns; #f
-;;   otherwise.
+;; - Returns #t if both matrices have the same number of rows and
+;;   columns; #f otherwise.
 ;;
 (define (grsp-matrix-is-samedim p_a1 p_a2)
   (let ((res1 #f))
@@ -8370,8 +8641,8 @@
     res1))
 
 
-;;;; grsp-matrix-is-samediml - Applies grsp-matrix-is-samedim to all elements
-;; of list p_l1
+;;;; grsp-matrix-is-samediml - Applies grsp-matrix-is-samedim to all
+;; elements of list p_l1
 ;;
 ;; Keywords:
 ;;
@@ -8383,8 +8654,8 @@
 ;;
 ;; Output:
 ;;
-;; - Returns #t if all matrices have the same number of rows and columns; #f
-;;   otherwise.
+;; - Returns #t if all matrices have the same number of rows and columns;
+;;   #f otherwise.
 ;;
 (define (grsp-matrix-is-samediml p_l1)
   (let ((res1 #t)
@@ -8412,8 +8683,8 @@
     res1))
 
 
-;;;; grsp-matrix-fill - Creates a matrix of the same dimensions as p_a1 Filled
-;; with value p_n1.
+;;;; grsp-matrix-fill - Creates a matrix of the same dimensions as p_a1
+;; Filled with value p_n1.
 ;;
 ;; Keywords:
 ;;
@@ -8435,12 +8706,12 @@
     res1))
 
 
-;;;; grsp-matrix-fdif - Find differences between matrices p_a1 and p_a2, This
-;; function returns a boolean-numeric matrix in which true (difference found)
-;; is expressed as the number one and false (difference not found) is
-;; represented by zero if both matrices have the same dimensions, or one matrix
-;; of the same dimensions as p_a1 with NaN as unique value if p_a1 and p_a2 are
-;; of different size.
+;;;; grsp-matrix-fdif - Find differences between matrices p_a1 and p_a2,
+;; This function returns a boolean-numeric matrix in which true
+;; (difference found) is expressed as the number one and false
+;; (difference not found) is represented by zero if both matrices have
+;; the same dimensions, or one matrix of the same dimensions as p_a1 with
+;; NaN as unique value if p_a1 and p_a2 are of different size.
 ;;
 ;; Keywords:
 ;;
@@ -8453,11 +8724,11 @@
 ;;
 ;; Output:
 ;;
-;; - A matrix of the same dimensions as p_a1 and p_a2 if they have the same
-;;   size, containing elements with value 1 wherever the elements
-;;   of the same coordinates in p_a1 and p_a2 are different, or 0 otherwise.
-;; - A matrix of the same dimensions as p_a1, with NaN as values, if matrices
-;;   have different sizes.
+;; - A matrix of the same dimensions as p_a1 and p_a2 if they have the
+;;   same size, containing elements with value 1 wherever the elements of
+;;   the same coordinates in p_a1 and p_a2 are different, or 0 otherwise.
+;; - A matrix of the same dimensions as p_a1, with NaN as values, if
+;;   matrices have different sizes.
 ;;
 (define (grsp-matrix-fdif p_a1 p_a2)
   (let ((res1 0)
@@ -8488,7 +8759,10 @@
 				     
 				     (cond ((= n3 n4)
 					    (array-set! res3 0 i1 j1))
-					   (else (array-set! res3 1 i1 j1)))
+					   (else (array-set! res3
+							     1
+							     i1
+							     j1)))
 				     
 				     (loop (+ j1 1)))))
 			
@@ -8503,8 +8777,8 @@
 ;; p_a1 and p_a2 respectively and place the results in column p_j3 of
 ;; matrix p_a3. This is a no-frills, quick-and-dirt function that I made
 ;; to test some stuff. There are certainly better solutions. This function
-;; provides an easy way to operate element-wise between columns of a single
-;; matrix or various matrices.
+;; provides an easy way to operate element-wise between columns of a
+;; single matrix or various matrices.
 ;;
 ;; Keywords:
 ;;
@@ -8596,9 +8870,9 @@
     res3))
 
 
-;;;; grsp-matrix-opew-mth - Performs element-wise operation p_s1 between rows
-;; p_m1 and p_m2 of matrices p_a1 and p_a2 respectively; this is a multithreaded
-;; function.
+;;;; grsp-matrix-opew-mth - Performs element-wise operation p_s1 between
+;; rows p_m1 and p_m2 of matrices p_a1 and p_a2 respectively; this is a
+;; multithreaded function.
 ;;
 ;; Keywords:
 ;;
@@ -8623,9 +8897,9 @@
 ;;
 ;; Notes:
 ;;
-;; - This function does not validate the dimensionality or boundaries of the 
-;;   matrices involved; the user or an additional shell function should take 
-;;   care of that.
+;; - This function does not validate the dimensionality or boundaries of
+;;   the matrices involved; the user or an additional shell function
+;;   should take care of that.
 ;; - Both matrices should be of equal dimensions.
 ;; - See grsp-matrix-opewc.
 ;;
@@ -8686,7 +8960,11 @@
   (let ((res1 '())
 	(a1 0))
 
-    (set! a1 (grsp-matrix-subcpy p_a1 p_m1 p_m1 (grsp-ln p_a1) (grsp-hn p_a1)))
+    (set! a1 (grsp-matrix-subcpy p_a1
+				 p_m1
+				 p_m1
+				 (grsp-ln p_a1)
+				 (grsp-hn p_a1)))
     (set! res1 (grsp-m2l a1))
     
     res1))
@@ -8746,8 +9024,8 @@
     res1))
 
 
-;;;; grsp-matrix-opew-mth - Performs element-wise operation p_s1 between p_a1
-;; and p_a2 in parallel.
+;;;; grsp-matrix-opew-mth - Performs element-wise operation p_s1 between
+;; p_a1 and p_a2 in parallel.
 ;;
 ;; Keywords:
 ;;
@@ -8770,9 +9048,9 @@
 ;;
 ;; Notes:
 ;;
-;; - This function does not validate the dimensionality or boundaries of the 
-;;   matrices involved; the user or an additional shell function should take 
-;;   care of that.
+;; - This function does not validate the dimensionality or boundaries of
+;;   the matrices involved; the user or an additional shell function
+;;   should take care of that.
 ;; - Both matrices should be of equal dimensions.
 ;; - See grsp-matrix-opew, grsp-matrix-row-opew-mth.
 ;;
@@ -8792,7 +9070,7 @@
     ;; Safety copy.
     (set! res1 (grsp-matrix-cpy p_a1))
 
-    ;; Cycle. Note that indexes for p_a1 and p_a2 should be initialized    
+    ;; Cycle. Note that indexes for p_a1 and p_a2 should be initialized
     ;; and updated separatedly since the row ordinals for each matrix
     ;; might be different.
     (set! i2 (grsp-lm p_a2))
@@ -8809,8 +9087,8 @@
     res1))
 
 
-;;;; grsp-matrix-is-traceless - Returns #t if matrix p_a1 is square and the
-;; sum of its main diagonal elements equals zero; false otherwise.
+;;;; grsp-matrix-is-traceless - Returns #t if matrix p_a1 is square and
+;; the sum of its main diagonal elements equals zero; false otherwise.
 ;;
 ;; Keywords:
 ;;
@@ -8835,10 +9113,10 @@
     res1))
 
 
-;;;; grsp-matrix-movemm - Circulates (moves) the value found at (p_m1, p_n1)
-;; of matrix p_a1 to position (p_m2, p_n2) of matrix p_a2. This allows for
-;; independent, element by element discrete movement of values between
-;; matrices.
+;;;; grsp-matrix-movemm - Circulates (moves) the value found at (p_m1,
+;; p_n1) of matrix p_a1 to position (p_m2, p_n2) of matrix p_a2. This
+;; allpws for independent, element by element discrete movement of values
+;; between matrices.
 ;;
 ;; Keywords:
 ;;
@@ -8870,8 +9148,8 @@
     res1))
 
 
-;;;; grsp-matrix-movsmm - Swaps element located at position (p_m1, p_n1) of
-;; matrix p_a1 with element located at p_a2 (p_m2, p_n2).
+;;;; grsp-matrix-movsmm - Swaps element located at position (p_m1, p_n1)
+;; of matrix p_a1 with element located at p_a2 (p_m2, p_n2).
 ;;
 ;; Keywords:
 ;;
@@ -8892,7 +9170,8 @@
 ;;
 ;; Output:
 ;;
-;; - List containing matrices p_a1 and p_a2 with elements in question swapped.
+;; - List containing matrices p_a1 and p_a2 with elements in question
+;;   swapped.
 ;;
 (define (grsp-matrix-movsmm p_a1 p_a2 p_m1 p_n1 p_m2 p_n2)
   (let ((res1 '())
@@ -8960,15 +9239,15 @@
 
     (cond ((equal? p_b1 #t)
 	   
-	   ;; Cycle as many times as you want to circulate the row from left
-	   ;; to right.
+	   ;; Cycle as many times as you want to circulate the row from
+	   ;; left to right.
 	   (while (<= j2 p_j2)
 
 		  ;; Cycle that corresponds to a one-element circulation.
 		  (set! j1 nh)
 		  (while (>= j1 nl)
-			 ;; Get the value of the current element according to
-			 ;; coordinates (p_m1, j1).
+			 ;; Get the value of the current element according
+			 ;; to coordinates (p_m1, j1).
 			 (set! n1 (array-ref res1 p_m1 j1))
 			 
 			 (cond ((equal? j1 nh)
@@ -8977,9 +9256,10 @@
 				(set! n3 (array-ref res1 p_m1 (- j1 1)))
 				(array-set! res1 n3 p_m1 j1))
 			       ((equal? (and (< j1 nh) (> j1 nl)) #t)
-				;; Replace the value of the current element with
-				;; the value of the prior element (the one that
-				;; has a col index lower by one).
+				;; Replace the value of the current
+				;; element with the value of the prior
+				;; element (the one that has a col index
+				;; lower by one).
 				(set! n3 (array-ref res1 p_m1 (- j1 1)))
 				(array-set! res1 n3 p_m1 j1))
 			       ((equal? j1 nl)
@@ -8992,15 +9272,15 @@
 
 	  ((equal? p_b1 #f)
 
-	   ;; Cycle as many times as you want to circulate the row from right
-	   ;; to left.
+	   ;; Cycle as many times as you want to circulate the row from
+	   ;; right to left.
 	   (while (<= j2 p_j2)
 
 		  ;; Cycle that corresponds to a one-element circulation.
 		  (set! j1 nl)
 		  (while (<= j1 nh)
-			 ;; Get the value of the current element according to
-			 ;; coordinates (p_m1, j1).
+			 ;; Get the value of the current element according
+			 ;; to coordinates (p_m1, j1).
 			 (set! n1 (array-ref res1 p_m1 j1))
 			 
 			 (cond ((equal? j1 nl)
@@ -9009,9 +9289,10 @@
 				(set! n3 (array-ref res1 p_m1 (+ j1 1)))
 				(array-set! res1 n3 p_m1 j1))
 			       ((equal? (and (< j1 nh) (> j1 nl)) #t)
-				;; Replace the value of the current element with
-				;; the value of the posterior element (the one
-				;; that has a col index higher by one).
+				;; Replace the value of the current
+				;; element with the value of the posterior
+				;; element (the one that has a col index
+				;; higher by one).
 				(set! n3 (array-ref res1 p_m1 (+ j1 1)))
 				(array-set! res1 n3 p_m1 j1))
 			       ((equal? j1 nh)
@@ -9027,8 +9308,8 @@
 
 ;;;; grsp-matrix-movtrm - Given matrix p_a1, this function will take each
 ;; element p_a1(0,n) and will place it on p_a1(n,n) if p_b1 is #t, or each
-;; element p_a1(n,0) and will place it on p_a1(n,n) if p_b1 is #f, until it
-;; reaches n = m.
+;; element p_a1(n,0) and will place it on p_a1(n,n) if p_b1 is #f, until
+;; it reaches n = m.
 ;;
 ;; Keywords:
 ;;
@@ -9051,17 +9332,25 @@
     (while (equal? (and (<= j1 (grsp-hm res1)) (<= j1 (grsp-hn res1))) #t)
 	   
 	   (cond ((equal? p_b1 #t)
-		  (array-set! res1 (array-ref res1 (grsp-lm res1) j1) j1 j1))
+		  (array-set! res1 (array-ref res1
+					      (grsp-lm res1)
+					      j1)
+			      j1
+			      j1))
 		 (else
-		  (array-set! res1 (array-ref res1 j1 (grsp-ln res1)) j1 j1)))
+		  (array-set! res1 (array-ref res1
+					      j1
+					      (grsp-ln res1))
+			      j1
+			      j1)))
 	   
 	   (set! j1 (in j1)))
     
     res1))
 
 
-;;;; grsp-matrix-ldiagonal - Replaces every element of matrix p_a1 with value
-;; p_n1 except those on the main diagonal.
+;;;; grsp-matrix-ldiagonal - Replaces every element of matrix p_a1 with
+;; value p_n1 except those on the main diagonal.
 ;;
 ;; Keywords:
 ;;
@@ -9144,8 +9433,8 @@
     res1))
 
 
-;;;; grsp-matrix-minor-cofactor - Find the (p_m1, p_n1) cofactor of p_a1 based
-;; on its (p_m1, p_n1) minor.
+;;;; grsp-matrix-minor-cofactor - Find the (p_m1, p_n1) cofactor of p_a1
+;; based on its (p_m1, p_n1) minor.
 ;;
 ;; Keywords:
 ;;
@@ -9199,7 +9488,8 @@
 (define (grsp-matrix-cofactor p_a1)
   (let ((res1 0))
 
-    ;; Set res1 to be a matrix of the same size as p_a1, filled with zeros.
+    ;; Set res1 to be a matrix of the same size as p_a1, filled with
+    ;; zeros.
     (set! res1 (grsp-matrix-create-dim 0 p_a1))    
 
     ;; Rows.
@@ -9210,7 +9500,10 @@
 	  (begin (let loop ((j1 (grsp-ln p_a1)))
 		   (if (<= j1 (grsp-hn p_a1))
 
-		       (begin (array-set! res1 (grsp-matrix-minor-cofactor p_a1 i1 j1)
+		       (begin (array-set! res1
+					  (grsp-matrix-minor-cofactor p_a1
+								      i1
+								      j1)
 					  i1
 					  j1)
 			      
@@ -9262,8 +9555,8 @@
     res1))
 
 
-;;;; grsp-matrix-adjugate - Calculates the adjugate of matrix p_a1 (transpose of
-;; cofactor of p_a1).
+;;;; grsp-matrix-adjugate - Calculates the adjugate of matrix p_a1
+;; (transpose of cofactor of p_a1).
 ;;
 ;; Keywords:
 ;;
@@ -9322,7 +9615,11 @@
 	  (begin (let loop ((j1 (grsp-ln p_a1)))
 		   (if (<= j1 (grsp-hn p_a1))
 
-		       (begin (array-set! res1 (grsp-n2s (array-ref p_a1 i1 j1)) i1 j1)
+		       (begin (array-set! res1 (grsp-n2s (array-ref p_a1
+								    i1
+								    j1))
+					  i1
+					  j1)
 				    
 			      (loop (+ j1 1)))))
 		 
@@ -9331,9 +9628,9 @@
     res1))
 
 
-;;;; grsp-string-spjustify - Applies grsp-string-pjustify to every element of
-;; p_a1, producing a matrix of strings of equal length, padded with p_s3 and
-;; lustified according to p_s1.
+;;;; grsp-string-spjustify - Applies grsp-string-pjustify to every element
+;; of p_a1, producing a matrix of strings of equal length, padded with
+;; p_s3 and lustified according to p_s1.
 ;;
 ;; Keywords:
 ;;
@@ -9372,7 +9669,12 @@
 	  (begin (let loop ((j1 (grsp-ln res1)))
 		   (if (<= j1 (grsp-hn res1))
 
-		       (begin (set! s2 (grsp-string-pjustify p_s1 (array-ref res1 i1 j1) p_s3 p_n1))
+		       (begin (set! s2 (grsp-string-pjustify p_s1
+							     (array-ref res1
+									i1
+									j1)
+							     p_s3
+							     p_n1))
 			      (array-set! res1 s2 i1 j1)
 				    
 			      (loop (+ j1 1)))))
@@ -9382,8 +9684,8 @@
     res1))
 
 
-;;;; grsp-matrix-slongest - Finds the length in number of characters of the
-;; longest string of string matrix p_a1.
+;;;; grsp-matrix-slongest - Finds the length in number of characters of
+;; the longest string of string matrix p_a1.
 ;;
 ;; Keywords:
 ;;
@@ -9425,8 +9727,9 @@
     res1))
 
 
-;;;; grsp-ms2s - Creates a formatted long string from p_a1 for display. This
-;; function transforms all elements of a string matrix into a unified string.
+;;;; grsp-ms2s - Creates a formatted long string from p_a1 for display.
+;; This function transforms all elements of a string matrix into a
+;; unified string.
 ;;
 ;; Keywords:
 ;;
@@ -9479,7 +9782,10 @@
 			(set! a3 (grsp-matrix-spjustify "#l" a3 " " l1))
 			
 			;; Put a3 back in a1.
-			(set! a1 (grsp-matrix-subrep a1 a3 (grsp-lm a1) j1))
+			(set! a1 (grsp-matrix-subrep a1
+						     a3
+						     (grsp-lm a1)
+						     j1))
 			
 			(loop (+ j1 1)))))
 	   
@@ -9502,11 +9808,13 @@
 		   (if (<= j1 (grsp-hn a1))
 
 		       (begin (set! res1 (string-append res1
-							(array-ref a2 i1 j1)))
+							(array-ref a2
+								   i1
+								   j1)))
 			      
 			      (loop (+ j1 1)))))
 
-		 ;; Insert a new line string after a row is completed.	   
+		 ;; Insert a new line string after a row is completed.
 		 (set! res1 (string-append res1 "\n"))
 		 
 		 (loop (+ i1 1)))))
@@ -9579,7 +9887,11 @@
 	  (begin (let loop ((j1 (grsp-ln p_a1)))
 		   (if (<= j1 (grsp-hn p_a1))
 
-		       (begin (array-set! res1 (grsp-s2n (array-ref p_a1 i1 j1)) i1 j1)
+		       (begin (array-set! res1 (grsp-s2n (array-ref p_a1
+								    i1
+								    j1))
+					  i1
+					  j1)
 		       
 			      (loop (+ j1 1)))))
 		       
@@ -9588,8 +9900,8 @@
     res1))
 
 
-;;;; grsp-matrix-tio - Turns into number p_n1 every number between established
-;; limits or p_n2 otherwise.
+;;;; grsp-matrix-tio - Turns into number p_n1 every number between
+;; established limits or p_n2 otherwise.
 ;;
 ;; Keywords:
 ;;
@@ -9781,8 +10093,8 @@
     res1))
 
 
-;;;; grsp-matrix-normp - Calculates the matrix norm using the vector p-norm
-;; rule.
+;;;; grsp-matrix-normp - Calculates the matrix norm using the vector
+;; p-norm rule.
 ;;
 ;; Keywords:
 ;;
@@ -9863,7 +10175,8 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, entry wise, eigenvalue
+;; - functions, algebra, matrix, matrices, vectors, entry wise,
+;;   eigenvalue
 ;;
 ;; Parameters:
 ;;
@@ -9895,8 +10208,7 @@
     ;; Safety copy.
     (set! A (grsp-matrix-cpy p_a1))
 
-    ;; Apply decomposition repeatedly until conditions are
-    ;; met.
+    ;; Apply decomposition repeatedly until conditions are met.
     (while (equal? b1 #f)
 
 	   ;; Unpack list of matrices.
@@ -9924,7 +10236,8 @@
     res2))
 
 
-;;;; grsp-eigenvec - Calculates right eigenvectors based on p_a1 and p_a2.
+;;;; grsp-eigenvec - Calculates right eigenvectors based on p_a1 and
+;; p_a2.
 ;;
 ;; Keywords:
 ;;
@@ -9982,8 +10295,8 @@
     res1))
 
 
-;;;; grsp-matrix-is-srddominant - Returns #t if square matrix p_a1 is strictly
-;; row diagonally dominant; #f otherwise.
+;;;; grsp-matrix-is-srddominant - Returns #t if square matrix p_a1 is
+;; strictly row diagonally dominant; #f otherwise.
 ;;
 ;; Keywords:
 ;;
@@ -10024,8 +10337,9 @@
 		  ;; Only apply when i1 is not equal to j1.
 		  (cond ((equal? (equal? i1 j1) #f)
 
-			 ;; If the a1 is less or equal than a2 at least once,
-			 ;; then the matrix is not strictly row dominant.
+			 ;; If the a1 is less or equal than a2 at least
+			 ;; once, then the matrix is not strictly row
+			 ;; dominant.
 			 (cond ((<= a1 a2)
 				(set! n1 (in n1))))))
 		  
@@ -10041,8 +10355,8 @@
     res1))
 
 
-;;;; grsp-matrix-jacobim - Implementation of the Jacobi method for solving 
-;; Ax = b.
+;;;; grsp-matrix-jacobim - Implementation of the Jacobi method for
+;; solving Ax = b.
 ;;
 ;; Keywords:
 ;;
@@ -10098,7 +10412,9 @@
 
 			 (cond ((equal? (grsp-eq i1 j1) #f)
 				(set! sum (+ sum (* (array-ref A i1 j1)
-						    (array-ref X j1 0))))))
+						    (array-ref X
+							       j1
+							       0))))))
 
 			 (set! j1 (in j1)))
 
@@ -10124,7 +10440,8 @@
     res1))
 
 
-;;;; grsp-matrix-sradius - Calculates the spectral radius of matrix p_a1- 
+;;;; grsp-matrix-sradius - Calculates the spectral radius of matrix
+;; p_a1. 
 ;;
 ;; Keywords:
 ;;
@@ -10139,8 +10456,8 @@
 ;;
 ;; Notes:
 ;;
-;; - See grsp-matrix-decompose for suitable decomposition methods for eigenvalue
-;;   calculation.
+;; - See grsp-matrix-decompose for suitable decomposition methods for
+;;   eigenvalue calculation.
 ;;
 ;; Output
 ;;
@@ -10153,19 +10470,22 @@
 (define (grsp-matrix-sradius p_s1 p_a1 p_n1)
   (let ((res1 0))
 
-    (set! res1 (array-ref (grsp-matrix-minmax (grsp-eigenval-qr p_s1 p_a1 p_n1))
+    (set! res1 (array-ref (grsp-matrix-minmax (grsp-eigenval-qr p_s1
+								p_a1
+								p_n1))
 			  0
 			  1))
     
     res1))
 
 
-;;;; grsp-ms2ts - Creates a text string from the file pointed by the string
-;; contained at (array-ref p_a1 p_m1 p_n1).
+;;;; grsp-ms2ts - Creates a text string from the file pointed by the
+;; string contained at (array-ref p_a1 p_m1 p_n1).
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, strings, text, pointers
+;; - functions, algebra, matrix, matrices, vectors, strings, text,
+;;   pointers
 ;;
 ;; Parameters:
 ;;
@@ -10189,8 +10509,8 @@
     res1))
 
 
-;;;; grsp-mr2ls - Matrix row to list of strings. Returns row p_m1 from matrix
-;; p_a1 as a list of strings.
+;;;; grsp-mr2ls - Matrix row to list of strings. Returns row p_m1 from
+;; matrix p_a1 as a list of strings.
 ;;
 ;; Keywords:
 ;;
@@ -10214,16 +10534,16 @@
 
 
 ;;;; grsp-dbc2lls - For database table (matrix) element p_a1(p_m1, p_n1)
-;; representing a link to a file with a numeric string, this function returns
-;; a two element string list containing:
+;; representing a link to a file with a numeric string, this function
+;; returns a two element string list containing:
 ;;
 ;; - Elem 0: the path to the plain text file as codified in the table.
 ;; - Elem 1: text of the file as a single string.
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, strings, lists, pointers,
-;;   links, lists
+;; - functions, algebra, matrix, matrices, vectors, strings, lists,
+;;   pointers, links, lists
 ;;
 ;; Parameters:
 ;;
@@ -10250,8 +10570,8 @@
 
 ;;;; grsp-matrix-row-prkey - Defines an explicit primary key on col p_j1
 ;; from matrix p_a1, starting at row p_m1 and whose values equal the
-;; corresponding row numbers. The resulting primary keys are unique since row
-;; numbers are also unique.
+;; corresponding row numbers. The resulting primary keys are unique
+;; since row numbers are also unique.
 ;;
 ;; Keywords:
 ;;
@@ -10265,10 +10585,12 @@
 ;;
 ;; Notes:
 ;;
-;; - This function should be used with care to avoid messing-up primarey keys.
+;; - This function should be used with care to avoid messing-up primarey
+;;   keys.
 ;; - The function gives the choice to start at any row number in order to
 ;;   save time when assigning primary key values to new rows.
-;; - Take into account that key numbers may not coincide with row numbers.
+;; - Take into account that key numbers may not coincide with row
+;;   numbers.
 ;; - Elements on p_j1 should be zero before applying this function.
 ;;
 ;; Output
@@ -10291,9 +10613,9 @@
 	   ;; Only act on elements that have no value assigned as key.
 	   (cond ((equal? (array-ref res1 i1 p_j1) 0)
 
-		  ;; Check if i2 already exists as a key. If it does, increment
-		  ;; i2 and continue checking until i2 has a value that does not
-		  ;; exist in column p_j1.
+		  ;; Check if i2 already exists as a key. If it does,
+		  ;; increment i2 and continue checking until i2 has a
+		  ;; value that does not exist in column p_j1.
 		  (cond ((> i1 0)
 			 (while (> (grsp-matrix-col-total-element "#=" p_a1 p_j1 i2) 0)
 				(set! i2 (in i2)))))
@@ -10307,8 +10629,8 @@
     res1))
 
 
-;;;; grsp-matrix-strot - Rotates column vector (p_v1) by angle p_t1 about the
-;; x, y or z axis.
+;;;; grsp-matrix-strot - Rotates column vector (p_v1) by angle p_t1
+;; about the x, y or z axis.
 ;;
 ;; Keywords:
 ;;
@@ -10409,8 +10731,8 @@
     res1))
 
 
-;;;; grsp-matrix-correwl - Correlate element wise all matrices contained in
-;; list p_l1.
+;;;; grsp-matrix-correwl - Correlate element wise all matrices
+;; contained in list p_l1.
 ;;
 ;; Keywords:
 ;;
@@ -10422,8 +10744,8 @@
 ;;
 ;; Notes:
 ;;
-;; - All matrices of list p_l1 should have the rows and columns of the same
-;;   size.
+;; - All matrices of list p_l1 should have the rows and columns of the
+;;   same size.
 ;; - See grsp-matrix-row-corr.
 ;;
 ;; Output:
@@ -10451,8 +10773,8 @@
 	(i2 0)
 	(j2 0))
 
-    ;; This function requires that all matrices in the list have the same number
-    ;; of rows and cols.
+    ;; This function requires that all matrices in the list have the
+    ;; same number of rows and cols.
     (set! b1 (grsp-matrix-is-samediml p_l1))
 
     (cond ((equal? b1 #t)
@@ -10463,7 +10785,8 @@
 	   (set! j1 1)
 	   (while (< j1 (length p_l1))
 
-		  ;; a1 is the matrix a0 will be correlated to in this instance.
+		  ;; a1 is the matrix a0 will be correlated to in this
+		  ;; instance.
 		  (set! a1 (list-ref p_l1 j1))
 
 		  (set! i2 (grsp-lm a0))
@@ -10499,8 +10822,8 @@
     res1))
 
 
-;;;; grsp-matrix-wlongest - Finds if matrix p_a1 has more rows than columns or
-;; vice-versa.
+;;;; grsp-matrix-wlongest - Finds if matrix p_a1 has more rows than
+;; columns or vice-versa.
 ;;
 ;; Keywords:
 ;;
@@ -10527,8 +10850,8 @@
     res1))
 
 
-;;;; grsp-matrix-mmt - Given matrix p_a1, calculates the product of p_a1 and
-;; its transposed matrix
+;;;; grsp-matrix-mmt - Given matrix p_a1, calculates the product of p_a1
+;; and its transposed matrix
 ;;
 ;; Keywords:
 ;;
@@ -10583,8 +10906,8 @@
     res1))
 
 
-;;;; grsp-matrix-fsubst - Performs a forward substitution on linear system
-;; of equations p_a1 * x = p_a2, solving for coulmn vector x
+;;;; grsp-matrix-fsubst - Performs a forward substitution on linear
+;; system of equations p_a1 * x = p_a2, solving for coulmn vector x
 ;;
 ;; Keywords:
 ;;
@@ -10627,7 +10950,13 @@
 		 (begin (let loop ((j1 0))
 			  (if (<= j1 hj)
 
-			      (begin (set! sum (+ sum (* (array-ref p_a1 i1 j1) (array-ref res1 j1 0))))
+			      (begin (set! sum (+ sum
+						  (* (array-ref p_a1
+								i1
+								j1)
+						     (array-ref res1
+								j1
+								0))))
 				     
 				     (loop (+ j1 1))))))
 
@@ -10640,8 +10969,8 @@
     res1))
 
 
-;;;; grsp-matrix-bsubst - Performs a backward substitution on linear system
-;; of equations p_a1 * x = p_a2, solving for column vector x.
+;;;; grsp-matrix-bsubst - Performs a backward substitution on linear
+;; system of equations p_a1 * x = p_a2, solving for column vector x.
 ;;
 ;; Keywords:
 ;;
@@ -10672,8 +11001,13 @@
 	(y1 0))
 
     ;; Prepare working matrices.
-    (set! res1 (grsp-matrix-create-dim 0 p_a2)) 
-    (array-set! res1 (/ (array-ref p_a2 hj 0) (array-ref p_a1 hj hj)) hj 0) ;; y[n] = B[n] / U[n,n]
+    (set! res1 (grsp-matrix-create-dim 0 p_a2))
+
+    ;; y[n] = B[n] / U[n,n]
+    (array-set! res1 (/ (array-ref p_a2 hj 0)
+			(array-ref p_a1 hj hj))
+		hj
+		0) 
 
     ;; Dec cycle.
     (let loop ((i1 (- hj 1)))
@@ -10684,13 +11018,19 @@
 		 (let loop ((j1 (+ i1 1)))
 		   (if (<= j1 hj)
 
-		       (begin (set! sum (+ sum (* (array-ref p_a1 i1 j1) (array-ref res1 j1 0))))
+		       (begin (set! sum (+ sum (* (array-ref p_a1
+							     i1
+							     j1)
+						  (array-ref res1
+							     j1
+							     0))))
 			      ;;(set! j1 (in j1))
 			      
 			      (loop (+ j1 1)))))
 		 
 		 ;; Find matrix var.
-		 (set! y1 (/ (- (array-ref p_a2 i1 0) sum) (array-ref p_a1 i1 i1)))
+		 (set! y1 (/ (- (array-ref p_a2 i1 0) sum)
+			     (array-ref p_a1 i1 i1)))
 		 (array-set! res1 y1 i1 0)	   
 
 	   (loop (- i1 1)))))
@@ -10698,8 +11038,8 @@
     res1))
 
 
-;;;; grsp-matrix-compatibility - Returns #t if the two matrices are compatible
-;; for operation p_s1, and returns #f otherwise.
+;;;; grsp-matrix-compatibility - Returns #t if the two matrices are
+;; compatible for operation p_s1, and returns #f otherwise.
 ;;
 ;; Keywords:
 ;;
@@ -10810,8 +11150,8 @@
     res1))
 
 
-;;;; grsp-matrix-is-filled-with - Returns true if all elements of matrix p_a1
-;; are equal to value p_n1.
+;;;; grsp-matrix-is-filled-with - Returns true if all elements of
+;; matrix p_a1 are equal to value p_n1.
 ;;
 ;; Keywords:
 ;;
@@ -10869,7 +11209,11 @@
 (define (grsp-matrix-row-selectrn p_a1 p_m1)
   (let ((res1 0))
 
-    (set! res1 (grsp-matrix-subcpy p_a1 p_m1 p_m1 (grsp-ln p_a1) (grsp-hn p_a1)))
+    (set! res1 (grsp-matrix-subcpy p_a1
+				   p_m1
+				   p_m1
+				   (grsp-ln p_a1)
+				   (grsp-hn p_a1)))
     
     res1))
 
@@ -10892,13 +11236,17 @@
 (define (grsp-matrix-col-selectcn p_a1 p_n1)
   (let ((res1 0))
 
-    (set! res1 (grsp-matrix-subcpy p_a1 (grsp-lm p_a1) (grsp-hm p_a1) p_n1 p_n1))
+    (set! res1 (grsp-matrix-subcpy p_a1
+				   (grsp-lm p_a1)
+				   (grsp-hm p_a1)
+				   p_n1
+				   p_n1))
     
     res1))
 
 
-;;;; grsp-matrix-row-subrepf - Replace in matrix p_a1 all rows with row vector
-;; p_a2 where col p_j1 has a value equal to p_v1.
+;;;; grsp-matrix-row-subrepf - Replace in matrix p_a1 all rows with row
+;; vector p_a2 where col p_j1 has a value equal to p_v1.
 ;;
 ;; Keywords:
 ;;
@@ -10933,17 +11281,20 @@
       (if (<= i1 (grsp-hm res1))
 	  
 	  (begin (cond ((equal? (array-ref res1 i1 p_j1) p_v1)
-			(set! res1 (grsp-matrix-subrep res1 res2 i1 (grsp-ln res1)))))	  
+			(set! res1 (grsp-matrix-subrep res1
+						       res2
+						       i1
+						       (grsp-ln res1))))) 
 	  
 		 (loop (+ i1 1)))))
     
     res1))
 
 
-;;;; grsp-matrix-row-subreps - For each and all rows of p_a2, replace in matrix
-;; p_a1 all rows with row vector p_a2 where col p_n1 is equal to p_v1. This is
-;; the same as saying that this function applies grsp-matrix-row-subrepf to
-;; all elements in p_a2, in order.
+;;;; grsp-matrix-row-subreps - For each and all rows of p_a2, replace
+;; in matrix p_a1 all rows with row vector p_a2 where col p_n1 is equal
+;; to p_v1. This is the same as saying that this function applies
+;; grsp-matrix-row-subrepf to all elements in p_a2, in order.
 ;;
 ;; Keywords:
 ;;
@@ -11006,9 +11357,9 @@
     res1))
 
 
-;;;; grsp-matrix-ldvl - Line, display title, display matrix. line. Displays p_n1
-;; blank lines before string p_s1 and matrix p_a2, and p_n2 blank lines after
-;; p_s1.
+;;;; grsp-matrix-ldvl - Line, display title, display matrix. line.
+;; Displays p_n1 blank lines before string p_s1 and matrix p_a2, and
+;; p_n2 blank lines after p_s1.
 ;;
 ;; Keywords:
 ;;
@@ -11056,8 +11407,8 @@
 ;;
 ;; - Values in p_a1 will act as statistical mean in each case.
 ;; - See grsp2.grsp-rprnd, grsp0.grsp-random-state-set.
-;; - With a normal distribution, mean 0 and variance 1 you shoild get Gaussian
-;;   noise.
+;; - With a normal distribution, mean 0 and variance 1 you shoild get
+;;   Gaussian noise.
 ;;
 ;; Output:
 ;;
@@ -11079,8 +11430,16 @@
 	  (begin (let loop ((j1 (grsp-ln res1)))
 		   (if (<= j1 (grsp-hn res1))
 
-		       ;; Replace element value by its noisy or blurred variant.
-		       (begin (array-set! res1 (grsp-rprnd p_s1 (array-ref res1 i1 j1) p_v1) i1 j1)		       
+		       ;; Replace element value by its noisy or blurred
+		       ;; variant.
+		       (begin (array-set! res1
+					  (grsp-rprnd p_s1
+						      (array-ref res1
+								 i1
+								 j1)
+						      p_v1)
+					  i1
+					  j1)		       
 			      
 			      (loop (+ j1 1)))))
 	  
@@ -11089,9 +11448,9 @@
     res1))
 
 
-;;;; grsp-matrix-col-replacev - Replace all instances in column p_j1 with p_v2
-;; in matrix p_a1 for p_j1 elements with relationship p_s1 betwheen them and
-;; value p_v1.
+;;;; grsp-matrix-col-replacev - Replace all instances in column p_j1
+;; with p_v2 in matrix p_a1 for p_j1 elements with relationship p_s1
+;; betwheen them and value p_v1.
 ;;
 ;; Keywords:
 ;;
@@ -11183,14 +11542,15 @@
 	(m1 0)
 	(m2 0))
 
-    ;; If p_m1 is higher than the number of rows in p_a1, replace m1 with the
-    ;; number of rows of p_a1. In this case the mini batch will be of the same
-    ;; size as the matrix.
+    ;; If p_m1 is higher than the number of rows in p_a1, replace m1
+    ;; with the number of rows of p_a1. In this case the mini batch
+    ;; will be of the same size as the matrix.
     (set! m1 p_m1)
     (cond ((> m1 (grsp-tm p_a1))
 	   (set! m1 (grsp-tm p_a1))))
 
-    ;; Create a matrix of m1 rows and with the same number of cols as p_a1.
+    ;; Create a matrix of m1 rows and with the same number of cols as
+    ;; p_a1.
     (set! res1 (grsp-matrix-create 0 m1 (grsp-tn p_a1)))
     
     ;; Cycle.
@@ -11199,16 +11559,23 @@
 
 	  (begin (set! m2 (random (+ (grsp-tm res1) 1)))
 		 
-		 (set! res2 (grsp-matrix-subcpy p_a1 m2 m2 (grsp-ln p_a1) (grsp-hn p_a1)))
-		 (set! res1 (grsp-matrix-subrep res1 res2 i1 (grsp-ln res1)))
+		 (set! res2 (grsp-matrix-subcpy p_a1
+						m2
+						m2
+						(grsp-ln p_a1)
+						(grsp-hn p_a1)))
+		 (set! res1 (grsp-matrix-subrep res1
+						res2
+						i1
+						(grsp-ln res1)))
 		 
 		 (loop (+ i1 1)))))
     
     res1))
 
 
-;;;; grsp-matrix-row-opscr - Performs operation p_s1 row by row on p_a1 and
-;; places scalar results on a column vector.
+;;;; grsp-matrix-row-opscr - Performs operation p_s1 row by row on p_a1
+;; and places scalar results on a column vector.
 ;;
 ;; Keywords:
 ;;
@@ -11230,6 +11597,7 @@
 (define (grsp-matrix-row-opscr p_s1 p_a1)
   (let ((res1 0)
 	(res2 0)
+	(n1 0)
 	(j2 0))
 
     ;; Safety copy.
@@ -11241,34 +11609,36 @@
 
 	  (begin (set! j2 (grsp-ln p_a1))
 
-		 ;; Set res2 to the value of the first col and increment j2 to
-		 ;; start from the following column.
+		 ;; Set res2 to the value of the first col and increment
+		 ;; j2 to start from the following column.
 		 (set! res2 (array-ref p_a1 i1 j2))
 		 (set! j2 (in j2))
 		 
 		 (let loop ((j1 j2))
 		   (if (<= j1 (grsp-hn p_a1))
+		       
+		       (begin (set! n1 (array-ref p_a1 i1 j1))
 
-		       (begin (cond ((equal? p_s1 "#+")
-				     (set! res2 (+ res2 (array-ref p_a1 i1 j1))))
+			      (cond ((equal? p_s1 "#+")
+				     (set! res2 (+ res2 n1)))
 				    ((equal? p_s1 "#-")
-				     (set! res2 (- res2 (array-ref p_a1 i1 j1))))
+				     (set! res2 (- res2 n1)))
 				    ((equal? p_s1 "#*")
-				     (set! res2 (* res2 (array-ref p_a1 i1 j1))))
+				     (set! res2 (* res2 n1)))
 				    ((equal? p_s1 "#/")
-				     (set! res2 (/ res2 (array-ref p_a1 i1 j1)))))
+				     (set! res2 (/ res2 n1))))
 
 			      (array-set! res1 res2 i1 0)
 			      
-			      (loop (+ j1 1)))))		 
+			      (loop (+ j1 1)))))	 
 		 
 		 (loop (+ i1 1)))))
     
     res1))
 
 
-;;;; grsp-ms2dbc - Casts a matrix of strings as a matrix of numbers representing
-;; those strings as numeric values.
+;;;; grsp-ms2dbc - Casts a matrix of strings as a matrix of numbers
+;; representing those strings as numeric values.
 ;;
 ;; Keywords:
 ;;
@@ -11313,8 +11683,8 @@
     res1))
 
 
-;;;; grsp-dbc2ms - Casts a dbc matrix of numbers representing strings as a
-;; matrix of strings.
+;;;; grsp-dbc2ms - Casts a dbc matrix of numbers representing strings
+;; as a matrix of strings.
 ;;
 ;; Keywords:
 ;;
@@ -11419,8 +11789,8 @@
     res1))
 
 
-;;;; grsp-matrix-inputev - Input a value in element p_i1 p_j1 of matrix p_a1
-;; interactively.
+;;;; grsp-matrix-inputev - Input a value in element p_i1 p_j1 of matrix
+;; p_a1 interactively.
 ;;
 ;; Keywords:
 ;;
@@ -11503,8 +11873,8 @@
     res1))
 
 
-;;;; grsp-matrix-row-inputev - Input a value in every element of row p_i1 of
-;; matrix p_a1 interactively.
+;;;; grsp-matrix-row-inputev - Input a value in every element of row
+;; p_i1 of matrix p_a1 interactively.
 ;;
 ;; Keywords:
 ;;
@@ -11546,8 +11916,8 @@
     res1))
 
 
-;;;; grsp-matrix-row-inputev - Input a value in every element of every row of
-;; matrix p_a1 between rows p_i1 and p_i2 interactively.
+;;;; grsp-matrix-row-inputev - Input a value in every element of every
+;; row of matrix p_a1 between rows p_i1 and p_i2 interactively.
 ;;
 ;; Keywords:
 ;;
@@ -11629,15 +11999,19 @@
 	   
 	   (cond ((equal? b3 #t)
 		  (set! res1 (grsp-matrix-subexp res1 1 0))
-		  (set! res1 (grsp-matrix-row-inputev p_b1 p_b2 res1 (grsp-hm res1))))))
+		  (set! res1 (grsp-matrix-row-inputev p_b1
+						      p_b2
+						      res1
+						      (grsp-hm res1))))))
 	       
     res1))
 
 
-;;;; grsp-matrix-lm-filled-with - Returns #t if the p_i1 initial rows of the
-;; matrix are filled with value p_v1. If p_i1 exceeds the total number of rows
-;; of p_a1, then the function with perform the evaluation not on the number of
-;; rows delcared by p_i1 but on the total numbero fo rows of the matrix.
+;;;; grsp-matrix-lm-filled-with - Returns #t if the p_i1 initial rows of
+;; the matrix are filled with value p_v1. If p_i1 exceeds the total
+;; number of rows of p_a1, then the function with perform the evaluation
+;; not on the number of rows delcared by p_i1 but on the total numbero
+;; of rows in the matrix.
 ;;
 ;; Keywords:
 ;;
@@ -11672,8 +12046,8 @@
     res1))
     
 
-;;;; grsp-matrix-displayts - Display string matrix p_a1 with column titles
-;; according to string list p_l1.
+;;;; grsp-matrix-displayts - Display string matrix p_a1 with column
+;; titles according to string list p_l1.
 ;;
 ;; Keywords
 ;;
@@ -11686,8 +12060,8 @@
 ;;
 ;; Notes:
 ;;
-;; - The number of elements of p_l1 should be the same as the number of columns
-;;   of p_a1
+;; - The number of elements of p_l1 should be the same as the number of
+;;   columns of p_a1
 ;;
 (define (grsp-matrix-displayts p_a1 p_l1)
   (let ((res1 0)
@@ -11739,8 +12113,8 @@
     res1))  
 
 
-;;;; grsp-matrix-displaytn - Display numeric matrix p_a1 with column titles
-;; according to string list p_l1.
+;;;; grsp-matrix-displaytn - Display numeric matrix p_a1 with column
+;; titles according to string list p_l1.
 ;;
 ;; Keywords
 ;;
@@ -11753,8 +12127,8 @@
 ;;
 ;; Notes:
 ;;
-;; - The number of elements of p_l1 should be the same as the number of columns
-;;   of p_a1
+;; - The number of elements of p_l1 should be the same as the number of
+;;   columns of p_a1
 ;;
 (define (grsp-matrix-displaytn p_a1 p_l1)
   (let ((a1 0))
@@ -11801,8 +12175,8 @@
     (while (equal? b1 #t)
 
 	   ;; TODO: this requires a proper control of the row.
-	   ;; Assign default values if matrix has one row filled with zeros,
-	   ;; meaning that it has just been created.
+	   ;; Assign default values if matrix has one row filled with
+	   ;; zeros, meaning that it has just been created.
 	   ;;(cond ((equal? (grsp-tm a1) 1)
 		  ;;(set! a1 (grsp-matrix-editu a1 (grsp-lm a1) p_l2))))
 	   ;; ***
@@ -11883,8 +12257,8 @@
     res1))
   
 
-;;;; grsp-matrix-displaytn - Displays the type matrix of matrix p_a1 and returns
-;; said type matrix.
+;;;; grsp-matrix-displaytn - Displays the type matrix of matrix p_a1
+;; and returns said type matrix.
 ;;
 ;; Keywords
 ;;
@@ -11908,8 +12282,8 @@
     res1))
 
 
-;;;; grsp-matrix-editu - Sets default values contained in list p_l1 in row p_i1
-;; of matrix p_a1.
+;;;; grsp-matrix-editu - Sets default values contained in list p_l1 in
+;; row p_i1 of matrix p_a1.
 ;;
 ;; Keywords:
 ;;
@@ -11942,8 +12316,8 @@
     res1))
 
 
-;;;; grsp-my2code - Returns the matrix contents as a string of Guile Scheme
-;; code.
+;;;; grsp-my2code - Returns the matrix contents as a string of Guile
+;; Scheme code.
 ;;
 ;; Keywords:
 ;;
@@ -12020,8 +12394,8 @@
     res1))
 
 
-;;;; grsp-ms2my - Casts a matrix of strings as a matrix with columns of multiple
-;; data types.
+;;;; grsp-ms2my - Casts a matrix of strings as a matrix with columns of
+;; multiple data types.
 ;;
 ;; Keywords:
 ;;
@@ -12107,8 +12481,8 @@
     res1))
 
 
-;;;; grsp-ms2mb - Casts mattrix of strings p_a1 representing bollean values as a
-;; matrix of bolleans.
+;;;; grsp-ms2mb - Casts mattrix of strings p_a1 representing bollean
+;; values as a matrix of bolleans.
 ;;
 ;; Keywords:
 ;;
@@ -12149,8 +12523,8 @@
     res1))
 
 
-;;;; grsp-matrix-row-select-like - Selects all rows where the element found at
-;; col p_j1 is like p_v1.
+;;;; grsp-matrix-row-select-like - Selects all rows where the element
+;; found at col p_j1 is like p_v1.
 ;;
 ;; Keywords:
 ;;
@@ -12160,7 +12534,8 @@
 ;;
 ;; Output:
 ;;
-;; . Submatrix of p_a1 containing the queried results, if found; zero otherwise.
+;; . Submatrix of p_a1 containing the queried results, if found; zero
+;;   otherwise.
 ;;
 (define (grsp-matrix-row-select-like p_a1 p_j1 p_v1)
   (let ((res1 0)
@@ -12195,15 +12570,16 @@
 			       (set! n1 (in n1)))
 			      ((> n1 0)
 			       ;; Add row to results matrix.
-			       (set! res1 (grsp-matrix-subadd res1 a2))))))
+			       (set! res1 (grsp-matrix-subadd res1
+							      a2))))))
 
 		 (loop (+ i1 1)))))
 
     res1))
 
 
-;;;; grsp-matrix-sincostan-mth - Calculates sin, cos and tan for elements of
-;; matrix p_a1.
+;;;; grsp-matrix-sincostan-mth - Calculates sin, cos and tan for
+;; elements of matrix p_a1.
 ;;
 ;; Keywords:
 ;;
@@ -12234,8 +12610,9 @@
     res1))
 
 
-;;;; grsp-matrix-row-number - Returns a list containing the row numbers for
-;; each instance in which for matrix p_a1 value p_v1 is found at column p_j1.
+;;;; grsp-matrix-row-number - Returns a list containing the row numbers
+;; for each instance in which for matrix p_a1 value p_v1 is found at
+;; column p_j1.
 ;;
 ;; Keywords:
 ;;
@@ -12263,8 +12640,8 @@
 
 	  (begin (cond ((equal? (array-ref p_a1 i1 p_j1) p_v1)
 
-			;; Change value on finding the first ocurrence and
-			;; pass the row number to the list.
+			;; Change value on finding the first ocurrence
+			;; and pass the row number to the list.
 			(cond ((equal? b1 #f)
 			       (set! res1 (list i1))
 			       (set! b1 #t))
@@ -12277,8 +12654,8 @@
     res1))
 
 
-;;;; grsp-matrix-keygen - Creates an unique numeric key value for column p_j1
-;; of matrix p_a1.
+;;;; grsp-matrix-keygen - Creates an unique numeric key value for
+;; column p_j1 of matrix p_a1.
 ;;
 ;; Keywords:
 ;;
@@ -12309,8 +12686,8 @@
     res1))
 
 
-;;;; grsp-matrix-keyapl - Appends a new key value to the element of column
-;; p_j1 of the last row of matrix p_a1.
+;;;; grsp-matrix-keyapl - Appends a new key value to the element of
+;; column p_j1 of the last row of matrix p_a1.
 ;;
 ;; Keywords:
 ;;
@@ -12324,7 +12701,8 @@
 ;;
 ;; Notes:
 ;;
-;; - Should only be used on columns defined as primary key or autoincrementable.
+;; - Should only be used on columns defined as primary key or
+;;   autoincrementable.
 ;; - The user should identify correctly which column will be modified. 
 ;;
 ;; Output:
@@ -12391,9 +12769,9 @@
 				 (grsp-ln p_a1)
 				 (grsp-hn p_a1)))
 
-    ;; The two steps before create two submatrices and leave out the rows in
-    ;; the intersection of the lower and higher limits. Then we add the two
-    ;; copied submatrices to compose the result.
+    ;; The two steps before create two submatrices and leave out the
+    ;; rows in the intersection of the lower and higher limits. Then we
+    ;; add the two copied submatrices to compose the result.
     (set! res1 (grsp-matrix-subadd a1 a2)) 
 
     res1))
@@ -12461,7 +12839,8 @@
     res1))
 
 
-;;;; grsp-ms-get-longest-element - Get the longest string from matrix p_a1.
+;;;; grsp-ms-get-longest-element - Get the longest string from matrix
+;; p_a1.
 ;;
 ;; Keywords:
 ;;
@@ -12498,8 +12877,8 @@
     res1))
 
 
-;;;; grsp-ms-create-col.headers - Creates and pads column headers for string
-;; matrix display.
+;;;; grsp-ms-create-col.headers - Creates and pads column headers for
+;; string matrix display.
 ;;
 ;; Keywords:
 ;;
@@ -12543,7 +12922,8 @@
     res1))
 
 
-;;;; grsp-ms-create-row-headers - Builds row headers for string matrix display.
+;;;; grsp-ms-create-row-headers - Builds row headers for string matrix
+;; display.
 ;;
 ;; Keywords:
 ;;
@@ -12559,14 +12939,16 @@
 ;;
 ;; Output:
 ;;
-;; - m x 1 string matrix with numbered rows to be joined to the matrix to be
-;;   displayed.
+;; - m x 1 string matrix with numbered rows to be joined to the matrix
+;;   to be displayed.
 ;;
 (define (grsp-ms-create-row-headers p_a1)
   (let ((res1 0)
 	(i2 0))
 
-    (set! res1 (grsp-matrix-create " " (grsp-tm p_a1) (+ (grsp-tn p_a1) 1)))
+    (set! res1 (grsp-matrix-create " "
+				   (grsp-tm p_a1)
+				   (+ (grsp-tn p_a1) 1)))
     (array-set! res1 "/" 0 0)
      
     (let loop ((i1 1))
@@ -12579,8 +12961,8 @@
     
     res1))
 
-;;;; grsp-ms-pad-elements - Pads elements of a string matrix to the right or
-;; left with blank spaces.
+;;;; grsp-ms-pad-elements - Pads elements of a string matrix to the
+;; right or left with blank spaces.
 ;;
 ;; Keywords:
 ;;
@@ -12619,8 +13001,8 @@
     res1))
 
 
-;;;; grsp-matrix-displaytms - Applies functions grsp-matrixtm and grsp-matrixts
-;; to matrix p_a1 and displays it.
+;;;; grsp-matrix-displaytms - Applies functions grsp-matrixtm and
+;; grsp-matrixts to matrix p_a1 and displays it.
 ;;
 ;; Keywords:
 ;;

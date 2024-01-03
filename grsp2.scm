@@ -1,36 +1,38 @@
-;; =============================================================================
+;; =========================================================================
 ;; 
 ;; grsp2.scm 
 ;;
-;; Real num. functions and general-purpose stuff. In general, these functions 
-;; constitute the basis for other functions found in the grspX.scm files, where
-;; X > 2.
+;; Real num. functions and general-purpose stuff. In general, these
+;; functions constitute the basis for other functions found in the
+;; grspX.scm files, where X > 2.
 ;;
-;; =============================================================================
+;; =========================================================================
 ;;
 ;; Copyright (C) 2018 - 2024 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
-;;   it under the terms of the GNU Lesser General Public License as published by
-;;   the Free Software Foundation, either version 3 of the License, or
-;;   (at your option) any later version.
+;;   it under the terms of the GNU Lesser General Public License as
+;;   published by the Free Software Foundation, either version 3 of the
+;;   License, or (at your option) any later version.
 ;;
 ;;   This program is distributed in the hope that it will be useful,
 ;;   but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 ;;   GNU Lesser General Public License for more details.
 ;;
-;;   You should have received a copy of the GNU Lesser General Public License
-;;   along with this program. If not, see <https://www.gnu.org/licenses/>.
+;;   You should have received a copy of the GNU Lesser General Public
+;;   License along with this program. If not, see
+;;   <https://www.gnu.org/licenses/>.
 ;;
-;; =============================================================================
+;; =========================================================================
 
 
 ;;;; General notes:
 ;;
 ;; - Read sources for limitations on function parameters.
-;; - As a general policy, multithreaded functions are kept to a minimum at this
-;;   level in order to simplify mth architecture at higher programming levels.
+;; - As a general policy, multithreaded functions are kept to a minimum at
+;;   this level in order to simplify mth architecture at higher
+;;   programming levels.
 ;;
 ;; Sources:
 ;;
@@ -41,10 +43,12 @@
 ;; - [2] En.wikipedia.org. 2020. Triangular Number. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Triangular_number [Accessed 20 November
 ;;   2020].
-;; - [3] En.wikipedia.org. (2020). Binomial coefficient. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Binomial_coefficient [Accessed 13 Jan. 2020].
+;; - [3] En.wikipedia.org. (2020). Binomial coefficient. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Binomial_coefficient [Accessed 13
+;;   Jan. 2020].
 ;; - [4] En.wikipedia.org. (2020). Bailey–Borwein–Plouffe formula. [online]
-;;   Available at: https://en.wikipedia.org/wiki/Bailey%E2%80%93Borwein%E2%80%93
+;;   Available at:
+;;   https://en.wikipedia.org/wiki/Bailey%E2%80%93Borwein%E2%80%93
 ;;   Plouffe_formula [Accessed 9 Jan. 2020].
 ;; - [5] En.wikipedia.org. (2020). Hyperoperation. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Hyperoperation [Accessed 1 Jan. 2020].
@@ -55,11 +59,13 @@
 ;;   https://en.wikipedia.org/wiki/Cullen_number [Accessed 6 Jan. 2020].
 ;; - [8] En.wikipedia.org. (2020). Proth prime. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Proth_prime [Accessed 9 Jan. 2020].
-;; - [9] Mersenne.org. (2020). Great Internet Mersenne Prime Search - PrimeNet.
-;;   [online] Available at: https://www.mersenne.org/ [Accessed 9 Jan. 2020].
+;; - [9] Mersenne.org. (2020). Great Internet Mersenne Prime Search -
+;;   PrimeNet. [online] Available at:
+;;   https://www.mersenne.org/ [Accessed 9 Jan. 2020].
 ;; - [10] Mathworld.wolfram.com. (2020). Mersenne Number -- from Wolfram
 ;;   MathWorld. [online] Available at:
-;;   http://mathworld.wolfram.com/MersenneNumber.html [Accessed 16 Jan. 2020].
+;;   http://mathworld.wolfram.com/MersenneNumber.html [Accessed 16 Jan.
+;;   2020].
 ;; - [11] En.wikipedia.org. (2020). Repdigit. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Repdigit [Accessed 11 Jan. 2020].
 ;; - [12] En.wikipedia.org. (2020). Wagstaff prime. [online] Available at:
@@ -70,48 +76,55 @@
 ;;   https://en.wikipedia.org/wiki/Catalan_number [Accessed 13 Jan. 2020].
 ;; - [15] En.wikipedia.org. (2020). Wagstaff prime. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Wagstaff_prime [Accessed 11 Jan. 2020].
-;; - [16] En.wikipedia.org. (2020). Dobiński's formula. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Dobi%C5%84ski%27s_formula
+;; - [16] En.wikipedia.org. (2020). Dobiński's formula. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Dobi%C5%84ski%27s_formula
 ;;   [Accessed 14 Jan. 2020].
 ;; - [17] En.wikipedia.org. (2020). Newton's method. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Newton%27s_method [Accessed 23 Jan. 2020].
-;; - [18] En.wikipedia.org. (2020). Numerical analysis. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Numerical_analysis [Accessed 24 Jan. 2020].
+;;   https://en.wikipedia.org/wiki/Newton%27s_method [Accessed 23 Jan.
+;;   2020].
+;; - [18] En.wikipedia.org. (2020). Numerical analysis. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Numerical_analysis [Accessed 24
+;;   Jan. 2020].
 ;; - [19] En.wikipedia.org. (2020). Euler method. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Euler_method [Accessed 24 Jan. 2020].
-;; - [20] En.wikipedia.org. (2020). Numerical analysis. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Numerical_analysis [Accessed 24 Jan. 2020].
-;; - [21] En.wikipedia.org. (2020). Linear interpolation. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Linear_interpolation [Accessed 24 Jan. 2020].
+;; - [20] En.wikipedia.org. (2020). Numerical analysis. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Numerical_analysis [Accessed 24
+;;   Jan. 2020].
+;; - [21] En.wikipedia.org. (2020). Linear interpolation. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Linear_interpolation
+;;   [Accessed 24 Jan. 2020].
 ;; - [22] En.wikipedia.org. 2020. Torus. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Torus [Accessed 3 November 2020].
-;; - [23] En.wikipedia.org. 2020. Asymptotic Analysis. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Asymptotic_analysis
+;; - [23] En.wikipedia.org. 2020. Asymptotic Analysis. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Asymptotic_analysis
 ;;   [Accessed 8 November 2020].
-;; - [24] En.wikipedia.org. 2020. Stirling's Approximation. [online] Available
-;;   at: https://en.wikipedia.org/wiki/Stirling%27s_approximation
+;; - [24] En.wikipedia.org. 2020. Stirling's Approximation. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Stirling%27s_approximation
 ;;   [Accessed 8 November 2020].
 ;; - [25] En.wikipedia.org. 2020. Airy Function. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Airy_function [Accessed 9 November 2020].
+;;   https://en.wikipedia.org/wiki/Airy_function [Accessed 9 November
+;;   2020].
 ;; - [26] En.wikipedia.org. 2020. Factorial. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Factorial#Superfactorial
 ;;   [Accessed 17 November 2020].
-;; - [27] En.wikipedia.org. 2020. Alternating Factorial. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Alternating_factorial
+;; - [27] En.wikipedia.org. 2020. Alternating Factorial. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Alternating_factorial
 ;;   [Accessed 17 November 2020].
-;; - [28] En.wikipedia.org. 2020. Exponential Factorial. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Exponential_factorial
+;; - [28] En.wikipedia.org. 2020. Exponential Factorial. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Exponential_factorial
 ;;   [Accessed 17 November 2020].
 ;; - [29] En.wikipedia.org. 2020. Derangement. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Derangement [Accessed 18 November 2020].
-;; - [30] Gnu.org. 2020. Exactness (Guile Reference Manual). [online] Available
-;;   at: https://www.gnu.org/software/guile/manual/html_node/Exactness.html
+;; - [30] Gnu.org. 2020. Exactness (Guile Reference Manual). [online]
+;;   Available at:
+;;   https://www.gnu.org/software/guile/manual/html_node/Exactness.html
 ;;   [Accessed 28 November 2020].
-;; - [31] En.wikipedia.org. 2021. Test functions for optimization - Wikipedia.
-;;   [online] Available at:
-;;   https://en.wikipedia.org/wiki/Test_functions_for_optimization [Accessed 13
-;;   April 2021].
-;; - [32] Gnu.org. 2021. Random (Guile Reference Manual). [online] Available at:
+;; - [31] En.wikipedia.org. 2021. Test functions for optimization -
+;;   Wikipedia. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Test_functions_for_optimization
+;;   [Accessed 13 April 2021].
+;; - [32] Gnu.org. 2021. Random (Guile Reference Manual). [online]
+;;   Available at:
 ;;   https://www.gnu.org/software/guile/manual/html_node/Random.html
 ;;   [Accessed 30 July 2021].
 ;; - [33] Gnu.org. 2021. Parallel Forms (Guile Reference Manual). [online]
@@ -122,42 +135,48 @@
 ;;   MathWorld. [online] Available at:
 ;;   https://mathworld.wolfram.com/HailstoneNumber.html
 ;;   [Accessed 30 July 2021].
-;; - [35] Es.wikipedia.org. 2021. Fórmula de Euler-Maclaurin - Wikipedia, la
-;;   enciclopedia libre. [online] Available at:
+;; - [35] Es.wikipedia.org. 2021. Fórmula de Euler-Maclaurin - Wikipedia,
+;;   la enciclopedia libre. [online] Available at:
 ;;   https://es.wikipedia.org/wiki/F%C3%B3rmula_de_Euler-Maclaurin
 ;;   [Accessed 27 August 2021].
 ;; - [36] Es.wikipedia.org. 2021. Regla del trapecio - Wikipedia, la
 ;;   enciclopedia libre. [online] Available at:
-;;   https://es.wikipedia.org/wiki/Regla_del_trapecio [Accessed 27 August 2021].
+;;   https://es.wikipedia.org/wiki/Regla_del_trapecio [Accessed 27 August
+;;   2021].
 ;; - [37] En.wikipedia.org. 2021. Kronecker delta - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Kronecker_delta
 ;;   [Accessed 30 August 2021].
-;; - [38] En.wikipedia.org. 2021. Dirac delta function - Wikipedia. [online]
-;;   Available at: <https://en.wikipedia.org/wiki/Dirac_delta_function [Accessed
+;; - [38] En.wikipedia.org. 2021. Dirac delta function - Wikipedia.
+;;   [online] Available at:
+;;   <https://en.wikipedia.org/wiki/Dirac_delta_function [Accessed
 ;;   30 August 2021].
 ;; - [39] Es.wikipedia.org. 2021. Teoría de distribuciones - Wikipedia, la
 ;;   enciclopedia libre. [online] Available at:
 ;;   https://es.wikipedia.org/wiki/Teor%C3%ADa_de_distribuciones
 ;;   [Accessed 2 September 2021].
-;; - [40] En.wikipedia.org. 2021. Heaviside step function - Wikipedia. [online]
-;;   Available at: https://en.wikipedia.org/wiki/Heaviside_step_function
+;; - [40] En.wikipedia.org. 2021. Heaviside step function - Wikipedia.
+;;   [online] Available at:
+;;   https://en.wikipedia.org/wiki/Heaviside_step_function
 ;;   [Accessed 2 September 2021].
-;; - [41] En.wikipedia.org. 2021. Rectangular function - Wikipedia. [online]
+;; - [41] En.wikipedia.org. 2021. Rectangular function - Wikipedia.
+;;   [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Rectangular_function
 ;;   [Accessed 9 September 2021].
 ;; - [42] En.wikipedia.org. 2021. Triangular function - Wikipedia. [online]
-;;   Available at: https://en.wikipedia.org/wiki/Triangular_function [Accessed
-;;   9 September 2021].
+;;   Available at: https://en.wikipedia.org/wiki/Triangular_function
+;;   [Accessed 9 September 2021].
 ;; - [43] En.wikipedia.org. 2021. Absolute value - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Absolute_value [Accessed 9
 ;;   September 2021].
 ;; - [44] En.wikipedia.org. 2020. Givens Rotation. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Givens_rotation [Accessed 25 March 2020].
-;; - [45] Crenel function (2017) Wikipedia. Wikimedia Foundation. Available at:
-;;   https://en.wikipedia.org/wiki/Crenel_function
-;;   (Accessed: December 19, 2022). 
-;; - [46] Racional Diádico (2022) Wikipedia. Wikimedia Foundation. Available at:
-;;   https://es.wikipedia.org/wiki/Racional_di%C3%A1dico
+;;   https://en.wikipedia.org/wiki/Givens_rotation [Accessed 25 March
+;;   2020].
+;; - [45] Crenel function (2017) Wikipedia. Wikimedia Foundation.
+;;   Available at:
+;;   https://en.wikipedia.org/wiki/Crenel_function (Accessed: December
+;;   19, 2022). 
+;; - [46] Racional Diádico (2022) Wikipedia. Wikimedia Foundation.
+;;   Available at: https://es.wikipedia.org/wiki/Racional_di%C3%A1dico
 ;;   (Accessed: December 19, 2022).
 ;; - [47] https://en.wikipedia.org/wiki/Numerical_differentiation
 
@@ -324,8 +343,8 @@
     res1))
 
 
-;;;; grsp-eiget - Finds out if p_n1 is an exact integer equal or greater than
-;; p_n2.
+;;;; grsp-eiget - Finds out if p_n1 is an exact integer equal or greater
+;; than p_n2.
 ;;
 ;; Keywords:
 ;;
@@ -452,8 +471,8 @@
     res1))
 
 
-;;;; grsp-biconr - Binomial coefficient. Lets you choose p_k1 elements from a 
-;; set of p_n1 elements without repetition.
+;;;; grsp-biconr - Binomial coefficient. Lets you choose p_k1 elements
+;; from a set of p_n1 elements without repetition.
 ;;
 ;; Keywords:
 ;;
@@ -487,8 +506,8 @@
     res1))
 
 
-;;;; grsp-bicowr - Binomial coefficient. Les you choose p_k1 elements from a set
-;; of p_n1 elements with repetition.
+;;;; grsp-bicowr - Binomial coefficient. Les you choose p_k1 elements from
+;; a set of p_n1 elements with repetition.
 ;;
 ;; Keywords:
 ;;
@@ -547,8 +566,9 @@
     res))
 
 
-;;;; grsp-getles - "getles = Greater or equal than, less or equal than" Finds if
-;; number p_n1 is greater or equal than p_n2 and smaller or equal than p_n3.
+;;;; grsp-getles - "getles = Greater or equal than, less or equal than"
+;; Finds if number p_n1 is greater or equal than p_n2 and smaller or
+;; equal than p_n3.
 ;;
 ;; Keywords:
 ;;
@@ -684,8 +704,8 @@
     res1))
 
 
-;;;; grsp-slog - Performs a non-recursive super logarithm operation on p_x1 of
-;; height p_n1.
+;;;; grsp-slog - Performs a non-recursive super logarithm operation on
+;; p_x1 of height p_n1.
 ;;
 ;; Keywords:
 ;;
@@ -694,8 +714,8 @@
 ;; Parameters:
 ;;
 ;; - p_x1: base.
-;; - p_n1: rank or height of the power tower of the super exponentiation for
-;;   which grsp-slog is inverse.
+;; - p_n1: rank or height of the power tower of the super exponentiation
+;;   for which grsp-slog is inverse.
 ;;
 ;; Output:
 ;;
@@ -703,8 +723,8 @@
 ;;
 ;; Notes:
 ;;
-;; - This operation might have a significant impact on the performance of your 
-;;   computer due to its very fast function growth. Use with care.
+;; - This operation might have a significant impact on the performance of
+;;   your computer due to its very fast function growth. Use with care.
 ;;
 (define (grsp-slog p_x1 p_n1)
   (let ((res1 0))
@@ -795,7 +815,8 @@
 ;;
 ;;   - 0 if p_n1 and p_k1 do not fill the requisites to calculate a Proth
 ;;     number.
-;;   - The Proth number if both p_n1 and p_k1 satisfy the conditions mentioned.
+;;   - The Proth number if both p_n1 and p_k1 satisfy the conditions
+;;     mentioned.
 ;;
 ;; Sources:
 ;;
@@ -811,7 +832,10 @@
 		  (cond ((odd? p_k1)
 			 
 			 (cond ((> (expt 2 p_n1) p_k1)
-				(set! res1 (grsp-krnb p_k1 2 p_n1 1))))))))))
+				(set! res1 (grsp-krnb p_k1
+						      2
+						      p_n1
+						      1))))))))))
 
     res1))
 
@@ -847,8 +871,8 @@
     res1))
 	  
 
-;;;; grsp-repdigit-number - Produces a repdigit number composed by p_n1 repeated
-;; p_d1 instances.
+;;;; grsp-repdigit-number - Produces a repdigit number composed by p_n1
+;; repeated p_d1 instances.
 ;;
 ;; Keywords:
 ;;
@@ -902,7 +926,8 @@
 ;;
 ;; - Numeric.
 ;;
-;;   - If conditions for arguments are met, the result is a Wagstaff number.
+;;   - If conditions for arguments are met, the result is a Wagstaff
+;;     number.
 ;;   - Otherwise the function returns zero.
 ;;
 ;; Sources:
@@ -935,7 +960,8 @@
 ;;
 ;; - Numeric.
 ;;
-;;   - If conditions for arguments are met, the result is a Williams number.
+;;   - If conditions for arguments are met, the result is a Williams
+;;     number.
 ;;   - Otherwise the function returns zero.
 ;;
 ;; Sources:
@@ -1109,7 +1135,8 @@
     res1))
 
 
-;;;; grsp-method-netwton - Simple implementation of the Newton-Raphson method.
+;;;; grsp-method-netwton - Simple implementation of the Newton-Raphson
+;; method.
 ;;
 ;; Keywords:
 ;;
@@ -1204,8 +1231,9 @@
     res1))
 
 
-;;;; grsp-matrix-givens-rotation - Givens rotation. The code for this function
-;; is adapted to Scheme from the original Octave code presented in the sources.
+;;;; grsp-matrix-givens-rotation - Givens rotation. The code for this
+;; function is adapted to Scheme from the original Octave code presented
+;; in the sources.
 ;;
 ;; Keywords:
 ;;
@@ -1304,7 +1332,8 @@
     res1))
 
 
-;;;; grsp-fitin-0-1 - Applies grsp-fitin to p_n1 within the interval [0.0, 1.0].
+;;;; grsp-fitin-0-1 - Applies grsp-fitin to p_n1 within the interval
+;; [0.0, 1.0].
 ;;
 ;; Keywords:
 ;;
@@ -1354,8 +1383,8 @@
     res1))
 
 
-;;;; grsp-rcurv-oblate-ellipsoid - Calculates the specified radius of curvature 
-;; of an oblate ellipsoid.
+;;;; grsp-rcurv-oblate-ellipsoid - Calculates the specified radius of
+;; curvature of an oblate ellipsoid.
 ;;
 ;; Keywords:
 ;;
@@ -1472,8 +1501,8 @@
     res1))
 
 
-;;;; grsp-eccentricityf-ellipsoid - Calculates the eccentricity of an ellipsoid
-;; based on its flattening.
+;;;; grsp-eccentricityf-ellipsoid - Calculates the eccentricity of an
+;; ellipsoid based on its flattening.
 ;;
 ;; Keywords:
 ;;
@@ -1524,7 +1553,9 @@
   (let ((res1 0))
 
     (set! res1 (/ (* p_x1 (- 1 (expt p_e1 2)))
-		  (expt (- 1 (* (expt p_e1 2) (expt (sin p_l1) 2))) (/ 3 2))))
+		  (expt (- 1 (* (expt p_e1 2)
+				(expt (sin p_l1) 2)))
+			(/ 3 2))))
 
     res1))
 
@@ -1561,8 +1592,8 @@
     res1))
 
 
-;;;; grsp-dirrc-ellipsoid - Directional radius of curvature on an ellipsoid at
-;; and azimuth p_a1.
+;;;; grsp-dirrc-ellipsoid - Directional radius of curvature on an
+;; ellipsoid at and azimuth p_a1.
 ;;
 ;; Keywords:
 ;;
@@ -1758,7 +1789,8 @@
 ;;
 ;; Parameters:
 ;;
-;; - p_r1: R, distance from the center of the tube to the center of the torus.
+;; - p_r1: R, distance from the center of the tube to the center of the
+;;   torus.
 ;; - p_r2: r, tube radius.
 ;; - p_x1: x.
 ;; - p_y1: y.
@@ -1783,8 +1815,8 @@
     res1))
 
 
-;;;; grsp-stirling-approximation - Approximation function for factorials. Allows
-;; to estimate the factorial pf p_n1.
+;;;; grsp-stirling-approximation - Approximation function for factorials.
+;; Allows to estimate the factorial pf p_n1.
 ;;
 ;; Keywords:
 ;;
@@ -1854,8 +1886,8 @@
 ;;
 ;; Notes:
 ;;
-;; - This operation might have a significant impact on the performance of your 
-;;   computer due to its very fast function growth. Use with care.
+;; - This operation might have a significant impact on the performance of
+;;   your computer due to its very fast function growth. Use with care.
 ;;
 ;; Sources:
 ;;
@@ -1887,8 +1919,8 @@
 ;;
 ;; Notes:
 ;;
-;; - This operation might have a significant impact on the performance of your 
-;;   computer due to its very fast function growth. Use with care.
+;; - This operation might have a significant impact on the performance of
+;;   your computer due to its very fast function growth. Use with care.
 ;;
 ;; Sources:
 ;;
@@ -1917,8 +1949,8 @@
 ;;
 ;; Notes:
 ;;
-;; - This operation might have a significant impact on the performance of your 
-;;   computer due to its very fast function growth. Use with care.
+;; - This operation might have a significant impact on the performance of
+;;   your computer due to its very fast function growth. Use with care.
 ;;
 ;; Output:
 ;;
@@ -1979,8 +2011,8 @@
 ;;
 ;; Notes:
 ;;
-;; - This operation might have a significant impact on the performance of your 
-;;   computer due to its very fast function growth. Use with care.
+;; - This operation might have a significant impact on the performance of
+;;   your computer due to its very fast function growth. Use with care.
 ;;
 ;; Output:
 ;;
@@ -2097,9 +2129,9 @@
 
 
 ;;;; grsp-ratio-derper - Calculates the ratio between derangement (sub 
-;; factorial and permutations (factorial) in a set. As p_n1 tends to infinity,
-;; this ratio should approach 1/e. Limit of the probability that a permutation
-;; is a derangement.
+;; factorial and permutations (factorial) in a set. As p_n1 tends to
+;; infinity, this ratio should approach 1/e. Limit of the probability
+;; that a permutation is a derangement.
 ;;
 ;; Keywords:
 ;;
@@ -2154,9 +2186,9 @@
 	  res1))
 
 
-;;;; grsp-intifint - If p_z1 is an integer, rounds p_z2 to zero decimals. This
-;; might be necessary to satisfy exactness rquirements as per R5RS criteria as
-;; describe in the sources.
+;;;; grsp-intifint - If p_z1 is an integer, rounds p_z2 to zero decimals.
+;; This might be necessary to satisfy exactness rquirements as per R5RS
+;; criteria as describe in the sources.
 ;;
 ;; Keywords:
 ;;
@@ -2250,8 +2282,8 @@
 
 
 ;;;; grsp-dtr - Divides p_n1 into two natural numbers and returns a list.
-;; If p_n1 is even then both values returned are equal. If p_n1 is odd then the
-;; function truncates one and rounds the other according to p_s1.
+;; If p_n1 is even then both values returned are equal. If p_n1 is odd
+;; then the function truncates one and rounds the other according to p_s1.
 ;;
 ;; Keywords:
 ;;
@@ -2259,8 +2291,8 @@
 ;;
 ;; Parameters:
 ;;
-;; - p_s1: determines which half is rounded and wich one is truncated if p_n1 is
-;;   odd:
+;; - p_s1: determines which half is rounded and wich one is truncated if
+;;   p_n1 is odd:
 ;;
 ;;   - "#rt": rounnd the first value, truncae the second.
 ;;   - "#tr": truncate the first and round the second.
@@ -2270,8 +2302,8 @@
 ;; - Numeric.
 ;;
 ;;   - As an example, for p_n1 = 4, will return 2,2 regardless of p_s1.
-;;   - Or if, for example  p_n1 = 5, will return 3,2 if p_s1 = "#rt" or 2,3 if
-;;     p_s1 = "#tr". 
+;;   - Or if, for example  p_n1 = 5, will return 3,2 if p_s1 = "#rt" or
+;;     2,3 if p_s1 = "#tr". 
 ;;
 (define (grsp-dtr p_s1 p_n1)
   (let ((res1 '())
@@ -2304,8 +2336,8 @@
     res1))
 
 
-;;;; grsp-opz - One point zero. Multiplies p_n1 by 1.0 in order to cast an  
-;; exact number as real.
+;;;; grsp-opz - One point zero. Multiplies p_n1 by 1.0 in order to cast
+;; an exact number as real.
 ;;
 ;; Keywords:
 ;;
@@ -2453,7 +2485,8 @@
     res1))
 
 
-;; grsp-absop - Simple arithmetic ops between absolute values of p_n2 and p_n1.
+;; grsp-absop - Simple arithmetic ops between absolute values of p_n2
+;; and p_n1.
 ;;
 ;; Keywords:
 ;;
@@ -2514,8 +2547,9 @@
 ;;
 ;; Notes:
 ;;
-;; - See [32] for further details on how GNU Guile deals with random number
-;;   generation.
+;; - See [32] for further details on how GNU Guile deals with random
+;;   number generation.
+;;
 ;; - See grsp0.grsp-random-state-set.
 ;;
 ;; Output:
@@ -2535,8 +2569,9 @@
     res1))
 
 
-;;;; grsp-ifrprnd - If a pseudo random number generated with the arguments of
-;; the function is less than p_n1, the function returns #t, or #f otherwise.
+;;;; grsp-ifrprnd - If a pseudo random number generated with the
+;; arguments of the function is less than p_n1, the function returns #t,
+;; or #f otherwise.
 ;;
 ;; Keywords:
 ;;
@@ -2597,8 +2632,8 @@
     res1))
 
 
-;;;; grsp-onhn - Given the operation defined by p_s1, performs it between p_n1
-;; and 1/p_n1.
+;;;; grsp-onhn - Given the operation defined by p_s1, performs it
+;; between p_n1 and 1/p_n1.
 ;;
 ;; Keywords:
 ;;
@@ -2635,8 +2670,8 @@
     res1))
 
 
-;;;; grsp-salbm-omth - Calculates the summation of the logarithm of base p_g1 of
-;; natural times from 1 to p_n1.
+;;;; grsp-salbm-omth - Calculates the summation of the logarithm of base
+;; p_g1 of natural times from 1 to p_n1.
 ;;
 ;; Keywords:
 ;;
@@ -2768,7 +2803,8 @@
     res1))
 
 
-;;;; grsp-dirac-delta - Returns +inf.0 if p_n1 equals zero, zero otherwise.
+;;;; grsp-dirac-delta - Returns +inf.0 if p_n1 equals zero, zero
+;; otherwise.
 ;;
 ;; Keywords:
 ;;
@@ -3096,8 +3132,8 @@
     res1))
 
 
-;;;; grsp-closestd - Returns the absolute value of the lowest difference between
-;; p_n1 and p_n2, and p_n1 and p_n3.
+;;;; grsp-closestd - Returns the absolute value of the lowest difference
+;; between p_n1 and p_n2, and p_n1 and p_n3.
 ;;
 ;; Keywords:
 ;;
@@ -3129,11 +3165,11 @@
     res1))
 
 
-;;;; grsp-coinflip - Returns parameter p_n2 or p_n3 depending on the application
-;; of grsp-ifrprnd tp p_n1. In other words, this function lets you select
-;; between two numbers (p_n1 and p_n2) based on a random result applied to a
-;; another one (p_n1) based on a certain probability distribution defined by
-;; p_s1, p_u1 and p_v1.
+;;;; grsp-coinflip - Returns parameter p_n2 or p_n3 depending on the
+;; application of grsp-ifrprnd tp p_n1. In other words, this function
+;; lets you select between two numbers (p_n1 and p_n2) based on a random
+;; result applied to a another one (p_n1) based on a certain probability
+;; distribution defined by p_s1, p_u1 and p_v1.
 ;;
 ;; Keywords:
 ;;
@@ -3182,8 +3218,8 @@
     res1))
 
 
-;;;; grsp-fn - A convenience function that Finds the number that produces p_n2
-;; from applying operation p_s1 to p_n1.
+;;;; grsp-fn - A convenience function that Finds the number that produces
+;; p_n2 from applying operation p_s1 to p_n1.
 ;;
 ;; Keywords:
 ;;
