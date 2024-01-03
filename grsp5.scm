@@ -1,27 +1,28 @@
-;; =============================================================================
+;; =========================================================================
 ;;
 ;; grsp5.scm
 ;;
 ;; Stats and probabilistic functions.
 ;;
-;; =============================================================================
+;; =========================================================================
 ;;
 ;; Copyright (C) 2018 - 2024 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
-;;   it under the terms of the GNU Lesser General Public License as published by
-;;   the Free Software Foundation, either version 3 of the License, or
-;;   (at your option) any later version.
+;;   it under the terms of the GNU Lesser General Public License as
+;;   published by the Free Software Foundation, either version 3 of the
+;;   License, or (at your option) any later version.
 ;;
 ;;   This program is distributed in the hope that it will be useful,
 ;;   but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 ;;   GNU Lesser General Public License for more details.
 ;;
-;;   You should have received a copy of the GNU Lesser General Public License
-;;   along with this program. If not, see <https://www.gnu.org/licenses/>.
+;;   You should have received a copy of the GNU Lesser General Public
+;;   License along with this program. If not, see
+;;   <https://www.gnu.org/licenses/>.
 ;;
-;; =============================================================================
+;; =========================================================================
 
 
 ;;;; General notes:
@@ -37,15 +38,15 @@
 ;;   https://en.wikipedia.org/wiki/Probability [Accessed 23 July 2020].
 ;; - [2] En.wikipedia.org. 2020. Bayes' Theorem [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Bayes%27_theorem [Accessed 23 July 2020].
-;; - [3] Statistics How To. 2020. Normalized Data / Normalization - Statistics
-;;   How To. [online] Available at:
+;; - [3] Statistics How To. 2020. Normalized Data / Normalization -
+;;   Statistics How To. [online] Available at:
 ;;   https://www.statisticshowto.datasciencecentral.com/normalized/
 ;;   [Accessed 23 July 2020].
-;; - [4] En.wikipedia.org. 2020. Poisson Distribution. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Poisson_distribution
+;; - [4] En.wikipedia.org. 2020. Poisson Distribution. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Poisson_distribution
 ;;   [Accessed 23 November 2020].
-;; - [5] En.wikipedia.org. 2020. Probability Mass Function. [online] Available
-;;   at: https://en.wikipedia.org/wiki/Probability_mass_function
+;; - [5] En.wikipedia.org. 2020. Probability Mass Function. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Probability_mass_function
 ;;   [Accessed 23 November 2020].
 ;; - [6] En.wikipedia.org. 2020. Gamma Distribution. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Gamma_distribution
@@ -54,7 +55,8 @@
 ;;   https://en.wikipedia.org/wiki/Erlang_distribution
 ;;   [Accessed 11 December 2020].
 ;; - [8] En.wikipedia.org. 2020. Entropy (Information Theory). [online]
-;;   Available at: https://en.wikipedia.org/wiki/Entropy_(information_theory)
+;;   Available at:
+;;   https://en.wikipedia.org/wiki/Entropy_(information_theory)
 ;;   [Accessed 13 December 2020].
 ;; - [9] En.wikipedia.org. 2020. Information Content. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Information_content
@@ -62,98 +64,112 @@
 ;; - [10] En.wikipedia.org. 2020. Standard Deviation. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Standard_deviation
 ;;   [Accessed 15 December 2020].
-;; - [11] En.wikipedia.org. 2020. Normal Distribution. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Normal_distribution
+;; - [11] En.wikipedia.org. 2020. Normal Distribution. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Normal_distribution
 ;;   [Accessed 15 December 2020].
-;; - [12] En.wikipedia.org. 2020. Bessel's Correction. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Bessel%27s_correction
+;; - [12] En.wikipedia.org. 2020. Bessel's Correction. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Bessel%27s_correction
 ;;   [Accessed 16 December 2020].
 ;; - [13] En.wikipedia.org. 2020. Expected Value. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Expected_value [Accessed 21 December 2020].
+;;   https://en.wikipedia.org/wiki/Expected_value [Accessed 21 December
+;;   2020].
 ;; - [14] En.wikipedia.org. 2020. Variance. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Variance [Accessed 21 December 2020].
-;; - [15] En.wikipedia.org. 2020. Coefficient Of Variation. [online] Available
-;;   at: https://en.wikipedia.org/wiki/Coefficient_of_variation
+;; - [15] En.wikipedia.org. 2020. Coefficient Of Variation. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Coefficient_of_variation
 ;;   [Accessed 21 December 2020].
-;; - [16] En.wikipedia.org. 2020. Average Absolute Deviation. [online] Available
-;;   at: https://en.wikipedia.org/wiki/Average_absolute_deviation
+;; - [16] En.wikipedia.org. 2020. Average Absolute Deviation. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Average_absolute_deviation
 ;;   [Accessed 21 December 2020].
-;; - [17] En.wikipedia.org. 2020. Kullback–Leibler Divergence. [online] Available
-;    at: https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence
+;; - [17] En.wikipedia.org. 2020. Kullback–Leibler Divergence. [online]
+;;   Available at:
+;;   https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence
 ;;   [Accessed 23 December 2020].
-;; - [18] En.wikipedia.org. 2020. Moment-Generating Function. [online] Available
-;;   at: https://en.wikipedia.org/wiki/Moment-generating_function [Accessed 23
+;; - [18] En.wikipedia.org. 2020. Moment-Generating Function. [online]
+;;   Available at:
+;;   https://en.wikipedia.org/wiki/Moment-generating_function [Accessed 23
 ;;   December 2020].
-;; - [19] En.wikipedia.org. 2020. Fisher Information. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Fisher_information [Accessed 29 December
-;;   2020].
+;; - [19] En.wikipedia.org. 2020. Fisher Information. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Fisher_information [Accessed 29
+;;   December 2020].
 ;; - [20] En.wikipedia.org. 2020. Skewness. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Skewness [Accessed 29 December 2020].
-;; - [21] En.wikipedia.org. 2020. Nonparametric Skew. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Nonparametric_skew [Accessed 29 December
-;;   2020].
-;; - [22] En.wikipedia.org. 2020. Moment (Mathematics). [online] Available at:
-;;   https://en.wikipedia.org/wiki/Moment_(mathematics) [Accessed 29 December
-;;   2020].
+;; - [21] En.wikipedia.org. 2020. Nonparametric Skew. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Nonparametric_skew [Accessed 29
+;;   December 2020].
+;; - [22] En.wikipedia.org. 2020. Moment (Mathematics). [online] Available
+;;   at: https://en.wikipedia.org/wiki/Moment_(mathematics) [Accessed 29
+;;   December 2020].
 ;; - [23] En.wikipedia.org. 2020. Kurtosis. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Kurtosis [Accessed 29 December 2020].
 ;; - [24] En.wikipedia.org. 2020. Quartile. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Quartile [Accessed 29 December 2020].
-;; - [25] En.wikipedia.org. 2020. Interquartile Range. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Interquartile_range [Accessed 29 December
-;;   2020].
-;; - [26] En.wikipedia.org. 2021. Summary Statistics. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Summary_statistics [Accessed 1 January 2021].
-;; - [27] En.wikipedia.org. 2021. Five-Number Summary. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Five-number_summary
-;;   [Accessed 1 January 2021].
-;; - [28] En.wikipedia.org. 2021. Range (Statistics). [online] Available at:
-;;   https://en.wikipedia.org/wiki/Range_(statistics) [Accessed 1 January 2021].
-;; - [29] En.wikipedia.org. 2021. Algorithms For Calculating Variance. [online]
-;;   Available at: https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance
+;; - [25] En.wikipedia.org. 2020. Interquartile Range. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Interquartile_range
+;;   [Accessed 29 December 2020].
+;; - [26] En.wikipedia.org. 2021. Summary Statistics. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Summary_statistics [Accessed 1
+;;   January 2021].
+;; - [27] En.wikipedia.org. 2021. Five-Number Summary. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Five-number_summary [Accessed 1
+;;   January 2021].
+;; - [28] En.wikipedia.org. 2021. Range (Statistics). [online] Available
+;;   at: https://en.wikipedia.org/wiki/Range_(statistics) [Accessed 1
+;;   January 2021].
+;; - [29] En.wikipedia.org. 2021. Algorithms For Calculating Variance.
+;;   [online] Available at:
+;;   https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance
 ;;   [Accessed 3 January 2021].
 ;; - [30] En.wikipedia.org. 2021. Mode (statistics). [online] Available at:
-;;   https://en.wikipedia.org/wiki/Mode_(statistics) [Accessed 3 January 2021].
-;; - [31] En.wikipedia.org. 2021. Frequency (statistics). [online] Available at:
-;;   https://en.wikipedia.org/wiki/Frequency_(statistics) [Accessed 3 January
+;;   https://en.wikipedia.org/wiki/Mode_(statistics) [Accessed 3 January
 ;;   2021].
+;; - [31] En.wikipedia.org. 2021. Frequency (statistics). [online]
+;;   Available at: https://en.wikipedia.org/wiki/Frequency_(statistics)
+;;   [Accessed 3 January 2021].
 ;; - [32] En.wikipedia.org. 2021. Unimodality. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Unimodality [Accessed 3 January 2021].
 ;; - [33] En.wikipedia.org. 2021. Central Tendency. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Central_tendency [Accessed 23 January 2021].
-;; - [34] En.wikipedia.org. 2021. Geometric Mean. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Geometric_mean [Accessed 23 January 2021].
-;; - [35] En.wikipedia.org. 2021. Interquartile mean. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Interquartile_mean [Accessed 14 February
+;;   https://en.wikipedia.org/wiki/Central_tendency [Accessed 23 January
 ;;   2021].
+;; - [34] En.wikipedia.org. 2021. Geometric Mean. [online] Available at:
+;;   https://en.wikipedia.org/wiki/Geometric_mean [Accessed 23 January
+;;   2021].
+;; - [35] En.wikipedia.org. 2021. Interquartile mean. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Interquartile_mean [Accessed 14
+;;   February 2021].
 ;; - [36] En.wikipedia.org. 2021. Root mean square. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Quadratic_mean [Accessed 14 February 2021].
+;;   https://en.wikipedia.org/wiki/Quadratic_mean [Accessed 14 February
+;;   2021].
 ;; - [37] En.wikipedia.org. 2021. Mid-range. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Mid-range [Accessed 14 February 2021].
-;; - [38] En.wikipedia.org. 2021. Weibull distribution. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Weibull_distribution [Accessed 19 February
-;;   2021].
-;; - [39] Publishing, R., 2021. Weibull Distribution: Characteristics of the
-;;   Weibull Distribution. [online] Weibull.com. Available at:
+;; - [38] En.wikipedia.org. 2021. Weibull distribution. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Weibull_distribution [Accessed 19
+;;   February 2021].
+;; - [39] Publishing, R., 2021. Weibull Distribution: Characteristics of
+;;   the Weibull Distribution. [online] Weibull.com. Available at:
 ;;   https://www.weibull.com/hotwire/issue14/relbasics14.htm [Accessed 19
 ;;   February 2021].
 ;; - [40] En.wikipedia.org. 2021. Chi distribution. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Chi_distribution [Accessed 19 February 2021].
+;;   https://en.wikipedia.org/wiki/Chi_distribution [Accessed 19 February
+;;   2021].
 ;; - [41] En.wikipedia.org. 2021. Theil–Sen estimator - Wikipedia. [online]
-;;   Available at: https://en.wikipedia.org/wiki/Theil%E2%80%93Sen_estimator 
+;;   Available at:
+;;   https://en.wikipedia.org/wiki/Theil%E2%80%93Sen_estimator 
 ;;   [Accessed 10 April 2021].
-;; - [42] En.wikipedia.org. 2021. Triangular distribution - Wikipedia. [online]
-;;   Available at: https://en.wikipedia.org/wiki/Triangular_distribution
-;;   [Accessed 13 September 2021].
-;; - [43] En.wikipedia.org. 2021. Continuous uniform distribution - Wikipedia.
+;; - [42] En.wikipedia.org. 2021. Triangular distribution - Wikipedia.
 ;;   [online] Available at:
+;;   https://en.wikipedia.org/wiki/Triangular_distribution [Accessed 13
+;;   September 2021].
+;; - [43] En.wikipedia.org. 2021. Continuous uniform distribution -
+;;   Wikipedia. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Continuous_uniform_distribution
 ;;   [Accessed 3 October 2021].
 ;; - [44] En.wikipedia.org. 2021. Gumbel distribution - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Gumbel_distribution
 ;;   [Accessed 14 October 2021].
-;; - [45] Principal component analysis (2023) Wikipedia. Wikimedia Foundation.
-;;   Available at: https://en.wikipedia.org/wiki/Principal_component_analysis
+;; - [45] Principal component analysis (2023) Wikipedia. Wikimedia
+;;   Foundation. Available at:
+;;   https://en.wikipedia.org/wiki/Principal_component_analysis
 ;;   (Accessed: March 13, 2023). 
 
 
@@ -363,8 +379,8 @@
     res1))
 
 
-;;;; grsp-binop - Performs an operation p_s1 on p_n1 and p_n2 and calculates the
-;; p_n3 power of that binomial operation.
+;;;; grsp-binop - Performs an operation p_s1 on p_n1 and p_n2 and
+;; calculates the p_n3 power of that binomial operation.
 ;;
 ;; Keywords:
 ;;
@@ -432,7 +448,8 @@
     res1))
 
 
-;;;; grsp-pand - Calculates the probability of p_n1 and p_n2, being independent.
+;;;; grsp-pand - Calculates the probability of p_n1 and p_n2, being
+;; independent.
 ;;
 ;; Keywords:
 ;;
@@ -590,8 +607,8 @@
     res1))
 
 
-;;;; grsp-pcomp - Given that (expt (abs p_n1) 2) + (expt (abs n2) 2) = 1, and 
-;; given p_n1 as a parameter, returns (abs n2).
+;;;; grsp-pcomp - Given that (expt (abs p_n1) 2) + (expt (abs n2) 2) =
+;; 1, and given p_n1 as a parameter, returns (abs n2).
 ;;
 ;; Keywords:
 ;;
@@ -617,9 +634,9 @@
     res1))
 
 
-;;;; grsp-osbv - Calculates expt operation p_s1 between p_n1 and p_n2 according
-;; to exponent p_e1. Can be used to calculate - for example - the squared
-;; difference between two numbers.
+;;;; grsp-osbv - Calculates expt operation p_s1 between p_n1 and p_n2
+;; according to exponent p_e1. Can be used to calculate - for example -
+;; the squared difference between two numbers.
 ;;
 ;; Keywords:
 ;;
@@ -660,8 +677,8 @@
     res1))
 
 
-;;;; grsp-obsv - Calculates expt operation to p_e1 power for p_n1 and p_n2 and
-;; then perfoms operation p_s1 between those values.
+;;;; grsp-obsv - Calculates expt operation to p_e1 power for p_n1 and p_n2
+;; and then perfoms operation p_s1 between those values.
 ;;
 ;; Keywords:
 ;;
@@ -703,8 +720,8 @@
     res1))
 
 
-;;;; grsp-entropy-dvar - Calculates the entropy of a discrete random variable in
-;; an m x n matix.
+;;;; grsp-entropy-dvar - Calculates the entropy of a discrete random
+;; variable in an m x n matix.
 ;;
 ;; Keywords:
 ;;
@@ -968,8 +985,8 @@
     res1))
 
 
-;;;; grsp-mean-quadratic - Quadratic mean of elements of p_a1. Requires that all
-;; elements of p_a1 should be >= 0.
+;;;; grsp-mean-quadratic - Quadratic mean of elements of p_a1. Requires
+;; that all elements of p_a1 should be >= 0.
 ;;
 ;; Keywords:
 ;;
@@ -1030,7 +1047,9 @@
 	(res2 0))
 
     (set! res2 (grsp-matrix-minmax p_a1))
-    (set! res1 (grsp-opz (/ (+ (array-ref res2 0 0) (array-ref res2 0 1)) 2)))
+    (set! res1 (grsp-opz (/ (+ (array-ref res2 0 0)
+			       (array-ref res2 0 1))
+			    2)))
     
     res1))
 
@@ -1101,7 +1120,12 @@
 
 	  (begin (let loop ((j1 ln1))
 		   (if (<= j1 hn1)
-		       (begin (set! res2 (+ res2 (expt (- (array-ref p_a1 i1 j1) u1) 2)))
+		       (begin (set! res2 (+ res2
+					    (expt (- (array-ref p_a1
+								i1
+								j1)
+						     u1)
+						  2)))
 			      (loop (+ j1 1)))))
 		 
 		 (loop (+ i1 1)))))  
@@ -1133,8 +1157,8 @@
     res1))
 
 
-;;;; grsp-variance2 - Variance, semivariance and supervariance as the expected
-;; value of the squared difference of a random variable.
+;;;; grsp-variance2 - Variance, semivariance and supervariance as the
+;; expected value of the squared difference of a random variable.
 ;;
 ;; Keywords:
 ;;
@@ -1188,14 +1212,20 @@
 		  
 		  (cond ((equal? p_s1 "#v")
 			 ;; Summation of all elements.
-			 (set! res2 (+ res2 (expt (- (array-ref p_a1 i1 j1) u1) 2))))
+			 (set! res2 (+ res2 (expt (- (array-ref p_a1
+								i1
+								j1)
+						     u1)
+						  2))))
 			((equal? p_s1 "#u")			 
-			 (cond ((> (array-ref p_a1 i1 j1) u1)				
-				;; Summation of elements with value > mean.
+			 (cond ((> (array-ref p_a1 i1 j1) u1)	
+				;; Summation of elements with value >
+				;; mean.
 				(set! res2 (+ res2 (expt (- (array-ref p_a1 i1 j1) u1) 2))))))			
 			((equal? p_s1 "#s")			 
-			 (cond ((< (array-ref p_a1 i1 j1) u1)				
-				;; summation of elements with values < mean.
+			 (cond ((< (array-ref p_a1 i1 j1) u1)
+				;; summation of elements with values <
+				;; mean.
 				(set! res2 (+ res2 (expt (- (array-ref p_a1 i1 j1) u1) 2)))))))
 		  
 		  (set! j1 (in j1)))
@@ -1271,7 +1301,9 @@
     (cond ((odd? n1)
 	   (set! res1 (array-ref p_a1 ln1 (+ lm1 j1))))
 	  ((even? n1)
-	   (set! res1 (/ (+ (array-ref p_a1 ln1 (+ lm1 j1)) (array-ref p_a1 ln1 (+ lm1 j1 1))) 2))))
+	   (set! res1 (/ (+ (array-ref p_a1 ln1 (+ lm1 j1))
+			    (array-ref p_a1 ln1 (+ lm1 j1 1)))
+			 2))))
 
     (set! res1 (grsp-opz res1))
 	    
@@ -1345,7 +1377,10 @@
 	  
 	  (begin (let loop ((j1 ln1))
 		   (if (<= j1 hn1)
-		       (begin (set! res1 (+ res1 (abs (- (array-ref p_a1 i1 j1) p_x1))))
+		       (begin (set! res1 (+ res1 (abs (- (array-ref p_a1
+								    i1
+								    j1)
+							 p_x1))))
 			      (loop (+ j1 1))))) 
 		 
 		 (loop (+ i1 1))))) 
@@ -1501,7 +1536,8 @@
     res1))
 
 
-;;;; grsp-standardized-4cm - Standardized fourth central moment (kurtosis).
+;;;; grsp-standardized-4cm - Standardized fourth central moment
+;; (kurtosis).
 ;;
 ;; Keywords:
 ;;
@@ -1645,8 +1681,8 @@
     res1))
 
 
-;;;; grsp-5ns - Five number summary. Extract min, quartiles and max values from 
-;; a sample.
+;;;; grsp-5ns - Five number summary. Extract min, quartiles and max
+;; values from a sample.
 ;;
 ;; Keywords:
 ;;
@@ -1658,8 +1694,8 @@
 ;;
 ;; Output:
 ;;
-;; - 1 x 5 matrix (vector) containg the values (in order) for min, Q1, Q2, Q3 
-;;   and max.
+;; - 1 x 5 matrix (vector) containg the values (in order) for min, Q1,
+;; Q2, Q3 and max.
 ;;
 ;; Sources:
 ;;
@@ -1716,11 +1752,23 @@
 	   (set! n5 (+ n4 2))))
 
     ;; Q1.
-    (array-set! res1 (grsp-median1 (grsp-matrix-subcpy res3 lm2 hm2 ln2 n4)) 0 1)
+    (array-set! res1 (grsp-median1 (grsp-matrix-subcpy res3
+						       lm2
+						       hm2
+						       ln2
+						       n4))
+		0
+		1)
 
     ;; Q3.
     (set! res3 res6)
-    (array-set! res1 (grsp-median1 (grsp-matrix-subcpy res3 lm2 hm2 n5 hn2)) 0 3)
+    (array-set! res1 (grsp-median1 (grsp-matrix-subcpy res3
+						       lm2
+						       hm2
+						       n5
+						       hn2))
+		0
+		3)
 
     ;; Set min and max values.
     (array-set! res1 (array-ref res3 lm2 ln2) 0 0)
@@ -1757,8 +1805,8 @@
     res1))
 
 
-;;;; grsp-covariance1 - Calculates covariance between two random variables X and
-;; Y, naive algorithm.
+;;;; grsp-covariance1 - Calculates covariance between two random
+;; variables X and Y, naive algorithm.
 ;;
 ;; Keywords:
 ;;
@@ -1801,24 +1849,25 @@
     res1))
 
 
-;;;; grsp-frequency-absolute - Absolute frequency of a value in sample p_a1.
+;;;; grsp-frequency-absolute - Absolute frequency of a value in sample
+;; p_a1.
 ;;
 ;; Keywords:
-;
+;;
 ;; - statistics, probability
 ;;
 ;; Parameters:
-;
+;;
 ;; - p_a1: sample.
 ;;
 ;; Output:
-;
+;;
 ;; - Unsorted matrix containing the values of sample p_a1 and their
 ;;   frequencies. The sample mode(s) are represented by the higest-valued
 ;;   elements of the matrix, since a sample can be uni or multi-modal.
 ;;
 ;; Sources:
-;
+;;
 ;; - [30][31][32].
 ;;
 (define (grsp-frequency-absolute p_a1)
@@ -1885,7 +1934,9 @@
 			 (set! res2 (grsp-matrix-change res2 n2 n1))
 			 
 			 (cond ((< n5 n4)
-				(set! res3 (grsp-matrix-subexp res3 1 0))))))
+				(set! res3 (grsp-matrix-subexp res3
+							       1
+							       0))))))
 		  		  
 		  (set! j2 (in j2)))
 	   
@@ -1900,20 +1951,20 @@
 ;;;; grsp-mode - Mode.
 ;;
 ;; Keywords:
-;
+;;
 ;; - statistics, probability
 ;;
 ;; Parameters:
-;
+;;
 ;; - p_a1: sample (matrix).
 ;;
 ;; Output:
-;
-;; - A matrix containing the value that corresponds to the mode and the mode
-;;   itself.
+;;
+;; - A matrix containing the value that corresponds to the mode and the
+;;   mode itself.
 ;;
 ;; Sources:
-;
+;;
 ;; - [30][31][32].
 ;;
 (define (grsp-mode p_a1)
@@ -2151,7 +2202,8 @@
     res1))
 
 
-;;;; grsp-gamma-variance1 - Variance, gamma distribution, parametrization k-t.
+;;;; grsp-gamma-variance1 - Variance, gamma distribution, parametrization
+;; k-t.
 ;;
 ;; Keywords:
 ;;
@@ -2178,7 +2230,8 @@
     res1))
 
 
-;; grsp-gamma-variance2 - Variance, gamma distribution, parametrization a-b.
+;; grsp-gamma-variance2 - Variance, gamma distribution, parametrization
+;; a-b.
 ;;
 ;; Keywords:
 ;;
@@ -2205,8 +2258,8 @@
     res1))
 
 
-;;;; grsp-gamma-kurtosis - Kurtosis, gamma distribution, parametrization k-t
-;; and a-b.
+;;;; grsp-gamma-kurtosis - Kurtosis, gamma distribution, parametrization
+;; k-t and a-b.
 ;;
 ;; Keywords:
 ;;
@@ -2235,8 +2288,8 @@
     res1))
 
 
-;;;; grsp-gamma-skewness - Skewness, gamma distribution, parametrization k-t
-;; and a-b.
+;;;; grsp-gamma-skewness - Skewness, gamma distribution, parametrization
+;; k-t and a-b.
 ;;
 ;; Keywords:
 ;;
@@ -2407,7 +2460,11 @@
 ;;
 (define (grsp-gamma-pdf1-mth p_b2 p_s1 p_k1 p_t1 p_x1 p_n1)
   (letpar ((res1 0)
-	   (res2 (/ 1 (* (grsp-complex-gamma p_b2 p_s1 p_k1 p_n1) (expt p_t1 p_k1))))
+	   (res2 (/ 1 (* (grsp-complex-gamma p_b2
+					     p_s1
+					     p_k1
+					     p_n1)
+			 (expt p_t1 p_k1))))
 	   (res3 (expt p_x1 (- p_k1 1)))
 	   (res4 (expt (grsp-e) (* -1 (/ p_x1 p_t1)))))
 
@@ -2512,8 +2569,8 @@
 	   res1))
 
 
-;;;; grsp-gamma-cdf1 - Cumulative distribution function, gamma distribution,
-;; parametrization k-t.
+;;;; grsp-gamma-cdf1 - Cumulative distribution function, gamma
+;; distribution, parametrization k-t.
 ;;
 ;; Keywords:
 ;;
@@ -2602,8 +2659,8 @@
     res1))
 
 
-;;;; grsp-gamma-cdf2 - Cumulative distribution function, gamma distribution,
-;; parametrization a-b.
+;;;; grsp-gamma-cdf2 - Cumulative distribution function, gamma
+;; distribution, parametrization a-b.
 ;;
 ;; Keywords:
 ;;
@@ -2685,7 +2742,11 @@
 (define (grsp-gamma-cdf2-mth p_b2 p_s1 p_a1 p_b1 p_x1 p_n1)
   (letpar ((res1 0)
 	   (res2 (/ 1 (grsp-complex-gamma p_b2 p_s1 p_a1 p_n1)))
-	   (res3 (grsp-complex-ligamma p_b2 p_s1 p_a1 (* p_b1 p_x1) p_n1)))
+	   (res3 (grsp-complex-ligamma p_b2
+				       p_s1
+				       p_a1
+				       (* p_b1 p_x1)
+				       p_n1)))
 
     (set! res1 (* res2 res3)) 
     
@@ -2898,8 +2959,8 @@
 ;;
 ;; Notes:
 ;;
-;; - See desription of grsp4.grsp-complex-gamma for details about parameters
-;;   above.
+;; - See desription of grsp4.grsp-complex-gamma for details about
+;;   parameters above.
 ;;
 ;; Output:
 ;;
@@ -2922,7 +2983,8 @@
     res1))
 
 
-;;;; grsp-erlang-cdf - Cumulative distribution function, Erlang distribution.
+;;;; grsp-erlang-cdf - Cumulative distribution function, Erlang
+;; distribution.
 ;;
 ;; Keywords:
 ;;
@@ -2947,8 +3009,8 @@
 ;;
 ;; Notes:
 ;;
-;; - See desription of grsp4.grsp-complex-gamma for details about parameters
-;;   above.
+;; - See desription of grsp4.grsp-complex-gamma for details about
+;;   parameters above.
 ;;
 ;; Output:
 ;;
@@ -2966,7 +3028,8 @@
     res1))
 
 
-;;;; grsp-erlang-variance - Moment generating function, Erlang distribution.
+;;;; grsp-erlang-variance - Moment generating function, Erlang
+;; distribution.
 ;;
 ;; Keywords:
 ;;
@@ -3309,7 +3372,10 @@
 (define (grsp-weibull-mean p_k1 p_l1 p_b2 p_s1 p_n1)
   (let ((res1 0.0))
 
-    (set! res1 (* p_l1 (grsp-complex-gamma p_b2 p_s1 (+ 1 (/ 1 p_k1)) p_n1)))
+    (set! res1 (* p_l1 (grsp-complex-gamma p_b2
+					   p_s1
+					   (+ 1 (/ 1 p_k1))
+					   p_n1)))
     
     res1))
 
@@ -3437,7 +3503,8 @@
     res1))
 
 
-;;;; grsp-weibull-entropy-mth - Multithreaded variant of grsp-weibull-entropy.
+;;;; grsp-weibull-entropy-mth - Multithreaded variant of
+;; grsp-weibull-entropy.
 ;;
 ;; Keywords:
 ;;
@@ -3555,7 +3622,8 @@
     res1))
 
 
-;;;; grsp-weibull-skewness-mth - Multithreaded variant of grsp-weibull-skewness.
+;;;; grsp-weibull-skewness-mth - Multithreaded variant of
+;; grsp-weibull-skewness.
 ;;
 ;; Keywords:
 ;;
@@ -3833,7 +3901,8 @@
     res4))	     
 
 
-;;;; grsp-triangular-kurtosis - Excess kurtosis of a triangular distribution.
+;;;; grsp-triangular-kurtosis - Excess kurtosis of a triangular
+;; distribution.
 ;;
 ;; Keywords:
 ;;
@@ -4077,8 +4146,8 @@
     res1))
 
 
-;;;; grsp-triangular-cdf - Cumulative distribution function of a triangular
-;; distribution.
+;;;; grsp-triangular-cdf - Cumulative distribution function of a
+;; triangular distribution.
 ;;
 ;; Keywords:
 ;;
@@ -4239,8 +4308,8 @@
     res1))
 
 
-;;;; grsp-cuniform-support - Finds if p_x1 lies within the interval [p_a1, p_b1]
-;; in a continuous uniform distribution.
+;;;; grsp-cuniform-support - Finds if p_x1 lies within the interval
+;; [p_a1, p_b1] in a continuous uniform distribution.
 ;;
 ;; Keywords:
 ;;
@@ -4298,8 +4367,8 @@
     res1))
 
 
-;;;; grs-cuniform-cgf - Cumulant generating function for continuous uniform
-;; distribution.
+;;;; grs-cuniform-cgf - Cumulant generating function for continuous
+;; uniform distribution.
 ;;
 ;; Keywords:
 ;;
@@ -4316,7 +4385,8 @@
 ;;
 ;; Notes:
 ;;
-;; - For specs on all parameters except p_n1, see grsp-complex-bernoulli-number.
+;; - For specs on all parameters except p_n1, see
+;;   grsp-complex-bernoulli-number.
 ;;
 ;; Output:
 ;;
@@ -4329,7 +4399,12 @@
 (define (grsp-cuniform-cgf p_n1 p_b2 p_s1 p_n2 p_m1 p_m2)
   (let ((res1 0))
 
-    (set! res1 (/ (grsp-complex-bernoulli-number p_b2 p_s1 p_n2 p_m1 p_m2) p_n1))
+    (set! res1 (/ (grsp-complex-bernoulli-number p_b2
+						 p_s1
+						 p_n2
+						 p_m1
+						 p_m2)
+		  p_n1))
 
     res1))
 
@@ -4420,7 +4495,8 @@
     res1))
   
 
-;;;; grsp-cuniform-kurtosis - Excess kurtosis, continuous uniform distribution.
+;;;; grsp-cuniform-kurtosis - Excess kurtosis, continuous uniform
+;; distribution.
 ;;
 ;; Keywords:
 ;;
@@ -4613,7 +4689,9 @@
 (define (grsp-gumbel-cdf p_b1 p_u1 p_x1)
   (let ((res1 0.0))
 
-    (set! res1 (expt (grsp-e) (expt (* -1 (grsp-e)) (/ (* -1 (- p_x1 p_u1)) p_b1))))
+    (set! res1 (expt (grsp-e)
+		     (expt (* -1 (grsp-e))
+			   (/ (* -1 (- p_x1 p_u1)) p_b1))))
     
     res1))
 

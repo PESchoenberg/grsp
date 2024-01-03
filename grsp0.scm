@@ -1,28 +1,29 @@
-;; =============================================================================
+;; =========================================================================
 ;;
 ;; grsp0.scm
 ;;
 ;; A library of some useful, simple functions for GNU Guile Scheme programs 
 ;; created or adapted during the development of several other projects.
 ;;
-;; =============================================================================
+;; =========================================================================
 ;;
 ;; Copyright (C) 2018 - 2024 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
-;;   it under the terms of the GNU Lesser General Public License as published by
-;;   the Free Software Foundation, either version 3 of the License, or
-;;   (at your option) any later version.
+;;   it under the terms of the GNU Lesser General Public License as
+;;   published by the Free Software Foundation, either version 3 of the
+;;   License, or (at your option) any later version.
 ;;
 ;;   This program is distributed in the hope that it will be useful,
 ;;   but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 ;;   GNU Lesser General Public License for more details.
 ;;
-;;   You should have received a copy of the GNU Lesser General Public License
-;;   along with this program. If not, see <https://www.gnu.org/licenses/>.
+;;   You should have received a copy of the GNU Lesser General Public
+;;   License along with this program. If not, see
+;;   <https://www.gnu.org/licenses/>.
 ;;
-;; =============================================================================
+;; =========================================================================
 
 
 ;;;; General notes:
@@ -63,8 +64,8 @@
 ;;   [online] Available at:
 ;;   https://academic.oup.com/bib/article-pdf/19/3/537/25603287/bbw130.pdf
 ;;   [Accessed 11 October 2021].
-;; - [7] En.wikipedia.org. 2022. Mathematics Subject Classification - Wikipedia.
-;;   [online] Available at:
+;; - [7] En.wikipedia.org. 2022. Mathematics Subject Classification -
+;;   Wikipedia. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Mathematics_Subject_Classification
 ;;   [Accessed 16 June 2022].
 ;; - [8] En.wikipedia.org. 2022. ACM Computing Classification System -
@@ -215,15 +216,15 @@
     ;; Cycle.
     (let loop ((i1 0))
       (if (= i1 p_l1)
-	  (begin (newlines 1)
+	  (begin (newline)
 		 (display s1)
-		 (newlines 1))
+		 (newline))
 	  (begin (set! s1 (string-append s1 p_s1))
 	         (loop (+ i1 1)))))))
 
 
-;;;; plinetn . same as pline but applies the string to the total width of the
-;; shell or terminal.
+;;;; plinetn - Same as pline but applies the string to the total width of
+;; the shell or terminal.
 ;;
 ;; Keywords:
 ;;
@@ -308,8 +309,8 @@
   (newlines 100))
 
 
-;;;; pres - Display results with a reference string or title and an equal sign
-;; preceeding the results string.
+;;;; pres - Display results with a reference string or title and an equal
+;; sign preceeding the results string.
 ;;
 ;; Keywords:
 ;;
@@ -414,9 +415,9 @@
       res1))
 
 
-;;;; strings-append - Appends strings entered in a list as one larger string.
-;; Use it to avoid complex, nested calls to string-append when you have to join 
-;; several strings into one.
+;;;; strings-append - Appends strings entered in a list as one larger
+;; string. Use it to avoid complex, nested calls to string-append when
+;; you have to join several strings into one.
 ;;
 ;; Keywords:
 ;;
@@ -461,10 +462,10 @@
     res1))
 
 
-;;;; read-file-as-string - Reads a file as a string; adapted from an example 
-;; from sources indicated below. The string will be formatted and include 
-;; characters such as \n and \r. What this does in practice is to read a 
-;; file and return it as one single string. 
+;;;; read-file-as-string - Reads a file as a string; adapted from an
+;; example from sources indicated below. The string will be formatted and
+;; include characters such as \n and \r. What this does in practice is to
+;; read a file and return it as one single string. 
 ;;
 ;; Keywords:
 ;;
@@ -609,8 +610,9 @@
     (system (strings-append (list s2 s3 p_f1) 1))))
 
 
-;; grsp-n2s - A convenience function, shorter to write than number->string that
-;; performs the same function. That is, to convert a number to a string.
+;; grsp-n2s - A convenience function, shorter to write than number->string
+;; that performs the same function. That is, to convert a number to a
+;; string.
 ;;
 ;; Keywords:
 ;;
@@ -632,8 +634,9 @@
     res1))
 
 
-;;;; grsp-s2n - A convenience function, shorter to write than string->number 
-;; that performs the same function. That is, to convert a string to a number.
+;;;; grsp-s2n - A convenience function, shorter to write than
+;; string->number that performs the same function. That is, to convert a
+;; string to a number.
 ;;
 ;; Keywords:
 ;;
@@ -656,8 +659,8 @@
     res1))
 
 
-;;;; grsp-sqlp - Calls sqlp to access Sqlite3 or HDF5 databases from within a  
-;; Guile program. Requires sqlp to be installed.
+;;;; grsp-sqlp - Calls sqlp to access Sqlite3 or HDF5 databases from
+;; within a Guile program. Requires sqlp to be installed.
 ;;
 ;; Keywords:
 ;;
@@ -754,8 +757,8 @@
     (newlines p_n2)))
 
 
-;;;; grsp-ldvl - Line, display value, line. Displays p_n1 blank lines before
-;; string p_s1 and p_n2 blank lines after p_s1.
+;;;; grsp-ldvl - Line, display value, line. Displays p_n1 blank lines
+;; before string p_s1 and p_n2 blank lines after p_s1.
 ;;
 ;; Keywords:
 ;;
@@ -791,8 +794,9 @@
     (newlines p_n2)))
 
 
-;;;; grsp-cd - Same as grsp-ld, but performs a clear instead of newline, meaning
-;; that it clears the screen or console instead of just adding a line break.
+;;;; grsp-cd - Same as grsp-ld, but performs a clear instead of newline,
+;; meaning that it clears the screen or console instead of just adding a
+;; line break.
 ;;
 ;; Keywords:
 ;;
@@ -831,8 +835,9 @@
 ;;
 ;; Output:
 ;;
-;; - Returns data from the user's input. You may need to use symbol->[type] in
-;;   order to return the proper type variable for your needs.
+;; - Returns data from the user's input. You may need to use
+;;   symbol->[type] in order to return the proper type variable for your
+;;   needs.
 ;;
 (define (grsp-ask p_s1)
   (let ((res1 " "))
@@ -956,8 +961,8 @@
     res1))
 
 
-;;;; grsp-bcn2s - Casts p_a1 to string, being p_a1 a boolean, char or numeric
-;; argument.
+;;;; grsp-bcn2s - Casts p_a1 to string, being p_a1 a boolean, char or
+;; numeric argument.
 ;;
 ;; Keywords:
 ;;
@@ -971,8 +976,8 @@
 ;;
 ;; - String.
 ;;
-;;   - String "nc2s" (not convertible to string) if the argument cannot be cast
-;;     as a string.
+;;   - String "nc2s" (not convertible to string) if the argument cannot
+;;     be cast as a string.
 ;;   - A string representing the argument, otherwise.
 ;;
 (define (grsp-bcn2s p_a1)
@@ -1062,8 +1067,8 @@
     res1))
 
 
-;;;; grsp-dstr - Duplicates string p_s1 by concatenationg it with itself so that
-;; if from p_s1 is obtained p_s1+p_s1.
+;;;; grsp-dstr - Duplicates string p_s1 by concatenationg it with itself
+;; so that if from p_s1 is obtained p_s1+p_s1.
 ;;
 ;; Keywords:
 ;;
@@ -1085,9 +1090,9 @@
     res1))
 
 
-;;;; grsp-jstr - Will form a string of p_n1 elements, including strings p_s1,
-;; p_s2 and enough repetitions of string p_s3 in order to justify p_s1 to the
-;; left and p_s2 to the right.
+;;;; grsp-jstr - Will form a string of p_n1 elements, including strings
+;; p_s1, p_s2 and enough repetitions of string p_s3 in order to justify
+;; p_s1 to the left and p_s2 to the right.
 ;;
 ;; Keywords:
 ;;
@@ -1098,8 +1103,8 @@
 ;; - p_s1: string.
 ;; - p_s2: string.
 ;; - p_s3: string (one element in length).
-;; - p_n1: number. Should be greater than the length of p_s1, p_s2 and p_s3
-;;   put together.
+;; - p_n1: number. Should be greater than the length of p_s1, p_s2 and
+;;   p_s3 put together.
 ;;
 ;; Output:
 ;;
@@ -1194,7 +1199,8 @@
     res1))
 
 
-;;;; grsp-string-ltlength - Find the length of each string in a string list.
+;;;; grsp-string-ltlength - Find the length of each string in a string
+;; list.
 ;;
 ;; Keywords:
 ;;
@@ -1243,8 +1249,8 @@
     res1))
 
 
-;;;; grsp-string-ltrim - Trim spaces on all elements of list p_l1 according to
-;; p_s1.
+;;;; grsp-string-ltrim - Trim spaces on all elements of list p_l1
+;; according to p_s1.
 ;;
 ;; Keywords:
 ;;
@@ -1285,8 +1291,8 @@
     res1))
 
 
-;;;; grsp-string-pjustify - Pads with string p_s3 and justifies string p_s2
-;; into a string of total length p_n1.
+;;;; grsp-string-pjustify - Pads with string p_s3 and justifies string
+;; p_s2 into a string of total length p_n1.
 ;;
 ;; Keywords:
 ;;
@@ -1378,9 +1384,9 @@
     res1))
 
 
-;;;; grsp-string-lpjustify - Applies grsp-string-pjustify to every element of
-;; p_l1, producing a list of strings of equal length, padded with p_s3 and
-;; lustified according to p_s1.
+;;;; grsp-string-lpjustify - Applies grsp-string-pjustify to every
+;; element of p_l1, producing a list of strings of equal length, padded
+;; with p_s3 and lustified according to p_s1.
 ;;
 ;; Keywords:
 ;;
@@ -1412,7 +1418,8 @@
     (let loop ((j1 0))
       (if (< j1 hn)
 	  (begin (list-set! res1 j1 (grsp-string-pjustify p_s1
-							  (list-ref p_l1 j1)
+							  (list-ref p_l1
+								    j1)
 							  p_s3
 							  p_n1))
 		 (loop (+ j1 1)))))
@@ -1420,8 +1427,8 @@
     res1))
 
 
-;;;; grsp-ln2ls - Casts a list of numbers as a list of strings that represent
-;; numbers.
+;;;; grsp-ln2ls - Casts a list of numbers as a list of strings that
+;; represent numbers.
 ;;
 ;; Keywords:
 ;;
@@ -1443,8 +1450,8 @@
     res1))
 
 
-;;;; grsp-ls2ln - Casts a list of strings representing numbers as a list of
-;; numbers.
+;;;; grsp-ls2ln - Casts a list of strings representing numbers as a list
+;; of numbers.
 ;;
 ;; Keywords:
 ;;
@@ -1491,8 +1498,8 @@
     res1))
 
 
-;;;; grsp-s2ln - String to list of numbers representing the Unicode number of
-;; each character in the original string.
+;;;; grsp-s2ln - String to list of numbers representing the Unicode
+;; number of each character in the original string.
 ;;
 ;; Keywords:
 ;;
@@ -1546,10 +1553,10 @@
     res1))
 
 
-;;;; grsp-generate-file-name - Generates a file name string that appends to
-;; string p_s1 a random number and a file descriptor in order to provide an
-;; unique file name even if the descriptor or p_s1 are the same in various
-;; instances.
+;;;; grsp-generate-file-name - Generates a file name string that appends
+;; to string p_s1 a random number and a file descriptor in order to
+;; provide an unique file name even if the descriptor or p_s1 are the
+;; same in various instances.
 ;;
 ;; Keywords:
 ;;
@@ -1577,14 +1584,22 @@
   (let ((res1 ""))
 
     (cond ((equal? p_b1 #t)
-	   (set! res1 (strings-append (list p_s1 "-" (grsp-trprnd) "." p_s2) 0)))
-	  (else (set! res1 (strings-append (list (grsp-trprnd) "." p_s2) 0))))
+	   (set! res1 (strings-append (list p_s1
+					    "-"
+					    (grsp-trprnd)
+					    "."
+					    p_s2)
+				      0)))
+	  (else (set! res1 (strings-append (list (grsp-trprnd)
+						 "."
+						 p_s2)
+					   0))))
     
     res1))
 
 
-;;;; grsp-list-file-name - Transforms a string created by grsp-generate-fname
-;; into a three-element list.
+;;;; grsp-list-file-name - Transforms a string created by
+;; grsp-generate-fname into a three-element list.
 ;;
 ;; Keywords:
 ;;
@@ -1644,8 +1659,8 @@
     res1))
 
 
-;;;; grsp-intercal - Intercalates string p_s2 between the characters of string
-;; p_s3 according to mode p_s1.
+;;;; grsp-intercal - Intercalates string p_s2 between the characters of
+;; string p_s3 according to mode p_s1.
 ;;
 ;; Keywords:
 ;;
@@ -1657,15 +1672,16 @@
 ;;
 ;;   - "#l": place p_s2 only at the beginning.
 ;;   - "#h": place p_s2 only at the end
-;;   - "#m": place p_s2 between characters bun neither at the beginning nor the
-;;     end.
-;;   - "#lm": place p_s2 at the beginning and between characters but not at the
-;;     end.
-;;   - "#mh": place p_s2 between the middle characters and at the end of the
-;;     string.
-;;   - "#lh": place p_s2 at the beginning and at the end of the string, but not
-;;     between characters.
-;;   - "#lmh": place p_s2 at the beginning, between characters and at the end.
+;;   - "#m": place p_s2 between characters bun neither at the beginning
+;;      nor the end.
+;;   - "#lm": place p_s2 at the beginning and between characters but not
+;;     at the end.
+;;   - "#mh": place p_s2 between the middle characters and at the end of
+;;     the string.
+;;   - "#lh": place p_s2 at the beginning and at the end of the string,
+;;     but not between characters.
+;;   - "#lmh": place p_s2 at the beginning, between characters and at
+;;     the end.
 ;;
 ;; - p_s2: string to place between characters.
 ;; - p_s3: string to be modified.
@@ -1707,7 +1723,10 @@
 			(begin (set! s4 (substring s3 j1 (+ j1 1)))
 			       
 			       (cond ((> j1 0)
-				      (set! sus (strings-append (list sus p_s2 s4) 0)))
+				      (set! sus (strings-append (list sus
+								      p_s2
+								      s4)
+								0)))
 				     (else (set! sus s4)))
 			       
 			       (loop (+ j1 1)))))
@@ -1728,11 +1747,12 @@
     res1))
 
 
-;;;; grsp-s2dbc - Casts a string as a number composed of a succession of the
-;; unicode representation of each character string interspected by the unicode
-;; representation of the string "|" . This is a useful way to store
-;; strings in numeric matrices as integers. This function converts any string
-;; to a number apt to be stored in a grsp relational matrix.
+;;;; grsp-s2dbc - Casts a string as a number composed of a succession of
+;; the unicode representation of each character string interspected by
+;; the unicode representation of the string "|". This is a useful way
+;; to store strings in numeric matrices as integers. This function
+;; converts any string to a number apt to be stored in a grsp relational
+;; matrix.
 ;;
 ;; Keywords:
 ;;
@@ -1745,8 +1765,8 @@
 ;; Notes:
 ;;
 ;; - See grsp-dbc2s, grsp3.grsp-matrix-create.
-;; - String "|" is used to clearly separate each character string and hence the
-;;   unicode number of each one of them.
+;; - String "|" is used to clearly separate each character string and
+;;   hence the unicode number of each one of them.
 ;;
 ;; Output:
 ;;
@@ -1766,9 +1786,9 @@
     res1))
 
 
-;;;; grsp-dbc2s - Inverse function of grsp-s2dbc. This function converts back
-;; strings initially converted into numbers by grsp-s2dbc back to string,
-;; human readable form.
+;;;; grsp-dbc2s - Inverse function of grsp-s2dbc. This function converts
+;; back strings initially converted into numbers by grsp-s2dbc back to
+;; string, human readable form.
 ;;
 ;; Keywords:
 ;;
@@ -1805,14 +1825,15 @@
     ;; Casy from list of numeric strings to list of numbers.
     (set! l1 (grsp-lns2ln s3))
 
-    ;; Cast from list of numbers to one string that rebuilds the original one.
+    ;; Cast from list of numbers to one string that rebuilds the
+    ;; original one.
     (set! res1 (grsp-ln2s l1))
     
     res1))
 
 
-;;;; grsp-ln2ns - List of numbers to numeric string. The numbers in the list
-;; should represent Unicode characters.
+;;;; grsp-ln2ns - List of numbers to numeric string. The numbers in the
+;; list should represent Unicode characters.
 ;;
 ;; Keywords:
 ;;
@@ -2026,8 +2047,8 @@
     res1))
 
 
-;;;; grsp-lam - List of strings enumerating the available modules of the grsp
-;; library.
+;;;; grsp-lam - List of strings enumerating the available modules of the
+;; grsp library.
 ;;
 ;; Keywords:
 ;;
@@ -2063,12 +2084,13 @@
 
 
 ;;;; grsp-random-state-set - Seed random state using platform-specific
-;; properties if p_b1 is #t. If you leave p_b1 as #f the value fo the system
-;; variable random-state will remain the same and therefore, you will get
-;; the same pseudo-random numbers each time you generate a random series. This
-;; could be useful in order to repeat experimental data. Otherwise, you should
-;; set p_b1 to #t in order ot get different number each time you star a program
-;; or call a random generation function.
+;; properties if p_b1 is #t. If you leave p_b1 as #f the value fo the
+;; system variable random-state will remain the same and therefore, you
+;; will get the same pseudo-random numbers each time you generate a
+;; random series. This could be useful in order to repeat experimental
+;; data. Otherwise, you should set p_b1 to #t in order ot get different
+;; number each time you star a program or call a random generation
+;; function.
 ;;
 ;; Keywords:
 ;;
@@ -2438,8 +2460,8 @@
     res1))
 
 
-;;;; grsp-art3 - Provides a combination of results of grsp-art1 and grsp-art2
-;; in list format.
+;;;; grsp-art3 - Provides a combination of results of grsp-art1 and
+;; grsp-art2 in list format.
 ;;
 ;; Keywords:
 ;; 
@@ -2478,8 +2500,8 @@
     res1))
 
 
-;;;; grsp-s2qs - Ads quotes at the beginning and endo fo a string as part of
-;; the string itself.
+;;;; grsp-s2qs - Ads quotes at the beginning and endo fo a string as
+;; part of the string itself.
 ;;
 ;; Keywords
 ;;
@@ -2509,9 +2531,10 @@
 ;;
 ;; Output:
 ;;
-;; - List containing the results of the operation for each element of p_l1; the
-;;   type of each element of the list and the number of elements it may contain
-;;   depends on the properties of p_l1 and its elements.
+;; - List containing the results of the operation for each element of
+;;   p_l1; the type of each element of the list and the number of
+;;   elements it may contain depends on the properties of p_l1 and its
+;;   elements.
 ;;
 (define (grsp-touch-lf p_l1)
   (let ((res1 '()))
@@ -2521,9 +2544,9 @@
     res1))
 
 
-;;;; grsp-sldvls - Speparator, Line, display value, line, separator. Displays
-;; p_n1 blank lines before a spearator defined by p_s2, string p_s1 and p_n2
-;; blank lines after p_s1 and separator p_s3.
+;;;; grsp-sldvls - Speparator, Line, display value, line, separator.
+;; Displays p_n1 blank lines before a spearator defined by p_s2, string
+;; p_s1 and p_n2 blank lines after p_s1 and separator p_s3.
 ;;
 ;; Keywords:
 ;;
@@ -2552,7 +2575,8 @@
   (grsp-ldl p_s3 p_n1 p_n2))
 
 
-;;;; grsp-clear-on-demand - Clear the screen or console window if p_b1 is #t.
+;;;; grsp-clear-on-demand - Clear the screen or console window if p_b1
+;; is #t.
 ;;
 ;; Keywords:
 ;;
@@ -2600,8 +2624,8 @@
     res1))
 
 
-;;;; gdp-pad-lr - Pad string p_s1 to the lenght of string p_s2, or truncate to
-;; the length of p_s2.
+;;;; gdp-pad-lr - Pad string p_s1 to the lenght of string p_s2, or
+;; truncate to the length of p_s2.
 ;;
 ;; Keywords:
 ;;
@@ -2650,7 +2674,10 @@
 
 	  (begin (set! s1 (list-ref p_l1 j1))
 		 (set! j2 (+ j1 1))
-		 (set! s2 (strings-append (list (grsp-n2s j2) " - " s1) 0))
+		 (set! s2 (strings-append (list (grsp-n2s j2)
+						" - "
+						s1)
+					  0))
 		 (grsp-ld s2)
 		 
 		 (loop (+ j1 1)))))
@@ -2660,7 +2687,8 @@
     res1))
 
 
-;; grsp-menup - This is a presentation for terminal or shell program menus.
+;; grsp-menup - This is a presentation for terminal or shell program
+;; menus.
 ;;
 ;; Keywords:
 ;;
@@ -2761,8 +2789,8 @@
   (newlines p_n1))
 
 
-;;;; grsp-clear-cup - Clears the terminal or shell and repositions the cursor
-;; at line p_m1.
+;;;; grsp-clear-cup - Clears the terminal or shell and repositions the
+;; cursor at line p_m1.
 ;;
 ;; Keywords:
 ;;
@@ -2781,8 +2809,8 @@
   res1))
 
 
-;;;; grsp-clear-cup - Repositions the cursor to line p_m1 without clearing the
-;; terminal.
+;;;; grsp-clear-cup - Repositions the cursor to line p_m1 without
+;; clearing the terminal.
 ;;
 ;; Keywords:
 ;;

@@ -1,28 +1,29 @@
-;; =============================================================================
+;; =========================================================================
 ;;
 ;; grsp9.scm
 ;;
-;; Test functions and artificial landscapes for single-objective optimization,
-;; interpolation functions.
+;; Test functions and artificial landscapes for single-objective
+;; optimization, interpolation functions.
 ;;
-;; =============================================================================
+;; =========================================================================
 ;;
 ;; Copyright (C) 2018 - 2024 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
-;;   it under the terms of the GNU Lesser General Public License as published by
-;;   the Free Software Foundation, either version 3 of the License, or
-;;   (at your option) any later version.
+;;   it under the terms of the GNU Lesser General Public License as
+;;   published by the Free Software Foundation, either version 3 of the
+;;   License, or (at your option) any later version.
 ;;
 ;;   This program is distributed in the hope that it will be useful,
 ;;   but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 ;;   GNU Lesser General Public License for more details.
 ;;
-;;   You should have received a copy of the GNU Lesser General Public License
-;;   along with this program. If not, see <https://www.gnu.org/licenses/>.
+;;   You should have received a copy of the GNU Lesser General Public
+;;   License along with this program. If not, see
+;;   <https://www.gnu.org/licenses/>.
 ;;
-;; =============================================================================
+;; =========================================================================
 
 
 ;;;; General notes:
@@ -38,24 +39,25 @@
 ;;   Available at:
 ;;   https://en.wikipedia.org/wiki/Test_functions_for_optimization
 ;;   [Accessed 5 March 2021].
-;; - [2] En.wikipedia.org. 2021. Mathematical optimization. [online] Available
+;; - [2] En.wikipedia.org. 2021. Mathematical optimization. [online]
+;;   Available
 ;;   at: https://en.wikipedia.org/wiki/Mathematical_optimization
 ;;   [Accessed 9 March 2021].
 ;; - [3] En.wikipedia.org. 2021. List of algorithms. [online] Available at:
-;;   https://en.wikipedia.org/wiki/List_of_algorithms [Accessed 9 March 2021].
-;; - [4] Algoritmo de Recocido Simulado (2023) Wikipedia. Wikimedia Foundation.
-;;   Available at: https://es.wikipedia.org/wiki/Algoritmo_de_recocido_simulado
+;;   https://en.wikipedia.org/wiki/List_of_algorithms [Accessed 9 March
+;;   2021].
+;; - [4] Algoritmo de Recocido Simulado (2023) Wikipedia. Wikimedia
+;;   Foundation. Available at:
+;;   https://es.wikipedia.org/wiki/Algoritmo_de_recocido_simulado
 ;;   (Accessed: March 6, 2023). 
-;; - [5] Simulated annealing algorithm (no date) Simulated Annealing Algorithm -
-;;   an overview | ScienceDirect Topics. Available at:
-;;   https://www.sciencedirect.com/topics/engineering/simulated-annealing-algorithm
-;;   (Accessed: March 6, 2023).
+;; - [5] Simulated annealing algorithm (no date) Simulated Annealing
+;;   Algorithm - an overview | ScienceDirect Topics. Available at:
+;;   https://www.sciencedirect.com/topics/engineering/simulated-annealing-algorithm (Accessed: March 6, 2023).
 ;; - [6] Interpolation (2023) Wikipedia. Wikimedia Foundation. Available at:
 ;;   https://en.wikipedia.org/wiki/Interpolation (Accessed: March 8, 2023). 
-;; - [7] Sheth, V. (2022) Implementing gradient descent in python from scratch,
-;;   Medium. Available at:
-;;   https://towardsdatascience.com/implementing-gradient-descent-in-python-from-scratch-760a8556c31f
-;;   (Accessed: 16 May 2023). 
+;; - [7] Sheth, V. (2022) Implementing gradient descent in python from
+;;   scratch, Medium. Available at:
+;;   https://towardsdatascience.com/implementing-gradient-descent-in-python-from-scratch-760a8556c31f (Accessed: 16 May 2023). 
 ;; - [8] Gradient descent: A comprehensive guide to implementing in Python
 ;;   (2023) Machine Learning Space. Available at:
 ;;   https://machinelearningspace.com/a-comprehensive-guide-to-gradient-descent-algorithm/#lregress
@@ -332,7 +334,8 @@
 ;;
 ;; Parameters:
 ;;
-;; - p_a1: 1 x n vector with n elements, representing an n-dimensinal problem.
+;; - p_a1: 1 x n vector with n elements, representing an n-dimensinal
+;;   problem.
 ;;
 ;; Output:
 ;;
@@ -373,7 +376,8 @@
     (let loop ((j1 1))
       (if (<= j1 n1)
 	  (begin (set! x1 (array-ref p_a1 0 j1))
-		 (set! res3 (+ res3 (- (expt x1 2) (* 10 (cos (* p2 x1))))))
+		 (set! res3 (+ res3
+			       (- (expt x1 2) (* 10 (cos (* p2 x1))))))
 		 (loop (+ j1 1)))))
     
     ;; Compose results.
@@ -390,7 +394,8 @@
 ;;
 ;; Parameters:
 ;;
-;; - p_a1: 1 x n vector with n elements, representing an n-dimensinal problem.
+;; - p_a1: 1 x n vector with n elements, representing an n-dimensinal
+;;   problem.
 ;;
 ;; Notes:
 ;;
@@ -424,7 +429,9 @@
 	      (let loop ((j1 1))
 		(if (<= j1 n1)
 		    (begin (set! x1 (array-ref p_a1 0 j1))
-			   (set! res3 (+ res3 (- (expt x1 2) (* 10 (cos (* p2 x1))))))
+			   (set! res3 (+ res3
+					 (- (expt x1 2)
+					    (* 10 (cos (* p2 x1))))))
 			   (loop (+ j1 1))))))
     
     ;; Compose results.	   
@@ -433,7 +440,8 @@
     res1))
 
 
-;;;; grsp-sop-goldstein-price - Goldstein-Price test, single objective function.
+;;;; grsp-sop-goldstein-price - Goldstein-Price test, single objective
+;; function.
 ;;
 ;; Keywords:
 ;;
@@ -530,13 +538,23 @@
 
     ;; res2.
     (parallel (set! res21 (expt (+ x y 1) 2))
-	      (set! res22 (+ 19 (* -14 x) (* 3 x2) (* -14 y) (* 6 xy) (* 3 y2))))
+	      (set! res22 (+ 19
+			     (* -14 x)
+			     (* 3 x2)
+			     (* -14 y)
+			     (* 6 xy)
+			     (* 3 y2))))
     
     (set! res2 (+ 1 (* res21 res22)))
 
     ;; res3.
     (parallel (set! res31 (expt (- (* 2 x) (* 3 y)) 2))
-	      (set! res32 (+ 18 (* -32 x) (* 12 x2) (* 48 y) (* -36 xy) (* 27 y2))))
+	      (set! res32 (+ 18
+			     (* -32 x)
+			     (* 12 x2)
+			     (* 48 y)
+			     (* -36 xy)
+			     (* 27 y2))))
     
     (set! res3 (+ 30 (* res31 res32)))
     
@@ -630,8 +648,10 @@
 	      (set! py (* y (grsp-pi))))
 
     (parallel (set! res2 (expt (sin (* 3 px)) 2))
-	      (set! res3 (* (expt (- x 1 ) 2) (+ 1 (expt (sin (* 3 py)) 2))))
-	      (set! res4 (* (expt (- y 1) 2) (+ 1 (expt (sin (* 2 py)) 2)))))
+	      (set! res3 (* (expt (- x 1 ) 2)
+			    (+ 1 (expt (sin (* 3 py)) 2))))
+	      (set! res4 (* (expt (- y 1) 2)
+			    (+ 1 (expt (sin (* 2 py)) 2)))))
 
     ;; Compose results.    
     (set! res1 (+ res2 res3 res4))
@@ -682,7 +702,8 @@
     res1))
 
 
-;;;; grsp-sop-himmelblau-mth - Multithreaded variant of grsp-sop-himmelblau.
+;;;; grsp-sop-himmelblau-mth - Multithreaded variant of
+;; grsp-sop-himmelblau.
 ;;
 ;; Keywords:
 ;;
@@ -949,8 +970,8 @@
 ;;
 ;; Parameters:
 ;;
-;; - p_a1: 1 x n vector with n elements, representing an n-dimensinal problem.
-;;   [-inf.0, +inf.0]
+;; - p_a1: 1 x n vector with n elements, representing an n-dimensinal
+;;   problem. [-inf.0, +inf.0]
 ;;
 ;; Output:
 ;;
@@ -985,8 +1006,8 @@
 ;;
 ;; Parameters:
 ;;
-;; - p_a1: 1 x n vector with n elements, representing an n-dimensional problem.
-;;   [-inf.0, +inf.0]
+;; - p_a1: 1 x n vector with n elements, representing an n-dimensional
+;;   problem. [-inf.0, +inf.0]
 ;;
 ;; Output:
 ;;
@@ -1014,7 +1035,8 @@
       (if (<= j1 n1)
 	  (begin (set! res2 (* 100
 			       (expt (- (array-ref p_a1 0 (+ j1 1))
-					(expt (array-ref p_a1 0 j1) 2)) 2)))
+					(expt (array-ref p_a1 0 j1) 2))
+				     2)))
 		 (set! res3 (expt (- 1 (array-ref p_a1 0 j1)) 2))	   
 		 (set! res1 (+ res1 res2 res3))
 		 (loop (+ j1 1)))))
@@ -1110,8 +1132,8 @@
 ;;
 ;; Parameters:
 ;;
-;; - p_a1: 1 x n vector with n elements, representing an n-dimensinal problem.
-;;   [-5.0, +5.0].
+;; - p_a1: 1 x n vector with n elements, representing an n-dimensinal
+;;   problem. [-5.0, +5.0].
 ;;
 ;; Output:
 ;;
@@ -1295,7 +1317,8 @@
 
     (parallel (set! res2 (* -1 (cos p_x1) (cos p_y1)))
 	      (set! res3 (grsp-eex (* -1 (+ (expt (- p_x1 (grsp-pi)) 2) 
-					    (expt (- p_y1 (grsp-pi)) 2))))))
+					    (expt (- p_y1 (grsp-pi))
+						  2))))))
 
     ;; Compose results.    
     (set! res1 (* res2 res3))
@@ -1331,7 +1354,9 @@
     (set! res2 (* (sin p_x1) (sin p_y1)))
 
     ;; res3.
-    (set! res3 (grsp-eex (abs (- 100 (/ (sqrt (+ (expt p_x1 2) (expt p_y1 2))) (grsp-pi))))))
+    (set! res3 (grsp-eex (abs (- 100 (/ (sqrt (+ (expt p_x1 2)
+						 (expt p_y1 2)))
+					(grsp-pi))))))
 
     ;; Compose results.
     (set! res1 (* -1 0.0001 (expt (+ (abs (* res2 res3)) 1) 0.1)))
@@ -1447,8 +1472,9 @@
     res1))
 
 
-;;;; grsp-cop-rosenbrock1 - Rosenbrock test, constrained objective function
-;; (cube, line). Returns +nan.0 for unconstraied arguments.
+;;;; grsp-cop-rosenbrock1 - Rosenbrock test, constrained objective
+;; function (cube, line). Returns +nan.0 for unconstraied arguments.
+;;
 ;; - (p_x1 - 1)**3 - p_y1 + 1 <= 0.
 ;; - p_x1 = p_y1 - 2 <= 0.
 ;;
@@ -1489,8 +1515,9 @@
     res1))
 
 
-;;;; grsp-cop-rosenbrock2 - Rosenbrock test, constrained objective function
-;; (disk). Returns +nan.0 for unconstraied arguments.
+;;;; grsp-cop-rosenbrock2 - Rosenbrock test, constrained objective
+;; function (disk). Returns +nan.0 for unconstraied arguments.
+;;
 ;; - p_x1**2 + p_y1**2 <= 2-
 ;;
 ;; Keywords:
@@ -1521,7 +1548,8 @@
     
     ;; Compose results.
     (cond ((equal? (<= (+ x2 y2) 2) #t)
-	   (set! res1 (+ (expt (- 1 p_x1) 2) (* 100 (expt (- p_x1 x2) 2))))) 
+	   (set! res1 (+ (expt (- 1 p_x1) 2)
+			 (* 100 (expt (- p_x1 x2) 2))))) 
 	  (else (set! res1 +nan.0)))
     
     res1))
@@ -1655,7 +1683,11 @@
 
     ;; res3.
     (cond ((equal? (equal? p_y1 0) #f)
-	   (set! res3 (expt (+ 1 (* 0.2 (cos (* 8 (atan (/ p_x1 p_y1)))))) 2)))
+	   (set! res3 (expt (+ 1
+			       (* 0.2 (cos (* 8
+					      (atan (/ p_x1
+						       p_y1))))))
+			    2)))
 	  (else (set! res3 (- res2 1))))
     
     ;; Compose results.
@@ -1666,8 +1698,8 @@
     res1))
     
 
-;;;; grsp-ipol-lerp - Linear interpolation. Returns value at point (x, y) given
-;; points (p_x1, p_y1) and (p_x2, p_y2).
+;;;; grsp-ipol-lerp - Linear interpolation. Returns value at point (x, y)
+;; given points (p_x1, p_y1) and (p_x2, p_y2).
 ;;
 ;; Keywords:
 ;;
@@ -1820,7 +1852,8 @@
 ;; - p_mi: max iterations.
 ;; - p_cv: convergence value.
 ;; - p_de: learning rate decay.
-;; - p_df: drop frequency (only for "#step", you can leave as zero otherwise).
+;; - p_df: drop frequency (only for "#step", you can leave as zero
+;;   otherwise).
 ;; - p_dr: drop rate (only for "#step", you can leave as zero otherwise).
 ;;
 ;; Notes:
@@ -1867,11 +1900,15 @@
 	  (begin (let loopj1 ((j1 (grsp-ln res2)))
 		   (if (<= j1 (grsp-hn res2))
 
-		       (begin (set! c1 (grsp-opt-cost-pd p_a1 p_a2 p_a3 j1))
+		       (begin (set! c1 (grsp-opt-cost-pd p_a1
+							 p_a2
+							 p_a3
+							 j1))
 
-			      ;; Multiply cost partial derivative by learning
-			      ;; rate.
-			      (set! j2 (- (array-ref res2 0 j1) (* lr c1)))
+			      ;; Multiply cost partial derivative by
+			      ;; learning rate.
+			      (set! j2 (- (array-ref res2 0 j1)
+					  (* lr c1)))
 
 			      ;; Replace parameter theta[j1].
 			      (array-set! res2 j2 0 j1)
@@ -1889,8 +1926,8 @@
     res2))
 
 
-;;;; grsp-opt-xty - Calculates the summation of the products of elements of
-;; p_a1 and p_a2.
+;;;; grsp-opt-xty - Calculates the summation of the products of elements
+;; of p_a1 and p_a2.
 ;;
 ;; Keywords:
 ;;
@@ -1903,8 +1940,8 @@
 ;;
 ;; Output:
 ;;
-;; - Col matrix containing the result of the operation per each row of p_a1
-;;   and p_a2.
+;; - Col matrix containing the result of the operation per each row of
+;; p_a1 and p_a2.
 ;;
 (define (grsp-opt-xty p_a1 p_a2)
   (let ((res1 0)
@@ -1925,11 +1962,17 @@
 	   (while (<= j1 (grsp-hn p_a1))
 
 		  ;; Summation.
-		  (set! sum (+ sum (* (array-ref p_a1 i1 j1) (array-ref p_a2 i1 j1))))
+		  (set! sum (+ sum (* (array-ref p_a1
+						 i1
+						 j1)
+				      (array-ref p_a2
+						 i1
+						 j1))))
 		  
 		  (set! j1 (in j1)))
 
-	   ;; PLace row summation (all cols per each row) in the results matrix.
+	   ;; PLace row summation (all cols per each row) in the results
+	   ;; matrix.
 	   (array-set! res1 sum i1 0)
 	   
 	   (set! i1 (in i1)))
@@ -2033,9 +2076,11 @@
 ;; - p_mi: max iterations.
 ;; - p_cv: convergence value.
 ;; - p_de: learning rate decay.
-;; - p_df: drop frequency (only for "#step", you can leave as zero otherwise).
+;; - p_df: drop frequency (only for "#step", you can leave as zero
+;;   otherwise).
 ;; - p_dr: drop rate (only for "#step", you can leave as zero otherwise).
-;; - p_m1: integer, mini-batch size (number of rows constituting the mini batch).
+;; - p_m1: integer, mini-batch size (number of rows constituting the
+;;   mini batch).
 ;;
 ;; Notes:
 ;;
@@ -2043,7 +2088,8 @@
 ;;
 ;; Output:
 ;;
-;; - List containing gradient descent results and mini batches of X, T and Y
+;; - List containing gradient descent results and mini batches of X, T
+;;   and Y
 ;;
 ;; Sources:
 ;;
@@ -2063,14 +2109,14 @@
 
     ;; Build mini-batch random dataset.
     
-    ;; If p_m1 is higher than the number of rows in p_a1, replace m1 with the
-    ;; number of rows of p_a1.
+    ;; If p_m1 is higher than the number of rows in p_a1, replace m1
+    ;; with the number of rows of p_a1.
     (set! m1 p_m1)
     (cond ((> m1 (grsp-tm p_a1))
 	   (set! m1 (grsp-tm p_a1))))
 
-    ;; Create matrices of m1 rows and with the same number of cols as p_a1,
-    ;; p_a2 and p_a3.
+    ;; Create matrices of m1 rows and with the same number of cols as
+    ;; p_a1, p_a2 and p_a3.
     (set! a1 (grsp-matrix-create 0 m1 (grsp-tn p_a1)))
     (set! a2 (grsp-matrix-create 0 m1 (grsp-tn p_a2)))
     (set! a3 (grsp-matrix-create 0 m1 (grsp-tn p_a3)))

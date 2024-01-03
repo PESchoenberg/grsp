@@ -1,27 +1,28 @@
-;; =============================================================================
+;; =========================================================================
 ;;
 ;; grsp4.scm
 ;;
 ;; Complex functions and complex-related code.
 ;;
-;; =============================================================================
+;; =========================================================================
 ;;
 ;; Copyright (C) 2020 - 2024 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
-;;   it under the terms of the GNU Lesser General Public License as published by
-;;   the Free Software Foundation, either version 3 of the License, or
-;;   (at your option) any later version.
+;;   it under the terms of the GNU Lesser General Public License as
+;;   published by the Free Software Foundation, either version 3 of the
+;;   License, or (at your option) any later version.
 ;;
 ;;   This program is distributed in the hope that it will be useful,
 ;;   but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 ;;   GNU Lesser General Public License for more details.
 ;;
-;;   You should have received a copy of the GNU Lesser General Public License
-;;   along with this program. If not, see <https://www.gnu.org/licenses/>.
+;;   You should have received a copy of the GNU Lesser General Public
+;;   License along with this program. If not, see
+;;   <https://www.gnu.org/licenses/>.
 ;;
-;; =============================================================================
+;; =========================================================================
 
 
 ;;;; General notes:
@@ -33,16 +34,17 @@
 ;; See code of functions used and their respective source files for more
 ;; credits and references.
 ;;
-;; - [1] Gnu.org. 2020. Complex (Guile Reference Manual). [online] Available at:
+;; - [1] Gnu.org. 2020. Complex (Guile Reference Manual). [online]
+;;   Available at:
 ;;   https://www.gnu.org/software/guile/manual/html_node/Complex.html
 ;;   [Accessed 24 July 2020].
 ;; - [2] En.wikipedia.org. 2020. Mandelbrot Set. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Mandelbrot_set [Accessed 4 October 2020].
-;; - [3] En.wikipedia.org. 2020. Feigenbaum Constants. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Feigenbaum_constants
-;;   [Accessed 5 October 2020].
-;; - [4] En.wikipedia.org. 2020. Dirichlet Eta Function. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Dirichlet_eta_function
+;; - [3] En.wikipedia.org. 2020. Feigenbaum Constants. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Feigenbaum_constants [Accessed 5
+;;   October 2020].
+;; - [4] En.wikipedia.org. 2020. Dirichlet Eta Function. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Dirichlet_eta_function
 ;;   [Accessed 10 November 2020].
 ;; - [5] En.wikipedia.org. 2020. Gamma Function. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Gamma_function [Accessed 24 November
@@ -51,22 +53,25 @@
 ;;   https://en.wikipedia.org/wiki/Fibonacci_number#Binet's_formula
 ;;   [Accessed 5 November 2020].
 ;; - [7] En.wikipedia.org. 2020. Digamma Function. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Digamma_function [Accessed 1 December 2020].
-;; - [8] En.wikipedia.org. 2020. Incomplete Gamma Function. [online] Available
-;;   at: https://en.wikipedia.org/wiki/Incomplete_gamma_function
+;;   https://en.wikipedia.org/wiki/Digamma_function [Accessed 1 December
+;;   2020].
+;; - [8] En.wikipedia.org. 2020. Incomplete Gamma Function. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Incomplete_gamma_function
 ;;   [Accessed 9 December 2020].
-;; - [10] En.wikipedia.org. 2021. Confluent hypergeometric function. [online]
-;;   Available at:
+;; - [10] En.wikipedia.org. 2021. Confluent hypergeometric function.
+;;   [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Confluent_hypergeometric_function
 ;;   [Accessed 19 February 2021].
 ;; - [11] En.wikipedia.org. 2021. Error function - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Error_function
 ;;   [Accessed 23 August 2021].
-;; - [12] En.wikipedia.org. 2021. Riemann zeta function - Wikipedia. [online]
-;;   Available at: https://en.wikipedia.org/wiki/Riemann_zeta_function
+;; - [12] En.wikipedia.org. 2021. Riemann zeta function - Wikipedia.
+;;   [online] Available at:
+;;   https://en.wikipedia.org/wiki/Riemann_zeta_function
 ;;   [Accessed 23 August 2021].
-;; - [13] En.wikipedia.org. 2021. Analytic continuation - Wikipedia. [online]
-;;   Available at: https://en.wikipedia.org/wiki/Analytic_continuation
+;; - [13] En.wikipedia.org. 2021. Analytic continuation - Wikipedia.
+;;   [online] Available at:
+;;   https://en.wikipedia.org/wiki/Analytic_continuation
 ;;   [Accessed 23 August 2021].
 ;; - [14] Mathworld.wolfram.com. 2021. Riemann Zeta Function -- from Wolfram
 ;;   MathWorld. [online] Available at:
@@ -81,7 +86,8 @@
 ;;   enciclopedia libre. [online] Available at:
 ;;   https://es.wikipedia.org/wiki/N%C3%BAmero_de_Bernoulli
 ;;   [Accessed 25 August 2021].
-;; - [17] En.wikipedia.org. 2022. Dual number - Wikipedia. [online] Available at
+;; - [17] En.wikipedia.org. 2022. Dual number - Wikipedia. [online]
+;;   Available at
 ;;   https://en.wikipedia.org/wiki/Dual_number [Accessed 24 February 2022].
 
 
@@ -157,8 +163,8 @@
     res1))
 
 
-;;;; grsp-complex-inv-real - Calculates the inverse of the real component of a
-;; complex number.
+;;;; grsp-complex-inv-real - Calculates the inverse of the real component
+;; of a complex number.
 ;;
 ;; Keywords:
 ;;
@@ -230,8 +236,9 @@
     res1))
 
 
-;;;; grsp-complex-sign - Returns a list containing boolean values indicating
-;; the signs of the real and imaginary parts of a complex number.
+;;;; grsp-complex-sign - Returns a list containing boolean values
+;; indicating the signs of the real and imaginary parts of a complex
+;; number.
 ;;
 ;; Keywords:
 ;;
@@ -248,7 +255,8 @@
 ;; - (-1 -1) if both components are negative.
 ;; - (-1 1) if the real component is negative and the imaginary positive or
 ;;   zero.
-;; - (1 -1) if the real component is positive and the imaginary is negative.
+;; - (1 -1) if the real component is positive and the imaginary is
+;;   negative.
 ;;
 ;; Sources:
 ;;
@@ -298,7 +306,8 @@
     res1))
 
 
-;;;; grsp-complex-mandelbrot - Quadratic map function for the Mandelbrot set.
+;;;; grsp-complex-mandelbrot - Quadratic map function for the Mandelbrot
+;; set.
 ;;
 ;; Keywords:
 ;;
@@ -325,8 +334,9 @@
     res1))
 
 
-;;;; grsp-complex-binet - Closed form expression of the Fibonacci sequence. It
-;; provides as a result the p_n1th value of the Fibonnaci series. 
+;;;; grsp-complex-binet - Closed form expression of the Fibonacci
+;; sequence. It provides as a result the p_n1th value of the Fibonnaci
+;; series. 
 ;;
 ;; Keywords:
 ;;
@@ -468,8 +478,8 @@
     res1))
 
 
-;;;; grsp-complex-gamma-weierstrass - Complex extension of the gamma function
-;; according to Weierstrass.
+;;;; grsp-complex-gamma-weierstrass - Complex extension of the gamma
+;; function according to Weierstrass.
 ;;
 ;; Keywords:
 ;;
@@ -530,7 +540,8 @@
     res1))
 
 
-;;;; grsp-complex-gamma - Calculates gamma using different representations. 
+;;;; grsp-complex-gamma - Calculates gamma using different
+;; representations. 
 ;;
 ;; Keywords:
 ;;
@@ -574,7 +585,8 @@
     res1))
 
 
-;;;; grsp-complex-pigamma - Pi Gauss function. Calculates gamma for p_z1 + 1.
+;;;; grsp-complex-pigamma - Pi Gauss function. Calculates gamma for p_z1
+;; + 1.
 ;;
 ;; Keywords:
 ;;
@@ -800,7 +812,10 @@
     (let loop ((i1 0))
       (if (<= i1 p_n1)
 	  (begin (set! res3 (+ res3 (/ (expt p_z2 i1)
-				       (grsp-complex-gamma p_b2 p_s1 (+ p_z1 i1 1) p_n1))))
+				       (grsp-complex-gamma p_b2
+							   p_s1
+							   (+ p_z1 i1 1)
+							   p_n1))))
 		 (loop (+ i1 1)))))
     
     ;; Compose results.
@@ -925,7 +940,8 @@
     res1))
     
 
-;;;; grsp-complex-kummer-ch1 - Kummer's complex hypergeometric function (M).
+;;;; grsp-complex-kummer-ch1 - Kummer's complex hypergeometric function
+;; (M).
 ;;
 ;; Keywords:
 ;;
@@ -1207,7 +1223,11 @@
 		 ((= r1 0) ; [0, 0].
 		  (set! res1 -0.5))))
 	  ((< r1 0) ; (-inf.0, 0).
-	   (set! res1 (grsp-complex-riemann-fezeta p_b2 p_s1 z1 p_m1 p_m2))))
+	   (set! res1 (grsp-complex-riemann-fezeta p_b2
+						   p_s1
+						   z1
+						   p_m1
+						   p_m2))))
     
     res1))
 
@@ -1345,8 +1365,8 @@
     res1))
 
 
-;;;; grsp-complex-bernoulli-number - Bernoulli numbers calculated by means of
-;; Riemann's Zeta function.
+;;;; grsp-complex-bernoulli-number - Bernoulli numbers calculated by
+;; means of Riemann's Zeta function.
 ;;
 ;; Keywords:
 ;;
@@ -1388,9 +1408,9 @@
 	(z1 0.0)
 	(z2 0.0))
 
-    ;; Bernoulli's number index argument (p_n2) should be an integer, but our
-    ;; Riemann zeta will reat it as a complex with an imaginary part equal to
-    ;; zero.
+    ;; Bernoulli's number index argument (p_n2) should be an integer,
+    ;; but our Riemann zeta will reat it as a complex with an imaginary
+    ;; part equal to zero.
     (set! z2 p_n2)
     (set! z1 (/ z2 2))
 
@@ -1402,8 +1422,8 @@
     ;; Compose results.
     (set! res1 (* res2 (/ res3 res4)))
 
-    ;; Patch for Z(1) = +inf.0, B(1) = -0.5, which would otherwise give +inf.0 
-    ;; as a result.
+    ;; Patch for Z(1) = +inf.0, B(1) = -0.5, which would otherwise give
+    ;; +inf.0 as a result.
     (cond ((= z2 1)
 	   (set! res1 -0.5))) ;; Z(0).
     
@@ -1431,9 +1451,9 @@
 
     res1))
 
-;;;; grsp-mr - Returns a complex number in rectangular form with real p_n1 and
-;; imaginary component p_n2. This is a wrapper for Guile's make-rectangular
-;; function but with a shorter syntax.
+;;;; grsp-mr - Returns a complex number in rectangular form with real
+;; p_n1 and imaginary component p_n2. This is a wrapper for Guile's
+;; make-rectangular function but with a shorter syntax.
 ;;
 ;; Keywords:
 ;;

@@ -1,27 +1,28 @@
-;; =============================================================================
+;; =========================================================================
 ;;
 ;; grsp11.scm
 ;;
 ;; List algebra and list-related functions.
 ;;
-;; =============================================================================
+;; =========================================================================
 ;;
 ;; Copyright (C) 2018 - 2024 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
-;;   it under the terms of the GNU Lesser General Public License as published by
-;;   the Free Software Foundation, either version 3 of the License, or
-;;   (at your option) any later version.
+;;   it under the terms of the GNU Lesser General Public License as
+;;   published by the Free Software Foundation, either version 3 of the
+;;   License, or (at your option) any later version.
 ;;
 ;;   This program is distributed in the hope that it will be useful,
 ;;   but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 ;;   GNU Lesser General Public License for more details.
 ;;
-;;   You should have received a copy of the GNU Lesser General Public License
-;;   along with this program. If not, see <https://www.gnu.org/licenses/>.
+;;   You should have received a copy of the GNU Lesser General Public
+;;   License along with this program. If not, see
+;;   <https://www.gnu.org/licenses/>.
 ;;
-;; =============================================================================
+;; =========================================================================
 
 
 ;;;; General notes:
@@ -33,13 +34,14 @@
 ;; See code of functions used and their respective source files for more
 ;; credits and references.
 ;;
-;; - [1] The simplest sorting algorithm (you've never heard of) (2022) YouTube.
-;;   YouTube. Available at:
-;;   https://www.youtube.com/watch?v=_W0yUJlscRA (Accessed: February 6, 2023). 
+;; - [1] The simplest sorting algorithm (you've never heard of) (2022)
+;;   YouTube. YouTube. Available at:
+;;   https://www.youtube.com/watch?v=_W0yUJlscRA (Accessed: February 6,
+;;   2023). 
 ;; - [2] ArXiv:2110.01111v1 [cs.DS] 3 Oct 2021 (no date). Available at:
 ;;   https://arxiv.org/pdf/2110.01111.pdf (Accessed: February 6, 2023). 
-;; - [3] Double-ended queue (2022) Wikipedia. Wikimedia Foundation. Available
-;;   at: https://en.wikipedia.org/wiki/Double-ended_queue
+;; - [3] Double-ended queue (2022) Wikipedia. Wikimedia Foundation.
+;;   Available at: https://en.wikipedia.org/wiki/Double-ended_queue
 ;;   (Accessed: February 8, 2023). 
 
 
@@ -81,10 +83,11 @@
 	    grsp-lal-deletee))
 
 
-;;;; grsp-lal-rel - Replace element in list. Replace element p_j1 of list p_l1
-;; with value p_n1 if condition p_s1 between p_n1 and element p_j1 is met. This
-;; function tests and replaces  if applicable- one single element of p_l1. To
-;; test and replace al elements of p_l1 with this method, use grsp-lal-rfl.
+;;;; grsp-lal-rel - Replace element in list. Replace element p_j1 of list
+;; p_l1 with value p_n1 if condition p_s1 between p_n1 and element p_j1 is
+;; met. This function tests and replaces  if applicable- one single element
+;; of p_l1. To test and replace al elements of p_l1 with this method, use
+;; grsp-lal-rfl.
 ;;
 ;; Keywords:
 ;;
@@ -140,11 +143,11 @@
     res1))
 
 
-;;;; grsp-lal-rfl - Replaces full list. Evaluates elements of list p_l1 with
-;; regards to value p_n1. If condition p_s1 between p_n1 and an element of the
-;; list is met, then replace that element with value p_n1. This function tests
-;; and replaces - if applicable - all elements of list p_l1. In order to test
-;; and replae a single element use grsp-lal-rel.
+;;;; grsp-lal-rfl - Replaces full list. Evaluates elements of list p_l1
+;; with regards to value p_n1. If condition p_s1 between p_n1 and an
+;; element of the list is met, then replace that element with value p_n1.
+;; This function tests and replaces - if applicable - all elements of list
+;; p_l1. In order to test and replae a single element use grsp-lal-rel.
 ;;
 ;; Keywords:
 ;;
@@ -182,8 +185,8 @@
     res1))
 
 
-;;;; grsp-lal-leql - Returns #t if lists p_l1 and p_l2 are of the same length,
-;; #f otherwise.
+;;;; grsp-lal-leql - Returns #t if lists p_l1 and p_l2 are of the same
+;; length, #f otherwise.
 ;;
 ;; Keywords:
 ;;
@@ -207,9 +210,9 @@
     res1))
 
 
-;;;; grsp-lal-leqe - Returns #t if element n1 of list p_l1 is equal to element
-;; n1 of p_l2 in all instances. That is, the function returns #t if both lists
-;; are equal.
+;;;; grsp-lal-leqe - Returns #t if element n1 of list p_l1 is equal to
+;; element n1 of p_l2 in all instances. That is, the function returns #t
+;; if both lists are equal.
 ;;
 ;; Keywords:
 ;;
@@ -292,15 +295,17 @@
 ;;   - "#expt": applies expt function to each element of p_l1.
 ;;   - "#max": applies max function to each element of p_l1.
 ;;   - "#min": applies min function to each element of p_l1.
-;;   - "#rw": replace all elements of p_l1 with p_v1 regardless of their value.
-;;   - "#rprnd": replace all elements of p_l1 with pseudo random numbers in a
-;;      normal distribution with mean 0.0 and standard deviation equal to p_v1.
-;;   - "#si": applies (grsp-complex-inv "#si" z1) to each element z1 of p_l1
-;;     (complex conjugate).
-;;   - "#is": applies (grsp-complex-inv "#is" z1) to each element z1 of p_l1
-;;     (sign inversion of real element of complex number).
-;;   - "#ii": applies (grsp-complex-inv "#ii" z1) to each element z1 of p_l1
-;;     (sign inversion of both elements of a complex number).
+;;   - "#rw": replace all elements of p_l1 with p_v1 regardless of their
+;;     value.
+;;   - "#rprnd": replace all elements of p_l1 with pseudo random numbers
+;;     in a  normal distribution with mean 0.0 and standard deviation
+;;     equal to p_v1.
+;;   - "#si": applies (grsp-complex-inv "#si" z1) to each element z1 of
+;;     p_l1 (complex conjugate).
+;;   - "#is": applies (grsp-complex-inv "#is" z1) to each element z1 of
+;;     p_l1 (sign inversion of real element of complex number).
+;;   - "#ii": applies (grsp-complex-inv "#ii" z1) to each element z1 of
+;;     p_l1 (sign inversion of both elements of a complex number).
 ;;
 ;; - p_l1: list.
 ;; - p_v1: scalar value.
@@ -356,9 +361,9 @@
 ;;
 ;; Notes:
 ;;
-;; - This function does not validate the dimensionality or boundaries of the 
-;;   lists involved; the user or an additional shell function should take 
-;;   care of that.
+;; - This function does not validate the dimensionality or boundaries of
+;;   the lists involved; the user or an additional shell function should
+;;   take care of that.
 ;; - Both lists should contain numeric elements.
 ;; - See grsp-matrix-opew.
 ;;
@@ -409,9 +414,9 @@
 ;;
 ;; Notes:
 ;;
-;; - This function does not validate the dimensionality or boundaries of the 
-;;   lists involved; the user or an additional shell function should take 
-;;   care of that.
+;; - This function does not validate the dimensionality or boundaries of
+;;   the lists involved; the user or an additional shell function should
+;;   take care of that.
 ;; - Both lists should contain numeric elements.
 ;; - See grsp-matrix-opew.
 ;; - This function works as a convenience wrapper for par-map; it is not
@@ -442,8 +447,8 @@
     res1))
 	
 
-;;;; grsp-lal-mutation - Produces random mutations in the values of elements 
-;; of list p_l1.
+;;;; grsp-lal-mutation - Produces random mutations in the values of
+;; elements of list p_l1.
 ;;
 ;; Keywords:
 ;;
@@ -485,8 +490,8 @@
     res1))
 
 
-;;;; grsp-lal-dev - Display, enumerated vertically. Displays list elements, each
-;; on a different line.
+;;;; grsp-lal-dev - Display, enumerated vertically. Displays list
+;; elements, each on a different line.
 ;;
 ;; Keywords:
 ;;
@@ -550,15 +555,16 @@
 		 (set! s2 (list-ref p_l2 j1))
 		 
 		 (cond ((equal? p_b1 #t)
-			(pres2 (strings-append (list s1 s2) 1) (list-ref p_l1 j1)))
+			(pres2 (strings-append (list s1 s2) 1)
+			       (list-ref p_l1 j1)))
 		       (else (pres2 s2 (list-ref p_l1 j1))))
 		 (loop (+ j1 1)))))))
 
 
 ;;;; grsp-lal-subcpy - Extracts a block or sub list from list p_l1. The
-;; process is not destructive with regards to p_l1. The user is responsible for
-;; providing correct boundaries since the function does not check those
-;; parameters in relation to p_l1.
+;; process is not destructive with regards to p_l1. The user is
+;; responsible for providing correct boundaries since the function does
+;; not check those parameters in relation to p_l1.
 ;;
 ;; Keywords:
 ;;
@@ -602,7 +608,8 @@
 ;;
 ;; - p_l1: list.
 ;; - p_l2: list.
-;; - p_n1: element number of p_l1 where to place the initial element of p_l2.
+;; - p_n1: element number of p_l1 where to place the initial element of
+;;   p_l2.
 ;;
 ;; Output:
 ;;
@@ -627,7 +634,8 @@
     res1))
 
 
-;;;; grsp-lal-is-nonnegative - Returns #t if p_l1 contains only values >= 0.
+;;;; grsp-lal-is-nonnegative - Returns #t if p_l1 contains only values
+;; >= 0.
 ;;
 ;; Keywords:
 ;;
@@ -707,7 +715,8 @@
     res1))
 
 
-;;;; grsp-lal-total-element - Counts the number of ocurrences of p_n1 in p_l1.
+;;;; grsp-lal-total-element - Counts the number of ocurrences of p_n1 in
+;; p_l1.
 ;;
 ;; Keywords:
 ;;
@@ -809,9 +818,9 @@
 
 
 ;;;; grsp-lal-supp - Given list p_l1 with n elements, it returns a
-;; list that contains one instance per each element value contained in p_11.
-;; That is, it elimitates repeated instances of the elements of p_l1 and
-;; returns its domain subset.
+;; list that contains one instance per each element value contained in
+;; p_11. That is, it elimitates repeated instances of the elements of
+;; p_l1 and returns its domain subset.
 ;;
 ;; Keywords:
 ;;
@@ -847,7 +856,8 @@
 ;;
 ;; Output:
 ;;
-;; - Returns #t if both lists have the same number of elements; #f otherwise.
+;; - Returns #t if both lists have the same number of elements; #f
+;; otherwise.
 ;;
 (define (grsp-lal-same-dims p_l1 p_l2)
   (let ((res1 #f))
@@ -1078,7 +1088,9 @@
     (let loop ((j1 0))
       (if (<= j1 hn)
 
-	  (begin (set! s1 (strings-append (list (grsp-n2s j1) (list-ref res1 j1)) 1))
+	  (begin (set! s1 (strings-append (list (grsp-n2s j1)
+						(list-ref res1 j1))
+					  1))
 		 (list-set! res1 j1 s1)
 		 
 		 (loop (+ j1 1)))))
@@ -1116,7 +1128,10 @@
     (set! a2 (grsp-my2ms a1))
 
     (cond ((equal? p_s1 "#define")
-	   (set! res1 (strings-append (list "(define " p_s2 " (list" ) 0)))
+	   (set! res1 (strings-append (list "(define "
+					    p_s2
+					    " (list" )
+				      0)))
 	  ((equal? p_s1 "#set!")
 	   (set! res1 (strings-append (list "(set! " p_s2 " (list" ) 0))))
     
@@ -1124,7 +1139,10 @@
     (let loop ((j1 (grsp-ln a2)))
       (if (<= j1 (grsp-hn a2))
 
-	  (begin (set! res1 (strings-append (list res1 " " (array-ref a2 0 j1)) 0))
+	  (begin (set! res1 (strings-append (list res1
+						  " "
+						  (array-ref a2 0 j1))
+					    0))
 		 
 		 (loop (+ j1 1)))))
 
@@ -1159,7 +1177,8 @@
       (if (<= j1 hn)
 
 	  (begin (cond ((equal? (equal? j1 p_j1) #f)
-			(set! res1 (append res1 (list (list-ref p_l1 j1))))))
+			(set! res1 (append res1
+					   (list (list-ref p_l1 j1))))))
 		 
 		 (loop (+ j1 1)))))
     
