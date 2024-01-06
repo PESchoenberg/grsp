@@ -27,7 +27,7 @@
 ;; =========================================================================
 
 
-;;;; General  notes:
+;;;; General notes:
 ;;
 ;; - Read sources for limitations on function parameters.
 ;; - grsp3 provides some level of matrix algebra functionality for Guile,
@@ -3159,7 +3159,8 @@
 	   ;; Delete row, if applicable.
 	   (cond ((equal? b1 #t)
 
-		  ;; Delete row where the p_n1th col element has value p_n2.
+		  ;; Delete row where the p_n1th col element has value
+		  ;; p_n2.
 		  (set! res1 (grsp-matrix-subdel "#Delr" res1 i1))
 		  (set! b1 #f)
 
@@ -3658,8 +3659,8 @@
 ;;
 ;; Output:
 ;;
-;; - Note that the function does not return a value but modifies the values of
-;;   elements in one matrix.
+;; - Note that the function does not return a value but modifies the
+;;   values of elements in one matrix.
 ;;
 ;; Sources:
 ;;
@@ -5185,7 +5186,8 @@
 ;;
 ;; Keywords:
 ;;
-;; - functions, algebra, matrix, matrices, vectors, intervals, mean, average
+;; - functions, algebra, matrix, matrices, vectors, intervals, mean,
+;;   average
 ;;
 ;; Parameters:
 ;;
@@ -6633,7 +6635,6 @@
     (set! n3 -inf.0)
     (set! n4 +inf.0)
 
-
     ;; First loop.
     (let loop ((j1 (grsp-ln res1)))
       (if (<= j1 (grsp-hn res1))
@@ -6656,7 +6657,11 @@
 		 (loop (+ j1 1)))))
     
     ;; Compose results.
-    (set! res1 (grsp-matrix-row-select "#>" (grsp-matrix-transpose res1) 0 n3))
+    (set! res1 (grsp-matrix-row-select "#>"
+				       (grsp-matrix-transpose
+					res1)
+				       0
+				       n3))
     (set! res1 (grsp-matrix-row-select "#<" res1 0 n4))
     (set! res1 (grsp-matrix-transposer res1 3))
 
@@ -7288,7 +7293,10 @@
     (let loop ((j2 (grsp-ln res2)))
       (if (<= j2 (grsp-hn res2))
 
-	  (begin (set! res1 (grsp-matrix-row-deletev res1 (array-ref res2 0 j2)))
+	  (begin (set! res1 (grsp-matrix-row-deletev res1
+						     (array-ref res2
+								0
+								j2)))
 		 
 		 (loop (+ j2 1)))))
     
@@ -12181,8 +12189,11 @@
 		  ;;(set! a1 (grsp-matrix-editu a1 (grsp-lm a1) p_l2))))
 	   ;; ***
 	   ;; Display matrix.
+	   (grsp-color-set "fgreen")
 	   (grsp-matrix-displaytms a1 p_l1)
+	   (grsp-color-set "fcyan")
 	   (grsp-ldl (gconsts "01234") 0 0)
+	   (grsp-color-set "fdefault")
 	   (set! n1 (grsp-askn "? "))
 
 	   (cond ((equal? n1 0)
@@ -13025,6 +13036,8 @@
     (set! a3 (grsp-my2ms a1))
     (set! a2 (grsp-matrix-displaytm a1))
     (grsp-ldl (gconsts "dam") 0 0)
+    (grsp-color-set "fgreen")
     (grsp-matrix-displayts a3 p_l1)
+    (grsp-color-set "fdefault")
 
     res1))

@@ -1,27 +1,28 @@
-;; =============================================================================
+;; =========================================================================
 ;; 
 ;; grsp12.scm
 ;;
 ;; Evolutionary and genetic functions.
 ;;
-;; =============================================================================
+;; =========================================================================
 ;;
 ;; Copyright (C) 2021 - 2024 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
-;;   it under the terms of the GNU Lesser General Public License as published by
-;;   the Free Software Foundation, either version 3 of the License, or
-;;   (at your option) any later version.
+;;   it under the terms of the GNU Lesser General Public License as
+;;   published by the Free Software Foundation, either version 3 of the
+;;   License, or (at your option) any later version.
 ;;
 ;;   This program is distributed in the hope that it will be useful,
 ;;   but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 ;;   GNU Lesser General Public License for more details.
 ;;
-;;   You should have received a copy of the GNU Lesser General Public License
-;;   along with this program. If not, see <https://www.gnu.org/licenses/>.
+;;   You should have received a copy of the GNU Lesser General Public
+;;   License along with this program. If not, see
+;;   <https://www.gnu.org/licenses/>.
 ;;
-;; =============================================================================
+;; =========================================================================
 
 
 ;;;; General notes:
@@ -33,8 +34,9 @@
 ;; See code of functions used and their respective source files for more
 ;; credits and references.
 ;;
-;; - [1] En.wikipedia.org. 2021. Differential evolution - Wikipedia. [online]
-;;   Available at: https://en.wikipedia.org/wiki/Differential_evolution
+;; - [1] En.wikipedia.org. 2021. Differential evolution - Wikipedia.
+;;   [online] Available at:
+;;   https://en.wikipedia.org/wiki/Differential_evolution
 ;;   [Accessed 21 October 2021].
 
 
@@ -49,14 +51,14 @@
 	    grsp-evo-mod1-evolve))
 
 
-;;;; grsp-evo-mod1-ff1 - Calculates the fitness of each individual as a measure
-;; of it attaining proximity to the problem's goal expressed as a succesive
-;; base operation p_s1 on all elements corresponding to columns contaiend in
-;; p_l1 of matrix p_a1. Differential evolution.
+;;;; grsp-evo-mod1-ff1 - Calculates the fitness of each individual as a
+;; measure of it attaining proximity to the problem's goal expressed as a
+;; succesive base operation p_s1 on all elements corresponding to columns
+;; contaiend in p_l1 of matrix p_a1. Differential evolution.
 ;;
 ;; Keywords:
 ;;
-;; - function, evolution, genetic, differential
+;; - function, evolution, genetic, differential, fitting
 ;;
 ;; Parameters:
 ;;
@@ -101,16 +103,18 @@
     (if (<= i1 hm1)
 	(begin (set! r1 (grsp-matrix-opio p_s1 p_a1 i1))
 	       (array-set! res1 r1 i1 p_n1)
-	       ;; Evaluate fitness as the inverse of absolute "distance" to the
-	       ;; goal (col 3 has fitness).
-	       (array-set! res1 (abs (/ 1 (- p_g1 (array-ref res1 i1 p_n1)))) i1 3)
+	       ;; Evaluate fitness as the inverse of absolute "distance"
+	       ;; to the goal (col 3 has fitness).
+	       (array-set! res1
+			   (abs (/ 1 (- p_g1 (array-ref res1 i1 p_n1))))
+			   i1 3)
 	       (loop (+ i1 1)))))
   
   res1))
 
 
-;;;; grsp-evo-mod1-pop-create - Creates a population matrix according to the
-;; following structure:
+;;;; grsp-evo-mod1-pop-create - Creates a population matrix according to
+;; the following structure:
 ;;
 ;; - Col 0: id.
 ;; - Col 1: status.
@@ -256,8 +260,8 @@
 	   
 	   (set! i1 (in i1)))
 
-    ;; At this point only the best solution attained should be returned (i.e.
-    ;; individual or row with highest fitness value).
+    ;; At this point only the best solution attained should be returned
+    ;; (i.e. individual or row with highest fitness value).
     (set! res1 (grsp-matrix-row-sort "#des" res1 3))
     (set! res1 (grsp-matrix-row-selectn res1 '(0)))  
     

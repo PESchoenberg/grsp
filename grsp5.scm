@@ -832,7 +832,8 @@
 ;; Parameters:
 ;;
 ;; - p_a1: matrix, instances of X.
-;; - p_a2: matrix, probabilities corresponding to each instance of X in p_a1.
+;; - p_a2: matrix, probabilities corresponding to each instance of X in
+;;   p_a1.
 ;;
 ;; Notes:
 ;;

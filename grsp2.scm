@@ -680,8 +680,8 @@
 ;;
 ;; Notes:
 ;;
-;; - This operation might have a significant impact on the performance of your 
-;;   computer due to its very fast function growth. Use with care.
+;; - This operation might have a significant impact on the performance of
+;;   your computer due to its very fast function growth. Use with care.
 ;;
 ;; Sources:
 ;;

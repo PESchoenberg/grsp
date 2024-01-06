@@ -88,7 +88,7 @@
 ;;   (Accessed: 29 July 2023).
 ;; - [14] https://www.gnu.org/software/guile/manual/html_node/Pipes.html
 ;; - [15] https://askubuntu.com/questions/859975/how-to-know-the-vertical-position-of-the-command-prompt
-
+;; - [16] https://www.codeproject.com/Articles/5329247/How-to-Change-Text-Color-in-a-Linux-Terminal
 
 (define-module (grsp grsp0)
   #:use-module (grsp grsp3)
@@ -188,7 +188,9 @@
 	    grsp-piped
 	    clearl
 	    grsp-clear-cup
-	    grsp-repos))
+	    grsp-repos
+	    grsp-color-set
+	    grsp-wrc))
 
 
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
@@ -1390,7 +1392,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - console, strings
+;; - console, strings, justification
 ;;
 ;; Parameters:
 ;;
@@ -2162,6 +2164,7 @@
 ;; Output:
 ;;
 ;; - String.
+;;
 (define (grsp-b2s p_b1)
   (let ((res1 ""))
 
@@ -2665,6 +2668,8 @@
 	(s1 "")
 	(s2 ""))
 
+    (grsp-color-set "fcyan")
+    
     ;; Present exit option in all cases.
     (grsp-ld "0 - Exit")
     
@@ -2682,6 +2687,8 @@
 		 
 		 (loop (+ j1 1)))))
 
+    (grsp-color-set "fdefault")
+    
     (set! res1 (grsp-ask "? "))
     
     res1))
@@ -2829,4 +2836,36 @@
 
   res1))
 
+;; grsp-color-set - Changes the terminal background and foregrond colors.
+;;
+;; Keyword:
+;;
+;; - terminal, colors
+;;
+;; Paramters:
+;;
+;; - p_s1: color identifier.
+;;
+;; Sources:
+;;
+;; - [16].
+;;
+(define (grsp-color-set p_s1)
+  (let ((s1 "")
+	(s2 "printf \"\\033[")
+	(s3 "m\""))
 
+    (set! s1 (grsp-n2s (gconstt p_s1)))
+    (system (strings-append (list s2 s1 s3) 0))))
+
+
+;;;; grsp-wrc - Displays a "wrong choice message."
+;;
+;; Keywords:
+;;
+;; - info, errors
+;;
+(define (grsp-wrc)
+  (grsp-color-set "fred")
+  (grsp-askn (gconsts "wrc"))
+  (grsp-color-set "fdefault"))

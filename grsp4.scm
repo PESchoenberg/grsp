@@ -1457,7 +1457,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - complex
+;; - complex, rectangle
 ;;
 ;; Parameters:
 ;;

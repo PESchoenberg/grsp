@@ -190,7 +190,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists, lenght, quantity
+;; - function, algebra, lists, lenght, quantity, listings
 ;;
 ;; Parameters:
 ;;
@@ -250,7 +250,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - function, algebra, lists
+;; - function, algebra, lists, data, structures
 ;;
 ;; Parameters;
 ;;

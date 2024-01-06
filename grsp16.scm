@@ -1,42 +1,44 @@
-;; =============================================================================
+;; =========================================================================
 ;;
 ;; grsp16.scm 
 ;;
 ;; Program creation related functions.
 ;;
-;; =============================================================================
+;; =========================================================================
 ;;
 ;; Copyright (C) 2021 - 2024 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
-;;   it under the terms of the GNU Lesser General Public License as published by
-;;   the Free Software Foundation, either version 3 of the License, or
-;;   (at your option) any later version.
+;;   it under the terms of the GNU Lesser General Public License as
+;;   published by the Free Software Foundation, either version 3 of the
+;;   License, or (at your option) any later version.
 ;;
 ;;   This program is distributed in the hope that it will be useful,
 ;;   but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 ;;   GNU Lesser General Public License for more details.
 ;;
-;;   You should have received a copy of the GNU Lesser General Public License
-;;   along with this program. If not, see <https://www.gnu.org/licenses/>.
+;;   You should have received a copy of the GNU Lesser General Public
+;;   License along with this program. If not, see
+;;   <https://www.gnu.org/licenses/>.
 ;;
-;; =============================================================================
+;; =========================================================================
 
 
 ;;;; General notes:
 ;;
 ;; - Read sources for limitations on function parameters.
-;; - These functions were developed to save some time when creating new code,
-;;   but they might also be useful for automatic code creation and self-
-;;   editing files.
+;; - These functions were developed to save some time when creating new
+;;   code, but they might also be useful for automatic code creation and
+;;   self-editing files.
 ;; - You may want to check if copyright and license info has been updated by
 ;;   means of other sources before using the texts provided here. Consider
 ;;   the info provided here regarding this issue as advisory but not
 ;;   final. The user is responsible for obtaining and using updated and
 ;;   appropriate license and copyright info whenever using these functions
 ;;   and procedures.
-;; - As a general note, be careful when constructing self-programmable systems.
+;; - As a general note, be careful when constructing self-programmable
+;;   systems.
 
 
 (define-module (grsp grsp16)
@@ -190,8 +192,8 @@
   (newlines 2))
 
 
-;;;; grsp-scm-defmod - GNU Guile module definition section for scm libraries
-;; writer.
+;;;; grsp-scm-defmod - GNU Guile module definition section for scm
+;; libraries writer.
 ;;
 ;; Keywords:
 ;;
@@ -272,8 +274,8 @@
     (close port2)))
 
 
-;;;; grsp-scm-create-prg-gpl3 - Creates an .scm program file according to user
-;; specifications under gpl3 license.
+;;;; grsp-scm-create-prg-gpl3 - Creates an .scm program file according
+;; to user specifications under gpl3 license.
 ;;
 ;; Keywords:
 ;;
@@ -334,8 +336,8 @@
 ;; - p_f1: text file containing license info.
 ;; - p_l1: list of the used modules as strings, i.e "(grsp grsp0)"
 ;;   "(grsp grsp1)"...
-;; - p_l2: list of the exported function names as strings, i.e "grsp-reqmod"
-;;   "grsp-defmod"...
+;; - p_l2: list of the exported function names as strings, i.e
+;;   "grsp-reqmod" "grsp-defmod"...
 ;; - p_l3: list of code of exported functions, i.e.
 ;;   (define grsp-fun1 p_s1 p_s2)...
 ;;
@@ -366,8 +368,8 @@
     (close port2)))
 
 
-;;;; grsp-scm-create-lib-gpl3 - Creates an empty .scm library file under gpl3
-;; license.
+;;;; grsp-scm-create-lib-gpl3 - Creates an empty .scm library file under
+;; gpl3 license.
 ;;
 ;; Keywords:
 ;;
@@ -383,8 +385,8 @@
 ;; - p_s6: string. Module definition.
 ;; - p_l1: list of the used modules as strings, i.e "(grsp grsp0)" "(grsp
 ;;   grsp1)"...
-;; - p_l2: list of the exported function names as strings, i.e "grsp-reqmod"
-;;   "grsp-defmod"...
+;; - p_l2: list of the exported function names as strings, i.e
+;;   "grsp-reqmod" "grsp-defmod"...
 ;; - p_l3: list of code of exported functions, i.e.
 ;;   (define grsp-fun1 p_s1 p_s2)...
 ;;
@@ -415,9 +417,9 @@
     (close port2)))
   
 
-;;;; grsp-scm-pbp - Creates a string appending p_s1, opening parenthesis, p_s2,
-;; closing parenthesis and p_s3. For example " " "(" "clear" ")" "\n", which
-;; leads to " (clear)\n".
+;;;; grsp-scm-pbp - Creates a string appending p_s1, opening parenthesis,
+;; p_s2, closing parenthesis and p_s3. For example " " "(" "clear" ")"
+;; "\n", which leads to " (clear)\n".
 ;;
 ;; Keywords:
 ;;

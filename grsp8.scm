@@ -1,40 +1,42 @@
-;; =============================================================================
+;; =========================================================================
 ;;
 ;; grsp8.scm
 ;;
 ;; Neural networks and network functions in general.
 ;;
-;; =============================================================================
+;; =========================================================================
 ;;
 ;; Copyright (C) 2018 - 2024 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
-;;   it under the terms of the GNU Lesser General Public License as published by
-;;   the Free Software Foundation, either version 3 of the License, or
-;;   (at your option) any later version.
+;;   it under the terms of the GNU Lesser General Public License as
+;;   published by the Free Software Foundation, either version 3 of the
+;;   License, or (at your option) any later version.
 ;;
 ;;   This program is distributed in the hope that it will be useful,
 ;;   but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 ;;   GNU Lesser General Public License for more details.
 ;;
-;;   You should have received a copy of the GNU Lesser General Public License
-;;   along with this program. If not, see <https://www.gnu.org/licenses/>.
+;;   You should have received a copy of the GNU Lesser General Public
+;;   License along with this program. If not, see
+;;   <https://www.gnu.org/licenses/>.
 ;;
-;; =============================================================================
+;; =========================================================================
 
 
 ;;;; General notes:
 ;;
 ;; - Read sources for limitations on function parameters.
 ;;
-;; - A grsp neural network is essentially a list of matrices that constitute a
-;;   database in itself according to the developments of file grsp3. The format
-;;   and structure of the matrices used in grsp8 (contained in the list
-;;   data structure just mentioned) is as follows:
+;; - A grsp neural network is essentially a list of matrices that
+;;   constitute a database in itself according to the developments of file
+;;   grsp3. The format and structure of the matrices used in grsp8
+;;   (contained in the list data structure just mentioned) is as follows:
 ;;
-;;   - Elem 0: nodes. Matrix. Each row of this matrix contains data representing
-;;     the properties and processes of a specific node of a neural network.
+;;   - Elem 0: nodes. Matrix. Each row of this matrix contains data
+;;     representing the properties and processes of a specific node of a
+;;     neural network.
 ;;
 ;;     - Col 0: id.
 ;;     - Col 1: status.
@@ -58,8 +60,8 @@
 ;;     - Col 9: weight.
 ;;     - Col 10: iter.
 ;;
-;;   - Elem 1: conns. Matrix. Each row contains data representing the properties
-;;     and processes of a specific connection between nodes.
+;;   - Elem 1: conns. Matrix. Each row contains data representing the
+;;     properties and processes of a specific connection between nodes.
 ;;
 ;;     - Col 0: id.
 ;;     - Col 1: status.
@@ -80,29 +82,31 @@
 ;;     - Col 8: iter.
 ;;     - Col 9: to layer pos.
 ;;
-;;   - Elem 2: count. Matrix. Each element of this table is a counter related
-;;     to a specific ann aspect.
+;;   - Elem 2: count. Matrix. Each element of this table is a counter
+;;     related to a specific ann aspect.
 ;;
 ;;     - Col 0: nodes id counter.
 ;;     - Col 1: conns id counter.
 ;;     - Col 2: epoch counter.
 ;;     - Col 3: layer counter.
 ;;
-;;   - Elem 3: idata. Matrix. Contains an instance of input data. This is how the
-;;     data should be passed to the network. Using this format it is possible to
-;;     modify the number of nodes interactively if and when an evolving
-;;     neural network is used. It is also possible to pass data interactively to
-;;     the network that does not go directly to the input nodes but modifies the
-;;     behavior of existing nodes.
+;;   - Elem 3: idata. Matrix. Contains an instance of input data. This is
+;;     how the data should be passed to the network. Using this format it
+;;     is possible to modify the number of nodes interactively if and when
+;;     an evolving neural network is used. It is also possible to pass
+;;     data interactively to the network that does not go directly to the
+;;     input nodes but modifies the behavior of existing nodes.
 ;;
 ;;     - Col 0: id of the receptive node or connection.
 ;;     - Col 1: number that corresponds to the column in the nodes or conns
 ;;       matrix in which for the row whose col 0 is equal to the id value
-;;       passed in col 0 of the idata matrix the input value will be stored.
+;;       passed in col 0 of the idata matrix the input value will be
+;;       stored.
 ;;     - Col 2: number.
-;;     - Col 3: type, the kind of element that will receive this data. This means
-;;       that based on any given idata row, a row in nodes or conns matrices will
-;;       be updated.
+;;     - Col 3: type, the kind of element that will receive this data.
+;;       This means
+;;       that based on any given idata row, a row in nodes or conns
+;;       matrices will be updated.
 ;;
 ;;       - 0: for node.
 ;;       - 1: for connection.
@@ -113,8 +117,8 @@
 ;;       - 1: epoch end.
 ;;       - 2: delete node or conn.
 ;;
-;;   - Elem 4: odata. Matrix. Contains am instance of data originated in the
-;;     output nodes of a neural network. I.e. this matrix contains the
+;;   - Elem 4: odata. Matrix. Contains am instance of data originated in
+;;     the output nodes of a neural network. I.e. this matrix contains the
 ;;     results of a network epoch.
 ;;
 ;;     - Col 0: id of each output node.
@@ -143,18 +147,20 @@
 ;;   - Elem 6: odtid. Matrix. Establishes a correlation between the data
 ;;     found on each epoch n on the output nodes of a neural network and
 ;;     the input data that will be found on the input nodes during epoch
-;;     (+ n 1), in the case that the network works by means of a feedback loop.
+;;     (+ n 1), in the case that the network works by means of a feedback
+;;     loop.
 ;;
 ;;     - Col 0: input idata layer pos (pos input).
 ;;     - Col 1: output odata layer pos (pos output).
 ;;
-;;   - Elem 7: datai. Contains data that should be passed to the input stream
-;;     (idata), coming from either the output stream (odata) or from a dataset.
+;;   - Elem 7: datai. Contains data that should be passed to the input
+;;     stream (idata), coming from either the output stream (odata) or
+;;     from a dataset.
 ;;
 ;;     - Col 0: id of the receptive node.
 ;;     - Col 1: number that corresponds to the column in the nodes matrix in
-;;       which for the row whose col 0 is equal to the id value passed in col 0
-;;       of the idata matrix the input value will be stored.
+;;       which for the row whose col 0 is equal to the id value passed in
+;;       col 0 of the idata matrix the input value will be stored.
 ;;     - Col 2: number; value to be passed.
 ;;     - Col 3: type, the kind of element that will receive this data.
 ;;
@@ -172,8 +178,8 @@
 ;;       - 1: training data.
 ;;       - 2: control data.
 ;;
-;;   - Elem 8: datao. Obtained values from each iteration or forward feed of
-;;     the network.
+;;   - Elem 8: datao. Obtained values from each iteration or forward feed
+;;     of the network.
 ;;
 ;;     - Col 0: id of each output node.
 ;;     - Col 1: layer.
@@ -190,8 +196,8 @@
 ;;       - 1: training data.
 ;;       - 2: control data.
 ;;
-;;   - Elem 9: datae. Expected and delta values. Expected values must be provided
-;;     along input training data in order to train the newtwork.
+;;   - Elem 9: datae. Expected and delta values. Expected values must be
+;;     provided along input training data in order to train the newtwork.
 ;;
 ;;     - Col 0: number (expected result).
 ;;     - Col 1: number (obtained result).
@@ -202,26 +208,28 @@
 ;; See code of functions used and their respective source files for more
 ;; credits and references.
 ;;
-;; - [1] En.wikipedia.org. 2021. Artificial Neural Network. [online] Available
-;;   at: https://en.wikipedia.org/wiki/Artificial_neural_network [Accessed 25
-;;   January 2021].
+;; - [1] En.wikipedia.org. 2021. Artificial Neural Network. [online]
+;;   Available at: https://en.wikipedia.org/wiki/Artificial_neural_network
+;;   [Accessed 25 January 2021].
 ;; - [2] En.wikipedia.org. 2021. Mathematics Of Artificial Neural Networks.
 ;;   [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Mathematics_of_artificial_neural_networks
 ;;   [Accessed 25 January 2021].
 ;; - [3] En.wikipedia.org. 2021. Artificial Neuron. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Artificial_neuron [Accessed 25 January 2021].
+;;   https://en.wikipedia.org/wiki/Artificial_neuron [Accessed 25
+;;   January 2021].
 ;; - [4] En.wikipedia.org. 2021. Perceptron. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Perceptron [Accessed 25 January 2021].
-;; - [5] En.wikipedia.org. 2021. Activation function. [online] Available at:
-;;   https://en.wikipedia.org/wiki/Activation_function [Accessed 28 January
-;;   2021].  
-;; - [6] Machine Learning From Scratch. 2021. Activation Functions Explained -
-;;   GELU, SELU, ELU, ReLU and more. [online] Available at:
+;; - [5] En.wikipedia.org. 2021. Activation function. [online] Available
+;;   at: https://en.wikipedia.org/wiki/Activation_function [Accessed 28
+;;   January 2021].  
+;; - [6] Machine Learning From Scratch. 2021. Activation Functions
+;;   Explained - GELU, SELU, ELU, ReLU and more. [online] Available at:
 ;;   https://mlfromscratch.com/activation-functions-explained [Accessed 28
 ;;   January 2021].
-;; - [7] En.wikipedia.org. 2021. Evolutionary algorithm - Wikipedia. [online]
-;;   Available at: https://en.wikipedia.org/wiki/Evolutionary_algorithm
+;; - [7] En.wikipedia.org. 2021. Evolutionary algorithm - Wikipedia.
+;;   [online] Available at:
+;;   https://en.wikipedia.org/wiki/Evolutionary_algorithm
 ;;   [Accessed 29 September 2021].
 ;; - [8] En.wikipedia.org. 2021. Karger's algorithm - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Karger%27s_algorithm
@@ -229,15 +237,15 @@
 ;; - [9] En.wikipedia.org. 2021. Las Vegas algorithm - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Las_Vegas_algorithm
 ;;   [Accessed 7 December 2021].
-;; - [10] Es.wikipedia.org. 2022. Teoría de grafos - Wikipedia, la enciclopedia
-;;   libre. [online] Available at:
+;; - [10] Es.wikipedia.org. 2022. Teoría de grafos - Wikipedia, la
+;;   enciclopedia libre. [online] Available at:
 ;;   https://es.wikipedia.org/wiki/Teor%C3%ADa_de_grafos
 ;;   [Accessed 21 February 2022].
 ;; - [11] En.wikipedia.org. 2022. Network science - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Network_science
 ;;   [Accessed 21 February 2022].
-;; - [12] En.wikipedia.org. 2022. Barabási–Albert model - Wikipedia. [online]
-;;   Available at:
+;; - [12] En.wikipedia.org. 2022. Barabási–Albert model - Wikipedia.
+;;   [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Barab%C3%A1si%E2%80%93Albert_model
 ;;   [Accessed 2 March 2022].
 ;; - [13] En.wikipedia.org. 2022. Link analysis - Wikipedia. [online]
@@ -246,8 +254,8 @@
 ;; - [16] En.wikipedia.org. 2022. Evolving network - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Evolving_network
 ;;   [Accessed 9 March 2022].
-;; - [17] En.wikipedia.org. 2022. Integrated information theory - Wikipedia.
-;;   [online] Available at:
+;; - [17] En.wikipedia.org. 2022. Integrated information theory -
+;;   Wikipedia. [online] Available at:
 ;;   https://en.wikipedia.org/wiki/Integrated_information_theory
 ;;   [Accessed 20 September 2022].
 ;; - [18] Evolutionary acquisition of Neural Topologies. (2022a). Retrieved
@@ -255,12 +263,15 @@
 ;;   https://en.wikipedia.org/wiki/Evolutionary_acquisition_of_neural_topologies 
 ;; - [19] Neuroevolution of augmenting topologies. (2023, March 20).
 ;;   https://en.wikipedia.org/wiki/Neuroevolution_of_augmenting_topologies 
-;; - [20] Wikimedia Foundation. (2023b, April 17). Catastrophic interference.
-;;   Wikipedia. https://en.wikipedia.org/wiki/Catastrophic_interference 
-;; - [21] Wikimedia Foundation. (2022a, September 6). Online machine learning.
-;;   Wikipedia. https://en.wikipedia.org/wiki/Online_machine_learning 
+;; - [20] Wikimedia Foundation. (2023b, April 17). Catastrophic
+;;   interference. Wikipedia.
+;;   https://en.wikipedia.org/wiki/Catastrophic_interference 
+;; - [21] Wikimedia Foundation. (2022a, September 6). Online machine
+;;   learning. Wikipedia.
+;;   https://en.wikipedia.org/wiki/Online_machine_learning 
 ;; - [22] Wikimedia Foundation. (2022a, July 10). Propagación hacia atrás.
-;;   Wikipedia. https://es.wikipedia.org/wiki/Propagaci%C3%B3n_hacia_atr%C3%A1s 
+;;   Wikipedia.
+;;   https://es.wikipedia.org/wiki/Propagaci%C3%B3n_hacia_atr%C3%A1s 
 
 
 (define-module (grsp grsp8)
@@ -347,12 +358,13 @@
 	    grsp-ann-node-info))
 
 
-;;;; grsp-ann-net-create-000 - Creates an empty neural network as a list data
-;; structure with basic, empty matrices as its elements.
+;;;; grsp-ann-net-create-000 - Creates an empty neural network as a list
+;; data structure with basic, empty matrices as its elements.
 ;;
 ;; Keywords:
 ;;
-;; - functions, ann, neural network, matrices, matrix, element, list, skeletal
+;; - functions, ann, neural network, matrices, matrix, element, list,
+;;   skeletal
 ;;
 ;; Parameters:
 ;;
@@ -366,30 +378,30 @@
 ;; - A list with ten elements, in this order.
 ;;
 ;;   - Elem 0: nodes, a matrix for the definition of nodes.
-;;   - Elem 1: conns, a matrix for the definition of connections between those
-;;     nodes.
+;;   - Elem 1: conns, a matrix for the definition of connections between
+;;     those nodes.
 ;;   - Elem 2: count, a 1x4 counter matrix that defines the id of nodes amd
 ;;     conns elements, as well as the epoch and layer counters.
 ;;   - Elem 3: idata, a data input matrix. This is what goes into an ann.
-;;   - Elem 4: odata, an output matrix. This is what comes out of the output
-;;     nodes of the ann.
-;;   - Elem 5: specs, a matrix that contains the structural specifications of
-;;     an ann.
-;;   - Elem 6: odtid, a matrix that provides feedback structure from odata to
-;;     idata.
+;;   - Elem 4: odata, an output matrix. This is what comes out of the
+;;     output nodes of the ann.
+;;   - Elem 5: specs, a matrix that contains the structural specifications
+;;     of an ann.
+;;   - Elem 6: odtid, a matrix that provides feedback structure from odata
+;;     to idata.
 ;;   - Elem 7; datai, results to be transfered to idata.
 ;;   - Elem 8: datao, obtained results.
 ;;   - Elem 9: datae, expected results, delta values.
 ;;
 ;; - In the case of active networs, these matrices will be filled with non-
-;;   trivial data. In this case, only trivial data will be placed inside those
-;;   matrices. This means that this fouction actually produces the structure
-;;   of a neural network, but not a network per se.
+;;   trivial data. In this case, only trivial data will be placed inside
+;;   those matrices. This means that this fouction actually produces the
+;;   structure of a neural network, but not a network per se.
 ;; - See grsp-ann-net-create-ffv in order to create a non-trivial or empty
 ;;   network.
 ;;
-;; - For more details on thse matrices, see "Format of matrices used in grsp8"
-;;   above.
+;; - For more details on thse matrices, see "Format of matrices used in
+;;   grsp8" above.
 ;;
 (define (grsp-ann-net-create-000 p_b1)
   (let ((res1 '())
@@ -438,9 +450,9 @@
     res1))
 
 
-;;;; grsp-ann-net-create-ffv - A convenience function that creates a forward
-;; feed network of a variable number of layers and elements contained in each
-;; layer.
+;;;; grsp-ann-net-create-ffv - A convenience function that creates a
+;; forward feed network of a variable number of layers and elements
+;; contained in each layer.
 ;;
 ;; Keywords:
 ;;
@@ -452,9 +464,9 @@
 ;;
 ;;   - #t if you want to return only the base ann list composed of matrices
 ;;     nodes, conns, count, idata, odata and empty specs.
-;;   - #f if you want to return also the associated matrix created during the
-;;     process as the sixth of the ann list, meaning that this option returns
-;;     full matrices:
+;;   - #f if you want to return also the associated matrix created during
+;;     the process as the sixth of the ann list, meaning that this option
+;;     returns full matrices:
 ;;
 ;;     - Elem 0: nodes.
 ;;     - Elem 1: conns.
@@ -486,8 +498,8 @@
 ;;   on each matrix used.
 ;; - A standard distribution is used for grsp-ann-net-mutate also.
 ;; - Further configuration of the ann might have to be done after using
-;;   this function to change parameters such as activation functions per node,
-;;   weights, etc.
+;;   this function to change parameters such as activation functions per
+;;   node, weights, etc.
 ;; - A network created by this function might be used as si or it could be
 ;;   modified later by adding or deleting nodes, connections, etc.
 ;; - See grsp-ann-net-create-000 to create a trivial network.
@@ -517,9 +529,9 @@
     (set! res3 (grsp-ann-net-create-ffn specs))
     (set! odtid (grsp-ann-matrix-create "odtid" 1))
     
-    ;; Mutate in order to randomize values as many tumes as defined by parameter
-    ;; p_n2. In order not t mutate the network, set p_n2 = 0 so that the 
-    ;; following cycle gets ignored entirely.
+    ;; Mutate in order to randomize values as many tumes as defined by
+    ;; parameter p_n2. In order not t mutate the network, set p_n2 = 0 so
+    ;; that the following cycle gets ignored entirely.
     (let loop ((i1 1))
       (if (<= i1 p_n2)
 	  (begin (set! res3 (grsp-ann-net-mutate res3
@@ -574,10 +586,11 @@
 ;;
 ;; Notes:
 ;;
-;; - TODO: according to (Open Assistant), these algorithms could be used for
-;;   optimization: genetic algorithms, simulated annealing, particle swarm
-;;   optimization, evolutionary computation, stochastic gradient descent,
-;;   batch gradient descent, online gradient descent, and Adaboost. 
+;; - TODO: according to (Open Assistant), these algorithms could be used
+;;   for optimization: genetic algorithms, simulated annealing, particle
+;;   swarm optimization, evolutionary computation, stochastic gradient
+;;   descent, batch gradient descent, online gradient descent, and
+;;   Adaboost. 
 ;;
 ;; Output:
 ;;
@@ -633,8 +646,8 @@
     res1))
 
 
-;;;; grsp-ann-net-miter-omth - Perform evaluations of the network p_n1 times
-;; (epochs).
+;;;; grsp-ann-net-miter-omth - Perform evaluations of the network p_n1
+;; times (epochs).
 ;;
 ;; Keywords:
 ;;
@@ -697,9 +710,9 @@
 		  (set! res1 (grsp-ann-net-nmutate-omth p_b1 res1))
 		  (set! i2 (in i2)))
 	   
-	   ;; Pass idata info. This means that new idata rows might be added to
-	   ;; the said matrix and eventually passed to the neural network on
-	   ;; each new iteration.
+	   ;; Pass idata info. This means that new idata rows might be
+	   ;; added to the said matrix and eventually passed to the neural
+	   ;; network on each new iteration.
 	   (set! idata (grsp-ann-get-matrix "idata" res1))
 
 	   ;; If verbosity is on, present epoch data.
@@ -724,10 +737,10 @@
     res1))
 
 
-;;;; grsp-ann-net-preb - Purges and rebuilds the net from discarded connections
-;; and nodes. While the network can survive and remain useful even if its
-;; entropy increases, purging it should be done in order to keep it to its
-;; minimum possible size for efficiency reasons.
+;;;; grsp-ann-net-preb - Purges and rebuilds the net from discarded
+;; connections and nodes. While the network can survive and remain useful
+;; even if its entropy increases, purging it should be done in order to
+;; keep it to its minimum possible size for efficiency reasons.
 ;;
 ;; Keywords:
 ;;
@@ -2238,13 +2251,19 @@
 						 (gconsts "RTb"))
 					   0))
 		  (display "\n")
-		  (grsp-matrix-display (grsp-matrix-row-select "#=" conns 4 id))
+		  (grsp-matrix-display (grsp-matrix-row-select "#="
+							       conns
+							       4
+							       id))
 		  (display "\n")
 		  (display (strings-append (list "\n +++ 1.1.4 "
 						 (gconsts "RFb"))
 					   0))
 		  (display "\n")
-		  (grsp-matrix-display (grsp-matrix-row-select "#=" conns 3 id))
+		  (grsp-matrix-display (grsp-matrix-row-select "#="
+							       conns
+							       3
+							       id))
 		  (display "\n")))
 
 	   ;; Update conns.
@@ -2255,13 +2274,19 @@
 						 (gconsts "RTa"))
 					   0))
 		  (display "\n")
-		  (grsp-matrix-display (grsp-matrix-row-select "#=" conns 4 id))
+		  (grsp-matrix-display (grsp-matrix-row-select "#="
+							       conns
+							       4
+							       id))
 		  (display "\n")
 		  (display (strings-append (list "\n +++ 1.1.6 "
 						 (gconsts "RFa"))
 					   0))
 		  (display "\n")
-		  (grsp-matrix-display (grsp-matrix-row-select "#=" conns 3 id))
+		  (grsp-matrix-display (grsp-matrix-row-select "#="
+							       conns
+							       3
+							       id))
 		  (display "\n")))
 
 	   ;; *** Test. Make conditional?
@@ -3364,9 +3389,8 @@
 	    (cond ((= (array-ref datai i1 4) 1)
 		   (set! b1 #t)))
 	    
-	    ;; Depending on the kind of target, select the rows from one table
-	    ;; or another whose id number (col 0) is equal to n0.
-	    ;;
+	    ;; Depending on the kind of target, select the rows from one
+	    ;; table or another whose id number (col 0) is equal to n0.
 	    (cond ((= n3 0) ;; Node.
 		   (set! res2 (grsp-matrix-row-select "#=" nodes 0 n0)))
 		  ((= n3 1) ;; Connection.
