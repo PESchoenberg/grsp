@@ -52,7 +52,8 @@
 ;;   (Accessed: March 6, 2023). 
 ;; - [5] Simulated annealing algorithm (no date) Simulated Annealing
 ;;   Algorithm - an overview | ScienceDirect Topics. Available at:
-;;   https://www.sciencedirect.com/topics/engineering/simulated-annealing-algorithm (Accessed: March 6, 2023).
+;;   https://www.sciencedirect.com/topics/engineering/simulated-annealing-algorithm
+;;   (Accessed: March 6, 2023).
 ;; - [6] Interpolation (2023) Wikipedia. Wikimedia Foundation. Available at:
 ;;   https://en.wikipedia.org/wiki/Interpolation (Accessed: March 8, 2023). 
 ;; - [7] Sheth, V. (2022) Implementing gradient descent in python from
@@ -1037,7 +1038,7 @@
 			       (expt (- (array-ref p_a1 0 (+ j1 1))
 					(expt (array-ref p_a1 0 j1) 2))
 				     2)))
-		 (set! res3 (expt (- 1 (array-ref p_a1 0 j1)) 2))	   
+		 (set! res3 (expt (- 1 (array-ref p_a1 0 j1)) 2)) 
 		 (set! res1 (+ res1 res2 res3))
 		 (loop (+ j1 1)))))
         

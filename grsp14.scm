@@ -1,32 +1,34 @@
-;; =============================================================================
+;; =========================================================================
 ;;
 ;; grsp14.scm
 ;;
 ;; Date and time related functions.
 ;;
-;; =============================================================================
+;; =========================================================================
 ;;
 ;; Copyright (C) 2021 - 2024 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
-;;   it under the terms of the GNU Lesser General Public License as published by
-;;   the Free Software Foundation, either version 3 of the License, or
-;;   (at your option) any later version.
+;;   it under the terms of the GNU Lesser General Public License as
+;;   published by the Free Software Foundation, either version 3 of the
+;;   License, or (at your option) any later version.
 ;;
 ;;   This program is distributed in the hope that it will be useful,
 ;;   but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 ;;   GNU Lesser General Public License for more details.
 ;;
-;;   You should have received a copy of the GNU Lesser General Public License
-;;   along with this program. If not, see <https://www.gnu.org/licenses/>.
+;;   You should have received a copy of the GNU Lesser General Public
+;;   License along with this program. If not, see
+;;   <https://www.gnu.org/licenses/>.
 ;;
-;; =============================================================================
+;; =========================================================================
 
 
 ;;;; General notes:
 ;;
 ;; - Read sources for limitations on function parameters.
+;;
 
 
 (define-module (grsp grsp14)
@@ -95,7 +97,8 @@
     res1))
 
 
-;;;; grsp-date-dl - Calculates the number of days in month p_m1 of year p_y1.
+;;;; grsp-date-dl - Calculates the number of days in month p_m1 of year
+;; p_y1.
 ;;
 ;; Keywords:
 ;;
@@ -125,8 +128,8 @@
     res1))
 
 
-;;;; grsp-date-nextm - Calculates the next month of month p_m1 in the same or
-;; next year, if applicable.
+;;;; grsp-date-nextm - Calculates the next month of month p_m1 in the
+;; same or next year, if applicable.
 ;;
 ;; Keywords:
 ;;
@@ -160,8 +163,8 @@
     res1))
 
 
-;;;; grsp-date-calc - Calculates dates corresponding to the last days of each
-;; month of the current trimester.
+;;;; grsp-date-calc - Calculates dates corresponding to the last days of
+;; each month of the current trimester.
 ;;
 ;; Keywords:
 ;;
@@ -169,8 +172,8 @@
 ;;
 ;; Output:
 ;;
-;; - A list of three lists corresponding to the present month, the next one and
-;;   the one following the next. Each one of hese lists contains:
+;; - A list of three lists corresponding to the present month, the next
+;;   one and the one following the next. Each one of hese lists contains:
 ;;
 ;;   - Elem 0: The number representing the month.
 ;;   - Elem 1: The year to which the month belongs to.
@@ -226,8 +229,8 @@
     res4))
 
 
-;;;; grsp-date-ldm3m - For the current date, finds the same day numbers of the
-;; two next months
+;;;; grsp-date-ldm3m - For the current date, finds the same day numbers
+;; of the two next months
 ;;
 ;; Keywords:
 ;;

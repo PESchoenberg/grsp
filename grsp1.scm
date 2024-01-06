@@ -34,6 +34,7 @@
 (define-module (grsp grsp1)
   #:use-module (grsp grsp0)
   #:export (gconst
+	    gconstt
 	    gconsts
 	    gconsten))
 	    
@@ -255,7 +256,7 @@
 	  ((equal? p_n1 "Asamkhyeya2")
 	   (set! res (expt 10 (* 7 (expt 2 103)))))  
 
-          ;; Asamkhyeya 4 [1].
+	  ;; Asamkhyeya 4 [1].
 	  ((equal? p_n1 "Asamkhyeya4")
 	   (set! res (expt 10 (* 10 (expt 2 104)))))  
 
@@ -477,9 +478,9 @@
 	  ((equal? p_n1 "Yobi")
 	   (set! res (expt 1024 8)))	  
 
-          ;; ------------------------------------------------------------- 
+	  ;; ------------------------------------------------------------- 
 	  
-          ;; Archimedes' constant. Pi [1][2].
+	  ;; Archimedes' constant. Pi [1][2].
 	  ((equal? p_n1 "A000796")
 	   (set! res 3.14159265358979323846))
 
@@ -546,7 +547,7 @@
 	  ;; Riemann Z(-1) [1][2][3].
 	  ((equal? p_n1 "Z-1")
 	   (set! res -1/12))
- 
+	  
 	  ;; Riemann Z(-2) [1][2][3].
 	  ((equal? p_n1 "Z-2")
 	   (set! res 0))
@@ -648,7 +649,7 @@
 	   (set! res 2.80777024202851936522))
 
 	  ;; Robbins constant. Delta3 [1][2].
-          ((equal? p_n1 "A073012")
+	  ((equal? p_n1 "A073012")
 	   (set! res 0.66170718226717623515))
 
 	  ;; Prevost constant. Psi [1][2].
@@ -787,7 +788,7 @@
 	  ((equal? p_n1 "A074785")
 	   (set! res 0.36651292058166432701))	       
 	  
- 	  	  	  	  	  	  
+	  
 	  ;; --------------------------------------------------------------
 	  ;; Physics
 
@@ -1121,6 +1122,91 @@
     res))
 
 
+;;;; gconstt - Constants, terminal colors.
+;;
+;; Keywords:
+;;
+;; - constants.
+;;
+;; Parameters:
+;;
+;; - p_s1: string, constant identifier.
+;;
+(define (gconstt p_s1)
+  (let ((res1 0))
+
+    (cond ((equal? p_s1 "fdefault")
+	   (set! res1 39))
+	  ((equal? p_s1 "bdefault")
+	   (set! res1 49))
+	  ((equal? p_s1 "fblack")
+	   (set! res1 30))
+	  ((equal? p_s1 "bblack")
+	   (set! res1 40))
+	  ((equal? p_s1 "fdred")
+	   (set! res1 31))
+	  ((equal? p_s1 "bdred")
+	   (set! res1 41))
+	  ((equal? p_s1 "fdgreen")
+	   (set! res1 32))
+	  ((equal? p_s1 "bdgreen")
+	   (set! res1 42))
+	  ((equal? p_s1 "fdyellow")
+	   (set! res1 33))
+	  ((equal? p_s1 "bdyellow")
+	   (set! res1 43))
+	  ((equal? p_s1 "fdblue")
+	   (set! res1 34))
+	  ((equal? p_s1 "bdblue")
+	   (set! res1 44))
+	  ((equal? p_s1 "fdmagenta")
+	   (set! res1 35))
+	  ((equal? p_s1 "bdmagenta")
+	   (set! res1 45))
+	  ((equal? p_s1 "fdcyan")
+	   (set! res1 36))
+	  ((equal? p_s1 "bdcyan")
+	   (set! res1 46))
+	  ((equal? p_s1 "flgrey")
+	   (set! res1 37))
+	  ((equal? p_s1 "blgrey")
+	   (set! res1 47))
+	  ((equal? p_s1 "fdgrey")
+	   (set! res1 90))
+	  ((equal? p_s1 "bdgrey")
+	   (set! res1 100))
+	  ((equal? p_s1 "fred")
+	   (set! res1 91))
+	  ((equal? p_s1 "bred")
+	   (set! res1 101))
+	  ((equal? p_s1 "fgreen")
+	   (set! res1 92))
+	  ((equal? p_s1 "bgreen")
+	   (set! res1 102))
+	  ((equal? p_s1 "forange")
+	   (set! res1 93))
+	  ((equal? p_s1 "borange")
+	   (set! res1 103))
+	  ((equal? p_s1 "fblue")
+	   (set! res1 94))
+	  ((equal? p_s1 "bblue")
+	   (set! res1 104))
+	  ((equal? p_s1 "fmagenta")
+	   (set! res1 95))
+	  ((equal? p_s1 "bmagenta")
+	   (set! res1 105))
+	  ((equal? p_s1 "fcyan")
+	   (set! res1 96))
+	  ((equal? p_s1 "bcyan")
+	   (set! res1 106))
+	  ((equal? p_s1 "fwhite")
+	   (set! res1 97))
+	  ((equal? p_s1 "bwhite")
+	   (set! res1 107)))	  
+    
+    res1))
+
+
 ;;;; gconsten - Constants, strings, in English.
 ;;
 ;; Keywords:
@@ -1232,8 +1318,8 @@
 	   (set! res1 "Updated p_a1 "))
 	  ((equal? p_s1 "Vpa2ae")
 	   (set! res1 "Value of p_a2 after eval "))		  
-	  ((equal? p_s1 "wrch")
+	  ((equal? p_s1 "wrc")
 	   (set! res1 "Wrong choice. Please try again.\n")))
- 
+    
     res1))
 	  	  

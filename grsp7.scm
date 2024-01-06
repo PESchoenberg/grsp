@@ -388,7 +388,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - geometry, pi
+;; - geometry, pi, approcimation
 ;;
 ;; Output:
 ;;

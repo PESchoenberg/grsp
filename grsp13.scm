@@ -1,27 +1,28 @@
-;; =============================================================================
+;; =========================================================================
 ;;
 ;; grsp13.scm
 ;;
 ;; Sequences and sequence-related code.
 ;;
-;; =============================================================================
+;; =========================================================================
 ;;
 ;; Copyright (C) 2021 - 2024 Pablo Edronkin (pablo.edronkin at yahoo.com)
 ;;
 ;;   This program is free software: you can redistribute it and/or modify
-;;   it under the terms of the GNU Lesser General Public License as published by
-;;   the Free Software Foundation, either version 3 of the License, or
-;;   (at your option) any later version.
+;;   it under the terms of the GNU Lesser General Public License as
+;;   published by the Free Software Foundation, either version 3 of the
+;;   License, or (at your option) any later version.
 ;;
 ;;   This program is distributed in the hope that it will be useful,
 ;;   but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 ;;   GNU Lesser General Public License for more details.
 ;;
-;;   You should have received a copy of the GNU Lesser General Public License
-;;   along with this program. If not, see <https://www.gnu.org/licenses/>.
+;;   You should have received a copy of the GNU Lesser General Public
+;;   License along with this program. If not, see
+;;   <https://www.gnu.org/licenses/>.
 ;;
-;; =============================================================================
+;; =========================================================================
 
 
 ;;;; General notes:
@@ -35,12 +36,12 @@
 ;; - [1] En.wikipedia.org. 2021. Collatz conjecture - Wikipedia. [online]
 ;;   Available at: https://en.wikipedia.org/wiki/Collatz_conjecture
 ;;   [Accessed 1 August 2021].
-;; - [2] Es.wikipedia.org. 2021. Serie (matemática) - Wikipedia, la enciclopedia
-;;   libre. [online] Available at:
+;; - [2] Es.wikipedia.org. 2021. Serie (matemática) - Wikipedia, la
+;;   enciclopedia libre. [online] Available at:
 ;;   https://es.wikipedia.org/wiki/Serie_(matem%C3%A1tica)
 ;;   [Accessed 6 August 2021].
-;; - [3] Es.wikipedia.org. 2021. Fracción continua - Wikipedia, la enciclopedia
-;;   libre. [online] Available at:
+;; - [3] Es.wikipedia.org. 2021. Fracción continua - Wikipedia, la
+;;   enciclopedia libre. [online] Available at:
 ;;   https://es.wikipedia.org/wiki/Fracci%C3%B3n_continua
 ;;   [Accessed 8 August 2021].
 ;; - [4] Es.wikipedia.org. 2021. Criterio del cociente - Wikipedia, la
@@ -84,8 +85,8 @@
 ;; Notes:
 ;;
 ;; - See grsp2.grsp-hailstone-number.
-;; - Stopping time is defined as the number of iterations required to reach the
-;;   value 1 (one) for the first time.
+;; - Stopping time is defined as the number of iterations required to
+;;   reach the value 1 (one) for the first time.
 ;;
 ;; Output:
 ;;
@@ -93,8 +94,8 @@
 ;;
 ;;   - Elem 0: p_n1.
 ;;   - Elem 1: p_m1.
-;;   - Elem 2: stopping time. Will return NaN if the function does not reach
-;;     value 1 (one) in p_m1 iterations.
+;;   - Elem 2: stopping time. Will return NaN if the function does not
+;;     reach value 1 (one) in p_m1 iterations.
 ;;   - Elem 3: a list containing the actual elements of the sequence.
 ;;
 ;; Sources:
@@ -347,7 +348,7 @@
 ;;
 ;; Keywords:
 ;;
-;; - numbers, sequences, pi
+;; - numbers, sequences, pi, series
 ;;
 ;; Parameters:
 ;;
