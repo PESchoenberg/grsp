@@ -5730,11 +5730,12 @@
 ;;   - "#<=".
 ;;   - "#!=".
 ;;   - "#=".
-;;   - "#eq".
+;;   - "#eq", string equals.
+;;   - "#ct", string contains.
 ;;
 ;; - p_a1: matrix.
 ;; - p_j1: column number.
-;; - p_n1: number.
+;; - p_n1: value.
 ;;
 ;; Output:
 ;;
@@ -5828,6 +5829,17 @@
 		       ((equal? p_s1 "#eq")
 			
 			(cond ((equal? n2 p_n1)			 
+			       (set! res2 (grsp-matrix-subexp res2 1 0))
+			       (set! hm2 (grsp-matrix-esi 2 res2))
+			       (set! res2 (grsp-matrix-subrep res2
+							      res3
+							      hm2
+							      ln1)))))
+
+
+		       ((equal? p_s1 "#ct")
+			
+			(cond ((equal? (equal? (string-contains n2 p_n1) #f) #f)
 			       (set! res2 (grsp-matrix-subexp res2 1 0))
 			       (set! hm2 (grsp-matrix-esi 2 res2))
 			       (set! res2 (grsp-matrix-subrep res2
