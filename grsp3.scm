@@ -509,7 +509,12 @@
 	    grsp-ms-create-col-headers
 	    grsp-ms-create-row-headers
 	    grsp-ms-pad-elements
-	    grsp-matrix-displaytms))
+	    grsp-matrix-displaytms
+	    grsp-matrix-row-subrepk
+	    grsp-matrix-row-numk
+	    grsp-matrix-subrepk
+	    grsp-matrix-row-subrepkl
+	    grsp-matrix-row-col-setk))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -7180,7 +7185,8 @@
     (let loop ((i1 (grsp-lm p_a1)))
       (if (<= i1 (grsp-hm p_a1))
 
-	  (begin (set! n2 (array-ref res2 i1 p_j1))
+	  ;;(begin (set! n2 (array-ref res2 i1 p_j1))
+	  (begin (set! n2 (array-ref res2 i1 0))
 		 
 		 (cond ((equal? p_s1 "#<")
 			
@@ -10605,7 +10611,7 @@
 ;;
 ;; Notes:
 ;;
-;; - This function should be used with care to avoid messing-up primarey
+;; - This function should be used with care to avoid messing-up primary
 ;;   keys.
 ;; - The function gives the choice to start at any row number in order to
 ;;   save time when assigning primary key values to new rows.
@@ -12194,15 +12200,9 @@
 
     (while (equal? b1 #t)
 
-	   ;; TODO: this requires a proper control of the row.
-	   ;; Assign default values if matrix has one row filled with
-	   ;; zeros, meaning that it has just been created.
-	   ;;(cond ((equal? (grsp-tm a1) 1)
-		  ;;(set! a1 (grsp-matrix-editu a1 (grsp-lm a1) p_l2))))
-	   ;; ***
 	   ;; Display matrix.
 	   (grsp-color-set "fgreen")
-	   (grsp-matrix-displaytms a1 p_l1)
+	   (grsp-matrix-displaytms a1 p_l1 p_l3)
 	   (grsp-color-set "fcyan")
 	   (grsp-ldl (gconsts "01234") 0 0)
 	   (grsp-color-set "fdefault")
@@ -12290,18 +12290,53 @@
 ;; Parameters:
 ;;
 ;; - p_a1: matrix, numeric.
+;; - p_3: string list, matrix properties.
 ;;
 ;; Output:
 ;;
 ;; - Matrix, datatypes of p_a1.
 ;;
-(define (grsp-matrix-displaytm p_a1)
-  (let ((res1 0))
+(define (grsp-matrix-displaytm p_a1 p_l3)
+  (let ((res1 0)
+	(a2 0)
+	(a3 0)
+	(b1 #t)
+	(s1 "")
+	(s2 " - ")
+	(n1 0)
+	(k1 0))
 
+    ;; Find out if there is a primary key, and if so, the corresponding
+    ;; column number.
+    (cond ((equal? (grsp-lal-esubstr p_l3 "#key") #f)
+	   (set! b1 #f))
+	  (else (set! n1 (grsp-lal-esubstr p_l3 "#key"))))
+
+    ;; If key is found build a string to inform the max key value found.
+    (cond ((equal? b1 #f)
+	   (set! a2 (grsp-matrix-row-minmax "#max" p_a1 n1))
+	   (set! k1 (array-ref a2 0 n1))
+	   (set! s1 (strings-append (list s2
+					  (gconsts "Mpkv")
+					  (grsp-n2s k1)
+					  " "
+					  (gconsts "ac")
+					  (grsp-n2s n1))
+				    0))))
+    
     (grsp-ldl (gconsts "dat") 0 0)
     (set! res1 (grsp-matrix-argstru p_a1))
     (grsp-matrix-display res1)
-
+    (grsp-ldl (strings-append (list (gconsts "Lr")
+				    (grsp-n2s (grsp-hm p_a1))
+				    s2
+				    (gconsts "Lc")
+				    (grsp-n2s (grsp-hn p_a1))
+				    s1)
+			      0)
+	      0
+	      0)
+    
     res1))
 
 
@@ -13035,8 +13070,9 @@
 ;;
 ;; - p_a1: matrix.
 ;; - p_l1: list of strings, column names or titles.
+;; - p_l3: list of strings, column properties.
 ;;
-(define (grsp-matrix-displaytms p_a1 p_l1)
+(define (grsp-matrix-displaytms p_a1 p_l1 p_l3)
   (let ((res1 0)
 	(a1 0)
 	(a2 0)
@@ -13044,12 +13080,223 @@
 
     ;; Safety copy.
     (set! a1 (grsp-matrix-cpy p_a1))
-    
+    ;; ***a
     (set! a3 (grsp-my2ms a1))
-    (set! a2 (grsp-matrix-displaytm a1))
+    (set! a2 (grsp-matrix-displaytm a1 p_l3))
     (grsp-ldl (gconsts "dam") 0 0)
     (grsp-color-set "fgreen")
     (grsp-matrix-displayts a3 p_l1)
     (grsp-color-set "fdefault")
 
     res1))
+
+
+;;;; grsp-matrix-subreprk - Copies row vector p_a2 to matrix p_a1 based
+;; on the primary key p_n1 and option p_b1.
+;;
+;; Keywords:
+;;
+;; - saving, copy, update, updating
+;;
+;; Parameters:
+;;
+;; - p_b1: boolean.
+;;
+;;   - #t: to add p_a2 as a new row in p_a1 if a row in p_a1 with the same
+;;     value as what p_a2 holds in col p_j1 is found.
+;;   - #f: otherwise.
+;;
+;; - p_a1: matrix.
+;; - p_a2: matrix.
+;; - p_j1: column number holding the primary key.
+;;
+;; Notes:
+;;
+;; - Both matrices should have the same structure in terms of number of
+;;   columns and primary keys.
+;;
+(define (grsp-matrix-row-subrepk p_b1 p_a1 p_a2 p_j1)
+  (let ((res1 0)
+	(i1 0)
+	(k1 0))
+
+    ;; Safety copy.
+    (set! res1 (grsp-matrix-cpy p_a1))
+
+    ;; Get key value.
+    (set! k1 (array-ref p_a2 0 p_j1))
+    
+    ;; Find row number.
+    (set! i1 (grsp-matrix-row-numk res1 p_j1 k1))
+
+    ;; Replace row if found. If not, add the row on request.
+    (cond ((>= i1 0)
+	   (set! res1 (grsp-matrix-subrep res1 p_a2 i1 (grsp-lm res1))))
+	  ((= i1 -1)
+
+	   (cond ((equal? p_b1 #t)
+		  (set! res1 (grsp-matrix-subadd res1 p_a2))))))
+    
+    res1))
+
+
+;;;; grsp-matrix-row-numk - Finds the row number in matrix p_a1
+;; corresponding to key p_v1 in column p_j1.
+;;
+;; Keywords:
+;;
+;; - primary, key, search, find
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix.
+;; - p_j1: key column.
+;; - p_v1: key value.
+;;
+;; Output:
+;;
+;; - Returns the row number of the first row where the key value
+;;   p_v1 in col p_j1 is found, if it exists.
+;; - Returns -1 if no row with key p_v1 is found
+;;
+(define (grsp-matrix-row-numk p_a1 p_j1 p_v1)
+  (let ((res1 -1))
+
+    ;; Row loop.
+    (let loop ((i1 (grsp-lm p_a1)))
+      (if (<= i1 (grsp-hm p_a1))
+
+	  (begin (cond ((equal? p_v1 (array-ref p_a1 i1 p_j1))
+			(set! res1 i1)
+			(set! i1 (grsp-hm p_a1))))
+		 
+		 (loop (+ i1 1)))))
+    
+    res1))
+
+
+;;;; grsp-matrix-subreprk - Copies each row of matrix p_a2 to matrix p_a1 based
+;; on the primary key p_n1 and option p_b1.
+;;
+;; Keywords:
+;;
+;; - saving, copy, update, updating
+;;
+;; Parameters:
+;;
+;; - p_b1: boolean.
+;;
+;;   - #t: to add p_a2 rows as new in p_a1 if a row in p_a1 with the same
+;;     values as what p_a2  rows hold in col p_j1.
+;;   - #f: otherwise.
+;;
+;; - p_a1: matrix.
+;; - p_a2: matrix.
+;; - p_j1: column number holding the primary key values.
+;;
+;; Notes:
+;;
+;; - Both matrices should have the same structure in terms of number of
+;;   columns and primary keys.
+;;
+(define (grsp-matrix-subrepk p_b1 p_a1 p_a2 p_j1)
+  (let ((res1 0))
+
+    ;; Safety copy.
+    (set! res1 (grsp-matrix-cpy p_a1))
+
+    ;; Cycle over p_a2 and process each row individually.
+    (let loop ((i2 (grsp-lm p_a2)))
+      (if (<= i2 (grsp-hm p_a2))
+
+	  (begin (set! res1 (grsp-matrix-row-subrepk p_b1
+						     res1
+						     p_a2
+						     p_j1))
+		 
+		 (loop (+ i2 1)))))    
+    
+    res1))
+
+
+;;;; grsp-matrix-subreprkl - Copies from a vector a2 to matrix p_a1 based
+;; on the primary key p_n1 and option p_b1 the values of elements of
+;; columns contained in list p_l1.
+;;
+;; Keywords:
+;;
+;; - saving, copy, update, updating
+;;
+;; Parameters:
+;;
+;; - p_b1: boolean.
+;;
+;;   - #t: to add p_a2 as a new row in p_a1 if a row in p_a1 with the same
+;;     value as what p_a2 holds in col p_j1 is found.
+;;   - #f: otherwise.
+;;
+;; - p_a1: matrix.
+;; - p_a2: matrix (horizontal vector).
+;; - p_j1: column number holding the primary key.
+;; - p_l1: list of column numbers to copy.
+;;
+;; Notes:
+;;
+;; - Both matrices should have the same structure in terms of number of
+;;   columns and primary keys.
+;;
+(define (grsp-matrix-row-subrepkl p_b1 p_a1 p_a2 p_j1 p_l1) 
+  (let ((res1 0)
+	(i1 0)
+	(k1 0))
+
+    ;; Safety copy.
+    (set! res1 (grsp-matrix-cpy p_a1))
+
+    ;; Get key value.
+    (set! k1 (array-ref p_a2 0 p_j1))
+    
+    ;; Find row number.
+    (set! i1 (grsp-matrix-row-numk res1 p_j1 k1))
+
+    ;; Replace row cols if found. If not, add the row on request.
+    (cond ((>= i1 0)
+
+	   ;; List loop.
+	   (let loop ((j1 0))
+	     (if (< j1 (length p_l1))
+
+		 (begin (array-set! res1 (array-ref p_a2 0 (list-ref p_l1 j1) i1 j1))
+			
+			(loop (+ j1 1)))))
+
+	  ((= i1 -1)
+
+	   (cond ((equal? p_b1 #t)
+		  (set! res1 (grsp-matrix-subadd res1 p_a2)))))))
+    
+    res1))
+
+
+;;;; grsp-matrix-row-col-setk - On matrix p_a1, at the row whose key
+;; value of column p_j1 is p_v2, place at col p_j2 value p_v2.
+;;
+;; Keywords:
+;;
+;; - saving, copy, update, updating
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix.
+;; - p_j1: column number, primary jkey.
+;; - p_v1: key value at p_j1.
+;; - p_j2: column of element to modify.
+;; - p_v2: value to enter at p_j2; at the row identified by key p_v1.
+;;
+(define (grsp-matrix-row-col-setk p_a1 p_j1 p_v1 p_j2 p_v2)
+  (let ((i2 0))
+   
+    (set! i2 (grsp-matrix-row-numk p_a1 p_j1 p_v1))
+    (array-set! p_a1 p_v2 i2 p_j2)))
+
+

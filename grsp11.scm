@@ -80,7 +80,8 @@
 	    grsp-lal-ll2l
 	    grsp-lal-ansl
 	    grsp-ly2code
-	    grsp-lal-deletee))
+	    grsp-lal-deletee
+	    grsp-lal-esubstr))
 
 
 ;;;; grsp-lal-rel - Replace element in list. Replace element p_j1 of list
@@ -1182,4 +1183,41 @@
 		 
 		 (loop (+ j1 1)))))
     
+    res1))
+
+
+;;;; grsp-lal-esubstr - Returns the number of element in a string list
+;; p_l1 where substring p_s1 is found.
+;;
+;; Keywords:
+;;
+;; - find. substrings
+;;
+;; Parameters:
+;;
+;; - p_l1: list of strings.
+;; - p_s2: substring.
+;;
+;; Output;
+;;
+;; - Number of string element containing substring p_l1.
+;; - #f if substring is not found at any element.
+;;
+(define (grsp-lal-esubstr p_l1 p_s2)
+  (let ((res1 #f)
+	(b1 #f)
+	(hn (- (length p_l1) 1)))
+
+    ;; List loop.
+    (let loop ((j1 0))
+      (if (<= j1 hn)
+
+	  (begin (set! b1 (string-contains (list-ref p_l1 j1) p_s2))
+		 
+		 (cond ((equal? (equal? b1 #f) #f)
+			(set! res1 j1)
+			(set! j1 (+ hn 2))))
+		 
+		 (loop (+ j1 1)))))
+        
     res1))
