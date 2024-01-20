@@ -514,7 +514,9 @@
 	    grsp-matrix-row-numk
 	    grsp-matrix-subrepk
 	    grsp-matrix-row-subrepkl
-	    grsp-matrix-row-col-setk))
+	    grsp-matrix-row-col-setk
+	    grsp-matrix-find-if-prkey-exists
+	    grsp-matrix-row-subexpk))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -12196,13 +12198,17 @@
 	(b1 #t))
 
     ;; Safety copy.
-    (set! a1 (grsp-matrix-cpy p_a1))
+    (set! res1 (grsp-matrix-cpy p_a1))
 
     (while (equal? b1 #t)
 
+	   ;; Clean the matrix of uncontrolled, induced types.
+	   (set! res1 (grsp-my2ms res1))
+	   (set! res1 (grsp-ms2my res1))
+	   
 	   ;; Display matrix.
 	   (grsp-color-set "fgreen")
-	   (grsp-matrix-displaytms a1 p_l1 p_l3)
+	   (grsp-matrix-displaytms res1 p_l1 p_l3)
 	   (grsp-color-set "fcyan")
 	   (grsp-ldl (gconsts "01234") 0 0)
 	   (grsp-color-set "fdefault")
@@ -12213,20 +12219,26 @@
 		 ((equal? n1 1)
 		  (set! i1 (grsp-askn (gconsts "row")))
 		  (set! j1 (grsp-askn (gconsts "col")))
-		  (set! a1 (grsp-matrix-inputev #f #f a1 i1 j1)))
+		  (set! res1 (grsp-matrix-inputev #f #f res1 i1 j1)))
 		 ((equal? n1 2)
-		  (set! a1 (grsp-matrix-subexp a1 1 0))
-		  (set! a1 (grsp-matrix-editu a1 (grsp-hm a1) p_l2)))
+		  (set! res1 (grsp-matrix-row-subexpk res1 p_l2 p_l3)))
 		 ((equal? n1 3)		  
 		  (set! i1 (grsp-askn (gconsts "row")))
-		  (set! a1 (grsp-matrix-subdel "#Delr" a1 i1)))
+		  (set! res1 (grsp-matrix-subdel "#Delr" res1 i1)))
 		 ((equal? n1 4)
 		  (set! i1 (grsp-askn (gconsts "row")))
-		  (set! a1 (grsp-matrix-editu a1 i1 p_l2)))))
 
-    ;; Compose results.
-    (set! res1 a1)
-	   
+		  ;; If a pr key col is found (the function returns a
+		  ;; number instead of a #f value.
+		  (cond ((equal? (number? (grsp-matrix-find-if-prkey-exists p_l3)) #t)
+
+			 ;; Get the col number.
+			 (set! n1 (grsp-matrix-find-if-prkey-exists p_l3))
+			 (set! res1 (grsp-matrix-editu res1
+						       i1
+						       p_l2
+						       n1)))))))
+
     res1))
 
   
@@ -12312,6 +12324,8 @@
 	   (set! b1 #f))
 	  (else (set! n1 (grsp-lal-esubstr p_l3 "#key"))))
 
+    ;;(grsp-matrix-find-if-prkey-exists p_l3)
+    
     ;; If key is found build a string to inform the max key value found.
     (cond ((equal? b1 #f)
 	   (set! a2 (grsp-matrix-row-minmax "#max" p_a1 n1))
@@ -12351,14 +12365,16 @@
 ;;
 ;; - p_a1: matrix.
 ;; - p_i1: numeric, row number.
-;; - p_l1: list of default values for every element of row p_i1.
+;; - p_l2: list of default values for every element of row p_i1.
+;; - p_n1: col number that holds the primary key.
 ;;
 ;; Notes:
 ;;
 ;; - Be careful not to overwrite existing values in rows that don't
 ;;   need default values.
+;; - This function requires the matrix to have a primary key column.
 ;;
-(define (grsp-matrix-editu p_a1 p_i1 p_l1)
+(define (grsp-matrix-editu p_a1 p_i1 p_l2 p_n1)
   (let ((res1 0))
 	
     (set! res1 (grsp-matrix-cpy p_a1))
@@ -12367,7 +12383,9 @@
     (let loop ((j1 (grsp-ln res1)))
       (if (<= j1 (grsp-hn res1))
 
-	  (begin (array-set! res1 (list-ref p_l1 j1) p_i1 j1)
+	  (begin (cond ((equal? (equal? j1 p_n1) #f)
+
+			(array-set! res1 (list-ref p_l2 j1) p_i1 j1)))
 		 
 		 (loop (+ j1 1))))) 
     
@@ -13019,6 +13037,7 @@
     
     res1))
 
+
 ;;;; grsp-ms-pad-elements - Pads elements of a string matrix to the
 ;; right or left with blank spaces.
 ;;
@@ -13080,7 +13099,6 @@
 
     ;; Safety copy.
     (set! a1 (grsp-matrix-cpy p_a1))
-    ;; ***a
     (set! a3 (grsp-my2ms a1))
     (set! a2 (grsp-matrix-displaytm a1 p_l3))
     (grsp-ldl (gconsts "dam") 0 0)
@@ -13102,8 +13120,8 @@
 ;;
 ;; - p_b1: boolean.
 ;;
-;;   - #t: to add p_a2 as a new row in p_a1 if a row in p_a1 with the same
-;;     value as what p_a2 holds in col p_j1 is found.
+;;   - #t: to add p_a2 as a new row in p_a1 if a row in p_a1 with the
+;;     same value as what p_a2 holds in col p_j1 is found.
 ;;   - #f: otherwise.
 ;;
 ;; - p_a1: matrix.
@@ -13175,8 +13193,8 @@
     res1))
 
 
-;;;; grsp-matrix-subreprk - Copies each row of matrix p_a2 to matrix p_a1 based
-;; on the primary key p_n1 and option p_b1.
+;;;; grsp-matrix-subreprk - Copies each row of matrix p_a2 to matrix
+;; p_a1 based on the primary key p_n1 and option p_b1.
 ;;
 ;; Keywords:
 ;;
@@ -13231,8 +13249,8 @@
 ;;
 ;; - p_b1: boolean.
 ;;
-;;   - #t: to add p_a2 as a new row in p_a1 if a row in p_a1 with the same
-;;     value as what p_a2 holds in col p_j1 is found.
+;;   - #t: to add p_a2 as a new row in p_a1 if a row in p_a1 with the
+;;     same value as what p_a2 holds in col p_j1 is found.
 ;;   - #f: otherwise.
 ;;
 ;; - p_a1: matrix.
@@ -13266,7 +13284,12 @@
 	   (let loop ((j1 0))
 	     (if (< j1 (length p_l1))
 
-		 (begin (array-set! res1 (array-ref p_a2 0 (list-ref p_l1 j1) i1 j1))
+		 (begin (array-set! res1
+				    (array-ref p_a2
+					       0
+					       (list-ref p_l1 j1)
+					       i1
+					       j1))
 			
 			(loop (+ j1 1)))))
 
@@ -13300,3 +13323,77 @@
     (array-set! p_a1 p_v2 i2 p_j2)))
 
 
+;;;; Find out if there is a primary key in the properties list p_l3,
+;; and if so, the corresponding column number.
+;;
+;; Keywords:
+;;
+;; - key, primary
+;;
+;; Parameters:
+;;
+;; - p_l3: list of strings, column properties of a matrix.
+;;
+;; Output:
+;;
+;; - Col number if it exists.
+;; - #f otherwise.
+;;
+(define (grsp-matrix-find-if-prkey-exists p_l3)
+  (let ((res1 0))
+
+    (cond ((equal? (grsp-lal-esubstr p_l3 "#key") #f)
+	   (set! res1 #f))
+	  (else (set! res1 (grsp-lal-esubstr p_l3 "#key"))))
+
+    res1))
+
+
+;;;; grsp-matrix-row-subexpk - Adds a new row and identifies it with a new
+;; key value if a primary key is defined for one of its columns.
+;;
+;; Keywords:
+;;
+;; - key, primary, adding
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix.
+;; - p_l2: list of default values per row.
+;; - p_l3: list of strings, column properties of a matrix.
+;;
+(define (grsp-matrix-row-subexpk p_a1 p_l2 p_l3)
+  (let ((res1 0)
+	(a2 0)
+	(k1 0)
+	(n1 0))
+
+    ;; Safety copy.
+    (set! res1 (grsp-matrix-cpy p_a1))
+
+    ;; Add a row at the bottom of the matrix.
+    (set! res1 (grsp-matrix-subexp res1 1 0))
+    
+    ;; If a pr key col is found (the function returns a number instead of
+    ;; a #f value).
+    (cond ((equal? (number? (grsp-matrix-find-if-prkey-exists p_l3)) #t)
+
+	   ;; Get the col number.
+	   (set! n1 (grsp-matrix-find-if-prkey-exists p_l3))
+
+	   ;; Get the max value for the primary key found.
+	   (set! a2 (grsp-matrix-row-minmax "#max" res1 n1))
+	   (set! k1 (array-ref a2 0 n1))
+
+	   ;; Increase the key value.
+	   (set! k1 (in k1))
+
+	   ;; Set the new key value in the recently added row.
+	   (array-set! res1 k1 (grsp-hm res1) n1)
+
+	   ;; Set default values.
+	   (set! res1 (grsp-matrix-editu res1 (grsp-hm res1) p_l2 n1))))
+    
+    res1))
+
+    
