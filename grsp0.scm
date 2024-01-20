@@ -190,7 +190,8 @@
 	    grsp-clear-cup
 	    grsp-repos
 	    grsp-color-set
-	    grsp-wrc))
+	    grsp-wrc
+	    plinerc))
 
 
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
@@ -2816,7 +2817,7 @@
   res1))
 
 
-;;;; grsp-clear-cup - Repositions the cursor to line p_m1 without
+;;;; grsp-repos - Repositions the cursor to line p_m1 without
 ;; clearing the terminal.
 ;;
 ;; Keywords:
@@ -2869,3 +2870,42 @@
   (grsp-color-set "fred")
   (grsp-askn (gconsts "wrc"))
   (grsp-color-set "fdefault"))
+
+
+;;;; plinerc - Draw a line of strings p_s1 at terminal row p_m1
+;; from column p_n1 to column p_n3 and reposition the cursor
+;; at row p_m2 and row p_n3.
+;;
+;; Keywords:
+;;
+;; - console, shell, terminal
+;;
+;; Parameters:
+;;
+;; - p_b1; boolean.
+;;
+;;   - #t to clear the terminal before drawing.
+;;   - #f otherwise.
+;;
+;; - p_s1: string. For example "*" or "-".
+;; - p_m1: number.
+;; - p_n1: number.
+;; - p_m2: number.
+;; - p_n2: number.
+;; - p_n3: number
+;;
+(define (plinerc p_b1 p_s1 p_m1 p_n1 p_m2 p_n2 p_n3)
+  (let ((res1 0)
+	(tm 0)
+	(tn 0))
+
+    (cond ((equal? p_b1 #t)
+	   (grsp-clear-cup p_m1))
+	  ((equal? p_b1 #f)
+	   (grsp-repos p_m1)))
+    
+    (set! tm (grsp-s2n (grsp-piped "tput lines")))
+    (set! tn (grsp-s2n (grsp-piped "tput cols")))
+
+    res1))
+  
