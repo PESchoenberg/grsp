@@ -89,6 +89,8 @@
 ;; - [14] https://www.gnu.org/software/guile/manual/html_node/Pipes.html
 ;; - [15] https://askubuntu.com/questions/859975/how-to-know-the-vertical-position-of-the-command-prompt
 ;; - [16] https://www.codeproject.com/Articles/5329247/How-to-Change-Text-Color-in-a-Linux-Terminal
+;; . [17] https://tldp.org/HOWTO/Bash-Prompt-HOWTO/x405.html
+
 
 (define-module (grsp grsp0)
   #:use-module (grsp grsp3)
@@ -187,10 +189,9 @@
 	    grsp-menufv
 	    grsp-piped
 	    clearl
-	    grsp-clear-cup
-	    grsp-repos
 	    grsp-color-set
 	    grsp-wrc
+	    grsp-movc
 	    plinerc))
 
 
@@ -2808,13 +2809,13 @@
 ;;
 ;; - p_m1: numeric, line number.
 ;;
-(define (grsp-clear-cup p_m1)
-  (let ((res1 0))
-    
-  (clear)
-  (grsp-repos p_m1)
-
-  res1))
+;;(define (grsp-clear-cup p_m1)
+;;  (let ((res1 0))
+;;    
+;;  (clear)
+;;  (grsp-repos p_m1)
+;;
+;;  res1))
 
 
 ;;;; grsp-repos - Repositions the cursor to line p_m1 without
@@ -2828,14 +2829,15 @@
 ;;
 ;; - p_m1: numeric, line number.
 ;;
-(define (grsp-repos p_m1)
-  (let ((res1 0)
-	(s1 ""))
+;;(define (grsp-repos p_m1)
+;;  (let ((res1 0)
+;;	(s1 ""))
+;;
+;;  (set! s1 (strings-append (list "tput cup" (grsp-n2s p_m1)) 1))
+;;  (system s1)
+;;
+;;  res1))
 
-  (set! s1 (strings-append (list "tput cup" (grsp-n2s p_m1)) 1))
-  (system s1)
-
-  res1))
 
 ;; grsp-color-set - Changes the terminal background and foregrond colors.
 ;;
@@ -2872,7 +2874,67 @@
   (grsp-color-set "fdefault"))
 
 
-;;;; plinerc - Draw a line of strings p_s1 at terminal row p_m1
+;;;; grsp-movc - Repositions cursor to row p_m1 col p_n1 in the terminal;
+;; optionally clears the screen.
+;;
+;; Keywords:
+;;
+;; - terminal, cursor, position
+;;
+;; Parameters:
+;;
+;; - p_b1: boolean.
+;;
+;;   - #t: clear.
+;;   - #f: otherwise.
+;;
+;; - p_m1: number, terminal row.
+;; - p_n2: number, terminal col.
+;;
+;; Sources:
+;;
+;; - [17].
+;;
+(define (grsp-movc p_b1 p_m1 p_n1)
+  (let ((res1 0)
+	(m1 0)
+	(n1 0)
+	(tm 0)
+	(tn 0))
+
+    ;; Find the number of rows and cols in the terminal.
+    (set! tm (grsp-s2n (grsp-piped "tput lines")))
+    (set! tn (grsp-s2n (grsp-piped "tput cols")))   
+
+    ;; If the required pos coordinates exceed tm or tn, then set
+    ;; m1 or n1 to the corresponding max value. If the values
+    ;; passed are negative, then they are reset to zero.
+    (cond ((> p_m1 tm)
+	   (set! m1 tm))
+	  ((<= p_m1 tm)
+	   (set! m1 p_m1))
+	  ((< p_m1 0)
+	   (set! m1 0)))
+
+    (cond ((> p_n1 tn)
+	   (set! n1 tn))
+	  ((<= p_n1 tn)
+	   (set! n1 p_n1))
+	  ((< p_n1 0)
+	   (set! n1 0)))
+    
+    ;; Clear screen if required.
+    (cond ((equal? p_b1 #t)
+	   (clear)))
+
+    ;; Reposition.
+    (system (strings-append (list "tput cup"
+				  (grsp-n2s m1)
+				  (grsp-n2s n1))
+			    1))))
+  
+
+;;;; plinerc - Draws a horizontal line of strings p_s1 at terminal row p_m1
 ;; from column p_n1 to column p_n3 and reposition the cursor
 ;; at row p_m2 and row p_n3.
 ;;
@@ -2899,13 +2961,7 @@
 	(tm 0)
 	(tn 0))
 
-    (cond ((equal? p_b1 #t)
-	   (grsp-clear-cup p_m1))
-	  ((equal? p_b1 #f)
-	   (grsp-repos p_m1)))
+    (grsp-movc p_b1 p_m1 p_n1)
     
-    (set! tm (grsp-s2n (grsp-piped "tput lines")))
-    (set! tn (grsp-s2n (grsp-piped "tput cols")))
-
     res1))
   
