@@ -516,7 +516,8 @@
 	    grsp-matrix-row-subrepkl
 	    grsp-matrix-row-col-setk
 	    grsp-matrix-find-if-prkey-exists
-	    grsp-matrix-row-subexpk))
+	    grsp-matrix-row-subexpk
+	    grsp-matrix-row-subexp))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -12324,9 +12325,11 @@
 	   (set! b1 #f))
 	  (else (set! n1 (grsp-lal-esubstr p_l3 "#key"))))
 
-    ;;(grsp-matrix-find-if-prkey-exists p_l3)
+    ;; Do not look into empty matrices.
+    (cond ((equal? (null? p_a1) #t)
+	   (set! b1 #t)))
     
-    ;; If key is found build a string to inform the max key value found.
+    ;; If key is found build a string to inform the max key value found. 
     (cond ((equal? b1 #f)
 	   (set! a2 (grsp-matrix-row-minmax "#max" p_a1 n1))
 	   (set! k1 (array-ref a2 0 n1))
@@ -13381,10 +13384,10 @@
 	   ;; Get the col number.
 	   (set! n1 (grsp-matrix-find-if-prkey-exists p_l3))
 
-	   ;; Get the max value for the primary key found.
+	   ;; Get the max value for the primary key found.	   
 	   (set! a2 (grsp-matrix-row-minmax "#max" res1 n1))
 	   (set! k1 (array-ref a2 0 n1))
-
+	   
 	   ;; Increase the key value.
 	   (set! k1 (in k1))
 
@@ -13396,4 +13399,48 @@
     
     res1))
 
+
+;;;; grsp-matrix-row-subexp - Adds a new row on matrix p_a1 and fills it
+;; with the values contained in list p_l1.
+;;
+;; Keywords:
+;;
+;; - adding
+;;
+;; Parameters:
+;;
+;; - p_b1: boolean.
+;;
+;;   - #t: for matrix type conversion.
+;;   - #f: otherwise.
+;;
+;;
+;; - p_a1: matrix.
+;; - p_l1: list of arguments to pass to p_a1.
+;;
+;; Notes:
+;;
+;; - If the types of p_l1 and p_a1 match element by element, p_b1 may be
+;;   set to #f in order to save time during operations.
+;;
+;; Output:
+;;
+;; - Matrix.
+;;
+(define (grsp-matrix-row-subexp p_b1 p_a1 p_l1)
+  (let ((res1 0)
+	(a1 0))
+
+    (set! res1 (grsp-matrix-cpy p_a1))
+    (set! a1 (grsp-l2m p_l1))
+
+    (cond ((equal? p_b1 #t)
+	   (set! res1 (grsp-my2ms res1))
+	   (set! a1 (grsp-my2ms a1))))
     
+    (set! res1 (grsp-matrix-subadd res1 a1))
+
+    (cond ((equal? p_b1 #t)    
+	   (set! res1 (grsp-ms2my res1))))
+
+    res1))
