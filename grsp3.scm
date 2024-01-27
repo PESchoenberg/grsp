@@ -517,7 +517,7 @@
 	    grsp-matrix-row-col-setk
 	    grsp-matrix-find-if-prkey-exists
 	    grsp-matrix-row-subexpk
-	    grsp-matrix-row-subexp))
+	    grsp-matrix-row-insert))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -12365,7 +12365,7 @@
 ;; - default, initial
 ;;
 ;; Parameters:
-;;
+;; 
 ;; - p_a1: matrix.
 ;; - p_i1: numeric, row number.
 ;; - p_l2: list of default values for every element of row p_i1.
@@ -13400,7 +13400,7 @@
     res1))
 
 
-;;;; grsp-matrix-row-subexp - Adds a new row on matrix p_a1 and fills it
+;;;; grsp-matrix-row-insert - Adds a new row on matrix p_a1 and fills it
 ;; with the values contained in list p_l1.
 ;;
 ;; Keywords:
@@ -13416,10 +13416,12 @@
 ;;
 ;;
 ;; - p_a1: matrix.
-;; - p_l1: list of arguments to pass to p_a1.
+;; - p_l1: list, multiple types, arguments to pass to p_a1.
 ;;
 ;; Notes:
 ;;
+;; - This function requires that p_l1 has as many elements as there are cols
+;;   in p_a1.
 ;; - If the types of p_l1 and p_a1 match element by element, p_b1 may be
 ;;   set to #f in order to save time during operations.
 ;;
@@ -13427,7 +13429,7 @@
 ;;
 ;; - Matrix.
 ;;
-(define (grsp-matrix-row-subexp p_b1 p_a1 p_l1)
+(define (grsp-matrix-row-insert p_b1 p_a1 p_l1)
   (let ((res1 0)
 	(a1 0))
 
