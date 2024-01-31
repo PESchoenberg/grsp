@@ -13146,13 +13146,14 @@
 
     ;; Get key value.
     (set! k1 (array-ref p_a2 0 p_j1))
-    
-    ;; Find row number.
+    ;; ***a
+    ;; Find row number that corresponds to key p_k1. If the row does not
+    ;; exist, the function will return value -1.
     (set! i1 (grsp-matrix-row-numk res1 p_j1 k1))
 
     ;; Replace row if found. If not, add the row on request.
     (cond ((>= i1 0)
-	   (set! res1 (grsp-matrix-subrep res1 p_a2 i1 (grsp-lm res1))))
+	   (set! res1 (grsp-matrix-subrep res1 p_a2 i1 (grsp-ln res1))))
 	  ((= i1 -1)
 
 	   (cond ((equal? p_b1 #t)
@@ -13211,8 +13212,8 @@
 ;;     values as what p_a2  rows hold in col p_j1.
 ;;   - #f: otherwise.
 ;;
-;; - p_a1: matrix.
-;; - p_a2: matrix.
+;; - p_a1: matrix, target.
+;; - p_a2: matrix to commit to p_a1.
 ;; - p_j1: column number holding the primary key values.
 ;;
 ;; Notes:
@@ -13221,7 +13222,8 @@
 ;;   columns and primary keys.
 ;;
 (define (grsp-matrix-subrepk p_b1 p_a1 p_a2 p_j1)
-  (let ((res1 0))
+  (let ((res1 0)
+	(a3 0))
 
     ;; Safety copy.
     (set! res1 (grsp-matrix-cpy p_a1))
@@ -13230,9 +13232,18 @@
     (let loop ((i2 (grsp-lm p_a2)))
       (if (<= i2 (grsp-hm p_a2))
 
-	  (begin (set! res1 (grsp-matrix-row-subrepk p_b1
+	  ;; First we need to extract each vector from p_a2 and
+	  ;; pass it.
+	  (begin (set! a3 (grsp-matrix-subcpy p_a2
+					      i2
+					      i2
+					      (grsp-ln p_a2)
+					      (grsp-hn p_a2)))
+		 
+		 ;; Now replace or add row to target matrix.
+		 (set! res1 (grsp-matrix-row-subrepk p_b1
 						     res1
-						     p_a2
+						     a3
 						     p_j1))
 		 
 		 (loop (+ i2 1)))))    
