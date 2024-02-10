@@ -12357,7 +12357,7 @@
     res1))
 
 
-;;;; grsp-matrix-editu - Sets default values contained in list p_l1 in
+;;;; grsp-matrix-editu - Sets default values contained in list p_l2 in
 ;; row p_i1 of matrix p_a1.
 ;;
 ;; Keywords:
