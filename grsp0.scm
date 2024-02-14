@@ -192,7 +192,8 @@
 	    grsp-color-set
 	    grsp-wrc
 	    grsp-movc
-	    plinerc))
+	    plinerc
+	    grsp-file-isolate-name))
 
 
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
@@ -2965,3 +2966,22 @@
     
     res1))
   
+
+;;;; grsp-file-isolate-name - Isolates database name from full path string.
+;;
+;; Keywords:
+;;
+;; - name, isolation, substring
+;;
+;; Parameters:
+;;
+;; - p_d1: database name.
+;;
+(define (grsp-file-isolate-name p_d1)
+  (let ((res1 "")
+	(l1 '()))
+
+    (set! l1 (string-split p_d1 #\/))
+    (set! res1 (list-ref l1 (- (length l1) 1)))
+    
+    res1))
