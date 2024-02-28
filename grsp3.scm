@@ -12187,8 +12187,9 @@
 ;;   - "#0": start counting from zero.
 ;;   - "#key#num#ai": autoincrementable, numeric, primary key.
 ;;   - "": no properties.
+;; - p_s1: name of parent entity of p_a1. See grsp-matrix-displaytm.
 ;;
-(define (grsp-matrix-edit p_a1 p_l1 p_l2 p_l3)
+(define (grsp-matrix-edit p_a1 p_l1 p_l2 p_l3 p_s1)
   (let ((res1 0)
 	(a1 0)
 	(a2 0)
@@ -12209,7 +12210,7 @@
 	   
 	   ;; Display matrix.
 	   (grsp-color-set "fgreen")
-	   (grsp-matrix-displaytms res1 p_l1 p_l3)
+	   (grsp-matrix-displaytms res1 p_l1 p_l3 p_s1)
 	   (grsp-color-set "fcyan")
 	   (grsp-ldl (gconsts "01234") 0 0)
 	   (grsp-color-set "fdefault")
@@ -12304,12 +12305,17 @@
 ;;
 ;; - p_a1: matrix, numeric.
 ;; - p_3: string list, matrix properties.
+;; - p_s1: name of source entity (wher p_a1 comes from)- Tis is
+;;   an optional paramenter for uses in the gdbs system.
+;;
+;;   - "[NAME_OF:ENTITY]": four using it.
+;;   - "": (enpty string) if not.
 ;;
 ;; Output:
 ;;
 ;; - Matrix, datatypes of p_a1.
 ;;
-(define (grsp-matrix-displaytm p_a1 p_l3)
+(define (grsp-matrix-displaytm p_a1 p_l3 p_s1)
   (let ((res1 0)
 	(a2 0)
 	(a3 0)
@@ -12333,6 +12339,12 @@
     (cond ((equal? b1 #f)
 	   (set! a2 (grsp-matrix-row-minmax "#max" p_a1 n1))
 	   (set! k1 (array-ref a2 0 n1))
+
+	   ;; If p_s1 is not null.
+	   (cond (equal? (string-null? p_s1) #f)
+		 ;;
+		 )
+	   
 	   (set! s1 (strings-append (list s2
 					  (gconsts "Mpkv")
 					  (grsp-n2s k1)
@@ -13093,8 +13105,9 @@
 ;; - p_a1: matrix.
 ;; - p_l1: list of strings, column names or titles.
 ;; - p_l3: list of strings, column properties.
+;; - p_s1: name of parent entity of p_a1. See grsp-matrix-displaytm.
 ;;
-(define (grsp-matrix-displaytms p_a1 p_l1 p_l3)
+(define (grsp-matrix-displaytms p_a1 p_l1 p_l3 p_s1)
   (let ((res1 0)
 	(a1 0)
 	(a2 0)
@@ -13103,7 +13116,7 @@
     ;; Safety copy.
     (set! a1 (grsp-matrix-cpy p_a1))
     (set! a3 (grsp-my2ms a1))
-    (set! a2 (grsp-matrix-displaytm a1 p_l3))
+    (set! a2 (grsp-matrix-displaytm a1 p_l3 p_s1))
     (grsp-ldl (gconsts "dam") 0 0)
     (grsp-color-set "fgreen")
     (grsp-matrix-displayts a3 p_l1)
