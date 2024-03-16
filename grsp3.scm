@@ -12187,9 +12187,9 @@
 ;;   - "#0": start counting from zero.
 ;;   - "#key#num#ai": autoincrementable, numeric, primary key.
 ;;   - "": no properties.
-;; - p_s1: name of parent entity of p_a1. See grsp-matrix-displaytm.
+;; - p_a4: source matrix of p_a1. See grsp-matrix-displaytm.
 ;;
-(define (grsp-matrix-edit p_a1 p_l1 p_l2 p_l3 p_s1)
+(define (grsp-matrix-edit p_a1 p_l1 p_l2 p_l3 p_a4)
   (let ((res1 0)
 	(a1 0)
 	(a2 0)
@@ -12210,7 +12210,7 @@
 	   
 	   ;; Display matrix.
 	   (grsp-color-set "fgreen")
-	   (grsp-matrix-displaytms res1 p_l1 p_l3 p_s1)
+	   (grsp-matrix-displaytms res1 p_l1 p_l3 p_a4)
 	   (grsp-color-set "fcyan")
 	   (grsp-ldl (gconsts "01234") 0 0)
 	   (grsp-color-set "fdefault")
@@ -12305,25 +12305,26 @@
 ;;
 ;; - p_a1: matrix, numeric.
 ;; - p_3: string list, matrix properties.
-;; - p_s1: name of source entity (wher p_a1 comes from)- Tis is
-;;   an optional paramenter for uses in the gdbs system.
-;;
-;;   - "[NAME_OF:ENTITY]": four using it.
-;;   - "": (enpty string) if not.
+;; - p_a4: source matrix (the matrix from which p_a1
+;;   has been extracted. Should pass p_a1 as argumrnt here
+;;   if it is the source.
 ;;
 ;; Output:
 ;;
 ;; - Matrix, datatypes of p_a1.
 ;;
-(define (grsp-matrix-displaytm p_a1 p_l3 p_s1)
+(define (grsp-matrix-displaytm p_a1 p_l3 p_a4)
   (let ((res1 0)
 	(a2 0)
 	(a3 0)
+	(a4 0)
 	(b1 #t)
 	(s1 "")
 	(s2 " - ")
+	(s3 "")
 	(n1 0)
-	(k1 0))
+	(k1 0)
+	(k4 0))
 
     ;; Find out if there is a primary key, and if so, the corresponding
     ;; column number.
@@ -12335,22 +12336,28 @@
     (cond ((equal? (null? p_a1) #t)
 	   (set! b1 #t)))
     
-    ;; If key is found build a string to inform the max key value found. 
+    ;; If key is found build a string to inform the max key value found
+    ;; in the submatrix and the source matrix. 
     (cond ((equal? b1 #f)
 	   (set! a2 (grsp-matrix-row-minmax "#max" p_a1 n1))
+	   (set! a4 (grsp-matrix-row-minmax "#max" p_a4 n1))
 	   (set! k1 (array-ref a2 0 n1))
-
-	   ;; If p_s1 is not null.
-	   (cond (equal? (string-null? p_s1) #f)
-		 ;;
-		 )
+	   (set! k4 (array-ref a4 0 n1))	   
 	   
-	   (set! s1 (strings-append (list s2
+	   (set! s1 (strings-append (list s1
 					  (gconsts "Mpkv")
 					  (grsp-n2s k1)
 					  " "
 					  (gconsts "ac")
-					  (grsp-n2s n1))
+					  (grsp-n2s n1))					  
+				    0))
+
+	   (set! s3 (strings-append (list s3
+					  (gconsts "Mspkv")
+					  (grsp-n2s k4)
+					  " "
+					  (gconsts "ac")
+					  (grsp-n2s n1))					  
 				    0))))
     
     (grsp-ldl (gconsts "dat") 0 0)
@@ -12361,7 +12368,10 @@
 				    s2
 				    (gconsts "Lc")
 				    (grsp-n2s (grsp-hn p_a1))
-				    s1)
+				    s2
+				    s1
+				    s2
+				    s3)
 			      0)
 	      0
 	      0)
@@ -13105,9 +13115,9 @@
 ;; - p_a1: matrix.
 ;; - p_l1: list of strings, column names or titles.
 ;; - p_l3: list of strings, column properties.
-;; - p_s1: name of parent entity of p_a1. See grsp-matrix-displaytm.
+;; - p_a4: source matrix. See grsp-matrix-displaytm.
 ;;
-(define (grsp-matrix-displaytms p_a1 p_l1 p_l3 p_s1)
+(define (grsp-matrix-displaytms p_a1 p_l1 p_l3 p_a4)
   (let ((res1 0)
 	(a1 0)
 	(a2 0)
@@ -13116,7 +13126,7 @@
     ;; Safety copy.
     (set! a1 (grsp-matrix-cpy p_a1))
     (set! a3 (grsp-my2ms a1))
-    (set! a2 (grsp-matrix-displaytm a1 p_l3 p_s1))
+    (set! a2 (grsp-matrix-displaytm a1 p_l3 p_a4))
     (grsp-ldl (gconsts "dam") 0 0)
     (grsp-color-set "fgreen")
     (grsp-matrix-displayts a3 p_l1)

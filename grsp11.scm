@@ -81,7 +81,8 @@
 	    grsp-lal-ansl
 	    grsp-ly2code
 	    grsp-lal-deletee
-	    grsp-lal-esubstr))
+	    grsp-lal-esubstr
+	    grsp-lal-extract-from-lp))
 
 
 ;;;; grsp-lal-rel - Replace element in list. Replace element p_j1 of list
@@ -1220,4 +1221,44 @@
 		 
 		 (loop (+ j1 1)))))
         
+    res1))
+
+
+;;;; grsp-lal-extract-from-lp - From each element of a list of pairs,
+;; extracts the first or second element of each pair and places them
+;; on a list.
+;;
+;; Keywords:
+;;
+;; - pairs, lists
+;;
+;; Parameters:
+;;
+;; - p_b1: boolean.
+;;
+;;   - #t: extract the first element of each pair.
+;;   - #f: extract the second element.
+;;
+;; - p_l1: list of pairs.
+;;
+;; Output:
+;;
+;; - List.
+;;
+(define (grsp-lal-extract-from-lp p_b1 p_l1)
+  (let ((res1 '()))
+
+    (set! res1 (make-list (length p_l1)))
+    
+    ;; List loop.
+    (let loop ((j1 0))
+      (if (< j1 (length p_l1))
+
+	  (begin (cond ((equal? p_b1 #t)
+			(list-set! res1 j1 (car (list-ref p_l1 j1))))
+		       ((equal? p_b1 #f)
+			(list-set! res1 j1 (cdr (list-ref p_l1 j1)))))
+		 
+		 (loop (+ j1 1)))))
+    
     res1))
