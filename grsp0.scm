@@ -193,7 +193,8 @@
 	    grsp-wrc
 	    grsp-movc
 	    plinerc
-	    grsp-file-isolate-name))
+	    grsp-file-isolate-name
+	    grsp-pg-psql1))
 
 
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
@@ -2985,3 +2986,31 @@
     (set! res1 (list-ref l1 (- (length l1) 1)))
     
     res1))
+
+
+;;;; grsp-pg-psql1 - Very simple Postgres psql login function.
+;;
+;; Keywords:
+;;
+;; - databases, ps, posgres, postgres
+;;
+;; Parameters;
+;;
+;; - p_h1: string, host.
+;; - p_d1: string, database.
+;; - p_u1: user
+;;
+;; Notes:
+;;
+;; - You will be propmted for the user's password by psql.
+;;
+(define (grsp-pg-psql1 p_h1 p_d1 p_u1)
+  (let ((res1 0)
+	(s1 ""))
+
+    (set! s1 (strings-append (list "psql -h" p_h1 "-d" p_d1 "-U" p_u1) 1))
+    
+    (system s1)
+    
+    res1))
+  
