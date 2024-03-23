@@ -94,7 +94,8 @@
 
 (define-module (grsp grsp0)
   #:use-module (grsp grsp3)
-  #:use-module (grsp grsp1)  
+  #:use-module (grsp grsp1)
+  #:use-module (grsp grsp11)  
   #:use-module (ice-9 string-fun)
   #:use-module (ice-9 futures)
   #:use-module (ice-9 binary-ports)
@@ -182,7 +183,7 @@
 	    grsp-sldvls
 	    grsp-clear-on-demand
 	    grsp-ldlc
-	    grsp-padlr
+	    ;;grsp-padlr
 	    grsp-pad-lr
 	    grsp-menuv
 	    grsp-menup
@@ -194,7 +195,10 @@
 	    grsp-movc
 	    plinerc
 	    grsp-file-isolate-name
-	    grsp-pg-psql1))
+	    grsp-pg-psql1
+	    grsp-count-words
+	    grsp-string-lo
+	    grsp-substring-replace))
 
 
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
@@ -2551,7 +2555,7 @@
     res1))
 
 
-;;;; grsp-sldvls - Speparator, Line, display value, line, separator.
+;;;; grsp-sldvls - Separator, Line, display value, line, separator.
 ;; Displays p_n1 blank lines before a spearator defined by p_s2, string
 ;; p_s1 and p_n2 blank lines after p_s1 and separator p_s3.
 ;;
@@ -3014,3 +3018,96 @@
     
     res1))
   
+
+;;;; grsp-count-words - Counts the words in string p_s1 and returns a two
+;; element list:
+;;
+;; - Elem 0: number of words.
+;; - Elem 1: a list containing each word in p_s1 as a separate element.
+;;
+;; Keywords:
+;;
+;; - words, terms
+;;
+;; Parameters:
+;;
+;; - p_s1: string.
+;;
+(define (grsp-count-words p_s1)
+  (let ((res1 '())
+	(l1 '()))
+
+    (set! l1 (string-split p_s1 #\space))
+
+    ;; Compose results.
+    (set! res1 (list (length l1) l1))
+
+    res1))
+
+
+;;;; grsp-string-lo - From string p_s1, leaves only the characters contained in
+;; list p_l1, purging it from everything else.
+;;
+;; Keywords:
+;;
+;; - strings, alphanumeric
+;;
+;; Parameters.
+;;
+;; - p_s1: string.
+;; - p_l1: list of one-character strings ("a" "b", etc-). 
+;;
+(define (grsp-string-lo p_s1 p_l1)
+  (let ((res1 "")
+	(s1 "")
+	(s2 "")
+	(s3 "|"))
+
+    (set! s1 p_s1)
+    
+    ;; String loop.
+    (let loop ((j1 0))
+      (if (< j1 (string-length p_s1))
+
+	  (begin (set! s2 (substring s1 j1 (+ j1 1)))
+
+		 ;; If substring is not on list l1, replace it by a
+		 ;; "monentary" substring.
+		 (cond ((equal? (grsp-lal-exists s2 p_l1) #f)
+			(set! s1 (string-replace-substring s1 s2 s3))))
+		 
+		 (loop (+ j1 1)))))
+
+    ;; Compose results.
+    (set! res1 (string-replace-substring s1 s3 ""))
+    
+    res1))
+
+
+;;;; grsp-substring-replace p_s1 - Replaces all p_s2 substrings with substring p_s3
+;; in string p_s1.
+;;
+;; Keywords:
+;;
+;; - replacing, strings
+;;
+;; Parameters:
+;;
+;; - p_s1: string.
+;; - p_s2: string.
+;; - p_s3: string.
+;;
+(define (grsp-substring-replace p_s1 p_s2 p_s3)
+  (let ((res1 "")
+	(b1 #f))
+
+    (set! res1 p_s1)
+
+    (while (equal? b1 #f)
+
+	   (cond ((not (equal? (string-contains res1 p_s2) #f))
+		  (set! res1 (string-replace-substring res1 p_s2 p_s3)))
+		 (else (set! b1 #t))))
+    
+    res1))
+

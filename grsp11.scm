@@ -82,7 +82,8 @@
 	    grsp-ly2code
 	    grsp-lal-deletee
 	    grsp-lal-esubstr
-	    grsp-lal-extract-from-lp))
+	    grsp-lal-extract-from-lp
+	    grsp-lal-exists))
 
 
 ;;;; grsp-lal-rel - Replace element in list. Replace element p_j1 of list
@@ -821,7 +822,7 @@
 
 ;;;; grsp-lal-supp - Given list p_l1 with n elements, it returns a
 ;; list that contains one instance per each element value contained in
-;; p_11. That is, it elimitates repeated instances of the elements of
+;; p_11. That is, it eliminates repeated instances of the elements of
 ;; p_l1 and returns its domain subset.
 ;;
 ;; Keywords:
@@ -1260,5 +1261,42 @@
 			(list-set! res1 j1 (cdr (list-ref p_l1 j1)))))
 		 
 		 (loop (+ j1 1)))))
+    
+    res1))
+
+
+;;;; grsp-lal-exists - Finds out if string p_s1 is in list p_l1.
+;;
+;; Keywords:
+;;
+;; - strings, alphanumeric
+;;
+;; Parameters.
+;;
+;; - p_s1: string.
+;; - p_l1: list of strings.
+;;
+;; Output:
+;;
+;; - #t if p_s1 is in the list.
+;; - #f otherwise. 
+;;
+(define (grsp-lal-exists p_s1 p_l1)
+  (let ((res1 #f)
+	(b1 #f)
+	(i1 0))
+
+    ;; List loop.
+    (while (equal? b1 #f)
+
+	   (cond ((equal? i1 (length p_l1))
+		  (set! b1 #t))
+		 ((< i1 (length p_l1))
+
+		  (cond ((equal? p_s1 (list-ref p_l1 i1))
+			 (set! b1 #t)
+			 (set! res1 #t)))))
+	   
+	   (set! i1 (in i1)))
     
     res1))
