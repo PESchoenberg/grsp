@@ -294,7 +294,8 @@
   #:use-module (grsp grsp4)
   #:use-module (grsp grsp11)  
   #:use-module (ice-9 threads)
-  #:use-module (ice-9 futures) 
+  #:use-module (ice-9 futures)
+  #:use-module (ice-9 string-fun)
   #:export (grsp-lm
 	    grsp-hm
 	    grsp-ln
@@ -517,7 +518,8 @@
 	    grsp-matrix-row-col-setk
 	    grsp-matrix-find-if-prkey-exists
 	    grsp-matrix-row-subexpk
-	    grsp-matrix-row-insert))
+	    grsp-matrix-row-insert
+	    grsp-matrix-tf-idf))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -13479,4 +13481,75 @@
     (cond ((equal? p_b1 #t)    
 	   (set! res1 (grsp-ms2my res1))))
 
+    res1))
+
+
+;;;; grsp-matrix-tf-idf - Creates a matrix for TF-IDF.
+;;
+;; Keywords:
+;;
+;; - frequency, embeddings, words, terms
+;;
+;; Parameters:
+;;
+;; - p_a1: col vector, string, list of documents.
+;;
+;; Notes:
+;;
+;; - https://www.turing.com/kb/guide-on-word-embeddings-in-nlp
+;;
+(define (grsp-matrix-tf-idf p_a1)
+  (let ((res1 0)
+	(s1 "")
+	(s2 "")
+	(td 0)
+	(a1 0)
+	(a2 0)
+	(tn 0)
+	(l1 '("a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "ñ" "o" "p" "q" "r" "s" "t" "u" "v" "w" "x" "y" "z"
+	      "á" "é" "í" "ó" "ú" " "))
+	(l2 '()))
+
+    ;; Create matrices matrices.
+    (set! a1 (grsp-matrix-cpy p_a1))
+    (set! a2 (grsp-matrix-create 0 0 1))
+    
+    ;; Add a column to a1 to contain the results of td calculation.
+    (set! a1 (grsp-matrix-subexp a1 0 1))
+
+    ;; Downcase and clean strings of all elements in the first col
+    ;; of a1.
+    (let loop ((i1 (grsp-lm a1)))
+      (if (<= i1 (grsp-hm a1))
+
+	  ;; First we donwcase, trim and clean the string.
+	  (begin (set! s1 (string-downcase (array-ref a1 i1 0)))
+		 (set! s1 (string-trim-both s1))
+		 (set! s1 (grsp-substring-replace s1 "  " ""))		 
+		 (set! s1 (grsp-string-lo s1 l1))
+		 (array-set! a1 s1 i1 0)
+
+		 ;; Calculate the number of terms in each document (td) and
+		 ;; place the results for each document on the second column
+		 ;; of a1.
+		 (array-set a1 (grsp-count-words s1) i1 1)
+
+		 ;; Analize each document and identify each different word.
+		 ;; Place them in a column vector a2 once. If a term already
+		 ;; exists in a2, then do not add a second instance of it.
+		 (set! l2 (string-split s1 #\space))
+		 (set! tn (length l2))
+		 
+		 (loop (+ i1 1)))))
+
+    ;; Build results matrix.
+    (set! res1 (grsp-matrix-create 0 (grsp-tm a1) (grsp-tm a2)))
+    
+    ;; Calculate each termś frequency on each document. Insert the result
+    ;; for each term in each document in res1.
+
+    ;; Eliminate trivial terms.
+    
+    ;; Count the number of documents containing each non-trivial term.
+    
     res1))
