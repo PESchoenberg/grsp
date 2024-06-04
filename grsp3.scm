@@ -519,7 +519,10 @@
 	    grsp-matrix-find-if-prkey-exists
 	    grsp-matrix-row-subexpk
 	    grsp-matrix-row-insert
-	    grsp-matrix-tf-idf))
+	    grsp-matrix-tf-idf
+	    grsp-matrix-row-insert-ioe
+	    grsp-2l2cm
+	    grsp-l2cm))
 
 
 ;;;; grsp-lm - Short form of (grsp-matrix-esi 1 p_a1).
@@ -13493,63 +13496,187 @@
 ;; Parameters:
 ;;
 ;; - p_a1: col vector, string, list of documents.
+;; - p_n1: numeric. Word lenght threshold.
 ;;
 ;; Notes:
 ;;
 ;; - https://www.turing.com/kb/guide-on-word-embeddings-in-nlp
 ;;
-(define (grsp-matrix-tf-idf p_a1)
+(define (grsp-matrix-tf-idf p_a1 p_n1)
   (let ((res1 0)
 	(s1 "")
 	(s2 "")
+	(s3 "")
 	(td 0)
 	(a1 0)
 	(a2 0)
+	(a3 0)
 	(tn 0)
 	(l1 '("a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "ñ" "o" "p" "q" "r" "s" "t" "u" "v" "w" "x" "y" "z"
 	      "á" "é" "í" "ó" "ú" " "))
 	(l2 '()))
-
+    
     ;; Create matrices matrices.
-    (set! a1 (grsp-matrix-cpy p_a1))
-    (set! a2 (grsp-matrix-create 0 0 1))
+    (set! a2 (grsp-matrix-create 0 1 1))
     
     ;; Add a column to a1 to contain the results of td calculation.
-    (set! a1 (grsp-matrix-subexp a1 0 1))
+    (set! a1 (grsp-matrix-subexp p_a1 0 1))
 
+    (grsp-ld "Step 1.0")
+    
     ;; Downcase and clean strings of all elements in the first col
     ;; of a1.
     (let loop ((i1 (grsp-lm a1)))
       (if (<= i1 (grsp-hm a1))
 
-	  ;; First we donwcase, trim and clean the string.
-	  (begin (set! s1 (string-downcase (array-ref a1 i1 0)))
+	  ;; First we eliminate short substrings, downcase, trim and clean the string.
+	  ;; These operations will increase the efficiency of the whole tf-idf
+	  ;; calculation by eliminating wors such as "the", "or", etc. which would
+	  ;; consume lots of resources and probably not add much to the final result.
+	  (begin (set! s1 (grsp-substring-delete-shorter (array-ref a1 i1 0) p_n1))
+		 (set! s1 (string-downcase s1))
 		 (set! s1 (string-trim-both s1))
-		 (set! s1 (grsp-substring-replace s1 "  " ""))		 
+		 (set! s1 (grsp-substring-replace s1 "  " ""))
 		 (set! s1 (grsp-string-lo s1 l1))
 		 (array-set! a1 s1 i1 0)
 
+		 (grsp-ld "Step 2.0")
+		 
 		 ;; Calculate the number of terms in each document (td) and
 		 ;; place the results for each document on the second column
 		 ;; of a1.
-		 (array-set a1 (grsp-count-words s1) i1 1)
+		 (array-set! a1 (grsp-count-words s1) i1 1)
 
 		 ;; Analize each document and identify each different word.
-		 ;; Place them in a column vector a2 once. If a term already
+		 ;; Place them in column vector a2 once. If a term already
 		 ;; exists in a2, then do not add a second instance of it.
 		 (set! l2 (string-split s1 #\space))
 		 (set! tn (length l2))
+		 (set! a3 (grsp-matrix-transpose (grsp-l2m l2)))
+		 (set! a3 (grsp-matrix-subexp a2 0 1))
+
+		 (grsp-ld "Step 3.0")
 		 
+		 ;; Row loop.
+		 (let loop ((i2 (grsp-lm a3)))
+		   (if (<= i2 (grsp-hm a3))
+
+		       (begin (set! s3 (array-ref a3 i2 0))
+			      (set! a2 (grsp-matrix-row-insert-ioe a3 0 s3 0 s3))
+
+			      (grsp-ld "Step 4.0")
+			      
+			      (loop (+ i2 1)))))
+
 		 (loop (+ i1 1)))))
 
+    (grsp-ld "Step 5.0")
+    
     ;; Build results matrix.
     (set! res1 (grsp-matrix-create 0 (grsp-tm a1) (grsp-tm a2)))
+
+    (grsp-ld "Step 6.0")
     
     ;; Calculate each termś frequency on each document. Insert the result
     ;; for each term in each document in res1.
 
-    ;; Eliminate trivial terms.
+    (grsp-ld "Step 7.0")
     
+    ;; Eliminate trivial terms not already eliminated.
+
+    (grsp-ld "Step 8.0")
+
     ;; Count the number of documents containing each non-trivial term.
+
+    (grsp-ld "Step 9.0")
+
+    res1))
+
+
+;;;; grsp-matrix-row-insert-ioe - Inserts value p_v1 at col p_j1 in a new row
+;; only it value p_v2 does not exist in any row of col p_j2.
+;;
+;; Keywords:
+;;
+;; - insert, nonexistent
+;;
+;; Parameters:
+;;
+;; - p_a1: matrix.
+;; - p_j1: col, target.
+;; - p_v1; value to insert.
+;; - p_j2: col, control.
+;; - p_v2; value, control.
+;;
+(define (grsp-matrix-row-insert-ioe p_a1 p_j1 p_v1 p_j2 p_v2)
+  (let ((res1 0)
+	(b2 #f)
+	(a1 0))
+
+    ;; Safety copy.
+    (set! res1 (grsp-matrix-cpy p_a1))
+    
+    ;; Row loop.
+    (let loop ((i1 (grsp-lm res1)))
+      (if (<= i1 (grsp-hm res1))
+
+	  ;; If found, then b2 becomes #t and the loop ends then
+	  ;; to save time.
+	  (begin (cond ((equal? p_v2 (array-ref res1 i1 p_j2))
+			(set! b2 #t)
+			(set! i1 (grsp-hm res1))))	 
+		 
+		 (loop (+ i1 1)))))
+    
+    ;; Insert only if not found (b2 remains #f).
+    (cond ((equal? b2 #f)
+	   (set! res1 (grsp-matrix-subexp res1 1 0))
+	   (array-set! res1 p_v1 (grsp-hm res1) p_j1)))
+    
+    res1))
+
+
+;;;; grsp-2l2m - Creates a column matrix containing p_l1 as the first column
+;; and p_l2 as the second one.
+;;
+;; Keywords:
+;;
+;; - lists, matrices, conversion, columnar
+;;
+;; Parameters:
+;;
+;; - p_l1: list.
+;; - p_l2: list.
+;;
+;; Notes:
+;;
+;; - Both lists should have the same number of elements.
+;;
+(define (grsp-2l2cm p_l1 p_l2)
+  (let ((res1 0)
+	(a1 0))
+
+    (set! a1 (grsp-l2m p_l1))
+    (set! res1 (grsp-matrix-row-insert #f a1 p_l2))
+    (set! res1 (grsp-matrix-transpose res1))
+    
+    res1))
+
+
+;;;; grsp-l2m - Creates a column matrix with list p_l1.
+;;
+;; Keywords:
+;;
+;; - lists, matrices, conversion, columnar
+;;
+;; Parameters:
+;;
+;; - p_l1: list.
+;;
+(define (grsp-l2cm p_l1)
+  (let ((res1 0))
+
+    (set! res1 (grsp-l2m p_l1))
+    (set! res1 (grsp-matrix-transpose res1))
     
     res1))
