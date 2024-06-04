@@ -83,7 +83,8 @@
 	    grsp-lal-deletee
 	    grsp-lal-esubstr
 	    grsp-lal-extract-from-lp
-	    grsp-lal-exists))
+	    grsp-lal-exists
+	    grsp-ls2sss))
 
 
 ;;;; grsp-lal-rel - Replace element in list. Replace element p_j1 of list
@@ -1188,7 +1189,7 @@
     res1))
 
 
-;;;; grsp-lal-esubstr - Returns the number of element in a string list
+;;;; grsp-lal-esubstr - Returns the number of elements in a string list
 ;; p_l1 where substring p_s1 is found.
 ;;
 ;; Keywords:
@@ -1298,5 +1299,37 @@
 			 (set! res1 #t)))))
 	   
 	   (set! i1 (in i1)))
+    
+    res1))
+
+
+;;;; grsp-ls2sss - Casts a list of strings as a string composed by the strings
+;; in p_l1 separated by string p_s1.
+;;
+;; Keywords:
+;;
+;; - strings, separated
+;;
+;; Parameters:
+;;
+;; - p_s1: string, separator.
+;; - p_l1: list of strings.
+;;
+(define (grsp-ls2sss p_s1 p_l1)
+  (let ((res1 "")
+	(s2 ""))
+
+    ;; List loop.
+    (let loop ((j1 0))
+      (if (< j1 (length p_l1))
+
+	  (begin (cond ((equal? j1 0)
+			(set! res1 (list-ref p_l1 j1)))
+		       ((equal? (and (> j1 0) (< j1 (- (length p_l1) 1))))
+			(set! res1 (strings-append (list res1 p_s1 (list-ref p_l1 j1)) 0)))
+		       ((equal? j1 (- (length p_l1) 1))
+			(set! res1 (strings-append (list res1 (list-ref p_l1 j1)) 0))))
+
+		 (loop (+ j1 1)))))
     
     res1))

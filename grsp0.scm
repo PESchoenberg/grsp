@@ -90,6 +90,7 @@
 ;; - [15] https://askubuntu.com/questions/859975/how-to-know-the-vertical-position-of-the-command-prompt
 ;; - [16] https://www.codeproject.com/Articles/5329247/How-to-Change-Text-Color-in-a-Linux-Terminal
 ;; . [17] https://tldp.org/HOWTO/Bash-Prompt-HOWTO/x405.html
+;; - [18] https://www.draketo.de/software/guile-capture-stdout-stderr.html
 
 
 (define-module (grsp grsp0)
@@ -111,6 +112,7 @@
 	    newspaces
 	    strings-append
 	    read-file-as-string
+	    call-command-with-output-error-to-string
 	    grsp-lang-effective-version
 	    grsp-test
 	    grsp-save-to-file
@@ -143,6 +145,7 @@
 	    grsp-string-lpjustify
 	    grsp-ln2ls
 	    grsp-ls2ln
+	    grsp-ls2ss
 	    grsp-ls2s
 	    grsp-s2ln
 	    grsp-ln2s
@@ -183,11 +186,12 @@
 	    grsp-sldvls
 	    grsp-clear-on-demand
 	    grsp-ldlc
-	    ;;grsp-padlr
 	    grsp-pad-lr
 	    grsp-menuv
+	    grsp-menub
 	    grsp-menup
 	    grsp-menufv
+	    grsp-menufb
 	    grsp-piped
 	    clearl
 	    grsp-color-set
@@ -198,7 +202,14 @@
 	    grsp-pg-psql1
 	    grsp-count-words
 	    grsp-string-lo
-	    grsp-substring-replace))
+	    grsp-substring-replace
+	    grsp-substring-delete-shorter
+	    grsp-ask2s
+	    grsp-askn2s
+	    grsp-menud
+	    grsp-display-scr
+	    grsp-menu-date
+	    grsp-row-menu))
 
 
 ;;;; pline - Displays string p_s1 p_l1 times in one line at the console.
@@ -503,6 +514,41 @@
 		   (list->string (reverse ls1)))
 	    
 	    (loop (cons c1 ls1) (read-char p1)))))))
+
+
+;;;; read-port-as-string - Reads terminal output as a string.
+;;
+;; Keywords:
+;;
+;; - console, terminal, strings
+;;
+;; Parameters:
+;;
+;; - p_p1: port.
+;;
+;; Notes:
+;;
+;; - This is an imported function. Credit goes to sources (lic lgplv2 or later).
+;;
+;; Sources:
+;;
+;; - [18].
+;;
+;; Output:
+;;
+;; - String.
+;;
+(define (call-command-with-output-error-to-string cmd)
+  (let* ((err-cons (pipe))
+         (port (with-error-to-port (cdr err-cons)
+				   (λ() (open-input-pipe cmd))))
+         (_ (setvbuf (car err-cons) 'block 
+		     (* 1024 1024 16)))
+         (result (read-delimited "" port)))
+    (close-port (cdr err-cons))
+    (values
+     result
+     (read-delimited "" (car err-cons)))))
 
 
 ;;;; grsp-lang-effective-version - Checks if currently instaled GNU Guile's
@@ -883,7 +929,7 @@
     res1))
 
 
-;;;; grsp-ask-etc - Asks top press <ENT> to continue.
+;;;; grsp-ask-etc - Asks to press <ENT> to continue.
 ;;
 ;; Keywords:
 ;;
@@ -1483,7 +1529,8 @@
     res1))
 
 
-;;;; grsp-ls2s - Casts a list of strings as single string.
+;;;; grsp-ls2ss - Casts a list of strings as single string, but separated by
+;; p_s2.
 ;;
 ;; Keywords:
 ;;
@@ -1492,6 +1539,42 @@
 ;; Parameters:
 ;;
 ;; - p_l1: list of strings to convert to a single string.
+;; - P_s2: string. Separator.
+;;
+;; Notes:
+;;
+;; - See grsp-l2s.
+;;
+;; Output:
+;;
+;; - String. 
+;;
+(define (grsp-ls2ss p_l1 p_s2)
+  (let ((res1 ""))
+
+    (let loop ((j1 0))
+      (if (< j1 (length p_l1))
+	  (begin (set! res1 (string-append res1 (list-ref p_l1 j1)))
+		 (set! res1 (string-append res1 p_s2))
+		 (loop (+ j1 1)))))
+    
+    res1))
+
+
+;;;; grsp-ls2s - Casts a list of strings as single string not separated
+;; by other characters.
+;;
+;; Keywords:
+;;
+;; - console, strings
+;;
+;; Parameters:
+;;
+;; - p_l1: list of strings to convert to a single string.
+;;
+;; Notes:
+;;
+;; - See grsp-l2ss.
 ;;
 ;; Output:
 ;;
@@ -1506,6 +1589,9 @@
 		 (loop (+ j1 1)))))
     
     res1))
+
+
+
 
 
 ;;;; grsp-s2ln - String to list of numbers representing the Unicode
@@ -2702,6 +2788,50 @@
     res1))
 
 
+;; grsp-menub - Build a vertical menu with the options in list p_l1 but
+;; unlike grsp-menuv it does not present a 0 - Exit option.
+;;
+;; Keywords:
+;;
+;; - menus, shell, interface, io, terminal
+;;
+;; Parameters:
+;;
+;; - p_l1: list, strings, menu items.
+;;
+;; Notes:
+;;
+;; - See grsp-menufv, grsp-menup.
+;;
+(define (grsp-menub p_l1)
+  (let ((res1 0)
+	(j2 0)
+	(s1 "")
+	(s2 ""))
+
+    (grsp-color-set "fcyan")
+    
+    ;; List loop.    
+    (let loop ((j1 0))
+      (if (<= j1 (- (length p_l1) 1))
+
+	  (begin (set! s1 (list-ref p_l1 j1))
+		 (set! j2 (+ j1 1))
+		 (set! s2 (strings-append (list (grsp-n2s j2)
+						" - "
+						s1)
+					  0))
+		 (grsp-ld s2)
+		 
+		 (loop (+ j1 1)))))
+
+    (grsp-color-set "fdefault")
+    
+    (set! res1 (grsp-ask "? "))
+    
+    res1))
+
+
 ;; grsp-menup - This is a presentation for terminal or shell program
 ;; menus.
 ;;
@@ -2738,7 +2868,8 @@
 	   (set! res1 (grsp-ask (gconsts "pec")))))))
 
 
-;; grsp-menufv - Fully vertical terminal or shell menus.
+;; grsp-menufv - Fully vertical terminal or shell menus with a default
+;; 0 Exit option.
 ;;
 ;; Keywords:
 ;;
@@ -2763,6 +2894,36 @@
     (set! tn (grsp-s2n (grsp-piped "tput cols")))
     (grsp-menup #f p_s1 p_s2 tm tn)
     (set! res1 (grsp-menuv p_l1))
+    
+    res1))
+
+
+;; grsp-menufb - Fully vertical terminal or shell menus without a default
+;; 0 Exit option.
+;;
+;; Keywords:
+;;
+;; - menus, shell, interface, io, terminals
+;;
+;; Arguments:
+;;
+;; - p_s1: menu title.
+;; - p_s2: text, brief description.
+;; - p_l1: list, strings, menu items.
+;;
+;; Notes:
+;;
+;; - See grsp-menub, grsp-menup.
+;;
+(define (grsp-menufb p_s1 p_s2 p_l1)
+  (let ((res1 0)
+	(tm 0)
+	(tn 0))
+
+    (set! tm (grsp-s2n (grsp-piped "tput lines")))
+    (set! tn (grsp-s2n (grsp-piped "tput cols")))
+    (grsp-menup #f p_s1 p_s2 tm tn)
+    (set! res1 (grsp-menub p_l1))
     
     res1))
 
@@ -3111,3 +3272,298 @@
     
     res1))
 
+
+;;;; grsp-substring-delete-shorter - From string s1 delete words (substrings)
+;; shorter than p_n1 characters.
+;;
+;; Keywords:
+;;
+;; - cut, delete
+;;
+;; Parameters:
+;;
+;; - p_s1: string-
+;; - p_n1: numeric. Substrings shorter than p_n1 charactes will be deleted.
+;;
+(define (grsp-substring-delete-shorter p_s1 p_n1)
+  (let ((res1 0)
+	(s2 "")
+	(l1 '()))
+
+    (set! l1 (string-tokenize p_s1))
+
+    ;; List loop.
+    (let loop ((j1 0))
+      (if (< j1 (length l1))
+
+	  (begin (set! s2 (list-ref l1 j1))
+		 
+		 (cond ((< (string-length s2) p_n1)
+			(set! l1 (delete s2 l1))
+			(set! j1 0)))
+		 
+		 (loop (+ j1 1)))))
+
+    ;; Return to string form.
+    (set! res1 (string-trim-both (grsp-ls2ss l1 " ")))
+    
+    res1))
+
+
+;; grsp-ask2s - Input alphabetic characters as a string.
+;;
+;; Keywords:
+;;
+;; - symbols, strings
+;;
+;; Parameters:
+;;
+;; - p_s1: Input request text.
+;;
+(define (grsp-ask2s p_s1)
+  (let ((res1 ""))
+
+    (set! res1 (symbol->string (grsp-ask p_s1)))
+
+    res1))
+
+
+;; grsp-ask2s - Input numeric characters as a string.
+;;
+;; Keywords:
+;;
+;; - symbols, strings
+;;
+;; Parameters:
+;;
+;; - p_s1: Input request text.
+;;
+(define (grsp-askn2s p_s1)
+  (let ((res1 "")
+	(n1 0))
+
+    (set! n1 (grsp-askn p_s1))
+    (set! res1 (grsp-n2s n1))
+
+    res1))
+
+
+;;;; grsp-menud - Dynamic menu.
+;;
+;; Keywords:
+;;
+;; - menu, dynamic, data, options, elements
+;;
+;; Parameters:
+;;
+;; - p_b1: boolean.
+;;
+;;   - #t to display a 0 - Exit option.
+;;   - #f otherwise.
+;;
+;; - p_s1: string, title,
+;; - p_s2: string, description.
+;; - p_a1: columnar m x 1 matrix.
+;;
+;; Notes:
+;;
+;; - Create p_a1 with grsp3.grsp-l2cm.
+;;
+(define (grsp-menud p_b1 p_s1 p_s2 p_a1)
+  (let ((res1 0)
+	(a2 0)
+	(mc -1)
+	(ms 0)
+	(tn 0)
+	(i1 0)
+	(i2 0)
+	(n1 0)
+	(b2 #f)
+	(l1 '()))
+
+    (set! tn (grsp-tm p_a1))
+
+    ;; Create list.
+    (set! l1 (make-list tn))
+
+    ;;
+    (cond ((equal? p_b1 #f)
+	   (set! ms 1)))
+    
+    ;; Merge.
+    (set! i1 n1)
+    (while (< i1 tn)
+
+	   (list-set! l1 i1 (array-ref p_a1 i2 0))
+	   (set! i2 (in i2))
+	   
+	   (set! i1 (in i1)))
+
+    ;; Display.
+    (while (equal? b2 #f)
+
+	   ;; This shows a menu with option 0 - Exit or not according to
+	   ;; p_b1.
+	   (cond ((equal? p_b1 #t)	   
+		  (set! mc (grsp-menufv p_s1
+					p_s2
+					l1)))
+		 ((equal? p_b1 #f)
+		  (set! mc (grsp-menufb p_s1
+					p_s2
+					l1))))
+	   
+	   ;; Validate while out condition.
+	   (cond ((>= mc ms)
+
+		  (cond ((<= mc (length l1))
+
+			 (set! b2 #t))))))
+
+    (set! res1 mc)
+    
+    res1))
+
+
+;;;; grsp-display-scr - Pretty display.
+;;
+;; Keywords:
+;;
+;; Parameters:
+;;
+;; - p_v1: value.
+;;
+;; - p_s1: screen title.
+;; - p_s2: text.
+;; - p_s3: string, color for contents.
+;; - p_l1: list of additional items, strings, menu items.
+;;
+;; Notes:
+;;
+;; - See grsp-menuv, grsp-menup.
+;;
+(define (grsp-display-scr p_s1 p_s2 p_s3 p_l1)
+  (let ((res1 0)
+	(tm 0)
+	(tn 0))
+
+    (set! tm (grsp-s2n (grsp-piped "tput lines")))
+    (set! tn (grsp-s2n (grsp-piped "tput cols")))
+    
+    (grsp-menup #f p_s1 p_s2 tm tn)
+    (grsp-display-scr-contents p_s3 p_l1)
+    
+    res1))
+
+
+;; grsp-display-scr-contents - Display generic contents from list l1.
+;;
+;; Keywords:
+;;
+;; - menus, shell, interface, io, terminal
+;;
+;; Parameters:
+;;
+;; - p_s1: string, color for contents.
+;; - p_l1: list, strings in paragraphs.
+;;
+(define (grsp-display-scr-contents p_s1 p_l1)
+  (let ((res1 0)
+	(s1 ""))
+
+    (grsp-color-set p_s1)
+        
+    ;; List loop.    
+    (let loop ((j1 0))
+      (if (<= j1 (- (length p_l1) 1))
+
+	  (begin (set! s1 (list-ref p_l1 j1))
+		 (grsp-ld s1)
+		 
+		 (loop (+ j1 1)))))
+
+    (grsp-color-set "fdefault")
+    
+    res1))
+
+
+;;;; grsp-menu-date - Add menu for accounting, transaction date.
+;;
+;; Keywords:
+;;
+;; - adding, payments, flow, money, date, limit
+;;
+;; Parameters:
+;;
+;; - p_s1: string, title.
+;; . p_s2: string, main descriptor.
+;; - p_s3: string, secondary descriptor.
+;;
+;; Output:
+;;
+;; - Numeric list of four elements:
+;;
+;;   - Elem 0: auto indicator.
+;;
+;;     - "#now": let the dbms calculate the actual date.
+;;     - "#not": pass user data.
+;;
+;;   - Elem 1: days fron mow.
+;;   - Elem 2: day.
+;;   - Elem 3: month.
+;;   - Elem 4: year.
+;;
+(define (grsp-menu-date p_s1 p_s2 p_s3)
+  (let ((res1 '())
+	(mc 0)
+	(b1 #f)
+	(s3 "#not")
+	(d1 0)
+	(m1 0)
+	(a1 0)
+	(c1 0))
+    
+    (while (equal? b1 #f)
+	   (set! mc (grsp-menufb (strings-append (list p_s1 "-" p_s2) 1)
+				 p_s3
+				 (list "Hoy."
+				       "En una fecha determinada."
+				       "En determinados días.")))
+
+	   (cond ((equal? mc 1)
+		  (set! s3 "#now")
+		  (set! b1 #t))
+		 ((equal? mc 2)
+		  (set! d1 (grsp-askn "Día (DD): "))
+		  (set! m1 (grsp-askn "Mes (MM): "))
+		  (set! a1 (grsp-askn "Año (AAAA): "))		  
+		  (set! b1 #t))
+		 ((equal? mc 3)
+		  (set! c1 (grsp-askn "Plazo en días: "))
+		  (set! b1 #t))		 
+		 (else (grsp-wrc))))
+
+    (set! res1 (list s3 c1 d1 m1 a1))
+
+    res1))
+
+
+;;;; grsp-row-menu - Displays a row menu.
+;;
+;; Keywords:
+;;
+;; - menu, options
+;;
+;; Parameters:
+;;
+;; - p_s1: string. Menu text (use gconsts values for better results).
+;;
+(define (grsp-row-menu p_s1)
+  (let ((res1 0))
+
+    (grsp-color-set "fcyan")
+    (grsp-ldl p_s1 0 0)
+    (grsp-color-set "fdefault")
+    (set! res1 (grsp-askn "? "))
+
+    res1))
